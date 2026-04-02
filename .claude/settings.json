@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd /home/user/os-sete-veus-site && npx tsx scripts/apply-proposals.ts 2>/dev/null | { notes=$(cat); if [ -n \"$notes\" ]; then echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"SessionStart\\\",\\\"additionalContext\\\":\\\"$notes\\\"}}\"; fi; } || true",
+            "timeout": 30,
+            "statusMessage": "A verificar notas de revisão..."
+          }
+        ]
+      }
+    ]
+  }
+}
