@@ -1,0 +1,22 @@
+{
+  "name": "Escola dos Véus",
+  "short_name": "Sete Véus",
+  "description": "Vê o que estava invisível. Cursos de autoconhecimento.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D0D1A",
+  "theme_color": "#0D0D1A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
