@@ -12,6 +12,8 @@ type PipelineStep = {
   detail?: string;
 };
 
+type AnimationTask = { type: string; taskId: string; status?: string; videoUrl?: string | null };
+
 type VideoResult = {
   status: string;
   title: string;
@@ -19,7 +21,8 @@ type VideoResult = {
   manifestUrl: string;
   scenes: number;
   imagesGenerated: number;
-  clipsAnimated: number;
+  animationsSubmitted?: number;
+  animationTaskIds?: AnimationTask[];
 };
 
 // ─── YOUTUBE HOOKS DATA ─────────────────────────────────────────────────────
@@ -46,6 +49,11 @@ export default function ProductionPage() {
   const [videoResult, setVideoResult] = useState<VideoResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Animation polling
+  const [animTasks, setAnimTasks] = useState<AnimationTask[]>([]);
+  const [animPolling, setAnimPolling] = useState(false);
+  const pollTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // YouTube metadata
   const [ytTitle, setYtTitle] = useState("");
@@ -107,6 +115,11 @@ export default function ProductionPage() {
             const data = JSON.parse(line.slice(6));
             if (data.result) {
               setVideoResult(data.result);
+              // Start polling for animation status if there are pending tasks
+              if (data.result.animationTaskIds?.length > 0) {
+                setAnimTasks(data.result.animationTaskIds);
+                startAnimationPolling(data.result.animationTaskIds);
+              }
             } else if (data.step !== undefined) {
               setPipelineSteps((prev) => {
                 const existing = prev.findIndex((s) => s.step === data.step);
@@ -143,6 +156,32 @@ export default function ProductionPage() {
       abortRef.current = null;
     }
   }, [selectedHook, voiceId]);
+
+  // ─── ANIMATION POLLING ───────────────────────────────────────────────────
+
+  function startAnimationPolling(tasks: AnimationTask[]) {
+    setAnimPolling(true);
+    if (pollTimerRef.current) clearInterval(pollTimerRef.current);
+
+    pollTimerRef.current = setInterval(async () => {
+      try {
+        const res = await fetch("/api/admin/courses/animation-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tasks, provider: "runway" }),
+        });
+
+        if (!res.ok) return;
+        const data = await res.json();
+        setAnimTasks(data.tasks);
+
+        if (data.allDone) {
+          if (pollTimerRef.current) clearInterval(pollTimerRef.current);
+          setAnimPolling(false);
+        }
+      } catch { /* retry next interval */ }
+    }, 15000); // Check every 15 seconds
+  }
 
   // ─── TEST IMAGE ─────────────────────────────────────────────────────────
 
@@ -349,10 +388,43 @@ export default function ProductionPage() {
                 <span className="text-escola-creme">{videoResult.imagesGenerated}</span>
               </div>
               <div>
-                <span className="text-escola-creme-50">Clips:</span>{" "}
-                <span className="text-escola-creme">{videoResult.clipsAnimated}</span>
+                <span className="text-escola-creme-50">Animacoes:</span>{" "}
+                <span className="text-escola-creme">{videoResult.animationsSubmitted || 0} submetidas</span>
               </div>
             </div>
+
+            {/* Animation status */}
+            {animTasks.length > 0 && (
+              <div className="mt-4 border-t border-escola-border pt-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <h4 className="text-sm font-medium text-escola-creme">Animacoes Runway</h4>
+                  {animPolling && <span className="text-xs text-escola-dourado animate-pulse">a verificar...</span>}
+                  {!animPolling && animTasks.every((t) => t.status === "done") && (
+                    <span className="text-xs text-green-400">Todas prontas</span>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  {animTasks.map((task, i) => (
+                    <div key={i} className="flex items-center gap-3 text-sm">
+                      <span className={`w-2 h-2 rounded-full ${
+                        task.status === "done" ? "bg-green-500"
+                        : task.status === "failed" || task.status === "error" ? "bg-escola-terracota"
+                        : "bg-escola-dourado animate-pulse"
+                      }`} />
+                      <span className="text-escola-creme-50 w-24">{task.type}</span>
+                      <span className="text-escola-creme text-xs">
+                        {task.status === "done" ? "Pronto" : task.status === "failed" ? "Falhou" : "A processar..."}
+                      </span>
+                      {task.videoUrl && (
+                        <a href={task.videoUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-escola-dourado underline">
+                          Ver clip
+                        </a>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             {videoResult.audioUrl && videoResult.audioUrl !== "[audio-direct-download]" && (
               <div className="mt-3">
                 <p className="text-xs text-escola-creme-50 mb-1">Audio narrado:</p>
