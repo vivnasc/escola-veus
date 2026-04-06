@@ -67,7 +67,7 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "Porque sentes culpa quando gastas dinheiro em ti mesma?",
       durationSec: 12,
       visualNote:
-        "Ilustração: céu escuro com uma luz dourada ao longe. Título aparece lentamente em texto creme.",
+        "Dark navy background, a very faint barely visible dark silhouette figure standing alone in the distance, almost merged with the darkness, a tiny golden light far away on the horizon",
     },
     {
       type: "pergunta",
@@ -76,7 +76,7 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "",
       durationSec: 18,
       visualNote:
-        "Ilustração flat: uma figura genérica (sem rosto, sem cor de pele definida) numa loja, a segurar um saco de compras. Expressão neutra. Estilo editorial simples, traço fino.",
+        "A dark silhouette figure in a shop holding a small bag, the figure is very dark almost blending into the navy background but slightly visible, shelves with warm terracotta colored products beside her, a faint thought bubble with numbers floating above",
     },
     {
       type: "situacao",
@@ -85,7 +85,7 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "",
       durationSec: 70,
       visualNote:
-        "Sequência de ilustrações estilo School of Life: 1) figura a tirar um objecto de um saco, a olhar para ele com incerteza 2) balão de pensamento com contas e números 3) split screen: mesma figura a pagar um jantar com naturalidade vs a hesitar com uma vela na mão",
+        "Split scene: on the left a slightly more visible dark silhouette figure happily giving presents to others shown as golden gift boxes, on the right the same figure hesitating alone with one small object in hand, the figure is becoming slightly more terracotta toned now, starting to emerge from the darkness",
     },
     {
       type: "revelacao",
@@ -94,7 +94,7 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "",
       durationSec: 80,
       visualNote:
-        "Ilustrações: 1) uma criança pequena a observar a mãe — a mãe a pousar algo numa prateleira de loja e a ir embora 2) frases a flutuar como folhas: 'não chega', 'não precisas', 'não somos dessas pessoas' 3) a criança cresce — dissolve para adulta — mas a sombra da criança continua lá 4) balança: lado 'outros' cheio de presentes, lado 'eu' vazio",
+        "A small child silhouette watching a taller adult silhouette who is putting something back on a shelf, both figures in terracotta now more visible, golden phrases floating like falling leaves around them, the child grows into an adult in the same pose — the shadow of the child remains behind her",
     },
     {
       type: "gesto",
@@ -103,7 +103,7 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "Repara. Três segundos.",
       durationSec: 40,
       visualNote:
-        "Ilustração: figura com a mão no peito. À volta, as frases-fantasma estão a desvanecer. Uma pequena luz onde a mão toca o peito. O mundo à volta continua normal.",
+        "A clearly visible terracotta silhouette figure with hand on chest, a warm golden glow radiating from where the hand touches, faint words and phrases dissolving and fading away around her, the figure is now warm and present — clearly emerged from the darkness",
     },
     {
       type: "frase_final",
@@ -113,7 +113,7 @@ const ouroProprioHook1: YouTubeScript = {
         "O prazer não precisa de justificação.\nSe precisasse, não seria prazer.",
       durationSec: 15,
       visualNote:
-        "Fundo escuro. Frase em texto creme, centrada. Silêncio.",
+        "Dark navy background with a warm golden glow at center, the terracotta figure now luminous with a golden outline, standing tall and calm, fully visible and radiant against the dark background",
     },
     {
       type: "cta",
@@ -122,7 +122,7 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "Subscreve. Há mais a caminho.",
       durationSec: 10,
       visualNote:
-        "Ilustração: a figura a caminhar calmamente. Texto simples com convite.",
+        "The luminous terracotta and gold figure walking calmly toward a warm golden light in the distance, a clear path ahead, peaceful and unhurried",
     },
     {
       type: "fecho",
@@ -130,7 +130,7 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "Escola dos Véus",
       durationSec: 6,
       visualNote:
-        "Logo Escola dos Véus. Fundo escuro. Silêncio.",
+        "Dark navy background, the golden light from the figure softly fading, leaving warmth behind, minimal and quiet",
     },
   ],
 };
