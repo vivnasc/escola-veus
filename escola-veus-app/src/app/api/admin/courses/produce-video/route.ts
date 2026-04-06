@@ -54,14 +54,15 @@ async function generateAudioDirect(text: string, voiceId: string): Promise<{ buf
   // Clean text: just add natural paragraph breaks, no fake pauses
   const processedText = text.replace(/\n\n+/g, "\n\n").trim();
 
-  // Use eleven_v3 — better Portuguese European, no accent mixing
+  // Use eleven_v3 with Portuguese language code — forces PT accent, no mixing
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
     method: "POST",
     headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
     body: JSON.stringify({
       text: processedText,
       model_id: "eleven_v3",
-      voice_settings: { stability: 0.7, similarity_boost: 0.85 },
+      language_code: "pt",
+      voice_settings: { stability: 0.8, similarity_boost: 0.9 },
     }),
   });
 

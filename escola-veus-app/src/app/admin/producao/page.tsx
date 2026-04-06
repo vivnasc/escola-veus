@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
 
@@ -25,6 +25,12 @@ type VideoResult = {
   animationTaskIds?: AnimationTask[];
 };
 
+type SceneEdit = {
+  type: string;
+  narration: string;
+  overlayText: string;
+};
+
 // ─── YOUTUBE HOOKS DATA ─────────────────────────────────────────────────────
 
 const YOUTUBE_HOOKS = [
@@ -38,7 +44,6 @@ const DEFAULT_VOICE_ID = "fnoNuVpfClX7lHKFbyZ2";
 // ─── MAIN PAGE ──────────────────────────────────────────────────────────────
 
 export default function ProductionPage() {
-  // Voice ID (the only thing the user might want to change)
   const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
   const [showVoiceField, setShowVoiceField] = useState(false);
 
@@ -49,6 +54,11 @@ export default function ProductionPage() {
   const [videoResult, setVideoResult] = useState<VideoResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Script preview/approval
+  const [scriptScenes, setScriptScenes] = useState<SceneEdit[]>([]);
+  const [scriptLoading, setScriptLoading] = useState(false);
+  const [scriptApproved, setScriptApproved] = useState(false);
 
   // Animation polling
   const [animTasks, setAnimTasks] = useState<AnimationTask[]>([]);
@@ -64,9 +74,49 @@ export default function ProductionPage() {
   const [testImageUrl, setTestImageUrl] = useState<string | null>(null);
   const [testImageLoading, setTestImageLoading] = useState(false);
 
+  // ─── LOAD SCRIPT FOR PREVIEW ────────────────────────────────────────────
+
+  const loadScript = useCallback(async () => {
+    setScriptLoading(true);
+    setScriptApproved(false);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/admin/courses/preview-script", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          courseSlug: "ouro-proprio",
+          scriptType: "youtube",
+          hookIndex: selectedHook,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
+        throw new Error(data.erro || `Erro ${res.status}`);
+      }
+
+      const data = await res.json();
+      setScriptScenes(data.scenes || []);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Erro";
+      setError(msg);
+    } finally {
+      setScriptLoading(false);
+    }
+  }, [selectedHook]);
+
+  // Load script when hook changes
+  useEffect(() => {
+    loadScript();
+  }, [loadScript]);
+
   // ─── PRODUCE VIDEO ──────────────────────────────────────────────────────
 
   const produceVideo = useCallback(async () => {
+    if (!scriptApproved) return;
+
     setIsProducing(true);
     setPipelineSteps([]);
     setVideoResult(null);
@@ -85,6 +135,8 @@ export default function ProductionPage() {
           hookIndex: selectedHook,
           animationProvider: "runway",
           voiceId: voiceId.trim() || undefined,
+          // Send edited scenes if user modified them
+          editedScenes: scriptScenes.length > 0 ? scriptScenes : undefined,
         }),
         signal: controller.signal,
       });
@@ -94,7 +146,6 @@ export default function ProductionPage() {
         throw new Error(data.erro || `Erro ${res.status}`);
       }
 
-      // Read SSE stream
       const reader = res.body?.getReader();
       if (!reader) throw new Error("Sem stream de resposta.");
 
@@ -115,7 +166,6 @@ export default function ProductionPage() {
             const data = JSON.parse(line.slice(6));
             if (data.result) {
               setVideoResult(data.result);
-              // Start polling for animation status if there are pending tasks
               if (data.result.animationTaskIds?.length > 0) {
                 setAnimTasks(data.result.animationTaskIds);
                 startAnimationPolling(data.result.animationTaskIds);
@@ -131,33 +181,29 @@ export default function ProductionPage() {
                 return [...prev, data];
               });
             }
-          } catch { /* skip malformed */ }
+          } catch { /* skip */ }
         }
       }
 
-      // Pre-fill YouTube metadata
       const hook = YOUTUBE_HOOKS[selectedHook];
       if (hook) {
         setYtTitle(hook.title);
-        setYtDescription(
-          `${hook.title}\n\nO curso Ouro Proprio vai muito mais fundo. Oito modulos para desatar o no entre o que sentes sobre dinheiro e quem realmente es.\n\nO primeiro modulo e gratuito: https://seteveus.space/cursos/ouro-proprio\n\n#escoladosveus #seteveus #ouroproprio #dinheiro #autoconhecimento #mulher`
-        );
-        setYtTags("escola dos veus, sete veus, ouro proprio, dinheiro, culpa, autoconhecimento, mulher, desenvolvimento pessoal");
+        setYtDescription(`${hook.title}\n\nSe isto fez sentido, subscreve. Ha mais a caminho.\n\n#escoladosveus #seteveus #ouroproprio #dinheiro #autoconhecimento`);
+        setYtTags("escola dos veus, sete veus, ouro proprio, dinheiro, culpa, autoconhecimento, mulher");
       }
     } catch (err: unknown) {
       if (err instanceof Error && err.name === "AbortError") {
         setError("Producao cancelada.");
       } else {
-        const msg = err instanceof Error ? err.message : String(err);
-        setError(msg);
+        setError(err instanceof Error ? err.message : String(err));
       }
     } finally {
       setIsProducing(false);
       abortRef.current = null;
     }
-  }, [selectedHook, voiceId]);
+  }, [scriptApproved, selectedHook, voiceId, scriptScenes]);
 
-  // ─── ANIMATION POLLING ───────────────────────────────────────────────────
+  // ─── ANIMATION POLLING ──────────────────────────────────────────────────
 
   function startAnimationPolling(tasks: AnimationTask[]) {
     setAnimPolling(true);
@@ -170,17 +216,15 @@ export default function ProductionPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ tasks, provider: "runway" }),
         });
-
         if (!res.ok) return;
         const data = await res.json();
         setAnimTasks(data.tasks);
-
         if (data.allDone) {
           if (pollTimerRef.current) clearInterval(pollTimerRef.current);
           setAnimPolling(false);
         }
-      } catch { /* retry next interval */ }
-    }, 15000); // Check every 15 seconds
+      } catch { /* retry */ }
+    }, 15000);
   }
 
   // ─── TEST IMAGE ─────────────────────────────────────────────────────────
@@ -189,7 +233,6 @@ export default function ProductionPage() {
     setTestImageLoading(true);
     setTestImageUrl(null);
     setError(null);
-
     try {
       const res = await fetch("/api/admin/courses/generate-image-flux", {
         method: "POST",
@@ -200,21 +243,31 @@ export default function ProductionPage() {
           sceneLabel: "teste",
         }),
       });
-
       if (!res.ok) {
         const data = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
         throw new Error(data.erro || `Erro ${res.status}`);
       }
-
       const data = await res.json();
       setTestImageUrl(data.url);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Erro";
-      setError(msg);
+      setError(err instanceof Error ? err.message : "Erro");
     } finally {
       setTestImageLoading(false);
     }
   }, []);
+
+  // ─── SCENE LABEL ────────────────────────────────────────────────────────
+
+  const SCENE_LABELS: Record<string, string> = {
+    abertura: "Abertura",
+    pergunta: "Pergunta",
+    situacao: "Situacao",
+    revelacao: "Revelacao",
+    gesto: "Gesto",
+    frase_final: "Frase Final",
+    cta: "CTA",
+    fecho: "Fecho",
+  };
 
   // ─── RENDER ─────────────────────────────────────────────────────────────
 
@@ -224,13 +277,13 @@ export default function ProductionPage() {
         Producao de Videos
       </h1>
       <p className="text-sm text-escola-creme-50 mt-1 mb-6">
-        Script &rarr; Voz &rarr; Imagens &rarr; Animacao &rarr; Video
+        1. Escolhe o hook &rarr; 2. Revê o script &rarr; 3. Aprova &rarr; 4. Produz
       </p>
 
       {/* Hook selector */}
       <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-6">
         <h2 className="font-serif text-lg font-medium text-escola-creme mb-4">
-          Ouro Proprio — YouTube Hooks
+          1. Escolhe o video
         </h2>
         <div className="space-y-2">
           {YOUTUBE_HOOKS.map((hook) => (
@@ -246,7 +299,7 @@ export default function ProductionPage() {
                 type="radio"
                 name="hook"
                 checked={selectedHook === hook.index}
-                onChange={() => setSelectedHook(hook.index)}
+                onChange={() => { setSelectedHook(hook.index); setScriptApproved(false); }}
                 className="accent-[#D4A853]"
               />
               <div className="flex-1">
@@ -257,9 +310,90 @@ export default function ProductionPage() {
             </label>
           ))}
         </div>
+      </div>
+
+      {/* Script preview & approval */}
+      <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-serif text-lg font-medium text-escola-creme">
+            2. Revê o script
+          </h2>
+          {scriptApproved && (
+            <span className="text-xs text-green-400 bg-green-400/10 px-3 py-1 rounded-full">Aprovado</span>
+          )}
+        </div>
+
+        {scriptLoading ? (
+          <p className="text-sm text-escola-creme-50 animate-pulse">A carregar script...</p>
+        ) : scriptScenes.length === 0 ? (
+          <p className="text-sm text-escola-creme-50">Nenhum script encontrado para este hook.</p>
+        ) : (
+          <div className="space-y-4">
+            {scriptScenes.map((scene, i) => (
+              <div key={i} className="border border-escola-border rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-medium text-escola-dourado bg-escola-dourado/10 px-2 py-0.5 rounded">
+                    {SCENE_LABELS[scene.type] || scene.type}
+                  </span>
+                  {!scene.narration && (
+                    <span className="text-[10px] text-escola-creme-50">(sem narracao)</span>
+                  )}
+                </div>
+                {scene.narration ? (
+                  <textarea
+                    value={scene.narration}
+                    onChange={(e) => {
+                      const updated = [...scriptScenes];
+                      updated[i] = { ...updated[i], narration: e.target.value };
+                      setScriptScenes(updated);
+                      setScriptApproved(false);
+                    }}
+                    rows={Math.max(2, Math.ceil(scene.narration.length / 80))}
+                    className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y"
+                  />
+                ) : (
+                  <p className="text-xs text-escola-creme-50 italic">
+                    {scene.overlayText ? `Texto no ecra: "${scene.overlayText}"` : "Cena silenciosa"}
+                  </p>
+                )}
+              </div>
+            ))}
+
+            <div className="flex items-center gap-3 pt-2">
+              {scriptApproved ? (
+                <button
+                  onClick={() => setScriptApproved(false)}
+                  className="rounded-lg border border-escola-border px-4 py-2.5 text-sm text-escola-creme-50 hover:text-escola-creme"
+                >
+                  Editar novamente
+                </button>
+              ) : (
+                <button
+                  onClick={() => setScriptApproved(true)}
+                  className="rounded-lg bg-escola-dourado px-6 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90"
+                >
+                  Aprovar script
+                </button>
+              )}
+              <button
+                onClick={loadScript}
+                className="text-xs text-escola-creme-50 hover:text-escola-creme"
+              >
+                Repor original
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Produce */}
+      <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-6">
+        <h2 className="font-serif text-lg font-medium text-escola-creme mb-4">
+          3. Produzir
+        </h2>
 
         {/* Voice ID toggle */}
-        <div className="mt-4">
+        <div className="mb-4">
           <button
             onClick={() => setShowVoiceField(!showVoiceField)}
             className="text-xs text-escola-creme-50 hover:text-escola-creme"
@@ -272,18 +406,14 @@ export default function ProductionPage() {
                 type="text"
                 value={voiceId}
                 onChange={(e) => setVoiceId(e.target.value)}
-                className="w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-4 py-2.5 text-sm text-escola-creme placeholder:text-escola-creme-50 focus:border-escola-dourado focus:outline-none"
+                className="w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-4 py-2.5 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none"
                 placeholder="Voice ID do ElevenLabs"
               />
-              <p className="text-[10px] text-escola-creme-50 mt-1">
-                Muda aqui para testar vozes diferentes. Por defeito usa a tua voz clonada.
-              </p>
             </div>
           )}
         </div>
 
-        {/* Action buttons */}
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {isProducing ? (
             <button
               onClick={() => abortRef.current?.abort()}
@@ -294,9 +424,10 @@ export default function ProductionPage() {
           ) : (
             <button
               onClick={produceVideo}
-              className="rounded-lg bg-escola-dourado px-6 py-3 text-sm font-medium text-escola-bg hover:opacity-90"
+              disabled={!scriptApproved}
+              className="rounded-lg bg-escola-dourado px-6 py-3 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40"
             >
-              Produzir video completo
+              {scriptApproved ? "Produzir video completo" : "Aprova o script primeiro"}
             </button>
           )}
           <button
@@ -312,51 +443,33 @@ export default function ProductionPage() {
       {/* Test image result */}
       {testImageUrl && (
         <div className="rounded-xl border border-escola-border bg-escola-card p-4 mb-6">
-          <img
-            src={testImageUrl}
-            alt="Teste Flux"
-            className="rounded-lg w-full max-w-lg border border-escola-border"
-          />
-          <p className="text-xs text-escola-creme-50 mt-2">Imagem gerada via Flux/fal.ai</p>
+          <img src={testImageUrl} alt="Teste" className="rounded-lg w-full max-w-lg border border-escola-border" />
         </div>
       )}
 
       {/* Pipeline progress */}
       {pipelineSteps.length > 0 && (
         <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-6">
-          <h3 className="font-serif text-lg font-medium text-escola-creme mb-4">
-            Pipeline
-          </h3>
-
-          {/* Progress bar */}
+          <h3 className="font-serif text-lg font-medium text-escola-creme mb-4">Pipeline</h3>
           <div className="mb-4">
             <div className="h-1.5 overflow-hidden rounded-full bg-escola-border">
-              <div
-                className="h-full rounded-full bg-escola-dourado transition-all duration-500"
-                style={{
-                  width: `${(pipelineSteps.filter((s) => s.status === "done").length / 5) * 100}%`,
-                }}
-              />
+              <div className="h-full rounded-full bg-escola-dourado transition-all duration-500"
+                style={{ width: `${(pipelineSteps.filter((s) => s.status === "done").length / 5) * 100}%` }} />
             </div>
           </div>
-
           <div className="space-y-3">
             {pipelineSteps.map((step) => (
               <div key={step.step} className="flex items-center gap-3">
                 <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-                  step.status === "done"
-                    ? "bg-green-500/20 text-green-400"
-                    : step.status === "error"
-                    ? "bg-escola-terracota/20 text-escola-terracota"
-                    : "bg-escola-dourado/20 text-escola-dourado animate-pulse"
+                  step.status === "done" ? "bg-green-500/20 text-green-400"
+                  : step.status === "error" ? "bg-escola-terracota/20 text-escola-terracota"
+                  : "bg-escola-dourado/20 text-escola-dourado animate-pulse"
                 }`}>
                   {step.status === "done" ? "\u2713" : step.status === "error" ? "!" : step.step}
                 </span>
                 <div className="flex-1">
                   <p className="text-sm text-escola-creme">{step.label}</p>
-                  {step.detail && (
-                    <p className="text-xs text-escola-creme-50">{step.detail}</p>
-                  )}
+                  {step.detail && <p className="text-xs text-escola-creme-50">{step.detail}</p>}
                 </div>
               </div>
             ))}
@@ -371,26 +484,15 @@ export default function ProductionPage() {
         </div>
       )}
 
-      {/* Video result + YouTube metadata */}
+      {/* Video result */}
       {videoResult && (
         <div className="rounded-xl border border-escola-dourado/30 bg-escola-dourado/5 p-6 space-y-6">
           <div>
-            <h3 className="font-serif text-lg font-medium text-escola-dourado mb-2">
-              Video produzido
-            </h3>
+            <h3 className="font-serif text-lg font-medium text-escola-dourado mb-2">Video produzido</h3>
             <div className="grid grid-cols-3 gap-4 text-sm">
-              <div>
-                <span className="text-escola-creme-50">Cenas:</span>{" "}
-                <span className="text-escola-creme">{videoResult.scenes}</span>
-              </div>
-              <div>
-                <span className="text-escola-creme-50">Imagens:</span>{" "}
-                <span className="text-escola-creme">{videoResult.imagesGenerated}</span>
-              </div>
-              <div>
-                <span className="text-escola-creme-50">Animacoes:</span>{" "}
-                <span className="text-escola-creme">{videoResult.animationsSubmitted || 0} submetidas</span>
-              </div>
+              <div><span className="text-escola-creme-50">Cenas:</span> <span className="text-escola-creme">{videoResult.scenes}</span></div>
+              <div><span className="text-escola-creme-50">Imagens:</span> <span className="text-escola-creme">{videoResult.imagesGenerated}</span></div>
+              <div><span className="text-escola-creme-50">Animacoes:</span> <span className="text-escola-creme">{videoResult.animationsSubmitted || 0}</span></div>
             </div>
 
             {/* Animation status */}
@@ -399,45 +501,31 @@ export default function ProductionPage() {
                 <div className="flex items-center gap-2 mb-3">
                   <h4 className="text-sm font-medium text-escola-creme">Animacoes Runway</h4>
                   {animPolling && <span className="text-xs text-escola-dourado animate-pulse">a verificar...</span>}
-                  {!animPolling && animTasks.every((t) => t.status === "done") && (
-                    <span className="text-xs text-green-400">Todas prontas</span>
-                  )}
+                  {!animPolling && animTasks.every((t) => t.status === "done") && <span className="text-xs text-green-400">Todas prontas</span>}
                 </div>
                 <div className="space-y-2">
                   {animTasks.map((task, i) => (
                     <div key={i} className="flex items-center gap-3 text-sm">
                       <span className={`w-2 h-2 rounded-full ${
-                        task.status === "done" ? "bg-green-500"
-                        : task.status === "failed" || task.status === "error" ? "bg-escola-terracota"
-                        : "bg-escola-dourado animate-pulse"
+                        task.status === "done" ? "bg-green-500" : task.status === "failed" ? "bg-escola-terracota" : "bg-escola-dourado animate-pulse"
                       }`} />
-                      <span className="text-escola-creme-50 w-24">{task.type}</span>
-                      <span className="text-escola-creme text-xs">
-                        {task.status === "done" ? "Pronto" : task.status === "failed" ? "Falhou" : "A processar..."}
-                      </span>
-                      {task.videoUrl && (
-                        <a href={task.videoUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-escola-dourado underline">
-                          Ver clip
-                        </a>
-                      )}
+                      <span className="text-escola-creme-50 w-24">{SCENE_LABELS[task.type] || task.type}</span>
+                      <span className="text-escola-creme text-xs">{task.status === "done" ? "Pronto" : task.status === "failed" ? "Falhou" : "A processar..."}</span>
+                      {task.videoUrl && <a href={task.videoUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-escola-dourado underline">Ver clip</a>}
                     </div>
                   ))}
                 </div>
               </div>
             )}
-            {videoResult.audioUrl && videoResult.audioUrl !== "[audio-direct-download]" && (
+
+            {videoResult.audioUrl && videoResult.audioUrl !== "[no-supabase]" && (
               <div className="mt-3">
                 <p className="text-xs text-escola-creme-50 mb-1">Audio narrado:</p>
                 <audio controls src={videoResult.audioUrl} className="w-full max-w-md h-10" />
               </div>
             )}
             {videoResult.manifestUrl && (
-              <a
-                href={videoResult.manifestUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block mt-2 text-xs text-escola-dourado underline"
-              >
+              <a href={videoResult.manifestUrl} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-xs text-escola-dourado underline">
                 Ver manifesto (JSON)
               </a>
             )}
@@ -445,44 +533,25 @@ export default function ProductionPage() {
 
           {/* YouTube metadata */}
           <div className="border-t border-escola-dourado/20 pt-4">
-            <h3 className="font-serif text-lg font-medium text-escola-creme mb-4">
-              YouTube
-            </h3>
+            <h3 className="font-serif text-lg font-medium text-escola-creme mb-4">YouTube</h3>
             <div className="space-y-4">
               <div>
                 <label className="text-xs text-escola-creme-50 block mb-1">Titulo</label>
-                <input
-                  type="text"
-                  value={ytTitle}
-                  onChange={(e) => setYtTitle(e.target.value)}
-                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none"
-                />
+                <input type="text" value={ytTitle} onChange={(e) => setYtTitle(e.target.value)}
+                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none" />
               </div>
               <div>
                 <label className="text-xs text-escola-creme-50 block mb-1">Descricao</label>
-                <textarea
-                  value={ytDescription}
-                  onChange={(e) => setYtDescription(e.target.value)}
-                  rows={6}
-                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y"
-                />
+                <textarea value={ytDescription} onChange={(e) => setYtDescription(e.target.value)} rows={5}
+                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y" />
               </div>
               <div>
                 <label className="text-xs text-escola-creme-50 block mb-1">Tags</label>
-                <input
-                  type="text"
-                  value={ytTags}
-                  onChange={(e) => setYtTags(e.target.value)}
-                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none"
-                />
+                <input type="text" value={ytTags} onChange={(e) => setYtTags(e.target.value)}
+                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none" />
               </div>
-              <button
-                onClick={() => {
-                  const text = `TITULO: ${ytTitle}\n\nDESCRICAO:\n${ytDescription}\n\nTAGS: ${ytTags}`;
-                  navigator.clipboard.writeText(text);
-                }}
-                className="rounded-lg bg-escola-dourado/20 border border-escola-dourado/30 px-4 py-2.5 text-sm text-escola-dourado hover:bg-escola-dourado/30"
-              >
+              <button onClick={() => navigator.clipboard.writeText(`TITULO: ${ytTitle}\n\nDESCRICAO:\n${ytDescription}\n\nTAGS: ${ytTags}`)}
+                className="rounded-lg bg-escola-dourado/20 border border-escola-dourado/30 px-4 py-2.5 text-sm text-escola-dourado hover:bg-escola-dourado/30">
                 Copiar metadados
               </button>
             </div>
