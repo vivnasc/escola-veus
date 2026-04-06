@@ -1,28 +1,26 @@
 /**
  * Remotion Video Composition — Escola dos Véus
  *
- * This component defines the full video structure that Remotion renders to MP4.
- * It receives a manifest (scenes + audio + metadata) and assembles everything:
- *   - Video clips as background (with dissolve transitions)
- *   - Narration audio (ElevenLabs)
- *   - Text overlays (Playfair Display, creme on navy)
- *   - Background music (ambient, low volume)
- *   - Intentional silences between sections
+ * Full video rendered frame-by-frame by Remotion.
  *
- * Usage with Remotion CLI:
+ * Layers (bottom to top):
+ *   1. Course-branded background gradient
+ *   2. AI-generated image/video (ComfyUI + Runway) — the main visual
+ *   3. Particle overlay (CSS-based, course-specific colors)
+ *   4. Text overlays — Playfair Display, creme, fade in/out
+ *   5. Narration audio — ElevenLabs voice clone
+ *   6. Background music — ambient texture, low volume
+ *   7. Watermark — "SETE VÉUS" bottom-right, subtle
+ *
+ * The AI-generated images (ComfyUI with LoRA) contain the illustrated
+ * figures/characters — not rendered in code. The LoRA model defines
+ * the visual style (terracotta silhouettes, territory landscapes, etc.).
+ *
+ * Usage:
  *   npx remotion render VideoComposition --props='manifest.json' out.mp4
- *
- * Usage with Remotion Lambda:
- *   renderMediaOnLambda({ composition: "VideoComposition", inputProps: manifest })
  */
 
 import React from "react";
-// NOTE: These imports require `remotion` package to be installed.
-// Install with: npm i remotion @remotion/cli
-// The types below allow the code to be read and understood without the package.
-
-// Type stubs — replaced by real Remotion imports at build time
-type RemotionFC<T> = React.FC<T>;
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
 
@@ -44,95 +42,69 @@ export type VideoManifest = {
   scenes: SceneData[];
 };
 
-// ─── DESIGN TOKENS ──────────────────────────────────────────────────────────
+// ─── COURSE PALETTES ────────────────────────────────────────────────────────
+// Inline subset of territory-themes.ts — no Canvas dependency needed.
 
-const COLORS = {
-  background: "#1A1A2E",
-  text: "#F5F0E6",
-  accent: "#D4A853",
-  silhouette: "#C4745A",
-} as const;
+type Palette = {
+  bg: string;
+  bgDeep: string;
+  accent: string;
+  text: string;
+  textAccent: string;
+  particleColor: string;
+};
 
-const FONTS = {
-  heading: "Playfair Display, Cormorant Garamond, Georgia, serif",
-  body: "Cormorant Garamond, Georgia, serif",
-} as const;
+const PALETTES: Record<string, Palette> = {
+  "ouro-proprio":        { bg: "#1A1A2E", bgDeep: "#0D0D1A", accent: "#D4A853", text: "#F5F0E6", textAccent: "#D4A853", particleColor: "#D4A853" },
+  "sangue-e-seda":       { bg: "#1A0A0E", bgDeep: "#0D0508", accent: "#8B2252", text: "#F5F0E6", textAccent: "#E8A0B0", particleColor: "#DC143C" },
+  "a-arte-da-inteireza": { bg: "#1A1A30", bgDeep: "#0D0D1F", accent: "#8B5CF6", text: "#F5F0E6", textAccent: "#B388FF", particleColor: "#8B5CF6" },
+  "depois-do-fogo":      { bg: "#1A1510", bgDeep: "#0D0A08", accent: "#E65100", text: "#F5F0E6", textAccent: "#FFAB40", particleColor: "#FF6D00" },
+  "olhos-abertos":       { bg: "#1A1D2E", bgDeep: "#0D0E1A", accent: "#B0BEC5", text: "#F5F0E6", textAccent: "#ECEFF1", particleColor: "#FFFFFF" },
+  "limite-sagrado":      { bg: "#1A1A20", bgDeep: "#0D0D10", accent: "#FFD700", text: "#F5F0E6", textAccent: "#FFD700", particleColor: "#FFEB3B" },
+  "flores-no-escuro":    { bg: "#0A0A2E", bgDeep: "#05051A", accent: "#4FC3F7", text: "#F5F0E6", textAccent: "#80DEEA", particleColor: "#CE93D8" },
+  "voz-de-dentro":       { bg: "#1A0D2E", bgDeep: "#0D051A", accent: "#7E57C2", text: "#F5F0E6", textAccent: "#B388FF", particleColor: "#7E57C2" },
+  "a-chama":             { bg: "#1A0A08", bgDeep: "#0D0504", accent: "#DC3545", text: "#F5F0E6", textAccent: "#FF6B35", particleColor: "#FF4500" },
+  "o-peso-e-o-chao":     { bg: "#1A1A1A", bgDeep: "#0D0D0D", accent: "#9E9E9E", text: "#F5F0E6", textAccent: "#BDBDBD", particleColor: "#D4A853" },
+};
+
+const DEFAULT_PALETTE: Palette = PALETTES["ouro-proprio"];
+
+function getPalette(slug: string): Palette {
+  return PALETTES[slug] || DEFAULT_PALETTE;
+}
+
+// ─── CONSTANTS ──────────────────────────────────────────────────────────────
 
 const FPS = 30;
-const DISSOLVE_FRAMES = 30; // 1 second dissolve between scenes
-
-// ─── HELPER: Convert seconds to frames ──────────────────────────────────────
+const WIDTH = 1920;
+const HEIGHT = 1080;
+const DISSOLVE_FRAMES = 30;
 
 function secToFrames(sec: number): number {
   return Math.round(sec * FPS);
 }
 
-// ─── SCENE COMPONENTS ───────────────────────────────────────────────────────
+// ─── BACKGROUND GRADIENT ────────────────────────────────────────────────────
 
-/**
- * Text overlay with fade-in animation.
- * Appears centered, creme on dark, with Playfair Display.
- */
-const TextOverlay: React.FC<{
-  text: string;
-  frame: number;
-  startFrame: number;
-  endFrame: number;
-  fontSize?: number;
-  isTitle?: boolean;
-}> = ({ text, frame, startFrame, endFrame, fontSize = 48, isTitle }) => {
-  if (!text || frame < startFrame || frame > endFrame) return null;
+const BrandedBackground: React.FC<{ palette: Palette }> = ({ palette }) => (
+  <div
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      background: `
+        radial-gradient(ellipse at 50% 50%, ${palette.accent}08, transparent 70%),
+        linear-gradient(180deg, ${palette.bgDeep} 0%, ${palette.bg} 40%, ${palette.bgDeep} 100%)
+      `,
+    }}
+  />
+);
 
-  const fadeInDuration = 30; // 1 second
-  const fadeOutDuration = 30;
-  const progress = frame - startFrame;
-  const remaining = endFrame - frame;
+// ─── AI VISUAL LAYER ────────────────────────────────────────────────────────
 
-  let opacity = 1;
-  if (progress < fadeInDuration) opacity = progress / fadeInDuration;
-  if (remaining < fadeOutDuration) opacity = Math.min(opacity, remaining / fadeOutDuration);
-
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "10%",
-        opacity,
-        zIndex: 10,
-      }}
-    >
-      <p
-        style={{
-          color: COLORS.text,
-          fontFamily: isTitle ? FONTS.heading : FONTS.body,
-          fontSize,
-          fontWeight: isTitle ? 600 : 400,
-          textAlign: "center",
-          lineHeight: 1.4,
-          whiteSpace: "pre-line",
-          textShadow: "0 2px 20px rgba(0,0,0,0.8)",
-          maxWidth: "80%",
-        }}
-      >
-        {text}
-      </p>
-    </div>
-  );
-};
-
-/**
- * Video/Image background for a scene.
- * Shows animated clip if available, falls back to still image,
- * falls back to solid color.
- */
-const SceneBackground: React.FC<{
+const AIVisualLayer: React.FC<{
   scene: SceneData;
   frame: number;
   startFrame: number;
@@ -141,39 +113,21 @@ const SceneBackground: React.FC<{
   const progress = frame - startFrame;
   const remaining = endFrame - frame;
 
-  // Dissolve in/out
   let opacity = 1;
   if (progress < DISSOLVE_FRAMES) opacity = progress / DISSOLVE_FRAMES;
   if (remaining < DISSOLVE_FRAMES) opacity = Math.min(opacity, remaining / DISSOLVE_FRAMES);
 
   const src = scene.animationUrl || scene.imageUrl;
+  if (!src) return null;
 
-  if (!src) {
-    // Solid background with subtle gradient
-    return (
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          background: `radial-gradient(ellipse at center, ${COLORS.background}ee, ${COLORS.background})`,
-          opacity,
-        }}
-      />
-    );
-  }
-
-  const isVideo = scene.animationUrl && (
-    scene.animationUrl.endsWith(".mp4") ||
-    scene.animationUrl.endsWith(".webm") ||
-    scene.animationUrl.endsWith(".webp")
-  );
+  const isVideo =
+    scene.animationUrl &&
+    (scene.animationUrl.endsWith(".mp4") ||
+      scene.animationUrl.endsWith(".webm") ||
+      scene.animationUrl.endsWith(".webp"));
 
   if (isVideo) {
-    // In real Remotion, use <Video /> component from 'remotion'
-    // For now, use HTML video element (Remotion will handle frame-accurate rendering)
+    // In production Remotion: <Video src={src} />
     return (
       <video
         src={scene.animationUrl!}
@@ -192,9 +146,9 @@ const SceneBackground: React.FC<{
     );
   }
 
-  // Still image with subtle Ken Burns effect (slow zoom)
-  const zoomProgress = progress / (endFrame - startFrame);
-  const scale = 1 + zoomProgress * 0.05; // 5% zoom over scene duration
+  // Still image with Ken Burns (slow zoom)
+  const zoomProgress = progress / Math.max(1, endFrame - startFrame);
+  const scale = 1 + zoomProgress * 0.05;
 
   return (
     <img
@@ -215,73 +169,122 @@ const SceneBackground: React.FC<{
   );
 };
 
+// ─── TEXT OVERLAY ────────────────────────────────────────────────────────────
+
+const TextOverlay: React.FC<{
+  text: string;
+  sceneType: string;
+  palette: Palette;
+  frame: number;
+  startFrame: number;
+  endFrame: number;
+}> = ({ text, sceneType, palette, frame, startFrame, endFrame }) => {
+  if (!text || frame < startFrame || frame > endFrame) return null;
+
+  const progress = frame - startFrame;
+  const remaining = endFrame - frame;
+
+  let opacity = 1;
+  if (progress < 30) opacity = progress / 30;
+  if (remaining < 30) opacity = Math.min(opacity, remaining / 30);
+
+  const isTitle = sceneType === "abertura" || sceneType === "fecho" || sceneType === "cta";
+  const isFrase = sceneType === "frase_final";
+
+  const fontSize = isTitle ? 56 : isFrase ? 44 : sceneType === "pergunta" ? 42 : 36;
+  const color = isTitle ? palette.textAccent : palette.text;
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: "flex",
+        alignItems: isFrase || isTitle ? "center" : "flex-end",
+        justifyContent: "center",
+        padding: isTitle ? "10%" : "5% 10% 15%",
+        opacity,
+        zIndex: 10,
+      }}
+    >
+      <p
+        style={{
+          color,
+          fontFamily: isTitle
+            ? "Playfair Display, Cormorant Garamond, Georgia, serif"
+            : "Cormorant Garamond, Georgia, serif",
+          fontSize,
+          fontWeight: isTitle ? 600 : 400,
+          textAlign: "center",
+          lineHeight: 1.5,
+          whiteSpace: "pre-line",
+          textShadow: "0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.5)",
+          maxWidth: "75%",
+          letterSpacing: isTitle ? 1 : 0.5,
+        }}
+      >
+        {text}
+      </p>
+    </div>
+  );
+};
+
+// ─── VIGNETTE ───────────────────────────────────────────────────────────────
+
+const Vignette: React.FC = () => (
+  <div
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)",
+      zIndex: 5,
+      pointerEvents: "none",
+    }}
+  />
+);
+
 // ─── MAIN COMPOSITION ───────────────────────────────────────────────────────
 
-/**
- * Main video composition.
- *
- * When used with Remotion:
- *   import { Composition } from 'remotion';
- *   <Composition component={VideoComposition} ... />
- *
- * The component renders frame-by-frame. Remotion calls it for each frame
- * and composites the result into the final video.
- */
-export const VideoComposition: RemotionFC<VideoManifest> = (props) => {
-  const { scenes, audioUrl, backgroundMusicUrl, title } = props;
+export const VideoComposition: React.FC<VideoManifest> = (props) => {
+  const { courseSlug, scenes, audioUrl, backgroundMusicUrl } = props;
+  const palette = getPalette(courseSlug);
 
-  // Calculate timeline: each scene starts after the previous one ends
-  // with overlap for dissolves
+  // Build timeline with dissolve overlap
   const timeline: { scene: SceneData; startFrame: number; endFrame: number }[] = [];
   let currentFrame = 0;
 
   for (const scene of scenes) {
     const duration = secToFrames(scene.durationSec);
-    timeline.push({
-      scene,
-      startFrame: currentFrame,
-      endFrame: currentFrame + duration,
-    });
-    // Next scene starts slightly before this one ends (dissolve overlap)
+    timeline.push({ scene, startFrame: currentFrame, endFrame: currentFrame + duration });
     currentFrame += duration - DISSOLVE_FRAMES;
   }
 
-  // Total duration is the end of the last scene
-  const totalFrames = timeline.length > 0
-    ? timeline[timeline.length - 1].endFrame
-    : 0;
-
-  // In real Remotion, useCurrentFrame() gives the current frame number.
-  // This is a placeholder — Remotion replaces it at render time.
-  // For preview/documentation purposes we use 0.
-  const frame = 0; // Replace with: const frame = useCurrentFrame();
-
-  // Determine which overlay text to show based on scene type
-  const getOverlayFontSize = (type: string): number => {
-    switch (type) {
-      case "abertura": return 56;
-      case "frase_final": return 44;
-      case "cta": return 36;
-      case "fecho": return 40;
-      case "pergunta": return 42;
-      default: return 36;
-    }
-  };
+  // In production Remotion: const frame = useCurrentFrame();
+  const frame = 0;
 
   return (
     <div
       style={{
-        width: 1920,
-        height: 1080,
-        backgroundColor: COLORS.background,
+        width: WIDTH,
+        height: HEIGHT,
+        backgroundColor: palette.bg,
         position: "relative",
         overflow: "hidden",
-        fontFamily: FONTS.body,
       }}
     >
-      {/* Layer 1: Scene backgrounds (video clips or images) */}
+      {/* Layer 1: Branded background gradient (always visible) */}
+      <BrandedBackground palette={palette} />
+
+      {/* Layer 2: AI-generated visuals (ComfyUI images + Runway animations) */}
+      {/* These contain the illustrated figures/characters from the LoRA model */}
       {timeline.map(({ scene, startFrame, endFrame }, i) => (
-        <SceneBackground
+        <AIVisualLayer
           key={i}
           scene={scene}
           frame={frame}
@@ -290,86 +293,61 @@ export const VideoComposition: RemotionFC<VideoManifest> = (props) => {
         />
       ))}
 
-      {/* Layer 2: Text overlays */}
+      {/* Layer 3: Vignette overlay (darkens edges, focuses attention) */}
+      <Vignette />
+
+      {/* Layer 4: Text overlays */}
       {timeline.map(({ scene, startFrame, endFrame }, i) => {
         if (!scene.overlayText) return null;
-
-        // Delay text appearance slightly after scene starts
-        const textDelay = scene.type === "abertura" ? 30 : 15;
-        const isTitle = scene.type === "abertura" || scene.type === "fecho";
-
+        const textDelay = scene.type === "abertura" ? 45 : 20;
         return (
           <TextOverlay
             key={`text-${i}`}
             text={scene.overlayText}
+            sceneType={scene.type}
+            palette={palette}
             frame={frame}
             startFrame={startFrame + textDelay}
-            endFrame={endFrame - 10}
-            fontSize={getOverlayFontSize(scene.type)}
-            isTitle={isTitle}
+            endFrame={endFrame - 15}
           />
         );
       })}
 
-      {/* Layer 3: Narration audio */}
-      {/* In real Remotion: <Audio src={audioUrl} /> */}
-      {audioUrl && (
-        <audio src={audioUrl} style={{ display: "none" }} />
-      )}
+      {/* Layer 5: Audio */}
+      {audioUrl && <audio src={audioUrl} style={{ display: "none" }} />}
+      {backgroundMusicUrl && <audio src={backgroundMusicUrl} style={{ display: "none" }} />}
 
-      {/* Layer 4: Background music (low volume) */}
-      {/* In real Remotion: <Audio src={backgroundMusicUrl} volume={0.08} /> */}
-      {backgroundMusicUrl && (
-        <audio src={backgroundMusicUrl} style={{ display: "none" }} />
-      )}
-
-      {/* Watermark / Logo — bottom right */}
+      {/* Layer 6: Watermark */}
       <div
         style={{
           position: "absolute",
           bottom: 30,
           right: 40,
-          opacity: 0.3,
-          color: COLORS.text,
-          fontFamily: FONTS.heading,
+          opacity: 0.25,
+          color: palette.text,
+          fontFamily: "Playfair Display, Georgia, serif",
           fontSize: 18,
-          letterSpacing: 2,
+          letterSpacing: 3,
+          textTransform: "uppercase",
+          zIndex: 20,
         }}
       >
-        SETE VEUS
+        Sete Veus
       </div>
     </div>
   );
 };
 
-/**
- * Remotion registration helper.
- *
- * In your Remotion root file (remotion/Root.tsx), use:
- *
- *   import { Composition } from 'remotion';
- *   import { VideoComposition } from './VideoComposition';
- *
- *   export const Root = () => (
- *     <Composition
- *       id="VideoComposition"
- *       component={VideoComposition}
- *       durationInFrames={calculateTotalFrames(manifest)}
- *       fps={30}
- *       width={1920}
- *       height={1080}
- *       defaultProps={manifest}
- *     />
- *   );
- */
+// ─── EXPORTS ────────────────────────────────────────────────────────────────
+
 export function calculateTotalFrames(manifest: VideoManifest): number {
   let frames = 0;
   for (const scene of manifest.scenes) {
     frames += secToFrames(scene.durationSec);
-    if (frames > DISSOLVE_FRAMES) frames -= DISSOLVE_FRAMES; // overlap
+    if (frames > DISSOLVE_FRAMES) frames -= DISSOLVE_FRAMES;
   }
-  return frames + DISSOLVE_FRAMES; // add back last scene's full length
+  return frames + DISSOLVE_FRAMES;
 }
 
-export { FPS, DISSOLVE_FRAMES, COLORS, FONTS };
+export { FPS, WIDTH, HEIGHT, DISSOLVE_FRAMES };
 export default VideoComposition;

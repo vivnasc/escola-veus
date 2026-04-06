@@ -71,8 +71,8 @@ function createSSEStream() {
 
 async function loadYouTubeScript(courseSlug: string, hookIndex: number) {
   // Dynamic import of youtube scripts
-  const { youtubeScripts } = await import("@/data/youtube-scripts");
-  const script = youtubeScripts.find(
+  const { YOUTUBE_SCRIPTS } = await import("@/data/youtube-scripts");
+  const script = YOUTUBE_SCRIPTS.find(
     (s) => s.courseSlug === courseSlug && s.hookIndex === hookIndex,
   );
   if (!script) {
