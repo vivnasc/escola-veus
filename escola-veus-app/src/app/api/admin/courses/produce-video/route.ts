@@ -74,10 +74,11 @@ async function generateImageDirect(prompt: string, courseSlug: string, sceneLabe
   const apiKey = process.env.FAL_KEY;
   if (!apiKey) throw new Error("FAL_KEY nao configurada no Vercel.");
 
-  const res = await fetch("https://fal.run/fal-ai/flux/dev", {
+  // Flux Schnell: ~2s per image (vs ~30s for Dev)
+  const res = await fetch("https://fal.run/fal-ai/flux/schnell", {
     method: "POST",
     headers: { Authorization: `Key ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt, image_size: { width: 1920, height: 1080 }, num_images: 1, enable_safety_checker: false }),
+    body: JSON.stringify({ prompt, image_size: { width: 1920, height: 1080 }, num_images: 1, num_inference_steps: 4, enable_safety_checker: false }),
   });
 
   if (!res.ok) { console.error(`Flux ${res.status} for ${sceneLabel}`); return null; }
