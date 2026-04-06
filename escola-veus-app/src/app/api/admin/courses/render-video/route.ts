@@ -5,18 +5,15 @@ export const maxDuration = 300;
 /**
  * POST /api/admin/courses/render-video
  *
- * Renders the final MP4 using Remotion Lambda (AWS cloud render).
- * No CLI, no Chromium, no local resources — 100% cloud.
+ * Renders final MP4 via Shotstack cloud API. Zero CLI, zero AWS, zero local.
+ * Builds a timeline from the manifest: clips + audio + music + text + watermark.
+ * Polls for completion, uploads to Supabase, returns download URL.
  *
- * Required env vars:
- *   REMOTION_AWS_REGION        — e.g. "eu-west-1"
- *   REMOTION_LAMBDA_FUNCTION   — Lambda function name (from `npx remotion lambda functions deploy`)
- *   REMOTION_SERVE_URL         — S3 serve URL (from `npx remotion lambda sites create`)
- *   AWS_ACCESS_KEY_ID          — AWS credentials
- *   AWS_SECRET_ACCESS_KEY      — AWS credentials
+ * Env: SHOTSTACK_API_KEY (from dashboard.shotstack.io)
+ *      SHOTSTACK_ENV: "stage" (free, watermark) or "v1" (production)
  *
- * Body: { manifest: VideoManifest }
- * Returns SSE stream with progress + final { result: { videoUrl } }
+ * Body: { manifest }
+ * Returns SSE: progress events + final { type: "result", videoUrl }
  */
 
 type SSEEvent =
@@ -35,6 +32,174 @@ function createSSEStream() {
   return { stream, send, close };
 }
 
+// ─── BUILD SHOTSTACK TIMELINE FROM MANIFEST ────────────────────────────────
+
+type ShotstackClip = {
+  asset: Record<string, unknown>;
+  start: number;
+  length: number;
+  transition?: { in?: string; out?: string };
+  fit?: string;
+  scale?: number;
+  opacity?: number;
+  position?: string;
+  offset?: { x?: number; y?: number };
+  effect?: string;
+};
+
+type ManifestScene = {
+  type: string;
+  narration: string;
+  overlayText: string;
+  durationSec: number;
+  imageUrl: string | null;
+  animationUrl: string | null;
+  audioUrl?: string | null;
+  audioStartSec?: number | null;
+  audioEndSec?: number | null;
+};
+
+function buildShotstackEdit(manifest: {
+  scenes: ManifestScene[];
+  backgroundMusicUrl?: string;
+  backgroundMusicVolume?: number;
+  title?: string;
+  courseSlug?: string;
+}) {
+  const scenes = manifest.scenes;
+  const OVERLAP = 1; // dissolve overlap in seconds
+
+  // Calculate timeline positions with dissolve overlap
+  const positions: { start: number; length: number }[] = [];
+  let currentTime = 0;
+  for (let i = 0; i < scenes.length; i++) {
+    const dur = scenes[i].durationSec;
+    positions.push({ start: currentTime, length: dur });
+    currentTime += dur - OVERLAP;
+  }
+  const totalDuration = currentTime + OVERLAP;
+
+  // ─── TRACK 1 (top): Watermark ──────────────────────────────────────
+  const watermarkTrack = {
+    clips: [
+      {
+        asset: {
+          type: "html" as const,
+          html: "<p>SETE V&Eacute;US</p>",
+          css: "p { font-family: Georgia, serif; font-size: 18px; color: rgba(245,240,230,0.25); letter-spacing: 3px; text-transform: uppercase; }",
+          width: 200,
+          height: 40,
+        },
+        start: 0,
+        length: totalDuration,
+        position: "bottomRight",
+        offset: { x: -0.03, y: 0.03 },
+      },
+    ],
+  };
+
+  // ─── TRACK 2: Text overlays ────────────────────────────────────────
+  const textClips: ShotstackClip[] = [];
+  for (let i = 0; i < scenes.length; i++) {
+    const scene = scenes[i];
+    const text = scene.overlayText || "";
+    if (!text) continue;
+
+    const isTitle = scene.type === "abertura" || scene.type === "fecho" || scene.type === "cta";
+    const isFrase = scene.type === "frase_final";
+    const size = isTitle ? "large" : isFrase ? "medium" : "small";
+
+    textClips.push({
+      asset: {
+        type: "html",
+        html: `<p>${text.replace(/\n/g, "<br>")}</p>`,
+        css: `p { font-family: Georgia, serif; font-size: ${isTitle ? 48 : isFrase ? 36 : 28}px; color: ${isTitle ? "#D4A853" : "#F5F0E6"}; text-align: center; line-height: 1.5; text-shadow: 0 2px 20px rgba(0,0,0,0.9); }`,
+        width: 1400,
+        height: 400,
+      },
+      start: positions[i].start + (scene.type === "abertura" ? 1.5 : 0.7),
+      length: positions[i].length - (scene.type === "abertura" ? 2 : 1.2),
+      position: isTitle || isFrase ? "center" : "bottom",
+      offset: isTitle || isFrase ? undefined : { y: 0.15 },
+      transition: { in: "fade", out: "fade" },
+    });
+  }
+  const textTrack = { clips: textClips };
+
+  // ─── TRACK 3: Visuals (clips or images) ────────────────────────────
+  const visualClips: ShotstackClip[] = [];
+  for (let i = 0; i < scenes.length; i++) {
+    const scene = scenes[i];
+    const src = scene.animationUrl || scene.imageUrl;
+    if (!src) continue;
+
+    const isVideo = scene.animationUrl &&
+      (scene.animationUrl.endsWith(".mp4") || scene.animationUrl.endsWith(".webm"));
+
+    const clip: ShotstackClip = {
+      asset: isVideo
+        ? { type: "video", src: scene.animationUrl, volume: 0 }
+        : { type: "image", src },
+      start: positions[i].start,
+      length: positions[i].length,
+      fit: "crop",
+      transition: { in: "fade", out: "fade" },
+    };
+
+    // Ken Burns zoom on still images
+    if (!isVideo) {
+      clip.effect = "zoomIn";
+    }
+
+    visualClips.push(clip);
+  }
+  const visualTrack = { clips: visualClips };
+
+  // ─── TRACK 4: Per-scene narration audio ────────────────────────────
+  const audioClips: ShotstackClip[] = [];
+  for (let i = 0; i < scenes.length; i++) {
+    const scene = scenes[i];
+    const audioUrl = (scene as Record<string, unknown>).audioUrl as string | undefined;
+    if (!audioUrl) continue;
+
+    audioClips.push({
+      asset: { type: "audio", src: audioUrl, volume: 1 },
+      start: positions[i].start,
+      length: positions[i].length,
+    });
+  }
+  const audioTrack = { clips: audioClips };
+
+  // ─── SOUNDTRACK: Background music ──────────────────────────────────
+  const soundtrack = manifest.backgroundMusicUrl
+    ? {
+        src: manifest.backgroundMusicUrl,
+        effect: "fadeInFadeOut",
+        volume: manifest.backgroundMusicVolume ?? 0.12,
+      }
+    : undefined;
+
+  return {
+    timeline: {
+      ...(soundtrack ? { soundtrack } : {}),
+      background: "#1A1A2E",
+      tracks: [
+        watermarkTrack,
+        textTrack,
+        visualTrack,
+        audioTrack,
+      ].filter((t) => t.clips.length > 0),
+    },
+    output: {
+      format: "mp4",
+      resolution: "1080",
+      fps: 30,
+    },
+  };
+}
+
+// ─── MAIN HANDLER ──────────────────────────────────────────────────────────
+
 export async function POST(req: NextRequest) {
   const { manifest } = await req.json();
 
@@ -42,105 +207,104 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "manifest obrigatorio." }, { status: 400 });
   }
 
-  const region = process.env.REMOTION_AWS_REGION;
-  const functionName = process.env.REMOTION_LAMBDA_FUNCTION;
-  const serveUrl = process.env.REMOTION_SERVE_URL;
-
-  if (!region || !functionName || !serveUrl) {
-    return NextResponse.json({
-      erro: "Remotion Lambda nao configurado. Precisa de REMOTION_AWS_REGION, REMOTION_LAMBDA_FUNCTION, REMOTION_SERVE_URL.",
-    }, { status: 400 });
+  const apiKey = process.env.SHOTSTACK_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ erro: "SHOTSTACK_API_KEY nao configurada." }, { status: 400 });
   }
+
+  const env = process.env.SHOTSTACK_ENV || "stage";
+  const baseUrl = `https://api.shotstack.io/${env}`;
 
   const { stream, send, close } = createSSEStream();
 
   (async () => {
     try {
-      send({ type: "progress", percent: 0, label: "A submeter render ao Lambda..." });
+      send({ type: "progress", percent: 0, label: "A construir timeline..." });
 
-      const { renderMediaOnLambda, getRenderProgress } = await import("@remotion/lambda/client");
+      const edit = buildShotstackEdit(manifest);
 
-      // Calculate total frames for the composition
-      const FPS = 30;
-      const DISSOLVE_FRAMES = 30;
-      let totalFrames = 0;
-      for (const scene of manifest.scenes) {
-        totalFrames += Math.round(scene.durationSec * FPS);
-        if (totalFrames > DISSOLVE_FRAMES) totalFrames -= DISSOLVE_FRAMES;
-      }
-      totalFrames += DISSOLVE_FRAMES;
+      send({ type: "progress", percent: 5, label: "A submeter render ao Shotstack..." });
 
-      // 1. Submit render to Lambda
-      const { renderId, bucketName } = await renderMediaOnLambda({
-        region,
-        functionName,
-        serveUrl,
-        composition: "VideoComposition",
-        inputProps: manifest,
-        codec: "h264",
-        framesPerLambda: 120,
-        privacy: "public",
-        downloadBehavior: { type: "download", fileName: `${manifest.sceneLabel || "video"}.mp4` },
+      // 1. Submit render
+      const renderRes = await fetch(`${baseUrl}/render`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-api-key": apiKey },
+        body: JSON.stringify(edit),
       });
 
-      send({ type: "progress", percent: 10, label: `Render submetido (${renderId}). A processar...` });
+      if (!renderRes.ok) {
+        const err = await renderRes.text();
+        throw new Error(`Shotstack ${renderRes.status}: ${err.slice(0, 300)}`);
+      }
 
-      // 2. Poll for progress
+      const renderData = await renderRes.json();
+      const renderId = renderData.response?.id;
+      if (!renderId) throw new Error("Shotstack nao devolveu render ID");
+
+      send({ type: "progress", percent: 10, label: `Render submetido (${renderId.slice(0, 8)}...). A processar...` });
+
+      // 2. Poll for completion
       let done = false;
-      let lastPercent = 10;
+      let lastStatus = "";
 
       while (!done) {
-        await new Promise((r) => setTimeout(r, 3000));
+        await new Promise((r) => setTimeout(r, 5000));
 
-        const progress = await getRenderProgress({
-          renderId,
-          bucketName,
-          functionName,
-          region,
+        const statusRes = await fetch(`${baseUrl}/render/${renderId}`, {
+          headers: { "x-api-key": apiKey },
         });
 
-        if (progress.fatalErrorEncountered) {
-          throw new Error(progress.errors?.[0]?.message || "Erro fatal no render Lambda");
+        if (!statusRes.ok) continue;
+
+        const statusData = await statusRes.json();
+        const status = statusData.response?.status;
+
+        if (status !== lastStatus) {
+          lastStatus = status;
+          const labels: Record<string, { pct: number; label: string }> = {
+            queued: { pct: 15, label: "Na fila..." },
+            fetching: { pct: 25, label: "A descarregar assets..." },
+            rendering: { pct: 50, label: "A renderizar video..." },
+            saving: { pct: 85, label: "A guardar..." },
+          };
+          const info = labels[status] || { pct: 50, label: `Estado: ${status}` };
+          send({ type: "progress", percent: info.pct, label: info.label });
         }
 
-        if (progress.done) {
+        if (status === "done") {
           done = true;
-          const videoUrl = progress.outputFile;
+          const outputUrl = statusData.response?.url;
+          if (!outputUrl) throw new Error("Shotstack nao devolveu URL do video");
 
-          send({ type: "progress", percent: 95, label: "Render completo. A guardar..." });
+          send({ type: "progress", percent: 90, label: "Render completo. A fazer upload ao Supabase..." });
 
-          // Upload to Supabase for permanent storage
+          // 3. Upload to Supabase
           const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
           const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-          let finalUrl = videoUrl || "";
+          let finalUrl = outputUrl;
 
-          if (serviceKey && supabaseUrl && videoUrl) {
+          if (serviceKey && supabaseUrl) {
             try {
-              const videoRes = await fetch(videoUrl);
+              const videoRes = await fetch(outputUrl);
               if (videoRes.ok) {
                 const { createClient } = await import("@supabase/supabase-js");
                 const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
-                const filePath = `courses/${manifest.courseSlug}/videos/${manifest.sceneLabel}-${Date.now()}.mp4`;
+                const filePath = `courses/${manifest.courseSlug || "video"}/videos/${manifest.sceneLabel || "render"}-${Date.now()}.mp4`;
                 const videoBuffer = new Uint8Array(await videoRes.arrayBuffer());
                 const { error } = await supabase.storage
                   .from("course-assets")
                   .upload(filePath, videoBuffer, { contentType: "video/mp4", upsert: true });
                 if (!error) finalUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
               }
-            } catch { /* keep Lambda URL as fallback */ }
+            } catch { /* keep Shotstack URL as fallback */ }
           }
 
           send({ type: "progress", percent: 100, label: "Video pronto!" });
           send({ type: "result", videoUrl: finalUrl });
-        } else {
-          const pct = Math.min(90, 10 + Math.round((progress.overallProgress || 0) * 85));
-          if (pct > lastPercent) {
-            lastPercent = pct;
-            const chunksStr = progress.chunks
-              ? `${progress.chunks.filter((c: { rendered: boolean }) => c.rendered).length}/${progress.chunks.length} chunks`
-              : "";
-            send({ type: "progress", percent: pct, label: `A renderizar... ${Math.round((progress.overallProgress || 0) * 100)}% ${chunksStr}` });
-          }
+        }
+
+        if (status === "failed") {
+          throw new Error(`Render falhou: ${statusData.response?.error || "erro desconhecido"}`);
         }
       }
     } catch (err) {
