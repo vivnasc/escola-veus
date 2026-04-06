@@ -129,7 +129,11 @@ export async function POST(req: NextRequest) {
   }
 
   const { stream, send, close } = createSSEStream();
-  const baseUrl = req.nextUrl.origin;
+
+  // Build correct base URL for internal API calls on Vercel
+  const proto = req.headers.get("x-forwarded-proto") || "https";
+  const host = req.headers.get("host") || req.headers.get("x-forwarded-host") || process.env.VERCEL_URL || "localhost:3000";
+  const baseUrl = `${proto}://${host}`;
   const totalSteps = 5;
 
   // Run pipeline asynchronously
