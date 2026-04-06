@@ -42,7 +42,7 @@ export default function ProductionPage() {
   const [elevenKey, setElevenKey] = useState("");
   const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
   const [runwayKey, setRunwayKey] = useState("");
-  const [animProvider, setAnimProvider] = useState<"runway" | "hailuo">("hailuo");
+  const [animProvider, setAnimProvider] = useState<"runway" | "hailuo">("runway");
 
   // Tab
   const [activeTab, setActiveTab] = useState<TabId>("video");
@@ -301,8 +301,8 @@ export default function ProductionPage() {
               onChange={(e) => setAnimProvider(e.target.value as "runway" | "hailuo")}
               className="rounded-lg border border-escola-border bg-escola-bg px-3 py-2.5 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none"
             >
-              <option value="hailuo">Hailuo 2.3 (via fal.ai) — ~$0.25/clip, boa qualidade</option>
-              <option value="runway">Runway Gen-4 — ~$0.24/clip, melhor qualidade</option>
+              <option value="runway">Runway Gen-4 — melhor qualidade, cinematico</option>
+              <option value="hailuo">Hailuo 2.3 (via fal.ai) — alternativa</option>
             </select>
           </div>
 
