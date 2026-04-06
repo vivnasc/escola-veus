@@ -31,6 +31,10 @@ export type SceneData = {
   durationSec: number;
   imageUrl: string | null;
   animationUrl: string | null;
+  /** Real audio start time in seconds (from ElevenLabs timestamps) */
+  audioStartSec?: number | null;
+  /** Real audio end time in seconds (from ElevenLabs timestamps) */
+  audioEndSec?: number | null;
 };
 
 export type VideoManifest = {
@@ -255,14 +259,29 @@ export const VideoComposition: React.FC<VideoManifest> = (props) => {
   const { courseSlug, scenes, audioUrl, backgroundMusicUrl } = props;
   const palette = getPalette(courseSlug);
 
-  // Build timeline with dissolve overlap
+  // Build timeline from real audio timestamps when available.
+  // This ensures visual scenes are precisely synced to the narration.
   const timeline: { scene: SceneData; startFrame: number; endFrame: number }[] = [];
-  let currentFrame = 0;
 
-  for (const scene of scenes) {
-    const duration = secToFrames(scene.durationSec);
-    timeline.push({ scene, startFrame: currentFrame, endFrame: currentFrame + duration });
-    currentFrame += duration - DISSOLVE_FRAMES;
+  const hasRealTimestamps = scenes.some((s) => s.audioStartSec != null);
+
+  if (hasRealTimestamps) {
+    // Use ElevenLabs timestamps for precise sync
+    for (const scene of scenes) {
+      const startFrame = scene.audioStartSec != null
+        ? secToFrames(scene.audioStartSec)
+        : (timeline.length > 0 ? timeline[timeline.length - 1].endFrame - DISSOLVE_FRAMES : 0);
+      const duration = secToFrames(scene.durationSec);
+      timeline.push({ scene, startFrame, endFrame: startFrame + duration });
+    }
+  } else {
+    // Fallback: sequential layout with dissolve overlap
+    let currentFrame = 0;
+    for (const scene of scenes) {
+      const duration = secToFrames(scene.durationSec);
+      timeline.push({ scene, startFrame: currentFrame, endFrame: currentFrame + duration });
+      currentFrame += duration - DISSOLVE_FRAMES;
+    }
   }
 
   // In production Remotion: const frame = useCurrentFrame();
