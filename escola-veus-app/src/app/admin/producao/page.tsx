@@ -195,7 +195,7 @@ export default function ProductionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: "a woman standing in a shop holding a small shopping bag, looking at it with uncertainty and guilt, thought bubble with numbers and calculations floating above her head, flat editorial illustration style, simple clean vector-like shapes, limited color palette, faceless generic human figure with no race and no visible skin color, warm muted tones, dark navy background, minimal detail, no photorealism, no text, no words, inspired by School of Life and Kurzgesagt animation style",
+          prompt: "an abstract silhouette figure standing in a shop holding a small bag, thought bubble with floating numbers above, the figure is a solid dark human-shaped shadow with no face no skin no features, flat minimalist editorial illustration, dark navy blue background, warm gold and terracotta accent colors, clean simple shapes, limited muted palette, contemplative mood, no photorealism, no cartoon face, no visible skin, no text, no words",
           courseSlug: "ouro-proprio",
           sceneLabel: "teste",
         }),

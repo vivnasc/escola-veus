@@ -9,9 +9,10 @@
  * warm muted tones on dark background.
  */
 
-// The style suffix that makes Flux generate illustrations, not photos
+// The Escola dos Véus visual style — NOT a copy of School of Life
+// Differences: dark atmosphere, abstract silhouette figures, gold/terracotta tones, contemplative
 const STYLE =
-  "flat editorial illustration style, simple clean vector-like shapes, limited color palette, faceless generic human figure with no race and no visible skin color, warm muted tones, dark navy background, minimal detail, no photorealism, no text, no words, inspired by School of Life and Kurzgesagt animation style";
+  "flat minimalist editorial illustration, dark navy blue background (#1A1A2E), abstract silhouette figures in solid dark shape with no face no skin color no features — just a human-shaped shadow, warm gold (#D4A853) and terracotta (#C4745A) accent colors, clean simple shapes, limited muted palette, contemplative and poetic mood, no photorealism, no cartoon faces, no visible skin, no text, no words, no letters";
 
 // ─── PROMPT BUILDER ─────────────────────────────────────────────────────────
 
