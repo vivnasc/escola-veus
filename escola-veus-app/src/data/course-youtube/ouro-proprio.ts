@@ -29,13 +29,13 @@ export const OURO_PROPRIO_YOUTUBE: YouTubeScript[] = [
     title: "Porque sentes culpa quando gastas dinheiro em ti mesma?",
     durationMin: 6,
     gancho:
-      "Compraste algo para ti — nao era caro, nao era necessario, era so bom — e antes de saíres da loja ja estavas a calcular se devias ter comprado. Soa familiar? Entao este video e para ti.",
+      "Compraste algo para ti. Nao era caro, nao era necessario, era so bom. E antes de saíres da loja ja estavas a calcular se devias ter comprado.",
     situacao:
-      "Compraste aquele creme. Ou aquele livro. Ou aquele cafe diferente. Algo pequeno, so teu. E por um instante sentiste prazer. Daquele puro, sem funcao. Depois veio a voz. Podias ter guardado esse dinheiro. Nao precisavas. Ha coisas mais importantes. E o prazer desapareceu. Nao porque o objecto perdeu valor — mas porque algo dentro de ti decidiu que nao mereces prazer sem justificacao. Isto acontece com mais mulheres do que imaginas. E nao e mesquinhice. Nao e avareza. E um padrao muito mais antigo do que o teu cartao de credito.",
+      "Isto acontece mais do que se pensa. Uma mulher compra um creme. Chega a casa, tira do saco, e nao consegue gostar dele completamente. Trouxe a culpa junto. Nao e por falta de dinheiro. E outra coisa. Uma voz antiga que diz: podias ter guardado. Ha coisas mais importantes. Ha mulheres que pagam o jantar de toda a gente sem pestanejar. Mas hesitam vinte minutos antes de comprar uma vela para si mesmas. Nao e avareza. E qualquer coisa muito mais funda.",
     revelacao:
-      "A culpa de gastar em ti nao e sobre dinheiro. E sobre uma regra invisivel que absorveste antes de ter idade para a questionar: para seres boa, tens de querer pouco. Para seres generosa, tens de vir por ultimo. Para seres decente, o prazer tem de ser justificado. Esta regra nao esta escrita em lado nenhum. Mas esta escrita no teu corpo. No aperto que sentes cada vez que compras algo so bonito. Na necessidade de dizer a alguem: estava em promocao. Na forma como pagas tudo para os outros sem pensar, mas hesitas quando e para ti. A culpa nao e tua — mas a permissao tem de ser.",
+      "Esta culpa nao nasce com ninguem. E herdada. Vem de frases que se ouvem antes de ter idade para as questionar. Uma mae que nunca compra nada para si. Um pai que repete que dinheiro nao nasce em arvores. As criancas que vivem nessas casas crescem. Comecam a ganhar o seu dinheiro. Mas a regra fica. Gastar nos outros e generosidade. Gastar em si e egoismo. E quando uma pessoa nao se permite gastar em si mesma, o que esta a dizer — sem palavras — e que o seu bem-estar nao e prioridade.",
     convite:
-      "Este video e so a superficie. No curso Ouro Proprio, passamos oito modulos inteiros a olhar para a tua relacao com dinheiro — nao as contas, mas o que sentes quando o dinheiro aparece. A heranca emocional. A vergonha. O merecimento. A liberdade. Se isto te tocou, o curso completo esta em seteveus.space.",
+      "Se isto fez sentido, subscreve. Ha mais a caminho.",
     fraseFinal:
       "O prazer nao precisa de justificacao. Se precisasse, nao seria prazer.",
     status: "draft",

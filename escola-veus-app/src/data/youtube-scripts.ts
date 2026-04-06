@@ -58,7 +58,7 @@ const ouroProprioHook1: YouTubeScript = {
   durationMin: 6,
   thumbnail: {
     mainText: "A culpa de gastar em ti",
-    subText: "O que o dinheiro revela",
+    subText: "um padrão que herdaste",
   },
   scenes: [
     {
@@ -67,70 +67,70 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "Porque sentes culpa quando gastas dinheiro em ti mesma?",
       durationSec: 12,
       visualNote:
-        "Céu azul-marinho (#1A1A2E). Fade in lento do título em creme. Território da Casa dos Espelhos Dourados ao longe, desfocado.",
+        "Ilustração: céu escuro com uma luz dourada ao longe. Título aparece lentamente em texto creme.",
     },
     {
       type: "pergunta",
       narration:
-        "Quando foi a última vez que compraste algo só para ti — sem ser comida, sem ser para a casa, sem ser para os filhos — e não sentiste nada? Sem aquele aperto. Sem aquela voz que diz: precisavas mesmo disto?",
-      overlayText: "Quando foi a última vez?",
-      durationSec: 25,
+        "Compraste algo para ti. Não era caro, não era necessário, era só bom. E antes de saíres da loja já estavas a calcular se devias ter comprado.",
+      overlayText: "",
+      durationSec: 18,
       visualNote:
-        "Silhueta de pé, imóvel, mãos ao longo do corpo. Fundo escuro com brilho dourado suave.",
+        "Ilustração flat: uma figura genérica (sem rosto, sem cor de pele definida) numa loja, a segurar um saco de compras. Expressão neutra. Estilo editorial simples, traço fino.",
     },
     {
       type: "situacao",
       narration:
-        "Imagina esta cena. É sábado. Estás no centro comercial. Vês uma peça de roupa que te fica bem. Experimentas. Olhas-te ao espelho e pensas: isto fica-me mesmo bem. Tiras o telemóvel, vês o preço. E aí começa.\n\nNão é o valor. Podes até ter o dinheiro. O que aparece é outra coisa. Uma espécie de tribunal interno que te pergunta: e a conta da luz? E o lanche das crianças? E se acontece alguma coisa no fim do mês?\n\nEntão pousas a peça. Dizes para ti mesma: não preciso disto agora. E sais da loja com uma coisa estranha no peito. Não é alívio. É resignação.\n\nOu então compras. Mas levas a culpa para casa junto com o saco. Vestes a peça e não consegues gostar dela completamente. Porque alguma parte de ti decidiu que não merecias.\n\nIsto acontece-te?",
+        "Isto acontece mais do que se pensa. Uma mulher compra um creme. Chega a casa, tira do saco, e não consegue gostar dele completamente. Trouxe a culpa junto.\n\nNão é por falta de dinheiro. É outra coisa. Uma voz antiga que diz: podias ter guardado. Há coisas mais importantes. Quem é que tu pensas que és para gastar assim?\n\nHá mulheres que pagam o jantar de toda a gente sem pestanejar. Mas hesitam vinte minutos antes de comprar uma vela para si mesmas. Não é avareza. Não é mesquinhice. É qualquer coisa muito mais funda.",
       overlayText: "",
-      durationSec: 120,
+      durationSec: 70,
       visualNote:
-        "Silhueta a caminhar, depois parada. Espelhos dourados ao fundo, cobertos. A silhueta vê o seu reflexo mas desvia o olhar. Ken Burns lento sobre paisagem do território.",
+        "Sequência de ilustrações estilo School of Life: 1) figura a tirar um objecto de um saco, a olhar para ele com incerteza 2) balão de pensamento com contas e números 3) split screen: mesma figura a pagar um jantar com naturalidade vs a hesitar com uma vela na mão",
     },
     {
       type: "revelacao",
       narration:
-        "Há um padrão aqui que quase ninguém vê. Quando sentes culpa por gastar dinheiro em ti, não é sobre dinheiro. É sobre uma hierarquia invisível que carregas há anos. Uma hierarquia que diz: tu vens por último.\n\nEsta hierarquia não nasceu contigo. Aprendeste-a. Talvez com uma mãe que nunca comprava nada para ela. Talvez com um pai que repetia: dinheiro não nasce em árvores. Talvez numa casa onde gastar era perigoso. Onde ter coisas bonitas era sinal de irresponsabilidade.\n\nE então cresceste. Começaste a ganhar o teu próprio dinheiro. Mas a regra ficou. Gastar nos outros é generosidade. Gastar em ti é egoísmo.\n\nE isto vai mais fundo do que imaginas. Porque quando não te permites gastar em ti, o que estás realmente a dizer é: o meu bem-estar não é prioridade. O meu conforto é dispensável. Eu sou dispensável.\n\nNão é sobre finanças. É sobre o lugar que te dás na tua própria vida.",
-      overlayText: "Gastar nos outros é generosidade.\nGastar em ti é egoísmo.",
-      durationSec: 130,
+        "Esta culpa não nasce com ninguém. É herdada. Vem de frases que se ouvem antes de ter idade para as questionar.\n\nUma mãe que nunca compra nada para si. Um pai que repete que dinheiro não nasce em árvores. Uma casa onde gastar era perigoso. Onde ter coisas bonitas era sinal de irresponsabilidade.\n\nAs crianças que vivem nessas casas crescem. Começam a ganhar o seu próprio dinheiro. Mas a regra fica. Gastar nos outros é generosidade. Gastar em si é egoísmo.\n\nE quando uma pessoa não se permite gastar em si mesma, o que está a dizer — sem palavras — é que o seu bem-estar não é prioridade.",
+      overlayText: "",
+      durationSec: 80,
       visualNote:
-        "Espelhos começam a descobrir-se. Reflexos distorcidos que lentamente ficam mais claros. Silhueta curvada que se endireita. Transição dissolve entre cenas.",
+        "Ilustrações: 1) uma criança pequena a observar a mãe — a mãe a pousar algo numa prateleira de loja e a ir embora 2) frases a flutuar como folhas: 'não chega', 'não precisas', 'não somos dessas pessoas' 3) a criança cresce — dissolve para adulta — mas a sombra da criança continua lá 4) balança: lado 'outros' cheio de presentes, lado 'eu' vazio",
     },
     {
       type: "gesto",
       narration:
-        "Quero propor-te uma coisa pequena. Esta semana, vai comprar algo só para ti. Pode ser um café, um livro, uma vela. Não importa o preço. O que importa é isto: quando fores pagar, pára. Sente o que aparece no corpo. O aperto, a voz, o desconforto — o que for. Não fujas disso. Fica com isso por três segundos.\n\nE depois paga. Conscientemente. E quando saíres da loja, repara: o mundo não acabou.",
-      overlayText: "Pára. Sente. Paga.",
-      durationSec: 55,
+        "Há uma coisa simples que se pode fazer. Na próxima vez que comprares algo para ti, repara no que aparece no corpo. O aperto. A voz. O desconforto. Não fujas. Fica com isso três segundos.\n\nE depois repara: o mundo não acabou.",
+      overlayText: "Repara. Três segundos.",
+      durationSec: 40,
       visualNote:
-        "Silhueta com mão estendida. Moedas douradas que flutuam. Gesto de receber.",
+        "Ilustração: figura com a mão no peito. À volta, as frases-fantasma estão a desvanecer. Uma pequena luz onde a mão toca o peito. O mundo à volta continua normal.",
     },
     {
       type: "frase_final",
       narration:
-        "O dinheiro que gastas em ti não é um luxo. É a primeira prova de que acreditas que mereces estar aqui.",
+        "O prazer não precisa de justificação. Se precisasse, não seria prazer.",
       overlayText:
-        "O dinheiro que gastas em ti\nnão é um luxo.\nÉ a primeira prova de que acreditas\nque mereces estar aqui.",
-      durationSec: 18,
+        "O prazer não precisa de justificação.\nSe precisasse, não seria prazer.",
+      durationSec: 15,
       visualNote:
-        "Ecrã escuro. Texto em creme, serifado, centrado. Pausa longa. Peso.",
+        "Fundo escuro. Frase em texto creme, centrada. Silêncio.",
     },
     {
       type: "cta",
       narration:
-        "Se isto te tocou, o curso Ouro Próprio vai muito mais fundo. Oito módulos para desatar o nó entre o que sentes sobre dinheiro e quem realmente és. O primeiro módulo é gratuito. O link está na descrição.",
-      overlayText: "Ouro Próprio\nO primeiro módulo é gratuito.\nseteveus.space",
-      durationSec: 20,
+        "Se isto fez sentido, subscreve. Há mais a caminho.",
+      overlayText: "Subscreve. Há mais a caminho.",
+      durationSec: 10,
       visualNote:
-        "Casa dos Espelhos Dourados com espelhos descobertos. Luz dourada. URL no ecrã.",
+        "Ilustração: a figura a caminhar calmamente. Texto simples com convite.",
     },
     {
       type: "fecho",
       narration: "",
-      overlayText: "Sete Véus",
-      durationSec: 8,
+      overlayText: "Escola dos Véus",
+      durationSec: 6,
       visualNote:
-        "Território dissolve no céu. Logo Sete Véus. Silêncio. Fade para negro.",
+        "Logo Escola dos Véus. Fundo escuro. Silêncio.",
     },
   ],
 };
