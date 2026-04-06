@@ -51,10 +51,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const speed = body.speed ?? 0.9;
-    const modelId = model === "v3" ? "eleven_v3" : "eleven_multilingual_v2";
+    const speed = body.speed ?? 1.0;
+    // Default to v3 — better Portuguese European, no accent mixing
+    const modelId = model === "v2" ? "eleven_multilingual_v2" : "eleven_v3";
     const voiceSettings =
-      model === "v3"
+      modelId === "eleven_v3"
         ? { stability: 0.7, similarity_boost: 0.85 }
         : { stability: 0.75, similarity_boost: 0.85, style: 0.1 };
 
@@ -86,8 +87,8 @@ export async function POST(req: NextRequest) {
 
         // Generate audio with timestamps for this scene
         const processedText = scene.narration
-          .replace(/\n\n+/g, "... ... ")
-          .replace(/\.\s+/g, ". ... ");
+          .replace(/\n\n+/g, "\n\n")
+          .trim();
 
         const elevenRes = await fetch(
           `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps`,
@@ -229,9 +230,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const processedScript = script
-      .replace(/\n\n+/g, "... ... ")
-      .replace(/\.\s+/g, ". ... ");
+    const processedScript = script.replace(/\n\n+/g, "\n\n").trim();
 
     const elevenRes = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,

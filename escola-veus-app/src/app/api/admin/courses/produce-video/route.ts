@@ -51,15 +51,17 @@ async function generateAudioDirect(text: string, voiceId: string): Promise<{ buf
   const apiKey = process.env.ELEVENLABS_API_KEY;
   if (!apiKey) throw new Error("ELEVENLABS_API_KEY nao configurada no Vercel.");
 
-  const processedText = text.replace(/\n\n+/g, "... ... ").replace(/\.\s+/g, ". ... ");
+  // Clean text: just add natural paragraph breaks, no fake pauses
+  const processedText = text.replace(/\n\n+/g, "\n\n").trim();
+
+  // Use eleven_v3 — better Portuguese European, no accent mixing
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
     method: "POST",
     headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
     body: JSON.stringify({
       text: processedText,
-      model_id: "eleven_multilingual_v2",
-      voice_settings: { stability: 0.75, similarity_boost: 0.85, style: 0.1 },
-      speed: 0.9,
+      model_id: "eleven_v3",
+      voice_settings: { stability: 0.7, similarity_boost: 0.85 },
     }),
   });
 
