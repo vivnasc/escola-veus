@@ -47,6 +47,15 @@ export type YouTubeScript = {
     subText: string;
   };
   scenes: VideoScene[];
+  /** URL da música de fundo (ambiente subtil, baixo volume) */
+  backgroundMusicUrl?: string;
+};
+
+// ─── BACKGROUND MUSIC PER COURSE ───────────────────────────────────────────
+// Música ambiente subtil — textura, não melodia. Volume ~10-15% da narração.
+
+export const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
+  "ouro-proprio": "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/curso-ouro-proprio/faixa-01.mp3",
 };
 
 // ─── OURO PRÓPRIO — HOOK 1 ───────────────────────────────────────────────

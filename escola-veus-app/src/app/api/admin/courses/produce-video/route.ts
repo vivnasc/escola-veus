@@ -157,8 +157,10 @@ export async function POST(req: NextRequest) {
       let scenes: SceneAsset[];
       let videoTitle: string;
 
+      let backgroundMusicUrl: string | undefined;
+
       if (scriptType === "youtube") {
-        const { YOUTUBE_SCRIPTS } = await import("@/data/youtube-scripts");
+        const { YOUTUBE_SCRIPTS, COURSE_BACKGROUND_MUSIC } = await import("@/data/youtube-scripts");
         const ytScript = YOUTUBE_SCRIPTS.find((s) => s.courseSlug === courseSlug && s.hookIndex === hookIndex);
         if (!ytScript) throw new Error(`Script nao encontrado: ${courseSlug} hook ${hookIndex}`);
         videoTitle = ytScript.title;
@@ -166,6 +168,7 @@ export async function POST(req: NextRequest) {
           type: s.type, narration: s.narration, overlayText: s.overlayText,
           durationSec: s.durationSec, visualNote: s.visualNote,
         }));
+        backgroundMusicUrl = ytScript.backgroundMusicUrl || COURSE_BACKGROUND_MUSIC[courseSlug];
       } else {
         if (moduleNum === undefined || !subLetter) throw new Error("moduleNum e subLetter obrigatorios.");
         const mod = await import(`@/data/course-scripts/${courseSlug}`);
@@ -183,6 +186,8 @@ export async function POST(req: NextRequest) {
           { type: "frase_final", narration: lesson.fraseFinal, overlayText: lesson.fraseFinal, durationSec: 18, visualNote: "Frase final" },
           { type: "fecho", narration: "", overlayText: "Sete Veus", durationSec: 8, visualNote: "Fecho" },
         ];
+        const { COURSE_BACKGROUND_MUSIC } = await import("@/data/youtube-scripts");
+        backgroundMusicUrl = COURSE_BACKGROUND_MUSIC[courseSlug];
       }
 
       const sceneLabel = scriptType === "youtube" ? `yt-hook${hookIndex}` : `m${moduleNum}${subLetter?.toLowerCase()}`;
@@ -295,6 +300,7 @@ export async function POST(req: NextRequest) {
 
       const manifest = {
         courseSlug, title: videoTitle, sceneLabel, audioUrl,
+        backgroundMusicUrl: backgroundMusicUrl || undefined,
         animationProvider,
         scenes: scenes.map((s) => ({
           type: s.type, narration: s.narration, overlayText: s.overlayText,
@@ -323,7 +329,7 @@ export async function POST(req: NextRequest) {
       send({
         result: {
           status: submittedCount > 0 ? "animations_pending" : "complete",
-          title: videoTitle, audioUrl, manifestUrl,
+          title: videoTitle, audioUrl, backgroundMusicUrl, manifestUrl,
           scenes: scenes.length,
           imagesGenerated: imgCount,
           animationsSubmitted: submittedCount,

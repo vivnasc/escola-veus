@@ -18,6 +18,7 @@ type VideoResult = {
   status: string;
   title: string;
   audioUrl: string;
+  backgroundMusicUrl?: string;
   manifestUrl: string;
   scenes: number;
   imagesGenerated: number;
@@ -522,6 +523,12 @@ export default function ProductionPage() {
               <div className="mt-3">
                 <p className="text-xs text-escola-creme-50 mb-1">Audio narrado:</p>
                 <audio controls src={videoResult.audioUrl} className="w-full max-w-md h-10" />
+              </div>
+            )}
+            {videoResult.backgroundMusicUrl && (
+              <div className="mt-3">
+                <p className="text-xs text-escola-creme-50 mb-1">Musica de fundo (ambiente):</p>
+                <audio controls src={videoResult.backgroundMusicUrl} className="w-full max-w-md h-10" />
               </div>
             )}
             {videoResult.manifestUrl && (

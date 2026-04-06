@@ -42,7 +42,10 @@ export type VideoManifest = {
   title: string;
   sceneLabel: string;
   audioUrl: string;
+  /** URL da música de fundo — ambiente subtil, ~12% volume */
   backgroundMusicUrl?: string;
+  /** Volume da música de fundo (0-1). Default: 0.12 */
+  backgroundMusicVolume?: number;
   scenes: SceneData[];
 };
 
@@ -255,8 +258,38 @@ const Vignette: React.FC = () => (
 
 // ─── MAIN COMPOSITION ───────────────────────────────────────────────────────
 
+// ─── BACKGROUND MUSIC LAYER ────────────────────────────────────────────────
+// Ambiente subtil, quase inaudível — textura, não melodia.
+// Fade in nos primeiros 3s, fade out nos últimos 3s.
+// In production Remotion: use <Audio /> with volume callback.
+
+const BackgroundMusic: React.FC<{
+  src: string;
+  volume: number;
+  frame: number;
+  totalFrames: number;
+}> = ({ src, volume, frame, totalFrames }) => {
+  const FADE_FRAMES = secToFrames(3);
+  let vol = volume;
+  if (frame < FADE_FRAMES) vol *= frame / FADE_FRAMES;
+  if (frame > totalFrames - FADE_FRAMES) vol *= (totalFrames - frame) / FADE_FRAMES;
+  vol = Math.max(0, Math.min(1, vol));
+
+  // In production Remotion: <Audio src={src} volume={vol} loop />
+  return (
+    <audio
+      src={src}
+      style={{ display: "none" }}
+      loop
+      data-volume={vol.toFixed(3)}
+    />
+  );
+};
+
+// ─── MAIN COMPOSITION ───────────────────────────────────────────────────────
+
 export const VideoComposition: React.FC<VideoManifest> = (props) => {
-  const { courseSlug, scenes, audioUrl, backgroundMusicUrl } = props;
+  const { courseSlug, scenes, audioUrl, backgroundMusicUrl, backgroundMusicVolume } = props;
   const palette = getPalette(courseSlug);
 
   // Build timeline from real audio timestamps when available.
@@ -332,11 +365,20 @@ export const VideoComposition: React.FC<VideoManifest> = (props) => {
         );
       })}
 
-      {/* Layer 5: Audio */}
+      {/* Layer 5: Narration audio */}
       {audioUrl && <audio src={audioUrl} style={{ display: "none" }} />}
-      {backgroundMusicUrl && <audio src={backgroundMusicUrl} style={{ display: "none" }} />}
 
-      {/* Layer 6: Watermark */}
+      {/* Layer 6: Background music — ambient texture, low volume with fade */}
+      {backgroundMusicUrl && (
+        <BackgroundMusic
+          src={backgroundMusicUrl}
+          volume={backgroundMusicVolume ?? 0.12}
+          frame={frame}
+          totalFrames={timeline.length > 0 ? timeline[timeline.length - 1].endFrame : 0}
+        />
+      )}
+
+      {/* Layer 7: Watermark */}
       <div
         style={{
           position: "absolute",
