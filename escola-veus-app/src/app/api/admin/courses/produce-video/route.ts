@@ -174,21 +174,27 @@ export async function POST(req: NextRequest) {
 
       // ─── STEP 2: GENERATE AUDIO ──────────────────────────────────────
 
-      send({ step: 2, total: totalSteps, label: "A gerar audio com a tua voz...", status: "running" });
+      send({ step: 2, total: totalSteps, label: "A gerar audio cena a cena (com timestamps)...", status: "running" });
 
-      const fullNarration = buildNarrationFromScenes(scenes);
       const sceneLabel = scriptType === "youtube"
         ? `yt-hook${hookIndex}`
         : `m${moduleNum}${subLetter?.toLowerCase()}`;
 
+      // Generate audio per-scene with timestamps for precise sync
       const audioRes = await fetch(`${baseUrl}/api/admin/courses/generate-audio`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          script: fullNarration,
+          script: "unused", // required by schema but scenes take priority
           courseSlug,
           moduleNum: moduleNum ?? hookIndex,
           subLetter: subLetter ?? `H${hookIndex}`,
+          withTimestamps: true,
+          scenes: scenes.map((s) => ({
+            type: s.type,
+            narration: s.narration,
+            durationSec: s.durationSec,
+          })),
         }),
       });
 
@@ -198,9 +204,21 @@ export async function POST(req: NextRequest) {
       }
 
       const audioResult = await audioRes.json();
-      const audioUrl = audioResult.url || "[audio-direct-download]";
+      const audioUrl = audioResult.audioUrl || audioResult.url || "[audio-direct-download]";
+      const sceneTimings = audioResult.sceneTimings || [];
 
-      send({ step: 2, total: totalSteps, label: "Audio gerado", status: "done", detail: audioUrl });
+      // Update scene durations with REAL audio durations (not estimates)
+      if (sceneTimings.length > 0) {
+        for (let i = 0; i < scenes.length && i < sceneTimings.length; i++) {
+          scenes[i].durationSec = sceneTimings[i].durationSec;
+        }
+      }
+
+      const totalDuration = audioResult.totalDurationSec
+        ? `${Math.round(audioResult.totalDurationSec / 60)}m${Math.round(audioResult.totalDurationSec % 60)}s`
+        : "";
+
+      send({ step: 2, total: totalSteps, label: "Audio gerado (sincronizado)", status: "done", detail: `${sceneTimings.length} cenas com timestamps ${totalDuration}` });
 
       // ─── STEP 3: GENERATE IMAGES ─────────────────────────────────────
 
@@ -311,14 +329,19 @@ export async function POST(req: NextRequest) {
         title: videoTitle,
         sceneLabel,
         audioUrl,
-        scenes: scenes.map((s) => ({
+        scenes: scenes.map((s, i) => ({
           type: s.type,
           narration: s.narration,
           overlayText: s.overlayText,
           durationSec: s.durationSec,
           imageUrl: s.imageUrl || null,
           animationUrl: s.animationUrl || null,
+          // Audio sync: real start/end times from ElevenLabs timestamps
+          audioStartSec: sceneTimings[i]?.startSec ?? null,
+          audioEndSec: sceneTimings[i]?.endSec ?? null,
         })),
+        sceneTimings,
+        totalAudioDurationSec: audioResult.totalDurationSec || null,
         createdAt: new Date().toISOString(),
         status: "ready_for_render",
       };
