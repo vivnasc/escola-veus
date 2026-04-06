@@ -123,6 +123,9 @@ export default function ProductionPage() {
   const [renderLabel, setRenderLabel] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
 
+  // Background music
+  const [bgMusicUrl, setBgMusicUrl] = useState(COURSE_BACKGROUND_MUSIC["ouro-proprio"] || "");
+
   // Manifest
   const [manifestUrl, setManifestUrl] = useState("");
 
@@ -380,6 +383,24 @@ export default function ProductionPage() {
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, manifest: false })); }
   }, [scenes, selectedHook, totalAudioDuration]);
+
+  // ─── GENERATE BACKGROUND MUSIC ─────────────────────────────────────────
+
+  const generateMusic = useCallback(async () => {
+    setLoading((p) => ({ ...p, music: true }));
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/courses/generate-music", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseSlug: "ouro-proprio" }),
+      });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+      const data = await res.json();
+      setBgMusicUrl(data.audioUrl);
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    finally { setLoading((p) => ({ ...p, music: false })); }
+  }, []);
 
   // ─── RENDER FINAL VIDEO ───────────────────────────────────────────────
 
@@ -812,12 +833,17 @@ export default function ProductionPage() {
             </div>
 
             {/* Background music */}
-            {COURSE_BACKGROUND_MUSIC["ouro-proprio"] && (
-              <div>
-                <p className="text-xs text-escola-creme-50 mb-1">Musica de fundo (ambiente):</p>
-                <audio controls src={COURSE_BACKGROUND_MUSIC["ouro-proprio"]} className="w-full max-w-md h-8" />
+            <div className="border border-escola-border rounded-lg p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-escola-creme-50">Musica de fundo (instrumental):</p>
+                <button onClick={generateMusic} disabled={loading.music}
+                  className="text-xs text-escola-dourado hover:underline disabled:opacity-40">
+                  {loading.music ? "A gerar..." : "Gerar nova com IA (Suno)"}
+                </button>
               </div>
-            )}
+              {bgMusicUrl && <audio controls src={bgMusicUrl} className="w-full max-w-md h-8" />}
+              {!bgMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Sem musica. Clica em gerar.</p>}
+            </div>
 
             {/* Render final video */}
             <div className="border border-escola-dourado/30 rounded-xl p-4 bg-escola-dourado/5 space-y-3">
