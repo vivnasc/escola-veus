@@ -22,6 +22,30 @@
 
 import React from "react";
 
+// Remotion imports — use dynamic check so file compiles even without remotion installed
+let useCurrentFrame: () => number;
+let useVideoConfig: () => { fps: number; width: number; height: number; durationInFrames: number };
+let RemotionAudio: React.FC<{ src: string; volume: number | ((f: number) => number); loop?: boolean }>;
+let RemotionVideo: React.FC<{ src: string; style?: React.CSSProperties; muted?: boolean }>;
+let RemotionImg: React.FC<{ src: string; alt?: string; style?: React.CSSProperties }>;
+
+let REMOTION_AVAILABLE = false;
+
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const remotion = require("remotion");
+  useCurrentFrame = remotion.useCurrentFrame;
+  useVideoConfig = remotion.useVideoConfig;
+  RemotionAudio = remotion.Audio;
+  RemotionVideo = remotion.Video;
+  RemotionImg = remotion.Img;
+  REMOTION_AVAILABLE = true;
+} catch {
+  // Remotion not installed — fallback to static preview (frame=0)
+  useCurrentFrame = () => 0;
+  useVideoConfig = () => ({ fps: 30, width: 1920, height: 1080, durationInFrames: 900 });
+}
+
 // ─── TYPES ──────────────────────────────────────────────────────────────────
 
 export type SceneData = {
@@ -134,46 +158,33 @@ const AIVisualLayer: React.FC<{
       scene.animationUrl.endsWith(".webp"));
 
   if (isVideo) {
-    // In production Remotion: <Video src={src} />
-    return (
-      <video
-        src={scene.animationUrl!}
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          opacity,
-        }}
-        muted
-        playsInline
-      />
-    );
+    const videoStyle: React.CSSProperties = {
+      position: "absolute",
+      top: 0, left: 0, width: "100%", height: "100%",
+      objectFit: "cover", opacity,
+    };
+    if (REMOTION_AVAILABLE && RemotionVideo) {
+      return <RemotionVideo src={scene.animationUrl!} style={videoStyle} muted />;
+    }
+    return <video src={scene.animationUrl!} style={videoStyle} muted playsInline />;
   }
 
   // Still image with Ken Burns (slow zoom)
   const zoomProgress = progress / Math.max(1, endFrame - startFrame);
   const scale = 1 + zoomProgress * 0.05;
 
-  return (
-    <img
-      src={src}
-      alt=""
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-        opacity,
-        transform: `scale(${scale})`,
-        transformOrigin: "center center",
-      }}
-    />
-  );
+  const imgStyle: React.CSSProperties = {
+    position: "absolute",
+    top: 0, left: 0, width: "100%", height: "100%",
+    objectFit: "cover", opacity,
+    transform: `scale(${scale})`,
+    transformOrigin: "center center",
+  };
+
+  if (REMOTION_AVAILABLE && RemotionImg) {
+    return <RemotionImg src={src} style={imgStyle} />;
+  }
+  return <img src={src} alt="" style={imgStyle} />;
 };
 
 // ─── TEXT OVERLAY ────────────────────────────────────────────────────────────
@@ -275,14 +286,18 @@ const BackgroundMusic: React.FC<{
   if (frame > totalFrames - FADE_FRAMES) vol *= (totalFrames - frame) / FADE_FRAMES;
   vol = Math.max(0, Math.min(1, vol));
 
-  // In production Remotion: <Audio src={src} volume={vol} loop />
+  if (REMOTION_AVAILABLE && RemotionAudio) {
+    // Remotion <Audio> uses a volume callback that receives the frame number
+    const volumeFn = (f: number) => {
+      let v = volume;
+      if (f < FADE_FRAMES) v *= f / FADE_FRAMES;
+      if (f > totalFrames - FADE_FRAMES) v *= (totalFrames - f) / FADE_FRAMES;
+      return Math.max(0, Math.min(1, v));
+    };
+    return <RemotionAudio src={src} volume={volumeFn} loop />;
+  }
   return (
-    <audio
-      src={src}
-      style={{ display: "none" }}
-      loop
-      data-volume={vol.toFixed(3)}
-    />
+    <audio src={src} style={{ display: "none" }} loop data-volume={vol.toFixed(3)} />
   );
 };
 
@@ -317,8 +332,7 @@ export const VideoComposition: React.FC<VideoManifest> = (props) => {
     }
   }
 
-  // In production Remotion: const frame = useCurrentFrame();
-  const frame = 0;
+  const frame = useCurrentFrame();
 
   return (
     <div
@@ -366,7 +380,11 @@ export const VideoComposition: React.FC<VideoManifest> = (props) => {
       })}
 
       {/* Layer 5: Narration audio */}
-      {audioUrl && <audio src={audioUrl} style={{ display: "none" }} />}
+      {audioUrl && (
+        REMOTION_AVAILABLE && RemotionAudio
+          ? <RemotionAudio src={audioUrl} volume={1} />
+          : <audio src={audioUrl} style={{ display: "none" }} />
+      )}
 
       {/* Layer 6: Background music — ambient texture, low volume with fade */}
       {backgroundMusicUrl && (
