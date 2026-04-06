@@ -118,6 +118,11 @@ export default function ProductionPage() {
   const [srt, setSrt] = useState("");
   const [vtt, setVtt] = useState("");
 
+  // Render
+  const [renderProgress, setRenderProgress] = useState<number | null>(null);
+  const [renderLabel, setRenderLabel] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+
   // Manifest
   const [manifestUrl, setManifestUrl] = useState("");
 
@@ -375,6 +380,73 @@ export default function ProductionPage() {
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, manifest: false })); }
   }, [scenes, selectedHook, totalAudioDuration]);
+
+  // ─── RENDER FINAL VIDEO ───────────────────────────────────────────────
+
+  const renderVideo = useCallback(async () => {
+    setLoading((p) => ({ ...p, render: true }));
+    setRenderProgress(0);
+    setRenderLabel("A iniciar...");
+    setVideoUrl("");
+    setError(null);
+    try {
+      const manifest = {
+        courseSlug: "ouro-proprio",
+        title: YOUTUBE_HOOKS[selectedHook]?.title,
+        sceneLabel: `yt-hook${selectedHook}`,
+        audioUrl: scenes.find((s) => s.audioUrl)?.audioUrl || "",
+        backgroundMusicUrl: COURSE_BACKGROUND_MUSIC["ouro-proprio"],
+        backgroundMusicVolume: 0.12,
+        scenes: scenes.map((s) => ({
+          type: s.type, narration: s.narration, overlayText: s.overlayText,
+          durationSec: s.durationSec, imageUrl: s.imageUrl || null,
+          animationUrl: s.animationUrl || null,
+          audioStartSec: s.audioStartSec ?? null, audioEndSec: s.audioEndSec ?? null,
+        })),
+      };
+
+      const res = await fetch("/api/admin/courses/render-video", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ manifest }),
+      });
+
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("Sem stream");
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n\n");
+        buffer = lines.pop() || "";
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.type === "progress") {
+              setRenderProgress(data.percent);
+              setRenderLabel(data.label);
+            } else if (data.type === "result") {
+              setVideoUrl(data.videoUrl);
+              setRenderProgress(100);
+              setRenderLabel("Video pronto!");
+              markComplete(5);
+            } else if (data.type === "error") {
+              throw new Error(data.message);
+            }
+          } catch (e) {
+            if (e instanceof Error && e.message !== "Unexpected end of JSON input") throw e;
+          }
+        }
+      }
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro no render"); }
+    finally { setLoading((p) => ({ ...p, render: false })); }
+  }, [scenes, selectedHook, markComplete]);
 
   function downloadFile(content: string, filename: string) {
     const blob = new Blob([content], { type: "text/plain" });
@@ -747,16 +819,47 @@ export default function ProductionPage() {
               </div>
             )}
 
-            {/* Save manifest */}
-            <div className="flex items-center gap-3">
-              <button onClick={() => { saveManifest().then(() => markComplete(5)); }} disabled={loading.manifest}
-                className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
-                {loading.manifest ? "A guardar..." : "Guardar manifesto"}
-              </button>
-              {manifestUrl && (
-                <a href={manifestUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-escola-dourado underline">
-                  Ver manifesto (JSON)
-                </a>
+            {/* Render final video */}
+            <div className="border border-escola-dourado/30 rounded-xl p-4 bg-escola-dourado/5 space-y-3">
+              <h3 className="font-serif text-base font-medium text-escola-dourado">Renderizar MP4</h3>
+              <p className="text-xs text-escola-creme-50">
+                Gera o video final com todas as camadas: imagens, animacoes, narracao, musica de fundo, legendas e watermark.
+              </p>
+
+              <div className="flex items-center gap-3">
+                <button onClick={renderVideo} disabled={loading.render}
+                  className="rounded-lg bg-escola-dourado px-6 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+                  {loading.render ? "A renderizar..." : "Renderizar video final"}
+                </button>
+                <button onClick={() => { saveManifest(); }} disabled={loading.manifest}
+                  className="rounded-lg border border-escola-border px-4 py-2.5 text-sm text-escola-creme-50 hover:text-escola-creme disabled:opacity-40">
+                  {loading.manifest ? "..." : "Guardar manifesto"}
+                </button>
+                {manifestUrl && (
+                  <a href={manifestUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-escola-dourado underline">
+                    JSON
+                  </a>
+                )}
+              </div>
+
+              {renderProgress !== null && (
+                <div>
+                  <div className="h-2 overflow-hidden rounded-full bg-escola-border">
+                    <div className="h-full rounded-full bg-escola-dourado transition-all duration-300"
+                      style={{ width: `${renderProgress}%` }} />
+                  </div>
+                  <p className="text-xs text-escola-creme-50 mt-1">{renderLabel}</p>
+                </div>
+              )}
+
+              {videoUrl && (
+                <div className="space-y-2">
+                  <video controls src={videoUrl} className="w-full max-w-lg rounded-lg border border-escola-border" />
+                  <a href={videoUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-block text-sm text-escola-dourado underline">
+                    Descarregar MP4
+                  </a>
+                </div>
               )}
             </div>
 
