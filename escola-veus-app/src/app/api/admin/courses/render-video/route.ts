@@ -1,42 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Remotion render can take a long time — max timeout
 export const maxDuration = 300;
 
 /**
  * POST /api/admin/courses/render-video
  *
- * Renders the final MP4 video using Remotion from a manifest.
- * Streams progress via SSE.
+ * Renders the final MP4 using Remotion Lambda (AWS cloud render).
+ * No CLI, no Chromium, no local resources — 100% cloud.
+ *
+ * Required env vars:
+ *   REMOTION_AWS_REGION        — e.g. "eu-west-1"
+ *   REMOTION_LAMBDA_FUNCTION   — Lambda function name (from `npx remotion lambda functions deploy`)
+ *   REMOTION_SERVE_URL         — S3 serve URL (from `npx remotion lambda sites create`)
+ *   AWS_ACCESS_KEY_ID          — AWS credentials
+ *   AWS_SECRET_ACCESS_KEY      — AWS credentials
  *
  * Body: { manifest: VideoManifest }
  * Returns SSE stream with progress + final { result: { videoUrl } }
- *
- * NOTE: This endpoint requires Remotion + a headless browser (Chromium).
- * On Vercel, use Remotion Lambda instead. This works for local/VPS deploy.
  */
 
-type ProgressEvent = {
-  type: "progress";
-  percent: number;
-  label: string;
-};
-
-type ResultEvent = {
-  type: "result";
-  videoUrl: string;
-};
-
-type ErrorEvent = {
-  type: "error";
-  message: string;
-};
+type SSEEvent =
+  | { type: "progress"; percent: number; label: string }
+  | { type: "result"; videoUrl: string }
+  | { type: "error"; message: string };
 
 function createSSEStream() {
   const encoder = new TextEncoder();
   let controller: ReadableStreamDefaultController | null = null;
   const stream = new ReadableStream({ start(c) { controller = c; } });
-  function send(data: ProgressEvent | ResultEvent | ErrorEvent) {
+  function send(data: SSEEvent) {
     if (controller) controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
   }
   function close() { if (controller) controller.close(); }
@@ -50,108 +42,107 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "manifest obrigatorio." }, { status: 400 });
   }
 
+  const region = process.env.REMOTION_AWS_REGION;
+  const functionName = process.env.REMOTION_LAMBDA_FUNCTION;
+  const serveUrl = process.env.REMOTION_SERVE_URL;
+
+  if (!region || !functionName || !serveUrl) {
+    return NextResponse.json({
+      erro: "Remotion Lambda nao configurado. Precisa de REMOTION_AWS_REGION, REMOTION_LAMBDA_FUNCTION, REMOTION_SERVE_URL.",
+    }, { status: 400 });
+  }
+
   const { stream, send, close } = createSSEStream();
 
   (async () => {
     try {
-      send({ type: "progress", percent: 0, label: "A preparar render..." });
+      send({ type: "progress", percent: 0, label: "A submeter render ao Lambda..." });
 
-      // Dynamic imports to avoid build issues
-      const { bundle } = await import("@remotion/bundler");
-      const { renderMedia, selectComposition } = await import("@remotion/renderer");
-      const path = await import("path");
-      const fs = await import("fs");
-      const os = await import("os");
+      const { renderMediaOnLambda, getRenderProgress } = await import("@remotion/lambda/client");
 
-      // 1. Bundle the Remotion project
-      send({ type: "progress", percent: 5, label: "A criar bundle Remotion..." });
-
-      const entryPoint = path.resolve(process.cwd(), "src/remotion/index.ts");
-
-      // Create index.ts entry point if it doesn't exist
-      const indexPath = path.resolve(process.cwd(), "src/remotion/index.ts");
-      if (!fs.existsSync(indexPath)) {
-        fs.writeFileSync(indexPath, `import { registerRoot } from "remotion";\nimport { Root } from "./Root";\nregisterRoot(Root);\n`);
+      // Calculate total frames for the composition
+      const FPS = 30;
+      const DISSOLVE_FRAMES = 30;
+      let totalFrames = 0;
+      for (const scene of manifest.scenes) {
+        totalFrames += Math.round(scene.durationSec * FPS);
+        if (totalFrames > DISSOLVE_FRAMES) totalFrames -= DISSOLVE_FRAMES;
       }
+      totalFrames += DISSOLVE_FRAMES;
 
-      const bundleLocation = await bundle({
-        entryPoint: indexPath,
-        onProgress: (p: number) => {
-          if (p % 20 === 0) send({ type: "progress", percent: 5 + p * 0.2, label: `Bundle: ${p}%` });
-        },
-      });
-
-      send({ type: "progress", percent: 25, label: "Bundle criado. A seleccionar composicao..." });
-
-      // 2. Select the composition
-      const composition = await selectComposition({
-        serveUrl: bundleLocation,
-        id: "VideoComposition",
+      // 1. Submit render to Lambda
+      const { renderId, bucketName } = await renderMediaOnLambda({
+        region,
+        functionName,
+        serveUrl,
+        composition: "VideoComposition",
         inputProps: manifest,
-      });
-
-      send({ type: "progress", percent: 30, label: "A renderizar video..." });
-
-      // 3. Render the video
-      const outputDir = os.tmpdir();
-      const outputPath = path.join(outputDir, `escola-veus-${manifest.sceneLabel || "video"}-${Date.now()}.mp4`);
-
-      await renderMedia({
-        composition,
-        serveUrl: bundleLocation,
         codec: "h264",
-        outputLocation: outputPath,
-        inputProps: manifest,
-        onProgress: ({ progress }: { progress: number }) => {
-          const pct = 30 + Math.round(progress * 65);
-          if (pct % 5 === 0) {
-            send({ type: "progress", percent: pct, label: `A renderizar: ${Math.round(progress * 100)}%` });
-          }
-        },
+        framesPerLambda: 120,
+        privacy: "public",
+        downloadBehavior: { type: "download", fileName: `${manifest.sceneLabel || "video"}.mp4` },
       });
 
-      send({ type: "progress", percent: 95, label: "Render completo. A fazer upload..." });
+      send({ type: "progress", percent: 10, label: `Render submetido (${renderId}). A processar...` });
 
-      // 4. Upload to Supabase
-      const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      // 2. Poll for progress
+      let done = false;
+      let lastPercent = 10;
 
-      let videoUrl = "";
+      while (!done) {
+        await new Promise((r) => setTimeout(r, 3000));
 
-      if (serviceKey && supabaseUrl) {
-        const { createClient } = await import("@supabase/supabase-js");
-        const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
+        const progress = await getRenderProgress({
+          renderId,
+          bucketName,
+          functionName,
+          region,
+        });
 
-        const videoBuffer = fs.readFileSync(outputPath);
-        const filePath = `courses/${manifest.courseSlug}/videos/${manifest.sceneLabel}-${Date.now()}.mp4`;
-
-        const { error } = await supabase.storage
-          .from("course-assets")
-          .upload(filePath, videoBuffer, { contentType: "video/mp4", upsert: true });
-
-        if (!error) {
-          videoUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
-        } else {
-          // Fallback: serve from tmp (local dev only)
-          videoUrl = `file://${outputPath}`;
+        if (progress.fatalErrorEncountered) {
+          throw new Error(progress.errors?.[0]?.message || "Erro fatal no render Lambda");
         }
-      } else {
-        videoUrl = `file://${outputPath}`;
+
+        if (progress.done) {
+          done = true;
+          const videoUrl = progress.outputFile;
+
+          send({ type: "progress", percent: 95, label: "Render completo. A guardar..." });
+
+          // Upload to Supabase for permanent storage
+          const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+          const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+          let finalUrl = videoUrl || "";
+
+          if (serviceKey && supabaseUrl && videoUrl) {
+            try {
+              const videoRes = await fetch(videoUrl);
+              if (videoRes.ok) {
+                const { createClient } = await import("@supabase/supabase-js");
+                const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
+                const filePath = `courses/${manifest.courseSlug}/videos/${manifest.sceneLabel}-${Date.now()}.mp4`;
+                const videoBuffer = new Uint8Array(await videoRes.arrayBuffer());
+                const { error } = await supabase.storage
+                  .from("course-assets")
+                  .upload(filePath, videoBuffer, { contentType: "video/mp4", upsert: true });
+                if (!error) finalUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
+              }
+            } catch { /* keep Lambda URL as fallback */ }
+          }
+
+          send({ type: "progress", percent: 100, label: "Video pronto!" });
+          send({ type: "result", videoUrl: finalUrl });
+        } else {
+          const pct = Math.min(90, 10 + Math.round((progress.overallProgress || 0) * 85));
+          if (pct > lastPercent) {
+            lastPercent = pct;
+            const chunksStr = progress.chunks
+              ? `${progress.chunks.filter((c: { rendered: boolean }) => c.rendered).length}/${progress.chunks.length} chunks`
+              : "";
+            send({ type: "progress", percent: pct, label: `A renderizar... ${Math.round((progress.overallProgress || 0) * 100)}% ${chunksStr}` });
+          }
+        }
       }
-
-      // Cleanup tmp file if uploaded
-      if (videoUrl.startsWith("http")) {
-        try { fs.unlinkSync(outputPath); } catch { /* ok */ }
-      }
-
-      // Cleanup bundle
-      try {
-        const { deleteBundle } = await import("@remotion/bundler");
-        if (typeof deleteBundle === "function") await deleteBundle(bundleLocation);
-      } catch { /* ok */ }
-
-      send({ type: "progress", percent: 100, label: "Video pronto!" });
-      send({ type: "result", videoUrl });
     } catch (err) {
       send({ type: "error", message: err instanceof Error ? err.message : String(err) });
     } finally {

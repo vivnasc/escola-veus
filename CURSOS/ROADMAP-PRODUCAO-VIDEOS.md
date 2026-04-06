@@ -154,10 +154,12 @@ O estilo e diferente (nao e cartoon), mas e igualmente profissional e distinto.
   │  ├── Workflows ComfyUI (3 tipos)             PRONTO  │
   │  └── Admin dashboard                         PRONTO  │
   ├──────────────────────────────────────────────────────┤
-  │  PIPELINE AUTOMATIZADO                    A CONSTRUIR │
-  │  ├── Animacao Runway Gen-4 API              POR FAZER │
-  │  ├── Montagem Remotion (React)              POR FAZER │
-  │  ├── Orquestrador (botao "Produzir")        POR FAZER │
+  │  PIPELINE AUTOMATIZADO                       FEITO │
+  │  ├── Animacao Runway Gen-4 API               FEITO │
+  │  ├── Montagem Remotion Lambda (cloud)        FEITO │
+  │  ├── Orquestrador (wizard 6 passos)          FEITO │
+  │  ├── Legendas SRT/VTT automaticas            FEITO │
+  │  ├── Musica de fundo (faixa-01.mp3)          FEITO │
   │  └── Treinar LoRA (estilo visual)           POR FAZER │
   ├──────────────────────────────────────────────────────┤
   │  BLOQUEIO HUMANO                                      │
@@ -177,7 +179,7 @@ O estilo e diferente (nao e cartoon), mas e igualmente profissional e distinto.
 | 0.2 | Conta ThinkDiffusion | Hobby $0.99/h ou Pro $19.99/mes | Por fazer |
 | 0.3 | Conta Runway | Criar conta, obter API key | Por fazer |
 | 0.4 | Treinar LoRA | 59 imagens → modelo visual (~3h, ~5€) | Por fazer |
-| 0.5 | Instalar Remotion | `npm i remotion @remotion/cli` | Por fazer |
+| 0.5 | Remotion Lambda | Deploy function + site na AWS | Por fazer (precisa AWS) |
 | 0.6 | Musica ambiente | Descarregar 2-3 texturas CC0 | Por fazer |
 
 ### FASE 1: APROVAR SCRIPTS (o teu trabalho, Vivianne)
