@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-escola-bg: #0D0D1A;
+  --color-escola-bg-light: #141428;
+  --color-escola-creme: #F5F0E6;
+  --color-escola-creme-50: rgba(245, 240, 230, 0.5);
+  --color-escola-dourado: #C9A96E;
+  --color-escola-dourado-light: #D4B87A;
+  --color-escola-terracota: #C4745A;
+  --color-escola-violeta: #8B5CF6;
+  --color-escola-violeta-dark: #6D28D9;
+  --color-escola-card: #1A1A2E;
+  --color-escola-border: rgba(201, 169, 110, 0.2);
+
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+html {
+  background-color: var(--color-escola-bg);
+  color: var(--color-escola-creme);
+}
+
+body {
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-escola-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-escola-border);
+  border-radius: 3px;
+}
+
+/* Safe area for bottom nav */
+.pb-nav {
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+}
