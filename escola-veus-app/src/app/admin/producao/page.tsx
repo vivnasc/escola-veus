@@ -195,7 +195,7 @@ export default function ProductionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: "faceless woman in long flowing navy dress with translucent golden veil, standing before ornate golden mirrors, soft golden glow, deep navy blue background, oil painting style, painterly brushstrokes, cinematic lighting, contemplative mood, no text",
+          prompt: "a woman standing in a shop holding a small shopping bag, looking at it with uncertainty and guilt, thought bubble with numbers and calculations floating above her head, flat editorial illustration style, simple clean vector-like shapes, limited color palette, faceless generic human figure with no race and no visible skin color, warm muted tones, dark navy background, minimal detail, no photorealism, no text, no words, inspired by School of Life and Kurzgesagt animation style",
           courseSlug: "ouro-proprio",
           sceneLabel: "teste",
         }),
