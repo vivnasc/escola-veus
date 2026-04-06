@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 
+const ADMIN_EMAILS = ["viv.saraiva@gmail.com"];
+
 const NAV_ITEMS = [
   { href: "/", label: "Inicio", icon: HomeIcon },
   { href: "/cursos", label: "Cursos", icon: BookIcon },
@@ -13,10 +15,11 @@ const NAV_ITEMS = [
 export function NavBar() {
   const pathname = usePathname();
   const { user, loading } = useAuth();
-  const isAdmin = pathname?.startsWith("/admin");
+  const isAdminPage = pathname?.startsWith("/admin");
   const isLanding = pathname === "/" && !user && !loading;
   const isEntrar = pathname === "/entrar";
-  if (isAdmin || isLanding || isEntrar) return null;
+  const isAdminUser = user?.email && ADMIN_EMAILS.includes(user.email);
+  if (isAdminPage || isLanding || isEntrar) return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-escola-border bg-escola-bg/95 backdrop-blur-md">
@@ -36,6 +39,17 @@ export function NavBar() {
             </Link>
           );
         })}
+        {isAdminUser && (
+          <Link
+            href="/admin/producao"
+            className={`flex flex-col items-center gap-0.5 px-4 py-3 text-xs transition-colors ${
+              pathname?.startsWith("/admin") ? "text-escola-dourado" : "text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            <AdminIcon active={!!pathname?.startsWith("/admin")} />
+            <span>Admin</span>
+          </Link>
+        )}
       </div>
     </nav>
   );
@@ -64,6 +78,14 @@ function UserIcon({ active }: { active: boolean }) {
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.5} strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function AdminIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 15l-2 5 9-11h-5l2-5-9 11z" />
     </svg>
   );
 }
