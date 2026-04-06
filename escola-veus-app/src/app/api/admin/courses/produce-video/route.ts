@@ -119,8 +119,6 @@ export async function POST(req: NextRequest) {
     moduleNum,
     subLetter,
     animationProvider = "runway",
-    comfyuiUrl,
-    loraName = "mundo-dos-veus-v1",
   } = await req.json();
 
   if (!courseSlug || !scriptType) {
@@ -206,62 +204,43 @@ export async function POST(req: NextRequest) {
 
       // ─── STEP 3: GENERATE IMAGES ─────────────────────────────────────
 
-      send({ step: 3, total: totalSteps, label: `A gerar ${scenes.length} imagens...`, status: "running" });
+      send({ step: 3, total: totalSteps, label: `A gerar ${scenes.length} imagens (Flux)...`, status: "running" });
 
-      if (!comfyuiUrl) {
-        // Skip image generation if no ComfyUI URL — use placeholder
-        send({ step: 3, total: totalSteps, label: "Imagens (sem ComfyUI — placeholder)", status: "done", detail: "Configura comfyuiUrl para gerar imagens reais" });
-      } else {
-        const { buildLandscapeWorkflow, buildSilhouetteWorkflow } = await import(
-          "@/lib/comfyui-workflows"
-        );
+      const { buildScenePrompt, REFERENCE_IMAGE_URLS } = await import("@/data/scene-prompts");
 
-        // Generate images in parallel (batches of 3 to not overwhelm GPU)
-        const batchSize = 3;
-        for (let i = 0; i < scenes.length; i += batchSize) {
-          const batch = scenes.slice(i, i + batchSize);
-          const promises = batch.map(async (scene, batchIdx) => {
-            const idx = i + batchIdx;
-            const isSilhouette = ["pergunta", "gesto", "situacao"].includes(scene.type);
+      // Generate images in parallel (batches of 3 — fal.ai rate limits)
+      const batchSize = 3;
+      for (let i = 0; i < scenes.length; i += batchSize) {
+        const batch = scenes.slice(i, i + batchSize);
+        const promises = batch.map(async (scene, batchIdx) => {
+          const idx = i + batchIdx;
+          const prompt = buildScenePrompt(courseSlug, scene.type, scene.visualNote);
 
-            const workflow = isSilhouette
-              ? buildSilhouetteWorkflow({
-                  prompt: scene.visualNote,
-                  loraName,
-                })
-              : buildLandscapeWorkflow({
-                  prompt: scene.visualNote,
-                  loraName,
-                });
+          const imgRes = await fetch(
+            `${baseUrl}/api/admin/courses/generate-image-flux`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                prompt,
+                courseSlug,
+                sceneLabel: `${sceneLabel}-scene${idx}`,
+                referenceImageUrls: REFERENCE_IMAGE_URLS,
+              }),
+            },
+          );
 
-            const imgRes = await fetch(
-              `${baseUrl}/api/admin/courses/generate-image`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  comfyuiUrl,
-                  workflow,
-                  courseSlug,
-                  moduleNum: moduleNum ?? hookIndex,
-                  assetType: isSilhouette ? "silhouette" : "landscape",
-                  filename: `${sceneLabel}-scene${idx}.png`,
-                }),
-              },
-            );
+          if (imgRes.ok) {
+            const result = await imgRes.json();
+            scenes[idx].imageUrl = result.url;
+          }
+        });
 
-            if (imgRes.ok) {
-              const result = await imgRes.json();
-              scenes[idx].imageUrl = result.url;
-            }
-          });
-
-          await Promise.all(promises);
-        }
-
-        const generated = scenes.filter((s) => s.imageUrl).length;
-        send({ step: 3, total: totalSteps, label: "Imagens geradas", status: "done", detail: `${generated}/${scenes.length}` });
+        await Promise.all(promises);
       }
+
+      const generated = scenes.filter((s) => s.imageUrl).length;
+      send({ step: 3, total: totalSteps, label: "Imagens geradas (Flux)", status: "done", detail: `${generated}/${scenes.length}` });
 
       // ─── STEP 4: ANIMATE IMAGES ──────────────────────────────────────
 
@@ -271,49 +250,6 @@ export async function POST(req: NextRequest) {
 
       if (scenesWithImages.length === 0) {
         send({ step: 4, total: totalSteps, label: "Animacao (sem imagens para animar)", status: "done" });
-      } else if (animationProvider === "wan") {
-        // Use existing Wan 2.1 via ComfyUI
-        if (!comfyuiUrl) throw new Error("comfyuiUrl necessario para Wan 2.1");
-
-        const WAN_MOTION: Record<string, string> = {
-          abertura: "slow cinematic camera drift downward",
-          pergunta: "silhouette breathing slowly, subtle movement",
-          situacao: "slow camera tracking, environment alive",
-          revelacao: "mirrors uncovering, veils lifting slowly",
-          gesto: "hand extending, particles gathering",
-          frase_final: "slow zoom into darkness",
-          cta: "gentle wind, floating particles, warm light",
-          fecho: "slow dissolve upward into navy sky",
-        };
-
-        for (let i = 0; i < scenesWithImages.length; i++) {
-          const scene = scenesWithImages[i];
-          const motion = WAN_MOTION[scene.type] || scene.visualNote;
-
-          const vidRes = await fetch(
-            `${baseUrl}/api/admin/courses/generate-video`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                comfyuiUrl,
-                sourceImageUrl: scene.imageUrl,
-                motionPrompt: motion,
-                courseSlug,
-                sceneLabel: `${sceneLabel}-scene${i}`,
-                durationSec: 5,
-              }),
-            },
-          );
-
-          if (vidRes.ok) {
-            const result = await vidRes.json();
-            scene.animationUrl = result.url;
-          }
-        }
-
-        const animated = scenesWithImages.filter((s) => s.animationUrl).length;
-        send({ step: 4, total: totalSteps, label: "Animacao (Wan 2.1)", status: "done", detail: `${animated}/${scenesWithImages.length}` });
       } else {
         // Use Runway or Hailuo via animate-runway route
         const MOTION_PROMPTS: Record<string, string> = {
