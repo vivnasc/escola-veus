@@ -195,7 +195,7 @@ export default function ProductionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: "an abstract silhouette figure standing in a shop holding a small bag, thought bubble with floating numbers above, the figure is a solid dark human-shaped shadow with no face no skin no features, flat minimalist editorial illustration, dark navy blue background, warm gold and terracotta accent colors, clean simple shapes, limited muted palette, contemplative mood, no photorealism, no cartoon face, no visible skin, no text, no words",
+          prompt: "a solid terracotta colored silhouette figure standing in a shop holding a small bag, thought bubble with floating numbers above, the figure is a warm terracotta shape with subtle golden outline glow clearly visible against dark background — no face no features just a human shape, flat minimalist editorial illustration, dark navy blue background, warm gold and terracotta accent colors, clean simple shapes, contemplative mood, no photorealism, no cartoon face, no text, no words",
           courseSlug: "ouro-proprio",
           sceneLabel: "teste",
         }),

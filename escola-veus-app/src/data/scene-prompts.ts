@@ -12,7 +12,7 @@
 // The Escola dos Véus visual style — NOT a copy of School of Life
 // Differences: dark atmosphere, abstract silhouette figures, gold/terracotta tones, contemplative
 const STYLE =
-  "flat minimalist editorial illustration, dark navy blue background (#1A1A2E), abstract silhouette figures in solid dark shape with no face no skin color no features — just a human-shaped shadow, warm gold (#D4A853) and terracotta (#C4745A) accent colors, clean simple shapes, limited muted palette, contemplative and poetic mood, no photorealism, no cartoon faces, no visible skin, no text, no words, no letters";
+  "flat minimalist editorial illustration, dark navy blue background (#1A1A2E), human figures as solid terracotta (#C4745A) silhouettes with subtle golden (#D4A853) outline glow — no face no features no skin texture just a warm-colored shape clearly visible against the dark background, warm gold and terracotta accent colors, clean simple shapes, limited muted palette, contemplative mood, no photorealism, no cartoon faces, no text, no words, no letters";
 
 // ─── PROMPT BUILDER ─────────────────────────────────────────────────────────
 
