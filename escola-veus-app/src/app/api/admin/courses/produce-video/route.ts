@@ -275,13 +275,20 @@ export async function POST(req: NextRequest) {
         // Use existing Wan 2.1 via ComfyUI
         if (!comfyuiUrl) throw new Error("comfyuiUrl necessario para Wan 2.1");
 
-        const { getMotionPrompt } = await import("@/lib/comfyui-workflows");
+        const WAN_MOTION: Record<string, string> = {
+          abertura: "slow cinematic camera drift downward",
+          pergunta: "silhouette breathing slowly, subtle movement",
+          situacao: "slow camera tracking, environment alive",
+          revelacao: "mirrors uncovering, veils lifting slowly",
+          gesto: "hand extending, particles gathering",
+          frase_final: "slow zoom into darkness",
+          cta: "gentle wind, floating particles, warm light",
+          fecho: "slow dissolve upward into navy sky",
+        };
 
         for (let i = 0; i < scenesWithImages.length; i++) {
           const scene = scenesWithImages[i];
-          const motion = typeof getMotionPrompt === "function"
-            ? getMotionPrompt(scene.type as Parameters<typeof getMotionPrompt>[0])
-            : scene.visualNote;
+          const motion = WAN_MOTION[scene.type] || scene.visualNote;
 
           const vidRes = await fetch(
             `${baseUrl}/api/admin/courses/generate-video`,
