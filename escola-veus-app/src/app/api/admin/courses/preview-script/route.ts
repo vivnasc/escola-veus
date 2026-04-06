@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
           type: s.type,
           narration: s.narration,
           overlayText: s.overlayText,
+          visualNote: s.visualNote,
+          durationSec: s.durationSec,
         })),
       });
     }
