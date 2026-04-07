@@ -122,12 +122,22 @@ Cada curso/territorio tem tambem a sua paleta propria (ver `territory-themes.ts`
 
 ## 9. Musica de Fundo
 
-- Instrumental, ambiente, contemplativo.
-- Gerada via Suno API (`make_instrumental: true`).
-- Piano suave, pads quentes.
+- **Fonte principal: musica original da Loranne** (music.seteveus.space)
+  - 54 albuns, 1200+ faixas — organic-electronic contemporaneo, vocais intimistas PT/EN
+  - Coleccoes relevantes: Espelhos (7 veus), Sangue (heranca), Incenso (meditacao), Curso (companheiros musicais)
+- Alternativa: Suno API (`make_instrumental: true`) apenas se nenhuma faixa da Loranne encaixar
 - Volume a ~12% da narracao.
 - Textura, nao melodia — quase inaudivel.
 - Silencio intencional entre seccoes.
+- CTA nos videos: "ouve a faixa completa em music.seteveus.space"
+
+### Ecossistema de dominios (para CTAs e links)
+
+| Dominio | O que e | Quando usar no CTA |
+|---------|---------|---------------------|
+| `escola.seteveus.space` | Escola — 20 cursos, modulos, cadernos | CTA principal dos videos YouTube |
+| `seteveus.space` | Site principal — livro interactivo "Os 7 Veus do Despertar" | Quando referir o livro/universo |
+| `music.seteveus.space` | Musica original da Loranne — 1200+ faixas | Quando usar musica nos videos |
 - Voz: clone ElevenLabs da Vivianne.
 
 ### 9.1 ElevenLabs v3 — Audio Tags (parenteses retos)

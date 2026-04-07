@@ -53,7 +53,7 @@ export const OURO_PROPRIO_YOUTUBE: YouTubeScript[] = [
     revelacao:
       "Nenhuma destas frases foi dita com maldade. A tua mae nao te quis prender. Estava a proteger-te com as ferramentas que tinha. Mas a proteccao tornou-se prisao. E o mais dificil e isto: nao podes voltar atras e mudar o que ouviste. Mas podes fazer algo que ninguem fez por ti — olhar para essas frases e escolher. Quais ficam? Quais vao? E que frase nova queres por no lugar delas?",
     convite:
-      "No curso Ouro Proprio, o segundo modulo chama-se A Heranca Financeira Emocional. E la que desenterramos estas frases — todas. E escolhemos conscientemente o que manter e o que largar. Se quiseres ir mais fundo, seteveus.space.",
+      "No curso Ouro Proprio, o segundo modulo chama-se A Heranca Financeira Emocional. E la que desenterramos estas frases — todas. E escolhemos conscientemente o que manter e o que largar. Se quiseres ir mais fundo, escola.seteveus.space.",
     fraseFinal:
       "Metade do que acreditas sobre dinheiro nao e teu. Foi-te dado antes de saberes recusar.",
     status: "draft",
@@ -71,7 +71,7 @@ export const OURO_PROPRIO_YOUTUBE: YouTubeScript[] = [
     revelacao:
       "A distancia entre o que cobras e o que vale nao e um problema de preco. E um problema de permissao. Algures, aprendeste que pedir o que mereces e arrogancia. Que cobrar bem e ganancia. Que ser acessivel e o mesmo que ser barata. Mas nao e. Ha uma diferenca enorme entre generosidade e medo. A generosidade e uma escolha. O desconto automatico que das antes de alguem pedir e uma reaccao. E cada vez que baixas o preco sem que ninguem te peca, estas a dizer — a ti mesma e ao mundo — que o teu valor e negociavel.",
     convite:
-      "No curso Ouro Proprio, ha um modulo inteiro sobre isto: Cobrar, Receber, Merecer. Nao e sobre tacticas de negociacao. E sobre desatar o no entre o que vales e o que te permites pedir. Se quiseres ir mais fundo: seteveus.space.",
+      "No curso Ouro Proprio, ha um modulo inteiro sobre isto: Cobrar, Receber, Merecer. Nao e sobre tacticas de negociacao. E sobre desatar o no entre o que vales e o que te permites pedir. Se quiseres ir mais fundo: escola.seteveus.space.",
     fraseFinal:
       "O desconto que ninguem te pediu e a medida exacta do quanto ainda nao te permites valer.",
     status: "draft",
