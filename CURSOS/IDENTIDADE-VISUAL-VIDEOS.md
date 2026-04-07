@@ -161,8 +161,8 @@ NAO usa SSML. NAO usar `...` para pausas (cria hesitacao indesejada).
 **Parametrizacao recomendada:**
 - `model_id: "eleven_v3"`
 - `language_code: "pt"`
-- `stability: 0.5` (mais baixo = tags mais expressivas; 0.8 e demasiado rigido)
-- `similarity_boost: 0.9`
+- `stability: 0.35` (mais baixo = mais expressivo e espontaneo; 0.5+ soa a leitura)
+- `similarity_boost: 0.70` (0.9 era demasiado rigido, suprimia variacao natural)
 - Modo "Creative" ou "Natural" na UI (nao "Stable")
 
 **Exemplo de narracao formatada:**
@@ -189,7 +189,7 @@ NAO usa SSML. NAO usar `...` para pausas (cria hesitacao indesejada).
 ## 11. STYLE Prompt (exacto do codigo)
 
 ```
-flat minimalist editorial illustration, dark navy blue background (#1A1A2E), human figures as solid terracotta (#C4745A) silhouettes with subtle golden (#D4A853) outline glow — no face no features no skin texture just a warm-colored shape clearly visible against the dark background, warm gold and terracotta accent colors, clean simple shapes, limited muted palette, contemplative mood, no photorealism, no cartoon faces, no text, no words, no letters
+flat editorial illustration, large bold composition filling the frame, dark navy blue background (#1A1A2E), human figures as large prominent terracotta (#C4745A) silhouettes with subtle golden (#D4A853) outline glow — no face no features no gender markers just warm-colored shapes dominating the scene, figures should be large and central not small icons, warm gold and terracotta accent colors, clean geometric shapes, limited muted palette, contemplative mood, 16:9 widescreen, no photorealism, no cartoon faces, no text, no words, no letters
 ```
 
 Este prompt e concatenado automaticamente a cada `visualNote` pela funcao `buildPrompt()`.
