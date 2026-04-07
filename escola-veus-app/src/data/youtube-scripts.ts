@@ -1195,21 +1195,74 @@ const trailerCanal: YouTubeScript = {
   },
   scenes: [
     {
-      type: "trailer",
-      narration:
-        "Há coisas que sabes sobre ti. [pause] E há coisas que escondes. Não por maldade — mas por protecção. Camadas que foste pondo ao longo da vida. Para não sentir demais. Para caber. Para sobreviver. [long pause] Na Escola dos Véus, chamamos-lhes véus. [pause] Cada véu é um padrão que já foi útil — mas que agora te limita. Um que te impede de dizer não. Outro que te faz sentir culpa quando gastas contigo. Outro que te mantém em relações onde desapareces. Outro que te faz engolir a raiva. Outro que te prende a uma herança que nem sabes que carregas. [long pause] Os véus são muitos. [pause] E cada curso desta escola ajuda-te a levantar um. Não de uma vez — mas com cuidado. Com conhecimento. Com exercícios que podes fazer ao teu ritmo. [pause] Isto não é auto-ajuda. Não é motivação. [short pause] É um caminho de autoconhecimento — com base em psicologia, neurociência, e experiência vivida. [long pause] Se alguma vez sentiste que há qualquer coisa entre ti e a tua vida real — algo que não consegues nomear, mas que pesa — estás no sítio certo. [long pause] Bem-vindo à Escola dos Véus. [pause] Subscreve. E começa a ver.",
-      overlayText: "",
-      durationSec: 90,
+      type: "abertura",
+      narration: "",
+      overlayText: "Escola dos Véus",
+      durationSec: 5,
       visualNote:
-        "Céu navy profundo. Silhueta quase invisível, apenas uma sombra mal perceptível contra o fundo escuro. À medida que camadas translúcidas (os véus) se levantam, a silhueta começa a ganhar tom terracota, contorno a emergir. Flashes rápidos de mundos visuais — espelhos, raízes, muros que se dissolvem. A cada véu levantado, a silhueta ganha mais presença, mais definição, até ficar plenamente luminosa com contorno dourado radiante. Logo Escola dos Véus em creme sobre navy.",
+        "Fundo navy escuro. Silhueta quase invisível, apenas uma sombra contra o escuro. Véu pesado a cobrir todo o corpo. Silêncio visual.",
+    },
+    {
+      type: "gancho",
+      narration:
+        "Há coisas que sabes sobre ti. [pause] E há coisas que escondes. Não por maldade — mas por protecção. Camadas que foste pondo ao longo da vida. Para não sentir demais. Para caber. Para sobreviver.",
+      overlayText: "",
+      durationSec: 15,
+      visualNote:
+        "Silhueta escura coberta por camadas translúcidas sobrepostas (véus). Navy profundo. A figura mal se distingue do fundo.",
+    },
+    {
+      type: "reconhecimento",
+      narration:
+        "[long pause] Na Escola dos Véus, chamamos-lhes véus. [pause] Cada véu é um padrão que já foi útil — mas que agora te limita.",
+      overlayText: "",
+      durationSec: 12,
+      visualNote:
+        "Uma das camadas/véus começa a levantar-se. Silhueta ganha um leve tom terracota. O contorno começa a emergir do escuro.",
+    },
+    {
+      type: "framework",
+      narration:
+        "Um que te impede de dizer não. Outro que te faz sentir culpa quando gastas contigo. Outro que te mantém em relações onde desapareces. Outro que te faz engolir a raiva. Outro que te prende a uma herança que nem sabes que carregas.",
+      overlayText: "",
+      durationSec: 18,
+      visualNote:
+        "Múltiplas silhuetas em poses diferentes — uma com muro à frente, uma com mãos abertas, uma com raízes nos pés, uma com espelho. Cada uma representa um véu. Terracota a ganhar presença.",
+    },
+    {
+      type: "exemplo",
+      narration:
+        "[long pause] Os véus são muitos. [pause] E cada curso desta escola ajuda-te a levantar um. Não de uma vez — mas com cuidado. Com conhecimento. Com exercícios que podes fazer ao teu ritmo.",
+      overlayText: "",
+      durationSec: 15,
+      visualNote:
+        "Silhueta central agora claramente terracota, véus a cair um a um como pétalas. Contorno dourado a surgir. Fundo navy com pontos de luz dourada.",
+    },
+    {
+      type: "reframe",
+      narration:
+        "[pause] Isto não é auto-ajuda. Não é motivação. [short pause] É um caminho de autoconhecimento — com base em psicologia, neurociência, e experiência vivida.",
+      overlayText: "Não é auto-ajuda.\nÉ autoconhecimento.",
+      durationSec: 12,
+      visualNote:
+        "Silhueta terracota de pé, sem véus, contorno dourado definido. Fundo limpo navy. Postura aberta, presença firme.",
+    },
+    {
+      type: "cta",
+      narration:
+        "[long pause] Se alguma vez sentiste que há qualquer coisa entre ti e a tua vida real — algo que não consegues nomear, mas que pesa — estás no sítio certo. [long pause] Bem-vindo à Escola dos Véus. [pause] Subscreve. E começa a ver.",
+      overlayText: "escola.seteveus.space",
+      durationSec: 18,
+      visualNote:
+        "Silhueta plenamente dourada, radiante, sem véus. Braços ligeiramente abertos. Luz dourada a irradiar. Navy profundo atrás.",
     },
     {
       type: "fecho",
       narration: "",
-      overlayText: "Escola dos Véus\nAutoconhecimento com profundidade\nescola.seteveus.space\nMúsica original: music.seteveus.space",
-      durationSec: 10,
+      overlayText: "Escola dos Véus\nAutoconhecimento com profundidade\nescola.seteveus.space",
+      durationSec: 8,
       visualNote:
-        "Navy background. Silhueta plenamente radiante, contorno dourado intenso a pulsar suavemente. Logo centrado. URL.",
+        "Navy background. Logo centrado. Silhueta pequena dourada em baixo. URL.",
     },
   ],
 };
