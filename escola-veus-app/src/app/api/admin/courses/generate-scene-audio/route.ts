@@ -28,7 +28,13 @@ export async function POST(req: NextRequest) {
     }
 
     const voice = voiceId || process.env.ELEVENLABS_VOICE_ID || "fnoNuVpfClX7lHKFbyZ2";
-    const processedText = narration.replace(/\n\n+/g, "\n\n").trim();
+    // ElevenLabs v3: \n\n = pause, — = breath pause, . = natural stop
+    // Normalize multiple breaks, keep double-newlines as pause markers
+    const processedText = narration
+      .replace(/\n{3,}/g, "\n\n")  // max 2 newlines
+      .replace(/\n\n/g, " ... ")   // double newline → pause marker for v3
+      .replace(/\s+/g, " ")        // collapse whitespace
+      .trim();
 
     // Use ElevenLabs v3 with with_timestamps to get actual duration
     const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice}/with-timestamps`, {
