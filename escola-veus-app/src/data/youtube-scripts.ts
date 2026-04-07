@@ -1197,11 +1197,11 @@ const trailerCanal: YouTubeScript = {
     {
       type: "trailer",
       narration:
-        "Há coisas que sabes sobre ti. E há coisas que escondes — não por maldade, mas por protecção. Camadas que foste pondo ao longo da vida para não sentir demais. Para caber. Para sobreviver.\n\nNa Escola dos Véus, chamamos-lhes véus. Cada véu é um padrão que já foi útil mas que agora te limita. Um que te impede de dizer não. Outro que te faz sentir culpa quando gastas contigo. Outro que te mantém em relações onde desapareces. Outro que te faz engolir a raiva. Outro que te prende a uma herança que nem sabes que carregas.\n\nOs véus são muitos. E cada curso desta escola ajuda-te a levantar um — não de uma vez, mas com cuidado. Com conhecimento. Com exercícios que podes fazer ao teu ritmo.\n\nIsto não é auto-ajuda. Não é motivação. É um caminho de autoconhecimento com base em psicologia, neurociência e experiência vivida.\n\nSe alguma vez sentiste que há qualquer coisa entre ti e a tua vida real — algo que não consegues nomear mas que pesa — estás no sítio certo.\n\nBem-vindo à Escola dos Véus. Subscreve e começa a ver.",
+        "Há coisas que sabes sobre ti.\n\nE há coisas que escondes. Não por maldade — mas por protecção. Camadas que foste pondo ao longo da vida. Para não sentir demais. Para caber. Para sobreviver.\n\nNa Escola dos Véus, chamamos-lhes véus.\n\nCada véu é um padrão que já foi útil — mas que agora te limita. Um que te impede de dizer não. Outro que te faz sentir culpa quando gastas contigo. Outro que te mantém em relações onde desapareces. Outro que te faz engolir a raiva. Outro que te prende a uma herança que nem sabes que carregas.\n\nOs véus são muitos.\n\nE cada curso desta escola ajuda-te a levantar um. Não de uma vez — mas com cuidado. Com conhecimento. Com exercícios que podes fazer ao teu ritmo.\n\nIsto não é auto-ajuda. Não é motivação.\n\nÉ um caminho de autoconhecimento — com base em psicologia, neurociência, e experiência vivida.\n\nSe alguma vez sentiste que há qualquer coisa entre ti e a tua vida real — algo que não consegues nomear, mas que pesa — estás no sítio certo.\n\nBem-vindo à Escola dos Véus.\n\nSubscreve. E começa a ver.",
       overlayText: "",
       durationSec: 90,
       visualNote:
-        "Sequência cinematográfica: céu navy profundo. Uma silhueta terracota emerge de camadas translúcidas (os véus). Cada véu que se levanta revela mais contorno, mais luz dourada. Flashes rápidos de alguns mundos visuais — espelhos dourados, raízes, muros que se dissolvem — como exemplos dos véus que se podem levantar. Final: silhueta inteira, luminosa, contorno dourado. Logo Escola dos Véus em creme sobre navy.",
+        "Céu navy profundo. Silhueta quase invisível, apenas uma sombra mal perceptível contra o fundo escuro. À medida que camadas translúcidas (os véus) se levantam, a silhueta começa a ganhar tom terracota, contorno a emergir. Flashes rápidos de mundos visuais — espelhos, raízes, muros que se dissolvem. A cada véu levantado, a silhueta ganha mais presença, mais definição, até ficar plenamente luminosa com contorno dourado radiante. Logo Escola dos Véus em creme sobre navy.",
     },
     {
       type: "fecho",
@@ -1209,7 +1209,7 @@ const trailerCanal: YouTubeScript = {
       overlayText: "Escola dos Véus\nAutoconhecimento com profundidade\nseteveus.space",
       durationSec: 10,
       visualNote:
-        "Navy background. Logo centrado. URL. Luz dourada suave a pulsar.",
+        "Navy background. Silhueta plenamente radiante, contorno dourado intenso a pulsar suavemente. Logo centrado. URL.",
     },
   ],
 };
@@ -1232,70 +1232,70 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "Porque dizes sim\nquando queres dizer não",
       durationSec: 10,
       visualNote:
-        "Céu navy. Título em creme, fade lento. Território: Jardim dos Muros Invisíveis — muros translúcidos, vegetação que cresce entre fissuras.",
+        "Céu navy profundo. Título em creme, fade lento. Território: Jardim dos Muros Invisíveis — muros translúcidos, vegetação entre fissuras. Silhueta ausente — apenas escuridão e formas vagas.",
     },
     {
       type: "gancho",
       narration:
-        "Alguém te pede uma coisa. Não é grande. Não é difícil. Mas por dentro sentes um não claro. E dizes sim. Outra vez. Porquê?",
+        "Alguém te pede uma coisa. Não é grande. Não é difícil.\n\nMas por dentro — sentes um não claro.\n\nE dizes sim. Outra vez.\n\nPorquê?",
       overlayText: "Porquê?",
       durationSec: 18,
       visualNote:
-        "Silhueta terracota de pé, boca entreaberta. Palavra 'sim' sai em dourado. Palavra 'não' fica presa dentro, a vermelho escuro, invisível para fora.",
+        "Silhueta quase invisível contra o navy, apenas um contorno ténue a adivinhar-se. Boca entreaberta. Palavra 'sim' sai em tom pálido. Palavra 'não' fica presa dentro, escura, imperceptível.",
     },
     {
       type: "reconhecimento",
       narration:
-        "Isto tem muitas versões. A mensagem que chega às onze da noite — e respondes. O favor que aceitas quando já estás a transbordar. O jantar a que vais por obrigação. O sorriso que dás quando devias estar a dizer: não posso.\n\nSempre que acontece, sentes a mesma coisa. Um aperto. Um cansaço. E no caminho para casa, uma irritação que não sabes bem a quem pertence — se a quem pediu, se a ti que disseste sim.",
+        "Isto tem muitas versões.\n\nA mensagem que chega às onze da noite — e respondes. O favor que aceitas quando já estás a transbordar. O jantar a que vais por obrigação. O sorriso que dás quando devias estar a dizer — não posso.\n\nSempre que acontece, sentes a mesma coisa. Um aperto. Um cansaço.\n\nE no caminho para casa, uma irritação que não sabes bem a quem pertence. Se a quem pediu — se a ti, que disseste sim.",
       overlayText: "",
       durationSec: 50,
       visualNote:
-        "Sequência rápida: silhueta a acenar 'sim' em diferentes contextos — telemóvel à noite, mesa de trabalho sobrecarregada, porta de casa de outra pessoa. Em cada cena, uma linha dourada sai do peito da silhueta e fica com quem pediu.",
+        "Sequência rápida: silhueta escura, mal visível, a acenar 'sim' em diferentes contextos — telemóvel à noite, mesa de trabalho, porta de casa de outra pessoa. A silhueta é sombra contra sombra, quase indistinta do fundo navy. Em cada cena, uma linha ténue sai do peito e desaparece com quem pediu.",
     },
     {
       type: "framework",
       narration:
-        "Na Escola dos Véus, chamamos a isto o Véu da Obediência. É um dos padrões mais antigos e mais invisíveis que existem.\n\nFunciona assim: quando eras criança, aprendeste que dizer sim era seguro. Que concordar era ser aceite. Que recusar — mesmo coisas pequenas — trazia consequências. Um olhar. Um silêncio. Uma retirada de afecto.\n\nNão precisou de ser violento. Bastou ser consistente. E o teu sistema nervoso gravou a regra: sim igual a segurança, não igual a perigo.\n\nO problema é que essa regra foi escrita por uma criança de cinco anos. E ainda está a correr. Agora tens trinta, quarenta, cinquenta — e o software é o mesmo.\n\nCada vez que dizes sim quando sentes não, não estás a ser generoso. Estás a obedecer a um programa antigo que confunde amor com obediência. E o preço — esse, pagas em silêncio. Com o corpo. Com o cansaço. Com a raiva que não sabes de onde vem.",
+        "Na Escola dos Véus, chamamos a isto — o Véu da Obediência.\n\nÉ um dos padrões mais antigos e mais invisíveis que existem.\n\nFunciona assim.\n\nQuando eras criança, aprendeste que dizer sim era seguro. Que concordar era ser aceite. Que recusar — mesmo coisas pequenas — trazia consequências. Um olhar. Um silêncio. Uma retirada de afecto.\n\nNão precisou de ser violento. Bastou ser consistente.\n\nE o teu sistema nervoso gravou a regra. Sim — igual a segurança. Não — igual a perigo.\n\nO problema é que essa regra foi escrita por uma criança de cinco anos. E ainda está a correr.\n\nAgora tens trinta, quarenta, cinquenta — e o software é o mesmo.\n\nCada vez que dizes sim quando sentes não, não estás a ser generoso. Estás a obedecer a um programa antigo — que confunde amor com obediência.\n\nE o preço — esse, pagas em silêncio. Com o corpo. Com o cansaço. Com a raiva que não sabes de onde vem.",
       overlayText: "O Véu da Obediência:\nsim = segurança\nnão = perigo",
       durationSec: 120,
       visualNote:
-        "Animação didáctica: silhueta criança que acena sim e recebe luz (aprovação). Mesma criança que diz não e a luz apaga. Dissolve para silhueta adulta — mesma postura, mesmo reflexo. Um véu translúcido cobre a silhueta — o Véu da Obediência. Texto sobre navy: 'Software de infância. Ainda a correr.' Linhas douradas que saem do peito da silhueta em cada 'sim' — ficam com os outros, a silhueta fica mais escura.",
+        "Animação didáctica: silhueta criança começa a ganhar tom terracota — pela primeira vez visível, a emergir do fundo. Acena sim e recebe um brilho de aprovação. Diz não e o brilho apaga. Dissolve para silhueta adulta com a mesma postura — agora mais definida, terracota suave. Véu translúcido cobre a silhueta. Texto sobre navy: 'Software de infância. Ainda a correr.' Linhas que saem do peito em cada 'sim'.",
     },
     {
       type: "exemplo",
       narration:
-        "Vou dar-te um exemplo concreto.\n\nImagina que a tua mãe te liga a pedir para ires lá no domingo. Tens planos. Precisas de descansar. Mas ouves o tom de voz — aquele tom — e sentes a culpa a chegar antes de ela dizer mais alguma coisa.\n\nDizes sim. Vais. Sorris. E no caminho de volta, não entendes porque estás tão irritado.\n\nO que aconteceu? O Véu da Obediência activou-se. O teu corpo leu o tom de voz da tua mãe e respondeu com a mesma regra dos cinco anos: se disseres não, perdes o amor.\n\nMas repara: tu não perdeste o amor. Perdeste o domingo. E uma parte de ti sabe que isso também conta.\n\nIsto não é sobre cortar relações. Não é sobre ser egoísta. É sobre perceberes que há uma diferença enorme entre um sim livre e um sim automático. O primeiro é generosidade. O segundo é sobrevivência.",
+        "Vou dar-te um exemplo concreto.\n\nImagina que a tua mãe te liga a pedir para ires lá no domingo. Tens planos. Precisas de descansar.\n\nMas ouves o tom de voz — aquele tom — e sentes a culpa a chegar antes de ela dizer mais alguma coisa.\n\nDizes sim. Vais. Sorris.\n\nE no caminho de volta — não entendes porque estás tão irritado.\n\nO que aconteceu?\n\nO Véu da Obediência activou-se. O teu corpo leu o tom de voz da tua mãe — e respondeu com a mesma regra dos cinco anos. Se disseres não, perdes o amor.\n\nMas repara. Tu não perdeste o amor. Perdeste o domingo.\n\nE uma parte de ti sabe que isso também conta.\n\nIsto não é sobre cortar relações. Não é sobre ser egoísta.\n\nÉ sobre perceberes que há uma diferença enorme entre um sim livre — e um sim automático. O primeiro é generosidade. O segundo é sobrevivência.",
       overlayText: "",
       durationSec: 100,
       visualNote:
-        "Cena doméstica: silhueta com telemóvel ao ouvido, ombros a cair. Dissolve para silhueta num carro, mãos no volante, mandíbula cerrada. Flashback: mesma silhueta em criança, a acenar 'sim' a uma silhueta maior (mãe). Volta ao presente: dois caminhos — um com véu (sim automático, silhueta escura) e outro sem (sim livre, silhueta luminosa).",
+        "Cena doméstica: silhueta terracota mais visível, com telemóvel ao ouvido, ombros a cair. Dissolve para silhueta num carro, contorno agora definido, mandíbula cerrada. Flashback: silhueta em criança. Volta ao presente: dois caminhos — um com véu (silhueta opaca, sem brilho) e outro sem véu (silhueta com primeiros traços de contorno dourado a despontar).",
     },
     {
       type: "exercicio",
       narration:
-        "Há uma coisa simples que podes fazer esta semana. Chama-se a Pausa dos Três Segundos.\n\nDa próxima vez que alguém te pedir algo, antes de responder, conta até três. Em silêncio. Só três segundos.\n\nNão é para dizer não. É para criares um espaço entre o pedido e a resposta. Nesse espaço, pergunta: isto é um sim meu, ou é o software a correr?\n\nSe for teu, diz sim com prazer. Se for o software, experimenta dizer: deixa-me pensar. Ou: agora não consigo. Não precisas de justificar. Não precisas de inventar uma desculpa. Só precisas de parar de responder em automático.\n\nTrês segundos. Começa por aí.",
+        "Há uma coisa simples que podes fazer esta semana.\n\nChama-se — a Pausa dos Três Segundos.\n\nDa próxima vez que alguém te pedir algo, antes de responder — conta até três. Em silêncio. Só três segundos.\n\nNão é para dizer não. É para criares um espaço entre o pedido e a resposta.\n\nNesse espaço, pergunta. Isto é um sim meu — ou é o software a correr?\n\nSe for teu, diz sim com prazer.\n\nSe for o software, experimenta dizer — deixa-me pensar. Ou — agora não consigo.\n\nNão precisas de justificar. Não precisas de inventar uma desculpa. Só precisas de parar de responder em automático.\n\nTrês segundos. Começa por aí.",
       overlayText: "Pausa dos 3 Segundos:\n1. Alguém pede.\n2. Conta até 3.\n3. Isto é meu ou é software?",
       durationSec: 70,
       visualNote:
-        "Silhueta de pé, mão no peito. Contagem visual: 1... 2... 3... com luz dourada a crescer a cada segundo. Véu translúcido que levanta ligeiramente — espaço visível entre o véu e a silhueta. Texto do exercício aparece em creme sobre navy.",
+        "Silhueta claramente visível, terracota quente, de pé com mão no peito. Contagem visual: 1... 2... 3... — a cada segundo, contorno dourado cresce em intensidade. Véu translúcido que levanta, revelando a silhueta cada vez mais luminosa. Texto do exercício em creme sobre navy.",
     },
     {
       type: "reframe",
       narration:
-        "Dizer não não te torna má pessoa. Torna-te uma pessoa inteira. Porque cada não verdadeiro abre espaço para um sim que é realmente teu.",
+        "Dizer não — não te torna má pessoa.\n\nTorna-te uma pessoa inteira.\n\nPorque cada não verdadeiro — abre espaço para um sim que é realmente teu.",
       overlayText: "Cada não verdadeiro\nabre espaço\npara um sim que é teu.",
       durationSec: 16,
       visualNote:
-        "Ecrã escuro. Texto serifado em creme, centrado. Silhueta luminosa, contorno dourado, véu caído aos pés. Pausa longa.",
+        "Silhueta nitidamente luminosa, contorno dourado brilhante, véu caído aos pés. Terracota quente irradia do centro. Texto serifado em creme, centrado. Pausa longa.",
     },
     {
       type: "cta",
       narration:
-        "No curso Limite Sagrado, o primeiro módulo chama-se A Boa Pessoa que Cresceu. É onde desinstalamos o software de infância e aprendemos a escolher conscientemente que regras ainda servem. Se isto fez sentido, subscreve — todas as semanas há um novo véu para explorar. E se quiseres ir mais fundo: seteveus.space.",
+        "No curso Limite Sagrado, o primeiro módulo chama-se — A Boa Pessoa que Cresceu.\n\nÉ onde desinstalamos o software de infância. E aprendemos a escolher conscientemente que regras ainda servem.\n\nSe isto fez sentido, subscreve. Todas as semanas há um novo véu para explorar.\n\nE se quiseres ir mais fundo — seteveus.space.",
       overlayText: "Limite Sagrado\nseteveus.space",
       durationSec: 22,
       visualNote:
-        "Jardim dos Muros Invisíveis com muros translúcidos a dissolver. Vegetação dourada a crescer. URL no ecrã. Logo Escola dos Véus.",
+        "Silhueta plenamente radiante, contorno dourado intenso a pulsar. Jardim dos Muros Invisíveis — muros dissolvidos, vegetação luminosa. URL no ecrã. Logo Escola dos Véus.",
     },
     {
       type: "fecho",
@@ -1303,7 +1303,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "Escola dos Véus",
       durationSec: 8,
       visualNote:
-        "Dissolve para navy. Logo. Silêncio.",
+        "Dissolve para navy. Silhueta totalmente luminosa, contorno dourado radiante — afterglow que persiste antes do fade final. Logo. Silêncio.",
     },
   ],
 };
@@ -1326,70 +1326,70 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "Porque sentes culpa\nquando gastas contigo",
       durationSec: 10,
       visualNote:
-        "Céu navy. Título em creme, fade lento. Território: Casa dos Espelhos Dourados ao longe — espelhos embaciados.",
+        "Céu navy profundo. Título em creme, fade lento. Território: Casa dos Espelhos Dourados ao longe, quase invisível — espelhos embaciados, formas vagas na escuridão. Sem silhueta visível.",
     },
     {
       type: "gancho",
       narration:
-        "Compraste algo para ti. Não era caro. Não era necessário. Era só bom. E antes de saíres da loja já estavas a calcular se devias ter comprado. De onde vem isto?",
+        "Compraste algo para ti. Não era caro. Não era necessário. Era só bom.\n\nE antes de saíres da loja — já estavas a calcular se devias ter comprado.\n\nDe onde vem isto?",
       overlayText: "De onde vem isto?",
       durationSec: 18,
       visualNote:
-        "Silhueta terracota segurando um pequeno saco. Sombra de culpa visível como uma segunda silhueta mais escura atrás.",
+        "Silhueta quase invisível contra o navy, apenas um contorno ténue segurando um pequeno saco. Sombra de culpa atrás — escura sobre escuro, mal perceptível.",
     },
     {
       type: "reconhecimento",
       narration:
-        "Há pessoas que pagam o jantar de toda a gente sem pestanejar. Mas hesitam vinte minutos antes de comprar uma vela para si. Não é avareza. É outra coisa. Uma voz antiga — podias ter guardado, há coisas mais importantes — que aparece sempre que o gasto é contigo.",
+        "Há pessoas que pagam o jantar de toda a gente sem pestanejar.\n\nMas hesitam vinte minutos antes de comprar uma vela para si.\n\nNão é avareza. É outra coisa.\n\nUma voz antiga — podias ter guardado, há coisas mais importantes — que aparece sempre que o gasto é contigo.",
       overlayText: "",
       durationSec: 40,
       visualNote:
-        "Dois lados: à esquerda, silhueta a dar presentes dourados alegremente. À direita, mesma silhueta sozinha com um objecto pequeno, hesitante. Contraste luz/sombra.",
+        "Dois lados: à esquerda, silhueta escura a dar formas a outros — mal se distingue do fundo. À direita, mesma silhueta sozinha com um objecto pequeno, hesitante. Ambas as silhuetas sombrias, apenas esboços contra o navy.",
     },
     {
       type: "framework",
       narration:
-        "Na Escola dos Véus, chamamos a isto o Véu da Herança Financeira. É um dos padrões mais silenciosos que existem — porque ninguém te ensinou sobre dinheiro. Mas aprendeste tudo.\n\nFunciona assim: antes dos dez anos, absorveste um conjunto de regras sobre dinheiro. Não foram dadas em aulas. Foram absorvidas no corpo. Pelo suspiro da tua mãe quando abria as contas. Pelo tom do teu pai quando dizia que não dava. Pelo silêncio à mesa quando o assunto aparecia.\n\nEstas regras criam três programas que correm em segundo plano.\n\nO primeiro: gastar nos outros é generosidade, gastar em ti é egoísmo. Aprendeste que uma boa pessoa sacrifica-se. E agora cada vez que gastas contigo, o programa activa a culpa.\n\nO segundo: nós não somos dessas pessoas. As que viajam. As que compram. As que podem. Absorveste um mapa de onde podes e não podes estar — e cada vez que te aproximas de um sítio que não era suposto ser teu, algo te puxa de volta.\n\nO terceiro: não se fala de dinheiro. O tema era tabu. E agora, quando precisas de negociar ou de pedir o que mereces, o corpo trava.\n\nNenhuma destas regras foi escrita por ti. Foram herdadas. E a boa notícia é que o que foi herdado pode ser devolvido.",
+        "Na Escola dos Véus, chamamos a isto — o Véu da Herança Financeira.\n\nÉ um dos padrões mais silenciosos que existem. Porque ninguém te ensinou sobre dinheiro. Mas aprendeste tudo.\n\nFunciona assim.\n\nAntes dos dez anos, absorveste um conjunto de regras sobre dinheiro. Não foram dadas em aulas. Foram absorvidas no corpo. Pelo suspiro da tua mãe quando abria as contas. Pelo tom do teu pai quando dizia que não dava. Pelo silêncio à mesa quando o assunto aparecia.\n\nEstas regras criam três programas que correm em segundo plano.\n\nO primeiro — gastar nos outros é generosidade. Gastar em ti é egoísmo. Aprendeste que uma boa pessoa sacrifica-se. E agora, cada vez que gastas contigo, o programa activa a culpa.\n\nO segundo — nós não somos dessas pessoas. As que viajam. As que compram. As que podem. Absorveste um mapa de onde podes e não podes estar. E cada vez que te aproximas de um sítio que não era suposto ser teu — algo te puxa de volta.\n\nO terceiro — não se fala de dinheiro. O tema era tabu. E agora, quando precisas de negociar ou de pedir o que mereces — o corpo trava.\n\nNenhuma destas regras foi escrita por ti. Foram herdadas.\n\nE a boa notícia — é que o que foi herdado, pode ser devolvido.",
       overlayText: "O Véu da Herança Financeira:\n3 programas invisíveis",
       durationSec: 140,
       visualNote:
-        "Animação didáctica: criança sentada à mesa da cozinha, absorvendo — ondas invisíveis dos pais em direcção à criança. Três painéis aparecem como espelhos embaciados, cada um com um programa: 1) balança culpa/generosidade, 2) mapa com zonas proibidas, 3) boca com véu. Dissolve para adulto com os mesmos três espelhos — programa herdado. Véu translúcido dourado sobre a silhueta.",
+        "Animação didáctica: silhueta criança começa a emergir — tom terracota a aparecer pela primeira vez, sentada à mesa da cozinha. Ondas dos pais em direcção à criança. Três painéis como espelhos embaciados, cada um com um programa: 1) balança culpa/generosidade, 2) mapa com zonas proibidas, 3) boca com véu. Dissolve para silhueta adulta mais definida, terracota suave — programa herdado visível.",
     },
     {
       type: "exemplo",
       narration:
-        "Vou dar-te um exemplo. Imagina que entras numa loja. Vês algo bonito — um livro, um creme, um objecto para a casa. Gostas. Pegas nele. E começa o diálogo interno.\n\nPrecisas mesmo disto? Não tinhas dito que ias poupar? E os miúdos, não precisam de coisas? Com esse dinheiro podias...\n\nNotaste? Nenhuma destas perguntas é sobre o objecto. São todas sobre permissão. Estás a pedir autorização a uma voz que nem sequer é tua. É a voz da tua mãe. Do teu pai. De uma casa onde gastar era arriscado.\n\nE se comprares, a culpa vem junto. Se não comprares, o alívio é estranho — porque não é alívio de ter poupado. É alívio de ter obedecido.\n\nO Véu da Herança Financeira não te impede de gastar. Impede-te de gastar em paz.",
+        "Vou dar-te um exemplo.\n\nImagina que entras numa loja. Vês algo bonito — um livro, um creme, um objecto para a casa. Gostas. Pegas nele.\n\nE começa o diálogo interno.\n\nPrecisas mesmo disto? Não tinhas dito que ias poupar? E os miúdos, não precisam de coisas? Com esse dinheiro podias...\n\nNotaste?\n\nNenhuma destas perguntas é sobre o objecto. São todas sobre permissão.\n\nEstás a pedir autorização a uma voz que nem sequer é tua. É a voz da tua mãe. Do teu pai. De uma casa onde gastar era arriscado.\n\nE se comprares — a culpa vem junto. Se não comprares — o alívio é estranho. Porque não é alívio de ter poupado. É alívio de ter obedecido.\n\nO Véu da Herança Financeira não te impede de gastar. Impede-te de gastar em paz.",
       overlayText: "",
       durationSec: 90,
       visualNote:
-        "Cena numa loja: silhueta a segurar objecto. Balões de pensamento aparecem como frases flutuantes — mas escritas em caligrafia antiga, não moderna (são frases herdadas). Silhueta pousa o objecto — o alívio visual não é luminoso, é cinzento. Alternativa: silhueta leva o objecto, mas uma sombra de culpa acompanha-a até à saída.",
+        "Cena numa loja: silhueta terracota mais visível, contorno a ganhar definição, segurando objecto. Frases flutuantes em caligrafia antiga (frases herdadas). Silhueta pousa o objecto — sem brilho, alívio cinzento. Alternativa: silhueta leva o objecto, primeiros traços de contorno dourado a despontar, mas sombra de culpa ainda a acompanha.",
     },
     {
       type: "exercicio",
       narration:
-        "Há um exercício que ensino no curso e que podes experimentar agora. Chama-se Isto É Meu ou Herdado?\n\nDa próxima vez que sentires culpa ao gastar contigo, para. Põe a mão no peito. E pergunta em silêncio: esta culpa é minha — ou é de alguém que veio antes de mim?\n\nNão precisas de resposta imediata. O corpo sabe. Se a culpa for herdada, vais sentir um afrouxar — como se a culpa dissesse: tens razão, não sou tua.\n\nE depois compra. Ou não compres. Mas que seja uma decisão tua — não de um programa de infância.",
+        "Há um exercício que ensino no curso — e que podes experimentar agora.\n\nChama-se — Isto É Meu ou Herdado?\n\nDa próxima vez que sentires culpa ao gastar contigo — para. Põe a mão no peito. E pergunta em silêncio.\n\nEsta culpa é minha — ou é de alguém que veio antes de mim?\n\nNão precisas de resposta imediata. O corpo sabe.\n\nSe a culpa for herdada, vais sentir um afrouxar — como se a culpa dissesse — tens razão, não sou tua.\n\nE depois compra. Ou não compres. Mas que seja uma decisão tua. Não de um programa de infância.",
       overlayText: "Isto é meu\nou herdado?\n\nMão no peito.\nPergunta.\nEspera.",
       durationSec: 60,
       visualNote:
-        "Silhueta com mão no peito. Véu translúcido que se levanta ligeiramente — espaço entre o véu e a pele. Frases antigas flutuam e começam a dissolver. Luz dourada cresce no peito.",
+        "Silhueta claramente visível, terracota quente, mão no peito. Véu translúcido que se levanta — espaço entre o véu e a pele. Frases antigas dissolvem-se. Contorno dourado cresce a partir do peito, irradiando para os bordos da silhueta.",
     },
     {
       type: "reframe",
       narration:
-        "A tua relação com dinheiro é um espelho. Não mostra quanto tens — mostra o que te permites. E cada vez que gastas contigo sem culpa, estás a dizer: o meu bem-estar é prioridade.",
+        "A tua relação com dinheiro é um espelho.\n\nNão mostra quanto tens. Mostra o que te permites.\n\nE cada vez que gastas contigo sem culpa — estás a dizer — o meu bem-estar é prioridade.",
       overlayText: "A tua relação com dinheiro\nnão mostra quanto tens.\nMostra o que te permites.",
       durationSec: 18,
       visualNote:
-        "Espelho dourado limpo. Silhueta refletida — inteira, luminosa. Texto serifado em creme.",
+        "Espelho limpo. Silhueta refletida — nitidamente luminosa, contorno dourado brilhante, terracota quente a irradiar do centro. Texto serifado em creme.",
     },
     {
       type: "cta",
       narration:
-        "No curso Ouro Próprio, o segundo módulo chama-se A Herança Financeira Emocional. É onde desenterramos os três programas — todos — e escolhemos conscientemente o que manter e o que devolver. Se isto fez sentido, subscreve. Todas as semanas há um novo véu. E se quiseres ir mais fundo: seteveus.space.",
+        "No curso Ouro Próprio, o segundo módulo chama-se — A Herança Financeira Emocional.\n\nÉ onde desenterramos os três programas — todos — e escolhemos conscientemente o que manter e o que devolver.\n\nSe isto fez sentido, subscreve. Todas as semanas há um novo véu.\n\nE se quiseres ir mais fundo — seteveus.space.",
       overlayText: "Ouro Próprio\nseteveus.space",
       durationSec: 22,
       visualNote:
-        "Casa dos Espelhos Dourados — espelhos agora limpos. Silhueta inteira refletida. URL. Logo.",
+        "Casa dos Espelhos Dourados — espelhos limpos. Silhueta plenamente radiante, contorno dourado intenso a pulsar. Reflexo inteiro e luminoso em cada espelho. URL. Logo.",
     },
     {
       type: "fecho",
@@ -1397,7 +1397,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "Escola dos Véus",
       durationSec: 8,
       visualNote:
-        "Dissolve para navy. Logo. Silêncio.",
+        "Dissolve para navy. Silhueta totalmente luminosa, contorno dourado radiante — afterglow que persiste antes do fade final. Logo. Silêncio.",
     },
   ],
 };
