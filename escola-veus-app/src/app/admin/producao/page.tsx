@@ -156,6 +156,7 @@ export default function ProductionPage() {
 
   // Background music
   const [bgMusicUrl, setBgMusicUrl] = useState("");
+  const [customMusicUrl, setCustomMusicUrl] = useState("");
 
   // Manifest
   const [manifestUrl, setManifestUrl] = useState("");
@@ -945,16 +946,45 @@ export default function ProductionPage() {
             </div>
 
             {/* Background music */}
-            <div className="border border-escola-border rounded-lg p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-escola-creme-50">Musica de fundo (instrumental):</p>
+            <div className="border border-escola-border rounded-lg p-4 space-y-3">
+              <p className="text-xs text-escola-creme-50 font-medium">Musica de fundo (instrumental):</p>
+
+              {/* Option 1: Use existing track URL */}
+              <div className="space-y-1.5">
+                <p className="text-[11px] text-escola-creme-50">Opcao 1 — Usar faixa existente:</p>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Cola aqui o URL da faixa (music.seteveus.space ou Supabase)"
+                    value={customMusicUrl}
+                    onChange={(e) => setCustomMusicUrl(e.target.value)}
+                    className="flex-1 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none"
+                  />
+                  <button
+                    onClick={() => {
+                      if (customMusicUrl.trim()) {
+                        setBgMusicUrl(customMusicUrl.trim());
+                      }
+                    }}
+                    disabled={!customMusicUrl.trim()}
+                    className="whitespace-nowrap rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40"
+                  >
+                    Usar esta faixa
+                  </button>
+                </div>
+              </div>
+
+              {/* Option 2: Generate with Suno */}
+              <div className="flex items-center gap-2">
+                <p className="text-[11px] text-escola-creme-50">Opcao 2 —</p>
                 <button onClick={generateMusic} disabled={loading.music}
                   className="text-xs text-escola-dourado hover:underline disabled:opacity-40">
                   {loading.music ? "A gerar..." : "Gerar nova com IA (Suno)"}
                 </button>
               </div>
+
               {bgMusicUrl && <audio controls src={bgMusicUrl} className="w-full max-w-md h-8" />}
-              {!bgMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Sem musica. Clica em gerar.</p>}
+              {!bgMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Sem musica. Usa uma faixa existente ou gera uma nova.</p>}
             </div>
 
             {/* Render final video */}

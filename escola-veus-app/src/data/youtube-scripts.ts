@@ -223,7 +223,7 @@ const ouroProprioHook2: YouTubeScript = {
       type: "cta",
       narration:
         "O curso Ouro Próprio começa exactamente aqui. Na arqueologia financeira da tua família. O primeiro módulo é gratuito. Está na descrição.",
-      overlayText: "Ouro Próprio\nPrimeiro módulo gratuito\nseteveus.space",
+      overlayText: "Ouro Próprio\nPrimeiro módulo gratuito\nescola.seteveus.space",
       durationSec: 18,
       visualNote: "Casa dos Espelhos Dourados, espelhos limpos. URL no ecrã.",
     },
@@ -306,7 +306,7 @@ const ouroProprioHook3: YouTubeScript = {
       type: "cta",
       narration:
         "No curso Ouro Próprio, o módulo quatro chama-se Cobrar, Receber, Merecer. É exactamente sobre isto. O primeiro módulo é gratuito. Link na descrição.",
-      overlayText: "Ouro Próprio\nPrimeiro módulo gratuito\nseteveus.space",
+      overlayText: "Ouro Próprio\nPrimeiro módulo gratuito\nescola.seteveus.space",
       durationSec: 16,
       visualNote: "Território final. URL. Logo.",
     },
@@ -390,7 +390,7 @@ const fioInvisivelHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso O Fio Invisível vai muito mais fundo. Oito módulos sobre a ligação entre todos nós — e como a tua cura toca o todo. O link está na descrição.",
-      overlayText: "O Fio Invisível\nseteveus.space",
+      overlayText: "O Fio Invisível\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Lago dos Reflexos Partilhados com superfície transparente. Fios dourados visíveis. URL no ecrã.",
@@ -476,7 +476,7 @@ const espelhoOutroHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso O Espelho do Outro vai muito mais fundo. Oito módulos para aprenderes a ver-te através de cada relação. O link está na descrição.",
-      overlayText: "O Espelho do Outro\nseteveus.space",
+      overlayText: "O Espelho do Outro\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Galeria dos Reflexos Vivos com espelhos claros. URL no ecrã.",
@@ -562,7 +562,7 @@ const silencioGritaHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso O Silêncio que Grita vai muito mais fundo. Oito módulos para ouvir o que nunca foi dito — e começar a libertar o que já não te pertence. O link está na descrição.",
-      overlayText: "O Silêncio que Grita\nseteveus.space",
+      overlayText: "O Silêncio que Grita\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Caverna dos Ecos Mudos com ondas de luz dourada. URL no ecrã.",
@@ -648,7 +648,7 @@ const teiaHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso A Teia vai muito mais fundo. Oito módulos para aprenderes a pertencer sem desaparecer. O link está na descrição.",
-      overlayText: "A Teia\nseteveus.space",
+      overlayText: "A Teia\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Bosque dos Fios Entrelaçados com fios dourados equilibrados. URL no ecrã.",
@@ -733,7 +733,7 @@ const chamaHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso Brasa Viva vai muito mais fundo. Oito módulos para recuperares a tua raiva como força. O link está na descrição.",
-      overlayText: "Brasa Viva\nseteveus.space",
+      overlayText: "Brasa Viva\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Vulcão com lava controlada. Luz vermelha e dourada. URL no ecrã.",
@@ -818,7 +818,7 @@ const mulherAntesDeMaeHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso Antes do Ninho vai muito mais fundo. Oito módulos para te reencontrares sem culpa. O link está na descrição.",
-      overlayText: "Antes do Ninho\nseteveus.space",
+      overlayText: "Antes do Ninho\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Ninho com espaço. Silhueta inteira. URL no ecrã.",
@@ -903,7 +903,7 @@ const oficioDeSerHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso Mãos Cansadas vai muito mais fundo. Oito módulos para trabalhares sem desaparecer. O link está na descrição.",
-      overlayText: "Mãos Cansadas\nseteveus.space",
+      overlayText: "Mãos Cansadas\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Oficina com janela aberta. Luz quente. URL no ecrã.",
@@ -988,7 +988,7 @@ const relogioPartidoHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso Estações Partidas vai muito mais fundo. Oito módulos para largares a pressa e viveres no presente. O link está na descrição.",
-      overlayText: "Estações Partidas\nseteveus.space",
+      overlayText: "Estações Partidas\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Jardim sem relógio. Todas as estações. URL no ecrã.",
@@ -1073,7 +1073,7 @@ const coroaEscondidaHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso Ouro e Sombra vai muito mais fundo. Oito módulos para parares de te esconder. O link está na descrição.",
-      overlayText: "Ouro e Sombra\nseteveus.space",
+      overlayText: "Ouro e Sombra\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Trono descoberto. Silhueta de pé, coroa visível. Dourado-púrpura. URL no ecrã.",
@@ -1158,7 +1158,7 @@ const fomeHook1: YouTubeScript = {
       type: "cta",
       narration:
         "Se isto te tocou, o curso Pão e Silêncio vai muito mais fundo. Oito módulos para fazeres as pazes com o prato e com o corpo. O link está na descrição.",
-      overlayText: "Pão e Silêncio\nseteveus.space",
+      overlayText: "Pão e Silêncio\nescola.seteveus.space",
       durationSec: 18,
       visualNote:
         "Mesa bonita. Silhueta em paz. Terracota e porcelana. URL no ecrã.",
@@ -1206,7 +1206,7 @@ const trailerCanal: YouTubeScript = {
     {
       type: "fecho",
       narration: "",
-      overlayText: "Escola dos Véus\nAutoconhecimento com profundidade\nseteveus.space",
+      overlayText: "Escola dos Véus\nAutoconhecimento com profundidade\nescola.seteveus.space\nMúsica original: music.seteveus.space",
       durationSec: 10,
       visualNote:
         "Navy background. Silhueta plenamente radiante, contorno dourado intenso a pulsar suavemente. Logo centrado. URL.",
@@ -1291,8 +1291,8 @@ const limiteSagradoHook1: YouTubeScript = {
     {
       type: "cta",
       narration:
-        "No curso Limite Sagrado, o primeiro módulo chama-se — A Boa Pessoa que Cresceu. [short pause] É onde desinstalamos o software de infância. E aprendemos a escolher conscientemente que regras ainda servem. [pause] Se isto fez sentido, subscreve. Todas as semanas há um novo véu para explorar. [short pause] E se quiseres ir mais fundo — seteveus.space.",
-      overlayText: "Limite Sagrado\nseteveus.space",
+        "No curso Limite Sagrado, o primeiro módulo chama-se — A Boa Pessoa que Cresceu. [short pause] É onde desinstalamos o software de infância. E aprendemos a escolher conscientemente que regras ainda servem. [pause] Se isto fez sentido, subscreve. Todas as semanas há um novo véu para explorar. [short pause] E se quiseres ir mais fundo — escola.seteveus.space. [short pause] E se quiseres ouvir a música original da Loranne — music.seteveus.space.",
+      overlayText: "Limite Sagrado\nescola.seteveus.space\nOuve a faixa completa em music.seteveus.space",
       durationSec: 22,
       visualNote:
         "Silhueta plenamente radiante, contorno dourado intenso a pulsar. Jardim dos Muros Invisíveis — muros dissolvidos, vegetação luminosa. URL no ecrã. Logo Escola dos Véus.",
@@ -1385,8 +1385,8 @@ const ouroProprioHook1v2: YouTubeScript = {
     {
       type: "cta",
       narration:
-        "No curso Ouro Próprio, o segundo módulo chama-se — A Herança Financeira Emocional. [pause] É onde desenterramos os três programas — todos — e escolhemos conscientemente o que manter... e o que devolver. [long pause] Se isto fez sentido, subscreve. [short pause] Todas as semanas há um novo véu. [pause] E se quiseres ir mais fundo — seteveus.space.",
-      overlayText: "Ouro Próprio\nseteveus.space",
+        "No curso Ouro Próprio, o segundo módulo chama-se — A Herança Financeira Emocional. [pause] É onde desenterramos os três programas — todos — e escolhemos conscientemente o que manter... e o que devolver. [long pause] Se isto fez sentido, subscreve. [short pause] Todas as semanas há um novo véu. [pause] E se quiseres ir mais fundo — escola.seteveus.space. [short pause] E se quiseres ouvir a música original da Loranne — music.seteveus.space.",
+      overlayText: "Ouro Próprio\nescola.seteveus.space\nOuve a faixa completa em music.seteveus.space",
       durationSec: 22,
       visualNote:
         "Casa dos Espelhos Dourados — espelhos limpos. Silhueta plenamente radiante, contorno dourado intenso a pulsar. Reflexo inteiro e luminoso em cada espelho. URL. Logo.",
