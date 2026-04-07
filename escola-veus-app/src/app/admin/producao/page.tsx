@@ -56,7 +56,7 @@ const SCENE_LABELS: Record<string, string> = {
   reframe: "Reframe",
 };
 
-const STYLE = "flat minimalist editorial illustration, dark navy blue background (#1A1A2E), human figures as solid terracotta (#C4745A) silhouettes with subtle golden (#D4A853) outline glow — no face no features no skin texture just a warm-colored shape clearly visible against the dark background, warm gold and terracotta accent colors, clean simple shapes, limited muted palette, contemplative mood, no photorealism, no cartoon faces, no text, no words, no letters";
+const STYLE = "cinematic digital painting, atmospheric, dark navy blue background (#1A1A2E), human figures as anonymous silhouettes in warm terracotta (#C4745A) with soft golden (#D4A853) rim light glow — no face no features no gender markers, volumetric lighting, depth of field, painterly brushstrokes, warm gold and terracotta accent colors, muted rich palette, contemplative cinematic mood, dramatic chiaroscuro, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters";
 
 const MOTION: Record<string, string> = {
   abertura: "slow cinematic camera drift downward, golden particles floating",
