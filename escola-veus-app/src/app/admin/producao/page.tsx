@@ -56,7 +56,7 @@ const SCENE_LABELS: Record<string, string> = {
   reframe: "Reframe",
 };
 
-const STYLE = "flat editorial illustration, large bold composition filling the frame, dark navy blue background (#1A1A2E), human figures as large prominent terracotta (#C4745A) silhouettes with subtle golden (#D4A853) outline glow — no face no features no gender markers just warm-colored shapes dominating the scene, figures should be large and central not small icons, warm gold and terracotta accent colors, clean geometric shapes, limited muted palette, contemplative mood, 16:9 widescreen, no photorealism, no cartoon faces, no text, no words, no letters";
+const STYLE = "minimalist flat vector illustration, faceless human figure as smooth rounded silhouette, no race no facial features no clothing details, dark muted navy-purple color palette (#1A1A2E to #2D2045), subtle layered veil integrated into the body flowing asymmetrically, soft organic shapes, clean edges, no outlines, no texture, no gradients or very subtle gradient, warm terracotta (#C4745A) and golden (#D4A853) accent elements, dark navy background, simple shadow, calm symbolic abstract modern, large central figure filling the frame, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters";
 
 const MOTION: Record<string, string> = {
   abertura: "slow cinematic camera drift downward, golden particles floating",
@@ -785,12 +785,27 @@ export default function ProductionPage() {
                       <span className="text-xs text-escola-creme-50">Sem imagem</span>
                     </div>
                   )}
-                  <div className="p-2 flex items-center justify-between">
-                    <span className="text-xs text-escola-dourado">{SCENE_LABELS[scene.type] || scene.type}</span>
-                    <button onClick={() => generateSceneImage(i)} disabled={loading[`img-${i}`]}
-                      className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
-                      {loading[`img-${i}`] ? "..." : scene.imageUrl ? "Re-gerar" : "Gerar"}
-                    </button>
+                  <div className="p-2 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-escola-dourado">{SCENE_LABELS[scene.type] || scene.type}</span>
+                      <button onClick={() => generateSceneImage(i)} disabled={loading[`img-${i}`]}
+                        className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
+                        {loading[`img-${i}`] ? "..." : scene.imageUrl ? "Re-gerar (Flux)" : "Gerar (Flux)"}
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <input
+                        type="text"
+                        placeholder="Colar URL de imagem (DALL-E, etc)"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            const val = (e.target as HTMLInputElement).value.trim();
+                            if (val) { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], imageUrl: val }; return n; }); (e.target as HTMLInputElement).value = ""; }
+                          }
+                        }}
+                        className="flex-1 rounded border border-escola-border bg-escola-bg px-2 py-0.5 text-[10px] text-escola-creme placeholder:text-escola-creme-50/40 focus:border-escola-dourado focus:outline-none"
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
