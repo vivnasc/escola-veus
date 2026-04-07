@@ -24,10 +24,24 @@ type AnimationTask = { type: string; taskId: string; status?: string; videoUrl?:
 
 // ─── CONSTANTS ──────────────────────────────────────────────────────────────
 
-const YOUTUBE_HOOKS = [
-  { index: 0, title: "Porque sentes culpa quando gastas dinheiro em ti mesma?", duration: "6 min" },
-  { index: 1, title: "3 frases sobre dinheiro que a tua mae te ensinou sem saber", duration: "7 min" },
-  { index: 2, title: "O teste do preco: diz o teu valor em voz alta", duration: "5 min" },
+const YOUTUBE_HOOKS: Record<string, { index: number; title: string; duration: string }[]> = {
+  "geral": [
+    { index: 0, title: "Escola dos Véus — O que escondes de ti?", duration: "2 min" },
+  ],
+  "ouro-proprio": [
+    { index: 0, title: "Porque sentes culpa quando gastas contigo (v2)", duration: "13 min" },
+    { index: 1, title: "3 frases sobre dinheiro que a tua mae te ensinou sem saber", duration: "7 min" },
+    { index: 2, title: "O teste do preco: diz o teu valor em voz alta", duration: "5 min" },
+  ],
+  "limite-sagrado": [
+    { index: 0, title: "Porque dizes sim quando queres dizer não", duration: "13 min" },
+  ],
+};
+
+const COURSE_OPTIONS = [
+  { slug: "geral", label: "Trailer do Canal" },
+  { slug: "limite-sagrado", label: "Limite Sagrado" },
+  { slug: "ouro-proprio", label: "Ouro Próprio" },
 ];
 
 const DEFAULT_VOICE_ID = "fnoNuVpfClX7lHKFbyZ2";
@@ -36,6 +50,10 @@ const SCENE_LABELS: Record<string, string> = {
   abertura: "Abertura", pergunta: "Pergunta", situacao: "Situacao",
   revelacao: "Revelacao", gesto: "Gesto", frase_final: "Frase Final",
   cta: "CTA", fecho: "Fecho",
+  // v2
+  trailer: "Trailer", gancho: "Gancho", reconhecimento: "Reconhecimento",
+  framework: "Framework", exemplo: "Exemplo", exercicio: "Exercicio",
+  reframe: "Reframe",
 };
 
 const STYLE = "flat minimalist editorial illustration, dark navy blue background (#1A1A2E), human figures as solid terracotta (#C4745A) silhouettes with subtle golden (#D4A853) outline glow — no face no features no skin texture just a warm-colored shape clearly visible against the dark background, warm gold and terracotta accent colors, clean simple shapes, limited muted palette, contemplative mood, no photorealism, no cartoon faces, no text, no words, no letters";
@@ -49,6 +67,14 @@ const MOTION: Record<string, string> = {
   frase_final: "very slow zoom into darkness",
   cta: "gentle wind, floating golden particles, warm light expanding",
   fecho: "slow dissolve upward into navy sky",
+  // v2
+  trailer: "slow cinematic sequence, veils lifting, silhouette emerging, golden light",
+  gancho: "silhouette breathing slowly, golden light pulsing gently",
+  reconhecimento: "slow camera tracking, environment subtly alive",
+  framework: "didactic animation, diagrams appearing, slow reveal",
+  exemplo: "narrative scene, warm lighting, dissolve transitions",
+  exercicio: "hand on chest, golden glow growing, calm",
+  reframe: "very slow zoom, text appearing in warm light",
 };
 
 const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
@@ -100,6 +126,7 @@ export default function ProductionPage() {
   const [completed, setCompleted] = useState<boolean[]>(Array(6).fill(false));
   const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
   const [showVoiceField, setShowVoiceField] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState("geral");
   const [selectedHook, setSelectedHook] = useState(0);
   const [scenes, setScenes] = useState<SceneData[]>([]);
   const [scriptLoading, setScriptLoading] = useState(false);
@@ -124,7 +151,7 @@ export default function ProductionPage() {
   const [videoUrl, setVideoUrl] = useState("");
 
   // Background music
-  const [bgMusicUrl, setBgMusicUrl] = useState(COURSE_BACKGROUND_MUSIC["ouro-proprio"] || "");
+  const [bgMusicUrl, setBgMusicUrl] = useState("");
 
   // Manifest
   const [manifestUrl, setManifestUrl] = useState("");
@@ -148,7 +175,7 @@ export default function ProductionPage() {
       const res = await fetch("/api/admin/courses/preview-script", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ courseSlug: "ouro-proprio", scriptType: "youtube", hookIndex: selectedHook }),
+        body: JSON.stringify({ courseSlug: selectedCourse, scriptType: "youtube", hookIndex: selectedHook }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
@@ -159,7 +186,7 @@ export default function ProductionPage() {
       })));
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setScriptLoading(false); }
-  }, [selectedHook]);
+  }, [selectedCourse, selectedHook]);
 
   useEffect(() => { loadScript(); }, [loadScript]);
 
@@ -175,7 +202,7 @@ export default function ProductionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          courseSlug: "ouro-proprio",
+          courseSlug: selectedCourse,
           sceneLabel: `yt-hook${selectedHook}`,
           sceneIndex: index,
           narration: scene.narration,
@@ -191,7 +218,7 @@ export default function ProductionPage() {
       });
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, [`audio-${index}`]: false })); }
-  }, [scenes, selectedHook, voiceId]);
+  }, [scenes, selectedCourse, selectedHook, voiceId]);
 
   const generateAllAudio = useCallback(async () => {
     setLoading((p) => ({ ...p, allAudio: true }));
@@ -231,14 +258,14 @@ export default function ProductionPage() {
       const res = await fetch("/api/admin/courses/generate-image-flux", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt, courseSlug: "ouro-proprio", sceneLabel: `yt-hook${selectedHook}-${scene.type}` }),
+        body: JSON.stringify({ prompt, courseSlug: selectedCourse, sceneLabel: `yt-hook${selectedHook}-${scene.type}` }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
       setScenes((prev) => { const n = [...prev]; n[index] = { ...n[index], imageUrl: data.url }; return n; });
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, [`img-${index}`]: false })); }
-  }, [scenes, selectedHook]);
+  }, [scenes, selectedCourse, selectedHook]);
 
   const generateAllImages = useCallback(async () => {
     setLoading((p) => ({ ...p, allImages: true }));
@@ -335,7 +362,7 @@ export default function ProductionPage() {
             audioEndSec: s.audioEndSec ?? s.durationSec,
             type: s.type,
           })),
-          title: YOUTUBE_HOOKS[selectedHook]?.title,
+          title: (YOUTUBE_HOOKS[selectedCourse] || [])[selectedHook]?.title,
         }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
@@ -352,11 +379,12 @@ export default function ProductionPage() {
     setLoading((p) => ({ ...p, manifest: true }));
     setError(null);
     try {
+      const hooks = YOUTUBE_HOOKS[selectedCourse] || [];
       const manifest = {
-        courseSlug: "ouro-proprio",
-        title: YOUTUBE_HOOKS[selectedHook]?.title,
+        courseSlug: selectedCourse,
+        title: hooks[selectedHook]?.title,
         audioUrls: scenes.filter((s) => s.audioUrl).map((s) => ({ type: s.type, url: s.audioUrl })),
-        backgroundMusicUrl: COURSE_BACKGROUND_MUSIC["ouro-proprio"],
+        backgroundMusicUrl: bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse] || "",
         scenes: scenes.map((s) => ({
           type: s.type, narration: s.narration, overlayText: s.overlayText,
           durationSec: s.durationSec, imageUrl: s.imageUrl || null,
@@ -369,20 +397,20 @@ export default function ProductionPage() {
       const res = await fetch("/api/admin/courses/save-manifest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ courseSlug: "ouro-proprio", sceneLabel: `yt-hook${selectedHook}`, manifest }),
+        body: JSON.stringify({ courseSlug: selectedCourse, sceneLabel: `yt-hook${selectedHook}`, manifest }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
       setManifestUrl(data.manifestUrl);
-      const hook = YOUTUBE_HOOKS[selectedHook];
+      const hook = hooks[selectedHook];
       if (hook) {
         setYtTitle(hook.title);
-        setYtDescription(`${hook.title}\n\nSe isto fez sentido, subscreve. Ha mais a caminho.\n\n#escoladosveus #seteveus #ouroproprio #dinheiro #autoconhecimento`);
-        setYtTags("escola dos veus, sete veus, ouro proprio, dinheiro, culpa, autoconhecimento, mulher");
+        setYtDescription(`${hook.title}\n\nEscola dos Veus — autoconhecimento com profundidade.\n\n#escoladosveus #seteveus #autoconhecimento`);
+        setYtTags("escola dos veus, sete veus, autoconhecimento, " + selectedCourse.replace(/-/g, " "));
       }
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, manifest: false })); }
-  }, [scenes, selectedHook, totalAudioDuration]);
+  }, [scenes, selectedCourse, selectedHook, totalAudioDuration, bgMusicUrl]);
 
   // ─── GENERATE BACKGROUND MUSIC ─────────────────────────────────────────
 
@@ -393,14 +421,14 @@ export default function ProductionPage() {
       const res = await fetch("/api/admin/courses/generate-music", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ courseSlug: "ouro-proprio" }),
+        body: JSON.stringify({ courseSlug: selectedCourse }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
       setBgMusicUrl(data.audioUrl);
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, music: false })); }
-  }, []);
+  }, [selectedCourse]);
 
   // ─── RENDER FINAL VIDEO ───────────────────────────────────────────────
 
@@ -411,12 +439,13 @@ export default function ProductionPage() {
     setVideoUrl("");
     setError(null);
     try {
+      const renderHooks = YOUTUBE_HOOKS[selectedCourse] || [];
       const manifest = {
-        courseSlug: "ouro-proprio",
-        title: YOUTUBE_HOOKS[selectedHook]?.title,
+        courseSlug: selectedCourse,
+        title: renderHooks[selectedHook]?.title,
         sceneLabel: `yt-hook${selectedHook}`,
         audioUrl: scenes.find((s) => s.audioUrl)?.audioUrl || "",
-        backgroundMusicUrl: COURSE_BACKGROUND_MUSIC["ouro-proprio"],
+        backgroundMusicUrl: bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse] || "",
         backgroundMusicVolume: 0.12,
         scenes: scenes.map((s) => ({
           type: s.type, narration: s.narration, overlayText: s.overlayText,
@@ -467,7 +496,7 @@ export default function ProductionPage() {
       }
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro no render"); }
     finally { setLoading((p) => ({ ...p, render: false })); }
-  }, [scenes, selectedHook, markComplete]);
+  }, [scenes, selectedCourse, selectedHook, bgMusicUrl, markComplete]);
 
   function downloadFile(content: string, filename: string) {
     const blob = new Blob([content], { type: "text/plain" });
@@ -516,9 +545,21 @@ export default function ProductionPage() {
 
         {step === 0 && (
           <div className="mt-4 space-y-4">
+            {/* Course selector */}
+            <div className="space-y-2">
+              <label className="text-xs text-escola-creme-50">Curso:</label>
+              <select value={selectedCourse}
+                onChange={(e) => { setSelectedCourse(e.target.value); setSelectedHook(0); setScriptApproved(false); }}
+                className="w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none">
+                {COURSE_OPTIONS.map((c) => (
+                  <option key={c.slug} value={c.slug}>{c.label}</option>
+                ))}
+              </select>
+            </div>
+
             {/* Hook selector */}
             <div className="space-y-2">
-              {YOUTUBE_HOOKS.map((hook) => (
+              {(YOUTUBE_HOOKS[selectedCourse] || []).map((hook) => (
                 <label key={hook.index} className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${selectedHook === hook.index ? "border-escola-dourado bg-escola-dourado/5" : "border-escola-border hover:border-escola-dourado/30"}`}>
                   <input type="radio" name="hook" checked={selectedHook === hook.index}
                     onChange={() => { setSelectedHook(hook.index); setScriptApproved(false); }}

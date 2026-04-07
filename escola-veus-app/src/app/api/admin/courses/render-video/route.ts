@@ -105,8 +105,8 @@ function buildShotstackEdit(manifest: {
     const text = scene.overlayText || "";
     if (!text) continue;
 
-    const isTitle = scene.type === "abertura" || scene.type === "fecho" || scene.type === "cta";
-    const isFrase = scene.type === "frase_final";
+    const isTitle = scene.type === "abertura" || scene.type === "fecho" || scene.type === "cta" || scene.type === "trailer";
+    const isFrase = scene.type === "frase_final" || scene.type === "reframe";
     const size = isTitle ? "large" : isFrase ? "medium" : "small";
 
     textClips.push({

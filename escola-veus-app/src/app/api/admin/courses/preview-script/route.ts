@@ -17,10 +17,11 @@ export async function POST(req: NextRequest) {
     }
 
     if (scriptType === "youtube") {
-      const { YOUTUBE_SCRIPTS } = await import("@/data/youtube-scripts");
-      const script = YOUTUBE_SCRIPTS.find(
-        (s) => s.courseSlug === courseSlug && s.hookIndex === hookIndex,
-      );
+      const { YOUTUBE_SCRIPTS, YOUTUBE_SCRIPTS_V2 } = await import("@/data/youtube-scripts");
+      // Search v2 first (new structure), fallback to v1
+      const script =
+        YOUTUBE_SCRIPTS_V2.find((s) => s.courseSlug === courseSlug && s.hookIndex === hookIndex) ||
+        YOUTUBE_SCRIPTS.find((s) => s.courseSlug === courseSlug && s.hookIndex === hookIndex);
       if (!script) {
         return NextResponse.json({ erro: `Script nao encontrado: ${courseSlug} hook ${hookIndex}` }, { status: 404 });
       }
