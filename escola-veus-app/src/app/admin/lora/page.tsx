@@ -30,6 +30,63 @@ export default function LoRAPage() {
   const [datasetUrl, setDatasetUrl] = useState("");
   const [imageCount, setImageCount] = useState(0);
 
+  // Dataset generation
+  const [basePrompt, setBasePrompt] = useState(
+    "Minimalist flat vector illustration of a faceless human figure, smooth rounded silhouette, no race, no facial features, no clothing details, single dark muted purple color palette. Subtle layered veil integrated into the body, flowing asymmetrically from the head down one side. Soft organic shapes, clean edges, no outlines, no texture, no gradients or very subtle gradient. Neutral light background. Simple shadow under feet. Calm, symbolic, abstract, modern."
+  );
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [generating, setGenerating] = useState(false);
+  const [genProgress, setGenProgress] = useState(0);
+
+  const VARIATIONS = [
+    "standing tall, arms relaxed at sides, veil flowing behind",
+    "sitting cross-legged, veil draped over shoulders like a shawl",
+    "walking forward, veil trailing behind like a path",
+    "arms slightly open, veil lifting off the body, lighter tone",
+    "kneeling, veil pooling on the ground around the figure",
+    "back turned, looking over shoulder, veil covering half the body",
+    "two figures facing each other, connected by a shared veil",
+    "figure emerging from darkness, veil dissolving into light particles",
+    "figure holding the veil in outstretched hands, examining it",
+    "figure with multiple layered veils, each a slightly different shade",
+    "figure mid-step on a bridge, veil blowing in wind",
+    "figure standing before a mirror, reflection shows figure without veil",
+    "figure reaching upward, veil sliding off naturally",
+    "small figure and large figure side by side, same veil connecting them",
+    "figure surrounded by falling veil fragments like petals",
+    "figure standing in a doorway, veil caught on the threshold",
+  ];
+
+  async function generateDataset() {
+    setGenerating(true);
+    setGenProgress(0);
+    const images: string[] = [];
+
+    for (let i = 0; i < VARIATIONS.length; i++) {
+      setGenProgress(i + 1);
+      try {
+        const prompt = `${basePrompt} ${VARIATIONS[i]}`;
+        const res = await fetch("/api/admin/courses/generate-image-flux", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, courseSlug: "lora", sceneLabel: `dataset-${i}`, width: 1024, height: 1024 }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.url) images.push(data.url);
+        }
+      } catch { /* skip failed ones */ }
+      setGeneratedImages([...images]);
+    }
+
+    setGenerating(false);
+    setImageCount(images.length);
+  }
+
+  function removeImage(index: number) {
+    setGeneratedImages((prev) => prev.filter((_, i) => i !== index));
+  }
+
   // Restore training state from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("lora-training-fal");
@@ -169,12 +226,44 @@ export default function LoRAPage() {
         </p>
       </div>
 
+      {/* Step 0: Generate dataset */}
+      <div className="rounded-xl border border-escola-border bg-escola-card p-6">
+        <h2 className="text-xs text-escola-creme-50 uppercase mb-4">0. Gerar imagens de referencia</h2>
+        <p className="text-sm text-escola-creme mb-3">
+          Gera {VARIATIONS.length} variações da figurinha automaticamente via Flux Pro (a tua FAL_KEY).
+          Edita o prompt base se quiseres, depois clica gerar. Remove as que não gostares.
+        </p>
+
+        <textarea value={basePrompt} onChange={(e) => setBasePrompt(e.target.value)} rows={4}
+          className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y font-mono leading-relaxed mb-3" />
+
+        <button onClick={generateDataset} disabled={generating}
+          className="rounded-lg bg-escola-dourado px-4 py-2 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+          {generating ? `A gerar... ${genProgress}/${VARIATIONS.length}` : `Gerar ${VARIATIONS.length} variações`}
+        </button>
+
+        {generatedImages.length > 0 && (
+          <div className="mt-4">
+            <p className="text-xs text-escola-creme-50 mb-2">{generatedImages.length} imagens geradas — clica para remover as que nao gostares:</p>
+            <div className="grid grid-cols-4 gap-2">
+              {generatedImages.map((url, i) => (
+                <div key={i} className="relative group cursor-pointer" onClick={() => removeImage(i)}>
+                  <img src={url} alt={`var-${i}`} className="w-full aspect-square object-cover rounded-lg border border-escola-border" />
+                  <div className="absolute inset-0 bg-red-500/0 group-hover:bg-red-500/30 rounded-lg transition-colors flex items-center justify-center">
+                    <span className="text-white text-xs opacity-0 group-hover:opacity-100">Remover</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Step 1: Upload dataset */}
       <div className="rounded-xl border border-escola-border bg-escola-card p-6">
         <h2 className="text-xs text-escola-creme-50 uppercase mb-4">1. Dataset de imagens</h2>
         <p className="text-sm text-escola-creme mb-3">
-          Cria ~15-20 imagens da figurinha no ChatGPT com variações (poses, véus, luminosidades).
-          Depois faz um ZIP e faz upload aqui.
+          Faz upload de um ZIP com as imagens acima (ou gera manualmente noutro sitio).
         </p>
 
         <div className="space-y-3">
