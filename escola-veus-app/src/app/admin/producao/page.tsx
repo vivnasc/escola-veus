@@ -605,15 +605,18 @@ export default function ProductionPage() {
                           className="mt-2 w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y font-mono leading-relaxed" />
                         {/* v3 pause indicators */}
                         {(() => {
-                          const pauses = (scene.narration.match(/\n\n/g) || []).length;
-                          const dashes = (scene.narration.match(/—/g) || []).length;
+                          const longPauses = (scene.narration.match(/\[long pause\]/g) || []).length;
+                          const pauses = (scene.narration.match(/\[pause\]/g) || []).length;
+                          const shortPauses = (scene.narration.match(/\[short pause\]/g) || []).length;
+                          const tags = (scene.narration.match(/\[(calm|thoughtful|whispers|sighs)\]/g) || []).length;
                           const words = scene.narration.split(/\s+/).length;
+                          const totalPauses = longPauses + pauses + shortPauses;
                           return (
                             <div className="flex items-center gap-3 mt-1">
                               <span className="text-[10px] text-escola-creme-50">
-                                ElevenLabs v3: {pauses} pausas longas, {dashes} pausas curtas, ~{words} palavras
+                                v3: {longPauses}×[long] {pauses}×[pause] {shortPauses}×[short] {tags}×tags ~{words} palavras
                               </span>
-                              {pauses === 0 && <span className="text-[10px] text-escola-terracota">Sem pausas — adiciona linhas em branco para o v3 respirar</span>}
+                              {totalPauses === 0 && <span className="text-[10px] text-escola-terracota">Sem pausas — adiciona [pause] ou [short pause] para o v3 respirar</span>}
                             </div>
                           );
                         })()}
