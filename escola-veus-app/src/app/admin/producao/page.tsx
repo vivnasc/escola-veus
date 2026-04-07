@@ -122,12 +122,16 @@ function StepIndicator({ current, completed }: { current: number; completed: boo
 // ─── MAIN PAGE ──────────────────────────────────────────────────────────────
 
 export default function ProductionPage() {
+  const [selectedCourse, setSelectedCourse] = useState("geral");
+  const [selectedHook, setSelectedHook] = useState(0);
+
+  // ─── localStorage persistence key ────────────────────────────────────
+  const storageKey = `producao-${selectedCourse}-hook${selectedHook}`;
+
   const [step, setStep] = useState(0);
   const [completed, setCompleted] = useState<boolean[]>(Array(6).fill(false));
   const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
   const [showVoiceField, setShowVoiceField] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState("geral");
-  const [selectedHook, setSelectedHook] = useState(0);
   const [scenes, setScenes] = useState<SceneData[]>([]);
   const [scriptLoading, setScriptLoading] = useState(false);
   const [scriptApproved, setScriptApproved] = useState(false);
@@ -161,6 +165,40 @@ export default function ProductionPage() {
   const [ytDescription, setYtDescription] = useState("");
   const [ytTags, setYtTags] = useState("");
 
+  // ─── AUTO-SAVE progress to localStorage ──────────────────────────────
+  useEffect(() => {
+    if (scenes.length === 0) return;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({
+        scenes, step, completed, voiceId, srt, vtt, bgMusicUrl, videoUrl,
+        totalAudioDuration, scriptApproved,
+      }));
+    } catch { /* quota exceeded — silent */ }
+  }, [scenes, step, completed, voiceId, srt, vtt, bgMusicUrl, videoUrl, totalAudioDuration, scriptApproved, storageKey]);
+
+  // ─── RESTORE progress from localStorage on course/hook change ────────
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.scenes?.length > 0) {
+          setScenes(data.scenes);
+          setStep(data.step ?? 0);
+          setCompleted(data.completed ?? Array(6).fill(false));
+          setVoiceId(data.voiceId ?? DEFAULT_VOICE_ID);
+          setSrt(data.srt ?? "");
+          setVtt(data.vtt ?? "");
+          setBgMusicUrl(data.bgMusicUrl ?? "");
+          setVideoUrl(data.videoUrl ?? "");
+          setTotalAudioDuration(data.totalAudioDuration ?? 0);
+          setScriptApproved(data.scriptApproved ?? false);
+          return; // don't load from API — we have saved progress
+        }
+      }
+    } catch { /* parse error — ignore, load fresh */ }
+  }, [storageKey]);
+
   const markComplete = useCallback((s: number) => {
     setCompleted((prev) => { const n = [...prev]; n[s] = true; return n; });
   }, []);
@@ -188,7 +226,14 @@ export default function ProductionPage() {
     finally { setScriptLoading(false); }
   }, [selectedCourse, selectedHook]);
 
-  useEffect(() => { loadScript(); }, [loadScript]);
+  // Only auto-load script if no saved progress exists
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) { const d = JSON.parse(saved); if (d.scenes?.length > 0) return; }
+    } catch { /* ignore */ }
+    loadScript();
+  }, [loadScript, storageKey]);
 
   // ─── STEP 2: GENERATE AUDIO ──────────────────────────────────────────────
 
@@ -646,6 +691,12 @@ export default function ProductionPage() {
                 </button>
               )}
               <button onClick={loadScript} className="text-xs text-escola-creme-50 hover:text-escola-creme">Repor original</button>
+              <button onClick={() => {
+                localStorage.removeItem(storageKey);
+                setStep(0); setCompleted(Array(6).fill(false)); setScenes([]);
+                setSrt(""); setVtt(""); setBgMusicUrl(""); setVideoUrl("");
+                setTotalAudioDuration(0); setScriptApproved(false); setError(null);
+              }} className="text-xs text-escola-terracota hover:text-red-400">Limpar progresso guardado</button>
             </div>
           </div>
         )}
