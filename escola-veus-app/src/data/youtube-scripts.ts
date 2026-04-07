@@ -71,7 +71,7 @@ export const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
 const ouroProprioHook1: YouTubeScript = {
   courseSlug: "ouro-proprio",
   hookIndex: 0,
-  title: "Porque sentes culpa quando gastas dinheiro em ti mesma?",
+  title: "Porque sentes culpa quando gastas dinheiro contigo?",
   durationMin: 6,
   thumbnail: {
     mainText: "A culpa de gastar em ti",
@@ -81,7 +81,7 @@ const ouroProprioHook1: YouTubeScript = {
     {
       type: "abertura",
       narration: "",
-      overlayText: "Porque sentes culpa quando gastas dinheiro em ti mesma?",
+      overlayText: "Porque sentes culpa quando gastas dinheiro contigo?",
       durationSec: 12,
       visualNote:
         "Dark navy background, a very faint barely visible dark silhouette figure standing alone in the distance, almost merged with the darkness, a tiny golden light far away on the horizon",
@@ -790,8 +790,8 @@ const mulherAntesDeMaeHook1: YouTubeScript = {
     {
       type: "revelacao",
       narration:
-        "Ninguém te avisou que quando um filho nasce, uma mulher morre. Não fisicamente. Mas a versão de ti que existia antes — a que tinha tempo, corpo, desejo, nome — essa desapareceu.\n\nE no lugar dela ficou 'mãe'. Uma função. Uma lista de tarefas. Uma culpa infinita.\n\nE o mais cruel: se sentes falta de ti mesma, a culpa duplica. Porque uma boa mãe não devia querer ser outra coisa. Devia bastar.\n\nMas não basta. E sentir isso não te faz má mãe. Faz-te humana. Faz-te inteira. Faz-te uma mulher que existia antes dos filhos e que merece continuar a existir.",
-      overlayText: "Quando um filho nasce,\numa mulher desaparece.\nNinguém te avisou.",
+        "Ninguém te avisou que quando um filho nasce, uma versão de ti morre. Não fisicamente. Mas a versão de ti que existia antes — a que tinha tempo, corpo, desejo, nome — essa desapareceu.\n\nE no lugar ficou 'mãe' ou 'pai'. Uma função. Uma lista de tarefas. Uma culpa infinita.\n\nE o mais cruel: se sentes falta de ti, a culpa duplica. Porque quem é boa mãe ou bom pai não devia querer ser outra coisa. Devia bastar.\n\nMas não basta. E sentir isso não te faz má pessoa. Faz-te real. Faz-te inteira, inteiro. Faz-te alguém que existia antes dos filhos e que merece continuar a existir.",
+      overlayText: "Quando um filho nasce,\numa parte de ti desaparece.\nNinguém te avisou.",
       durationSec: 100,
       visualNote:
         "Silhueta a emergir do ninho. Contorno próprio a aparecer. Duas formas da mesma pessoa — mãe e mulher — a separar-se suavemente.",
@@ -808,8 +808,8 @@ const mulherAntesDeMaeHook1: YouTubeScript = {
     {
       type: "frase_final",
       narration:
-        "Sentir falta de ti mesma não é egoísmo. É o primeiro sinal de que ainda estás lá.",
-      overlayText: "Sentir falta de ti mesma\nnão é egoísmo.",
+        "Sentir falta de ti não é egoísmo. É o primeiro sinal de que ainda estás lá.",
+      overlayText: "Sentir falta de ti\nnão é egoísmo.",
       durationSec: 14,
       visualNote:
         "Ecrã escuro. Texto em creme, serifado. Pausa.",
@@ -1197,7 +1197,7 @@ const trailerCanal: YouTubeScript = {
     {
       type: "trailer",
       narration:
-        "Há coisas que sabes sobre ti.\n\nE há coisas que escondes. Não por maldade — mas por protecção. Camadas que foste pondo ao longo da vida. Para não sentir demais. Para caber. Para sobreviver.\n\nNa Escola dos Véus, chamamos-lhes véus.\n\nCada véu é um padrão que já foi útil — mas que agora te limita. Um que te impede de dizer não. Outro que te faz sentir culpa quando gastas contigo. Outro que te mantém em relações onde desapareces. Outro que te faz engolir a raiva. Outro que te prende a uma herança que nem sabes que carregas.\n\nOs véus são muitos.\n\nE cada curso desta escola ajuda-te a levantar um. Não de uma vez — mas com cuidado. Com conhecimento. Com exercícios que podes fazer ao teu ritmo.\n\nIsto não é auto-ajuda. Não é motivação.\n\nÉ um caminho de autoconhecimento — com base em psicologia, neurociência, e experiência vivida.\n\nSe alguma vez sentiste que há qualquer coisa entre ti e a tua vida real — algo que não consegues nomear, mas que pesa — estás no sítio certo.\n\nBem-vindo à Escola dos Véus.\n\nSubscreve. E começa a ver.",
+        "Há coisas que sabes sobre ti. [pause] E há coisas que escondes. Não por maldade — mas por protecção. Camadas que foste pondo ao longo da vida. Para não sentir demais. Para caber. Para sobreviver. [long pause] Na Escola dos Véus, chamamos-lhes véus. [pause] Cada véu é um padrão que já foi útil — mas que agora te limita. Um que te impede de dizer não. Outro que te faz sentir culpa quando gastas contigo. Outro que te mantém em relações onde desapareces. Outro que te faz engolir a raiva. Outro que te prende a uma herança que nem sabes que carregas. [long pause] Os véus são muitos. [pause] E cada curso desta escola ajuda-te a levantar um. Não de uma vez — mas com cuidado. Com conhecimento. Com exercícios que podes fazer ao teu ritmo. [pause] Isto não é auto-ajuda. Não é motivação. [short pause] É um caminho de autoconhecimento — com base em psicologia, neurociência, e experiência vivida. [long pause] Se alguma vez sentiste que há qualquer coisa entre ti e a tua vida real — algo que não consegues nomear, mas que pesa — estás no sítio certo. [long pause] Bem-vindo à Escola dos Véus. [pause] Subscreve. E começa a ver.",
       overlayText: "",
       durationSec: 90,
       visualNote:
@@ -1237,7 +1237,7 @@ const limiteSagradoHook1: YouTubeScript = {
     {
       type: "gancho",
       narration:
-        "Alguém te pede uma coisa. Não é grande. Não é difícil.\n\nMas por dentro — sentes um não claro.\n\nE dizes sim. Outra vez.\n\nPorquê?",
+        "Alguém te pede uma coisa. Não é grande. Não é difícil. [pause] Mas por dentro — sentes um não claro. [short pause] E dizes sim. Outra vez. [long pause] Porquê?",
       overlayText: "Porquê?",
       durationSec: 18,
       visualNote:
@@ -1246,7 +1246,7 @@ const limiteSagradoHook1: YouTubeScript = {
     {
       type: "reconhecimento",
       narration:
-        "Isto tem muitas versões.\n\nA mensagem que chega às onze da noite — e respondes. O favor que aceitas quando já estás a transbordar. O jantar a que vais por obrigação. O sorriso que dás quando devias estar a dizer — não posso.\n\nSempre que acontece, sentes a mesma coisa. Um aperto. Um cansaço.\n\nE no caminho para casa, uma irritação que não sabes bem a quem pertence. Se a quem pediu — se a ti, que disseste sim.",
+        "Isto tem muitas versões. [pause] A mensagem que chega às onze da noite — e respondes. O favor que aceitas quando já estás a transbordar. O jantar a que vais por obrigação. O sorriso que dás quando devias estar a dizer — não posso. [pause] Sempre que acontece, sentes a mesma coisa. Um aperto. Um cansaço. [short pause] E no caminho para casa, uma irritação que não sabes bem a quem pertence. Se a quem pediu — se a ti, que disseste sim.",
       overlayText: "",
       durationSec: 50,
       visualNote:
@@ -1255,7 +1255,7 @@ const limiteSagradoHook1: YouTubeScript = {
     {
       type: "framework",
       narration:
-        "Na Escola dos Véus, chamamos a isto — o Véu da Obediência.\n\nÉ um dos padrões mais antigos e mais invisíveis que existem.\n\nFunciona assim.\n\nQuando eras criança, aprendeste que dizer sim era seguro. Que concordar era ser aceite. Que recusar — mesmo coisas pequenas — trazia consequências. Um olhar. Um silêncio. Uma retirada de afecto.\n\nNão precisou de ser violento. Bastou ser consistente.\n\nE o teu sistema nervoso gravou a regra. Sim — igual a segurança. Não — igual a perigo.\n\nO problema é que essa regra foi escrita por uma criança de cinco anos. E ainda está a correr.\n\nAgora tens trinta, quarenta, cinquenta — e o software é o mesmo.\n\nCada vez que dizes sim quando sentes não, não estás a ser generoso. Estás a obedecer a um programa antigo — que confunde amor com obediência.\n\nE o preço — esse, pagas em silêncio. Com o corpo. Com o cansaço. Com a raiva que não sabes de onde vem.",
+        "Na Escola dos Véus, chamamos a isto — o Véu da Obediência. [long pause] É um dos padrões mais antigos e mais invisíveis que existem. [pause] Funciona assim. [pause] Quando eras criança, aprendeste que dizer sim era seguro. Que concordar era ser aceite. Que recusar — mesmo coisas pequenas — trazia consequências. Um olhar. Um silêncio. Uma retirada de afecto. [pause] Não precisou de ser violento. Bastou ser consistente. [short pause] E o teu sistema nervoso gravou a regra. Sim — igual a segurança. Não — igual a perigo. [long pause] O problema é que essa regra foi escrita por uma criança de cinco anos. E ainda está a correr. [pause] Agora tens trinta, quarenta, cinquenta — e o software é o mesmo. [pause] Cada vez que dizes sim quando sentes não, não estás a ser generoso. Estás a obedecer a um programa antigo — que confunde amor com obediência. [short pause] E o preço — esse, pagas em silêncio. Com o corpo. Com o cansaço. Com a raiva que não sabes de onde vem.",
       overlayText: "O Véu da Obediência:\nsim = segurança\nnão = perigo",
       durationSec: 120,
       visualNote:
@@ -1264,7 +1264,7 @@ const limiteSagradoHook1: YouTubeScript = {
     {
       type: "exemplo",
       narration:
-        "Vou dar-te um exemplo concreto.\n\nImagina que a tua mãe te liga a pedir para ires lá no domingo. Tens planos. Precisas de descansar.\n\nMas ouves o tom de voz — aquele tom — e sentes a culpa a chegar antes de ela dizer mais alguma coisa.\n\nDizes sim. Vais. Sorris.\n\nE no caminho de volta — não entendes porque estás tão irritado.\n\nO que aconteceu?\n\nO Véu da Obediência activou-se. O teu corpo leu o tom de voz da tua mãe — e respondeu com a mesma regra dos cinco anos. Se disseres não, perdes o amor.\n\nMas repara. Tu não perdeste o amor. Perdeste o domingo.\n\nE uma parte de ti sabe que isso também conta.\n\nIsto não é sobre cortar relações. Não é sobre ser egoísta.\n\nÉ sobre perceberes que há uma diferença enorme entre um sim livre — e um sim automático. O primeiro é generosidade. O segundo é sobrevivência.",
+        "Vou dar-te um exemplo concreto. [pause] Imagina que a tua mãe te liga a pedir para ires lá no domingo. Tens planos. Precisas de descansar. [short pause] Mas ouves o tom de voz — aquele tom — e sentes a culpa a chegar antes de ela dizer mais alguma coisa. [pause] Dizes sim. Vais. Sorris. [short pause] E no caminho de volta — não entendes porque estás tão irritado. [long pause] O que aconteceu? [pause] O Véu da Obediência activou-se. O teu corpo leu o tom de voz da tua mãe — e respondeu com a mesma regra dos cinco anos. Se disseres não, perdes o amor. [pause] Mas repara. Tu não perdeste o amor. Perdeste o domingo. [short pause] E uma parte de ti sabe que isso também conta. [long pause] Isto não é sobre cortar relações. Não é sobre ser egoísta. [short pause] É sobre perceberes que há uma diferença enorme entre um sim livre — e um sim automático. O primeiro é generosidade. O segundo é sobrevivência.",
       overlayText: "",
       durationSec: 100,
       visualNote:
@@ -1273,7 +1273,7 @@ const limiteSagradoHook1: YouTubeScript = {
     {
       type: "exercicio",
       narration:
-        "Há uma coisa simples que podes fazer esta semana.\n\nChama-se — a Pausa dos Três Segundos.\n\nDa próxima vez que alguém te pedir algo, antes de responder — conta até três. Em silêncio. Só três segundos.\n\nNão é para dizer não. É para criares um espaço entre o pedido e a resposta.\n\nNesse espaço, pergunta. Isto é um sim meu — ou é o software a correr?\n\nSe for teu, diz sim com prazer.\n\nSe for o software, experimenta dizer — deixa-me pensar. Ou — agora não consigo.\n\nNão precisas de justificar. Não precisas de inventar uma desculpa. Só precisas de parar de responder em automático.\n\nTrês segundos. Começa por aí.",
+        "Há uma coisa simples que podes fazer esta semana. [pause] Chama-se — a Pausa dos Três Segundos. [long pause] Da próxima vez que alguém te pedir algo, antes de responder — conta até três. Em silêncio. Só três segundos. [pause] Não é para dizer não. É para criares um espaço entre o pedido e a resposta. [short pause] Nesse espaço, pergunta. Isto é um sim meu — ou é o software a correr? [pause] Se for teu, diz sim com prazer. [short pause] Se for o software, experimenta dizer — deixa-me pensar. Ou — agora não consigo. [pause] Não precisas de justificar. Não precisas de inventar uma desculpa. Só precisas de parar de responder em automático. [long pause] Três segundos. Começa por aí.",
       overlayText: "Pausa dos 3 Segundos:\n1. Alguém pede.\n2. Conta até 3.\n3. Isto é meu ou é software?",
       durationSec: 70,
       visualNote:
@@ -1282,7 +1282,7 @@ const limiteSagradoHook1: YouTubeScript = {
     {
       type: "reframe",
       narration:
-        "Dizer não — não te torna má pessoa.\n\nTorna-te uma pessoa inteira.\n\nPorque cada não verdadeiro — abre espaço para um sim que é realmente teu.",
+        "Dizer não — não te torna má pessoa. [pause] Torna-te uma pessoa inteira. [long pause] Porque cada não verdadeiro — abre espaço para um sim que é realmente teu.",
       overlayText: "Cada não verdadeiro\nabre espaço\npara um sim que é teu.",
       durationSec: 16,
       visualNote:
@@ -1291,7 +1291,7 @@ const limiteSagradoHook1: YouTubeScript = {
     {
       type: "cta",
       narration:
-        "No curso Limite Sagrado, o primeiro módulo chama-se — A Boa Pessoa que Cresceu.\n\nÉ onde desinstalamos o software de infância. E aprendemos a escolher conscientemente que regras ainda servem.\n\nSe isto fez sentido, subscreve. Todas as semanas há um novo véu para explorar.\n\nE se quiseres ir mais fundo — seteveus.space.",
+        "No curso Limite Sagrado, o primeiro módulo chama-se — A Boa Pessoa que Cresceu. [short pause] É onde desinstalamos o software de infância. E aprendemos a escolher conscientemente que regras ainda servem. [pause] Se isto fez sentido, subscreve. Todas as semanas há um novo véu para explorar. [short pause] E se quiseres ir mais fundo — seteveus.space.",
       overlayText: "Limite Sagrado\nseteveus.space",
       durationSec: 22,
       visualNote:
@@ -1331,7 +1331,7 @@ const ouroProprioHook1v2: YouTubeScript = {
     {
       type: "gancho",
       narration:
-        "Compraste algo para ti. Não era caro. Não era necessário. Era só bom.\n\nE antes de saíres da loja — já estavas a calcular se devias ter comprado.\n\nDe onde vem isto?",
+        "[calm] Compraste algo para ti. Não era caro. Não era necessário. Era só bom. [pause] E antes de saíres da loja — já estavas a calcular se devias ter comprado. [long pause] De onde vem isto?",
       overlayText: "De onde vem isto?",
       durationSec: 18,
       visualNote:
@@ -1340,7 +1340,7 @@ const ouroProprioHook1v2: YouTubeScript = {
     {
       type: "reconhecimento",
       narration:
-        "Há pessoas que pagam o jantar de toda a gente sem pestanejar.\n\nMas hesitam vinte minutos antes de comprar uma vela para si.\n\nNão é avareza. É outra coisa.\n\nUma voz antiga — podias ter guardado, há coisas mais importantes — que aparece sempre que o gasto é contigo.",
+        "Há pessoas que pagam o jantar de toda a gente sem pestanejar. [short pause] Mas hesitam vinte minutos antes de comprar uma vela para si. [pause] Não é avareza. É outra coisa. [short pause] Uma voz antiga — podias ter guardado, há coisas mais importantes — que aparece sempre que o gasto é contigo.",
       overlayText: "",
       durationSec: 40,
       visualNote:
@@ -1349,7 +1349,7 @@ const ouroProprioHook1v2: YouTubeScript = {
     {
       type: "framework",
       narration:
-        "Na Escola dos Véus, chamamos a isto — o Véu da Herança Financeira.\n\nÉ um dos padrões mais silenciosos que existem. Porque ninguém te ensinou sobre dinheiro. Mas aprendeste tudo.\n\nFunciona assim.\n\nAntes dos dez anos, absorveste um conjunto de regras sobre dinheiro. Não foram dadas em aulas. Foram absorvidas no corpo. Pelo suspiro da tua mãe quando abria as contas. Pelo tom do teu pai quando dizia que não dava. Pelo silêncio à mesa quando o assunto aparecia.\n\nEstas regras criam três programas que correm em segundo plano.\n\nO primeiro — gastar nos outros é generosidade. Gastar em ti é egoísmo. Aprendeste que uma boa pessoa sacrifica-se. E agora, cada vez que gastas contigo, o programa activa a culpa.\n\nO segundo — nós não somos dessas pessoas. As que viajam. As que compram. As que podem. Absorveste um mapa de onde podes e não podes estar. E cada vez que te aproximas de um sítio que não era suposto ser teu — algo te puxa de volta.\n\nO terceiro — não se fala de dinheiro. O tema era tabu. E agora, quando precisas de negociar ou de pedir o que mereces — o corpo trava.\n\nNenhuma destas regras foi escrita por ti. Foram herdadas.\n\nE a boa notícia — é que o que foi herdado, pode ser devolvido.",
+        "[thoughtful] Na Escola dos Véus, chamamos a isto — o Véu da Herança Financeira. [long pause] É um dos padrões mais silenciosos que existem. Porque ninguém te ensinou sobre dinheiro. Mas aprendeste tudo. [pause] Funciona assim. [pause] Antes dos dez anos, absorveste um conjunto de regras sobre dinheiro. Não foram dadas em aulas. Foram absorvidas no corpo. Pelo suspiro da tua mãe quando abria as contas. Pelo tom do teu pai quando dizia que não dava. Pelo silêncio à mesa quando o assunto aparecia. [long pause] Estas regras criam três programas que correm em segundo plano. [pause] O primeiro — gastar nos outros é generosidade. Gastar em ti é egoísmo. Aprendeste que uma boa pessoa sacrifica-se. E agora, cada vez que gastas contigo, o programa activa a culpa. [pause] O segundo — nós não somos dessas pessoas. As que viajam. As que compram. As que podem. Absorveste um mapa de onde podes e não podes estar. E cada vez que te aproximas de um sítio que não era suposto ser teu — algo te puxa de volta. [pause] O terceiro — não se fala de dinheiro. O tema era tabu. E agora, quando precisas de negociar ou de pedir o que mereces — o corpo trava. [long pause] Nenhuma destas regras foi escrita por ti. Foram herdadas. [pause] E a boa notícia — é que o que foi herdado, pode ser devolvido.",
       overlayText: "O Véu da Herança Financeira:\n3 programas invisíveis",
       durationSec: 140,
       visualNote:
@@ -1358,7 +1358,7 @@ const ouroProprioHook1v2: YouTubeScript = {
     {
       type: "exemplo",
       narration:
-        "Vou dar-te um exemplo.\n\nImagina que entras numa loja. Vês algo bonito — um livro, um creme, um objecto para a casa. Gostas. Pegas nele.\n\nE começa o diálogo interno.\n\nPrecisas mesmo disto? Não tinhas dito que ias poupar? E os miúdos, não precisam de coisas? Com esse dinheiro podias...\n\nNotaste?\n\nNenhuma destas perguntas é sobre o objecto. São todas sobre permissão.\n\nEstás a pedir autorização a uma voz que nem sequer é tua. É a voz da tua mãe. Do teu pai. De uma casa onde gastar era arriscado.\n\nE se comprares — a culpa vem junto. Se não comprares — o alívio é estranho. Porque não é alívio de ter poupado. É alívio de ter obedecido.\n\nO Véu da Herança Financeira não te impede de gastar. Impede-te de gastar em paz.",
+        "Vou dar-te um exemplo. [pause] Imagina que entras numa loja. Vês algo bonito — um livro, um creme, um objecto para a casa. Gostas. Pegas nele. [short pause] E começa o diálogo interno. [pause] Precisas MESMO disto? Não tinhas dito que ias poupar? E os miúdos, não precisam de coisas? Com esse dinheiro podias... [pause] Notaste? [short pause] Nenhuma destas perguntas é sobre o objecto. São todas sobre permissão. [pause] Estás a pedir autorização a uma voz que nem sequer é tua. É a voz da tua mãe. Do teu pai. De uma casa onde gastar era arriscado. [pause] E se comprares — a culpa vem junto. Se não comprares — o alívio é estranho. Porque não é alívio de ter poupado. É alívio de ter obedecido. [long pause] O Véu da Herança Financeira não te impede de gastar. Impede-te de gastar em paz.",
       overlayText: "",
       durationSec: 90,
       visualNote:
@@ -1367,7 +1367,7 @@ const ouroProprioHook1v2: YouTubeScript = {
     {
       type: "exercicio",
       narration:
-        "Há um exercício que ensino no curso — e que podes experimentar agora.\n\nChama-se — Isto É Meu ou Herdado?\n\nDa próxima vez que sentires culpa ao gastar contigo — para. Põe a mão no peito. E pergunta em silêncio.\n\nEsta culpa é minha — ou é de alguém que veio antes de mim?\n\nNão precisas de resposta imediata. O corpo sabe.\n\nSe a culpa for herdada, vais sentir um afrouxar — como se a culpa dissesse — tens razão, não sou tua.\n\nE depois compra. Ou não compres. Mas que seja uma decisão tua. Não de um programa de infância.",
+        "[calm] Há um exercício que ensino no curso — e que podes experimentar agora. [pause] Chama-se — Isto É Meu ou Herdado? [long pause] Da próxima vez que sentires culpa ao gastar contigo — para. Põe a mão no peito. E pergunta em silêncio. [pause] Esta culpa é minha — ou é de alguém que veio antes de mim? [long pause] Não precisas de resposta imediata. O corpo sabe. [pause] Se a culpa for herdada, vais sentir um afrouxar — como se a culpa dissesse — tens razão, não sou tua. [pause] E depois compra. Ou não compres. Mas que seja uma decisão TUA. Não de um programa de infância.",
       overlayText: "Isto é meu\nou herdado?\n\nMão no peito.\nPergunta.\nEspera.",
       durationSec: 60,
       visualNote:
@@ -1376,7 +1376,7 @@ const ouroProprioHook1v2: YouTubeScript = {
     {
       type: "reframe",
       narration:
-        "A tua relação com dinheiro é um espelho.\n\nNão mostra quanto tens. Mostra o que te permites.\n\nE cada vez que gastas contigo sem culpa — estás a dizer — o meu bem-estar é prioridade.",
+        "[calm] A tua relação com dinheiro... é um espelho. [pause] Não mostra quanto tens. [short pause] Mostra o que te permites. [long pause] E cada vez que gastas contigo sem culpa — estás a dizer — [thoughtful] o meu bem-estar é prioridade.",
       overlayText: "A tua relação com dinheiro\nnão mostra quanto tens.\nMostra o que te permites.",
       durationSec: 18,
       visualNote:
@@ -1385,7 +1385,7 @@ const ouroProprioHook1v2: YouTubeScript = {
     {
       type: "cta",
       narration:
-        "No curso Ouro Próprio, o segundo módulo chama-se — A Herança Financeira Emocional.\n\nÉ onde desenterramos os três programas — todos — e escolhemos conscientemente o que manter e o que devolver.\n\nSe isto fez sentido, subscreve. Todas as semanas há um novo véu.\n\nE se quiseres ir mais fundo — seteveus.space.",
+        "No curso Ouro Próprio, o segundo módulo chama-se — A Herança Financeira Emocional. [pause] É onde desenterramos os três programas — todos — e escolhemos conscientemente o que manter... e o que devolver. [long pause] Se isto fez sentido, subscreve. [short pause] Todas as semanas há um novo véu. [pause] E se quiseres ir mais fundo — seteveus.space.",
       overlayText: "Ouro Próprio\nseteveus.space",
       durationSec: 22,
       visualNote:

@@ -28,12 +28,12 @@ export async function POST(req: NextRequest) {
     }
 
     const voice = voiceId || process.env.ELEVENLABS_VOICE_ID || "fnoNuVpfClX7lHKFbyZ2";
-    // ElevenLabs v3: \n\n = pause, — = breath pause, . = natural stop
-    // Normalize multiple breaks, keep double-newlines as pause markers
+    // ElevenLabs v3: uses [pause], [short pause], [long pause] audio tags
+    // Convert \n\n to [pause] tags for v3
     const processedText = narration
-      .replace(/\n{3,}/g, "\n\n")  // max 2 newlines
-      .replace(/\n\n/g, " ... ")   // double newline → pause marker for v3
-      .replace(/\s+/g, " ")        // collapse whitespace
+      .replace(/\n{3,}/g, "\n\n")
+      .replace(/\n\n/g, " [pause] ")
+      .replace(/\s+/g, " ")
       .trim();
 
     // Use ElevenLabs v3 with with_timestamps to get actual duration
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
         model_id: "eleven_v3",
         language_code: "pt",
         output_format: "mp3_44100_128",
-        voice_settings: { stability: 0.8, similarity_boost: 0.9 },
+        voice_settings: { stability: 0.5, similarity_boost: 0.9 },
       }),
     });
 
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
           model_id: "eleven_v3",
           language_code: "pt",
           output_format: "mp3_44100_128",
-          voice_settings: { stability: 0.8, similarity_boost: 0.9 },
+          voice_settings: { stability: 0.5, similarity_boost: 0.9 },
         }),
       });
 

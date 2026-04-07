@@ -130,6 +130,38 @@ Cada curso/territorio tem tambem a sua paleta propria (ver `territory-themes.ts`
 - Silencio intencional entre seccoes.
 - Voz: clone ElevenLabs da Vivianne.
 
+### 9.1 ElevenLabs v3 — Audio Tags (parenteses retos)
+
+O modelo `eleven_v3` usa tags em parenteses retos directamente no texto da narracao.
+NAO usa SSML. NAO usar `...` para pausas (cria hesitacao indesejada).
+
+**Pausas:**
+- `[short pause]` — micro-pausa (~0.5s)
+- `[pause]` — pausa media (~1s)
+- `[long pause]` — pausa longa (~2s)
+
+**Emocao/Tom:**
+- `[calm]` — tom calmo, centrado
+- `[thoughtful]` — tom reflexivo, contemplativo
+- `[whispers]` — sussurro
+- `[sighs]` — suspiro
+
+**Enfase:**
+- MAIUSCULAS = enfase (ex: "NAO e sobre dinheiro")
+- `...` = hesitacao/peso natural (usar com moderacao)
+
+**Parametrizacao recomendada:**
+- `model_id: "eleven_v3"`
+- `language_code: "pt"`
+- `stability: 0.5` (mais baixo = tags mais expressivas; 0.8 e demasiado rigido)
+- `similarity_boost: 0.9`
+- Modo "Creative" ou "Natural" na UI (nao "Stable")
+
+**Exemplo de narracao formatada:**
+```
+[calm] Imagina isto. [short pause] Alguem te pede algo... e por dentro, sentes um NAO. [pause] Mas o que sai da tua boca — e sim. [long pause] [thoughtful] Porque e que isso acontece?
+```
+
 ---
 
 ## 10. O Que NUNCA Usar

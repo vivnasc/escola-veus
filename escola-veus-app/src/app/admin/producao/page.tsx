@@ -288,7 +288,7 @@ export default function ProductionPage() {
       const res = await fetch("/api/admin/courses/submit-animation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageUrl: scene.imageUrl, motionPrompt: motion, provider: "runway" }),
+        body: JSON.stringify({ imageUrl: scene.imageUrl, motionPrompt: motion, provider: "runway", courseSlug: selectedCourse }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
@@ -299,7 +299,7 @@ export default function ProductionPage() {
       });
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, [`anim-${index}`]: false })); }
-  }, [scenes]);
+  }, [scenes, selectedCourse]);
 
   const submitAllAnimations = useCallback(async () => {
     setLoading((p) => ({ ...p, allAnim: true }));
@@ -324,7 +324,7 @@ export default function ProductionPage() {
         const res = await fetch("/api/admin/courses/animation-status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tasks, provider: "runway" }),
+          body: JSON.stringify({ tasks, provider: "runway", courseSlug: selectedCourse }),
         });
         if (!res.ok) return;
         const data = await res.json();
@@ -363,6 +363,7 @@ export default function ProductionPage() {
             type: s.type,
           })),
           title: (YOUTUBE_HOOKS[selectedCourse] || [])[selectedHook]?.title,
+          courseSlug: selectedCourse,
         }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
@@ -371,7 +372,7 @@ export default function ProductionPage() {
       setVtt(data.vtt || "");
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, subs: false })); }
-  }, [scenes, selectedHook]);
+  }, [scenes, selectedHook, selectedCourse]);
 
   // ─── STEP 6: SAVE MANIFEST ───────────────────────────────────────────────
 
@@ -595,13 +596,32 @@ export default function ProductionPage() {
                       {SCENE_LABELS[scene.type] || scene.type}
                     </span>
                     {scene.narration ? (
-                      <textarea value={scene.narration}
-                        onChange={(e) => {
-                          const n = [...scenes]; n[i] = { ...n[i], narration: e.target.value };
-                          setScenes(n); setScriptApproved(false);
-                        }}
-                        rows={Math.max(2, Math.ceil(scene.narration.length / 80))}
-                        className="mt-2 w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y" />
+                      <>
+                        <textarea value={scene.narration}
+                          onChange={(e) => {
+                            const n = [...scenes]; n[i] = { ...n[i], narration: e.target.value };
+                            setScenes(n); setScriptApproved(false);
+                          }}
+                          rows={Math.max(3, Math.ceil(scene.narration.length / 80))}
+                          className="mt-2 w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y font-mono leading-relaxed" />
+                        {/* v3 pause indicators */}
+                        {(() => {
+                          const longPauses = (scene.narration.match(/\[long pause\]/g) || []).length;
+                          const pauses = (scene.narration.match(/\[pause\]/g) || []).length;
+                          const shortPauses = (scene.narration.match(/\[short pause\]/g) || []).length;
+                          const tags = (scene.narration.match(/\[(calm|thoughtful|whispers|sighs)\]/g) || []).length;
+                          const words = scene.narration.split(/\s+/).length;
+                          const totalPauses = longPauses + pauses + shortPauses;
+                          return (
+                            <div className="flex items-center gap-3 mt-1">
+                              <span className="text-[10px] text-escola-creme-50">
+                                v3: {longPauses}×[long] {pauses}×[pause] {shortPauses}×[short] {tags}×tags ~{words} palavras
+                              </span>
+                              {totalPauses === 0 && <span className="text-[10px] text-escola-terracota">Sem pausas — adiciona [pause] ou [short pause] para o v3 respirar</span>}
+                            </div>
+                          );
+                        })()}
+                      </>
                     ) : (
                       <p className="mt-1 text-xs text-escola-creme-50 italic">
                         {scene.overlayText ? `Texto: "${scene.overlayText}"` : "Cena silenciosa"}
