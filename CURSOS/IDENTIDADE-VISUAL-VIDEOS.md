@@ -122,12 +122,10 @@ Cada curso/territorio tem tambem a sua paleta propria (ver `territory-themes.ts`
 
 ## 9. Musica de Fundo
 
-- **Fonte principal: musica original da Loranne** (music.seteveus.space)
-  - 54 albuns, 1200+ faixas — organic-electronic contemporaneo, vocais intimistas PT/EN
-  - Coleccoes relevantes: Espelhos (7 veus), Sangue (heranca), Incenso (meditacao), Curso (companheiros musicais)
-- Alternativa: Suno API (`make_instrumental: true`) apenas se nenhuma faixa da Loranne encaixar
-- Volume a ~12% da narracao.
-- Textura, nao melodia — quase inaudivel.
+- **Duas camadas de musica:**
+  - **Instrumental (Suno API)** — por baixo da narracao. `make_instrumental: true`. Volume a ~12%. Textura, nao melodia — quase inaudivel.
+  - **Loranne (music.seteveus.space)** — cenas SEM narracao (abertura, fecho, transicoes). Musica com vocais intimistas, organic-electronic. 54 albuns, 1200+ faixas.
+- NUNCA sobrepor vocais da Loranne com narracao — duas vozes em simultaneo nao funciona.
 - Silencio intencional entre seccoes.
 - CTA nos videos: "ouve a faixa completa em music.seteveus.space"
 

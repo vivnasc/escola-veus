@@ -947,15 +947,26 @@ export default function ProductionPage() {
 
             {/* Background music */}
             <div className="border border-escola-border rounded-lg p-4 space-y-3">
-              <p className="text-xs text-escola-creme-50 font-medium">Musica de fundo (instrumental):</p>
+              <p className="text-xs text-escola-creme-50 font-medium">Musica de fundo:</p>
 
-              {/* Option 1: Use existing track URL */}
+              {/* Instrumental (under narration) */}
               <div className="space-y-1.5">
-                <p className="text-[11px] text-escola-creme-50">Opcao 1 — Usar faixa existente:</p>
+                <p className="text-[11px] text-escola-dourado font-medium">Instrumental (por baixo da narracao):</p>
+                <div className="flex items-center gap-2">
+                  <button onClick={generateMusic} disabled={loading.music}
+                    className="rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40">
+                    {loading.music ? "A gerar..." : "Gerar instrumental (Suno)"}
+                  </button>
+                </div>
+              </div>
+
+              {/* Loranne track (scenes without narration: abertura, fecho, transitions) */}
+              <div className="space-y-1.5">
+                <p className="text-[11px] text-escola-dourado font-medium">Loranne — cenas sem narracao (abertura, fecho):</p>
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
-                    placeholder="Cola aqui o URL da faixa (music.seteveus.space ou Supabase)"
+                    placeholder="URL da faixa da Loranne (music.seteveus.space)"
                     value={customMusicUrl}
                     onChange={(e) => setCustomMusicUrl(e.target.value)}
                     className="flex-1 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none"
@@ -972,19 +983,11 @@ export default function ProductionPage() {
                     Usar esta faixa
                   </button>
                 </div>
-              </div>
-
-              {/* Option 2: Generate with Suno */}
-              <div className="flex items-center gap-2">
-                <p className="text-[11px] text-escola-creme-50">Opcao 2 —</p>
-                <button onClick={generateMusic} disabled={loading.music}
-                  className="text-xs text-escola-dourado hover:underline disabled:opacity-40">
-                  {loading.music ? "A gerar..." : "Gerar nova com IA (Suno)"}
-                </button>
+                <p className="text-[10px] text-escola-creme-50 italic">A musica da Loranne tem vocais — usar apenas em cenas sem narracao para nao haver duas vozes.</p>
               </div>
 
               {bgMusicUrl && <audio controls src={bgMusicUrl} className="w-full max-w-md h-8" />}
-              {!bgMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Sem musica. Usa uma faixa existente ou gera uma nova.</p>}
+              {!bgMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Sem musica. Gera instrumental para fundo ou usa uma faixa da Loranne para cenas silenciosas.</p>}
             </div>
 
             {/* Render final video */}
