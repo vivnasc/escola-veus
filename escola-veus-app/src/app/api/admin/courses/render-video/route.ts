@@ -79,21 +79,35 @@ function buildShotstackEdit(manifest: {
   }
   const totalDuration = currentTime + OVERLAP;
 
-  // ─── TRACK 1 (top): Watermark ──────────────────────────────────────
+  // ─── TRACK 1 (top): Watermark — favicon + "ESCOLA DOS VÉUS" ────────
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://seteveus.space";
+  const faviconUrl = `${siteUrl}/escola_veus_favicon-192.png`;
   const watermarkTrack = {
     clips: [
       {
         asset: {
-          type: "html" as const,
-          html: "<p>SETE V&Eacute;US</p>",
-          css: "p { font-family: Georgia, serif; font-size: 18px; color: rgba(245,240,230,0.25); letter-spacing: 3px; text-transform: uppercase; }",
-          width: 200,
-          height: 40,
+          type: "image" as const,
+          src: faviconUrl,
         },
         start: 0,
         length: totalDuration,
         position: "bottomRight",
-        offset: { x: -0.03, y: 0.03 },
+        offset: { x: -0.03, y: 0.06 },
+        scale: 0.06,
+        opacity: 0.3,
+      },
+      {
+        asset: {
+          type: "html" as const,
+          html: "<p>ESCOLA DOS V&Eacute;US</p>",
+          css: "p { font-family: Georgia, serif; font-size: 14px; color: rgba(245,240,230,0.25); letter-spacing: 2px; text-transform: uppercase; }",
+          width: 200,
+          height: 30,
+        },
+        start: 0,
+        length: totalDuration,
+        position: "bottomRight",
+        offset: { x: -0.03, y: 0.02 },
       },
     ],
   };
