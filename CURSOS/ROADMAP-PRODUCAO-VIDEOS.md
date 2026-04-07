@@ -1,230 +1,266 @@
 # Roadmap de Producao de Videos — Escola dos Veus
 
 **Criado:** 2026-04-06
-**Actualizado:** 2026-04-06 (pipeline 100% automatizado, sem edicao manual)
+**Actualizado:** 2026-04-07 (nova estrategia de conteudo + pipeline completo)
 **Para:** Vivianne
 
 ---
 
-## Visao geral: pipeline 100% automatizado
+## Visao geral
 
-**Nao vais editar video nenhum.** Nao vais abrir CapCut, DaVinci, nem nada.
-Vais aprovar scripts, carregar num botao, e receber um MP4 pronto para YouTube.
+**Pipeline 100% web, 100% automatizado.**
+Aprovas scripts, clicas num botao, recebes MP4 pronto para YouTube.
+Sem CLI, sem edicao manual, sem software local.
 
 ```
   TU APROVAS ──→ MAQUINA FAZ TUDO ──→ VIDEO PRONTO
   O SCRIPT        (~30 min)            PARA YOUTUBE
 ```
 
-### Como funciona (por dentro):
+**Frequencia:** 2 videos por semana
+
+---
+
+## Estrategia de conteudo YouTube
+
+### Posicionamento
+
+**"A School of Life portuguesa, mas mais quente e encorpada."**
+
+- Tom: professor/a acolhedor/a que fala com clareza (nao terapeuta em sessao)
+- Camada terapeutica presente mas ao servico do ensino
+- Publico maioritariamente feminino, mas linguagem inclusiva (genero neutro)
+- PT-PT (mercado subservido vs PT-BR — vantagem competitiva)
+- Visual: silhuetas sem genero, territorios dos veus, navy + terracota + dourado
+
+### Principios dos scripts
+
+| Principio | O que significa |
+|-----------|-----------------|
+| **Ensinar, nao so acolher** | Cada video ensina algo concreto que o espectador leva consigo |
+| **Frameworks com nome** | Dar nome aos padroes: "O Veu da Heranca Financeira", "O Ciclo do Abandono" |
+| **60/25/15** | 60% ensino acessivel + 25% storytelling + 15% exercicio pratico |
+| **Inclusivo sem ser forcado** | Usar "voce/tu", "pessoas", "quem sente..." — sem "todxs" nem genero forcado |
+| **Respeitar a inteligencia** | Nao simplificar demais — o publico ja busca autoconhecimento |
+| **Metafora > jargao** | "E como se houvesse um veu entre ti e o que realmente sentes" |
+
+### Nova estrutura de cada video (12-15 min)
+
+| Seccao | Duracao | O que faz |
+|--------|---------|-----------|
+| **Gancho** | 15-20 seg | Pergunta ou cenario que prende |
+| **Reconhecimento** | 40-60 seg | Cenario do dia-a-dia — curto, certeiro |
+| **Framework** | 3-4 min | Ensina o conceito com nome ("O Veu de X funciona assim...") |
+| **Exemplo** | 2-3 min | Historia concreta que ilustra o framework |
+| **Exercicio** | 1-2 min | Pratica simples para fazer hoje |
+| **Reframe** | 30-40 seg | Frase de fecho que muda a perspectiva |
+| **CTA** | 20-30 seg | Curso especifico + modulo + subscricao |
+
+### Estrutura anterior (a substituir)
+
+A estrutura antiga (abertura → pergunta → situacao → revelacao → gesto → frase_final → cta → fecho) tinha problemas:
+- Seccao "situacao" demasiado longa (70-150 seg) — causa drop-off
+- Faltava ensino concreto (so validacao emocional)
+- CTAs genericos ("se isto te tocou, subscreve")
+- Linguagem demasiado feminina em vez de inclusiva
+
+**Todos os hooks existentes precisam de ser reescritos** com a nova estrutura.
+
+### Titulos e thumbnails
+
+- **Titulos que identificam o problema:** "Porque dizes sim quando queres dizer nao"
+- **Sem clickbait exagerado** — este publico rejeita manipulacao
+- **Thumbnails:** silhueta + 3-5 palavras max + paleta quente
+- **Formato:** pergunta directa ou espelho de identidade ("Se sentes demais, ve isto")
+
+### Shorts (vertical)
+
+- 2-3 Shorts por cada video longo
+- Cortados dos momentos mais fortes do video
+- Formato: reframe rapido, citacao com peso, "uma coisa que aprendi"
+- Servem para descoberta — nao convertem sozinhos
+
+### Funil de conversao
+
+```
+YouTube (ensino gratuito, valor real)
+  → Quiz: "Qual veu esta mais presente na tua vida?"
+  → Email (3-5 emails com valor adicional)
+  → Curso pago (profundidade + estrutura + acompanhamento)
+```
+
+**Principio:** YouTube da valor REAL. O curso vende o contentor (estrutura, comunidade, guia) — nao a informacao.
+
+---
+
+## Prioridade de producao (primeiros 20 videos)
+
+### Fase 1: Fundacao (semanas 1-2)
+
+| # | Video | Curso | Porque |
+|---|-------|-------|--------|
+| 1 | Trailer do canal (90 seg) | Geral | Apresentar os veus e o canal |
+| 2 | "Porque dizes sim quando queres dizer nao" | Limite Sagrado | Tema trending, altamente pesquisavel |
+| 3 | "Porque sentes culpa quando gastas contigo" | Ouro Proprio | Hook 1 reescrito com nova estrutura |
+| 4 | "O que herdaste sem saber" | Sangue e Seda | Heranca emocional — topico forte |
+
+### Fase 2: Crescimento (semanas 3-5)
+
+| # | Video | Curso | Porque |
+|---|-------|-------|--------|
+| 5 | "A fome que nao e de comida" | A Fome | Gancho fortissimo |
+| 6 | "Recomecar quando a vida obriga" | Depois do Fogo | Publico amplo |
+| 7 | "Porque engoles o que precisas de dizer" | Voz de Dentro | Universal |
+| 8 | "O preco de pertencer" | A Teia | Relacional |
+| 9 | "Porque essa pessoa te irrita tanto" | O Espelho do Outro | Curiosidade natural |
+| 10 | "O corpo sabe antes de ti" | Pele Nua | Somático — diferenciador |
+
+### Fase 3: Profundidade (semanas 6-10)
+
+| # | Video | Curso | Porque |
+|---|-------|-------|--------|
+| 11 | "O segredo que a familia toda sabe" | O Silencio que Grita | Familia |
+| 12 | "Porque choras sem razao aparente" | O Fio Invisivel | Emocional |
+| 13 | "Porque o cansaco nao passa com ferias" | O Oficio de Ser | Burnout |
+| 14 | "Porque sentes que ja e tarde demais" | O Relogio Partido | Medo do tempo |
+| 15-20 | Hooks 2 e 3 dos cursos com melhor desempenho | Variavel | Baseado em dados |
+
+**Ritmo:** 2 videos/semana = 10 semanas para os primeiros 20 videos.
+
+---
+
+## Pipeline tecnico (ESTADO ACTUAL)
+
+### Infraestrutura — TUDO FEITO
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │                                                              │
-│  1. SCRIPT (ja existe, tu aprovas)                           │
+│  1. SCRIPT (tu aprovas no wizard de 6 passos)                │
 │     ↓ parse automatico em cenas com timing                   │
 │                                                              │
-│  2. VOZ ──→ ElevenLabs API                        ~2 min    │
-│     ↓ gera MP3 com a tua voz clonada                        │
-│     ↓ devolve timestamps por palavra (para sync do texto)    │
+│  2. VOZ ──→ ElevenLabs API (por cena)            ~2 min     │
+│     ↓ gera MP3 com timestamps por palavra                    │
+│     ↓ upload individual: courses/{slug}/audio/               │
 │                                                              │
-│  3. IMAGENS ──→ ComfyUI / ThinkDiffusion         ~10 min    │
-│     ↓ gera 1 imagem por cena (8 cenas)                      │
-│     ↓ usa o modelo LoRA do Mundo dos Veus                    │
+│  3. IMAGENS ──→ Flux Schnell via fal.ai          ~3 min     │
+│     ↓ gera 1 imagem por cena                                 │
+│     ↓ upload: courses/{slug}/images/                         │
 │                                                              │
 │  4. ANIMACAO ──→ Runway Gen-4 API                ~15 min    │
-│     ↓ cada imagem vira um clip animado de 5-10s              │
-│     ↓ movimentos subtis: respiracao, particulas, dissolves   │
+│     ↓ cada imagem vira clip animado de 5-10s                 │
+│     ↓ upload: courses/{slug}/videos/                         │
 │                                                              │
-│  5. MONTAGEM ──→ Remotion (React automatico)      ~2 min    │
+│  5. LEGENDAS ──→ Automaticas SRT + VTT           ~instant   │
+│     ↓ geradas a partir dos timestamps da narracao            │
+│                                                              │
+│  6. MUSICA ──→ Suno API (instrumental)           ~2 min     │
+│     ↓ make_instrumental: true                                │
+│     ↓ upload: courses/{slug}/music/                          │
+│                                                              │
+│  7. MONTAGEM ──→ Shotstack API (cloud)           ~5 min     │
 │     ↓ junta clips + audio + texto + musica + transicoes      │
-│     ↓ renderiza MP4 1080p automaticamente                    │
+│     ↓ renderiza MP4 1080p na cloud (sem AWS)                 │
+│     ↓ upload: courses/{slug}/final/                          │
 │                                                              │
-│  6. PRONTO ──→ Supabase Storage                              │
-│     ↓ recebes notificacao: "o teu video esta pronto"         │
-│     ↓ ves, aprovas ou pedes ajustes                          │
+│  8. PRONTO ──→ Supabase Storage                              │
+│     ↓ ver, aprovar ou pedir ajustes                          │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
-
-TEMPO TOTAL: ~30 minutos (automatico, sem tocar em nada)
 ```
 
----
+### APIs e contas configuradas
 
-## Custo por video
+| Servico | Chave | Estado |
+|---------|-------|--------|
+| ElevenLabs | `ELEVENLABS_API_KEY` | Configurado no Vercel |
+| fal.ai (Flux Schnell) | `FAL_KEY` | Configurado no Vercel |
+| Runway Gen-4 | `RUNWAY_API_KEY` | Configurado no Vercel |
+| Suno (musica instrumental) | `SUNO_API_KEY` + `SUNO_API_URL` | Configurado no Vercel |
+| Shotstack (montagem cloud) | `SHOTSTACK_API_KEY` | Configurado no Vercel |
+| Shotstack ambiente | `SHOTSTACK_ENV` | **FALTA: adicionar `v1` no Vercel** |
+| Supabase | Ja configurado | Pronto |
 
-| Componente | Ferramenta | Custo | Nota |
-|-----------|-----------|-------|------|
-| Voz narrada | ElevenLabs API | ~0.30€ | 5 min de audio |
-| Imagens (8 cenas) | ComfyUI/ThinkDiffusion | ~0.50€ | GPU ~$0.99/h |
-| Animacao (8 clips) | Runway Gen-4 API | ~2.00€ | $0.024/seg, 10s cada |
-| Montagem final | Remotion | ~0.05€ | Rendering local ou Lambda |
-| **TOTAL por video** | | **~3€** | |
+### Endpoints API (todos prontos)
 
-**Setup unico (uma vez):**
+| Endpoint | Funcao |
+|----------|--------|
+| `/api/admin/courses/preview-script` | Parse do script em cenas |
+| `/api/admin/courses/generate-scene-audio` | Audio por cena (ElevenLabs) |
+| `/api/admin/courses/generate-image` | Imagem por cena (Flux/fal.ai) |
+| `/api/admin/courses/submit-animation` | Clip animado por cena (Runway) |
+| `/api/admin/courses/generate-subtitles` | Legendas SRT + VTT |
+| `/api/admin/courses/generate-music` | Musica instrumental (Suno) |
+| `/api/admin/courses/save-manifest` | Guardar manifesto no Supabase |
+| `/api/admin/courses/render-video` | Montagem final (Shotstack) |
+| `/api/admin/courses/produce-video` | Orquestrador (botao unico) |
 
-| Item | Custo | Nota |
-|------|-------|------|
-| Treinar LoRA | ~3-5€ | 59 imagens, ~3h GPU. Uma vez. |
-| Musica ambiente (pack) | 0€ | CC0 do Pixabay/Freesound |
-| Contas (ElevenLabs + ThinkDiffusion + Runway) | Variavel | Free tiers para testar |
+### Pagina de producao (wizard 6 passos)
 
----
+Acessivel em `/admin/producao`. Permite controlo granular de cada asset:
 
-## APIs de animacao IA disponíveis (Abril 2026)
-
-| Modelo | Qualidade | Custo/10s | API | Nota |
-|--------|-----------|-----------|-----|------|
-| **Runway Gen-4** | 10/10 | ~$0.24 | Sim | Melhor qualidade. Recomendado. |
-| **Minimax Hailuo 2.3** | 8.5/10 | ~$0.25 | Sim | Melhor custo/qualidade. Alternativa. |
-| Kling 3.0 | 9/10 | ~$2.50 | Via fal.ai | Bom para consistencia, mas caro |
-| Luma Ray 2 | 8/10 | ~$0.25 | Sim | Movimento natural |
-| Google Veo 3.1 | 9.5/10 | ~$1.50 | Sim | 4K, mas caro |
-| Wan 2.1 (ja temos) | 7.5/10 | GPU only | Self-hosted | Opcao gratis, ja configurado |
-
-**Estrategia:** Runway Gen-4 como principal. Hailuo como fallback barato. Wan 2.1 como opcao gratis.
-**Gateway unico:** fal.ai da acesso a todos estes modelos com uma so API key.
-
----
-
-## Montagem automatica: Remotion
-
-**Remotion** e um framework React/TypeScript que renderiza video programaticamente.
-E exactamente o mesmo stack do nosso projecto (Next.js + React).
-
-Em vez de abrir um editor de video, escrevemos componentes React que definem:
-- Onde cada clip aparece na timeline
-- Quando e onde o texto aparece (sincronizado com a voz)
-- Que transicoes usar entre cenas (dissolves lentos)
-- Volume e timing da musica de fundo
-- Tudo renderizado automaticamente para MP4 1080p
-
-**Porque Remotion e nao CapCut/ffmpeg:**
-- Mesmo stack (React/TypeScript) — reutiliza componentes, fonts, cores
-- Texto com CSS completo (Playfair Display, animacoes, sombras)
-- Sincronizacao audio frame-a-frame (timestamps do ElevenLabs)
-- Renderiza na cloud (Lambda) por ~$0.01-0.05 por video
-- Gratis para equipas ate 3 pessoas
-- Reproducivel: mesmo input = mesmo output (nao depende de "arrastar bem")
+1. **Script** — editar narracoes, aprovar
+2. **Audio** — gerar por cena, re-gerar individualmente
+3. **Imagens** — gerar por cena, rever grelha, re-gerar individualmente
+4. **Animacoes** — submeter por cena, verificar estado, re-submeter
+5. **Legendas** — auto SRT/VTT, editar, download
+6. **Resultado** — gerar musica com Suno, render MP4, download manifesto
 
 ---
 
-## O estilo visual: "School of Life, mas nosso"
+## Custo por video (actualizado)
 
-Os videos da School of Life usam:
-- Ilustrador humano (estilo flat/cartoon)
-- Animacao After Effects manual (motion graphics)
-- Locutor profissional
-- 6-10 minutos
+| Componente | Ferramenta | Custo estimado |
+|-----------|-----------|----------------|
+| Voz narrada | ElevenLabs API | ~0.30€ |
+| Imagens (8 cenas) | Flux Schnell via fal.ai | ~0.10€ |
+| Animacao (8 clips) | Runway Gen-4 API | ~2.00€ |
+| Musica instrumental | Suno API | ~0.10€ |
+| Montagem final | Shotstack API | ~0.50€ |
+| **TOTAL por video** | | **~3€** |
 
-**A nossa versao:**
-- Voz da Vivianne (clone ElevenLabs) — calma, proxima, contemplativa
-- Silhuetas femininas em terracota/dourado (sem rosto, universais)
-- Paisagens de territorio (cada curso tem o seu "mundo" visual)
-- Fundo navy-blue profundo (#1A1A2E) — "o momento antes da madrugada"
-- Texto creme (#F5F0E6) em Playfair Display / Cormorant Garamond
-- Zero cortes bruscos — tudo dissolve, tudo respira
-- Particulas flutuantes (po dourado, brasas, nevoa)
-- Animacao IA (Runway Gen-4) — movimento subtil, cinematico
-
-**A diferenca:** School of Life e intelectual/explicativa. Nos somos corporais/poeticas.
-A aluna nao deve pensar "que interessante" — deve sentir "isto sou eu".
-
-Com Runway Gen-4 a qualidade da animacao esta ao nivel ou acima da School of Life.
-O estilo e diferente (nao e cartoon), mas e igualmente profissional e distinto.
+**2 videos/semana = ~6€/semana = ~26€/mes**
 
 ---
 
-## O que ja existe vs. o que falta
+## Scripts: estado actual e trabalho pendente
 
-```
-                        OURO PROPRIO (1o curso)
-  ┌──────────────────────────────────────────────────────┐
-  │  CONTEUDO ESCRITO                         TUDO FEITO │
-  │  ├── 24 scripts de aulas (8 modulos x 3)     DRAFT  │
-  │  ├── 1 manual (8 capitulos)                   DRAFT  │
-  │  ├── 8 cadernos de exercicios                 DRAFT  │
-  │  └── 3 scripts YouTube (hooks)                DRAFT  │
-  ├──────────────────────────────────────────────────────┤
-  │  INFRAESTRUTURA API                       TUDO FEITO │
-  │  ├── API de audio (ElevenLabs)               PRONTO  │
-  │  ├── API de imagem (ComfyUI/ThinkDiffusion)  PRONTO  │
-  │  ├── API de video clips (Wan 2.1)            PRONTO  │
-  │  ├── Sistema visual (cores, particulas)      PRONTO  │
-  │  ├── Workflows ComfyUI (3 tipos)             PRONTO  │
-  │  └── Admin dashboard                         PRONTO  │
-  ├──────────────────────────────────────────────────────┤
-  │  PIPELINE AUTOMATIZADO                    A CONSTRUIR │
-  │  ├── Animacao Runway Gen-4 API              POR FAZER │
-  │  ├── Montagem Remotion (React)              POR FAZER │
-  │  ├── Orquestrador (botao "Produzir")        POR FAZER │
-  │  └── Treinar LoRA (estilo visual)           POR FAZER │
-  ├──────────────────────────────────────────────────────┤
-  │  BLOQUEIO HUMANO                                      │
-  │  └── Aprovacao dos scripts pela Vivianne    BLOQUEIO  │
-  └──────────────────────────────────────────────────────┘
-```
+### O que existe (13 hooks escritos, estrutura ANTIGA — a reescrever)
 
----
+| Curso | Hooks | Estado |
+|-------|-------|--------|
+| Ouro Proprio | 3 | Draft — reescrever com nova estrutura |
+| O Fio Invisivel | 1 | Draft — reescrever |
+| O Espelho do Outro | 1 | Draft — reescrever |
+| O Silencio que Grita | 1 | Draft — reescrever |
+| A Teia | 1 | Draft — reescrever |
+| A Chama | 1 | Draft — reescrever |
+| A Mulher Antes de Mae | 1 | Draft — reescrever |
+| O Oficio de Ser | 1 | Draft — reescrever |
+| O Relogio Partido | 1 | Draft — reescrever |
+| A Coroa Escondida | 1 | Draft — reescrever |
+| A Fome | 1 | Draft — reescrever |
 
-## Fases do projecto
+### O que falta (cursos sem nenhum hook YouTube)
 
-### FASE 0: SETUP (uma vez)
+| Curso | Tema | Prioridade |
+|-------|------|------------|
+| **Limite Sagrado** | Limites, o preco de agradar, culpa de recusar | ALTA |
+| **Sangue e Seda** | Heranca invisivel mae/filha | ALTA |
+| **Depois do Fogo** | Recomecar quando a vida obriga | ALTA |
+| **Voz de Dentro** | Dizer o que precisas de dizer | ALTA |
+| **Pele Nua** | Ouvir o corpo antes da mente | MEDIA |
+| **A Arte da Inteireza** | Amar sem te perderes | MEDIA |
+| **Olhos Abertos** | Decidir com clareza, nao com medo | MEDIA |
+| **Flores no Escuro** | Perdas que nao sao morte mas doem como tal | MEDIA |
+| **O Peso e o Chao** | Quando o descanso nao resolve | MEDIA |
 
-| Passo | O que | Como | Estado |
-|-------|-------|------|--------|
-| 0.1 | Conta ElevenLabs | Criar conta, verificar clone de voz | Feito (chave necessaria) |
-| 0.2 | Conta ThinkDiffusion | Hobby $0.99/h ou Pro $19.99/mes | Por fazer |
-| 0.3 | Conta Runway | Criar conta, obter API key | Por fazer |
-| 0.4 | Treinar LoRA | 59 imagens → modelo visual (~3h, ~5€) | Por fazer |
-| 0.5 | Instalar Remotion | `npm i remotion @remotion/cli` | Por fazer |
-| 0.6 | Musica ambiente | Descarregar 2-3 texturas CC0 | Por fazer |
+### Trabalho total de scripts
 
-### FASE 1: APROVAR SCRIPTS (o teu trabalho, Vivianne)
-
-**Comeca por aqui. Nada avanca sem isto.**
-
-| O que rever | Ficheiro | Qtd |
-|-------------|----------|-----|
-| Scripts YouTube (hooks) | `src/data/course-youtube/ouro-proprio.ts` | 3 |
-| Scripts detalhados (cena a cena) | `src/data/youtube-scripts.ts` | 1 completo |
-| Scripts das 24 aulas | `src/data/course-scripts/ouro-proprio.ts` | 24 |
-
-**Sugestao:** comeca pelo YouTube Hook 1 — "Porque sentes culpa quando gastas dinheiro em ti mesma?"
-E o primeiro video que vai existir. Se este funcionar, os outros seguem.
-
-**Como rever:** Le o script. Pergunta "isto soa a mim?". Marca APROVADO ou deixa notas.
-
-### FASE 2: CONSTRUIR PIPELINE (trabalho tecnico)
-
-| Passo | O que | Detalhe |
-|-------|-------|---------|
-| 2.1 | API Runway Gen-4 | Nova route: `/api/admin/courses/animate-runway` |
-| 2.2 | Composicao Remotion | Template React para montar video automaticamente |
-| 2.3 | Orquestrador | Route `/api/admin/courses/produce-video` — botao unico |
-| 2.4 | Pagina admin | UI para ver progresso e aprovar resultado |
-
-### FASE 3: PRODUZIR PRIMEIRO VIDEO
-
-```
-□ Vivianne aprova Hook 1
-□ Clicar "Produzir" no admin
-□ Pipeline corre (~30 min):
-    → gera audio (ElevenLabs)
-    → gera 8 imagens (ComfyUI)
-    → anima 8 clips (Runway Gen-4)
-    → monta video final (Remotion)
-□ Vivianne ve o resultado
-□ Aprovar ou pedir ajustes
-□ Publicar no YouTube
-```
-
-### FASE 4: ESCALAR
-
-Uma vez que o primeiro funcione:
-- Produzir Hook 2 e Hook 3 (mesmo pipeline)
-- Produzir as 24 aulas do curso (mesmo pipeline, mais cenas)
-- Comecar o segundo curso (Limite Sagrado)
+- **13 hooks existentes** a reescrever (nova estrutura)
+- **9 cursos** sem hooks (escrever 1-3 hooks cada)
+- **1 trailer** do canal (90 seg)
+- **Estimativa:** ~35-40 scripts no total para cobrir todos os cursos com 2 hooks cada
 
 ---
 
@@ -232,19 +268,47 @@ Uma vez que o primeiro funcione:
 
 | Decisao | Escolha | Razao |
 |---------|---------|-------|
-| Montagem | Remotion (automatica) | Mesmo stack, zero edicao manual |
-| Animacao principal | Runway Gen-4 API | Melhor qualidade, preco razoavel |
-| Animacao fallback | Minimax Hailuo 2.3 | Mais barato, boa qualidade |
-| Animacao gratis | Wan 2.1 (ja temos) | Para testes e opcao de custo zero |
-| API gateway | fal.ai (opcional) | Acesso unificado a varios modelos |
+| Montagem cloud | Shotstack API | Sem AWS, sem CLI, 100% web |
+| Animacao principal | Runway Gen-4 API | Melhor qualidade |
+| Imagens | Flux Schnell via fal.ai | Rapido, barato, boa qualidade |
+| Musica de fundo | Suno API (instrumental) | Gera musica original, sem direitos |
+| Voz | ElevenLabs v3 (PT) | Clone da Vivianne |
+| Frequencia | 2 videos/semana | Ritmo de crescimento |
+| Linguagem | Genero neutro / inclusivo | Publico feminino mas acessivel a todos |
+| Estrutura video | Nova (gancho→reconhecimento→framework→exemplo→exercicio→reframe→CTA) | Didactica + terapeutica |
+| Tom | Professor/a acolhedor/a | Nao terapeuta em sessao |
 
 ## Decisoes por tomar
 
 | Decisao | Opcoes | Nota |
 |---------|--------|------|
-| Musica ambiente | CC0 gratis / Epidemic Sound / Artlist | Testar CC0 primeiro |
-| Pseudonimo | Nome real / pseudonimo | Deve funcionar em PT e EN |
 | Preco dos cursos | ? | Ainda por definir |
+| Quiz dos veus | Typeform / custom | Para funil de conversao |
+| Canal secundario EN | Sim/Nao | Depois de PT estabilizar |
+
+---
+
+## Proximas accoes
+
+### Imediato (esta semana)
+
+1. **Vivianne:** Adicionar `SHOTSTACK_ENV=v1` no Vercel
+2. **Tecnico:** Reescrever Hook 1 do Ouro Proprio com nova estrutura (modelo para todos)
+3. **Vivianne:** Rever e aprovar o novo Hook 1
+
+### Curto prazo (proximas 2 semanas)
+
+4. Escrever trailer do canal (90 seg)
+5. Escrever hooks para Limite Sagrado, Sangue e Seda, Depois do Fogo, Voz de Dentro
+6. Produzir primeiro video end-to-end (teste completo do pipeline)
+7. Vivianne: aprovar ou pedir ajustes
+
+### Medio prazo (semanas 3-10)
+
+8. Reescrever todos os hooks existentes com nova estrutura
+9. Produzir 2 videos/semana seguindo a ordem de prioridade
+10. Criar Shorts a partir dos videos produzidos
+11. Montar funil: quiz dos veus → email → curso
 
 ---
 
@@ -252,41 +316,35 @@ Uma vez que o primeiro funcione:
 
 ```
 CURSOS/
-  PRODUCAO-STATUS.md                ← estado da producao
   ROADMAP-PRODUCAO-VIDEOS.md        ← ESTE FICHEIRO
-  imagens/                          ← 59 imagens para LoRA
-  lora-training/                    ← configs de treino
+  PRODUCAO-STATUS.md                ← estado da producao
+  imagens/                          ← imagens para LoRA
 
 escola-veus-app/src/
   data/
-    course-guidelines.ts            ← tom, estrutura, regras visuais
     courses.ts                      ← 20 cursos (estrutura)
     course-scripts/ouro-proprio.ts  ← 24 scripts aulas (DRAFT)
-    course-youtube/ouro-proprio.ts  ← 3 scripts YouTube (DRAFT)
-    youtube-scripts.ts              ← scripts detalhados (cena a cena)
+    course-youtube/ouro-proprio.ts  ← 3 scripts YouTube (DRAFT — a reescrever)
+    youtube-scripts.ts              ← hooks detalhados (DRAFT — a reescrever)
     youtube-calendar.ts             ← calendario publicacao
+    youtube-scripts.ts              ← scripts com cenas e timing
     territory-themes.ts             ← cores por curso
+    course-guidelines.ts            ← tom, estrutura, regras visuais
+
+  app/admin/producao/page.tsx       ← wizard 6 passos
 
   app/api/admin/courses/
-    generate-audio/route.ts         ← ElevenLabs (voz)
-    generate-image/route.ts         ← ComfyUI (imagens)
-    generate-video/route.ts         ← Wan 2.1 (clips)
-    animate-runway/route.ts         ← Runway Gen-4 (animacao) ← NOVO
-    produce-video/route.ts          ← Orquestrador (botao unico) ← NOVO
+    preview-script/route.ts         ← parse de scripts
+    generate-scene-audio/route.ts   ← ElevenLabs por cena
+    generate-image/route.ts         ← Flux/fal.ai
+    submit-animation/route.ts       ← Runway Gen-4
+    generate-subtitles/route.ts     ← SRT + VTT
+    generate-music/route.ts         ← Suno instrumental
+    save-manifest/route.ts          ← manifesto Supabase
+    render-video/route.ts           ← Shotstack montagem
+    produce-video/route.ts          ← orquestrador
 
   remotion/
-    VideoComposition.tsx            ← Template Remotion ← NOVO
-    scenes/                         ← Componentes por tipo de cena ← NOVO
-
-  lib/
-    comfyui-workflows.ts            ← workflows ComfyUI
-    video-visuals.ts                ← paletas, composicoes
+    VideoComposition.tsx            ← composicao Remotion (fallback)
+    Root.tsx                        ← registo Remotion
 ```
-
----
-
-## Proxima accao
-
-1. **Vivianne:** Le e aprova o script do YouTube Hook 1
-2. **Tecnico:** Construir o pipeline automatizado (Runway + Remotion + orquestrador)
-3. **Teste:** Produzir o primeiro video end-to-end

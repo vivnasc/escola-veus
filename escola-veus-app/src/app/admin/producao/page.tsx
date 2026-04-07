@@ -4,212 +4,322 @@ import { useState, useRef, useCallback, useEffect } from "react";
 
 // ─── TYPES ──────────────────────────────────────────────────────────────────
 
-type PipelineStep = {
-  step: number;
-  total: number;
-  label: string;
-  status: "running" | "done" | "error";
-  detail?: string;
+type SceneData = {
+  type: string;
+  narration: string;
+  overlayText: string;
+  visualNote: string;
+  durationSec: number;
+  audioUrl?: string;
+  audioDurationSec?: number;
+  imageUrl?: string;
+  animationTaskId?: string;
+  animationStatus?: string;
+  animationUrl?: string;
+  audioStartSec?: number;
+  audioEndSec?: number;
 };
 
 type AnimationTask = { type: string; taskId: string; status?: string; videoUrl?: string | null };
 
-type VideoResult = {
-  status: string;
-  title: string;
-  audioUrl: string;
-  manifestUrl: string;
-  scenes: number;
-  imagesGenerated: number;
-  animationsSubmitted?: number;
-  animationTaskIds?: AnimationTask[];
+// ─── CONSTANTS ──────────────────────────────────────────────────────────────
+
+const YOUTUBE_HOOKS: Record<string, { index: number; title: string; duration: string }[]> = {
+  "geral": [
+    { index: 0, title: "Escola dos Véus — O que escondes de ti?", duration: "2 min" },
+  ],
+  "ouro-proprio": [
+    { index: 0, title: "Porque sentes culpa quando gastas contigo (v2)", duration: "13 min" },
+    { index: 1, title: "3 frases sobre dinheiro que a tua mae te ensinou sem saber", duration: "7 min" },
+    { index: 2, title: "O teste do preco: diz o teu valor em voz alta", duration: "5 min" },
+  ],
+  "limite-sagrado": [
+    { index: 0, title: "Porque dizes sim quando queres dizer não", duration: "13 min" },
+  ],
 };
 
-type SceneEdit = {
-  type: string;
-  narration: string;
-  overlayText: string;
-};
-
-// ─── YOUTUBE HOOKS DATA ─────────────────────────────────────────────────────
-
-const YOUTUBE_HOOKS = [
-  { index: 0, title: "Porque sentes culpa quando gastas dinheiro em ti mesma?", duration: "6 min" },
-  { index: 1, title: "3 frases sobre dinheiro que a tua mae te ensinou sem saber", duration: "7 min" },
-  { index: 2, title: "O teste do preco: diz o teu valor em voz alta", duration: "5 min" },
+const COURSE_OPTIONS = [
+  { slug: "geral", label: "Trailer do Canal" },
+  { slug: "limite-sagrado", label: "Limite Sagrado" },
+  { slug: "ouro-proprio", label: "Ouro Próprio" },
 ];
 
 const DEFAULT_VOICE_ID = "fnoNuVpfClX7lHKFbyZ2";
 
+const SCENE_LABELS: Record<string, string> = {
+  abertura: "Abertura", pergunta: "Pergunta", situacao: "Situacao",
+  revelacao: "Revelacao", gesto: "Gesto", frase_final: "Frase Final",
+  cta: "CTA", fecho: "Fecho",
+  // v2
+  trailer: "Trailer", gancho: "Gancho", reconhecimento: "Reconhecimento",
+  framework: "Framework", exemplo: "Exemplo", exercicio: "Exercicio",
+  reframe: "Reframe",
+};
+
+const STYLE = "flat minimalist editorial illustration, dark navy blue background (#1A1A2E), human figures as solid terracotta (#C4745A) silhouettes with subtle golden (#D4A853) outline glow — no face no features no skin texture just a warm-colored shape clearly visible against the dark background, warm gold and terracotta accent colors, clean simple shapes, limited muted palette, contemplative mood, no photorealism, no cartoon faces, no text, no words, no letters";
+
+const MOTION: Record<string, string> = {
+  abertura: "slow cinematic camera drift downward, golden particles floating",
+  pergunta: "silhouette breathing slowly, golden light pulsing gently",
+  situacao: "slow camera tracking, environment subtly alive",
+  revelacao: "mirrors uncovering, veils lifting in slow motion",
+  gesto: "hand extending, golden particles gathering in palm",
+  frase_final: "very slow zoom into darkness",
+  cta: "gentle wind, floating golden particles, warm light expanding",
+  fecho: "slow dissolve upward into navy sky",
+  // v2
+  trailer: "slow cinematic sequence, veils lifting, silhouette emerging, golden light",
+  gancho: "silhouette breathing slowly, golden light pulsing gently",
+  reconhecimento: "slow camera tracking, environment subtly alive",
+  framework: "didactic animation, diagrams appearing, slow reveal",
+  exemplo: "narrative scene, warm lighting, dissolve transitions",
+  exercicio: "hand on chest, golden glow growing, calm",
+  reframe: "very slow zoom, text appearing in warm light",
+};
+
+const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
+  "ouro-proprio": "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/curso-ouro-proprio/faixa-01.mp3",
+};
+
+function buildPrompt(visualNote: string): string {
+  if (visualNote && visualNote.length > 20) {
+    const cleaned = visualNote.replace(/#[0-9A-Fa-f]{6}/g, "").replace(/\(.*?\)/g, "").trim();
+    return `${cleaned}, ${STYLE}`;
+  }
+  return `contemplative scene, ${STYLE}`;
+}
+
+// ─── STEP INDICATOR ─────────────────────────────────────────────────────────
+
+const STEPS = ["Script", "Audio", "Imagens", "Animacoes", "Legendas", "Resultado"];
+
+function StepIndicator({ current, completed }: { current: number; completed: boolean[] }) {
+  return (
+    <div className="flex items-center gap-1 mb-6">
+      {STEPS.map((label, i) => (
+        <div key={i} className="flex items-center gap-1">
+          <div
+            className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
+              i === current
+                ? "bg-escola-dourado text-escola-bg"
+                : completed[i]
+                ? "bg-green-500/20 text-green-400"
+                : "bg-escola-border text-escola-creme-50"
+            }`}
+          >
+            {completed[i] ? "\u2713" : i + 1}
+          </div>
+          <span className={`text-xs hidden sm:block ${i === current ? "text-escola-dourado" : "text-escola-creme-50"}`}>
+            {label}
+          </span>
+          {i < STEPS.length - 1 && <div className="w-4 h-px bg-escola-border mx-1" />}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ─── MAIN PAGE ──────────────────────────────────────────────────────────────
 
 export default function ProductionPage() {
+  const [step, setStep] = useState(0);
+  const [completed, setCompleted] = useState<boolean[]>(Array(6).fill(false));
   const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
   const [showVoiceField, setShowVoiceField] = useState(false);
-
-  // Video production
+  const [selectedCourse, setSelectedCourse] = useState("geral");
   const [selectedHook, setSelectedHook] = useState(0);
-  const [pipelineSteps, setPipelineSteps] = useState<PipelineStep[]>([]);
-  const [isProducing, setIsProducing] = useState(false);
-  const [videoResult, setVideoResult] = useState<VideoResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const abortRef = useRef<AbortController | null>(null);
-
-  // Script preview/approval
-  const [scriptScenes, setScriptScenes] = useState<SceneEdit[]>([]);
+  const [scenes, setScenes] = useState<SceneData[]>([]);
   const [scriptLoading, setScriptLoading] = useState(false);
   const [scriptApproved, setScriptApproved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<Record<string, boolean>>({});
 
-  // Animation polling
-  const [animTasks, setAnimTasks] = useState<AnimationTask[]>([]);
+  // Audio
+  const [totalAudioDuration, setTotalAudioDuration] = useState(0);
+
+  // Animations
   const [animPolling, setAnimPolling] = useState(false);
   const pollTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Subtitles
+  const [srt, setSrt] = useState("");
+  const [vtt, setVtt] = useState("");
+
+  // Render
+  const [renderProgress, setRenderProgress] = useState<number | null>(null);
+  const [renderLabel, setRenderLabel] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+
+  // Background music
+  const [bgMusicUrl, setBgMusicUrl] = useState("");
+
+  // Manifest
+  const [manifestUrl, setManifestUrl] = useState("");
 
   // YouTube metadata
   const [ytTitle, setYtTitle] = useState("");
   const [ytDescription, setYtDescription] = useState("");
   const [ytTags, setYtTags] = useState("");
 
-  // Test image
-  const [testImageUrl, setTestImageUrl] = useState<string | null>(null);
-  const [testImageLoading, setTestImageLoading] = useState(false);
+  const markComplete = useCallback((s: number) => {
+    setCompleted((prev) => { const n = [...prev]; n[s] = true; return n; });
+  }, []);
 
-  // ─── LOAD SCRIPT FOR PREVIEW ────────────────────────────────────────────
+  // ─── STEP 1: LOAD SCRIPT ─────────────────────────────────────────────────
 
   const loadScript = useCallback(async () => {
     setScriptLoading(true);
     setScriptApproved(false);
     setError(null);
-
     try {
       const res = await fetch("/api/admin/courses/preview-script", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          courseSlug: "ouro-proprio",
-          scriptType: "youtube",
-          hookIndex: selectedHook,
-        }),
+        body: JSON.stringify({ courseSlug: selectedCourse, scriptType: "youtube", hookIndex: selectedHook }),
       });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
-        throw new Error(data.erro || `Erro ${res.status}`);
-      }
-
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
-      setScriptScenes(data.scenes || []);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Erro";
-      setError(msg);
-    } finally {
-      setScriptLoading(false);
-    }
-  }, [selectedHook]);
+      setScenes((data.scenes || []).map((s: SceneData) => ({
+        ...s,
+        visualNote: s.visualNote || "",
+        durationSec: s.durationSec || 15,
+      })));
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    finally { setScriptLoading(false); }
+  }, [selectedCourse, selectedHook]);
 
-  // Load script when hook changes
-  useEffect(() => {
-    loadScript();
-  }, [loadScript]);
+  useEffect(() => { loadScript(); }, [loadScript]);
 
-  // ─── PRODUCE VIDEO ──────────────────────────────────────────────────────
+  // ─── STEP 2: GENERATE AUDIO ──────────────────────────────────────────────
 
-  const produceVideo = useCallback(async () => {
-    if (!scriptApproved) return;
-
-    setIsProducing(true);
-    setPipelineSteps([]);
-    setVideoResult(null);
+  const generateSceneAudio = useCallback(async (index: number) => {
+    const scene = scenes[index];
+    if (!scene.narration?.trim()) return;
+    setLoading((p) => ({ ...p, [`audio-${index}`]: true }));
     setError(null);
-
-    const controller = new AbortController();
-    abortRef.current = controller;
-
     try {
-      const res = await fetch("/api/admin/courses/produce-video", {
+      const res = await fetch("/api/admin/courses/generate-scene-audio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          courseSlug: "ouro-proprio",
-          scriptType: "youtube",
-          hookIndex: selectedHook,
-          animationProvider: "runway",
+          courseSlug: selectedCourse,
+          sceneLabel: `yt-hook${selectedHook}`,
+          sceneIndex: index,
+          narration: scene.narration,
           voiceId: voiceId.trim() || undefined,
-          // Send edited scenes if user modified them
-          editedScenes: scriptScenes.length > 0 ? scriptScenes : undefined,
         }),
-        signal: controller.signal,
       });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+      const data = await res.json();
+      setScenes((prev) => {
+        const n = [...prev];
+        n[index] = { ...n[index], audioUrl: data.audioUrl, audioDurationSec: data.durationSec };
+        return n;
+      });
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    finally { setLoading((p) => ({ ...p, [`audio-${index}`]: false })); }
+  }, [scenes, selectedCourse, selectedHook, voiceId]);
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
-        throw new Error(data.erro || `Erro ${res.status}`);
+  const generateAllAudio = useCallback(async () => {
+    setLoading((p) => ({ ...p, allAudio: true }));
+    let time = 0;
+    for (let i = 0; i < scenes.length; i++) {
+      if (scenes[i].narration?.trim()) {
+        await generateSceneAudio(i);
       }
-
-      const reader = res.body?.getReader();
-      if (!reader) throw new Error("Sem stream de resposta.");
-
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n\n");
-        buffer = lines.pop() || "";
-
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          try {
-            const data = JSON.parse(line.slice(6));
-            if (data.result) {
-              setVideoResult(data.result);
-              if (data.result.animationTaskIds?.length > 0) {
-                setAnimTasks(data.result.animationTaskIds);
-                startAnimationPolling(data.result.animationTaskIds);
-              }
-            } else if (data.step !== undefined) {
-              setPipelineSteps((prev) => {
-                const existing = prev.findIndex((s) => s.step === data.step);
-                if (existing >= 0) {
-                  const updated = [...prev];
-                  updated[existing] = data;
-                  return updated;
-                }
-                return [...prev, data];
-              });
-            }
-          } catch { /* skip */ }
-        }
-      }
-
-      const hook = YOUTUBE_HOOKS[selectedHook];
-      if (hook) {
-        setYtTitle(hook.title);
-        setYtDescription(`${hook.title}\n\nSe isto fez sentido, subscreve. Ha mais a caminho.\n\n#escoladosveus #seteveus #ouroproprio #dinheiro #autoconhecimento`);
-        setYtTags("escola dos veus, sete veus, ouro proprio, dinheiro, culpa, autoconhecimento, mulher");
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error && err.name === "AbortError") {
-        setError("Producao cancelada.");
-      } else {
-        setError(err instanceof Error ? err.message : String(err));
-      }
-    } finally {
-      setIsProducing(false);
-      abortRef.current = null;
     }
-  }, [scriptApproved, selectedHook, voiceId, scriptScenes]);
+    // Compute timestamps
+    setScenes((prev) => {
+      const updated = [...prev];
+      let t = 0;
+      for (const s of updated) {
+        s.audioStartSec = t;
+        const dur = s.audioDurationSec || s.durationSec;
+        s.audioEndSec = t + dur;
+        if (s.audioDurationSec) s.durationSec = s.audioDurationSec + 1;
+        t += s.durationSec;
+      }
+      time = t;
+      return updated;
+    });
+    setTotalAudioDuration(time);
+    setLoading((p) => ({ ...p, allAudio: false }));
+  }, [scenes, generateSceneAudio]);
 
-  // ─── ANIMATION POLLING ──────────────────────────────────────────────────
 
-  function startAnimationPolling(tasks: AnimationTask[]) {
+  // ─── STEP 3: GENERATE IMAGES ─────────────────────────────────────────────
+
+  const generateSceneImage = useCallback(async (index: number) => {
+    const scene = scenes[index];
+    setLoading((p) => ({ ...p, [`img-${index}`]: true }));
+    setError(null);
+    try {
+      const prompt = buildPrompt(scene.visualNote);
+      const res = await fetch("/api/admin/courses/generate-image-flux", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, courseSlug: selectedCourse, sceneLabel: `yt-hook${selectedHook}-${scene.type}` }),
+      });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+      const data = await res.json();
+      setScenes((prev) => { const n = [...prev]; n[index] = { ...n[index], imageUrl: data.url }; return n; });
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    finally { setLoading((p) => ({ ...p, [`img-${index}`]: false })); }
+  }, [scenes, selectedCourse, selectedHook]);
+
+  const generateAllImages = useCallback(async () => {
+    setLoading((p) => ({ ...p, allImages: true }));
+    for (let i = 0; i < scenes.length; i += 3) {
+      const batch = scenes.slice(i, Math.min(i + 3, scenes.length));
+      await Promise.all(batch.map((_, bi) => generateSceneImage(i + bi)));
+    }
+    setLoading((p) => ({ ...p, allImages: false }));
+  }, [scenes, generateSceneImage]);
+
+  // ─── STEP 4: SUBMIT ANIMATIONS ───────────────────────────────────────────
+
+  const submitSceneAnimation = useCallback(async (index: number) => {
+    const scene = scenes[index];
+    if (!scene.imageUrl) return;
+    setLoading((p) => ({ ...p, [`anim-${index}`]: true }));
+    setError(null);
+    try {
+      const motion = MOTION[scene.type] || "slow cinematic movement";
+      const res = await fetch("/api/admin/courses/submit-animation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageUrl: scene.imageUrl, motionPrompt: motion, provider: "runway" }),
+      });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+      const data = await res.json();
+      setScenes((prev) => {
+        const n = [...prev];
+        n[index] = { ...n[index], animationTaskId: data.taskId, animationStatus: "processing" };
+        return n;
+      });
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    finally { setLoading((p) => ({ ...p, [`anim-${index}`]: false })); }
+  }, [scenes]);
+
+  const submitAllAnimations = useCallback(async () => {
+    setLoading((p) => ({ ...p, allAnim: true }));
+    const withImages = scenes.map((s, i) => ({ s, i })).filter(({ s }) => s.imageUrl);
+    await Promise.all(withImages.map(({ i }) => submitSceneAnimation(i)));
+    setLoading((p) => ({ ...p, allAnim: false }));
+    startPolling();
+  }, [scenes, submitSceneAnimation]);
+
+  function startPolling() {
     setAnimPolling(true);
     if (pollTimerRef.current) clearInterval(pollTimerRef.current);
-
     pollTimerRef.current = setInterval(async () => {
+      const tasks = scenes.filter((s) => s.animationTaskId && s.animationStatus === "processing")
+        .map((s) => ({ type: s.type, taskId: s.animationTaskId! }));
+      if (tasks.length === 0) {
+        if (pollTimerRef.current) clearInterval(pollTimerRef.current);
+        setAnimPolling(false);
+        return;
+      }
       try {
         const res = await fetch("/api/admin/courses/animation-status", {
           method: "POST",
@@ -218,7 +328,16 @@ export default function ProductionPage() {
         });
         if (!res.ok) return;
         const data = await res.json();
-        setAnimTasks(data.tasks);
+        setScenes((prev) => {
+          const n = [...prev];
+          for (const t of data.tasks) {
+            const idx = n.findIndex((s) => s.animationTaskId === t.taskId);
+            if (idx >= 0) {
+              n[idx] = { ...n[idx], animationStatus: t.status, animationUrl: t.videoUrl || undefined };
+            }
+          }
+          return n;
+        });
         if (data.allDone) {
           if (pollTimerRef.current) clearInterval(pollTimerRef.current);
           setAnimPolling(false);
@@ -227,337 +346,620 @@ export default function ProductionPage() {
     }, 15000);
   }
 
-  // ─── TEST IMAGE ─────────────────────────────────────────────────────────
+  // ─── STEP 5: SUBTITLES ───────────────────────────────────────────────────
 
-  const testGenerateImage = useCallback(async () => {
-    setTestImageLoading(true);
-    setTestImageUrl(null);
+  const generateSubtitles = useCallback(async () => {
+    setLoading((p) => ({ ...p, subs: true }));
     setError(null);
     try {
-      const res = await fetch("/api/admin/courses/generate-image-flux", {
+      const res = await fetch("/api/admin/courses/generate-subtitles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: "a solid terracotta colored silhouette figure standing in a shop holding a small bag, thought bubble with floating numbers above, the figure is a warm terracotta shape with subtle golden outline glow clearly visible against dark background — no face no features just a human shape, flat minimalist editorial illustration, dark navy blue background, warm gold and terracotta accent colors, clean simple shapes, contemplative mood, no photorealism, no cartoon face, no text, no words",
-          courseSlug: "ouro-proprio",
-          sceneLabel: "teste",
+          scenes: scenes.map((s) => ({
+            narration: s.narration,
+            audioStartSec: s.audioStartSec ?? 0,
+            audioEndSec: s.audioEndSec ?? s.durationSec,
+            type: s.type,
+          })),
+          title: (YOUTUBE_HOOKS[selectedCourse] || [])[selectedHook]?.title,
         }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
-        throw new Error(data.erro || `Erro ${res.status}`);
-      }
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
-      setTestImageUrl(data.url);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Erro");
-    } finally {
-      setTestImageLoading(false);
-    }
-  }, []);
+      setSrt(data.srt || "");
+      setVtt(data.vtt || "");
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    finally { setLoading((p) => ({ ...p, subs: false })); }
+  }, [scenes, selectedHook]);
 
-  // ─── SCENE LABEL ────────────────────────────────────────────────────────
+  // ─── STEP 6: SAVE MANIFEST ───────────────────────────────────────────────
 
-  const SCENE_LABELS: Record<string, string> = {
-    abertura: "Abertura",
-    pergunta: "Pergunta",
-    situacao: "Situacao",
-    revelacao: "Revelacao",
-    gesto: "Gesto",
-    frase_final: "Frase Final",
-    cta: "CTA",
-    fecho: "Fecho",
-  };
+  const saveManifest = useCallback(async () => {
+    setLoading((p) => ({ ...p, manifest: true }));
+    setError(null);
+    try {
+      const hooks = YOUTUBE_HOOKS[selectedCourse] || [];
+      const manifest = {
+        courseSlug: selectedCourse,
+        title: hooks[selectedHook]?.title,
+        audioUrls: scenes.filter((s) => s.audioUrl).map((s) => ({ type: s.type, url: s.audioUrl })),
+        backgroundMusicUrl: bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse] || "",
+        scenes: scenes.map((s) => ({
+          type: s.type, narration: s.narration, overlayText: s.overlayText,
+          durationSec: s.durationSec, imageUrl: s.imageUrl || null,
+          animationUrl: s.animationUrl || null, animationTaskId: s.animationTaskId || null,
+          audioUrl: s.audioUrl || null, audioStartSec: s.audioStartSec ?? null, audioEndSec: s.audioEndSec ?? null,
+        })),
+        totalDurationSec: totalAudioDuration,
+        createdAt: new Date().toISOString(),
+      };
+      const res = await fetch("/api/admin/courses/save-manifest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseSlug: selectedCourse, sceneLabel: `yt-hook${selectedHook}`, manifest }),
+      });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+      const data = await res.json();
+      setManifestUrl(data.manifestUrl);
+      const hook = hooks[selectedHook];
+      if (hook) {
+        setYtTitle(hook.title);
+        setYtDescription(`${hook.title}\n\nEscola dos Veus — autoconhecimento com profundidade.\n\n#escoladosveus #seteveus #autoconhecimento`);
+        setYtTags("escola dos veus, sete veus, autoconhecimento, " + selectedCourse.replace(/-/g, " "));
+      }
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    finally { setLoading((p) => ({ ...p, manifest: false })); }
+  }, [scenes, selectedCourse, selectedHook, totalAudioDuration, bgMusicUrl]);
 
-  // ─── RENDER ─────────────────────────────────────────────────────────────
+  // ─── GENERATE BACKGROUND MUSIC ─────────────────────────────────────────
+
+  const generateMusic = useCallback(async () => {
+    setLoading((p) => ({ ...p, music: true }));
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/courses/generate-music", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseSlug: selectedCourse }),
+      });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+      const data = await res.json();
+      setBgMusicUrl(data.audioUrl);
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    finally { setLoading((p) => ({ ...p, music: false })); }
+  }, [selectedCourse]);
+
+  // ─── RENDER FINAL VIDEO ───────────────────────────────────────────────
+
+  const renderVideo = useCallback(async () => {
+    setLoading((p) => ({ ...p, render: true }));
+    setRenderProgress(0);
+    setRenderLabel("A iniciar...");
+    setVideoUrl("");
+    setError(null);
+    try {
+      const renderHooks = YOUTUBE_HOOKS[selectedCourse] || [];
+      const manifest = {
+        courseSlug: selectedCourse,
+        title: renderHooks[selectedHook]?.title,
+        sceneLabel: `yt-hook${selectedHook}`,
+        audioUrl: scenes.find((s) => s.audioUrl)?.audioUrl || "",
+        backgroundMusicUrl: bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse] || "",
+        backgroundMusicVolume: 0.12,
+        scenes: scenes.map((s) => ({
+          type: s.type, narration: s.narration, overlayText: s.overlayText,
+          durationSec: s.durationSec, imageUrl: s.imageUrl || null,
+          animationUrl: s.animationUrl || null,
+          audioStartSec: s.audioStartSec ?? null, audioEndSec: s.audioEndSec ?? null,
+        })),
+      };
+
+      const res = await fetch("/api/admin/courses/render-video", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ manifest }),
+      });
+
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("Sem stream");
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n\n");
+        buffer = lines.pop() || "";
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.type === "progress") {
+              setRenderProgress(data.percent);
+              setRenderLabel(data.label);
+            } else if (data.type === "result") {
+              setVideoUrl(data.videoUrl);
+              setRenderProgress(100);
+              setRenderLabel("Video pronto!");
+              markComplete(5);
+            } else if (data.type === "error") {
+              throw new Error(data.message);
+            }
+          } catch (e) {
+            if (e instanceof Error && e.message !== "Unexpected end of JSON input") throw e;
+          }
+        }
+      }
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro no render"); }
+    finally { setLoading((p) => ({ ...p, render: false })); }
+  }, [scenes, selectedCourse, selectedHook, bgMusicUrl, markComplete]);
+
+  function downloadFile(content: string, filename: string) {
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+
+  // ─── RENDER ───────────────────────────────────────────────────────────────
+
+  const audioComplete = scenes.length > 0 && scenes.filter((s) => s.narration?.trim()).every((s) => s.audioUrl);
+  const imagesComplete = scenes.length > 0 && scenes.every((s) => s.imageUrl);
+  const animsComplete = scenes.filter((s) => s.animationTaskId).length > 0 &&
+    scenes.filter((s) => s.animationTaskId).every((s) => s.animationStatus === "done" || s.animationStatus === "failed");
+  const subsComplete = srt.length > 0;
 
   return (
     <>
       <h1 className="font-serif text-2xl font-semibold text-escola-creme">
         Producao de Videos
       </h1>
-      <p className="text-sm text-escola-creme-50 mt-1 mb-6">
-        1. Escolhe o hook &rarr; 2. Revê o script &rarr; 3. Aprova &rarr; 4. Produz
+      <p className="text-sm text-escola-creme-50 mt-1 mb-4">
+        Pipeline passo a passo — revisa e controla cada etapa
       </p>
 
-      {/* Hook selector */}
-      <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-6">
-        <h2 className="font-serif text-lg font-medium text-escola-creme mb-4">
-          1. Escolhe o video
-        </h2>
-        <div className="space-y-2">
-          {YOUTUBE_HOOKS.map((hook) => (
-            <label
-              key={hook.index}
-              className={`flex items-center gap-3 rounded-lg border p-4 cursor-pointer transition-colors ${
-                selectedHook === hook.index
-                  ? "border-escola-dourado bg-escola-dourado/5"
-                  : "border-escola-border hover:border-escola-dourado/30"
-              }`}
-            >
-              <input
-                type="radio"
-                name="hook"
-                checked={selectedHook === hook.index}
-                onChange={() => { setSelectedHook(hook.index); setScriptApproved(false); }}
-                className="accent-[#D4A853]"
-              />
-              <div className="flex-1">
-                <p className="text-sm text-escola-creme">{hook.title}</p>
-                <p className="text-xs text-escola-creme-50">{hook.duration}</p>
-              </div>
-              <span className="text-xs text-escola-creme-50">Hook {hook.index + 1}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+      <StepIndicator current={step} completed={completed} />
 
-      {/* Script preview & approval */}
-      <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-serif text-lg font-medium text-escola-creme">
-            2. Revê o script
+      {/* Error */}
+      {error && (
+        <div className="rounded-xl border border-escola-terracota/30 bg-escola-terracota/5 p-4 mb-4">
+          <p className="text-sm text-escola-terracota">{error}</p>
+          <button onClick={() => setError(null)} className="text-xs text-escola-creme-50 mt-1 underline">Fechar</button>
+        </div>
+      )}
+
+      {/* ─── STEP 1: SCRIPT ──────────────────────────────────────────────── */}
+      <div className={`rounded-xl border bg-escola-card p-6 mb-4 ${step === 0 ? "border-escola-dourado/50" : "border-escola-border"}`}>
+        <button onClick={() => setStep(0)} className="w-full text-left">
+          <h2 className="font-serif text-lg font-medium text-escola-creme flex items-center gap-2">
+            {completed[0] && <span className="text-green-400 text-sm">&#10003;</span>}
+            1. Script
           </h2>
-          {scriptApproved && (
-            <span className="text-xs text-green-400 bg-green-400/10 px-3 py-1 rounded-full">Aprovado</span>
-          )}
-        </div>
+        </button>
 
-        {scriptLoading ? (
-          <p className="text-sm text-escola-creme-50 animate-pulse">A carregar script...</p>
-        ) : scriptScenes.length === 0 ? (
-          <p className="text-sm text-escola-creme-50">Nenhum script encontrado para este hook.</p>
-        ) : (
-          <div className="space-y-4">
-            {scriptScenes.map((scene, i) => (
-              <div key={i} className="border border-escola-border rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-medium text-escola-dourado bg-escola-dourado/10 px-2 py-0.5 rounded">
-                    {SCENE_LABELS[scene.type] || scene.type}
-                  </span>
-                  {!scene.narration && (
-                    <span className="text-[10px] text-escola-creme-50">(sem narracao)</span>
-                  )}
-                </div>
-                {scene.narration ? (
-                  <textarea
-                    value={scene.narration}
-                    onChange={(e) => {
-                      const updated = [...scriptScenes];
-                      updated[i] = { ...updated[i], narration: e.target.value };
-                      setScriptScenes(updated);
-                      setScriptApproved(false);
-                    }}
-                    rows={Math.max(2, Math.ceil(scene.narration.length / 80))}
-                    className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y"
-                  />
-                ) : (
-                  <p className="text-xs text-escola-creme-50 italic">
-                    {scene.overlayText ? `Texto no ecra: "${scene.overlayText}"` : "Cena silenciosa"}
-                  </p>
-                )}
+        {step === 0 && (
+          <div className="mt-4 space-y-4">
+            {/* Course selector */}
+            <div className="space-y-2">
+              <label className="text-xs text-escola-creme-50">Curso:</label>
+              <select value={selectedCourse}
+                onChange={(e) => { setSelectedCourse(e.target.value); setSelectedHook(0); setScriptApproved(false); }}
+                className="w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none">
+                {COURSE_OPTIONS.map((c) => (
+                  <option key={c.slug} value={c.slug}>{c.label}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Hook selector */}
+            <div className="space-y-2">
+              {(YOUTUBE_HOOKS[selectedCourse] || []).map((hook) => (
+                <label key={hook.index} className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${selectedHook === hook.index ? "border-escola-dourado bg-escola-dourado/5" : "border-escola-border hover:border-escola-dourado/30"}`}>
+                  <input type="radio" name="hook" checked={selectedHook === hook.index}
+                    onChange={() => { setSelectedHook(hook.index); setScriptApproved(false); }}
+                    className="accent-[#D4A853]" />
+                  <div className="flex-1">
+                    <p className="text-sm text-escola-creme">{hook.title}</p>
+                    <p className="text-xs text-escola-creme-50">{hook.duration}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+
+            {/* Voice toggle */}
+            <div>
+              <button onClick={() => setShowVoiceField(!showVoiceField)} className="text-xs text-escola-creme-50 hover:text-escola-creme">
+                {showVoiceField ? "Esconder voz" : "Mudar voz"}
+              </button>
+              {showVoiceField && (
+                <input type="text" value={voiceId} onChange={(e) => setVoiceId(e.target.value)}
+                  className="mt-2 w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none"
+                  placeholder="Voice ID do ElevenLabs" />
+              )}
+            </div>
+
+            {/* Script scenes */}
+            {scriptLoading ? (
+              <p className="text-sm text-escola-creme-50 animate-pulse">A carregar...</p>
+            ) : (
+              <div className="space-y-3">
+                {scenes.map((scene, i) => (
+                  <div key={i} className="border border-escola-border rounded-lg p-3">
+                    <span className="text-xs font-medium text-escola-dourado bg-escola-dourado/10 px-2 py-0.5 rounded">
+                      {SCENE_LABELS[scene.type] || scene.type}
+                    </span>
+                    {scene.narration ? (
+                      <textarea value={scene.narration}
+                        onChange={(e) => {
+                          const n = [...scenes]; n[i] = { ...n[i], narration: e.target.value };
+                          setScenes(n); setScriptApproved(false);
+                        }}
+                        rows={Math.max(2, Math.ceil(scene.narration.length / 80))}
+                        className="mt-2 w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y" />
+                    ) : (
+                      <p className="mt-1 text-xs text-escola-creme-50 italic">
+                        {scene.overlayText ? `Texto: "${scene.overlayText}"` : "Cena silenciosa"}
+                      </p>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
 
             <div className="flex items-center gap-3 pt-2">
               {scriptApproved ? (
-                <button
-                  onClick={() => setScriptApproved(false)}
-                  className="rounded-lg border border-escola-border px-4 py-2.5 text-sm text-escola-creme-50 hover:text-escola-creme"
-                >
-                  Editar novamente
-                </button>
+                <>
+                  <span className="text-xs text-green-400 bg-green-400/10 px-3 py-1 rounded-full">Aprovado</span>
+                  <button onClick={() => setScriptApproved(false)} className="text-xs text-escola-creme-50 hover:text-escola-creme">Editar</button>
+                </>
               ) : (
-                <button
-                  onClick={() => setScriptApproved(true)}
-                  className="rounded-lg bg-escola-dourado px-6 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90"
-                >
-                  Aprovar script
+                <button onClick={() => { setScriptApproved(true); markComplete(0); setStep(1); }}
+                  disabled={scenes.length === 0}
+                  className="rounded-lg bg-escola-dourado px-6 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+                  Aprovar e avancar
                 </button>
               )}
-              <button
-                onClick={loadScript}
-                className="text-xs text-escola-creme-50 hover:text-escola-creme"
-              >
-                Repor original
+              <button onClick={loadScript} className="text-xs text-escola-creme-50 hover:text-escola-creme">Repor original</button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ─── STEP 2: AUDIO ───────────────────────────────────────────────── */}
+      <div className={`rounded-xl border bg-escola-card p-6 mb-4 ${step === 1 ? "border-escola-dourado/50" : "border-escola-border"}`}>
+        <button onClick={() => completed[0] && setStep(1)} className="w-full text-left">
+          <h2 className="font-serif text-lg font-medium text-escola-creme flex items-center gap-2">
+            {completed[1] && <span className="text-green-400 text-sm">&#10003;</span>}
+            2. Audio
+          </h2>
+        </button>
+
+        {step === 1 && (
+          <div className="mt-4 space-y-3">
+            <div className="flex items-center gap-3 mb-3">
+              <button onClick={generateAllAudio} disabled={loading.allAudio}
+                className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+                {loading.allAudio ? "A gerar..." : "Gerar todo o audio"}
+              </button>
+              {totalAudioDuration > 0 && (
+                <span className="text-xs text-escola-creme-50">
+                  Total: {Math.floor(totalAudioDuration / 60)}m{Math.round(totalAudioDuration % 60)}s
+                </span>
+              )}
+            </div>
+
+            {scenes.map((scene, i) => (
+              <div key={i} className="border border-escola-border rounded-lg p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-escola-dourado">{SCENE_LABELS[scene.type] || scene.type}</span>
+                  {scene.narration?.trim() && (
+                    <button onClick={() => generateSceneAudio(i)} disabled={loading[`audio-${i}`]}
+                      className="text-xs text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
+                      {loading[`audio-${i}`] ? "..." : scene.audioUrl ? "Re-gerar" : "Gerar"}
+                    </button>
+                  )}
+                </div>
+                {scene.audioUrl ? (
+                  <div className="mt-2">
+                    <audio controls src={scene.audioUrl} className="w-full h-8" />
+                    <p className="text-[10px] text-escola-creme-50 mt-1">{scene.audioDurationSec?.toFixed(1)}s</p>
+                  </div>
+                ) : !scene.narration?.trim() ? (
+                  <p className="text-[10px] text-escola-creme-50 mt-1">Sem narracao ({scene.durationSec}s silencio)</p>
+                ) : null}
+              </div>
+            ))}
+
+            <div className="flex gap-3 pt-2">
+              <button onClick={() => setStep(0)} className="text-xs text-escola-creme-50 hover:text-escola-creme">Voltar</button>
+              <button onClick={() => { markComplete(1); setStep(2); }} disabled={!audioComplete}
+                className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+                Avancar para imagens
               </button>
             </div>
           </div>
         )}
       </div>
 
-      {/* Produce */}
-      <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-6">
-        <h2 className="font-serif text-lg font-medium text-escola-creme mb-4">
-          3. Produzir
-        </h2>
+      {/* ─── STEP 3: IMAGES ──────────────────────────────────────────────── */}
+      <div className={`rounded-xl border bg-escola-card p-6 mb-4 ${step === 2 ? "border-escola-dourado/50" : "border-escola-border"}`}>
+        <button onClick={() => completed[1] && setStep(2)} className="w-full text-left">
+          <h2 className="font-serif text-lg font-medium text-escola-creme flex items-center gap-2">
+            {completed[2] && <span className="text-green-400 text-sm">&#10003;</span>}
+            3. Imagens
+          </h2>
+        </button>
 
-        {/* Voice ID toggle */}
-        <div className="mb-4">
-          <button
-            onClick={() => setShowVoiceField(!showVoiceField)}
-            className="text-xs text-escola-creme-50 hover:text-escola-creme"
-          >
-            {showVoiceField ? "Esconder opcoes de voz" : "Mudar voz"}
-          </button>
-          {showVoiceField && (
-            <div className="mt-2">
-              <input
-                type="text"
-                value={voiceId}
-                onChange={(e) => setVoiceId(e.target.value)}
-                className="w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-4 py-2.5 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none"
-                placeholder="Voice ID do ElevenLabs"
-              />
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          {isProducing ? (
-            <button
-              onClick={() => abortRef.current?.abort()}
-              className="rounded-lg bg-escola-terracota/80 px-6 py-3 text-sm font-medium text-escola-creme hover:bg-escola-terracota"
-            >
-              Cancelar
+        {step === 2 && (
+          <div className="mt-4 space-y-3">
+            <button onClick={generateAllImages} disabled={loading.allImages}
+              className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+              {loading.allImages ? "A gerar..." : "Gerar todas as imagens"}
             </button>
-          ) : (
-            <button
-              onClick={produceVideo}
-              disabled={!scriptApproved}
-              className="rounded-lg bg-escola-dourado px-6 py-3 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40"
-            >
-              {scriptApproved ? "Produzir video completo" : "Aprova o script primeiro"}
-            </button>
-          )}
-          <button
-            onClick={testGenerateImage}
-            disabled={testImageLoading}
-            className="rounded-lg border border-escola-border px-4 py-3 text-sm text-escola-creme-50 hover:border-escola-dourado/30 hover:text-escola-creme disabled:opacity-50"
-          >
-            {testImageLoading ? "A gerar..." : "Testar imagem"}
-          </button>
-        </div>
-      </div>
 
-      {/* Test image result */}
-      {testImageUrl && (
-        <div className="rounded-xl border border-escola-border bg-escola-card p-4 mb-6">
-          <img src={testImageUrl} alt="Teste" className="rounded-lg w-full max-w-lg border border-escola-border" />
-        </div>
-      )}
-
-      {/* Pipeline progress */}
-      {pipelineSteps.length > 0 && (
-        <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-6">
-          <h3 className="font-serif text-lg font-medium text-escola-creme mb-4">Pipeline</h3>
-          <div className="mb-4">
-            <div className="h-1.5 overflow-hidden rounded-full bg-escola-border">
-              <div className="h-full rounded-full bg-escola-dourado transition-all duration-500"
-                style={{ width: `${(pipelineSteps.filter((s) => s.status === "done").length / 5) * 100}%` }} />
-            </div>
-          </div>
-          <div className="space-y-3">
-            {pipelineSteps.map((step) => (
-              <div key={step.step} className="flex items-center gap-3">
-                <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-                  step.status === "done" ? "bg-green-500/20 text-green-400"
-                  : step.status === "error" ? "bg-escola-terracota/20 text-escola-terracota"
-                  : "bg-escola-dourado/20 text-escola-dourado animate-pulse"
-                }`}>
-                  {step.status === "done" ? "\u2713" : step.status === "error" ? "!" : step.step}
-                </span>
-                <div className="flex-1">
-                  <p className="text-sm text-escola-creme">{step.label}</p>
-                  {step.detail && <p className="text-xs text-escola-creme-50">{step.detail}</p>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Error */}
-      {error && (
-        <div className="rounded-xl border border-escola-terracota/30 bg-escola-terracota/5 p-4 mb-6">
-          <p className="text-sm text-escola-terracota">{error}</p>
-        </div>
-      )}
-
-      {/* Video result */}
-      {videoResult && (
-        <div className="rounded-xl border border-escola-dourado/30 bg-escola-dourado/5 p-6 space-y-6">
-          <div>
-            <h3 className="font-serif text-lg font-medium text-escola-dourado mb-2">Video produzido</h3>
-            <div className="grid grid-cols-3 gap-4 text-sm">
-              <div><span className="text-escola-creme-50">Cenas:</span> <span className="text-escola-creme">{videoResult.scenes}</span></div>
-              <div><span className="text-escola-creme-50">Imagens:</span> <span className="text-escola-creme">{videoResult.imagesGenerated}</span></div>
-              <div><span className="text-escola-creme-50">Animacoes:</span> <span className="text-escola-creme">{videoResult.animationsSubmitted || 0}</span></div>
-            </div>
-
-            {/* Animation status */}
-            {animTasks.length > 0 && (
-              <div className="mt-4 border-t border-escola-border pt-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <h4 className="text-sm font-medium text-escola-creme">Animacoes Runway</h4>
-                  {animPolling && <span className="text-xs text-escola-dourado animate-pulse">a verificar...</span>}
-                  {!animPolling && animTasks.every((t) => t.status === "done") && <span className="text-xs text-green-400">Todas prontas</span>}
-                </div>
-                <div className="space-y-2">
-                  {animTasks.map((task, i) => (
-                    <div key={i} className="flex items-center gap-3 text-sm">
-                      <span className={`w-2 h-2 rounded-full ${
-                        task.status === "done" ? "bg-green-500" : task.status === "failed" ? "bg-escola-terracota" : "bg-escola-dourado animate-pulse"
-                      }`} />
-                      <span className="text-escola-creme-50 w-24">{SCENE_LABELS[task.type] || task.type}</span>
-                      <span className="text-escola-creme text-xs">{task.status === "done" ? "Pronto" : task.status === "failed" ? "Falhou" : "A processar..."}</span>
-                      {task.videoUrl && <a href={task.videoUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-escola-dourado underline">Ver clip</a>}
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+              {scenes.map((scene, i) => (
+                <div key={i} className="border border-escola-border rounded-lg overflow-hidden">
+                  {scene.imageUrl ? (
+                    <img src={scene.imageUrl} alt={scene.type} className="w-full aspect-video object-cover" />
+                  ) : (
+                    <div className="w-full aspect-video bg-escola-bg flex items-center justify-center">
+                      <span className="text-xs text-escola-creme-50">Sem imagem</span>
                     </div>
-                  ))}
+                  )}
+                  <div className="p-2 flex items-center justify-between">
+                    <span className="text-xs text-escola-dourado">{SCENE_LABELS[scene.type] || scene.type}</span>
+                    <button onClick={() => generateSceneImage(i)} disabled={loading[`img-${i}`]}
+                      className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
+                      {loading[`img-${i}`] ? "..." : scene.imageUrl ? "Re-gerar" : "Gerar"}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              ))}
+            </div>
 
-            {videoResult.audioUrl && videoResult.audioUrl !== "[no-supabase]" && (
-              <div className="mt-3">
-                <p className="text-xs text-escola-creme-50 mb-1">Audio narrado:</p>
-                <audio controls src={videoResult.audioUrl} className="w-full max-w-md h-10" />
-              </div>
-            )}
-            {videoResult.manifestUrl && (
-              <a href={videoResult.manifestUrl} target="_blank" rel="noopener noreferrer" className="inline-block mt-2 text-xs text-escola-dourado underline">
-                Ver manifesto (JSON)
-              </a>
-            )}
-          </div>
-
-          {/* YouTube metadata */}
-          <div className="border-t border-escola-dourado/20 pt-4">
-            <h3 className="font-serif text-lg font-medium text-escola-creme mb-4">YouTube</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs text-escola-creme-50 block mb-1">Titulo</label>
-                <input type="text" value={ytTitle} onChange={(e) => setYtTitle(e.target.value)}
-                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none" />
-              </div>
-              <div>
-                <label className="text-xs text-escola-creme-50 block mb-1">Descricao</label>
-                <textarea value={ytDescription} onChange={(e) => setYtDescription(e.target.value)} rows={5}
-                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y" />
-              </div>
-              <div>
-                <label className="text-xs text-escola-creme-50 block mb-1">Tags</label>
-                <input type="text" value={ytTags} onChange={(e) => setYtTags(e.target.value)}
-                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-4 py-3 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none" />
-              </div>
-              <button onClick={() => navigator.clipboard.writeText(`TITULO: ${ytTitle}\n\nDESCRICAO:\n${ytDescription}\n\nTAGS: ${ytTags}`)}
-                className="rounded-lg bg-escola-dourado/20 border border-escola-dourado/30 px-4 py-2.5 text-sm text-escola-dourado hover:bg-escola-dourado/30">
-                Copiar metadados
+            <div className="flex gap-3 pt-2">
+              <button onClick={() => setStep(1)} className="text-xs text-escola-creme-50 hover:text-escola-creme">Voltar</button>
+              <button onClick={() => { markComplete(2); setStep(3); }} disabled={!imagesComplete}
+                className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+                Avancar para animacoes
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
+      {/* ─── STEP 4: ANIMATIONS ──────────────────────────────────────────── */}
+      <div className={`rounded-xl border bg-escola-card p-6 mb-4 ${step === 3 ? "border-escola-dourado/50" : "border-escola-border"}`}>
+        <button onClick={() => completed[2] && setStep(3)} className="w-full text-left">
+          <h2 className="font-serif text-lg font-medium text-escola-creme flex items-center gap-2">
+            {completed[3] && <span className="text-green-400 text-sm">&#10003;</span>}
+            4. Animacoes
+            {animPolling && <span className="text-xs text-escola-dourado animate-pulse ml-2">a verificar...</span>}
+          </h2>
+        </button>
+
+        {step === 3 && (
+          <div className="mt-4 space-y-3">
+            <button onClick={submitAllAnimations} disabled={loading.allAnim}
+              className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+              {loading.allAnim ? "A submeter..." : "Submeter todas as animacoes"}
+            </button>
+            <p className="text-xs text-escola-creme-50">Cada animacao demora ~3-5 min no Runway.</p>
+
+            <div className="space-y-2">
+              {scenes.map((scene, i) => (
+                <div key={i} className="border border-escola-border rounded-lg p-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${
+                        scene.animationStatus === "done" ? "bg-green-500"
+                        : scene.animationStatus === "failed" ? "bg-escola-terracota"
+                        : scene.animationTaskId ? "bg-escola-dourado animate-pulse"
+                        : "bg-escola-border"
+                      }`} />
+                      <span className="text-xs text-escola-dourado">{SCENE_LABELS[scene.type] || scene.type}</span>
+                      <span className="text-[10px] text-escola-creme-50">
+                        {scene.animationStatus === "done" ? "Pronto" : scene.animationStatus === "failed" ? "Falhou" : scene.animationTaskId ? "A processar..." : "Pendente"}
+                      </span>
+                    </div>
+                    <button onClick={() => submitSceneAnimation(i)} disabled={!scene.imageUrl || loading[`anim-${i}`]}
+                      className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
+                      {loading[`anim-${i}`] ? "..." : scene.animationTaskId ? "Re-submeter" : "Submeter"}
+                    </button>
+                  </div>
+                  {scene.animationUrl && (
+                    <div className="mt-2">
+                      <video controls src={scene.animationUrl} className="w-full max-w-sm rounded" />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button onClick={() => setStep(2)} className="text-xs text-escola-creme-50 hover:text-escola-creme">Voltar</button>
+              <button onClick={() => { markComplete(3); setStep(4); }}
+                disabled={!animsComplete && scenes.some((s) => s.animationTaskId)}
+                className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+                Avancar para legendas
+              </button>
+              <button onClick={() => { markComplete(3); setStep(4); }}
+                className="text-xs text-escola-creme-50 hover:text-escola-creme">
+                Saltar (sem animacoes)
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ─── STEP 5: SUBTITLES ───────────────────────────────────────────── */}
+      <div className={`rounded-xl border bg-escola-card p-6 mb-4 ${step === 4 ? "border-escola-dourado/50" : "border-escola-border"}`}>
+        <button onClick={() => completed[2] && setStep(4)} className="w-full text-left">
+          <h2 className="font-serif text-lg font-medium text-escola-creme flex items-center gap-2">
+            {completed[4] && <span className="text-green-400 text-sm">&#10003;</span>}
+            5. Legendas
+          </h2>
+        </button>
+
+        {step === 4 && (
+          <div className="mt-4 space-y-3">
+            <button onClick={generateSubtitles} disabled={loading.subs}
+              className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+              {loading.subs ? "A gerar..." : "Gerar legendas"}
+            </button>
+
+            {srt && (
+              <>
+                <div className="border border-escola-border rounded-lg p-3 max-h-60 overflow-y-auto">
+                  <textarea value={srt} onChange={(e) => setSrt(e.target.value)}
+                    rows={12}
+                    className="w-full bg-transparent text-xs text-escola-creme font-mono focus:outline-none resize-y" />
+                </div>
+                <div className="flex gap-3">
+                  <button onClick={() => downloadFile(srt, `hook-${selectedHook + 1}.srt`)}
+                    className="text-xs text-escola-dourado hover:underline">Descarregar SRT</button>
+                  <button onClick={() => downloadFile(vtt, `hook-${selectedHook + 1}.vtt`)}
+                    className="text-xs text-escola-dourado hover:underline">Descarregar VTT</button>
+                </div>
+              </>
+            )}
+
+            <div className="flex gap-3 pt-2">
+              <button onClick={() => setStep(3)} className="text-xs text-escola-creme-50 hover:text-escola-creme">Voltar</button>
+              <button onClick={() => { markComplete(4); setStep(5); }}
+                className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90">
+                {subsComplete ? "Avancar" : "Saltar legendas"}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ─── STEP 6: RESULT ──────────────────────────────────────────────── */}
+      <div className={`rounded-xl border bg-escola-card p-6 mb-4 ${step === 5 ? "border-escola-dourado/50" : "border-escola-border"}`}>
+        <button onClick={() => completed[3] && setStep(5)} className="w-full text-left">
+          <h2 className="font-serif text-lg font-medium text-escola-creme flex items-center gap-2">
+            {completed[5] && <span className="text-green-400 text-sm">&#10003;</span>}
+            6. Resultado Final
+          </h2>
+        </button>
+
+        {step === 5 && (
+          <div className="mt-4 space-y-4">
+            {/* Summary */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+              <div className="border border-escola-border rounded-lg p-3 text-center">
+                <p className="text-escola-dourado text-lg font-medium">{scenes.length}</p>
+                <p className="text-xs text-escola-creme-50">Cenas</p>
+              </div>
+              <div className="border border-escola-border rounded-lg p-3 text-center">
+                <p className="text-escola-dourado text-lg font-medium">{scenes.filter((s) => s.audioUrl).length}</p>
+                <p className="text-xs text-escola-creme-50">Audio</p>
+              </div>
+              <div className="border border-escola-border rounded-lg p-3 text-center">
+                <p className="text-escola-dourado text-lg font-medium">{scenes.filter((s) => s.imageUrl).length}</p>
+                <p className="text-xs text-escola-creme-50">Imagens</p>
+              </div>
+              <div className="border border-escola-border rounded-lg p-3 text-center">
+                <p className="text-escola-dourado text-lg font-medium">{scenes.filter((s) => s.animationUrl).length}</p>
+                <p className="text-xs text-escola-creme-50">Clips</p>
+              </div>
+            </div>
+
+            {/* Background music */}
+            <div className="border border-escola-border rounded-lg p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-escola-creme-50">Musica de fundo (instrumental):</p>
+                <button onClick={generateMusic} disabled={loading.music}
+                  className="text-xs text-escola-dourado hover:underline disabled:opacity-40">
+                  {loading.music ? "A gerar..." : "Gerar nova com IA (Suno)"}
+                </button>
+              </div>
+              {bgMusicUrl && <audio controls src={bgMusicUrl} className="w-full max-w-md h-8" />}
+              {!bgMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Sem musica. Clica em gerar.</p>}
+            </div>
+
+            {/* Render final video */}
+            <div className="border border-escola-dourado/30 rounded-xl p-4 bg-escola-dourado/5 space-y-3">
+              <h3 className="font-serif text-base font-medium text-escola-dourado">Renderizar MP4</h3>
+              <p className="text-xs text-escola-creme-50">
+                Gera o video final com todas as camadas: imagens, animacoes, narracao, musica de fundo, legendas e watermark.
+              </p>
+
+              <div className="flex items-center gap-3">
+                <button onClick={renderVideo} disabled={loading.render}
+                  className="rounded-lg bg-escola-dourado px-6 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+                  {loading.render ? "A renderizar..." : "Renderizar video final"}
+                </button>
+                <button onClick={() => { saveManifest(); }} disabled={loading.manifest}
+                  className="rounded-lg border border-escola-border px-4 py-2.5 text-sm text-escola-creme-50 hover:text-escola-creme disabled:opacity-40">
+                  {loading.manifest ? "..." : "Guardar manifesto"}
+                </button>
+                {manifestUrl && (
+                  <a href={manifestUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-escola-dourado underline">
+                    JSON
+                  </a>
+                )}
+              </div>
+
+              {renderProgress !== null && (
+                <div>
+                  <div className="h-2 overflow-hidden rounded-full bg-escola-border">
+                    <div className="h-full rounded-full bg-escola-dourado transition-all duration-300"
+                      style={{ width: `${renderProgress}%` }} />
+                  </div>
+                  <p className="text-xs text-escola-creme-50 mt-1">{renderLabel}</p>
+                </div>
+              )}
+
+              {videoUrl && (
+                <div className="space-y-2">
+                  <video controls src={videoUrl} className="w-full max-w-lg rounded-lg border border-escola-border" />
+                  <a href={videoUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-block text-sm text-escola-dourado underline">
+                    Descarregar MP4
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* YouTube metadata */}
+            {manifestUrl && (
+              <div className="border-t border-escola-border pt-4 space-y-3">
+                <h3 className="font-serif text-lg font-medium text-escola-creme">YouTube</h3>
+                <div>
+                  <label className="text-xs text-escola-creme-50 block mb-1">Titulo</label>
+                  <input type="text" value={ytTitle} onChange={(e) => setYtTitle(e.target.value)}
+                    className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none" />
+                </div>
+                <div>
+                  <label className="text-xs text-escola-creme-50 block mb-1">Descricao</label>
+                  <textarea value={ytDescription} onChange={(e) => setYtDescription(e.target.value)} rows={4}
+                    className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y" />
+                </div>
+                <div>
+                  <label className="text-xs text-escola-creme-50 block mb-1">Tags</label>
+                  <input type="text" value={ytTags} onChange={(e) => setYtTags(e.target.value)}
+                    className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none" />
+                </div>
+                <button onClick={() => navigator.clipboard.writeText(`TITULO: ${ytTitle}\n\nDESCRICAO:\n${ytDescription}\n\nTAGS: ${ytTags}`)}
+                  className="rounded-lg bg-escola-dourado/20 border border-escola-dourado/30 px-4 py-2 text-sm text-escola-dourado hover:bg-escola-dourado/30">
+                  Copiar metadados
+                </button>
+              </div>
+            )}
+
+            <button onClick={() => setStep(4)} className="text-xs text-escola-creme-50 hover:text-escola-creme">Voltar</button>
+          </div>
+        )}
+      </div>
     </>
   );
 }
