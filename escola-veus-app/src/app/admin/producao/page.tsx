@@ -595,13 +595,29 @@ export default function ProductionPage() {
                       {SCENE_LABELS[scene.type] || scene.type}
                     </span>
                     {scene.narration ? (
-                      <textarea value={scene.narration}
-                        onChange={(e) => {
-                          const n = [...scenes]; n[i] = { ...n[i], narration: e.target.value };
-                          setScenes(n); setScriptApproved(false);
-                        }}
-                        rows={Math.max(2, Math.ceil(scene.narration.length / 80))}
-                        className="mt-2 w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y" />
+                      <>
+                        <textarea value={scene.narration}
+                          onChange={(e) => {
+                            const n = [...scenes]; n[i] = { ...n[i], narration: e.target.value };
+                            setScenes(n); setScriptApproved(false);
+                          }}
+                          rows={Math.max(3, Math.ceil(scene.narration.length / 80))}
+                          className="mt-2 w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y font-mono leading-relaxed" />
+                        {/* v3 pause indicators */}
+                        {(() => {
+                          const pauses = (scene.narration.match(/\n\n/g) || []).length;
+                          const dashes = (scene.narration.match(/—/g) || []).length;
+                          const words = scene.narration.split(/\s+/).length;
+                          return (
+                            <div className="flex items-center gap-3 mt-1">
+                              <span className="text-[10px] text-escola-creme-50">
+                                ElevenLabs v3: {pauses} pausas longas, {dashes} pausas curtas, ~{words} palavras
+                              </span>
+                              {pauses === 0 && <span className="text-[10px] text-escola-terracota">Sem pausas — adiciona linhas em branco para o v3 respirar</span>}
+                            </div>
+                          );
+                        })()}
+                      </>
                     ) : (
                       <p className="mt-1 text-xs text-escola-creme-50 italic">
                         {scene.overlayText ? `Texto: "${scene.overlayText}"` : "Cena silenciosa"}
