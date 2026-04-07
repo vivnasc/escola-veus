@@ -71,7 +71,7 @@ export const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
 const ouroProprioHook1: YouTubeScript = {
   courseSlug: "ouro-proprio",
   hookIndex: 0,
-  title: "Porque sentes culpa quando gastas dinheiro em ti mesma?",
+  title: "Porque sentes culpa quando gastas dinheiro contigo?",
   durationMin: 6,
   thumbnail: {
     mainText: "A culpa de gastar em ti",
@@ -81,7 +81,7 @@ const ouroProprioHook1: YouTubeScript = {
     {
       type: "abertura",
       narration: "",
-      overlayText: "Porque sentes culpa quando gastas dinheiro em ti mesma?",
+      overlayText: "Porque sentes culpa quando gastas dinheiro contigo?",
       durationSec: 12,
       visualNote:
         "Dark navy background, a very faint barely visible dark silhouette figure standing alone in the distance, almost merged with the darkness, a tiny golden light far away on the horizon",
@@ -790,8 +790,8 @@ const mulherAntesDeMaeHook1: YouTubeScript = {
     {
       type: "revelacao",
       narration:
-        "Ninguém te avisou que quando um filho nasce, uma mulher morre. Não fisicamente. Mas a versão de ti que existia antes — a que tinha tempo, corpo, desejo, nome — essa desapareceu.\n\nE no lugar dela ficou 'mãe'. Uma função. Uma lista de tarefas. Uma culpa infinita.\n\nE o mais cruel: se sentes falta de ti mesma, a culpa duplica. Porque uma boa mãe não devia querer ser outra coisa. Devia bastar.\n\nMas não basta. E sentir isso não te faz má mãe. Faz-te humana. Faz-te inteira. Faz-te uma mulher que existia antes dos filhos e que merece continuar a existir.",
-      overlayText: "Quando um filho nasce,\numa mulher desaparece.\nNinguém te avisou.",
+        "Ninguém te avisou que quando um filho nasce, uma versão de ti morre. Não fisicamente. Mas a versão de ti que existia antes — a que tinha tempo, corpo, desejo, nome — essa desapareceu.\n\nE no lugar ficou 'mãe' ou 'pai'. Uma função. Uma lista de tarefas. Uma culpa infinita.\n\nE o mais cruel: se sentes falta de ti, a culpa duplica. Porque quem é boa mãe ou bom pai não devia querer ser outra coisa. Devia bastar.\n\nMas não basta. E sentir isso não te faz má pessoa. Faz-te real. Faz-te inteira, inteiro. Faz-te alguém que existia antes dos filhos e que merece continuar a existir.",
+      overlayText: "Quando um filho nasce,\numa parte de ti desaparece.\nNinguém te avisou.",
       durationSec: 100,
       visualNote:
         "Silhueta a emergir do ninho. Contorno próprio a aparecer. Duas formas da mesma pessoa — mãe e mulher — a separar-se suavemente.",
@@ -808,8 +808,8 @@ const mulherAntesDeMaeHook1: YouTubeScript = {
     {
       type: "frase_final",
       narration:
-        "Sentir falta de ti mesma não é egoísmo. É o primeiro sinal de que ainda estás lá.",
-      overlayText: "Sentir falta de ti mesma\nnão é egoísmo.",
+        "Sentir falta de ti não é egoísmo. É o primeiro sinal de que ainda estás lá.",
+      overlayText: "Sentir falta de ti\nnão é egoísmo.",
       durationSec: 14,
       visualNote:
         "Ecrã escuro. Texto em creme, serifado. Pausa.",

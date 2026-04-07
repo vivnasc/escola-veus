@@ -288,7 +288,7 @@ export default function ProductionPage() {
       const res = await fetch("/api/admin/courses/submit-animation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageUrl: scene.imageUrl, motionPrompt: motion, provider: "runway" }),
+        body: JSON.stringify({ imageUrl: scene.imageUrl, motionPrompt: motion, provider: "runway", courseSlug: selectedCourse }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
@@ -299,7 +299,7 @@ export default function ProductionPage() {
       });
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, [`anim-${index}`]: false })); }
-  }, [scenes]);
+  }, [scenes, selectedCourse]);
 
   const submitAllAnimations = useCallback(async () => {
     setLoading((p) => ({ ...p, allAnim: true }));
@@ -324,7 +324,7 @@ export default function ProductionPage() {
         const res = await fetch("/api/admin/courses/animation-status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tasks, provider: "runway" }),
+          body: JSON.stringify({ tasks, provider: "runway", courseSlug: selectedCourse }),
         });
         if (!res.ok) return;
         const data = await res.json();
@@ -363,6 +363,7 @@ export default function ProductionPage() {
             type: s.type,
           })),
           title: (YOUTUBE_HOOKS[selectedCourse] || [])[selectedHook]?.title,
+          courseSlug: selectedCourse,
         }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
@@ -371,7 +372,7 @@ export default function ProductionPage() {
       setVtt(data.vtt || "");
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, subs: false })); }
-  }, [scenes, selectedHook]);
+  }, [scenes, selectedHook, selectedCourse]);
 
   // ─── STEP 6: SAVE MANIFEST ───────────────────────────────────────────────
 
