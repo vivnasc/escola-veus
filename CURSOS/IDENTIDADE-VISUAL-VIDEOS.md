@@ -189,7 +189,7 @@ NAO usa SSML. NAO usar `...` para pausas (cria hesitacao indesejada).
 ## 11. STYLE Prompt (exacto do codigo)
 
 ```
-cinematic digital painting, atmospheric, dark navy blue background (#1A1A2E), human figures as anonymous silhouettes in warm terracotta (#C4745A) with soft golden (#D4A853) rim light glow — no face no features no gender markers, volumetric lighting, depth of field, painterly brushstrokes, warm gold and terracotta accent colors, muted rich palette, contemplative cinematic mood, dramatic chiaroscuro, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters
+flat editorial illustration, large bold composition filling the frame, dark navy blue background (#1A1A2E), human figures as large prominent terracotta (#C4745A) silhouettes with subtle golden (#D4A853) outline glow — no face no features no gender markers just warm-colored shapes dominating the scene, figures should be large and central not small icons, warm gold and terracotta accent colors, clean geometric shapes, limited muted palette, contemplative mood, 16:9 widescreen, no photorealism, no cartoon faces, no text, no words, no letters
 ```
 
 Este prompt e concatenado automaticamente a cada `visualNote` pela funcao `buildPrompt()`.
