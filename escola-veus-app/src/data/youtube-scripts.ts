@@ -85,25 +85,25 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "",
       durationSec: 18,
       visualNote:
-        "A dark silhouette figure in a shop holding a small bag, the figure is very dark almost blending into the navy background but slightly visible, shelves with warm terracotta colored products beside her, a faint thought bubble with numbers floating above",
+        "A dark silhouette figure in a shop holding a small bag, the figure is very dark almost blending into the navy background but slightly visible, shelves with warm terracotta colored products beside them, a faint thought bubble with numbers floating above",
     },
     {
       type: "situacao",
       narration:
-        "Isto acontece mais do que se pensa. Uma mulher compra um creme. Chega a casa, tira do saco, e não consegue gostar dele completamente. Trouxe a culpa junto.\n\nNão é por falta de dinheiro. É outra coisa. Uma voz antiga que diz: podias ter guardado. Há coisas mais importantes. Quem é que tu pensas que és para gastar assim?\n\nHá mulheres que pagam o jantar de toda a gente sem pestanejar. Mas hesitam vinte minutos antes de comprar uma vela para si mesmas. Não é avareza. Não é mesquinhice. É qualquer coisa muito mais funda.",
+        "Isto acontece mais do que se pensa. Compras um creme. Chegas a casa, tiras do saco, e não consegues gostar dele completamente. Trouxeste a culpa junto.\n\nNão é por falta de dinheiro. É outra coisa. Uma voz antiga que diz: podias ter guardado. Há coisas mais importantes. Quem é que tu pensas que és para gastar assim?\n\nHá pessoas que pagam o jantar de toda a gente sem pestanejar. Mas hesitam vinte minutos antes de comprar uma vela para si. Não é avareza. Não é mesquinhice. É qualquer coisa muito mais funda.",
       overlayText: "",
       durationSec: 70,
       visualNote:
-        "Split scene: on the left a slightly more visible dark silhouette figure happily giving presents to others shown as golden gift boxes, on the right the same figure hesitating alone with one small object in hand, the figure is becoming slightly more terracotta toned now, starting to emerge from the darkness",
+        "Split scene: on the left a slightly more visible dark silhouette figure happily giving presents to others shown as golden gift boxes, on the right the same figure hesitating alone with one small object in hand, the figure is becoming slightly more terracotta toned now, gender-neutral, starting to emerge from the darkness",
     },
     {
       type: "revelacao",
       narration:
-        "Esta culpa não nasce com ninguém. É herdada. Vem de frases que se ouvem antes de ter idade para as questionar.\n\nUma mãe que nunca compra nada para si. Um pai que repete que dinheiro não nasce em árvores. Uma casa onde gastar era perigoso. Onde ter coisas bonitas era sinal de irresponsabilidade.\n\nAs crianças que vivem nessas casas crescem. Começam a ganhar o seu próprio dinheiro. Mas a regra fica. Gastar nos outros é generosidade. Gastar em si é egoísmo.\n\nE quando uma pessoa não se permite gastar em si mesma, o que está a dizer — sem palavras — é que o seu bem-estar não é prioridade.",
+        "Esta culpa não nasce com ninguém. É herdada. Vem de frases que se ouvem antes de ter idade para as questionar.\n\nUma mãe que nunca compra nada para si. Um pai que repete que dinheiro não nasce em árvores. Uma casa onde gastar era perigoso. Onde ter coisas bonitas era sinal de irresponsabilidade.\n\nAs crianças que vivem nessas casas crescem. Começam a ganhar o seu próprio dinheiro. Mas a regra fica. Gastar nos outros é generosidade. Gastar em si é egoísmo.\n\nE quando não te permites gastar contigo, o que estás a dizer — sem palavras — é que o teu bem-estar não é prioridade.",
       overlayText: "",
       durationSec: 80,
       visualNote:
-        "A small child silhouette watching a taller adult silhouette who is putting something back on a shelf, both figures in terracotta now more visible, golden phrases floating like falling leaves around them, the child grows into an adult in the same pose — the shadow of the child remains behind her",
+        "A small child silhouette watching a taller adult silhouette who is putting something back on a shelf, both figures in terracotta now more visible, golden phrases floating like falling leaves around them, the child grows into an adult in the same pose — the shadow of the child remains behind them",
     },
     {
       type: "gesto",
@@ -112,7 +112,7 @@ const ouroProprioHook1: YouTubeScript = {
       overlayText: "Repara. Três segundos.",
       durationSec: 40,
       visualNote:
-        "A clearly visible terracotta silhouette figure with hand on chest, a warm golden glow radiating from where the hand touches, faint words and phrases dissolving and fading away around her, the figure is now warm and present — clearly emerged from the darkness",
+        "A clearly visible terracotta silhouette figure with hand on chest, a warm golden glow radiating from where the hand touches, faint words and phrases dissolving and fading away around them, the figure is now warm and present — clearly emerged from the darkness",
     },
     {
       type: "frase_final",
@@ -177,7 +177,7 @@ const ouroProprioHook2: YouTubeScript = {
     {
       type: "situacao",
       narration:
-        "A primeira frase que nunca foi dita, mas que ouviste mil vezes: nós não somos dessa gente. Talvez não fosse sobre dinheiro directamente. Mas cada vez que passavam por uma loja e a tua mãe desviava o olhar. Cada vez que dizia: isso não é para nós. Cada vez que recusava um convite porque era caro demais — mesmo quando não era — estavas a aprender.\n\nA aprender que há pessoas que podem e pessoas que não podem. E que tu eras das que não podem.\n\nA segunda frase: olha para o teu pai. Se a tua mãe alguma vez disse isto quando o assunto era dinheiro, o que te estava a ensinar era: o dinheiro causa dor. O dinheiro causa conflito. É melhor não falar sobre ele. Então cresceste a evitar o assunto. A mudar de conversa. A fingir que não te importas. Mas importas.\n\nA terceira frase: eu não preciso de nada. Esta é talvez a mais poderosa. Porque parece generosidade. Parece força. Mas o que a tua mãe te mostrou foi: uma boa mulher não tem necessidades. Uma boa mãe não gasta em si. O sacrifício é a moeda de troca do amor.\n\nE tu, sem perceber, adoptaste exactamente a mesma regra.",
+        "A primeira frase que nunca foi dita, mas que ouviste mil vezes: nós não somos dessa gente. Talvez não fosse sobre dinheiro directamente. Mas cada vez que passavam por uma loja e a tua mãe desviava o olhar. Cada vez que dizia: isso não é para nós. Cada vez que recusava um convite porque era caro demais — mesmo quando não era — estavas a aprender.\n\nA aprender que há pessoas que podem e pessoas que não podem. E que tu eras das que não podem.\n\nA segunda frase: olha para o teu pai. Se a tua mãe alguma vez disse isto quando o assunto era dinheiro, o que te estava a ensinar era: o dinheiro causa dor. O dinheiro causa conflito. É melhor não falar sobre ele. Então cresceste a evitar o assunto. A mudar de conversa. A fingir que não te importas. Mas importas.\n\nA terceira frase: eu não preciso de nada. Esta é talvez a mais poderosa. Porque parece generosidade. Parece força. Mas o que a tua mãe te mostrou foi: uma boa pessoa não tem necessidades. Quem cuida dos outros não gasta em si. O sacrifício é a moeda de troca do amor.\n\nE tu, sem perceber, adoptaste exactamente a mesma regra.",
       overlayText: "",
       durationSec: 150,
       visualNote:
@@ -261,7 +261,7 @@ const ouroProprioHook3: YouTubeScript = {
     {
       type: "situacao",
       narration:
-        "Há uma cena que se repete em versões diferentes. A freelancer que manda o orçamento e pede desculpa no email. A profissional que aceita o salário sem negociar. A dona do negócio que faz desconto antes de alguém pedir. A mulher que oferece o trabalho de graça porque sente que cobrar é rude.\n\nEm todos estes casos, há um momento invisível. O momento em que pensas num valor — o valor real — e depois baixas. Trinta por cento, às vezes mais. Não porque a outra pessoa pediu. Mas porque uma voz dentro de ti decidiu que esse valor é demasiado. Que quem és tu para cobrar isso.\n\nE depois aceitas. Trabalhas. Entregas. E no final sentes uma coisa que não sabes bem nomear. Não é raiva. É mais como traição. Como se tivesses vendido algo que era teu por menos do que vale.",
+        "Há uma cena que se repete em versões diferentes. Quem manda o orçamento e pede desculpa no email. Quem aceita o salário sem negociar. Quem faz desconto antes de alguém pedir. Quem oferece o trabalho de graça porque sente que cobrar é rude.\n\nEm todos estes casos, há um momento invisível. O momento em que pensas num valor — o valor real — e depois baixas. Trinta por cento, às vezes mais. Não porque a outra pessoa pediu. Mas porque uma voz dentro de ti decidiu que esse valor é demasiado. Que quem és tu para cobrar isso.\n\nE depois aceitas. Trabalhas. Entregas. E no final sentes uma coisa que não sabes bem nomear. Não é raiva. É mais como traição. Como se tivesses vendido algo que era teu por menos do que vale.",
       overlayText: "",
       durationSec: 100,
       visualNote:
@@ -279,7 +279,7 @@ const ouroProprioHook3: YouTubeScript = {
     {
       type: "gesto",
       narration:
-        "O exercício é simples e desconfortável. Escolhe o valor mais importante que cobras — o teu salário, o teu serviço, a tua hora. E diz em voz alta. Sozinha. No carro, no chuveiro, onde quiseres. Diz o número. Sem acrescentar nada. Sem justificar. Repara no que acontece no corpo quando o dizes.\n\nDepois, aumenta dez por cento. E diz outra vez.",
+        "O exercício é simples e desconfortável. Escolhe o valor mais importante que cobras — o teu salário, o teu serviço, a tua hora. E diz em voz alta. A sós. No carro, no chuveiro, onde quiseres. Diz o número. Sem acrescentar nada. Sem justificar. Repara no que acontece no corpo quando o dizes.\n\nDepois, aumenta dez por cento. E diz outra vez.",
       overlayText: "Diz o número.\nSem justificar.",
       durationSec: 50,
       visualNote:
@@ -353,8 +353,8 @@ const fioInvisivelHook1: YouTubeScript = {
     {
       type: "revelacao",
       narration:
-        "Há uma ideia que a ciência está cada vez mais a confirmar: nós não somos tão separados como pensamos. O que a tua mãe sentiu e não disse, o teu corpo ouviu. O que a tua avó viveu e engoliu, ficou registado. A ansiedade da tua melhor amiga que nunca te contou — tu sentiste-a na última vez que estiveram juntas.\n\nNão é magia. Não é energia. É biologia. O sistema nervoso humano foi feito para se ligar. Para sentir o outro. Para carregar o que não é nomeado.\n\nE quando choras sem razão, pode ser que estejas a chorar por muitas. Pela tua mãe que nunca chorou. Pela tua avó que não podia. Pela tua filha que ainda não sabe que vai precisar.\n\nEsse choro não é fraqueza. É a prova de que estás ligada a algo maior do que tu.",
-      overlayText: "Quando choras sem razão,\npode ser que estejas\na chorar por muitas.",
+        "Há uma ideia que a ciência está cada vez mais a confirmar: nós não somos tão separados como pensamos. O que a tua mãe sentiu e não disse, o teu corpo ouviu. O que a tua avó viveu e engoliu, ficou registado. A ansiedade de quem amas e nunca te contou — tu sentiste-a na última vez que estiveram juntos.\n\nNão é magia. Não é energia. É biologia. O sistema nervoso humano foi feito para se ligar. Para sentir o outro. Para carregar o que não é nomeado.\n\nE quando choras sem razão, pode ser que estejas a chorar por muitos. Por quem veio antes de ti e nunca chorou. Por quem não podia. Por quem ainda não sabe que vai precisar.\n\nEsse choro não é fraqueza. É a prova de que estás ligado a algo maior do que tu.",
+      overlayText: "Quando choras sem razão,\npode ser que estejas\na chorar por muitos.",
       durationSec: 120,
       visualNote:
         "Lago a tornar-se transparente. Reflexos de várias silhuetas visíveis na água — gerações. Fios dourados a conectar os reflexos. Luz a crescer.",
@@ -371,9 +371,9 @@ const fioInvisivelHook1: YouTubeScript = {
     {
       type: "frase_final",
       narration:
-        "Não estás sozinha no que sentes. Nunca estiveste. Há um fio invisível que te liga a todas as que vieram antes — e a todas as que vêm depois.",
+        "Não estás só no que sentes. Nunca estiveste. Há um fio invisível que te liga a quem veio antes — e a quem vem depois.",
       overlayText:
-        "Não estás sozinha no que sentes.\nNunca estiveste.\nHá um fio invisível.",
+        "Não estás só no que sentes.\nNunca estiveste.\nHá um fio invisível.",
       durationSec: 18,
       visualNote:
         "Ecrã escuro. Texto em creme, serifado, centrado. Pausa longa.",
@@ -421,7 +421,7 @@ const espelhoOutroHook1: YouTubeScript = {
     {
       type: "pergunta",
       narration:
-        "Há alguém na tua vida — pode ser uma colega, uma cunhada, uma amiga de uma amiga — que te irrita de uma forma que não faz sentido. Não te fez nada de grave. Mas cada vez que fala, algo dentro de ti contrai. Já te perguntaste porquê?",
+        "Há alguém na tua vida — pode ser um colega, alguém da família, uma pessoa que mal conheces — que te irrita de uma forma que não faz sentido. Não te fez nada de grave. Mas cada vez que fala, algo dentro de ti contrai. Já te perguntaste porquê?",
       overlayText: "Cada vez que fala,\nalgo dentro de ti contrai.",
       durationSec: 28,
       visualNote:
@@ -430,7 +430,7 @@ const espelhoOutroHook1: YouTubeScript = {
     {
       type: "situacao",
       narration:
-        "Imagina. Estás num jantar. Ela está lá. Fala alto. Ocupa espaço. Diz o que pensa sem pedir licença. E tu, que passas a vida a medir palavras, a ponderar, a ter cuidado com o que dizes — sentes um calor a subir.\n\nNão é raiva exactamente. É irritação. Uma irritação que parece desproporcionada. Porque ela não te fez nada. Não te insultou. Não te traiu.\n\nMas irrita-te.\n\nE quando contas a alguém, dizes: não sei, há qualquer coisa nela que me incomoda. E essa qualquer coisa — essa coisa que não sabes nomear — é a pista mais importante que vais receber hoje.",
+        "Imagina. Estás num jantar. Essa pessoa está lá. Fala alto. Ocupa espaço. Diz o que pensa sem pedir licença. E tu, que passas a vida a medir palavras, a ponderar, a ter cuidado com o que dizes — sentes um calor a subir.\n\nNão é raiva exactamente. É irritação. Uma irritação que parece desproporcionada. Porque não te fez nada. Não te insultou. Não te traiu.\n\nMas irrita-te.\n\nE quando contas a alguém, dizes: não sei, há qualquer coisa nessa pessoa que me incomoda. E essa qualquer coisa — essa coisa que não sabes nomear — é a pista mais importante que vais receber hoje.",
       overlayText: "",
       durationSec: 100,
       visualNote:
@@ -439,7 +439,7 @@ const espelhoOutroHook1: YouTubeScript = {
     {
       type: "revelacao",
       narration:
-        "O que te irrita no outro é quase sempre algo que vive em ti e que não te permites. Ela fala alto — e tu calaste-te a vida inteira. Ela ocupa espaço — e tu aprendeste a encolher. Ela diz o que pensa — e tu medes cada palavra com medo de incomodar.\n\nA irritação não é sobre ela. É sobre a parte de ti que gostava de ser assim mas que decidiu, há muito tempo, que isso não era permitido.\n\nIsto não significa que ela tem razão ou que é melhor. Significa que o teu corpo está a reagir a algo que reconhece — algo que é teu e que escondeste.\n\nO outro é um espelho. E quando o espelho te incomoda, raramente é por causa do espelho.",
+        "O que te irrita no outro é quase sempre algo que vive em ti e que não te permites. Essa pessoa fala alto — e tu calaste-te a vida inteira. Ocupa espaço — e tu aprendeste a encolher. Diz o que pensa — e tu medes cada palavra com medo de incomodar.\n\nA irritação não é sobre o outro. É sobre a parte de ti que gostava de ser assim mas que decidiu, há muito tempo, que isso não era permitido.\n\nIsto não significa que essa pessoa tem razão ou que é melhor. Significa que o teu corpo está a reagir a algo que reconhece — algo que é teu e que escondeste.\n\nO outro é um espelho. E quando o espelho te incomoda, raramente é por causa do espelho.",
       overlayText: "Quando o espelho te incomoda,\nraramente é por causa\ndo espelho.",
       durationSec: 110,
       visualNote:
@@ -602,7 +602,7 @@ const teiaHook1: YouTubeScript = {
     {
       type: "situacao",
       narration:
-        "Estás num almoço com amigas. Alguém diz algo com que não concordas. Sobre educação dos filhos. Sobre politica. Sobre a forma como outra amiga foi tratada.\n\nE sentes aquilo dentro de ti — a vontade de dizer. A tua versão. A tua verdade. Mas olhas à volta. E decides que não vale a pena. Que vai criar atrito. Que vão olhar para ti de lado.\n\nEntão sorris. Acenas. Mudas de assunto. E no caminho de volta para casa, no carro, sozinha — dizes tudo o que devias ter dito. Mas já não conta.\n\nIsto não acontece uma vez. Acontece sempre. Em cada grupo, em cada relação, em cada contexto onde sentes que a tua verdade pode custar-te o lugar.\n\nE a pergunta é: que lugar é esse, se para lá estar tens de desaparecer?",
+        "Estás num almoço com amigos. Alguém diz algo com que não concordas. Sobre educação dos filhos. Sobre politica. Sobre a forma como outra pessoa foi tratada.\n\nE sentes aquilo dentro de ti — a vontade de dizer. A tua versão. A tua verdade. Mas olhas à volta. E decides que não vale a pena. Que vai criar atrito. Que vão olhar para ti de lado.\n\nEntão sorris. Acenas. Mudas de assunto. E no caminho de volta para casa, no carro, a sós — dizes tudo o que devias ter dito. Mas já não conta.\n\nIsto não acontece uma vez. Acontece sempre. Em cada grupo, em cada relação, em cada contexto onde sentes que a tua verdade pode custar-te o lugar.\n\nE a pergunta é: que lugar é esse, se para lá estar tens de desaparecer?",
       overlayText: "",
       durationSec: 110,
       visualNote:
@@ -611,7 +611,7 @@ const teiaHook1: YouTubeScript = {
     {
       type: "revelacao",
       narration:
-        "Pertencer é a necessidade humana mais antiga. O cérebro trata a rejeição como uma ameaça de morte — literalmente. As mesmas zonas do cérebro que se activam com dor física activam-se quando és excluída.\n\nPor isso aprendeste cedo a adaptar-te. A ler a sala. A perceber o que é aceite e o que não é. A moldar-te ao formato do grupo.\n\nMas há um preço. E o preço é este: cada vez que te moldas, perdes um pedaço de contorno. E ao fim de anos, olhas para ti e não sabes quem és sem o grupo. Sem a aprovação. Sem o sorriso do outro.\n\nA boa notícia é que podes pertencer sem desaparecer. Mas primeiro precisas de perceber o que abdicaste para caber.",
+        "Pertencer é a necessidade humana mais antiga. O cérebro trata a rejeição como uma ameaça de morte — literalmente. As mesmas zonas do cérebro que se activam com dor física activam-se quando és excluído.\n\nPor isso aprendeste cedo a adaptar-te. A ler a sala. A perceber o que é aceite e o que não é. A moldar-te ao formato do grupo.\n\nMas há um preço. E o preço é este: cada vez que te moldas, perdes um pedaço de contorno. E ao fim de anos, olhas para ti e não sabes quem és sem o grupo. Sem a aprovação. Sem o sorriso do outro.\n\nA boa notícia é que podes pertencer sem desaparecer. Mas primeiro precisas de perceber o que abdicaste para caber.",
       overlayText: "Cada vez que te moldas,\nperdes um pedaço de contorno.",
       durationSec: 100,
       visualNote:
@@ -629,9 +629,9 @@ const teiaHook1: YouTubeScript = {
     {
       type: "frase_final",
       narration:
-        "Pertencer não é desaparecer. Pertencer de verdade é ser vista como és — e ainda assim ter lugar.",
+        "Pertencer não é desaparecer. Pertencer de verdade é ser visto como és — e ainda assim ter lugar.",
       overlayText:
-        "Pertencer não é desaparecer.\nÉ ser vista como és\ne ainda assim ter lugar.",
+        "Pertencer não é desaparecer.\nÉ ser visto como és\ne ainda assim ter lugar.",
       durationSec: 16,
       visualNote:
         "Ecrã escuro. Texto em creme, serifado. Pausa.",
@@ -688,7 +688,7 @@ const chamaHook1: YouTubeScript = {
     {
       type: "situacao",
       narration:
-        "Na reunião disseram-te que o projecto que fizeste sozinha ia ser apresentado por outra pessoa. Sentiste o calor subir. A mandíbula cerrar. Os olhos arder.\n\nMas o que fizeste? Sorriste. Disseste 'claro, faz sentido'. E no carro, sozinha, as mãos tremiam no volante. Não de medo. De raiva.\n\nUma raiva que nunca te ensinaram a ter. Porque meninas boas não gritam. Mulheres fortes não perdem o controlo. E tu — tu aprendeste tão bem a engolir que já nem sabes o que é raiva e o que é cansaço.\n\nA mandíbula dói. As costas travam. O estômago fecha. E tu chamas a tudo isto 'stress'.",
+        "Na reunião disseram-te que o projecto que fizeste sozinho ia ser apresentado por outra pessoa. Sentiste o calor subir. A mandíbula cerrar. Os olhos arder.\n\nMas o que fizeste? Sorriste. Disseste 'claro, faz sentido'. E no carro, a sós, as mãos tremiam no volante. Não de medo. De raiva.\n\nUma raiva que nunca te ensinaram a ter. Porque pessoas boas não gritam. Pessoas fortes não perdem o controlo. E tu — tu aprendeste tão bem a engolir que já nem sabes o que é raiva e o que é cansaço.\n\nA mandíbula dói. As costas travam. O estômago fecha. E tu chamas a tudo isto 'stress'.",
       overlayText: "",
       durationSec: 110,
       visualNote:
@@ -697,7 +697,7 @@ const chamaHook1: YouTubeScript = {
     {
       type: "revelacao",
       narration:
-        "A raiva é a emoção mais censurada nas mulheres. Um homem com raiva é assertivo. Uma mulher com raiva é histérica. E tu aprendeste isso antes de teres palavras.\n\nAprendeste que a raiva era perigosa. Que se a mostrasses, perdias amor. Perdias aprovação. Perdias o teu lugar.\n\nEntão guardaste-a. Na mandíbula. Nas costas. No estômago. Transformaste-a em cansaço, em sarcasmo, em controlo, em choro.\n\nMas a raiva não desaparece porque a escondes. Cresce. E um dia sai — nos sítios errados, nas pessoas erradas, da forma errada.\n\nNão porque sejas má. Porque nunca te deixaram ser inteira.",
+        "A raiva é uma das emoções mais censuradas. Desde cedo aprendes que mostrar raiva é perigoso. Que se a mostrasses, perdias amor. Perdias aprovação. Perdias o teu lugar.\n\nEntão guardaste-a. Na mandíbula. Nas costas. No estômago. Transformaste-a em cansaço, em sarcasmo, em controlo, em choro.\n\nMas a raiva não desaparece porque a escondes. Cresce. E um dia sai — nos sítios errados, nas pessoas erradas, da forma errada.\n\nNão porque sejas má pessoa. Porque nunca te deixaram ser inteiro.",
       overlayText: "A raiva não desaparece\nporque a escondes.\nCresce.",
       durationSec: 100,
       visualNote:

@@ -26,14 +26,14 @@ export const OURO_PROPRIO_YOUTUBE: YouTubeScript[] = [
   // ─── VIDEO 1 ───────────────────────────────────────────────────────────────
   {
     number: 1,
-    title: "Porque sentes culpa quando gastas dinheiro em ti mesma?",
+    title: "Porque sentes culpa quando gastas dinheiro contigo?",
     durationMin: 6,
     gancho:
       "Compraste algo para ti. Nao era caro, nao era necessario, era so bom. E antes de saíres da loja ja estavas a calcular se devias ter comprado.",
     situacao:
-      "Isto acontece mais do que se pensa. Uma mulher compra um creme. Chega a casa, tira do saco, e nao consegue gostar dele completamente. Trouxe a culpa junto. Nao e por falta de dinheiro. E outra coisa. Uma voz antiga que diz: podias ter guardado. Ha coisas mais importantes. Ha mulheres que pagam o jantar de toda a gente sem pestanejar. Mas hesitam vinte minutos antes de comprar uma vela para si mesmas. Nao e avareza. E qualquer coisa muito mais funda.",
+      "Isto acontece mais do que se pensa. Compras um creme. Chegas a casa, tiras do saco, e nao consegues gostar dele completamente. Trouxeste a culpa junto. Nao e por falta de dinheiro. E outra coisa. Uma voz antiga que diz: podias ter guardado. Ha coisas mais importantes. Ha pessoas que pagam o jantar de toda a gente sem pestanejar. Mas hesitam vinte minutos antes de comprar uma vela para si. Nao e avareza. E qualquer coisa muito mais funda.",
     revelacao:
-      "Esta culpa nao nasce com ninguem. E herdada. Vem de frases que se ouvem antes de ter idade para as questionar. Uma mae que nunca compra nada para si. Um pai que repete que dinheiro nao nasce em arvores. As criancas que vivem nessas casas crescem. Comecam a ganhar o seu dinheiro. Mas a regra fica. Gastar nos outros e generosidade. Gastar em si e egoismo. E quando uma pessoa nao se permite gastar em si mesma, o que esta a dizer — sem palavras — e que o seu bem-estar nao e prioridade.",
+      "Esta culpa nao nasce com ninguem. E herdada. Vem de frases que se ouvem antes de ter idade para as questionar. Uma mae que nunca compra nada para si. Um pai que repete que dinheiro nao nasce em arvores. As criancas que vivem nessas casas crescem. Comecam a ganhar o seu dinheiro. Mas a regra fica. Gastar nos outros e generosidade. Gastar em si e egoismo. E quando nao te permites gastar contigo, o que estas a dizer — sem palavras — e que o teu bem-estar nao e prioridade.",
     convite:
       "Se isto fez sentido, subscreve. Ha mais a caminho.",
     fraseFinal:
@@ -65,9 +65,9 @@ export const OURO_PROPRIO_YOUTUBE: YouTubeScript[] = [
     title: "O teste do preco: diz o teu valor em voz alta",
     durationMin: 5,
     gancho:
-      "Vou pedir-te para fazeres uma coisa agora — so demora dez segundos, mas vai dizer-te mais sobre a tua relacao com dinheiro do que qualquer livro de financas. Pronta?",
+      "Vou pedir-te para fazeres uma coisa agora — so demora dez segundos, mas vai dizer-te mais sobre a tua relacao com dinheiro do que qualquer livro de financas. Preparado?",
     situacao:
-      "Pensa no teu trabalho. No que fazes. No que ofereces — ao teu chefe, aos teus clientes, a quem quer que pague pelo teu tempo. Agora pensa: quanto vale isso? Nao quanto cobras. Nao quanto te pagam. Quanto vale. Tens o numero? Agora diz em voz alta. Diz: o meu trabalho vale X. O que aconteceu? Baixaste a voz? Olhaste a volta para ver se alguem ouviu? Riste de ti mesma? Disseste o numero com um talvez a frente? A maioria das mulheres nao consegue dizer o seu valor em voz alta sem que algo no corpo interfira. Nao e timidez. Nao e falta de confianca. E uma distancia — entre o que sabes que vale e o que te permites pedir.",
+      "Pensa no teu trabalho. No que fazes. No que ofereces — ao teu chefe, aos teus clientes, a quem quer que pague pelo teu tempo. Agora pensa: quanto vale isso? Nao quanto cobras. Nao quanto te pagam. Quanto vale. Tens o numero? Agora diz em voz alta. Diz: o meu trabalho vale X. O que aconteceu? Baixaste a voz? Olhaste a volta para ver se alguem ouviu? Riste? Disseste o numero com um talvez a frente? A maioria das pessoas nao consegue dizer o seu valor em voz alta sem que algo no corpo interfira. Nao e timidez. Nao e falta de confianca. E uma distancia — entre o que sabes que vale e o que te permites pedir.",
     revelacao:
       "A distancia entre o que cobras e o que vale nao e um problema de preco. E um problema de permissao. Algures, aprendeste que pedir o que mereces e arrogancia. Que cobrar bem e ganancia. Que ser acessivel e o mesmo que ser barata. Mas nao e. Ha uma diferenca enorme entre generosidade e medo. A generosidade e uma escolha. O desconto automatico que das antes de alguem pedir e uma reaccao. E cada vez que baixas o preco sem que ninguem te peca, estas a dizer — a ti mesma e ao mundo — que o teu valor e negociavel.",
     convite:
