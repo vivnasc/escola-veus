@@ -1201,7 +1201,7 @@ const trailerCanal: YouTubeScript = {
       overlayText: "",
       durationSec: 90,
       visualNote:
-        "Sequência cinematográfica: céu navy profundo. Uma silhueta terracota emerge de camadas translúcidas (os véus). Cada véu que se levanta revela mais contorno, mais luz dourada. Flashes rápidos de alguns mundos visuais — espelhos dourados, raízes, muros que se dissolvem — como exemplos dos véus que se podem levantar. Final: silhueta inteira, luminosa, contorno dourado. Logo Escola dos Véus em creme sobre navy.",
+        "Céu navy profundo. Silhueta quase invisível, apenas uma sombra mal perceptível contra o fundo escuro. À medida que camadas translúcidas (os véus) se levantam, a silhueta começa a ganhar tom terracota, contorno a emergir. Flashes rápidos de mundos visuais — espelhos, raízes, muros que se dissolvem. A cada véu levantado, a silhueta ganha mais presença, mais definição, até ficar plenamente luminosa com contorno dourado radiante. Logo Escola dos Véus em creme sobre navy.",
     },
     {
       type: "fecho",
@@ -1209,7 +1209,7 @@ const trailerCanal: YouTubeScript = {
       overlayText: "Escola dos Véus\nAutoconhecimento com profundidade\nseteveus.space",
       durationSec: 10,
       visualNote:
-        "Navy background. Logo centrado. URL. Luz dourada suave a pulsar.",
+        "Navy background. Silhueta plenamente radiante, contorno dourado intenso a pulsar suavemente. Logo centrado. URL.",
     },
   ],
 };
@@ -1232,7 +1232,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "Porque dizes sim\nquando queres dizer não",
       durationSec: 10,
       visualNote:
-        "Céu navy. Título em creme, fade lento. Território: Jardim dos Muros Invisíveis — muros translúcidos, vegetação que cresce entre fissuras.",
+        "Céu navy profundo. Título em creme, fade lento. Território: Jardim dos Muros Invisíveis — muros translúcidos, vegetação entre fissuras. Silhueta ausente — apenas escuridão e formas vagas.",
     },
     {
       type: "gancho",
@@ -1241,7 +1241,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "Porquê?",
       durationSec: 18,
       visualNote:
-        "Silhueta terracota de pé, boca entreaberta. Palavra 'sim' sai em dourado. Palavra 'não' fica presa dentro, a vermelho escuro, invisível para fora.",
+        "Silhueta quase invisível contra o navy, apenas um contorno ténue a adivinhar-se. Boca entreaberta. Palavra 'sim' sai em tom pálido. Palavra 'não' fica presa dentro, escura, imperceptível.",
     },
     {
       type: "reconhecimento",
@@ -1250,7 +1250,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "",
       durationSec: 50,
       visualNote:
-        "Sequência rápida: silhueta a acenar 'sim' em diferentes contextos — telemóvel à noite, mesa de trabalho sobrecarregada, porta de casa de outra pessoa. Em cada cena, uma linha dourada sai do peito da silhueta e fica com quem pediu.",
+        "Sequência rápida: silhueta escura, mal visível, a acenar 'sim' em diferentes contextos — telemóvel à noite, mesa de trabalho, porta de casa de outra pessoa. A silhueta é sombra contra sombra, quase indistinta do fundo navy. Em cada cena, uma linha ténue sai do peito e desaparece com quem pediu.",
     },
     {
       type: "framework",
@@ -1259,7 +1259,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "O Véu da Obediência:\nsim = segurança\nnão = perigo",
       durationSec: 120,
       visualNote:
-        "Animação didáctica: silhueta criança que acena sim e recebe luz (aprovação). Mesma criança que diz não e a luz apaga. Dissolve para silhueta adulta — mesma postura, mesmo reflexo. Um véu translúcido cobre a silhueta — o Véu da Obediência. Texto sobre navy: 'Software de infância. Ainda a correr.' Linhas douradas que saem do peito da silhueta em cada 'sim' — ficam com os outros, a silhueta fica mais escura.",
+        "Animação didáctica: silhueta criança começa a ganhar tom terracota — pela primeira vez visível, a emergir do fundo. Acena sim e recebe um brilho de aprovação. Diz não e o brilho apaga. Dissolve para silhueta adulta com a mesma postura — agora mais definida, terracota suave. Véu translúcido cobre a silhueta. Texto sobre navy: 'Software de infância. Ainda a correr.' Linhas que saem do peito em cada 'sim'.",
     },
     {
       type: "exemplo",
@@ -1268,7 +1268,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "",
       durationSec: 100,
       visualNote:
-        "Cena doméstica: silhueta com telemóvel ao ouvido, ombros a cair. Dissolve para silhueta num carro, mãos no volante, mandíbula cerrada. Flashback: mesma silhueta em criança, a acenar 'sim' a uma silhueta maior (mãe). Volta ao presente: dois caminhos — um com véu (sim automático, silhueta escura) e outro sem (sim livre, silhueta luminosa).",
+        "Cena doméstica: silhueta terracota mais visível, com telemóvel ao ouvido, ombros a cair. Dissolve para silhueta num carro, contorno agora definido, mandíbula cerrada. Flashback: silhueta em criança. Volta ao presente: dois caminhos — um com véu (silhueta opaca, sem brilho) e outro sem véu (silhueta com primeiros traços de contorno dourado a despontar).",
     },
     {
       type: "exercicio",
@@ -1277,7 +1277,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "Pausa dos 3 Segundos:\n1. Alguém pede.\n2. Conta até 3.\n3. Isto é meu ou é software?",
       durationSec: 70,
       visualNote:
-        "Silhueta de pé, mão no peito. Contagem visual: 1... 2... 3... com luz dourada a crescer a cada segundo. Véu translúcido que levanta ligeiramente — espaço visível entre o véu e a silhueta. Texto do exercício aparece em creme sobre navy.",
+        "Silhueta claramente visível, terracota quente, de pé com mão no peito. Contagem visual: 1... 2... 3... — a cada segundo, contorno dourado cresce em intensidade. Véu translúcido que levanta, revelando a silhueta cada vez mais luminosa. Texto do exercício em creme sobre navy.",
     },
     {
       type: "reframe",
@@ -1286,7 +1286,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "Cada não verdadeiro\nabre espaço\npara um sim que é teu.",
       durationSec: 16,
       visualNote:
-        "Ecrã escuro. Texto serifado em creme, centrado. Silhueta luminosa, contorno dourado, véu caído aos pés. Pausa longa.",
+        "Silhueta nitidamente luminosa, contorno dourado brilhante, véu caído aos pés. Terracota quente irradia do centro. Texto serifado em creme, centrado. Pausa longa.",
     },
     {
       type: "cta",
@@ -1295,7 +1295,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "Limite Sagrado\nseteveus.space",
       durationSec: 22,
       visualNote:
-        "Jardim dos Muros Invisíveis com muros translúcidos a dissolver. Vegetação dourada a crescer. URL no ecrã. Logo Escola dos Véus.",
+        "Silhueta plenamente radiante, contorno dourado intenso a pulsar. Jardim dos Muros Invisíveis — muros dissolvidos, vegetação luminosa. URL no ecrã. Logo Escola dos Véus.",
     },
     {
       type: "fecho",
@@ -1303,7 +1303,7 @@ const limiteSagradoHook1: YouTubeScript = {
       overlayText: "Escola dos Véus",
       durationSec: 8,
       visualNote:
-        "Dissolve para navy. Logo. Silêncio.",
+        "Dissolve para navy. Silhueta totalmente luminosa, contorno dourado radiante — afterglow que persiste antes do fade final. Logo. Silêncio.",
     },
   ],
 };
@@ -1326,7 +1326,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "Porque sentes culpa\nquando gastas contigo",
       durationSec: 10,
       visualNote:
-        "Céu navy. Título em creme, fade lento. Território: Casa dos Espelhos Dourados ao longe — espelhos embaciados.",
+        "Céu navy profundo. Título em creme, fade lento. Território: Casa dos Espelhos Dourados ao longe, quase invisível — espelhos embaciados, formas vagas na escuridão. Sem silhueta visível.",
     },
     {
       type: "gancho",
@@ -1335,7 +1335,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "De onde vem isto?",
       durationSec: 18,
       visualNote:
-        "Silhueta terracota segurando um pequeno saco. Sombra de culpa visível como uma segunda silhueta mais escura atrás.",
+        "Silhueta quase invisível contra o navy, apenas um contorno ténue segurando um pequeno saco. Sombra de culpa atrás — escura sobre escuro, mal perceptível.",
     },
     {
       type: "reconhecimento",
@@ -1344,7 +1344,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "",
       durationSec: 40,
       visualNote:
-        "Dois lados: à esquerda, silhueta a dar presentes dourados alegremente. À direita, mesma silhueta sozinha com um objecto pequeno, hesitante. Contraste luz/sombra.",
+        "Dois lados: à esquerda, silhueta escura a dar formas a outros — mal se distingue do fundo. À direita, mesma silhueta sozinha com um objecto pequeno, hesitante. Ambas as silhuetas sombrias, apenas esboços contra o navy.",
     },
     {
       type: "framework",
@@ -1353,7 +1353,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "O Véu da Herança Financeira:\n3 programas invisíveis",
       durationSec: 140,
       visualNote:
-        "Animação didáctica: criança sentada à mesa da cozinha, absorvendo — ondas invisíveis dos pais em direcção à criança. Três painéis aparecem como espelhos embaciados, cada um com um programa: 1) balança culpa/generosidade, 2) mapa com zonas proibidas, 3) boca com véu. Dissolve para adulto com os mesmos três espelhos — programa herdado. Véu translúcido dourado sobre a silhueta.",
+        "Animação didáctica: silhueta criança começa a emergir — tom terracota a aparecer pela primeira vez, sentada à mesa da cozinha. Ondas dos pais em direcção à criança. Três painéis como espelhos embaciados, cada um com um programa: 1) balança culpa/generosidade, 2) mapa com zonas proibidas, 3) boca com véu. Dissolve para silhueta adulta mais definida, terracota suave — programa herdado visível.",
     },
     {
       type: "exemplo",
@@ -1362,7 +1362,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "",
       durationSec: 90,
       visualNote:
-        "Cena numa loja: silhueta a segurar objecto. Balões de pensamento aparecem como frases flutuantes — mas escritas em caligrafia antiga, não moderna (são frases herdadas). Silhueta pousa o objecto — o alívio visual não é luminoso, é cinzento. Alternativa: silhueta leva o objecto, mas uma sombra de culpa acompanha-a até à saída.",
+        "Cena numa loja: silhueta terracota mais visível, contorno a ganhar definição, segurando objecto. Frases flutuantes em caligrafia antiga (frases herdadas). Silhueta pousa o objecto — sem brilho, alívio cinzento. Alternativa: silhueta leva o objecto, primeiros traços de contorno dourado a despontar, mas sombra de culpa ainda a acompanha.",
     },
     {
       type: "exercicio",
@@ -1371,7 +1371,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "Isto é meu\nou herdado?\n\nMão no peito.\nPergunta.\nEspera.",
       durationSec: 60,
       visualNote:
-        "Silhueta com mão no peito. Véu translúcido que se levanta ligeiramente — espaço entre o véu e a pele. Frases antigas flutuam e começam a dissolver. Luz dourada cresce no peito.",
+        "Silhueta claramente visível, terracota quente, mão no peito. Véu translúcido que se levanta — espaço entre o véu e a pele. Frases antigas dissolvem-se. Contorno dourado cresce a partir do peito, irradiando para os bordos da silhueta.",
     },
     {
       type: "reframe",
@@ -1380,7 +1380,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "A tua relação com dinheiro\nnão mostra quanto tens.\nMostra o que te permites.",
       durationSec: 18,
       visualNote:
-        "Espelho dourado limpo. Silhueta refletida — inteira, luminosa. Texto serifado em creme.",
+        "Espelho limpo. Silhueta refletida — nitidamente luminosa, contorno dourado brilhante, terracota quente a irradiar do centro. Texto serifado em creme.",
     },
     {
       type: "cta",
@@ -1389,7 +1389,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "Ouro Próprio\nseteveus.space",
       durationSec: 22,
       visualNote:
-        "Casa dos Espelhos Dourados — espelhos agora limpos. Silhueta inteira refletida. URL. Logo.",
+        "Casa dos Espelhos Dourados — espelhos limpos. Silhueta plenamente radiante, contorno dourado intenso a pulsar. Reflexo inteiro e luminoso em cada espelho. URL. Logo.",
     },
     {
       type: "fecho",
@@ -1397,7 +1397,7 @@ const ouroProprioHook1v2: YouTubeScript = {
       overlayText: "Escola dos Véus",
       durationSec: 8,
       visualNote:
-        "Dissolve para navy. Logo. Silêncio.",
+        "Dissolve para navy. Silhueta totalmente luminosa, contorno dourado radiante — afterglow que persiste antes do fade final. Logo. Silêncio.",
     },
   ],
 };
