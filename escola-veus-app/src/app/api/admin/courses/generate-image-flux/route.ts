@@ -26,16 +26,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "FAL_KEY nao configurada." }, { status: 400 });
     }
 
-    // Flux Schnell — synchronous, ~2 seconds
-    const res = await fetch("https://fal.run/fal-ai/flux/schnell", {
+    // Flux Pro 1.1 — high quality, ~10 seconds
+    const res = await fetch("https://fal.run/fal-ai/flux-pro/v1.1", {
       method: "POST",
       headers: { Authorization: `Key ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         prompt,
         image_size: { width, height },
         num_images: 1,
-        num_inference_steps: 4,
-        enable_safety_checker: false,
+        safety_tolerance: "5",
       }),
     });
 
