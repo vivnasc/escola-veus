@@ -256,7 +256,7 @@ export default function ProductionPage() {
           sceneLabel: `yt-hook${selectedHook}`,
           sceneIndex: index,
           narration: scene.narration,
-          voiceId: voiceId.trim() || undefined,
+          voiceId: voiceId.trim() || DEFAULT_VOICE_ID,
         }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
@@ -625,13 +625,7 @@ export default function ProductionPage() {
               ))}
             </div>
 
-            {/* Voice ID */}
-            <div>
-              <label className="text-xs text-escola-creme-50">Voice ID do ElevenLabs</label>
-              <input type="text" value={voiceId} onChange={(e) => setVoiceId(e.target.value)}
-                className="mt-1 w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme font-mono focus:border-escola-dourado focus:outline-none"
-                placeholder="Cola aqui o Voice ID" />
-            </div>
+            {/* Voice ID — escondido, já tem default correcto */}
 
             {/* Script scenes */}
             {scriptLoading ? (
