@@ -271,7 +271,8 @@ export default function ProductionPage() {
 
   const generateAllAudio = useCallback(async () => {
     setLoading((p) => ({ ...p, allAudio: true }));
-    let time = 0;
+    // Limpar áudios antigos para ficar claro que está a regenerar
+    setScenes((prev) => prev.map((s) => ({ ...s, audioUrl: undefined, audioDurationSec: undefined })));
     for (let i = 0; i < scenes.length; i++) {
       if (scenes[i].narration?.trim()) {
         await generateSceneAudio(i);
@@ -720,8 +721,14 @@ export default function ProductionPage() {
             <div className="flex items-center gap-3 mb-3">
               <button onClick={generateAllAudio} disabled={loading.allAudio}
                 className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
-                {loading.allAudio ? "A gerar..." : "Gerar todo o audio"}
+                {loading.allAudio ? "A gerar..." : scenes.some((s) => s.audioUrl) ? "Re-gerar todo o audio" : "Gerar todo o audio"}
               </button>
+              {scenes.some((s) => s.audioUrl) && !loading.allAudio && (
+                <button onClick={() => setScenes((prev) => prev.map((s) => ({ ...s, audioUrl: undefined, audioDurationSec: undefined })))}
+                  className="text-xs text-escola-creme-50 hover:text-escola-terracota">
+                  Limpar todos
+                </button>
+              )}
               {totalAudioDuration > 0 && (
                 <span className="text-xs text-escola-creme-50">
                   Total: {Math.floor(totalAudioDuration / 60)}m{Math.round(totalAudioDuration % 60)}s
