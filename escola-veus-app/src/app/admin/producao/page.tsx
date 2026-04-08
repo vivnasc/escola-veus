@@ -175,11 +175,11 @@ export default function ProductionPage() {
     if (scenes.length === 0) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify({
-        scenes, step, completed, voiceId, srt, vtt, bgMusicUrl, videoUrl,
+        scenes, step, completed, srt, vtt, bgMusicUrl, videoUrl,
         totalAudioDuration, scriptApproved,
       }));
     } catch { /* quota exceeded — silent */ }
-  }, [scenes, step, completed, voiceId, srt, vtt, bgMusicUrl, videoUrl, totalAudioDuration, scriptApproved, storageKey]);
+  }, [scenes, step, completed, srt, vtt, bgMusicUrl, videoUrl, totalAudioDuration, scriptApproved, storageKey]);
 
   // ─── RESTORE progress from localStorage on course/hook change ────────
   useEffect(() => {
@@ -191,7 +191,7 @@ export default function ProductionPage() {
           setScenes(data.scenes);
           setStep(data.step ?? 0);
           setCompleted(data.completed ?? Array(6).fill(false));
-          setVoiceId(data.voiceId ?? DEFAULT_VOICE_ID);
+          setVoiceId(DEFAULT_VOICE_ID); // Sempre usar a voz padrão
           setSrt(data.srt ?? "");
           setVtt(data.vtt ?? "");
           setBgMusicUrl(data.bgMusicUrl ?? "");
