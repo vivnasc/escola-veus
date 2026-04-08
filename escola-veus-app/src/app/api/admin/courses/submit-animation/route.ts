@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ erro: "RUNWAY_API_KEY nao configurada." }, { status: 400 });
       }
 
-      const res = await fetch("https://api.dev.runwayml.com/v1/image_to_video", {
+      const res = await fetch("https://api.runwayml.com/v1/image_to_video", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,

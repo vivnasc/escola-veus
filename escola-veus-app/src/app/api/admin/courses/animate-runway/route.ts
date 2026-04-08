@@ -29,7 +29,7 @@ async function animateWithRunway(
   if (!apiKey) throw new Error("RUNWAY_API_KEY nao configurada.");
 
   // 1. Create generation task
-  const createRes = await fetch("https://api.dev.runwayml.com/v1/image_to_video", {
+  const createRes = await fetch("https://api.runwayml.com/v1/image_to_video", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -61,7 +61,7 @@ async function animateWithRunway(
     await new Promise((r) => setTimeout(r, pollInterval));
 
     const statusRes = await fetch(
-      `https://api.dev.runwayml.com/v1/tasks/${taskId}`,
+      `https://api.runwayml.com/v1/tasks/${taskId}`,
       {
         headers: {
           Authorization: `Bearer ${apiKey}`,

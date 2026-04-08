@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
           const apiKey = process.env.RUNWAY_API_KEY;
           if (!apiKey) return { ...task, status: "error", videoUrl: null };
 
-          const res = await fetch(`https://api.dev.runwayml.com/v1/tasks/${task.taskId}`, {
+          const res = await fetch(`https://api.runwayml.com/v1/tasks/${task.taskId}`, {
             headers: { Authorization: `Bearer ${apiKey}`, "X-Runway-Version": "2024-11-06" },
           });
 

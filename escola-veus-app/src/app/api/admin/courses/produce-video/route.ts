@@ -108,7 +108,7 @@ async function submitRunwayAnimation(sourceImageUrl: string, motionPrompt: strin
   const apiKey = process.env.RUNWAY_API_KEY;
   if (!apiKey) return null;
 
-  const res = await fetch("https://api.dev.runwayml.com/v1/image_to_video", {
+  const res = await fetch("https://api.runwayml.com/v1/image_to_video", {
     method: "POST",
     headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "X-Runway-Version": "2024-11-06" },
     body: JSON.stringify({ model: "gen4_turbo", promptImage: sourceImageUrl, promptText: motionPrompt, duration: 10, ratio: "1280:720" }),
