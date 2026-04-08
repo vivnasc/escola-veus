@@ -43,9 +43,9 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         text: processedText,
         model_id: "eleven_v3",
-        // Não enviar language_code — deixar o modelo usar o sotaque natural da voz
+        language_code: "pt",
         output_format: "mp3_44100_128",
-        voice_settings: { stability: 0.30, similarity_boost: 0.60 },
+        voice_settings: { stability: 0.35, similarity_boost: 0.70 },
       }),
     });
 
@@ -80,8 +80,9 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           text: processedText,
           model_id: "eleven_v3",
+          language_code: "pt",
           output_format: "mp3_44100_128",
-          voice_settings: { stability: 0.30, similarity_boost: 0.60 },
+          voice_settings: { stability: 0.35, similarity_boost: 0.70 },
         }),
       });
 
