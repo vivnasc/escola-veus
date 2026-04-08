@@ -165,7 +165,7 @@ NAO usa SSML. NAO usar `...` para pausas (cria hesitacao indesejada).
 
 **Parametrizacao recomendada:**
 - `model_id: "eleven_v3"`
-- `language_code: "pt"`
+- `language_code: "pt-pt"` (pt = Brasil, pt-pt = Portugal)
 - `stability: 0.35` (mais baixo = mais expressivo e espontaneo; 0.5+ soa a leitura)
 - `similarity_boost: 0.70` (0.9 era demasiado rigido, suprimia variacao natural)
 - Modo "Creative" ou "Natural" na UI (nao "Stable")
