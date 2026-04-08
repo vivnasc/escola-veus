@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "ELEVENLABS_API_KEY nao configurada." }, { status: 400 });
     }
 
-    const voice = voiceId || process.env.ELEVENLABS_VOICE_ID || "fnoNuVpfClX7lHKFbyZ2";
+    const voice = voiceId || process.env.ELEVENLABS_VOICE_ID || "JGnWZj684pcXmK2SxYIv";
     // ElevenLabs v3: uses [pause], [short pause], [long pause] audio tags
     // Convert \n\n to [pause] tags for v3
     const processedText = narration
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
         model_id: "eleven_v3",
         // Não enviar language_code — deixar o modelo usar o sotaque natural da voz
         output_format: "mp3_44100_128",
-        voice_settings: { stability: 0.25, similarity_boost: 0.55, style: 0.45, speed: 1.12 },
+        voice_settings: { stability: 0.30, similarity_boost: 0.60 },
       }),
     });
 
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
           text: processedText,
           model_id: "eleven_v3",
           output_format: "mp3_44100_128",
-          voice_settings: { stability: 0.25, similarity_boost: 0.55, style: 0.45, speed: 1.12 },
+          voice_settings: { stability: 0.30, similarity_boost: 0.60 },
         }),
       });
 
