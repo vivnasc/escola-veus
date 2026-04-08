@@ -81,12 +81,15 @@ const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
   "ouro-proprio": "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/curso-ouro-proprio/faixa-01.mp3",
 };
 
+const LORA_TRIGGER = "veus_figure";
+
 function buildPrompt(visualNote: string): string {
+  const trigger = `${LORA_TRIGGER}, `;
   if (visualNote && visualNote.length > 20) {
     const cleaned = visualNote.replace(/#[0-9A-Fa-f]{6}/g, "").replace(/\(.*?\)/g, "").trim();
-    return `${cleaned}, ${STYLE}`;
+    return `${trigger}${cleaned}, ${STYLE}`;
   }
-  return `contemplative scene, ${STYLE}`;
+  return `${trigger}contemplative scene, ${STYLE}`;
 }
 
 // ─── STEP INDICATOR ─────────────────────────────────────────────────────────

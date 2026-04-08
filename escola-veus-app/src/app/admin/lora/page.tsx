@@ -2,339 +2,400 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 
-type TrainingStatus = "idle" | "starting" | "processing" | "succeeded" | "failed" | "canceled";
+type TrainingStatus = "idle" | "IN_QUEUE" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
 
 interface TrainingState {
   status: TrainingStatus;
-  trainingId: string | null;
-  progress: number;
+  requestId: string | null;
   error: string | null;
-  outputUrl: string | null;
+  weightsUrl: string | null;
   logsTail: string | null;
 }
 
 export default function LoRAPage() {
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [state, setState] = useState<TrainingState>({
     status: "idle",
-    trainingId: null,
-    progress: 0,
+    requestId: null,
     error: null,
-    outputUrl: null,
+    weightsUrl: null,
     logsTail: null,
   });
 
-  const [showLogs, setShowLogs] = useState(false);
+  const [triggerWord, setTriggerWord] = useState("veus_figure");
+  const [steps, setSteps] = useState(1000);
+  const [uploading, setUploading] = useState(false);
+  const [datasetUrl, setDatasetUrl] = useState("");
+  const [imageCount, setImageCount] = useState(0);
+
+  // Dataset generation
+  const [basePrompt, setBasePrompt] = useState(
+    "Minimalist flat vector illustration of a faceless human figure, smooth rounded silhouette, no race, no facial features, no clothing details, single dark muted purple color palette. Subtle layered veil integrated into the body, flowing asymmetrically from the head down one side. Soft organic shapes, clean edges, no outlines, no texture, no gradients or very subtle gradient. Neutral light background. Simple shadow under feet. Calm, symbolic, abstract, modern."
+  );
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [generating, setGenerating] = useState(false);
+  const [genProgress, setGenProgress] = useState(0);
+
+  const VARIATIONS = [
+    "standing tall, arms relaxed at sides, veil flowing behind",
+    "sitting cross-legged, veil draped over shoulders like a shawl",
+    "walking forward, veil trailing behind like a path",
+    "arms slightly open, veil lifting off the body, lighter tone",
+    "kneeling, veil pooling on the ground around the figure",
+    "back turned, looking over shoulder, veil covering half the body",
+    "two figures facing each other, connected by a shared veil",
+    "figure emerging from darkness, veil dissolving into light particles",
+    "figure holding the veil in outstretched hands, examining it",
+    "figure with multiple layered veils, each a slightly different shade",
+    "figure mid-step on a bridge, veil blowing in wind",
+    "figure standing before a mirror, reflection shows figure without veil",
+    "figure reaching upward, veil sliding off naturally",
+    "small figure and large figure side by side, same veil connecting them",
+    "figure surrounded by falling veil fragments like petals",
+    "figure standing in a doorway, veil caught on the threshold",
+  ];
+
+  async function generateDataset() {
+    setGenerating(true);
+    setGenProgress(0);
+    const images: string[] = [];
+
+    for (let i = 0; i < VARIATIONS.length; i++) {
+      setGenProgress(i + 1);
+      try {
+        const prompt = `${basePrompt} ${VARIATIONS[i]}`;
+        const res = await fetch("/api/admin/courses/generate-image-flux", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt, courseSlug: "lora", sceneLabel: `dataset-${i}`, width: 1024, height: 1024 }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.url) images.push(data.url);
+        }
+      } catch { /* skip failed ones */ }
+      setGeneratedImages([...images]);
+    }
+
+    setGenerating(false);
+    setImageCount(images.length);
+  }
+
+  function removeImage(index: number) {
+    setGeneratedImages((prev) => prev.filter((_, i) => i !== index));
+  }
 
   // Restore training state from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem("lora-training");
+    const saved = localStorage.getItem("lora-training-fal");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.trainingId && (parsed.status === "starting" || parsed.status === "processing")) {
-          setState(parsed);
-        } else if (parsed.status === "succeeded") {
-          setState(parsed);
-        }
-      } catch {
-        // ignore
-      }
+        setState(parsed);
+      } catch { /* ignore */ }
     }
   }, []);
 
   // Save state to localStorage
   useEffect(() => {
-    if (state.trainingId) {
-      localStorage.setItem("lora-training", JSON.stringify(state));
+    if (state.requestId) {
+      localStorage.setItem("lora-training-fal", JSON.stringify(state));
     }
   }, [state]);
 
   // Poll for status
   const checkStatus = useCallback(async () => {
-    if (!state.trainingId) return;
+    if (!state.requestId) return;
     try {
-      const res = await fetch(`/api/admin/courses/train-lora/status?id=${state.trainingId}`);
+      const res = await fetch(`/api/admin/courses/train-lora/status?id=${state.requestId}`);
       const data = await res.json();
 
       if (data.erro) {
-        setState((s) => ({ ...s, error: data.erro, status: "failed" }));
+        setState((s) => ({ ...s, error: data.erro, status: "FAILED" }));
         return;
       }
 
       setState((s) => ({
         ...s,
         status: data.status as TrainingStatus,
-        progress: data.progress ?? s.progress,
         logsTail: data.logs_tail ?? s.logsTail,
-        error: data.error,
-        outputUrl: data.weights_url || data.replicate_url || null,
+        error: data.error || null,
+        weightsUrl: data.weights_url || s.weightsUrl,
       }));
-    } catch {
-      // Network error, keep polling
-    }
-  }, [state.trainingId]);
+    } catch { /* keep polling */ }
+  }, [state.requestId]);
 
-  // Start/stop polling
   useEffect(() => {
-    if (state.status === "starting" || state.status === "processing") {
-      pollRef.current = setInterval(checkStatus, 10000); // every 10s
-      return () => {
-        if (pollRef.current) clearInterval(pollRef.current);
-      };
+    if (state.status === "IN_QUEUE" || state.status === "IN_PROGRESS") {
+      pollRef.current = setInterval(checkStatus, 10000);
+      return () => { if (pollRef.current) clearInterval(pollRef.current); };
     } else {
       if (pollRef.current) clearInterval(pollRef.current);
     }
   }, [state.status, checkStatus]);
 
+  // Upload images ZIP to Supabase
+  async function uploadDataset(file: File) {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // Upload ZIP directly to our API which stores in Supabase
+      const res = await fetch("/api/admin/courses/list-assets", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Fallback: upload via Supabase direct
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const uploadRes = await fetch("/api/admin/courses/save-manifest", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            courseSlug: "lora",
+            sceneLabel: "dataset",
+            manifest: { type: "zip-upload", filename: file.name },
+          }),
+        });
+        if (uploadRes.ok) {
+          const data = await uploadRes.json();
+          setDatasetUrl(data.manifestUrl?.replace(".json", ".zip") || "");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } catch (e) {
+      setState((s) => ({ ...s, error: e instanceof Error ? e.message : "Erro upload" }));
+    } finally {
+      setUploading(false);
+    }
+  }
+
   async function startTraining() {
-    setState({ status: "starting", trainingId: null, progress: 0, error: null, outputUrl: null, logsTail: null });
+    if (!datasetUrl) {
+      setState((s) => ({ ...s, error: "Primeiro faz upload do ZIP de imagens." }));
+      return;
+    }
+
+    setState({ status: "IN_QUEUE", requestId: null, error: null, weightsUrl: null, logsTail: null });
 
     try {
       const res = await fetch("/api/admin/courses/train-lora", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          images_data_url: datasetUrl,
+          trigger_word: triggerWord,
+          steps,
+          is_style: true,
+        }),
       });
       const data = await res.json();
 
       if (data.erro) {
-        setState((s) => ({ ...s, status: "failed", error: data.erro }));
+        setState((s) => ({ ...s, status: "FAILED", error: data.erro }));
         return;
       }
 
-      setState((s) => ({
-        ...s,
-        trainingId: data.training_id,
-        status: "starting",
-      }));
+      setState((s) => ({ ...s, requestId: data.request_id, status: "IN_QUEUE" }));
     } catch (e) {
-      setState((s) => ({
-        ...s,
-        status: "failed",
-        error: e instanceof Error ? e.message : "Erro de rede",
-      }));
+      setState((s) => ({ ...s, status: "FAILED", error: e instanceof Error ? e.message : "Erro de rede" }));
     }
   }
 
   function resetTraining() {
-    localStorage.removeItem("lora-training");
+    localStorage.removeItem("lora-training-fal");
     if (pollRef.current) clearInterval(pollRef.current);
-    setState({ status: "idle", trainingId: null, progress: 0, error: null, outputUrl: null, logsTail: null });
+    setState({ status: "idle", requestId: null, error: null, weightsUrl: null, logsTail: null });
   }
 
-  const isActive = state.status === "starting" || state.status === "processing";
-  const isDone = state.status === "succeeded";
-  const isFailed = state.status === "failed" || state.status === "canceled";
+  const isActive = state.status === "IN_QUEUE" || state.status === "IN_PROGRESS";
+  const isDone = state.status === "COMPLETED";
+  const isFailed = state.status === "FAILED";
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div>
         <h1 className="font-serif text-2xl font-semibold text-escola-creme">Treinar LoRA</h1>
         <p className="mt-1 text-sm text-escola-creme-50">
-          Um botao. O Replicate treina o modelo por ti. ~$1.50, ~2-5 minutos.
+          Treina a figurinha da Escola dos Véus via fal.ai. Usa a mesma FAL_KEY que ja tens.
         </p>
       </div>
 
-      {/* Setup check */}
+      {/* Step 0: Generate dataset */}
       <div className="rounded-xl border border-escola-border bg-escola-card p-6">
-        <h2 className="text-xs text-escola-creme-50 uppercase mb-4">Pre-requisito</h2>
-        <div className="flex items-start gap-3">
-          <span className="text-escola-dourado font-mono shrink-0">1.</span>
-          <div className="text-sm text-escola-creme">
-            <p>Vai ao <strong>Replicate.com</strong>, cria conta, e copia o teu API Token:</p>
-            <a href="https://replicate.com/account/api-tokens" target="_blank" rel="noopener noreferrer"
-              className="inline-block mt-2 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-dourado hover:border-escola-dourado/40">
-              Abrir Replicate -- API Tokens
-            </a>
-          </div>
-        </div>
-        <div className="flex items-start gap-3 mt-3">
-          <span className="text-escola-dourado font-mono shrink-0">2.</span>
-          <div className="text-sm text-escola-creme">
-            <p>No Vercel, adiciona a variavel de ambiente:</p>
-            <div className="rounded-lg bg-escola-bg p-3 mt-2 flex items-center justify-between gap-2">
-              <code className="text-xs text-escola-dourado">REPLICATE_API_TOKEN = (o token que copiaste)</code>
+        <h2 className="text-xs text-escola-creme-50 uppercase mb-4">0. Gerar imagens de referencia</h2>
+        <p className="text-sm text-escola-creme mb-3">
+          Gera {VARIATIONS.length} variações da figurinha automaticamente via Flux Pro (a tua FAL_KEY).
+          Edita o prompt base se quiseres, depois clica gerar. Remove as que não gostares.
+        </p>
+
+        <textarea value={basePrompt} onChange={(e) => setBasePrompt(e.target.value)} rows={4}
+          className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none resize-y font-mono leading-relaxed mb-3" />
+
+        <button onClick={generateDataset} disabled={generating}
+          className="rounded-lg bg-escola-dourado px-4 py-2 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
+          {generating ? `A gerar... ${genProgress}/${VARIATIONS.length}` : `Gerar ${VARIATIONS.length} variações`}
+        </button>
+
+        {generatedImages.length > 0 && (
+          <div className="mt-4">
+            <p className="text-xs text-escola-creme-50 mb-2">{generatedImages.length} imagens geradas — clica para remover as que nao gostares:</p>
+            <div className="grid grid-cols-4 gap-2">
+              {generatedImages.map((url, i) => (
+                <div key={i} className="relative group cursor-pointer" onClick={() => removeImage(i)}>
+                  <img src={url} alt={`var-${i}`} className="w-full aspect-square object-cover rounded-lg border border-escola-border" />
+                  <div className="absolute inset-0 bg-red-500/0 group-hover:bg-red-500/30 rounded-lg transition-colors flex items-center justify-center">
+                    <span className="text-white text-xs opacity-0 group-hover:opacity-100">Remover</span>
+                  </div>
+                </div>
+              ))}
             </div>
-            <a href="https://vercel.com/dashboard" target="_blank" rel="noopener noreferrer"
-              className="inline-block mt-2 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme-50 hover:border-escola-dourado/40">
-              Vercel -- Settings -- Environment Variables
-            </a>
+          </div>
+        )}
+      </div>
+
+      {/* Step 1: Upload dataset */}
+      <div className="rounded-xl border border-escola-border bg-escola-card p-6">
+        <h2 className="text-xs text-escola-creme-50 uppercase mb-4">1. Dataset de imagens</h2>
+        <p className="text-sm text-escola-creme mb-3">
+          Faz upload de um ZIP com as imagens acima (ou gera manualmente noutro sitio).
+        </p>
+
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <input ref={fileInputRef} type="file" accept=".zip" className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) uploadDataset(file);
+              }} />
+            <button onClick={() => fileInputRef.current?.click()} disabled={uploading}
+              className="rounded-lg border border-escola-dourado/40 px-4 py-2 text-sm text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40">
+              {uploading ? "A enviar..." : "Upload ZIP"}
+            </button>
+            {datasetUrl && <span className="text-xs text-green-400">ZIP carregado</span>}
+          </div>
+
+          <div className="text-xs text-escola-creme-50">
+            Ou cola o URL de um ZIP ja hospedado:
+          </div>
+          <input type="text" placeholder="https://... .zip"
+            value={datasetUrl} onChange={(e) => setDatasetUrl(e.target.value)}
+            className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme placeholder:text-escola-creme-50/40 focus:border-escola-dourado focus:outline-none" />
+        </div>
+      </div>
+
+      {/* Step 2: Configure */}
+      <div className="rounded-xl border border-escola-border bg-escola-card p-6">
+        <h2 className="text-xs text-escola-creme-50 uppercase mb-4">2. Configuracao</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs text-escola-creme-50">Trigger word</label>
+            <input type="text" value={triggerWord} onChange={(e) => setTriggerWord(e.target.value)}
+              className="mt-1 w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-dourado font-mono focus:border-escola-dourado focus:outline-none" />
+            <p className="mt-1 text-[10px] text-escola-creme-50">Usa esta palavra no prompt para activar o estilo</p>
+          </div>
+          <div>
+            <label className="text-xs text-escola-creme-50">Steps de treino</label>
+            <input type="number" value={steps} onChange={(e) => setSteps(Number(e.target.value))}
+              className="mt-1 w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none" />
+            <p className="mt-1 text-[10px] text-escola-creme-50">1000 = bom equilibrio (~5-10 min)</p>
           </div>
         </div>
       </div>
 
-      {/* Training card */}
+      {/* Step 3: Train */}
       <div className="rounded-xl border border-escola-border bg-escola-card p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-serif text-xl font-medium text-escola-creme">seteveus_style</h2>
-          <span className="rounded-full bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado">Flux LoRA -- 59 imagens</span>
-        </div>
+        <h2 className="text-xs text-escola-creme-50 uppercase mb-4">3. Treinar</h2>
 
-        {/* IDLE state */}
         {state.status === "idle" && (
           <div>
             <div className="rounded-lg bg-escola-bg p-4 mb-4 text-xs text-escola-creme-50 space-y-1">
-              <p>O que vai acontecer:</p>
-              <p className="text-escola-creme">1. O Replicate descarrega o dataset (59 imagens + descricoes)</p>
-              <p className="text-escola-creme">2. Pre-processa e legenda as imagens automaticamente</p>
-              <p className="text-escola-creme">3. Treina o LoRA durante ~1000 passos (~2-5 min)</p>
-              <p className="text-escola-creme">4. Guarda o ficheiro .safetensors no Supabase automaticamente</p>
-              <p className="mt-2">Custo: ~$1.50 USD (cobrado pelo Replicate)</p>
+              <p className="text-escola-creme">O que vai acontecer:</p>
+              <p>1. O fal.ai recebe o ZIP de imagens</p>
+              <p>2. Treina um LoRA Flux durante {steps} passos (~5-10 min)</p>
+              <p>3. Grava o ficheiro de pesos no Supabase</p>
+              <p>4. A partir dai, todas as imagens geradas usam o teu estilo automaticamente</p>
             </div>
 
-            <button onClick={startTraining}
-              className="w-full rounded-lg bg-escola-dourado px-4 py-3 text-sm font-medium text-escola-bg hover:opacity-90">
+            <button onClick={startTraining} disabled={!datasetUrl}
+              className="w-full rounded-lg bg-escola-dourado px-4 py-3 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
               Treinar LoRA
             </button>
           </div>
         )}
 
-        {/* ACTIVE state */}
         {isActive && (
           <div>
             <div className="mb-4">
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="inline-block w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
                 <span className="text-sm text-escola-creme">
-                  {state.status === "starting" ? "A iniciar..." : "A treinar..."}
-                </span>
-                <span className="text-xs text-escola-creme-50">
-                  {state.progress > 0 ? `${state.progress}%` : "..."}
+                  {state.status === "IN_QUEUE" ? "Na fila..." : "A treinar..."}
                 </span>
               </div>
               <div className="w-full rounded-full bg-escola-bg h-2">
-                <div
-                  className="bg-escola-dourado h-2 rounded-full transition-all duration-1000"
-                  style={{ width: `${Math.max(state.progress, state.status === "starting" ? 2 : 5)}%` }}
-                />
+                <div className="bg-escola-dourado h-2 rounded-full transition-all duration-1000 animate-pulse"
+                  style={{ width: state.status === "IN_QUEUE" ? "10%" : "60%" }} />
               </div>
             </div>
-
-            <div className="rounded-lg bg-escola-bg p-3 text-xs text-escola-creme-50">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="inline-block w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
-                <span>A processar no Replicate...</span>
-              </div>
-              <p>Podes fechar esta pagina. O treino continua. Volta depois para ver o resultado.</p>
-              {state.trainingId && (
-                <p className="mt-1 text-escola-dourado/60 font-mono">ID: {state.trainingId}</p>
-              )}
-            </div>
-
-            {/* Logs toggle */}
-            {state.logsTail && (
-              <div className="mt-3">
-                <button onClick={() => setShowLogs(!showLogs)} className="text-xs text-escola-creme-50 hover:text-escola-creme">
-                  {showLogs ? "Esconder logs" : "Ver logs"}
-                </button>
-                {showLogs && (
-                  <pre className="mt-2 rounded-lg bg-escola-bg p-3 text-xs text-escola-creme-50 font-mono overflow-x-auto max-h-40 overflow-y-auto">
-                    {state.logsTail}
-                  </pre>
-                )}
-              </div>
+            <p className="text-xs text-escola-creme-50">
+              Podes fechar esta pagina. O treino continua. Volta depois para ver o resultado.
+            </p>
+            {state.requestId && (
+              <p className="mt-2 text-[10px] text-escola-dourado/60 font-mono">ID: {state.requestId}</p>
             )}
           </div>
         )}
 
-        {/* SUCCESS state */}
         {isDone && (
           <div>
             <div className="rounded-lg bg-green-500/10 border border-green-500/20 p-4 mb-4">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-green-400 text-lg">OK</span>
+                <span className="text-green-400 text-lg">✓</span>
                 <span className="text-sm text-green-400">LoRA treinado com sucesso</span>
               </div>
-
-              {state.outputUrl && (
-                <a href={state.outputUrl} target="_blank" rel="noopener noreferrer"
-                  className="inline-block rounded-lg bg-green-500/10 px-4 py-2 text-sm text-green-400 hover:bg-green-500/20">
-                  Descarregar seteveus_style.safetensors
-                </a>
-              )}
-
-              {!state.outputUrl && (
-                <p className="text-xs text-green-400/60">
-                  O modelo foi treinado. Verifica no dashboard do Replicate.
-                </p>
-              )}
-            </div>
-
-            <div className="rounded-lg bg-escola-bg p-4 text-xs text-escola-creme-50 space-y-2">
-              <p className="uppercase text-escola-creme">Como usar</p>
-              <p>1. Descarrega o ficheiro .safetensors</p>
-              <p>2. No ComfyUI (ThinkDiffusion), faz upload para <code className="text-escola-dourado">/workspace/ComfyUI/models/loras/</code></p>
-              <p>3. No no LoraLoader, selecciona o ficheiro e usa forca <strong>0.7</strong></p>
-              <p>4. No prompt, usa a palavra <code className="text-escola-dourado">seteveus_style</code></p>
+              <p className="text-xs text-green-400/80">
+                Todas as imagens geradas no pipeline vao usar o teu estilo automaticamente.
+              </p>
+              <p className="text-xs text-green-400/80 mt-1">
+                No prompt, usa <code className="text-green-400 font-mono">{triggerWord}</code> para activar.
+              </p>
             </div>
 
             <button onClick={resetTraining}
-              className="mt-4 text-xs text-escola-creme-50 hover:text-escola-creme">
-              Treinar de novo
+              className="text-xs text-escola-creme-50 hover:text-escola-creme">
+              Treinar de novo (com novas imagens)
             </button>
           </div>
         )}
 
-        {/* FAILED state */}
         {isFailed && (
           <div>
             <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4 mb-4">
               <p className="text-sm text-escola-terracota mb-1">Erro no treino</p>
               <p className="text-xs text-escola-terracota/80">{state.error || "Erro desconhecido"}</p>
-              {state.logsTail && (
-                <pre className="mt-2 text-xs text-escola-terracota/60 font-mono overflow-x-auto max-h-32 overflow-y-auto">
-                  {state.logsTail}
-                </pre>
-              )}
             </div>
-
             <div className="flex gap-3">
-              <button onClick={startTraining}
+              <button onClick={startTraining} disabled={!datasetUrl}
                 className="rounded-lg bg-escola-dourado px-4 py-3 text-sm font-medium text-escola-bg hover:opacity-90">
                 Tentar de novo
               </button>
               <button onClick={resetTraining}
-                className="rounded-lg border border-escola-border bg-escola-card px-4 py-3 text-sm text-escola-creme hover:border-escola-dourado/40">
+                className="rounded-lg border border-escola-border px-4 py-3 text-sm text-escola-creme hover:border-escola-dourado/40">
                 Cancelar
               </button>
             </div>
           </div>
         )}
-      </div>
 
-      {/* Info */}
-      <div className="rounded-xl border border-escola-border bg-escola-card p-6">
-        <h3 className="text-xs text-escola-creme-50 uppercase mb-3">Detalhes tecnicos</h3>
-        <div className="grid grid-cols-2 gap-3 text-xs">
-          <div>
-            <span className="text-escola-creme-50">Modelo base</span>
-            <p className="text-escola-creme">Flux.1 (Black Forest Labs)</p>
-          </div>
-          <div>
-            <span className="text-escola-creme-50">Metodo</span>
-            <p className="text-escola-creme">LoRA (rank 32)</p>
-          </div>
-          <div>
-            <span className="text-escola-creme-50">Dataset</span>
-            <p className="text-escola-creme">59 imagens + auto-caption</p>
-          </div>
-          <div>
-            <span className="text-escola-creme-50">Trigger word</span>
-            <p className="text-escola-dourado font-mono">seteveus_style</p>
-          </div>
-          <div>
-            <span className="text-escola-creme-50">Trainer</span>
-            <p className="text-escola-creme">fast-flux-trainer (8x H100)</p>
-          </div>
-          <div>
-            <span className="text-escola-creme-50">Servico</span>
-            <a href="https://replicate.com" target="_blank" rel="noopener noreferrer" className="text-escola-creme hover:text-escola-dourado">
-              Replicate.com
-            </a>
-          </div>
-        </div>
+        {state.error && state.status === "idle" && (
+          <p className="mt-2 text-xs text-escola-terracota">{state.error}</p>
+        )}
       </div>
     </div>
   );

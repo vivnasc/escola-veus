@@ -1,31 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSupabaseAdminClient } from "@/lib/supabase-server";
 
 /**
- * GET /api/admin/courses/train-lora/status?id=TRAINING_ID
- * Checks the status of a Replicate training.
+ * GET /api/admin/courses/train-lora/status?id=REQUEST_ID
+ * Checks the status of a fal.ai LoRA training.
  *
- * When training succeeds, automatically saves the LoRA weights
- * to Supabase Storage (because Replicate URLs expire in 1 hour).
+ * When training succeeds, saves the LoRA weights URL to Supabase
+ * for use in the generate-image-flux endpoint.
  *
  * Returns: {
- *   status: "starting" | "processing" | "succeeded" | "failed" | "canceled",
- *   progress?: number,
- *   weights_url?: string,  // Permanent Supabase URL (if saved) or Replicate URL
+ *   status: "IN_QUEUE" | "IN_PROGRESS" | "COMPLETED" | "FAILED",
+ *   weights_url?: string,
  *   error?: string,
  * }
  */
 export async function GET(req: NextRequest) {
-  const token = process.env.REPLICATE_API_TOKEN;
-  if (!token) {
+  const apiKey = process.env.FAL_KEY;
+  if (!apiKey) {
     return NextResponse.json(
-      { erro: "REPLICATE_API_TOKEN nao configurado." },
+      { erro: "FAL_KEY nao configurada." },
       { status: 500 }
     );
   }
 
-  const trainingId = req.nextUrl.searchParams.get("id");
-  if (!trainingId) {
+  const requestId = req.nextUrl.searchParams.get("id");
+  if (!requestId) {
     return NextResponse.json(
       { erro: "Parametro 'id' obrigatorio." },
       { status: 400 }
@@ -34,55 +32,52 @@ export async function GET(req: NextRequest) {
 
   try {
     const response = await fetch(
-      `https://api.replicate.com/v1/trainings/${trainingId}`,
+      `https://queue.fal.run/fal-ai/flux-lora-fast-training/requests/${requestId}/status`,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Key ${apiKey}` },
       }
     );
 
     if (!response.ok) {
       const err = await response.text();
       return NextResponse.json(
-        { erro: `Replicate erro: ${response.status}`, detalhe: err },
+        { erro: `fal.ai erro: ${response.status}`, detalhe: err },
         { status: response.status }
       );
     }
 
-    const training = await response.json();
+    const statusData = await response.json();
 
-    // Extract progress from logs
-    let progress: number | undefined;
-    if (training.logs) {
-      const match = training.logs.match(/(\d+)%/);
-      if (match) progress = parseInt(match[1]);
-      if (!progress) {
-        const stepMatch = training.logs.match(/step\s+(\d+)\s*[/|of]\s*(\d+)/i);
-        if (stepMatch) {
-          progress = Math.round((parseInt(stepMatch[1]) / parseInt(stepMatch[2])) * 100);
+    // If completed, fetch the result to get the weights URL
+    if (statusData.status === "COMPLETED") {
+      const resultRes = await fetch(
+        `https://queue.fal.run/fal-ai/flux-lora-fast-training/requests/${requestId}`,
+        {
+          headers: { Authorization: `Key ${apiKey}` },
         }
+      );
+
+      if (resultRes.ok) {
+        const result = await resultRes.json();
+        const weightsUrl = result.diffusers_lora_file?.url || null;
+
+        // Save weights URL to Supabase for later use
+        if (weightsUrl) {
+          await saveLoraUrl(weightsUrl);
+        }
+
+        return NextResponse.json({
+          status: "COMPLETED",
+          weights_url: weightsUrl,
+          config_url: result.config_file?.url || null,
+        });
       }
     }
 
-    // If succeeded, try to save weights to Supabase Storage
-    let weightsUrl: string | null = null;
-    const replicateWeightsUrl = training.output?.weights || null;
-
-    if (training.status === "succeeded" && replicateWeightsUrl) {
-      // Try to save to Supabase (permanent URL)
-      weightsUrl = await saveWeightsToSupabase(replicateWeightsUrl, trainingId);
-      // Fallback to Replicate URL if Supabase save fails
-      if (!weightsUrl) weightsUrl = replicateWeightsUrl;
-    }
-
     return NextResponse.json({
-      status: training.status,
-      progress,
-      weights_url: weightsUrl,
-      replicate_url: replicateWeightsUrl,
-      error: training.error || null,
-      logs_tail: training.logs ? training.logs.slice(-500) : null,
-      started_at: training.started_at,
-      completed_at: training.completed_at,
+      status: statusData.status,
+      progress: statusData.status === "IN_PROGRESS" ? 50 : 0,
+      logs_tail: statusData.logs ? statusData.logs.slice(-500) : null,
     });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Erro desconhecido";
@@ -91,64 +86,26 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * Downloads LoRA weights from Replicate and saves to Supabase Storage.
- * Returns the permanent Supabase public URL, or null if it fails.
+ * Saves the LoRA weights URL to a known location in Supabase Storage
+ * so the image generation endpoint can find it.
  */
-async function saveWeightsToSupabase(
-  weightsUrl: string,
-  trainingId: string
-): Promise<string | null> {
+async function saveLoraUrl(weightsUrl: string): Promise<void> {
   try {
-    const admin = createSupabaseAdminClient();
-    if (!admin) return null;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (!serviceKey || !supabaseUrl) return;
 
-    // Check if already saved
-    const filename = `seteveus_style_${trainingId}.safetensors`;
-    const storagePath = `lora/${filename}`;
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
-    const { data: existing } = await admin.storage
+    const data = JSON.stringify({ weightsUrl, updatedAt: new Date().toISOString() });
+    await supabase.storage
       .from("course-assets")
-      .list("lora", { search: filename });
-
-    if (existing && existing.length > 0) {
-      // Already saved - return the public URL
-      const { data: urlData } = admin.storage
-        .from("course-assets")
-        .getPublicUrl(storagePath);
-      return urlData?.publicUrl || null;
-    }
-
-    // Download from Replicate
-    const res = await fetch(weightsUrl);
-    if (!res.ok) return null;
-    const buffer = await res.arrayBuffer();
-
-    // Upload to Supabase Storage
-    // First try to create the bucket (it's ok if it already exists)
-    await admin.storage.createBucket("course-assets", {
-      public: true,
-      fileSizeLimit: 200 * 1024 * 1024, // 200MB
-    });
-
-    const { error } = await admin.storage
-      .from("course-assets")
-      .upload(storagePath, buffer, {
-        contentType: "application/octet-stream",
+      .upload("lora/active-lora.json", new TextEncoder().encode(data), {
+        contentType: "application/json",
         upsert: true,
       });
-
-    if (error) {
-      console.error("Supabase upload error:", error);
-      return null;
-    }
-
-    const { data: urlData } = admin.storage
-      .from("course-assets")
-      .getPublicUrl(storagePath);
-
-    return urlData?.publicUrl || null;
-  } catch (e) {
-    console.error("Failed to save weights to Supabase:", e);
-    return null;
+  } catch {
+    // Silent fail — not critical
   }
 }
