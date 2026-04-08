@@ -19,13 +19,18 @@ Cada curso/territorio tem tambem a sua paleta propria (ver `territory-themes.ts`
 
 ---
 
-## 2. As Silhuetas
+## 2. A Figurinha — Conceito A: "O Veu e o Corpo"
 
-- **Terracota** (`#C4745A`) com contorno/brilho dourado (`#D4A853`).
-- **Sem rosto, sem features, sem textura de pele.** Apenas uma forma quente e solida.
+A figurinha da escola NAO e uma silhueta solida. E feita inteiramente de veus translucidos sobrepostos.
+
+- **Os veus SAO o corpo.** Nao ha pele por baixo — a figura e composta de camadas de tecido semi-transparente em tons navy-purpura (#1A1A2E a #2D2045).
+- **Luz dourada interior** (#D4A853) — brilha suavemente entre as camadas de veu, como se a essencia da pessoa estivesse escondida la dentro.
+- **Acentos terracota** (#C4745A) — detalhes pontuais que aquecem a figura.
+- **Sem rosto, sem features, sem textura de pele.** Formas organicas e fluidas.
 - **Gender-neutral.** Sem raca, sem idade. Sempre a mesma "pessoa".
-- Claramente visiveis contra o fundo navy escuro.
-- Golden outline glow — um brilho dourado subtil a contornar a silhueta.
+- A progressao visual: mais veus = inicio da jornada; veus a cair = progresso; luz dourada pura = revelacao.
+
+**Porque este conceito:** o nome da escola e "Escola dos Veus" — e a figurinha E feita de veus. Quando os veus caem, revela-se a luz. E a metafora visual perfeita para o trabalho de autoconhecimento.
 
 ### Poses com significado
 
@@ -189,10 +194,10 @@ NAO usa SSML. NAO usar `...` para pausas (cria hesitacao indesejada).
 ## 11. STYLE Prompt (exacto do codigo)
 
 ```
-minimalist flat vector illustration, faceless human figure as smooth rounded silhouette, no race no facial features no clothing details, dark muted navy-purple color palette (#1A1A2E to #2D2045), subtle layered veil integrated into the body flowing asymmetrically, soft organic shapes, clean edges, no outlines, no texture, no gradients or very subtle gradient, warm terracotta (#C4745A) and golden (#D4A853) accent elements, dark navy background, simple shadow, calm symbolic abstract modern, large central figure filling the frame, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters
+minimalist flat illustration, faceless human figure made entirely of translucent layered veils, the veils ARE the body, no solid skin visible, figure composed of flowing semi-transparent fabric layers in dark navy-purple (#1A1A2E to #2D2045), warm golden light (#D4A853) glowing softly from within between veil layers, no race no facial features no clothing details, smooth organic flowing shapes, clean edges, no outlines, terracotta (#C4745A) accent details, dark navy background (#0D0D1A), calm symbolic abstract modern, large central figure filling the frame, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters
 ```
 
-**Referencia visual:** silhueta gerada pelo ChatGPT (DALL-E) — corpo arredondado, sem rosto, manto/veu integrado a fluir assimetricamente, paleta roxa escura sobre fundo neutro. Adaptada para paleta da escola (navy + terracota + dourado).
+**Conceito visual: "O Veu e o Corpo" (Conceito A)** — a figura NAO e solida. E feita de veus translucidos sobrepostos com luz dourada a brilhar por dentro. Quando os veus caem, a luz revela-se. Conceito escolhido por ser o unico que traduz o nome da escola em imagem.
 
 Este prompt e concatenado automaticamente a cada `visualNote` pela funcao `buildPrompt()`.
 
