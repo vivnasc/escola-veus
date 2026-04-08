@@ -44,7 +44,7 @@ const COURSE_OPTIONS = [
   { slug: "ouro-proprio", label: "Ouro Próprio" },
 ];
 
-const DEFAULT_VOICE_ID = "JGnWZj684pcXmK2SxYIv";
+const DEFAULT_VOICE_ID = "fnoNuVpfClX7lHKFbyZ2";
 
 
 const SCENE_LABELS: Record<string, string> = {
