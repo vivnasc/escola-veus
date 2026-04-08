@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
         model_id: "eleven_v3",
         language_code: "pt-pt",
         output_format: "mp3_44100_128",
-        voice_settings: { stability: 0.35, similarity_boost: 0.70 },
+        voice_settings: { stability: 0.25, similarity_boost: 0.55, style: 0.45, speed: 1.12 },
       }),
     });
 
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
           model_id: "eleven_v3",
           language_code: "pt-pt",
           output_format: "mp3_44100_128",
-          voice_settings: { stability: 0.35, similarity_boost: 0.70 },
+          voice_settings: { stability: 0.25, similarity_boost: 0.55, style: 0.45, speed: 1.12 },
         }),
       });
 
