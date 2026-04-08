@@ -46,6 +46,7 @@ const COURSE_OPTIONS = [
 
 const DEFAULT_VOICE_ID = "fnoNuVpfClX7lHKFbyZ2";
 
+
 const SCENE_LABELS: Record<string, string> = {
   abertura: "Abertura", pergunta: "Pergunta", situacao: "Situacao",
   revelacao: "Revelacao", gesto: "Gesto", frase_final: "Frase Final",
@@ -134,7 +135,7 @@ export default function ProductionPage() {
   const [step, setStep] = useState(0);
   const [completed, setCompleted] = useState<boolean[]>(Array(6).fill(false));
   const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
-  const [showVoiceField, setShowVoiceField] = useState(false);
+  // showVoiceField removed — voice ID is always visible
   const [scenes, setScenes] = useState<SceneData[]>([]);
   const [scriptLoading, setScriptLoading] = useState(false);
   const [scriptApproved, setScriptApproved] = useState(false);
@@ -279,6 +280,7 @@ export default function ProductionPage() {
       }
     }
     // Compute timestamps
+    let totalDur = 0;
     setScenes((prev) => {
       const updated = [...prev];
       let t = 0;
@@ -289,10 +291,10 @@ export default function ProductionPage() {
         if (s.audioDurationSec) s.durationSec = s.audioDurationSec + 1;
         t += s.durationSec;
       }
-      time = t;
+      totalDur = t;
       return updated;
     });
-    setTotalAudioDuration(time);
+    setTotalAudioDuration(totalDur);
     setLoading((p) => ({ ...p, allAudio: false }));
   }, [scenes, generateSceneAudio]);
 
@@ -623,16 +625,12 @@ export default function ProductionPage() {
               ))}
             </div>
 
-            {/* Voice toggle */}
+            {/* Voice ID */}
             <div>
-              <button onClick={() => setShowVoiceField(!showVoiceField)} className="text-xs text-escola-creme-50 hover:text-escola-creme">
-                {showVoiceField ? "Esconder voz" : "Mudar voz"}
-              </button>
-              {showVoiceField && (
-                <input type="text" value={voiceId} onChange={(e) => setVoiceId(e.target.value)}
-                  className="mt-2 w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none"
-                  placeholder="Voice ID do ElevenLabs" />
-              )}
+              <label className="text-xs text-escola-creme-50">Voice ID do ElevenLabs</label>
+              <input type="text" value={voiceId} onChange={(e) => setVoiceId(e.target.value)}
+                className="mt-1 w-full max-w-md rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme font-mono focus:border-escola-dourado focus:outline-none"
+                placeholder="Cola aqui o Voice ID" />
             </div>
 
             {/* Script scenes */}
