@@ -332,7 +332,10 @@ export default function ProductionPage() {
 
   const submitSceneAnimation = useCallback(async (index: number) => {
     const scene = scenes[index];
-    if (!scene.imageUrl) return;
+    if (!scene.imageUrl) {
+      setError(`Cena ${index} nao tem imagem. Gera a imagem primeiro.`);
+      return;
+    }
     setLoading((p) => ({ ...p, [`anim-${index}`]: true }));
     setError(null);
     try {
@@ -342,14 +345,14 @@ export default function ProductionPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ imageUrl: scene.imageUrl, motionPrompt: motion, provider: "runway", courseSlug: selectedCourse }),
       });
-      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
       const data = await res.json();
+      if (!res.ok) throw new Error(data.erro || `Erro ${res.status}`);
       setScenes((prev) => {
         const n = [...prev];
         n[index] = { ...n[index], animationTaskId: data.taskId, animationStatus: "processing" };
         return n;
       });
-    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
+    } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro ao submeter animacao"); }
     finally { setLoading((p) => ({ ...p, [`anim-${index}`]: false })); }
   }, [scenes, selectedCourse]);
 
