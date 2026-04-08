@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "ELEVENLABS_API_KEY nao configurada." }, { status: 400 });
     }
 
-    const voice = voiceId || process.env.ELEVENLABS_VOICE_ID || "fnoNuVpfClX7lHKFbyZ2";
+    const voice = voiceId || process.env.ELEVENLABS_VOICE_ID || "JGnWZj684pcXmK2SxYIv";
     // ElevenLabs v3: uses [pause], [short pause], [long pause] audio tags
     // Convert \n\n to [pause] tags for v3
     const processedText = narration
