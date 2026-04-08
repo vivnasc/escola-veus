@@ -256,7 +256,7 @@ export default function ProductionPage() {
           sceneLabel: `yt-hook${selectedHook}`,
           sceneIndex: index,
           narration: scene.narration,
-          voiceId: voiceId.trim() || undefined,
+          voiceId: voiceId.trim() || DEFAULT_VOICE_ID,
         }),
       });
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
