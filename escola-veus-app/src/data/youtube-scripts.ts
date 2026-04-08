@@ -1223,7 +1223,7 @@ const trailerCanal: YouTubeScript = {
     {
       type: "framework",
       narration:
-        "Um que te impede de dizer não. Outro que te faz sentir culpa quando gastas contigo. Outro que te mantém em relações onde desapareces. Outro que te faz engolir a raiva. Outro que te prende a uma herança que nem sabes que carregas.",
+        "Um que te impede de dizer não. [short pause] Outro que te faz sentir culpa quando gastas contigo. [short pause] Outro que te mantém em relações onde desapareces. [short pause] Outro que te faz engolir a raiva. [short pause] Outro que te prende a uma herança que nem sabes que carregas.",
       overlayText: "",
       durationSec: 18,
       visualNote:
