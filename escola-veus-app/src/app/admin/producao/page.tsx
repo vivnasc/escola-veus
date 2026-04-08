@@ -845,6 +845,16 @@ export default function ProductionPage() {
             </button>
             <p className="text-xs text-escola-creme-50">Cada animacao demora ~3-5 min no Runway.</p>
 
+            {error && (
+              <div className="rounded-lg border border-escola-terracota/30 bg-escola-terracota/10 p-3">
+                <p className="text-xs text-escola-terracota">{error}</p>
+              </div>
+            )}
+
+            <p className="text-[10px] text-escola-creme-50">
+              Cenas com imagem: {scenes.filter((s) => s.imageUrl).length}/{scenes.length}
+            </p>
+
             <div className="space-y-2">
               {scenes.map((scene, i) => (
                 <div key={i} className="border border-escola-border rounded-lg p-3">
