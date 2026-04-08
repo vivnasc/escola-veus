@@ -343,7 +343,7 @@ export default function ProductionPage() {
       const res = await fetch("/api/admin/courses/submit-animation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageUrl: scene.imageUrl, motionPrompt: motion, provider: "hailuo", courseSlug: selectedCourse }),
+        body: JSON.stringify({ imageUrl: scene.imageUrl, motionPrompt: motion, provider: "runway", courseSlug: selectedCourse }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.erro || `Erro ${res.status}`);
@@ -379,7 +379,7 @@ export default function ProductionPage() {
         const res = await fetch("/api/admin/courses/animation-status", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tasks, provider: "hailuo", courseSlug: selectedCourse }),
+          body: JSON.stringify({ tasks, provider: "runway", courseSlug: selectedCourse }),
         });
         if (!res.ok) return;
         const data = await res.json();
