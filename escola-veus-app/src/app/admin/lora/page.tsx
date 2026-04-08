@@ -32,29 +32,33 @@ export default function LoRAPage() {
 
   // Dataset generation
   const [basePrompt, setBasePrompt] = useState(
-    "Minimalist flat vector illustration of a faceless human figure, smooth rounded silhouette, no race, no facial features, no clothing details, single dark muted purple color palette. Subtle layered veil integrated into the body, flowing asymmetrically from the head down one side. Soft organic shapes, clean edges, no outlines, no texture, no gradients or very subtle gradient. Neutral light background. Simple shadow under feet. Calm, symbolic, abstract, modern."
+    "Minimalist flat illustration, faceless human figure made entirely of translucent layered veils, the veils ARE the body, no solid skin visible, figure composed of flowing semi-transparent fabric layers in dark navy-purple (#1A1A2E to #2D2045), warm golden light (#D4A853) glowing softly from within the figure between the veil layers, no race no facial features no clothing details, smooth organic flowing shapes, clean edges, no outlines, dark navy background (#0D0D1A), terracotta (#C4745A) accent details, calm symbolic abstract modern, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters."
   );
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [generating, setGenerating] = useState(false);
   const [genProgress, setGenProgress] = useState(0);
 
   const VARIATIONS = [
-    "standing tall, arms relaxed at sides, veil flowing behind",
-    "sitting cross-legged, veil draped over shoulders like a shawl",
-    "walking forward, veil trailing behind like a path",
-    "arms slightly open, veil lifting off the body, lighter tone",
-    "kneeling, veil pooling on the ground around the figure",
-    "back turned, looking over shoulder, veil covering half the body",
-    "two figures facing each other, connected by a shared veil",
-    "figure emerging from darkness, veil dissolving into light particles",
-    "figure holding the veil in outstretched hands, examining it",
-    "figure with multiple layered veils, each a slightly different shade",
-    "figure mid-step on a bridge, veil blowing in wind",
-    "figure standing before a mirror, reflection shows figure without veil",
-    "figure reaching upward, veil sliding off naturally",
-    "small figure and large figure side by side, same veil connecting them",
-    "figure surrounded by falling veil fragments like petals",
-    "figure standing in a doorway, veil caught on the threshold",
+    // Poses base — figura de véus com luz dourada interior
+    "standing tall, arms relaxed, veils flowing down like a long dress, golden light strongest at chest",
+    "sitting cross-legged, veils pooling around like fabric petals, golden glow at center",
+    "walking forward mid-step, veils trailing behind like a flowing path, light pulsing from within",
+    "arms slightly open, outer veil layers lifting off the body revealing more golden light",
+    "kneeling, veils cascading to the ground, head bowed, soft golden halo around the figure",
+    "back turned, looking over shoulder, veils wrapping asymmetrically, light escaping through gaps",
+    // Interacção com os véus
+    "figure gently pulling one veil layer away from the body, golden light pouring through the gap",
+    "figure with hands on chest, veils parting at the heart, brightest golden glow at center",
+    "figure reaching upward, top veils sliding off like water, golden light rising",
+    "figure surrounded by falling veil fragments dissolving into golden particles",
+    // Variações narrativas
+    "two figures facing each other, connected by a shared flowing veil, golden thread between them",
+    "small child figure and tall adult figure, same veil material, the child more opaque the adult more translucent",
+    "figure standing before a dark mirror, reflection shows the figure with fewer veils and more golden light",
+    "figure emerging from complete darkness, first veil layers becoming visible, faint golden spark inside",
+    // Composições finais
+    "figure fully luminous, all veils fallen at feet as petals, body now pure golden light silhouette",
+    "figure standing in a doorway threshold, veils caught behind, stepping forward into warm light",
   ];
 
   async function generateDataset() {

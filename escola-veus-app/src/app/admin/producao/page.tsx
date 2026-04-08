@@ -56,7 +56,7 @@ const SCENE_LABELS: Record<string, string> = {
   reframe: "Reframe",
 };
 
-const STYLE = "minimalist flat vector illustration, faceless human figure as smooth rounded silhouette, no race no facial features no clothing details, dark muted navy-purple color palette (#1A1A2E to #2D2045), subtle layered veil integrated into the body flowing asymmetrically, soft organic shapes, clean edges, no outlines, no texture, no gradients or very subtle gradient, warm terracotta (#C4745A) and golden (#D4A853) accent elements, dark navy background, simple shadow, calm symbolic abstract modern, large central figure filling the frame, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters";
+const STYLE = "minimalist flat illustration, faceless human figure made entirely of translucent layered veils, the veils ARE the body, no solid skin visible, figure composed of flowing semi-transparent fabric layers in dark navy-purple (#1A1A2E to #2D2045), warm golden light (#D4A853) glowing softly from within between veil layers, no race no facial features no clothing details, smooth organic flowing shapes, clean edges, no outlines, terracotta (#C4745A) accent details, dark navy background (#0D0D1A), calm symbolic abstract modern, large central figure filling the frame, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters";
 
 const MOTION: Record<string, string> = {
   abertura: "slow cinematic camera drift downward, golden particles floating",
