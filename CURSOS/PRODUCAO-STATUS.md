@@ -22,7 +22,7 @@
 | APIs de producao | COMPLETO | Todos os endpoints prontos (audio, imagem, animacao, legendas, musica, render) |
 | Scripts YouTube | EM CURSO | V1 (13 hooks) + V2 (1 hook) + Trailer — todos com audio tags v3 |
 | LoRA treinado | COMPLETO | Treinado com 11 imagens via fal.ai, trigger: `veus_figure` |
-| **Trailer do canal** | **EM CURSO** | **8 cenas com audio + imagens geradas. Animacoes pendentes (Runway credits)** |
+| **Trailer do canal** | **EM CURSO** | **5/8 animacoes geradas. Faltam 3 re-submeter + legendas + render** |
 | Scripts das aulas | EM CURSO | 24/480 scripts escritos (Ouro Proprio completo — DRAFT) |
 | Manuais (PDF) | EM CURSO | 1/20 manuais escritos (Ouro Proprio — DRAFT) + pipeline PDF |
 | Cadernos exercicios | EM CURSO | 8/160 cadernos escritos (Ouro Proprio — DRAFT) |
@@ -69,7 +69,7 @@ O campo de voice ID esta escondido na UI.
 - Web App (dev.runwayml.com → plano Standard $15/mês) = credits para usar na interface web
 - API credits = comprados separadamente em dev.runwayml.com → Manage → Billing
 - Minimo: $10 = 1000 credits = 20 clips de 10s
-- A Vivianne JA tem plano Standard mas PRECISA comprar API credits separadamente
+- Vivianne JA comprou API credits (2026-04-10)
 
 ### Imagens
 
@@ -99,9 +99,15 @@ O campo de voice ID esta escondido na UI.
 | Script | COMPLETO | 8 cenas com audio tags v3, todos os `[pause]` convertidos |
 | Audio | COMPLETO | 8 cenas com audio gerado (voz JGnWZj684pcXmK2SxYIv, sem voice_settings) |
 | Imagens | COMPLETO | 8 cenas com imagens Flux + LoRA |
-| Animacoes | **BLOQUEADO** | Precisa de API credits Runway (min $10 em dev.runwayml.com → Billing) |
+| Animacoes | **EM CURSO** | 5/8 clips gerados (250 credits gastos). 3 faltam re-submeter (~150 credits) |
 | Legendas | NAO INICIADO | Depende de audio + animacoes |
 | Render final | NAO INICIADO | Shotstack — depende de tudo acima + SHOTSTACK_ENV |
+
+**Nota (2026-04-10):** Havia um bug no polling de animacoes — ao recarregar a pagina, o polling nao
+recomeçava e as animacoes ficavam presas em "A processar..." para sempre. Corrigido com:
+- `scenesRef` para evitar stale closure no setInterval
+- `useEffect` que auto-resume polling ao detectar animacoes em "processing"
+- Ficheiro: `escola-veus-app/src/app/admin/producao/page.tsx`
 
 ---
 
@@ -169,14 +175,14 @@ O campo de voice ID esta escondido na UI.
 
 ## Proximas Accoes (por ordem de prioridade)
 
-### Imediato (bloqueadores)
+### Imediato
 
-1. **Vivianne:** Comprar API credits Runway em dev.runwayml.com → Manage → Billing (min $10)
-2. **Vivianne:** Adicionar `SHOTSTACK_ENV=v1` no Vercel
+1. Recarregar pagina de producao — polling vai actualizar estado dos 5 clips prontos
+2. Re-submeter as 3 animacoes em falta (~150 credits Runway)
+3. **Vivianne:** Adicionar `SHOTSTACK_ENV=v1` no Vercel
 
-### Apos desbloquear Runway
+### Apos 8/8 animacoes prontas
 
-3. Submeter 8 animacoes do trailer
 4. Gerar legendas do trailer
 5. Gerar musica instrumental do trailer (Suno)
 6. Render final do trailer (Shotstack)
@@ -205,6 +211,7 @@ O campo de voice ID esta escondido na UI.
 - Runway API URL: `api.dev.runwayml.com` — NAO mudar para api.runwayml.com
 - LoRA trigger: `veus_figure` — usado automaticamente em `buildPrompt()`
 - localStorage guarda progresso de producao MAS nunca guarda voiceId
+- Polling de animacoes usa scenesRef (NAO scenes da closure) para evitar stale data
 
 ---
 
