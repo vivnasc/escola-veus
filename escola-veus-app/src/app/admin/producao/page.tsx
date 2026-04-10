@@ -317,7 +317,7 @@ export default function ProductionPage() {
         s.audioStartSec = t;
         const dur = s.audioDurationSec || s.durationSec;
         s.audioEndSec = t + dur;
-        if (s.audioDurationSec) s.durationSec = s.audioDurationSec + 1;
+        if (s.audioDurationSec) s.durationSec = Math.min(s.audioDurationSec + 2, 10);
         t += s.durationSec;
       }
       totalDur = t;
