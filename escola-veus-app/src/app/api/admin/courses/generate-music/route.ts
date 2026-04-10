@@ -84,11 +84,13 @@ async function submitGeneration(
   apiKey: string,
   prompt: string,
 ): Promise<{ taskId: string | null; rawResponses: unknown[] }> {
+  // callBackUrl is required by API.box — we use a dummy since we poll instead
   const body = JSON.stringify({
     customMode: false,
     instrumental: true,
     model: "V5_5",
     prompt,
+    callBackUrl: "https://escola.seteveus.space/api/webhook/suno",
   });
 
   const headers = {
@@ -98,43 +100,20 @@ async function submitGeneration(
 
   const rawResponses: unknown[] = [];
 
-  // Primary endpoint
   try {
-    const res = await fetch(`${baseUrl}/api/suno/submit/music`, {
+    const res = await fetch(`${baseUrl}/api/v1/generate`, {
       method: "POST",
       headers,
       body,
     });
 
-    if (res.ok) {
-      const data = await res.json();
-      rawResponses.push({ endpoint: "/api/suno/submit/music", status: res.status, data });
+    const data = await res.json();
+    rawResponses.push({ endpoint: "/api/v1/generate", status: res.status, data });
+
+    // API.box returns code 200 with nested data, or code != 200 for errors
+    if (data?.code === 200 || res.ok) {
       const taskId = data?.data?.taskId || data?.taskId || data?.data?.data?.taskId || null;
       if (taskId) return { taskId, rawResponses };
-    } else {
-      const text = await res.text().catch(() => "");
-      rawResponses.push({ endpoint: "/api/suno/submit/music", status: res.status, body: text.slice(0, 300) });
-    }
-  } catch (e) {
-    rawResponses.push({ endpoint: "/api/suno/submit/music", error: String(e) });
-  }
-
-  // Fallback endpoint
-  try {
-    const res2 = await fetch(`${baseUrl}/api/v1/generate`, {
-      method: "POST",
-      headers,
-      body,
-    });
-
-    if (res2.ok) {
-      const data = await res2.json();
-      rawResponses.push({ endpoint: "/api/v1/generate", status: res2.status, data });
-      const taskId = data?.data?.taskId || data?.taskId || data?.data?.data?.taskId || null;
-      if (taskId) return { taskId, rawResponses };
-    } else {
-      const text = await res2.text().catch(() => "");
-      rawResponses.push({ endpoint: "/api/v1/generate", status: res2.status, body: text.slice(0, 300) });
     }
   } catch (e) {
     rawResponses.push({ endpoint: "/api/v1/generate", error: String(e) });
