@@ -820,6 +820,10 @@ export default function ProductionPage() {
                         {loading[`img-${i}`] ? "..." : scene.imageUrl ? "Re-gerar (Flux)" : "Gerar (Flux)"}
                       </button>
                     </div>
+                    <textarea value={scene.visualNote} onChange={(e) => {
+                      setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], visualNote: e.target.value }; return n; });
+                    }} rows={2} placeholder="Descreve o visual desta cena..."
+                      className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[10px] text-escola-creme font-mono resize-y focus:border-escola-dourado focus:outline-none" />
                     <div className="flex items-center gap-1">
                       <input
                         type="text"
@@ -882,6 +886,26 @@ export default function ProductionPage() {
                 <div key={i} className="border border-escola-border rounded-lg p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
+                      <div className="flex flex-col gap-0.5 mr-1">
+                        <button disabled={i === 0} onClick={() => {
+                          setScenes((prev) => {
+                            const n = [...prev];
+                            const pick = (s: SceneData) => ({ imageUrl: s.imageUrl, animationUrl: s.animationUrl, animationTaskId: s.animationTaskId, animationStatus: s.animationStatus });
+                            const a = pick(n[i]), b = pick(n[i - 1]);
+                            n[i] = { ...n[i], ...b }; n[i - 1] = { ...n[i - 1], ...a };
+                            return n;
+                          });
+                        }} className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-20" title="Mover visual para cima">&uarr;</button>
+                        <button disabled={i === scenes.length - 1} onClick={() => {
+                          setScenes((prev) => {
+                            const n = [...prev];
+                            const pick = (s: SceneData) => ({ imageUrl: s.imageUrl, animationUrl: s.animationUrl, animationTaskId: s.animationTaskId, animationStatus: s.animationStatus });
+                            const a = pick(n[i]), b = pick(n[i + 1]);
+                            n[i] = { ...n[i], ...b }; n[i + 1] = { ...n[i + 1], ...a };
+                            return n;
+                          });
+                        }} className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-20" title="Mover visual para baixo">&darr;</button>
+                      </div>
                       <span className={`w-2 h-2 rounded-full ${
                         scene.animationStatus === "done" ? "bg-green-500"
                         : scene.animationStatus === "failed" ? "bg-escola-terracota"
@@ -904,15 +928,19 @@ export default function ProductionPage() {
                       </button>
                     </div>
                   </div>
-                  {scene.animationUrl ? (
-                    <div className="mt-2">
+                  <div className="mt-2 space-y-1.5">
+                    <div>
+                      <label className="text-[9px] text-escola-creme-50 uppercase">Visual (prompt imagem)</label>
+                      <textarea value={scene.visualNote} onChange={(e) => {
+                        setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], visualNote: e.target.value }; return n; });
+                      }} rows={2} className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[10px] text-escola-creme font-mono resize-y focus:border-escola-dourado focus:outline-none" />
+                    </div>
+                    {scene.animationUrl ? (
                       <video controls src={scene.animationUrl} className="w-full max-w-sm rounded" />
-                    </div>
-                  ) : scene.imageUrl ? (
-                    <div className="mt-2">
+                    ) : scene.imageUrl ? (
                       <img src={scene.imageUrl} alt={scene.type} className="w-32 aspect-video object-cover rounded opacity-60" />
-                    </div>
-                  ) : null}
+                    ) : null}
+                  </div>
                 </div>
               ))}
             </div>
