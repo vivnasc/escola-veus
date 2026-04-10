@@ -212,6 +212,8 @@ recomeçava e as animacoes ficavam presas em "A processar..." para sempre. Corri
 - LoRA trigger: `veus_figure` — usado automaticamente em `buildPrompt()`
 - localStorage guarda progresso de producao MAS nunca guarda voiceId
 - Polling de animacoes usa scenesRef (NAO scenes da closure) para evitar stale data
+- Motion prompts gerados a partir da visualNote de cada cena (buildMotionPrompt), MOTION fixo e fallback
+- Botao "Nova imagem" disponivel no passo 4 (animacoes) para re-gerar imagem de cena individual
 
 ---
 

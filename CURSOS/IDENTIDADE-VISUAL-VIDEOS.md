@@ -211,6 +211,11 @@ Este prompt e concatenado automaticamente a cada `visualNote` pela funcao `build
 - SEMPRE descrever movimento da FIGURA (maos, corpo, cabeca) + VEUS (esvoaçar, descolar, ondular)
 - Manter mood contemplativo: movimento lento, intencional, nunca brusco
 
+**COMO FUNCIONA (desde 2026-04-10):**
+A funcao `buildMotionPrompt(scene)` gera o motion prompt a partir da `visualNote` de cada cena.
+Os prompts fixos por tipo (tabela abaixo) sao usados apenas como FALLBACK quando a visualNote
+e curta ou vazia. Isto garante coerencia entre narracao → visualNote → imagem → animacao.
+
 ### v1
 
 | Tipo de cena | Prompt de movimento |
