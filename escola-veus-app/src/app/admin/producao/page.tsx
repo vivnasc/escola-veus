@@ -18,6 +18,7 @@ type SceneData = {
   animationUrl?: string;
   audioStartSec?: number;
   audioEndSec?: number;
+  musicUrl?: string;
 };
 
 type AnimationTask = { type: string; taskId: string; status?: string; videoUrl?: string | null };
@@ -530,6 +531,7 @@ export default function ProductionPage() {
           durationSec: s.durationSec, imageUrl: s.imageUrl || null,
           animationUrl: s.animationUrl || null,
           audioStartSec: s.audioStartSec ?? null, audioEndSec: s.audioEndSec ?? null,
+          musicUrl: s.musicUrl || null,
         })),
       };
 
@@ -943,6 +945,17 @@ export default function ProductionPage() {
                     ) : scene.imageUrl ? (
                       <img src={scene.imageUrl} alt={scene.type} className="w-32 aspect-video object-cover rounded opacity-60" />
                     ) : null}
+                    {!scene.narration?.trim() && (
+                      <div className="mt-1.5">
+                        <label className="text-[9px] text-escola-creme-50 uppercase">Musica desta cena (sem narracao)</label>
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <input type="text" placeholder="URL da faixa (Loranne, Suno...)" value={scene.musicUrl || ""}
+                            onChange={(e) => { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], musicUrl: e.target.value }; return n; }); }}
+                            className="flex-1 rounded border border-escola-border bg-escola-bg px-2 py-0.5 text-[10px] text-escola-creme placeholder:text-escola-creme-50/40 focus:border-escola-dourado focus:outline-none" />
+                          {scene.musicUrl && <audio controls src={scene.musicUrl} className="h-6 max-w-[140px]" />}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
