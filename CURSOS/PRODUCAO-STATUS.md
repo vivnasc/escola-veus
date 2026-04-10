@@ -163,7 +163,7 @@ recomeçava e as animacoes ficavam presas em "A processar..." para sempre. Corri
 | Montagem cloud | Shotstack API | Sem AWS, sem CLI, 100% web |
 | Animacao principal | Runway Gen-4 Turbo API | Melhor qualidade (Hailuo/fal.ai como fallback) |
 | Imagens | Flux via fal.ai + LoRA treinado | Rapido, barato, estilo consistente |
-| Musica de fundo | Suno (instrumental) + Loranne (cenas sem narracao) | Original, sem direitos |
+| Musica (3 faixas) | Abertura (80% vol) + Instrumental continuo (12% vol) + Fecho (80% vol) | Loranne ou Suno. Duracao auto da cena |
 | Voz | ElevenLabs v3, ID `JGnWZj684pcXmK2SxYIv` | NAO e clone — voz pre-existente, rapida e conversacional |
 | voice_settings | NENHUM | Usar defaults naturais da voz |
 | language_code | `"pt"` | "pt-pt" nao funciona com v3 |
@@ -175,18 +175,13 @@ recomeçava e as animacoes ficavam presas em "A processar..." para sempre. Corri
 
 ## Proximas Accoes (por ordem de prioridade)
 
-### Imediato
+### Imediato (Trailer)
 
-1. Recarregar pagina de producao — polling vai actualizar estado dos 5 clips prontos
-2. Re-submeter as 3 animacoes em falta (~150 credits Runway)
-3. **Vivianne:** Adicionar `SHOTSTACK_ENV=v1` no Vercel
-
-### Apos 8/8 animacoes prontas
-
-4. Gerar legendas do trailer
-5. Gerar musica instrumental do trailer (Suno)
-6. Render final do trailer (Shotstack)
-7. Aprovar e publicar trailer no YouTube
+1. Re-submeter as 3 animacoes em falta (~150 credits Runway) — polling auto-resume
+2. Configurar musica (colar URLs Loranne nas 3 faixas)
+3. Gerar legendas do trailer
+4. Render final do trailer (Shotstack)
+5. Aprovar e publicar trailer no YouTube
 
 ### Curto prazo
 
@@ -214,6 +209,9 @@ recomeçava e as animacoes ficavam presas em "A processar..." para sempre. Corri
 - Polling de animacoes usa scenesRef (NAO scenes da closure) para evitar stale data
 - Motion prompts gerados a partir da visualNote de cada cena (buildMotionPrompt), MOTION fixo e fallback
 - Botao "Nova imagem" disponivel no passo 4 (animacoes) para re-gerar imagem de cena individual
+- Musica: 3 faixas (abertura + instrumental + fecho). So "Comecar no seg:" — duracao calculada da cena
+- Suno API retorna 404 — usar URLs directos de Loranne ou Suno externo
+- Prompts de imagem e animacao sao editaveis na UI (sem precisar deploy)
 
 ---
 
