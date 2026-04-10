@@ -168,9 +168,10 @@ export default function ProductionPage() {
   const [renderLabel, setRenderLabel] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
 
-  // Background music
-  const [bgMusicUrl, setBgMusicUrl] = useState("");
-  const [customMusicUrl, setCustomMusicUrl] = useState("");
+  // Background music — 3 faixas
+  const [bgMusicUrl, setBgMusicUrl] = useState(""); // instrumental contínuo (por baixo da narração)
+  const [openingMusicUrl, setOpeningMusicUrl] = useState(""); // faixa da abertura
+  const [closingMusicUrl, setClosingMusicUrl] = useState(""); // faixa do fecho (vazio = mesma da abertura)
 
   // Manifest
   const [manifestUrl, setManifestUrl] = useState("");
@@ -185,11 +186,11 @@ export default function ProductionPage() {
     if (scenes.length === 0) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify({
-        scenes, step, completed, srt, vtt, bgMusicUrl, videoUrl,
+        scenes, step, completed, srt, vtt, bgMusicUrl, openingMusicUrl, closingMusicUrl, videoUrl,
         totalAudioDuration, scriptApproved,
       }));
     } catch { /* quota exceeded — silent */ }
-  }, [scenes, step, completed, srt, vtt, bgMusicUrl, videoUrl, totalAudioDuration, scriptApproved, storageKey]);
+  }, [scenes, step, completed, srt, vtt, bgMusicUrl, openingMusicUrl, closingMusicUrl, videoUrl, totalAudioDuration, scriptApproved, storageKey]);
 
   // Keep scenesRef in sync so polling always reads latest state
   useEffect(() => { scenesRef.current = scenes; }, [scenes]);
@@ -208,6 +209,8 @@ export default function ProductionPage() {
           setSrt(data.srt ?? "");
           setVtt(data.vtt ?? "");
           setBgMusicUrl(data.bgMusicUrl ?? "");
+          setOpeningMusicUrl(data.openingMusicUrl ?? "");
+          setClosingMusicUrl(data.closingMusicUrl ?? "");
           setVideoUrl(data.videoUrl ?? "");
           setTotalAudioDuration(data.totalAudioDuration ?? 0);
           setScriptApproved(data.scriptApproved ?? false);
@@ -526,12 +529,13 @@ export default function ProductionPage() {
         audioUrl: scenes.find((s) => s.audioUrl)?.audioUrl || "",
         backgroundMusicUrl: bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse] || "",
         backgroundMusicVolume: 0.12,
+        openingMusicUrl: openingMusicUrl || "",
+        closingMusicUrl: closingMusicUrl || openingMusicUrl || "",
         scenes: scenes.map((s) => ({
           type: s.type, narration: s.narration, overlayText: s.overlayText,
           durationSec: s.durationSec, imageUrl: s.imageUrl || null,
           animationUrl: s.animationUrl || null,
           audioStartSec: s.audioStartSec ?? null, audioEndSec: s.audioEndSec ?? null,
-          musicUrl: s.musicUrl || null,
         })),
       };
 
@@ -576,7 +580,7 @@ export default function ProductionPage() {
       }
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro no render"); }
     finally { setLoading((p) => ({ ...p, render: false })); }
-  }, [scenes, selectedCourse, selectedHook, bgMusicUrl, markComplete]);
+  }, [scenes, selectedCourse, selectedHook, bgMusicUrl, openingMusicUrl, closingMusicUrl, markComplete]);
 
   function downloadFile(content: string, filename: string) {
     const blob = new Blob([content], { type: "text/plain" });
@@ -945,17 +949,6 @@ export default function ProductionPage() {
                     ) : scene.imageUrl ? (
                       <img src={scene.imageUrl} alt={scene.type} className="w-32 aspect-video object-cover rounded opacity-60" />
                     ) : null}
-                    {!scene.narration?.trim() && (
-                      <div className="mt-1.5">
-                        <label className="text-[9px] text-escola-creme-50 uppercase">Musica desta cena (sem narracao)</label>
-                        <div className="flex items-center gap-1 mt-0.5">
-                          <input type="text" placeholder="URL da faixa (Loranne, Suno...)" value={scene.musicUrl || ""}
-                            onChange={(e) => { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], musicUrl: e.target.value }; return n; }); }}
-                            className="flex-1 rounded border border-escola-border bg-escola-bg px-2 py-0.5 text-[10px] text-escola-creme placeholder:text-escola-creme-50/40 focus:border-escola-dourado focus:outline-none" />
-                          {scene.musicUrl && <audio controls src={scene.musicUrl} className="h-6 max-w-[140px]" />}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
               ))}
@@ -1051,50 +1044,48 @@ export default function ProductionPage() {
               </div>
             </div>
 
-            {/* Background music */}
-            <div className="border border-escola-border rounded-lg p-4 space-y-3">
-              <p className="text-xs text-escola-creme-50 font-medium">Musica de fundo:</p>
+            {/* Music — 3 tracks */}
+            <div className="border border-escola-border rounded-lg p-4 space-y-4">
+              <p className="text-xs text-escola-creme-50 font-medium">Musica (3 faixas):</p>
 
-              {/* Instrumental (under narration) */}
+              {/* 1. Opening music */}
               <div className="space-y-1.5">
-                <p className="text-[11px] text-escola-dourado font-medium">Instrumental (por baixo da narracao):</p>
+                <p className="text-[11px] text-escola-dourado font-medium">1. Abertura (cena sem narracao)</p>
                 <div className="flex items-center gap-2">
+                  <input type="text" placeholder="URL da faixa (Loranne, Suno, etc)" value={openingMusicUrl}
+                    onChange={(e) => setOpeningMusicUrl(e.target.value)}
+                    className="flex-1 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none" />
+                </div>
+                {openingMusicUrl && <audio controls src={openingMusicUrl} className="w-full max-w-md h-8" />}
+              </div>
+
+              {/* 2. Instrumental (continuous under narration) */}
+              <div className="space-y-1.5">
+                <p className="text-[11px] text-escola-dourado font-medium">2. Instrumental continuo (por baixo de TODA a narracao, ~12% volume)</p>
+                <div className="flex items-center gap-2">
+                  <input type="text" placeholder="URL do instrumental" value={bgMusicUrl}
+                    onChange={(e) => setBgMusicUrl(e.target.value)}
+                    className="flex-1 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none" />
                   <button onClick={generateMusic} disabled={loading.music}
-                    className="rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40">
-                    {loading.music ? "A gerar (pode demorar ~60s)..." : "Gerar instrumental (Suno)"}
+                    className="whitespace-nowrap rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40">
+                    {loading.music ? "A gerar..." : "Gerar (Suno)"}
                   </button>
                 </div>
-                {error && loading.music === false && <p className="text-[10px] text-escola-terracota">{error}</p>}
+                {error && !loading.music && <p className="text-[10px] text-escola-terracota">{error}</p>}
+                {bgMusicUrl && <audio controls src={bgMusicUrl} className="w-full max-w-md h-8" />}
               </div>
 
-              {/* Loranne track (scenes without narration: abertura, fecho, transitions) */}
+              {/* 3. Closing music */}
               <div className="space-y-1.5">
-                <p className="text-[11px] text-escola-dourado font-medium">Loranne — cenas sem narracao (abertura, fecho):</p>
+                <p className="text-[11px] text-escola-dourado font-medium">3. Fecho (cena sem narracao)</p>
                 <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    placeholder="URL da faixa da Loranne (music.seteveus.space)"
-                    value={customMusicUrl}
-                    onChange={(e) => setCustomMusicUrl(e.target.value)}
-                    className="flex-1 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none"
-                  />
-                  <button
-                    onClick={() => {
-                      if (customMusicUrl.trim()) {
-                        setBgMusicUrl(customMusicUrl.trim());
-                      }
-                    }}
-                    disabled={!customMusicUrl.trim()}
-                    className="whitespace-nowrap rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40"
-                  >
-                    Usar esta faixa
-                  </button>
+                  <input type="text" placeholder={openingMusicUrl ? "Vazio = mesma da abertura" : "URL da faixa"} value={closingMusicUrl}
+                    onChange={(e) => setClosingMusicUrl(e.target.value)}
+                    className="flex-1 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none" />
                 </div>
-                <p className="text-[10px] text-escola-creme-50 italic">A musica da Loranne tem vocais — usar apenas em cenas sem narracao para nao haver duas vozes.</p>
+                {closingMusicUrl && <audio controls src={closingMusicUrl} className="w-full max-w-md h-8" />}
+                {!closingMusicUrl && openingMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Vai usar a mesma faixa da abertura.</p>}
               </div>
-
-              {bgMusicUrl && <audio controls src={bgMusicUrl} className="w-full max-w-md h-8" />}
-              {!bgMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Sem musica. Gera instrumental para fundo ou usa uma faixa da Loranne para cenas silenciosas.</p>}
             </div>
 
             {/* Render final video */}
