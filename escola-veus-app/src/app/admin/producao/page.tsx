@@ -148,6 +148,7 @@ export default function ProductionPage() {
   // Animations
   const [animPolling, setAnimPolling] = useState(false);
   const pollTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const scenesRef = useRef<SceneData[]>([]);
 
   // Subtitles
   const [srt, setSrt] = useState("");
@@ -180,6 +181,9 @@ export default function ProductionPage() {
       }));
     } catch { /* quota exceeded — silent */ }
   }, [scenes, step, completed, srt, vtt, bgMusicUrl, videoUrl, totalAudioDuration, scriptApproved, storageKey]);
+
+  // Keep scenesRef in sync so polling always reads latest state
+  useEffect(() => { scenesRef.current = scenes; }, [scenes]);
 
   // ─── RESTORE progress from localStorage on course/hook change ────────
   useEffect(() => {
@@ -364,11 +368,12 @@ export default function ProductionPage() {
     startPolling();
   }, [scenes, submitSceneAnimation]);
 
-  function startPolling() {
+  const startPolling = useCallback(() => {
     setAnimPolling(true);
     if (pollTimerRef.current) clearInterval(pollTimerRef.current);
     pollTimerRef.current = setInterval(async () => {
-      const tasks = scenes.filter((s) => s.animationTaskId && s.animationStatus === "processing")
+      const current = scenesRef.current;
+      const tasks = current.filter((s) => s.animationTaskId && s.animationStatus === "processing")
         .map((s) => ({ type: s.type, taskId: s.animationTaskId! }));
       if (tasks.length === 0) {
         if (pollTimerRef.current) clearInterval(pollTimerRef.current);
@@ -399,7 +404,16 @@ export default function ProductionPage() {
         }
       } catch { /* retry */ }
     }, 15000);
-  }
+  }, [selectedCourse]);
+
+  // Auto-resume polling on page load if there are animations in processing state
+  const hasProcessing = scenes.some((s) => s.animationTaskId && s.animationStatus === "processing");
+  useEffect(() => {
+    if (hasProcessing && !pollTimerRef.current) {
+      startPolling();
+    }
+    return () => { if (pollTimerRef.current) { clearInterval(pollTimerRef.current); pollTimerRef.current = null; } };
+  }, [hasProcessing, startPolling]);
 
   // ─── STEP 5: SUBTITLES ───────────────────────────────────────────────────
 
