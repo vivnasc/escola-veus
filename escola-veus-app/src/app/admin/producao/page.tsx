@@ -513,6 +513,7 @@ export default function ProductionPage() {
     setLoading((p) => ({ ...p, music: true }));
     setError(null);
     try {
+      // 1. Submit — returns taskId immediately
       const res = await fetch("/api/admin/courses/generate-music", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -523,8 +524,36 @@ export default function ProductionPage() {
         const debugInfo = d.debug ? ` | ${JSON.stringify(d.debug).slice(0, 500)}` : "";
         throw new Error((d.erro || `Erro ${res.status}`) + debugInfo);
       }
-      const data = await res.json();
-      setBgMusicUrl(data.audioUrl);
+      const { taskId } = await res.json();
+      if (!taskId) throw new Error("Sem taskId");
+
+      setError("A gerar musica... (pode demorar 30-90s)");
+
+      // 2. Poll for result
+      for (let i = 0; i < 30; i++) {
+        await new Promise((r) => setTimeout(r, 5000));
+        try {
+          const statusRes = await fetch("/api/admin/courses/music-status", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ taskId, courseSlug: selectedCourse }),
+          });
+          if (!statusRes.ok) continue;
+          const status = await statusRes.json();
+
+          if (status.status === "done" && status.audioUrl) {
+            setBgMusicUrl(status.audioUrl);
+            setError(null);
+            return;
+          }
+          if (status.status === "failed") {
+            throw new Error("Suno falhou a gerar musica.");
+          }
+        } catch (e) {
+          if (e instanceof Error && e.message.includes("falhou")) throw e;
+        }
+      }
+      throw new Error("Timeout: musica nao ficou pronta em 2.5 minutos.");
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }
     finally { setLoading((p) => ({ ...p, music: false })); }
   }, [selectedCourse]);
