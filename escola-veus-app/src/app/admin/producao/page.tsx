@@ -518,7 +518,11 @@ export default function ProductionPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ courseSlug: selectedCourse }),
       });
-      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.erro || `Erro ${res.status}`); }
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        const debugInfo = d.debug ? ` | ${JSON.stringify(d.debug).slice(0, 500)}` : "";
+        throw new Error((d.erro || `Erro ${res.status}`) + debugInfo);
+      }
       const data = await res.json();
       setBgMusicUrl(data.audioUrl);
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro"); }

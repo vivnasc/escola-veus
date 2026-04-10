@@ -42,14 +42,16 @@ export async function POST(req: NextRequest) {
     const musicPrompt = prompt || DEFAULT_PROMPT;
 
     // 1. Submit generation — try /api/suno/submit/music first, fallback to /api/v1/generate
-    const taskId = await submitGeneration(baseUrl, apiKey, musicPrompt);
+    const submitResult = await submitGeneration(baseUrl, apiKey, musicPrompt);
 
-    if (!taskId) {
+    if (!submitResult.taskId) {
       return NextResponse.json(
-        { erro: "API.box nao devolveu taskId. Verifica SUNO_API_KEY e creditos." },
+        { erro: `API.box nao devolveu taskId.`, debug: submitResult.rawResponses },
         { status: 500 },
       );
     }
+
+    const taskId = submitResult.taskId;
 
     // 2. Poll for completion (5s intervals, up to 2 min)
     const result = await pollForResult(baseUrl, apiKey, taskId);
@@ -81,7 +83,7 @@ async function submitGeneration(
   baseUrl: string,
   apiKey: string,
   prompt: string,
-): Promise<string | null> {
+): Promise<{ taskId: string | null; rawResponses: unknown[] }> {
   const body = JSON.stringify({
     customMode: false,
     instrumental: true,
@@ -94,32 +96,51 @@ async function submitGeneration(
     "Authorization": `Bearer ${apiKey}`,
   };
 
-  // Primary endpoint
-  const res = await fetch(`${baseUrl}/api/suno/submit/music`, {
-    method: "POST",
-    headers,
-    body,
-  });
+  const rawResponses: unknown[] = [];
 
-  if (res.ok) {
-    const data = await res.json();
-    // taskId can be at data.data.taskId (double nesting) or data.taskId
-    return data?.data?.taskId || data?.taskId || null;
+  // Primary endpoint
+  try {
+    const res = await fetch(`${baseUrl}/api/suno/submit/music`, {
+      method: "POST",
+      headers,
+      body,
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      rawResponses.push({ endpoint: "/api/suno/submit/music", status: res.status, data });
+      const taskId = data?.data?.taskId || data?.taskId || data?.data?.data?.taskId || null;
+      if (taskId) return { taskId, rawResponses };
+    } else {
+      const text = await res.text().catch(() => "");
+      rawResponses.push({ endpoint: "/api/suno/submit/music", status: res.status, body: text.slice(0, 300) });
+    }
+  } catch (e) {
+    rawResponses.push({ endpoint: "/api/suno/submit/music", error: String(e) });
   }
 
   // Fallback endpoint
-  const res2 = await fetch(`${baseUrl}/api/v1/generate`, {
-    method: "POST",
-    headers,
-    body,
-  });
+  try {
+    const res2 = await fetch(`${baseUrl}/api/v1/generate`, {
+      method: "POST",
+      headers,
+      body,
+    });
 
-  if (res2.ok) {
-    const data = await res2.json();
-    return data?.data?.taskId || data?.taskId || null;
+    if (res2.ok) {
+      const data = await res2.json();
+      rawResponses.push({ endpoint: "/api/v1/generate", status: res2.status, data });
+      const taskId = data?.data?.taskId || data?.taskId || data?.data?.data?.taskId || null;
+      if (taskId) return { taskId, rawResponses };
+    } else {
+      const text = await res2.text().catch(() => "");
+      rawResponses.push({ endpoint: "/api/v1/generate", status: res2.status, body: text.slice(0, 300) });
+    }
+  } catch (e) {
+    rawResponses.push({ endpoint: "/api/v1/generate", error: String(e) });
   }
 
-  return null;
+  return { taskId: null, rawResponses };
 }
 
 // ─── Poll ────────────────────────────────────────────────────────
