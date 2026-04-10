@@ -205,30 +205,36 @@ Este prompt e concatenado automaticamente a cada `visualNote` pela funcao `build
 
 ## 12. MOTION Prompts (exactos do codigo)
 
+**REGRAS para motion prompts (Runway Gen-4):**
+- NUNCA usar "text appearing", "diagrams", "words" — Runway gera texto sem sentido
+- NUNCA usar termos abstractos como "narrative scene" — descrever MOVIMENTO concreto
+- SEMPRE descrever movimento da FIGURA (maos, corpo, cabeca) + VEUS (esvoaçar, descolar, ondular)
+- Manter mood contemplativo: movimento lento, intencional, nunca brusco
+
 ### v1
 
 | Tipo de cena | Prompt de movimento |
 |---|---|
-| `abertura` | `slow cinematic camera drift downward, golden particles floating` |
-| `pergunta` | `silhouette breathing slowly, golden light pulsing gently` |
-| `situacao` | `slow camera tracking, environment subtly alive` |
-| `revelacao` | `mirrors uncovering, veils lifting in slow motion` |
-| `gesto` | `hand extending, golden particles gathering in palm` |
-| `frase_final` | `very slow zoom into darkness` |
-| `cta` | `gentle wind, floating golden particles, warm light expanding` |
-| `fecho` | `slow dissolve upward into navy sky` |
+| `abertura` | `slow cinematic camera drift downward, figure standing still, veils flowing gently in wind, golden particles floating upward` |
+| `pergunta` | `figure breathing slowly, veil layers rippling softly, golden light pulsing from within the chest` |
+| `situacao` | `slow camera tracking right, figure turning head slightly, veils swaying with the movement` |
+| `revelacao` | `figure slowly lifting arms, outer veil layers peeling away and floating upward, golden light growing brighter underneath` |
+| `gesto` | `figure slowly raising hand to chest, veils gathering around the hand, golden particles collecting in palm` |
+| `frase_final` | `very slow zoom in, figure standing calm, veils settling down peacefully, golden glow fading softly` |
+| `cta` | `gentle wind blowing veils to the side, figure walking forward slowly, warm golden light expanding from within` |
+| `fecho` | `figure slowly dissolving upward into golden particles, veils floating away into dark navy sky` |
 
 ### v2
 
 | Tipo de cena | Prompt de movimento |
 |---|---|
-| `trailer` | `slow cinematic sequence, veils lifting, silhouette emerging, golden light` |
-| `gancho` | `silhouette breathing slowly, golden light pulsing gently` |
-| `reconhecimento` | `slow camera tracking, environment subtly alive` |
-| `framework` | `didactic animation, diagrams appearing, slow reveal` |
-| `exemplo` | `narrative scene, warm lighting, dissolve transitions` |
-| `exercicio` | `hand on chest, golden glow growing, calm` |
-| `reframe` | `very slow zoom, text appearing in warm light` |
+| `trailer` | `slow cinematic sequence, figure emerging from darkness, veils lifting and flowing, golden light growing from within` |
+| `gancho` | `figure breathing slowly, veil layers rippling, golden light pulsing gently from the core` |
+| `reconhecimento` | `slow camera tracking, figure looking down contemplatively, veils stirring softly around the body` |
+| `framework` | `figure slowly opening arms wide, veil layers separating and revealing golden light between each layer` |
+| `exemplo` | `two figures facing each other, shared veil flowing between them, warm golden light connecting them` |
+| `exercicio` | `figure placing hand on chest slowly, veils tightening gently around the hand, golden glow growing at the touch point` |
+| `reframe` | `very slow zoom into warm golden light, veils dissolving into golden particles floating upward` |
 
 Fallback (se o tipo nao existir): `slow cinematic movement`.
 

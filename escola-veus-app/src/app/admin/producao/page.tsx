@@ -60,22 +60,23 @@ const SCENE_LABELS: Record<string, string> = {
 const STYLE = "minimalist flat illustration, faceless human figure made entirely of translucent layered veils, the veils ARE the body, no solid skin visible, figure composed of flowing semi-transparent fabric layers in dark navy-purple (#1A1A2E to #2D2045), warm golden light (#D4A853) glowing softly from within between veil layers, no race no facial features no clothing details, smooth organic flowing shapes, clean edges, no outlines, terracotta (#C4745A) accent details, dark navy background (#0D0D1A), calm symbolic abstract modern, large central figure filling the frame, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters";
 
 const MOTION: Record<string, string> = {
-  abertura: "slow cinematic camera drift downward, golden particles floating",
-  pergunta: "silhouette breathing slowly, golden light pulsing gently",
-  situacao: "slow camera tracking, environment subtly alive",
-  revelacao: "mirrors uncovering, veils lifting in slow motion",
-  gesto: "hand extending, golden particles gathering in palm",
-  frase_final: "very slow zoom into darkness",
-  cta: "gentle wind, floating golden particles, warm light expanding",
-  fecho: "slow dissolve upward into navy sky",
+  // v1
+  abertura: "slow cinematic camera drift downward, figure standing still, veils flowing gently in wind, golden particles floating upward",
+  pergunta: "figure breathing slowly, veil layers rippling softly, golden light pulsing from within the chest",
+  situacao: "slow camera tracking right, figure turning head slightly, veils swaying with the movement",
+  revelacao: "figure slowly lifting arms, outer veil layers peeling away and floating upward, golden light growing brighter underneath",
+  gesto: "figure slowly raising hand to chest, veils gathering around the hand, golden particles collecting in palm",
+  frase_final: "very slow zoom in, figure standing calm, veils settling down peacefully, golden glow fading softly",
+  cta: "gentle wind blowing veils to the side, figure walking forward slowly, warm golden light expanding from within",
+  fecho: "figure slowly dissolving upward into golden particles, veils floating away into dark navy sky",
   // v2
-  trailer: "slow cinematic sequence, veils lifting, silhouette emerging, golden light",
-  gancho: "silhouette breathing slowly, golden light pulsing gently",
-  reconhecimento: "slow camera tracking, environment subtly alive",
-  framework: "didactic animation, diagrams appearing, slow reveal",
-  exemplo: "narrative scene, warm lighting, dissolve transitions",
-  exercicio: "hand on chest, golden glow growing, calm",
-  reframe: "very slow zoom into warm golden light, veils dissolving softly",
+  trailer: "slow cinematic sequence, figure emerging from darkness, veils lifting and flowing, golden light growing from within",
+  gancho: "figure breathing slowly, veil layers rippling, golden light pulsing gently from the core",
+  reconhecimento: "slow camera tracking, figure looking down contemplatively, veils stirring softly around the body",
+  framework: "figure slowly opening arms wide, veil layers separating and revealing golden light between each layer",
+  exemplo: "two figures facing each other, shared veil flowing between them, warm golden light connecting them",
+  exercicio: "figure placing hand on chest slowly, veils tightening gently around the hand, golden glow growing at the touch point",
+  reframe: "very slow zoom into warm golden light, veils dissolving into golden particles floating upward",
 };
 
 const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
