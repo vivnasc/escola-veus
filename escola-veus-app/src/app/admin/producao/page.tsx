@@ -18,6 +18,7 @@ type SceneData = {
   animationUrl?: string;
   audioStartSec?: number;
   audioEndSec?: number;
+  musicUrl?: string;
 };
 
 type AnimationTask = { type: string; taskId: string; status?: string; videoUrl?: string | null };
@@ -167,9 +168,19 @@ export default function ProductionPage() {
   const [renderLabel, setRenderLabel] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
 
-  // Background music
+  // Background music — 3 faixas com trim + volume
   const [bgMusicUrl, setBgMusicUrl] = useState("");
-  const [customMusicUrl, setCustomMusicUrl] = useState("");
+  const [bgMusicStart, setBgMusicStart] = useState(0);
+  const [bgMusicEnd, setBgMusicEnd] = useState(0);
+  const [bgMusicVol, setBgMusicVol] = useState(12); // % (por baixo da narração)
+  const [openingMusicUrl, setOpeningMusicUrl] = useState("");
+  const [openingMusicStart, setOpeningMusicStart] = useState(0);
+  const [openingMusicEnd, setOpeningMusicEnd] = useState(0);
+  const [openingMusicVol, setOpeningMusicVol] = useState(80); // % (cena silenciosa)
+  const [closingMusicUrl, setClosingMusicUrl] = useState("");
+  const [closingMusicStart, setClosingMusicStart] = useState(0);
+  const [closingMusicEnd, setClosingMusicEnd] = useState(0);
+  const [closingMusicVol, setClosingMusicVol] = useState(80); // %
 
   // Manifest
   const [manifestUrl, setManifestUrl] = useState("");
@@ -184,11 +195,13 @@ export default function ProductionPage() {
     if (scenes.length === 0) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify({
-        scenes, step, completed, srt, vtt, bgMusicUrl, videoUrl,
-        totalAudioDuration, scriptApproved,
+        scenes, step, completed, srt, vtt, videoUrl, totalAudioDuration, scriptApproved,
+        bgMusicUrl, bgMusicStart, bgMusicEnd, bgMusicVol,
+        openingMusicUrl, openingMusicStart, openingMusicEnd, openingMusicVol,
+        closingMusicUrl, closingMusicStart, closingMusicEnd, closingMusicVol,
       }));
     } catch { /* quota exceeded — silent */ }
-  }, [scenes, step, completed, srt, vtt, bgMusicUrl, videoUrl, totalAudioDuration, scriptApproved, storageKey]);
+  }, [scenes, step, completed, srt, vtt, videoUrl, totalAudioDuration, scriptApproved, storageKey, bgMusicUrl, bgMusicStart, bgMusicEnd, bgMusicVol, openingMusicUrl, openingMusicStart, openingMusicEnd, openingMusicVol, closingMusicUrl, closingMusicStart, closingMusicEnd, closingMusicVol]);
 
   // Keep scenesRef in sync so polling always reads latest state
   useEffect(() => { scenesRef.current = scenes; }, [scenes]);
@@ -207,6 +220,17 @@ export default function ProductionPage() {
           setSrt(data.srt ?? "");
           setVtt(data.vtt ?? "");
           setBgMusicUrl(data.bgMusicUrl ?? "");
+          setBgMusicStart(data.bgMusicStart ?? 0);
+          setBgMusicEnd(data.bgMusicEnd ?? 0);
+          setBgMusicVol(data.bgMusicVol ?? 12);
+          setOpeningMusicUrl(data.openingMusicUrl ?? "");
+          setOpeningMusicStart(data.openingMusicStart ?? 0);
+          setOpeningMusicEnd(data.openingMusicEnd ?? 0);
+          setOpeningMusicVol(data.openingMusicVol ?? 80);
+          setClosingMusicUrl(data.closingMusicUrl ?? "");
+          setClosingMusicStart(data.closingMusicStart ?? 0);
+          setClosingMusicEnd(data.closingMusicEnd ?? 0);
+          setClosingMusicVol(data.closingMusicVol ?? 80);
           setVideoUrl(data.videoUrl ?? "");
           setTotalAudioDuration(data.totalAudioDuration ?? 0);
           setScriptApproved(data.scriptApproved ?? false);
@@ -523,8 +547,24 @@ export default function ProductionPage() {
         title: renderHooks[selectedHook]?.title,
         sceneLabel: `yt-hook${selectedHook}`,
         audioUrl: scenes.find((s) => s.audioUrl)?.audioUrl || "",
-        backgroundMusicUrl: bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse] || "",
-        backgroundMusicVolume: 0.12,
+        backgroundMusic: {
+          url: bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse] || "",
+          volume: bgMusicVol / 100,
+          startSec: bgMusicStart,
+          endSec: bgMusicEnd || undefined,
+        },
+        openingMusic: {
+          url: openingMusicUrl || "",
+          volume: openingMusicVol / 100,
+          startSec: openingMusicStart,
+          endSec: openingMusicEnd || undefined,
+        },
+        closingMusic: {
+          url: closingMusicUrl || openingMusicUrl || "",
+          volume: closingMusicUrl ? closingMusicVol / 100 : openingMusicVol / 100,
+          startSec: closingMusicUrl ? closingMusicStart : openingMusicStart,
+          endSec: closingMusicUrl ? (closingMusicEnd || undefined) : (openingMusicEnd || undefined),
+        },
         scenes: scenes.map((s) => ({
           type: s.type, narration: s.narration, overlayText: s.overlayText,
           durationSec: s.durationSec, imageUrl: s.imageUrl || null,
@@ -574,7 +614,7 @@ export default function ProductionPage() {
       }
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro no render"); }
     finally { setLoading((p) => ({ ...p, render: false })); }
-  }, [scenes, selectedCourse, selectedHook, bgMusicUrl, markComplete]);
+  }, [scenes, selectedCourse, selectedHook, bgMusicUrl, openingMusicUrl, closingMusicUrl, markComplete]);
 
   function downloadFile(content: string, filename: string) {
     const blob = new Blob([content], { type: "text/plain" });
@@ -1038,49 +1078,108 @@ export default function ProductionPage() {
               </div>
             </div>
 
-            {/* Background music */}
-            <div className="border border-escola-border rounded-lg p-4 space-y-3">
-              <p className="text-xs text-escola-creme-50 font-medium">Musica de fundo:</p>
+            {/* Music — 3 tracks */}
+            <div className="border border-escola-border rounded-lg p-4 space-y-4">
+              <p className="text-xs text-escola-creme-50 font-medium">Musica (3 faixas):</p>
 
-              {/* Instrumental (under narration) */}
+              {/* 1. Opening music */}
               <div className="space-y-1.5">
-                <p className="text-[11px] text-escola-dourado font-medium">Instrumental (por baixo da narracao):</p>
+                <p className="text-[11px] text-escola-dourado font-medium">1. Abertura (cena sem narracao)</p>
+                <input type="text" placeholder="URL da faixa (Loranne, Suno, etc)" value={openingMusicUrl}
+                  onChange={(e) => setOpeningMusicUrl(e.target.value)}
+                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none" />
+                {openingMusicUrl && (
+                  <>
+                    <audio controls src={openingMusicUrl} className="w-full max-w-md h-8" />
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <div className="flex items-center gap-1">
+                        <label className="text-[9px] text-escola-creme-50">De:</label>
+                        <input type="number" min={0} step={1} value={openingMusicStart} onChange={(e) => setOpeningMusicStart(Number(e.target.value))}
+                          className="w-14 rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme text-center focus:border-escola-dourado focus:outline-none" />
+                        <label className="text-[9px] text-escola-creme-50">Ate:</label>
+                        <input type="number" min={0} step={1} value={openingMusicEnd} onChange={(e) => setOpeningMusicEnd(Number(e.target.value))}
+                          className="w-14 rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme text-center focus:border-escola-dourado focus:outline-none" />
+                        <span className="text-[9px] text-escola-creme-50">seg</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <label className="text-[9px] text-escola-creme-50">Vol:</label>
+                        <input type="range" min={0} max={100} value={openingMusicVol} onChange={(e) => setOpeningMusicVol(Number(e.target.value))}
+                          className="w-20 h-1 accent-escola-dourado" />
+                        <span className="text-[9px] text-escola-creme-50 w-6">{openingMusicVol}%</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* 2. Instrumental (continuous under narration) */}
+              <div className="space-y-1.5">
+                <p className="text-[11px] text-escola-dourado font-medium">2. Instrumental continuo (~12% volume)</p>
                 <div className="flex items-center gap-2">
+                  <input type="text" placeholder="URL do instrumental" value={bgMusicUrl}
+                    onChange={(e) => setBgMusicUrl(e.target.value)}
+                    className="flex-1 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none" />
                   <button onClick={generateMusic} disabled={loading.music}
-                    className="rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40">
-                    {loading.music ? "A gerar..." : "Gerar instrumental (Suno)"}
+                    className="whitespace-nowrap rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40">
+                    {loading.music ? "A gerar..." : "Gerar (Suno)"}
                   </button>
                 </div>
+                {error && !loading.music && <p className="text-[10px] text-escola-terracota">{error}</p>}
+                {bgMusicUrl && (
+                  <>
+                    <audio controls src={bgMusicUrl} className="w-full max-w-md h-8" />
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <div className="flex items-center gap-1">
+                        <label className="text-[9px] text-escola-creme-50">De:</label>
+                        <input type="number" min={0} step={1} value={bgMusicStart} onChange={(e) => setBgMusicStart(Number(e.target.value))}
+                          className="w-14 rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme text-center focus:border-escola-dourado focus:outline-none" />
+                        <label className="text-[9px] text-escola-creme-50">Ate:</label>
+                        <input type="number" min={0} step={1} value={bgMusicEnd} onChange={(e) => setBgMusicEnd(Number(e.target.value))}
+                          className="w-14 rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme text-center focus:border-escola-dourado focus:outline-none" />
+                        <span className="text-[9px] text-escola-creme-50">seg (0=tudo)</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <label className="text-[9px] text-escola-creme-50">Vol:</label>
+                        <input type="range" min={0} max={100} value={bgMusicVol} onChange={(e) => setBgMusicVol(Number(e.target.value))}
+                          className="w-20 h-1 accent-escola-dourado" />
+                        <span className="text-[9px] text-escola-creme-50 w-6">{bgMusicVol}%</span>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
-              {/* Loranne track (scenes without narration: abertura, fecho, transitions) */}
+              {/* 3. Closing music */}
               <div className="space-y-1.5">
-                <p className="text-[11px] text-escola-dourado font-medium">Loranne — cenas sem narracao (abertura, fecho):</p>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    placeholder="URL da faixa da Loranne (music.seteveus.space)"
-                    value={customMusicUrl}
-                    onChange={(e) => setCustomMusicUrl(e.target.value)}
-                    className="flex-1 rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none"
-                  />
-                  <button
-                    onClick={() => {
-                      if (customMusicUrl.trim()) {
-                        setBgMusicUrl(customMusicUrl.trim());
-                      }
-                    }}
-                    disabled={!customMusicUrl.trim()}
-                    className="whitespace-nowrap rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40"
-                  >
-                    Usar esta faixa
-                  </button>
-                </div>
-                <p className="text-[10px] text-escola-creme-50 italic">A musica da Loranne tem vocais — usar apenas em cenas sem narracao para nao haver duas vozes.</p>
+                <p className="text-[11px] text-escola-dourado font-medium">3. Fecho (cena sem narracao)</p>
+                <input type="text" placeholder={openingMusicUrl ? "Vazio = mesma da abertura" : "URL da faixa"} value={closingMusicUrl}
+                  onChange={(e) => setClosingMusicUrl(e.target.value)}
+                  className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50/50 focus:border-escola-dourado focus:outline-none" />
+                {closingMusicUrl ? (
+                  <>
+                    <audio controls src={closingMusicUrl} className="w-full max-w-md h-8" />
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <div className="flex items-center gap-1">
+                        <label className="text-[9px] text-escola-creme-50">De:</label>
+                        <input type="number" min={0} step={1} value={closingMusicStart} onChange={(e) => setClosingMusicStart(Number(e.target.value))}
+                          className="w-14 rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme text-center focus:border-escola-dourado focus:outline-none" />
+                        <label className="text-[9px] text-escola-creme-50">Ate:</label>
+                        <input type="number" min={0} step={1} value={closingMusicEnd} onChange={(e) => setClosingMusicEnd(Number(e.target.value))}
+                          className="w-14 rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme text-center focus:border-escola-dourado focus:outline-none" />
+                        <span className="text-[9px] text-escola-creme-50">seg</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <label className="text-[9px] text-escola-creme-50">Vol:</label>
+                        <input type="range" min={0} max={100} value={closingMusicVol} onChange={(e) => setClosingMusicVol(Number(e.target.value))}
+                          className="w-20 h-1 accent-escola-dourado" />
+                        <span className="text-[9px] text-escola-creme-50 w-6">{closingMusicVol}%</span>
+                      </div>
+                    </div>
+                  </>
+                ) : openingMusicUrl ? (
+                  <p className="text-[10px] text-escola-creme-50 italic">Vai usar a mesma faixa e trecho da abertura.</p>
+                ) : null}
               </div>
-
-              {bgMusicUrl && <audio controls src={bgMusicUrl} className="w-full max-w-md h-8" />}
-              {!bgMusicUrl && <p className="text-[10px] text-escola-creme-50 italic">Sem musica. Gera instrumental para fundo ou usa uma faixa da Loranne para cenas silenciosas.</p>}
             </div>
 
             {/* Render final video */}
