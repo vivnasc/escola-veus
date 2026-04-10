@@ -886,16 +886,26 @@ export default function ProductionPage() {
                         {scene.animationStatus === "done" ? "Pronto" : scene.animationStatus === "failed" ? "Falhou" : scene.animationTaskId ? "A processar..." : "Pendente"}
                       </span>
                     </div>
-                    <button onClick={() => submitSceneAnimation(i)} disabled={!scene.imageUrl || loading[`anim-${i}`]}
-                      className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
-                      {loading[`anim-${i}`] ? "..." : scene.animationTaskId ? "Re-submeter" : "Submeter"}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => generateSceneImage(i)} disabled={loading[`img-${i}`]}
+                        className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
+                        {loading[`img-${i}`] ? "img..." : "Nova imagem"}
+                      </button>
+                      <button onClick={() => submitSceneAnimation(i)} disabled={!scene.imageUrl || loading[`anim-${i}`]}
+                        className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
+                        {loading[`anim-${i}`] ? "..." : scene.animationTaskId ? "Re-submeter" : "Submeter"}
+                      </button>
+                    </div>
                   </div>
-                  {scene.animationUrl && (
+                  {scene.animationUrl ? (
                     <div className="mt-2">
                       <video controls src={scene.animationUrl} className="w-full max-w-sm rounded" />
                     </div>
-                  )}
+                  ) : scene.imageUrl ? (
+                    <div className="mt-2">
+                      <img src={scene.imageUrl} alt={scene.type} className="w-32 aspect-video object-cover rounded opacity-60" />
+                    </div>
+                  ) : null}
                 </div>
               ))}
             </div>
