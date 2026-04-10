@@ -1061,9 +1061,10 @@ export default function ProductionPage() {
                 <div className="flex items-center gap-2">
                   <button onClick={generateMusic} disabled={loading.music}
                     className="rounded-lg border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40">
-                    {loading.music ? "A gerar..." : "Gerar instrumental (Suno)"}
+                    {loading.music ? "A gerar (pode demorar ~60s)..." : "Gerar instrumental (Suno)"}
                   </button>
                 </div>
+                {error && loading.music === false && <p className="text-[10px] text-escola-terracota">{error}</p>}
               </div>
 
               {/* Loranne track (scenes without narration: abertura, fecho, transitions) */}
