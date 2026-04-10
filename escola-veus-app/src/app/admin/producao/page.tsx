@@ -85,6 +85,13 @@ const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
 
 const LORA_TRIGGER = "veus_figure";
 
+function buildMotionPrompt(scene: SceneData): string {
+  const fallback = MOTION[scene.type] || "slow cinematic movement, veils flowing gently";
+  if (!scene.visualNote || scene.visualNote.length < 20) return fallback;
+  const cleaned = scene.visualNote.replace(/#[0-9A-Fa-f]{6}/g, "").replace(/\(.*?\)/g, "").trim();
+  return `slow cinematic, ${cleaned}, veils moving gently, golden light, no sudden movements`;
+}
+
 function buildPrompt(visualNote: string): string {
   const trigger = `${LORA_TRIGGER}, `;
   if (visualNote && visualNote.length > 20) {
@@ -344,7 +351,7 @@ export default function ProductionPage() {
     setLoading((p) => ({ ...p, [`anim-${index}`]: true }));
     setError(null);
     try {
-      const motion = MOTION[scene.type] || "slow cinematic movement";
+      const motion = buildMotionPrompt(scene);
       const res = await fetch("/api/admin/courses/submit-animation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
