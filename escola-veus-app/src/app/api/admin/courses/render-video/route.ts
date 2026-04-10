@@ -59,8 +59,18 @@ type ManifestScene = {
   audioEndSec?: number | null;
 };
 
+type MusicTrack = {
+  url?: string;
+  volume?: number;
+  startSec?: number;
+  durationSec?: number;
+};
+
 function buildShotstackEdit(manifest: {
   scenes: ManifestScene[];
+  backgroundMusic?: MusicTrack;
+  openingMusic?: MusicTrack;
+  closingMusic?: MusicTrack;
   backgroundMusicUrl?: string;
   backgroundMusicVolume?: number;
   title?: string;
@@ -116,8 +126,8 @@ function buildShotstackEdit(manifest: {
     const src = scene.animationUrl || scene.imageUrl;
     if (!src) continue;
 
-    const isVideo = scene.animationUrl &&
-      (scene.animationUrl.endsWith(".mp4") || scene.animationUrl.endsWith(".webm"));
+    // If there's an animation URL, it's always a video (Runway/Hailuo output)
+    const isVideo = !!scene.animationUrl;
 
     const clip: ShotstackClip = {
       asset: isVideo
@@ -153,23 +163,75 @@ function buildShotstackEdit(manifest: {
   }
   const audioTrack = { clips: audioClips };
 
-  // ─── SOUNDTRACK: Background music ──────────────────────────────────
-  const soundtrack = manifest.backgroundMusicUrl
-    ? {
-        src: manifest.backgroundMusicUrl,
-        effect: "fadeInFadeOut",
-        volume: manifest.backgroundMusicVolume ?? 0.12,
-      }
-    : undefined;
+  // ─── MUSIC TRACKS: opening + instrumental + closing ─────────────────
+  const musicClips: ShotstackClip[] = [];
+  const bgMusic = manifest.backgroundMusic;
+  const bgUrl = bgMusic?.url || manifest.backgroundMusicUrl;
+
+  // Opening music (plays during first scene, e.g. abertura)
+  const opening = manifest.openingMusic;
+  if (opening?.url && positions.length > 0) {
+    musicClips.push({
+      asset: {
+        type: "audio",
+        src: opening.url,
+        volume: opening.volume ?? 0.8,
+        trim: opening.startSec || 0,
+      },
+      start: positions[0].start,
+      length: opening.durationSec || positions[0].length,
+      transition: { in: "fade", out: "fade" },
+    });
+  }
+
+  // Instrumental continuous (plays under all narration scenes)
+  if (bgUrl) {
+    const firstNarration = scenes.findIndex((s) => s.type !== "abertura");
+    const lastNarration = scenes.length - 1 - [...scenes].reverse().findIndex((s) => s.type !== "fecho");
+    if (firstNarration >= 0 && lastNarration >= firstNarration) {
+      const instrStart = positions[firstNarration].start;
+      const instrEnd = positions[lastNarration].start + positions[lastNarration].length;
+      musicClips.push({
+        asset: {
+          type: "audio",
+          src: bgUrl,
+          volume: bgMusic?.volume ?? manifest.backgroundMusicVolume ?? 0.12,
+          trim: bgMusic?.startSec || 0,
+        },
+        start: instrStart,
+        length: instrEnd - instrStart,
+        transition: { in: "fade", out: "fade" },
+      });
+    }
+  }
+
+  // Closing music (plays during last scene, e.g. fecho)
+  const closing = manifest.closingMusic;
+  if (closing?.url && positions.length > 1) {
+    const lastPos = positions[positions.length - 1];
+    musicClips.push({
+      asset: {
+        type: "audio",
+        src: closing.url,
+        volume: closing.volume ?? 0.8,
+        trim: closing.startSec || 0,
+      },
+      start: lastPos.start,
+      length: closing.durationSec || lastPos.length,
+      transition: { in: "fade", out: "fade" },
+    });
+  }
+
+  const musicTrack = { clips: musicClips };
 
   return {
     timeline: {
-      ...(soundtrack ? { soundtrack } : {}),
       background: "#1A1A2E",
       tracks: [
         textTrack,
         visualTrack,
         audioTrack,
+        musicTrack,
       ].filter((t) => t.clips.length > 0),
     },
     output: {
