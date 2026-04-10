@@ -77,17 +77,16 @@ function buildShotstackEdit(manifest: {
   courseSlug?: string;
 }) {
   const scenes = manifest.scenes;
-  const OVERLAP = 1; // dissolve overlap in seconds
 
-  // Calculate timeline positions with dissolve overlap
+  // Sequential positions — NO overlap to prevent audio/text bleeding
   const positions: { start: number; length: number }[] = [];
   let currentTime = 0;
   for (let i = 0; i < scenes.length; i++) {
     const dur = scenes[i].durationSec;
     positions.push({ start: currentTime, length: dur });
-    currentTime += dur - OVERLAP;
+    currentTime += dur;
   }
-  const totalDuration = currentTime + OVERLAP;
+  const totalDuration = currentTime;
 
   // ─── Watermark removido — YouTube adiciona marca de água automaticamente ──
 
@@ -102,49 +101,70 @@ function buildShotstackEdit(manifest: {
     const isFrase = scene.type === "frase_final" || scene.type === "reframe";
     const size = isTitle ? "large" : isFrase ? "medium" : "small";
 
+    const textDelay = scene.type === "abertura" ? 1.5 : 1;
+    const textDuration = Math.max(2, positions[i].length - textDelay - 0.5);
+
     textClips.push({
       asset: {
         type: "html",
         html: `<p>${text.replace(/\n/g, "<br>")}</p>`,
-        css: `p { font-family: Georgia, serif; font-size: ${isTitle ? 48 : isFrase ? 36 : 28}px; color: ${isTitle ? "#D4A853" : "#F5F0E6"}; text-align: center; line-height: 1.5; text-shadow: 0 2px 20px rgba(0,0,0,0.9); }`,
-        width: 1400,
-        height: 400,
+        css: `p { font-family: Georgia, serif; font-size: ${isTitle ? 44 : isFrase ? 32 : 24}px; color: ${isTitle ? "#D4A853" : "#F5F0E6"}; text-align: center; line-height: 1.5; text-shadow: 0 2px 20px rgba(0,0,0,0.9); }`,
+        width: 1200,
+        height: 300,
       },
-      start: positions[i].start + (scene.type === "abertura" ? 1.5 : 0.7),
-      length: positions[i].length - (scene.type === "abertura" ? 2 : 1.2),
+      start: positions[i].start + textDelay,
+      length: textDuration,
       position: isTitle || isFrase ? "center" : "bottom",
-      offset: isTitle || isFrase ? undefined : { y: 0.15 },
+      offset: isTitle || isFrase ? undefined : { y: 0.12 },
       transition: { in: "fade", out: "fade" },
     });
   }
   const textTrack = { clips: textClips };
 
   // ─── TRACK 3: Visuals (clips or images) ────────────────────────────
+  const RUNWAY_CLIP_DURATION = 10; // Runway Gen-4 clips are 10s
   const visualClips: ShotstackClip[] = [];
   for (let i = 0; i < scenes.length; i++) {
     const scene = scenes[i];
     const src = scene.animationUrl || scene.imageUrl;
     if (!src) continue;
 
-    // If there's an animation URL, it's always a video (Runway/Hailuo output)
     const isVideo = !!scene.animationUrl;
+    const sceneDur = positions[i].length;
 
-    const clip: ShotstackClip = {
-      asset: isVideo
-        ? { type: "video", src: scene.animationUrl, volume: 0 }
-        : { type: "image", src },
-      start: positions[i].start,
-      length: positions[i].length,
-      fit: "crop",
-      transition: { in: "fade", out: "fade" },
-    };
+    if (isVideo) {
+      // Video clip — capped at actual clip duration
+      const videoDur = Math.min(sceneDur, RUNWAY_CLIP_DURATION);
+      visualClips.push({
+        asset: { type: "video", src: scene.animationUrl, volume: 0 },
+        start: positions[i].start,
+        length: videoDur,
+        fit: "crop",
+        transition: { in: "fade" },
+      });
 
-    // Ken Burns zoom on still images
-    if (!isVideo) {
-      clip.effect = "zoomIn";
+      // If scene is longer than clip, fill remainder with still image + slow zoom
+      if (sceneDur > RUNWAY_CLIP_DURATION && scene.imageUrl) {
+        visualClips.push({
+          asset: { type: "image", src: scene.imageUrl },
+          start: positions[i].start + videoDur,
+          length: sceneDur - videoDur,
+          fit: "crop",
+          effect: "zoomIn",
+          transition: { out: "fade" },
+        });
+      }
+    } else {
+      // Still image with Ken Burns
+      visualClips.push({
+        asset: { type: "image", src },
+        start: positions[i].start,
+        length: sceneDur,
+        fit: "crop",
+        effect: "zoomIn",
+        transition: { in: "fade", out: "fade" },
+      });
     }
-
-    visualClips.push(clip);
   }
   const visualTrack = { clips: visualClips };
 
