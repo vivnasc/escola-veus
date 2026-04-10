@@ -5,19 +5,19 @@ export const maxDuration = 60;
 /**
  * POST /api/admin/courses/save-manifest
  *
- * Save or update a production manifest to Supabase storage.
- * Callable independently after replacing a single image, clip, or audio.
+ * Save production progress to Supabase storage (fixed path, always overwritten).
+ * Used for auto-save so progress persists across devices.
  *
- * Body: { courseSlug, sceneLabel, manifest: object }
- * Returns: { manifestUrl }
+ * Body: { courseSlug, hookIndex, data: object }
+ * Returns: { ok: true }
  */
 export async function POST(req: NextRequest) {
   try {
-    const { courseSlug, sceneLabel, manifest } = await req.json();
+    const { courseSlug, hookIndex, data } = await req.json();
 
-    if (!courseSlug || !sceneLabel || !manifest) {
+    if (!courseSlug || hookIndex === undefined || !data) {
       return NextResponse.json(
-        { erro: "courseSlug, sceneLabel e manifest obrigatorios." },
+        { erro: "courseSlug, hookIndex e data obrigatorios." },
         { status: 400 },
       );
     }
@@ -32,31 +32,66 @@ export async function POST(req: NextRequest) {
     const { createClient } = await import("@supabase/supabase-js");
     const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
-    const manifestWithMeta = {
-      ...manifest,
+    const payload = {
+      ...data,
       courseSlug,
-      sceneLabel,
-      updatedAt: new Date().toISOString(),
+      hookIndex,
+      savedAt: new Date().toISOString(),
     };
 
-    const filePath = `courses/${courseSlug}/manifests/${sceneLabel}-${Date.now()}.json`;
+    // Fixed path — always overwritten so we can load it back
+    const filePath = `courses/${courseSlug}/progress/hook-${hookIndex}.json`;
     const { error } = await supabase.storage
       .from("course-assets")
       .upload(
         filePath,
-        new TextEncoder().encode(JSON.stringify(manifestWithMeta, null, 2)),
+        new TextEncoder().encode(JSON.stringify(payload, null, 2)),
         { contentType: "application/json", upsert: true },
       );
 
     if (error) {
-      return NextResponse.json({ erro: `Supabase upload: ${error.message}` }, { status: 500 });
+      return NextResponse.json({ erro: `Supabase: ${error.message}` }, { status: 500 });
     }
 
-    const manifestUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
-
-    return NextResponse.json({ manifestUrl });
+    return NextResponse.json({ ok: true });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ erro: msg }, { status: 500 });
+  }
+}
+
+/**
+ * GET /api/admin/courses/save-manifest?courseSlug=xxx&hookIndex=0
+ *
+ * Load saved production progress from Supabase.
+ * Returns: { data } or { data: null } if not found.
+ */
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const courseSlug = searchParams.get("courseSlug");
+    const hookIndex = searchParams.get("hookIndex");
+
+    if (!courseSlug || hookIndex === null) {
+      return NextResponse.json({ erro: "courseSlug e hookIndex obrigatorios." }, { status: 400 });
+    }
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (!supabaseUrl) {
+      return NextResponse.json({ data: null });
+    }
+
+    const filePath = `courses/${courseSlug}/progress/hook-${hookIndex}.json`;
+    const url = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
+
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) {
+      return NextResponse.json({ data: null });
+    }
+
+    const data = await res.json();
+    return NextResponse.json({ data });
+  } catch {
+    return NextResponse.json({ data: null });
   }
 }

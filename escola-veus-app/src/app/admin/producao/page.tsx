@@ -186,51 +186,81 @@ export default function ProductionPage() {
   const [ytDescription, setYtDescription] = useState("");
   const [ytTags, setYtTags] = useState("");
 
-  // ─── AUTO-SAVE progress to localStorage ──────────────────────────────
+  // ─── AUTO-SAVE progress to localStorage + Supabase ──────────────────
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     if (scenes.length === 0) return;
-    try {
-      localStorage.setItem(storageKey, JSON.stringify({
-        scenes, step, completed, srt, vtt, videoUrl, totalAudioDuration, scriptApproved,
-        bgMusicUrl, bgMusicStart, bgMusicVol,
-        openingMusicUrl, openingMusicStart, openingMusicVol,
-        closingMusicUrl, closingMusicStart, closingMusicVol,
-      }));
-    } catch { /* quota exceeded — silent */ }
-  }, [scenes, step, completed, srt, vtt, videoUrl, totalAudioDuration, scriptApproved, storageKey, bgMusicUrl, bgMusicStart, bgMusicVol, openingMusicUrl, openingMusicStart, openingMusicVol, closingMusicUrl, closingMusicStart, closingMusicVol]);
+    const payload = {
+      scenes, step, completed, srt, vtt, videoUrl, totalAudioDuration, scriptApproved,
+      bgMusicUrl, bgMusicStart, bgMusicVol,
+      openingMusicUrl, openingMusicStart, openingMusicVol,
+      closingMusicUrl, closingMusicStart, closingMusicVol,
+    };
+    // Save to localStorage immediately
+    try { localStorage.setItem(storageKey, JSON.stringify(payload)); } catch { /* quota */ }
+
+    // Debounced save to Supabase (every 10s max)
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      fetch("/api/admin/courses/save-manifest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseSlug: selectedCourse, hookIndex: selectedHook, data: payload }),
+      }).catch(() => {});
+    }, 10000);
+  }, [scenes, step, completed, srt, vtt, videoUrl, totalAudioDuration, scriptApproved, storageKey, selectedCourse, selectedHook, bgMusicUrl, bgMusicStart, bgMusicVol, openingMusicUrl, openingMusicStart, openingMusicVol, closingMusicUrl, closingMusicStart, closingMusicVol]);
 
   // Keep scenesRef in sync so polling always reads latest state
   useEffect(() => { scenesRef.current = scenes; }, [scenes]);
 
-  // ─── RESTORE progress from localStorage on course/hook change ────────
+  // ─── RESTORE progress: localStorage first, then Supabase ──────────────
+  function applyProgressData(data: Record<string, unknown>) {
+    setScenes(data.scenes as SceneData[]);
+    setStep((data.step as number) ?? 0);
+    setCompleted((data.completed as boolean[]) ?? Array(6).fill(false));
+    setVoiceId(DEFAULT_VOICE_ID);
+    setSrt((data.srt as string) ?? "");
+    setVtt((data.vtt as string) ?? "");
+    setBgMusicUrl((data.bgMusicUrl as string) ?? "");
+    setBgMusicStart((data.bgMusicStart as number) ?? 0);
+    setBgMusicVol((data.bgMusicVol as number) ?? 12);
+    setOpeningMusicUrl((data.openingMusicUrl as string) ?? "");
+    setOpeningMusicStart((data.openingMusicStart as number) ?? 0);
+    setOpeningMusicVol((data.openingMusicVol as number) ?? 80);
+    setClosingMusicUrl((data.closingMusicUrl as string) ?? "");
+    setClosingMusicStart((data.closingMusicStart as number) ?? 0);
+    setClosingMusicVol((data.closingMusicVol as number) ?? 80);
+    setVideoUrl((data.videoUrl as string) ?? "");
+    setTotalAudioDuration((data.totalAudioDuration as number) ?? 0);
+    setScriptApproved((data.scriptApproved as boolean) ?? false);
+  }
+
   useEffect(() => {
+    // 1. Try localStorage
     try {
       const saved = localStorage.getItem(storageKey);
       if (saved) {
         const data = JSON.parse(saved);
         if (data.scenes?.length > 0) {
-          setScenes(data.scenes);
-          setStep(data.step ?? 0);
-          setCompleted(data.completed ?? Array(6).fill(false));
-          setVoiceId(DEFAULT_VOICE_ID); // Sempre usar a voz padrão
-          setSrt(data.srt ?? "");
-          setVtt(data.vtt ?? "");
-          setBgMusicUrl(data.bgMusicUrl ?? "");
-          setBgMusicStart(data.bgMusicStart ?? 0);
-          setBgMusicVol(data.bgMusicVol ?? 12);
-          setOpeningMusicUrl(data.openingMusicUrl ?? "");
-          setOpeningMusicStart(data.openingMusicStart ?? 0);
-          setOpeningMusicVol(data.openingMusicVol ?? 80);
-          setClosingMusicUrl(data.closingMusicUrl ?? "");
-          setClosingMusicStart(data.closingMusicStart ?? 0);
-          setClosingMusicVol(data.closingMusicVol ?? 80);
-          setVideoUrl(data.videoUrl ?? "");
-          setTotalAudioDuration(data.totalAudioDuration ?? 0);
-          setScriptApproved(data.scriptApproved ?? false);
-          return; // don't load from API — we have saved progress
+          applyProgressData(data);
+          return;
         }
       }
-    } catch { /* parse error — ignore, load fresh */ }
+    } catch { /* parse error */ }
+
+    // 2. Try Supabase (cross-device)
+    fetch(`/api/admin/courses/save-manifest?courseSlug=${selectedCourse}&hookIndex=${selectedHook}`)
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.data?.scenes?.length > 0) {
+          applyProgressData(res.data);
+          // Also save to localStorage for faster next load
+          try { localStorage.setItem(storageKey, JSON.stringify(res.data)); } catch { /* */ }
+        }
+      })
+      .catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storageKey]);
 
   const markComplete = useCallback((s: number) => {
