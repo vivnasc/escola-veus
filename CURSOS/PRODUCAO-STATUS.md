@@ -1,6 +1,6 @@
 # Escola dos Veus — Estado da Producao
 
-**Ultima actualizacao:** 2026-03-25
+**Ultima actualizacao:** 2026-04-10
 **Actualizado por:** Claude Code
 
 > Este ficheiro e a referencia unica de continuidade entre sessoes.
@@ -16,207 +16,225 @@
 | Estrutura dos 20 cursos | COMPLETO | `src/data/courses.ts` — 20 cursos, 160 modulos, 480 sub-aulas |
 | Guidelines de producao | COMPLETO | `src/data/course-guidelines.ts` — 706 linhas |
 | Territorios visuais | COMPLETO | `src/data/territorios.ts` — 10 territorios mapeados |
-| Admin de producao (UI) | COMPLETO | `/admin/cursos/producao/` — audio, imagem, video |
-| APIs de producao | COMPLETO | 6 API routes (audio, imagem, video, LoRA, test, assets) |
-| Imagens de referencia | PARCIAL | ~60 imagens em `CURSOS/imagens/` |
-| **Scripts das aulas** | **EM CURSO** | **24/480 scripts escritos (Ouro Proprio completo — DRAFT)** |
-| **Manuais (PDF)** | **EM CURSO** | **1/20 manuais escritos (Ouro Proprio — DRAFT) + pipeline PDF** |
-| **Cadernos exercicios** | **EM CURSO** | **8/160 cadernos escritos (Ouro Proprio — DRAFT)** |
-| **Scripts YouTube** | **EM CURSO** | **3/~50 scripts escritos (Ouro Proprio — DRAFT)** |
-| Audios (ElevenLabs) | NAO INICIADO | Depende dos scripts |
-| Visuais (ThinkDiffusion) | NAO INICIADO | Depende do LoRA + scripts |
-| LoRA treinado | NAO INICIADO | Infra pronta, modelo nao treinado |
-| PDFs gerados | EM CURSO | Pipeline implementado (`@react-pdf/renderer`) + API route |
-| Tabelas Supabase cursos | NAO EXISTE | Falta `course_content`, `course_assets` |
+| Identidade visual videos | COMPLETO | `CURSOS/IDENTIDADE-VISUAL-VIDEOS.md` — Conceito A: O Veu e o Corpo |
+| Admin de producao (UI) | COMPLETO | `/admin/producao/` — wizard 6 passos |
+| Admin LoRA (UI) | COMPLETO | `/admin/lora/` — gerar + treinar automaticamente |
+| APIs de producao | COMPLETO | Todos os endpoints prontos (audio, imagem, animacao, legendas, musica, render) |
+| Scripts YouTube | EM CURSO | V1 (13 hooks) + V2 (1 hook) + Trailer — todos com audio tags v3 |
+| LoRA treinado | COMPLETO | Treinado com 11 imagens via fal.ai, trigger: `veus_figure` |
+| **Trailer do canal** | **EM CURSO** | **8 cenas com audio + imagens geradas. Animacoes pendentes (Runway credits)** |
+| Scripts das aulas | EM CURSO | 24/480 scripts escritos (Ouro Proprio completo — DRAFT) |
+| Manuais (PDF) | EM CURSO | 1/20 manuais escritos (Ouro Proprio — DRAFT) + pipeline PDF |
+| Cadernos exercicios | EM CURSO | 8/160 cadernos escritos (Ouro Proprio — DRAFT) |
 
 ---
 
-## Pipeline de Producao — Ordem Obrigatoria
+## Pipeline Tecnico — Estado Actual (Abril 2026)
 
+### Conceito Visual: "O Veu e o Corpo" (Conceito A)
+
+A figura NAO e solida. E feita de veus translucidos sobrepostos com luz dourada a brilhar por dentro.
+Quando os veus caem, a luz revela-se. Escolhido por traduzir o nome da escola em imagem.
+
+**STYLE prompt (exacto do codigo):**
 ```
-FASE 1: CONTEUDO (onde estamos)
-  1.1 Scripts das aulas (480 sub-aulas) ← OURO PROPRIO COMPLETO (draft)
-  1.2 Manuais (20, um por curso)
-  1.3 Cadernos de exercicios (160, 8 por curso)
-  1.4 Scripts YouTube (2-3 por curso)
-
-FASE 2: AUDIO
-  2.1 Gerar audios via ElevenLabs (480 audios de aulas)
-  2.2 Gerar audios YouTube (40-60 audios)
-  2.3 QA e aprovacao pela Vivianne
-
-FASE 3: VISUAIS
-  3.1 Treinar LoRA com estilo Mundo dos Veus
-  3.2 Gerar biblioteca de assets (~100 imagens base)
-  3.3 Gerar imagens por aula
-  3.4 Gerar clips video (Wan 2.1)
-
-FASE 4: MONTAGEM
-  4.1 Juntar audio + visuais + texto animado
-  4.2 Gerar PDFs dos manuais e cadernos
-  4.3 QA e aprovacao final
-
-FASE 5: PUBLICACAO
-  5.1 Upload para Supabase Storage
-  5.2 Activar na plataforma
-  5.3 Lancamento
+minimalist flat illustration, faceless human figure made entirely of translucent layered veils, the veils ARE the body, no solid skin visible, figure composed of flowing semi-transparent fabric layers in dark navy-purple (#1A1A2E to #2D2045), warm golden light (#D4A853) glowing softly from within between veil layers, no race no facial features no clothing details, smooth organic flowing shapes, clean edges, no outlines, terracotta (#C4745A) accent details, dark navy background (#0D0D1A), calm symbolic abstract modern, large central figure filling the frame, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters
 ```
 
-**REGRA: Nao avancar para a Fase 2 sem ter scripts aprovados.**
+### Voz (ElevenLabs v3)
+
+| Parametro | Valor | Nota |
+|-----------|-------|------|
+| Voice ID | `JGnWZj684pcXmK2SxYIv` | NAO e clone da Vivianne — voz pre-existente escolhida |
+| Model | `eleven_v3` | Modelo mais recente |
+| language_code | `"pt"` | Obrigatorio com v3. "pt-pt" nao funciona com v3 |
+| voice_settings | NENHUM | NAO enviar — usar defaults naturais da voz |
+| Audio tags | `[pause]`, `[short pause]`, `[long pause]`, `[calm]`, `[thoughtful]` | Directamente no texto |
+
+**REGRA:** O voiceId NUNCA e guardado/restaurado de localStorage. Vem sempre do DEFAULT_VOICE_ID no codigo.
+O campo de voice ID esta escondido na UI.
+
+### Animacoes
+
+| Parametro | Valor |
+|-----------|-------|
+| Provider | Runway Gen-4 Turbo |
+| API URL | `https://api.dev.runwayml.com/v1/image_to_video` |
+| Status URL | `https://api.dev.runwayml.com/v1/tasks/${taskId}` |
+| Modelo | `gen4_turbo` |
+| Duracao | 10 segundos |
+| Custo | 50 credits/clip ($0.50/clip) |
+
+**IMPORTANTE:** A billing da API Runway e SEPARADA do plano Web App.
+- Web App (dev.runwayml.com → plano Standard $15/mês) = credits para usar na interface web
+- API credits = comprados separadamente em dev.runwayml.com → Manage → Billing
+- Minimo: $10 = 1000 credits = 20 clips de 10s
+- A Vivianne JA tem plano Standard mas PRECISA comprar API credits separadamente
+
+### Imagens
+
+| Parametro | Valor |
+|-----------|-------|
+| Motor | Flux via fal.ai |
+| LoRA trigger | `veus_figure` |
+| Endpoint | `/api/admin/courses/generate-image-flux` |
+| Resolucao | 1024x1024 (dataset LoRA) / widescreen (cenas video) |
+
+### Montagem Final
+
+| Parametro | Valor |
+|-----------|-------|
+| Motor | Shotstack API |
+| **FALTA** | `SHOTSTACK_ENV=v1` no Vercel |
 
 ---
 
-## Curso Prioritario: Ouro Proprio
+## Trailer do Canal — Estado Detalhado
 
-O primeiro curso a ser produzido e o **Ouro Proprio** (slug: `ouro-proprio`).
-Razao: porta universal — dinheiro e o tema mais activador.
+**Curso:** geral, Hook: 0
+**Titulo:** "Escola dos Veus — O que escondes de ti?"
 
-### Progresso do Ouro Proprio
-
-| Modulo | Titulo | Scripts | Manual | Caderno | Audio | Visual |
-|--------|--------|---------|--------|---------|-------|--------|
-| 1 | O Extracto como Espelho | DRAFT (3/3) | DRAFT | DRAFT | — | — |
-| 2 | A Heranca Financeira Emocional | DRAFT (3/3) | DRAFT | DRAFT | — | — |
-| 3 | A Vergonha do Dinheiro | DRAFT (3/3) | DRAFT | DRAFT | — | — |
-| 4 | Cobrar, Receber, Merecer | DRAFT (3/3) | DRAFT | DRAFT | — | — |
-| 5 | Gastar em Ti | DRAFT (3/3) | DRAFT | DRAFT | — | — |
-| 6 | Dinheiro e Relacoes | DRAFT (3/3) | DRAFT | DRAFT | — | — |
-| 7 | Ganhar Mais Nao Resolve | DRAFT (3/3) | DRAFT | DRAFT | — | — |
-| 8 | Dinheiro como Liberdade | DRAFT (3/3) | DRAFT | DRAFT | — | — |
-
-Legenda: — = nao iniciado | DRAFT = rascunho | APROVADO = Vivianne aprovou | PRODUZIDO = asset gerado
-
-### Resumo dos Scripts Escritos (sessao 2026-03-25)
-
-**Modulo 1 — O Extracto como Espelho:**
-- m1a: O medo de olhar — abrir o extracto sem desviar o olhar
-- m1b: Ler o extracto como um diario — cada linha conta uma historia emocional
-- m1c: O corpo e o dinheiro — onde o dinheiro vive no corpo
-
-**Modulo 2 — A Heranca Financeira Emocional:**
-- m2a: Os scripts de infancia — as frases sobre dinheiro absorvidas antes dos 10 anos
-- m2b: O que viste vs. o que ouviste — contradicoes entre palavras e actos dos pais
-- m2c: Reescrever os scripts — escolher conscientemente o que manter e largar
-
-**Modulo 3 — A Vergonha do Dinheiro:**
-- m3a: Vergonha de nao ter — quando a falta se torna identidade
-- m3b: Vergonha de querer mais — o pacto silencioso de querer pouco
-- m3c: Dinheiro e dignidade — separar valor pessoal de valor monetario
-
-**Modulo 4 — Cobrar, Receber, Merecer:**
-- m4a: O desconto automatico — baixar o preco antes de alguem pedir
-- m4b: A ligacao cobrar-merecer — o ciclo entre merecimento e cobranca
-- m4c: Receber sem devolver imediatamente — a dificuldade de aceitar sem compensar
-
-**Modulo 5 — Gastar em Ti:**
-- m5a: A hierarquia dos gastos — onde te colocas na lista de prioridades
-- m5b: Culpa e prazer — a culpa que impede o prazer de gastar em si
-- m5c: O investimento em ti como acto politico — investir em si como posicionamento
-
-**Modulo 6 — Dinheiro e Relacoes:**
-- m6a: Quem paga, manda? — poder escondido nas contas partilhadas
-- m6b: Dependencia financeira e medo — quando ficar e uma questao de contas
-- m6c: A conversa sobre dinheiro que evitas — o tabu do dinheiro nas relacoes
-
-**Modulo 7 — Ganhar Mais Nao Resolve:**
-- m7a: O buraco que o dinheiro nao enche — quando mais nao traz paz
-- m7b: Sabotagem financeira — o corpo que regressa ao que conhece
-- m7c: Suficiente: quando e suficiente? — a esteira de querer sempre mais
-
-**Modulo 8 — Dinheiro como Liberdade:**
-- m8a: De sobrevivencia a direccao — sair do modo reaccao
-- m8b: O mapa do futuro que queres financiar — saber para onde queres ir
-- m8c: Liberdade, nao acumulacao — dinheiro como ferramenta, nao como destino
+| Passo | Estado | Notas |
+|-------|--------|-------|
+| Script | COMPLETO | 8 cenas com audio tags v3, todos os `[pause]` convertidos |
+| Audio | COMPLETO | 8 cenas com audio gerado (voz JGnWZj684pcXmK2SxYIv, sem voice_settings) |
+| Imagens | COMPLETO | 8 cenas com imagens Flux + LoRA |
+| Animacoes | **BLOQUEADO** | Precisa de API credits Runway (min $10 em dev.runwayml.com → Billing) |
+| Legendas | NAO INICIADO | Depende de audio + animacoes |
+| Render final | NAO INICIADO | Shotstack — depende de tudo acima + SHOTSTACK_ENV |
 
 ---
 
-## Proxima Accao (para a proxima sessao)
+## APIs e Contas Configuradas
 
-**OPCAO A — Revisao pela Vivianne:**
-Os 24 scripts e o manual do Ouro Proprio estao em DRAFT. A Vivianne deve reve-los e marcar como APROVADO ou deixar notas de revisao.
-
-**OPCAO B — Continuar producao de conteudo do Ouro Proprio:**
-1. ~~Escrever o manual do Ouro Proprio~~ FEITO
-2. ~~Escrever os 8 cadernos de exercicios~~ FEITO
-3. ~~Escrever os 3 scripts YouTube~~ FEITO
-
-**Todo o conteudo do Ouro Proprio esta em DRAFT. Proxima accao:**
-- Vivianne rever e aprovar tudo
-- Ou comecar o conteudo do Limite Sagrado
-
-**OPCAO C — Comecar o segundo curso:**
-Se o Ouro Proprio estiver aprovado, comecar os scripts do Limite Sagrado (`src/data/course-scripts/limite-sagrado.ts`).
+| Servico | Chave | Estado |
+|---------|-------|--------|
+| ElevenLabs | `ELEVENLABS_API_KEY` | Configurado no Vercel |
+| fal.ai (Flux + LoRA) | `FAL_KEY` | Configurado no Vercel |
+| Runway Gen-4 | `RUNWAY_API_KEY` | Configurado — FALTA comprar API credits |
+| Suno (musica instrumental) | `SUNO_API_KEY` + `SUNO_API_URL` | Configurado no Vercel |
+| Shotstack (montagem cloud) | `SHOTSTACK_API_KEY` | Configurado no Vercel |
+| Shotstack ambiente | `SHOTSTACK_ENV` | **FALTA: adicionar `v1` no Vercel** |
+| Supabase | Ja configurado | Pronto |
 
 ---
 
-## Onde Guardar Conteudo
+## Endpoints API (todos prontos)
 
-```
-src/data/course-scripts/
-  ouro-proprio.ts          ← scripts das 24 sub-aulas (DRAFT COMPLETO)
-  limite-sagrado.ts        ← (futuro)
-  arte-inteireza.ts        ← (futuro)
-  ...
-
-src/data/course-manuals/
-  ouro-proprio.ts          ← conteudo do manual (8 capitulos) (DRAFT COMPLETO)
-  ...
-
-src/data/course-workbooks/
-  ouro-proprio.ts          ← conteudo dos 8 cadernos (DRAFT COMPLETO)
-  ...
-
-src/data/course-youtube/
-  ouro-proprio.ts          ← scripts dos 3 hooks YouTube (DRAFT COMPLETO)
-  ...
-```
-
----
-
-## Ficheiros Chave (referencia rapida)
-
-| Ficheiro | Contem |
+| Endpoint | Funcao |
 |----------|--------|
-| `src/data/courses.ts` | Estrutura dos 20 cursos (modulos, sub-aulas, titulos) |
-| `src/data/course-guidelines.ts` | Guidelines de producao (tom, estrutura, visual) |
-| `src/data/course-scripts/ouro-proprio.ts` | **24 scripts DRAFT do Ouro Proprio** |
-| `src/data/course-manuals/ouro-proprio.ts` | **Manual DRAFT do Ouro Proprio (8 capitulos)** |
-| `src/data/course-workbooks/ouro-proprio.ts` | **8 cadernos de exercicios DRAFT do Ouro Proprio** |
-| `src/lib/pdf/manual-template.tsx` | **Template PDF com identidade visual + licenca** |
-| `src/app/api/courses/manual/route.ts` | **API para gerar PDF personalizado** |
-| `src/data/territorios.ts` | 10 territorios visuais |
-| `src/types/course.ts` | Types TypeScript dos cursos |
-| `CLAUDE.md` | Arquitectura tecnica completa do projecto |
-| `CURSOS/PRODUCAO-STATUS.md` | **ESTE FICHEIRO** — estado da producao |
+| `/api/admin/courses/preview-script` | Parse do script em cenas |
+| `/api/admin/courses/generate-scene-audio` | Audio por cena (ElevenLabs v3) |
+| `/api/admin/courses/generate-image-flux` | Imagem por cena (Flux/fal.ai + LoRA) |
+| `/api/admin/courses/submit-animation` | Clip animado (Runway Gen-4 / Hailuo) |
+| `/api/admin/courses/animation-status` | Poll status animacao |
+| `/api/admin/courses/generate-subtitles` | Legendas SRT + VTT |
+| `/api/admin/courses/generate-music` | Musica instrumental (Suno) |
+| `/api/admin/courses/save-manifest` | Guardar manifesto no Supabase |
+| `/api/admin/courses/render-video` | Montagem final (Shotstack) |
+| `/api/admin/courses/produce-video` | Orquestrador (botao unico) |
+| `/api/admin/courses/create-dataset-zip` | ZIP de imagens para LoRA |
+| `/api/admin/courses/train-lora` | Treinar LoRA via fal.ai |
+| `/api/admin/courses/train-lora/status` | Poll status treino LoRA |
 
 ---
 
-## Decisoes Tomadas
+## Ecossistema de Dominios
 
-1. **Ordem de lancamento:** Ouro Proprio → Limite Sagrado → A Arte da Inteireza → restantes
-2. **Formato dos scripts:** TypeScript em `src/data/course-scripts/` (permite import directo na plataforma)
-3. **Pipeline:** Conteudo primeiro, producao depois (nao produzir video sem script aprovado)
-4. **Voz:** Clone ElevenLabs da Vivianne (ja configurado)
-5. **Visuais:** ThinkDiffusion + LoRA (infra pronta, modelo por treinar)
+| Dominio | O que e |
+|---------|---------|
+| `escola.seteveus.space` | Escola — 20 cursos, modulos, cadernos |
+| `seteveus.space` | Site principal — livro interactivo "Os 7 Veus do Despertar" |
+| `music.seteveus.space` | Musica original da Loranne — 1200+ faixas, 54 albuns |
 
 ---
 
-## Decisoes Pendentes
+## Decisoes Tomadas (actualizado Abril 2026)
 
-1. **Pseudonimo da instrutora** — deve funcionar em PT e EN, soar a educadora/guia
-2. **Ferramenta de montagem de video** — Wan 2.1 vs CapCut vs ffmpeg
-3. **Preco dos cursos** — ainda nao definido
-4. **Calendario de lancamento exacto** — depende da velocidade de producao
+| Decisao | Escolha | Razao |
+|---------|---------|-------|
+| Conceito visual | Conceito A: O Veu e o Corpo | Unico que traduz o nome da escola em imagem |
+| Montagem cloud | Shotstack API | Sem AWS, sem CLI, 100% web |
+| Animacao principal | Runway Gen-4 Turbo API | Melhor qualidade (Hailuo/fal.ai como fallback) |
+| Imagens | Flux via fal.ai + LoRA treinado | Rapido, barato, estilo consistente |
+| Musica de fundo | Suno (instrumental) + Loranne (cenas sem narracao) | Original, sem direitos |
+| Voz | ElevenLabs v3, ID `JGnWZj684pcXmK2SxYIv` | NAO e clone — voz pre-existente, rapida e conversacional |
+| voice_settings | NENHUM | Usar defaults naturais da voz |
+| language_code | `"pt"` | "pt-pt" nao funciona com v3 |
+| Frequencia | 2 videos/semana | Ritmo de crescimento |
+| Linguagem | Genero neutro / inclusivo | Publico feminino mas acessivel a todos |
+| LoRA trigger | `veus_figure` | Treinado com 11 imagens, Conceito A |
+
+---
+
+## Proximas Accoes (por ordem de prioridade)
+
+### Imediato (bloqueadores)
+
+1. **Vivianne:** Comprar API credits Runway em dev.runwayml.com → Manage → Billing (min $10)
+2. **Vivianne:** Adicionar `SHOTSTACK_ENV=v1` no Vercel
+
+### Apos desbloquear Runway
+
+3. Submeter 8 animacoes do trailer
+4. Gerar legendas do trailer
+5. Gerar musica instrumental do trailer (Suno)
+6. Render final do trailer (Shotstack)
+7. Aprovar e publicar trailer no YouTube
+
+### Curto prazo
+
+8. Produzir primeiro video completo (Limite Sagrado hook 1)
+9. Produzir Ouro Proprio hook 1 (v2 reescrito)
+10. Criar Shorts a partir dos videos produzidos
 
 ---
 
 ## Instrucoes para Sessoes Futuras
 
 1. Ler este ficheiro (`CURSOS/PRODUCAO-STATUS.md`)
-2. Ler `src/data/course-guidelines.ts` para tom e estrutura
-3. Verificar a "Proxima Accao" acima
-4. Trabalhar na accao indicada
+2. Ler `CURSOS/IDENTIDADE-VISUAL-VIDEOS.md` para identidade visual
+3. Ler `CURSOS/ROADMAP-PRODUCAO-VIDEOS.md` para estrategia de conteudo
+4. Verificar a "Proximas Accoes" acima
 5. **Actualizar este ficheiro** no final da sessao com o progresso feito
 6. Commit e push das alteracoes
 
-**IMPORTANTE:** Nao saltar fases. Nao comecar a gerar audios ou visuais sem scripts aprovados.
+**REGRAS CRITICAS:**
+- Voice ID `JGnWZj684pcXmK2SxYIv` — NUNCA mudar sem ordem explicita
+- Sem voice_settings — NUNCA adicionar stability/similarity_boost
+- Runway API URL: `api.dev.runwayml.com` — NAO mudar para api.runwayml.com
+- LoRA trigger: `veus_figure` — usado automaticamente em `buildPrompt()`
+- localStorage guarda progresso de producao MAS nunca guarda voiceId
+
+---
+
+## Mapa de Ficheiros (referencia rapida)
+
+```
+CURSOS/
+  PRODUCAO-STATUS.md                ← ESTE FICHEIRO
+  IDENTIDADE-VISUAL-VIDEOS.md      ← identidade visual completa
+  ROADMAP-PRODUCAO-VIDEOS.md       ← estrategia de conteudo + pipeline
+
+escola-veus-app/src/
+  data/
+    courses.ts                      ← 20 cursos (estrutura)
+    youtube-scripts.ts              ← hooks com cenas, timing, audio tags v3
+    territory-themes.ts             ← cores por curso
+    course-guidelines.ts            ← tom, estrutura, regras visuais
+
+  app/admin/
+    producao/page.tsx               ← wizard 6 passos (producao de videos)
+    lora/page.tsx                   ← treinar LoRA (gerar + treinar)
+
+  app/api/admin/courses/
+    generate-scene-audio/route.ts   ← ElevenLabs v3 por cena
+    generate-image-flux/route.ts    ← Flux/fal.ai + LoRA
+    submit-animation/route.ts       ← Runway Gen-4 / Hailuo
+    animation-status/route.ts       ← Poll status animacao
+    generate-subtitles/route.ts     ← SRT + VTT
+    generate-music/route.ts         ← Suno instrumental
+    render-video/route.ts           ← Shotstack montagem
+    create-dataset-zip/route.ts     ← ZIP imagens para LoRA
+    train-lora/route.ts             ← Treinar LoRA via fal.ai
+```
