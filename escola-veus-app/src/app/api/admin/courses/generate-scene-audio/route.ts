@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
           model_id: "eleven_v3",
           language_code: "pt",
           output_format: "mp3_44100_128",
-          voice_settings: { stability: 0.35, similarity_boost: 0.70 },
+          // Sem voice_settings — defaults naturais da voz (NUNCA alterar)
         }),
       });
 

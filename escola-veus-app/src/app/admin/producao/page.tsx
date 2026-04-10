@@ -57,26 +57,26 @@ const SCENE_LABELS: Record<string, string> = {
   reframe: "Reframe",
 };
 
-const STYLE = "minimalist flat illustration, faceless human figure made entirely of translucent layered veils, the veils ARE the body, no solid skin visible, figure composed of flowing semi-transparent fabric layers in dark navy-purple (#1A1A2E to #2D2045), warm golden light (#D4A853) glowing softly from within between veil layers, no race no facial features no clothing details, smooth organic flowing shapes, clean edges, no outlines, terracotta (#C4745A) accent details, dark navy background (#0D0D1A), calm symbolic abstract modern, large central figure filling the frame, 16:9 widescreen composition, no photorealism, no cartoon, no text, no words, no letters";
+const STYLE = "cinematic digital painting, elegant faceless feminine silhouette with visible body language and natural human posture, figure has a real body with hands arms shoulders hips, draped in flowing translucent fabric layers, warm skin-like terracotta tones (#C4745A) visible through semi-transparent veils in dark navy-purple (#1A1A2E to #2D2045), warm golden light (#D4A853) glowing softly from within, the figure faces the viewer as if in intimate conversation, expressive body posture and hand gestures, no face no eyes no mouth but strong human presence, no race, smooth organic flowing shapes, dark navy background (#0D0D1A), 16:9 widescreen cinematic composition, large central figure, emotional and intimate mood, no photorealism, no cartoon, no text, no words, no letters";
 
 const MOTION: Record<string, string> = {
   // v1
-  abertura: "slow cinematic camera drift downward, figure standing still, veils flowing gently in wind, golden particles floating upward",
-  pergunta: "figure breathing slowly, veil layers rippling softly, golden light pulsing from within the chest",
-  situacao: "slow camera tracking right, figure turning head slightly, veils swaying with the movement",
-  revelacao: "figure slowly lifting arms, outer veil layers peeling away and floating upward, golden light growing brighter underneath",
-  gesto: "figure slowly raising hand to chest, veils gathering around the hand, golden particles collecting in palm",
-  frase_final: "very slow zoom in, figure standing calm, veils settling down peacefully, golden glow fading softly",
-  cta: "gentle wind blowing veils to the side, figure walking forward slowly, warm golden light expanding from within",
-  fecho: "figure slowly dissolving upward into golden particles, veils floating away into dark navy sky",
+  abertura: "slow cinematic camera drift downward, figure standing still facing the viewer, gentle breathing, fabric flowing softly in wind",
+  pergunta: "figure tilting head slightly as if asking a question, hands moving gently, natural breathing rhythm",
+  situacao: "slow camera tracking, figure turning body slightly toward viewer, one hand rising to gesture",
+  revelacao: "figure slowly lifting hands outward, fabric layers falling away from shoulders, golden light revealing skin underneath",
+  gesto: "figure slowly placing hand on own chest, intimate gesture, natural body weight shift",
+  frase_final: "very slow zoom in on figure, calm confident posture, hands resting at sides, steady breathing",
+  cta: "figure taking one step forward toward viewer, arms opening gently in welcome, warm golden light expanding",
+  fecho: "figure standing still, silhouette glowing golden, slow fade to dark navy",
   // v2
-  trailer: "slow cinematic sequence, figure emerging from darkness, veils lifting and flowing, golden light growing from within",
-  gancho: "figure breathing slowly, veil layers rippling, golden light pulsing gently from the core",
-  reconhecimento: "slow camera tracking, figure looking down contemplatively, veils stirring softly around the body",
-  framework: "figure slowly opening arms wide, veil layers separating and revealing golden light between each layer",
-  exemplo: "two figures facing each other, shared veil flowing between them, warm golden light connecting them",
-  exercicio: "figure placing hand on chest slowly, veils tightening gently around the hand, golden glow growing at the touch point",
-  reframe: "very slow zoom into warm golden light, veils dissolving into golden particles floating upward",
+  trailer: "slow cinematic, figure emerging from darkness toward the viewer, body becoming visible, confident presence",
+  gancho: "figure breathing naturally, one hand moving to emphasize a point, intimate direct presence facing camera",
+  reconhecimento: "figure nodding slowly as if understanding, hand touching chin contemplatively, natural body language",
+  framework: "figure using both hands to gesture while speaking, open expressive body language, fabric flowing with movement",
+  exemplo: "figure extending one hand toward viewer as if offering something, warm inviting gesture, natural movement",
+  exercicio: "figure placing both hands on chest, eyes down, intimate self-connection gesture, slow breathing",
+  reframe: "figure standing tall with confident posture, chin slightly lifted, golden light growing from within",
 };
 
 const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
@@ -86,19 +86,19 @@ const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
 const LORA_TRIGGER = "veus_figure";
 
 function buildMotionPrompt(scene: SceneData): string {
-  const fallback = MOTION[scene.type] || "slow cinematic movement, veils flowing gently";
+  const fallback = MOTION[scene.type] || "slow cinematic movement, figure breathing naturally, subtle body movement";
   if (!scene.visualNote || scene.visualNote.length < 20) return fallback;
   const cleaned = scene.visualNote.replace(/#[0-9A-Fa-f]{6}/g, "").replace(/\(.*?\)/g, "").trim();
-  return `slow cinematic, ${cleaned}, veils moving gently, golden light, no sudden movements`;
+  return `slow cinematic, ${cleaned}, natural human breathing and subtle gestures, fabric flowing gently, no sudden movements`;
 }
 
 function buildPrompt(visualNote: string): string {
   const trigger = `${LORA_TRIGGER}, `;
   if (visualNote && visualNote.length > 20) {
     const cleaned = visualNote.replace(/#[0-9A-Fa-f]{6}/g, "").replace(/\(.*?\)/g, "").trim();
-    return `${trigger}${cleaned}, ${STYLE}`;
+    return `${trigger}${cleaned}, facing the viewer, ${STYLE}`;
   }
-  return `${trigger}contemplative scene, ${STYLE}`;
+  return `${trigger}figure facing viewer in intimate conversation, ${STYLE}`;
 }
 
 // ─── STEP INDICATOR ─────────────────────────────────────────────────────────
@@ -317,7 +317,7 @@ export default function ProductionPage() {
         s.audioStartSec = t;
         const dur = s.audioDurationSec || s.durationSec;
         s.audioEndSec = t + dur;
-        if (s.audioDurationSec) s.durationSec = s.audioDurationSec + 1;
+        if (s.audioDurationSec) s.durationSec = Math.min(s.audioDurationSec + 2, 10);
         t += s.durationSec;
       }
       totalDur = t;
