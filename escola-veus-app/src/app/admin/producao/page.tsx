@@ -75,7 +75,7 @@ const MOTION: Record<string, string> = {
   framework: "didactic animation, diagrams appearing, slow reveal",
   exemplo: "narrative scene, warm lighting, dissolve transitions",
   exercicio: "hand on chest, golden glow growing, calm",
-  reframe: "very slow zoom, text appearing in warm light",
+  reframe: "very slow zoom into warm golden light, veils dissolving softly",
 };
 
 const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
