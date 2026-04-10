@@ -593,7 +593,7 @@ export default function ProductionPage() {
         scenes: scenes.map((s) => ({
           type: s.type, narration: s.narration, overlayText: s.overlayText,
           durationSec: s.durationSec, imageUrl: s.imageUrl || null,
-          animationUrl: s.animationUrl || null,
+          animationUrl: s.animationUrl || null, audioUrl: s.audioUrl || null,
           audioStartSec: s.audioStartSec ?? null, audioEndSec: s.audioEndSec ?? null,
         })),
       };
