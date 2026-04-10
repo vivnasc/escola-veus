@@ -5,11 +5,11 @@ export const maxDuration = 120;
 /**
  * POST /api/admin/courses/generate-music
  *
- * Generates instrumental background music using Suno API (third-party wrapper).
- * Tries multiple known endpoint formats since there's no official Suno API.
- * Uploads to Supabase and returns URL.
+ * Generates instrumental background music using Suno via API.box wrapper.
+ * Endpoint: POST https://apibox.erweima.ai/api/v1/generate
+ * Status:   GET  https://apibox.erweima.ai/api/v1/generate/record-info?taskId=XXX
  *
- * Env: SUNO_API_KEY, SUNO_API_URL (base URL of the wrapper, e.g. https://api.sunoapi.org)
+ * Env: SUNO_API_KEY (API.box Bearer token), SUNO_API_URL (https://apibox.erweima.ai)
  *
  * Body: {
  *   prompt?: string,      — style description
@@ -23,31 +23,6 @@ const DEFAULT_PROMPT =
   "ambient contemplative instrumental, soft subtle piano and warm pads, " +
   "slow tempo, meditative, no vocals, no lyrics, no drums, " +
   "gentle atmospheric texture, background music for narration";
-
-// Known endpoint formats for Suno API wrappers
-const ENDPOINT_FORMATS = [
-  { path: "/api/v1/generate", bodyFn: makeBodyV1 },   // sunoapi.org
-  { path: "/api/generate", bodyFn: makeBodyLegacy },   // gcui-art/suno-api
-  { path: "/v1/generate", bodyFn: makeBodyV1 },        // alternative
-  { path: "/generate", bodyFn: makeBodyV1 },            // minimal
-];
-
-function makeBodyV1(prompt: string, durationSec: number) {
-  return {
-    prompt,
-    instrumental: true,
-    model: "chirp-v3-5",
-    wait_audio: true,
-  };
-}
-
-function makeBodyLegacy(prompt: string, durationSec: number) {
-  return {
-    prompt,
-    make_instrumental: true,
-    wait_audio: true,
-  };
-}
 
 export async function POST(req: NextRequest) {
   try {
@@ -63,102 +38,135 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "SUNO_API_KEY e SUNO_API_URL obrigatorios." }, { status: 400 });
     }
 
+    const baseUrl = apiUrl.replace(/\/+$/, "");
     const musicPrompt = prompt || DEFAULT_PROMPT;
-    const baseUrl = apiUrl.replace(/\/+$/, ""); // trim trailing slashes
 
-    // Try each known endpoint format
-    const errors: string[] = [];
-    for (const { path, bodyFn } of ENDPOINT_FORMATS) {
-      const url = `${baseUrl}${path}`;
-      try {
-        const res = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify(bodyFn(musicPrompt, durationSec)),
-        });
+    // 1. Submit generation task to API.box
+    const generateRes = await fetch(`${baseUrl}/api/v1/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        prompt: musicPrompt,
+        instrumental: true,
+        customMode: false,
+        model: "V4_5ALL",
+      }),
+    });
 
-        if (!res.ok) {
-          const errText = await res.text().catch(() => "");
-          errors.push(`${path}: ${res.status} ${errText.slice(0, 100)}`);
-          continue;
-        }
-
-        const data = await res.json();
-
-        // Extract audio URL from various response formats
-        const generations = Array.isArray(data) ? data : data.data || [data];
-        const first = generations[0];
-
-        if (!first) {
-          errors.push(`${path}: resposta vazia`);
-          continue;
-        }
-
-        let audioUrl = first.audio_url || first.url || first.audio || first.stream_url;
-
-        // If Suno returns an ID, poll for completion
-        if (!audioUrl && first.id) {
-          audioUrl = await pollSunoResult(baseUrl, apiKey, first.id);
-        }
-
-        if (!audioUrl) {
-          errors.push(`${path}: sem URL de audio na resposta`);
-          continue;
-        }
-
-        // Success — upload to Supabase
-        const uploaded = await uploadToSupabase(audioUrl, courseSlug);
-        return NextResponse.json({
-          audioUrl: uploaded || audioUrl,
-          durationSec: first.duration || durationSec,
-          title: first.title || "Instrumental",
-        });
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : String(e);
-        errors.push(`${path}: ${msg.slice(0, 100)}`);
-      }
+    if (!generateRes.ok) {
+      const errText = await generateRes.text().catch(() => "");
+      return NextResponse.json(
+        { erro: `API.box erro ${generateRes.status}: ${errText.slice(0, 300)}` },
+        { status: 500 },
+      );
     }
 
-    // All endpoints failed
+    const genData = await generateRes.json();
+
+    // API.box returns { code, data: { taskId } } or similar
+    const taskId = genData.data?.taskId || genData.taskId || genData.data?.task_id;
+
+    if (!taskId) {
+      // Maybe it returned audio directly
+      const directUrl = genData.data?.audio_url || genData.audio_url;
+      if (directUrl) {
+        const uploaded = await uploadToSupabase(directUrl, courseSlug);
+        return NextResponse.json({
+          audioUrl: uploaded || directUrl,
+          durationSec,
+          title: genData.data?.title || "Instrumental",
+        });
+      }
+      return NextResponse.json(
+        { erro: "API.box nao devolveu taskId.", data: genData },
+        { status: 500 },
+      );
+    }
+
+    // 2. Poll for completion via record-info
+    const result = await pollApiBox(baseUrl, apiKey, taskId);
+
+    if (!result) {
+      return NextResponse.json(
+        { erro: "Timeout: musica nao ficou pronta em 2 minutos.", taskId },
+        { status: 500 },
+      );
+    }
+
+    // 3. Upload to Supabase
+    const uploaded = await uploadToSupabase(result.audioUrl, courseSlug);
+
     return NextResponse.json({
-      erro: `Nenhum endpoint Suno funcionou. SUNO_API_URL=${baseUrl}. Tentativas: ${errors.join(" | ")}`,
-    }, { status: 500 });
+      audioUrl: uploaded || result.audioUrl,
+      durationSec: result.duration || durationSec,
+      title: result.title || "Instrumental",
+    });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ erro: msg }, { status: 500 });
   }
 }
 
-async function pollSunoResult(baseUrl: string, apiKey: string, id: string): Promise<string | null> {
-  // Try known status endpoints
-  const statusPaths = [
-    `/api/v1/status/${id}`,
-    `/api/get?ids=${id}`,
-    `/v1/status/${id}`,
-  ];
-
-  for (let i = 0; i < 30; i++) {
+async function pollApiBox(
+  baseUrl: string,
+  apiKey: string,
+  taskId: string,
+): Promise<{ audioUrl: string; duration?: number; title?: string } | null> {
+  // Poll every 5s for up to 2 minutes (24 attempts)
+  for (let i = 0; i < 24; i++) {
     await new Promise((r) => setTimeout(r, 5000));
 
-    for (const path of statusPaths) {
-      try {
-        const res = await fetch(`${baseUrl}${path}`, {
-          headers: { "Authorization": `Bearer ${apiKey}` },
-        });
-        if (!res.ok) continue;
+    try {
+      const res = await fetch(
+        `${baseUrl}/api/v1/generate/record-info?taskId=${taskId}`,
+        { headers: { "Authorization": `Bearer ${apiKey}` } },
+      );
 
-        const data = await res.json();
-        const item = Array.isArray(data) ? data[0] : data;
-        if (item?.audio_url) return item.audio_url;
-        if (item?.stream_url) return item.stream_url;
-        if (item?.status === "error" || item?.status === "failed") return null;
-        break; // found a working status endpoint, wait for next poll
-      } catch {
-        continue;
+      if (!res.ok) continue;
+      const data = await res.json();
+
+      // API.box response: { code, data: { status, response: { data: [{ audio_url, ... }] } } }
+      // or: { code, data: { status, sunoData: [{ audioUrl, ... }] } }
+      const status = data.data?.status || data.status;
+
+      if (status === "SUCCESS" || status === "COMPLETED" || status === "complete") {
+        // Try multiple response shapes
+        const items =
+          data.data?.response?.data ||
+          data.data?.sunoData ||
+          data.data?.data ||
+          (Array.isArray(data.data) ? data.data : null);
+
+        if (items && items.length > 0) {
+          const first = items[0];
+          const audioUrl =
+            first.audio_url || first.audioUrl ||
+            first.stream_audio_url || first.streamAudioUrl ||
+            first.url;
+          if (audioUrl) {
+            return {
+              audioUrl,
+              duration: first.duration,
+              title: first.title,
+            };
+          }
+        }
+
+        // Fallback: audio_url at top level
+        const topUrl = data.data?.audio_url || data.data?.audioUrl;
+        if (topUrl) return { audioUrl: topUrl };
       }
+
+      if (status === "FAILED" || status === "ERROR" || status === "failed") {
+        return null;
+      }
+
+      // Still processing, continue polling
+    } catch {
+      continue;
     }
   }
   return null;
