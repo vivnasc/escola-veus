@@ -12,7 +12,7 @@ import { NextRequest, NextResponse } from "next/server";
  * }
  *
  * Returns: {
- *   tasks: Array<{ type: string, taskId: string, status: string, videoUrl: string | null }>,
+ *   tasks: Array<{ type: string, taskId: string, status: string, videoUrl: string | null, failureReason: string | null }>,
  *   allDone: boolean,
  * }
  */
@@ -28,34 +28,35 @@ export async function POST(req: NextRequest) {
       try {
         if (provider === "runway") {
           const apiKey = process.env.RUNWAY_API_KEY;
-          if (!apiKey) return { ...task, status: "error", videoUrl: null };
+          if (!apiKey) return { ...task, status: "error", videoUrl: null, failureReason: "RUNWAY_API_KEY nao configurada" };
 
           const res = await fetch(`https://api.dev.runwayml.com/v1/tasks/${task.taskId}`, {
             headers: { Authorization: `Bearer ${apiKey}`, "X-Runway-Version": "2024-11-06" },
           });
 
-          if (!res.ok) return { ...task, status: "polling_error", videoUrl: null };
+          if (!res.ok) return { ...task, status: "polling_error", videoUrl: null, failureReason: `Runway devolveu ${res.status}` };
           const data = await res.json();
 
           if (data.status === "SUCCEEDED" && data.output?.length > 0) {
-            return { ...task, status: "done", videoUrl: data.output[0] };
+            return { ...task, status: "done", videoUrl: data.output[0], failureReason: null };
           }
           if (data.status === "FAILED") {
-            return { ...task, status: "failed", videoUrl: null };
+            const reason = data.failure || data.failureReason || "Runway falhou sem razao especifica";
+            return { ...task, status: "failed", videoUrl: null, failureReason: reason };
           }
-          return { ...task, status: "processing", videoUrl: null };
+          return { ...task, status: "processing", videoUrl: null, failureReason: null };
         }
 
         // Hailuo via fal.ai
         const apiKey = process.env.FAL_KEY;
-        if (!apiKey) return { ...task, status: "error", videoUrl: null };
+        if (!apiKey) return { ...task, status: "error", videoUrl: null, failureReason: "FAL_KEY nao configurada" };
 
         const res = await fetch(
           `https://queue.fal.run/fal-ai/minimax/video-01-live/image-to-video/status/${task.taskId}`,
           { headers: { Authorization: `Key ${apiKey}` } },
         );
 
-        if (!res.ok) return { ...task, status: "polling_error", videoUrl: null };
+        if (!res.ok) return { ...task, status: "polling_error", videoUrl: null, failureReason: `Hailuo devolveu ${res.status}` };
         const data = await res.json();
 
         if (data.status === "COMPLETED" && data.response_url) {
@@ -65,15 +66,17 @@ export async function POST(req: NextRequest) {
             return { ...task, status: "done", videoUrl: result.video?.url || null };
           }
         }
-        if (data.status === "FAILED") return { ...task, status: "failed", videoUrl: null };
-        return { ...task, status: "processing", videoUrl: null };
-      } catch {
-        return { ...task, status: "error", videoUrl: null };
+        if (data.status === "FAILED") return { ...task, status: "failed", videoUrl: null, failureReason: "Hailuo falhou" };
+        return { ...task, status: "processing", videoUrl: null, failureReason: null };
+      } catch (err) {
+        const reason = err instanceof Error ? err.message : "Erro desconhecido ao verificar estado";
+        return { ...task, status: "error", videoUrl: null, failureReason: reason };
       }
     }),
   );
 
-  const allDone = results.every((r) => r.status === "done" || r.status === "failed" || r.status === "error");
+  const terminalStatuses = new Set(["done", "failed", "error", "polling_error"]);
+  const allDone = results.every((r) => terminalStatuses.has(r.status));
   const doneCount = results.filter((r) => r.status === "done").length;
 
   return NextResponse.json({ tasks: results, allDone, doneCount, total: results.length });

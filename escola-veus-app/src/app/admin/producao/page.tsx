@@ -16,11 +16,13 @@ type SceneData = {
   animationTaskId?: string;
   animationStatus?: string;
   animationUrl?: string;
+  animationError?: string;
+  animationSubmittedAt?: number;
   audioStartSec?: number;
   audioEndSec?: number;
 };
 
-type AnimationTask = { type: string; taskId: string; status?: string; videoUrl?: string | null };
+type AnimationTask = { type: string; taskId: string; status?: string; videoUrl?: string | null; failureReason?: string | null };
 
 // ─── CONSTANTS ──────────────────────────────────────────────────────────────
 
@@ -408,7 +410,7 @@ export default function ProductionPage() {
       if (!res.ok) throw new Error(data.erro || `Erro ${res.status}`);
       setScenes((prev) => {
         const n = [...prev];
-        n[index] = { ...n[index], animationTaskId: data.taskId, animationStatus: "processing" };
+        n[index] = { ...n[index], animationTaskId: data.taskId, animationStatus: "processing", animationError: undefined, animationSubmittedAt: Date.now() };
         return n;
       });
     } catch (err: unknown) { setError(err instanceof Error ? err.message : "Erro ao submeter animacao"); }
@@ -417,18 +419,53 @@ export default function ProductionPage() {
 
   const submitAllAnimations = useCallback(async () => {
     setLoading((p) => ({ ...p, allAnim: true }));
-    const withImages = scenes.map((s, i) => ({ s, i })).filter(({ s }) => s.imageUrl);
-    await Promise.all(withImages.map(({ i }) => submitSceneAnimation(i)));
+    // Only submit scenes that have images AND don't already have a successful animation
+    const needsAnimation = scenes.map((s, i) => ({ s, i })).filter(({ s }) => s.imageUrl && s.animationStatus !== "done");
+    if (needsAnimation.length === 0) {
+      setError("Todas as cenas ja tem animacao. Usa 'Re-submeter' individualmente se quiseres.");
+      setLoading((p) => ({ ...p, allAnim: false }));
+      return;
+    }
+    await Promise.all(needsAnimation.map(({ i }) => submitSceneAnimation(i)));
     setLoading((p) => ({ ...p, allAnim: false }));
     startPolling();
-  }, [scenes, submitSceneAnimation]);
+  }, [scenes, submitSceneAnimation, startPolling]);
+
+  const ANIMATION_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
   const startPolling = useCallback(() => {
     setAnimPolling(true);
     if (pollTimerRef.current) clearInterval(pollTimerRef.current);
     pollTimerRef.current = setInterval(async () => {
       const current = scenesRef.current;
-      const tasks = current.filter((s) => s.animationTaskId && s.animationStatus === "processing")
+      const now = Date.now();
+
+      // Check for timeouts FIRST — mark timed-out scenes before polling
+      let hadTimeout = false;
+      const timedOutIds = new Set<string>();
+      for (const s of current) {
+        if (s.animationTaskId && s.animationStatus === "processing" && s.animationSubmittedAt) {
+          if (now - s.animationSubmittedAt > ANIMATION_TIMEOUT_MS) {
+            timedOutIds.add(s.animationTaskId);
+            hadTimeout = true;
+          }
+        }
+      }
+      if (hadTimeout) {
+        setScenes((prev) => {
+          const n = [...prev];
+          for (let i = 0; i < n.length; i++) {
+            if (n[i].animationTaskId && timedOutIds.has(n[i].animationTaskId!)) {
+              n[i] = { ...n[i], animationStatus: "timeout", animationError: "Timeout: Runway nao respondeu em 5 minutos. Creditos podem ter sido consumidos." };
+            }
+          }
+          return n;
+        });
+        setError("Uma ou mais animacoes excederam o tempo limite de 5 minutos.");
+      }
+
+      // Now poll only scenes still processing (not timed out)
+      const tasks = current.filter((s) => s.animationTaskId && s.animationStatus === "processing" && !timedOutIds.has(s.animationTaskId!))
         .map((s) => ({ type: s.type, taskId: s.animationTaskId! }));
       if (tasks.length === 0) {
         if (pollTimerRef.current) clearInterval(pollTimerRef.current);
@@ -448,7 +485,12 @@ export default function ProductionPage() {
           for (const t of data.tasks) {
             const idx = n.findIndex((s) => s.animationTaskId === t.taskId);
             if (idx >= 0) {
-              n[idx] = { ...n[idx], animationStatus: t.status, animationUrl: t.videoUrl || undefined };
+              n[idx] = {
+                ...n[idx],
+                animationStatus: t.status,
+                animationUrl: t.videoUrl || undefined,
+                animationError: t.failureReason || (t.status === "failed" ? "Runway falhou sem razao especifica" : undefined),
+              };
             }
           }
           return n;
@@ -457,7 +499,7 @@ export default function ProductionPage() {
           if (pollTimerRef.current) clearInterval(pollTimerRef.current);
           setAnimPolling(false);
         }
-      } catch { /* retry */ }
+      } catch { /* retry next cycle */ }
     }, 15000);
   }, [selectedCourse]);
 
@@ -684,8 +726,9 @@ export default function ProductionPage() {
 
   const audioComplete = scenes.length > 0 && scenes.filter((s) => s.narration?.trim()).every((s) => s.audioUrl);
   const imagesComplete = scenes.length > 0 && scenes.every((s) => s.imageUrl);
+  const terminalStatuses = new Set(["done", "failed", "timeout", "error", "polling_error"]);
   const animsComplete = scenes.filter((s) => s.animationTaskId).length > 0 &&
-    scenes.filter((s) => s.animationTaskId).every((s) => s.animationStatus === "done" || s.animationStatus === "failed");
+    scenes.filter((s) => s.animationTaskId).every((s) => terminalStatuses.has(s.animationStatus || ""));
   const subsComplete = srt.length > 0;
 
   return (
@@ -964,7 +1007,7 @@ export default function ProductionPage() {
               className="rounded-lg bg-escola-dourado px-5 py-2.5 text-sm font-medium text-escola-bg hover:opacity-90 disabled:opacity-40">
               {loading.allAnim ? "A submeter..." : "Submeter todas as animacoes"}
             </button>
-            <p className="text-xs text-escola-creme-50">Cada animacao demora ~3-5 min no Runway.</p>
+            <p className="text-xs text-escola-creme-50">Cada animacao demora ~3-5 min no Runway. Timeout automatico aos 5 min.</p>
 
             {error && (
               <div className="rounded-lg border border-escola-terracota/30 bg-escola-terracota/10 p-3">
@@ -972,26 +1015,68 @@ export default function ProductionPage() {
               </div>
             )}
 
-            <p className="text-[10px] text-escola-creme-50">
-              Cenas com imagem: {scenes.filter((s) => s.imageUrl).length}/{scenes.length}
-            </p>
+            {/* ── Status summary bar ── */}
+            {scenes.length > 0 && (() => {
+              const done = scenes.filter((s) => s.animationStatus === "done").length;
+              const failed = scenes.filter((s) => s.animationStatus === "failed" || s.animationStatus === "timeout" || s.animationStatus === "error" || s.animationStatus === "polling_error").length;
+              const processing = scenes.filter((s) => s.animationStatus === "processing").length;
+              const pending = scenes.length - done - failed - processing;
+              return (
+                <div className="flex items-center gap-4 rounded-lg border border-escola-border bg-escola-bg/50 px-4 py-2.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                    <span className="text-xs text-escola-creme">{done} pronto{done !== 1 ? "s" : ""}</span>
+                  </div>
+                  {failed > 0 && (
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-escola-terracota" />
+                      <span className="text-xs text-escola-terracota font-medium">{failed} falhou</span>
+                    </div>
+                  )}
+                  {processing > 0 && (
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-escola-dourado animate-pulse" />
+                      <span className="text-xs text-escola-creme">{processing} a processar</span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-escola-border" />
+                    <span className="text-xs text-escola-creme-50">{pending} pendente{pending !== 1 ? "s" : ""}</span>
+                  </div>
+                  <span className="text-[10px] text-escola-creme-50 ml-auto">
+                    Imagens: {scenes.filter((s) => s.imageUrl).length}/{scenes.length}
+                  </span>
+                </div>
+              );
+            })()}
 
             <div className="space-y-2">
-              {scenes.map((scene, i) => (
-                <div key={i} className="border border-escola-border rounded-lg p-3">
+              {scenes.map((scene, i) => {
+                const isFailed = scene.animationStatus === "failed" || scene.animationStatus === "timeout" || scene.animationStatus === "error" || scene.animationStatus === "polling_error";
+                return (
+                <div key={i} className={`border rounded-lg p-3 ${isFailed ? "border-escola-terracota/40 bg-escola-terracota/5" : "border-escola-border"}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] text-escola-creme-50 font-mono w-4">{i + 1}</span>
-                      <span className={`w-2 h-2 rounded-full ${
+                      <span className={`w-2.5 h-2.5 rounded-full ${
                         scene.animationStatus === "done" ? "bg-green-500"
-                        : scene.animationStatus === "failed" ? "bg-escola-terracota"
+                        : isFailed ? "bg-escola-terracota"
                         : scene.animationTaskId ? "bg-escola-dourado animate-pulse"
                         : "bg-escola-border"
                       }`} />
                       <span className="text-xs text-escola-dourado">{SCENE_LABELS[scene.type] || scene.type}</span>
-                      <span className="text-[10px] text-escola-creme-50">
-                        {scene.animationStatus === "done" ? "Pronto" : scene.animationStatus === "failed" ? "Falhou" : scene.animationTaskId ? "A processar..." : "Pendente"}
+                      <span className={`text-[10px] ${isFailed ? "text-escola-terracota font-medium" : "text-escola-creme-50"}`}>
+                        {scene.animationStatus === "done" ? "Pronto"
+                          : scene.animationStatus === "timeout" ? "Timeout (5 min)"
+                          : isFailed ? "Falhou"
+                          : scene.animationTaskId ? "A processar..."
+                          : "Pendente"}
                       </span>
+                      {scene.animationStatus === "processing" && scene.animationSubmittedAt && (
+                        <span className="text-[9px] text-escola-creme-50">
+                          ({Math.floor((Date.now() - scene.animationSubmittedAt) / 1000)}s)
+                        </span>
+                      )}
                     </div>
                     <div className="flex items-center gap-2">
                       <select onChange={(e) => {
@@ -999,7 +1084,7 @@ export default function ProductionPage() {
                         if (isNaN(target) || target === i) return;
                         setScenes((prev) => {
                           const n = [...prev];
-                          const pick = (s: SceneData) => ({ imageUrl: s.imageUrl, animationUrl: s.animationUrl, animationTaskId: s.animationTaskId, animationStatus: s.animationStatus });
+                          const pick = (s: SceneData) => ({ imageUrl: s.imageUrl, animationUrl: s.animationUrl, animationTaskId: s.animationTaskId, animationStatus: s.animationStatus, animationError: s.animationError, animationSubmittedAt: s.animationSubmittedAt });
                           const a = pick(n[i]), b = pick(n[target]);
                           n[i] = { ...n[i], ...b }; n[target] = { ...n[target], ...a };
                           return n;
@@ -1015,12 +1100,32 @@ export default function ProductionPage() {
                         className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
                         {loading[`img-${i}`] ? "img..." : "Nova imagem"}
                       </button>
-                      <button onClick={() => submitSceneAnimation(i)} disabled={!scene.imageUrl || loading[`anim-${i}`]}
+                      {isFailed && (
+                        <button onClick={() => {
+                          setScenes((prev) => {
+                            const n = [...prev];
+                            n[i] = { ...n[i], animationTaskId: undefined, animationStatus: undefined, animationUrl: undefined, animationError: undefined, animationSubmittedAt: undefined };
+                            return n;
+                          });
+                        }}
+                          className="text-[10px] text-escola-terracota hover:text-escola-creme font-medium border border-escola-terracota/30 rounded px-1.5 py-0.5">
+                          Limpar
+                        </button>
+                      )}
+                      <button onClick={() => { submitSceneAnimation(i); startPolling(); }} disabled={!scene.imageUrl || loading[`anim-${i}`]}
                         className="text-[10px] text-escola-creme-50 hover:text-escola-dourado disabled:opacity-40">
                         {loading[`anim-${i}`] ? "..." : scene.animationTaskId ? "Re-submeter" : "Submeter"}
                       </button>
                     </div>
                   </div>
+                  {/* Failure reason — prominent display */}
+                  {isFailed && scene.animationError && (
+                    <div className="mt-1.5 rounded border border-escola-terracota/20 bg-escola-terracota/10 px-2.5 py-1.5">
+                      <p className="text-[10px] text-escola-terracota leading-relaxed">
+                        {scene.animationError}
+                      </p>
+                    </div>
+                  )}
                   {scene.narration && (
                     <p className="mt-1 text-[10px] text-escola-creme-50 italic line-clamp-2">
                       {scene.narration.replace(/\[.*?\]/g, "").slice(0, 120)}{scene.narration.length > 120 ? "..." : ""}
@@ -1040,7 +1145,8 @@ export default function ProductionPage() {
                     ) : null}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="flex gap-3 pt-2">
