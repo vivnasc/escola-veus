@@ -86,6 +86,7 @@ const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
 };
 
 const LORA_TRIGGER = "veus_figure";
+const ANIMATION_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
 function buildMotionPrompt(scene: SceneData): string {
   const fallback = MOTION[scene.type] || "slow cinematic movement, figure breathing naturally, subtle body movement";
@@ -429,9 +430,8 @@ export default function ProductionPage() {
     await Promise.all(needsAnimation.map(({ i }) => submitSceneAnimation(i)));
     setLoading((p) => ({ ...p, allAnim: false }));
     startPolling();
-  }, [scenes, submitSceneAnimation, startPolling]);
-
-  const ANIMATION_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scenes, submitSceneAnimation]);
 
   const startPolling = useCallback(() => {
     setAnimPolling(true);
