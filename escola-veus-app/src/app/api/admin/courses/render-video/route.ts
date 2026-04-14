@@ -57,6 +57,11 @@ type ManifestScene = {
   audioUrl?: string | null;
   audioStartSec?: number | null;
   audioEndSec?: number | null;
+  // Per-scene render settings
+  transitionIn?: string;   // "fade" | "none"
+  transitionOut?: string;  // "fade" | "none"
+  textDelaySec?: number;
+  narrationVolume?: number; // 0-100
 };
 
 type MusicTrack = {
@@ -101,8 +106,11 @@ function buildShotstackEdit(manifest: {
     const isFrase = scene.type === "frase_final" || scene.type === "reframe";
     const size = isTitle ? "large" : isFrase ? "medium" : "small";
 
-    const textDelay = scene.type === "abertura" ? 1.5 : 1;
+    const textDelay = scene.textDelaySec ?? (scene.type === "abertura" ? 1.5 : 1);
     const textDuration = Math.max(2, positions[i].length - textDelay - 0.5);
+
+    const txtTransIn = (scene.transitionIn || "fade") === "none" ? undefined : "fade";
+    const txtTransOut = (scene.transitionOut || "fade") === "none" ? undefined : "fade";
 
     textClips.push({
       asset: {
@@ -116,7 +124,7 @@ function buildShotstackEdit(manifest: {
       length: textDuration,
       position: isTitle || isFrase ? "center" : "bottom",
       offset: isTitle || isFrase ? undefined : { y: 0.12 },
-      transition: { in: "fade", out: "fade" },
+      transition: (txtTransIn || txtTransOut) ? { in: txtTransIn, out: txtTransOut } : undefined,
     });
   }
   const textTrack = { clips: textClips };
@@ -132,6 +140,9 @@ function buildShotstackEdit(manifest: {
     const isVideo = !!scene.animationUrl;
     const sceneDur = positions[i].length;
 
+    const visTransIn = (scene.transitionIn || "fade") === "none" ? undefined : "fade";
+    const visTransOut = (scene.transitionOut || "fade") === "none" ? undefined : "fade";
+
     if (isVideo) {
       // Video clip — capped at actual clip duration
       const videoDur = Math.min(sceneDur, RUNWAY_CLIP_DURATION);
@@ -140,7 +151,7 @@ function buildShotstackEdit(manifest: {
         start: positions[i].start,
         length: videoDur,
         fit: "crop",
-        transition: { in: "fade" },
+        transition: (visTransIn) ? { in: visTransIn } : undefined,
       });
 
       // If scene is longer than clip, fill remainder with still image + slow zoom
@@ -151,7 +162,7 @@ function buildShotstackEdit(manifest: {
           length: sceneDur - videoDur,
           fit: "crop",
           effect: "zoomIn",
-          transition: { out: "fade" },
+          transition: (visTransOut) ? { out: visTransOut } : undefined,
         });
       }
     } else {
@@ -162,7 +173,7 @@ function buildShotstackEdit(manifest: {
         length: sceneDur,
         fit: "crop",
         effect: "zoomIn",
-        transition: { in: "fade", out: "fade" },
+        transition: (visTransIn || visTransOut) ? { in: visTransIn, out: visTransOut } : undefined,
       });
     }
   }
@@ -175,8 +186,9 @@ function buildShotstackEdit(manifest: {
     const audioUrl = (scene as Record<string, unknown>).audioUrl as string | undefined;
     if (!audioUrl) continue;
 
+    const vol = (scene.narrationVolume != null ? scene.narrationVolume / 100 : 1);
     audioClips.push({
-      asset: { type: "audio", src: audioUrl, volume: 1 },
+      asset: { type: "audio", src: audioUrl, volume: vol },
       start: positions[i].start,
       length: positions[i].length,
     });

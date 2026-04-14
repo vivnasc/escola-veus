@@ -20,6 +20,11 @@ type SceneData = {
   animationSubmittedAt?: number;
   audioStartSec?: number;
   audioEndSec?: number;
+  // Per-scene render settings (editable in Step 6)
+  transitionIn?: string;   // "fade" | "none"
+  transitionOut?: string;  // "fade" | "none"
+  textDelaySec?: number;   // delay before text appears (default 1s)
+  narrationVolume?: number; // 0-100 (default 100)
 };
 
 type AnimationTask = { type: string; taskId: string; status?: string; videoUrl?: string | null; failureReason?: string | null };
@@ -557,6 +562,8 @@ export default function ProductionPage() {
           durationSec: s.durationSec, imageUrl: s.imageUrl || null,
           animationUrl: s.animationUrl || null, animationTaskId: s.animationTaskId || null,
           audioUrl: s.audioUrl || null, audioStartSec: s.audioStartSec ?? null, audioEndSec: s.audioEndSec ?? null,
+          transitionIn: s.transitionIn || "fade", transitionOut: s.transitionOut || "fade",
+          textDelaySec: s.textDelaySec ?? null, narrationVolume: s.narrationVolume ?? 100,
         })),
         totalDurationSec: totalAudioDuration,
         createdAt: new Date().toISOString(),
@@ -667,6 +674,10 @@ export default function ProductionPage() {
           durationSec: s.durationSec, imageUrl: s.imageUrl || null,
           animationUrl: s.animationUrl || null, audioUrl: s.audioUrl || null,
           audioStartSec: s.audioStartSec ?? null, audioEndSec: s.audioEndSec ?? null,
+          transitionIn: s.transitionIn || "fade",
+          transitionOut: s.transitionOut || "fade",
+          textDelaySec: s.textDelaySec ?? (s.type === "abertura" ? 1.5 : 1),
+          narrationVolume: s.narrationVolume ?? 100,
         })),
       };
 
@@ -1237,6 +1248,107 @@ export default function ProductionPage() {
                 <p className="text-escola-dourado text-lg font-medium">{scenes.filter((s) => s.animationUrl).length}</p>
                 <p className="text-xs text-escola-creme-50">Clips</p>
               </div>
+            </div>
+
+            {/* ── Per-scene timeline editor ── */}
+            <div className="border border-escola-border rounded-lg p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-escola-creme-50 font-medium">Timeline — ajusta cada cena antes de renderizar</p>
+                <span className="text-[10px] text-escola-creme-50">
+                  Total: {scenes.reduce((sum, s) => sum + (s.durationSec || 0), 0)}s
+                </span>
+              </div>
+
+              {scenes.map((scene, i) => {
+                const cumStart = scenes.slice(0, i).reduce((sum, s) => sum + (s.durationSec || 0), 0);
+                return (
+                <div key={i} className="border border-escola-border rounded-lg p-3 space-y-2">
+                  {/* Header row */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-escola-creme-50 font-mono w-4">{i + 1}</span>
+                    <span className="text-xs text-escola-dourado font-medium">{SCENE_LABELS[scene.type] || scene.type}</span>
+                    <span className="text-[9px] text-escola-creme-50">({cumStart}s–{cumStart + scene.durationSec}s)</span>
+                    {scene.animationUrl && <span className="text-[9px] text-green-400">clip</span>}
+                    {!scene.animationUrl && scene.imageUrl && <span className="text-[9px] text-escola-creme-50">imagem+zoom</span>}
+                    {scene.audioUrl && <span className="text-[9px] text-escola-creme-50">audio</span>}
+                  </div>
+
+                  {/* Controls row */}
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {/* Duration */}
+                    <div className="flex items-center gap-1">
+                      <label className="text-[9px] text-escola-creme-50">Dur:</label>
+                      <input type="number" min={1} max={30} step={0.5} value={scene.durationSec}
+                        onChange={(e) => { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], durationSec: Number(e.target.value) || 1 }; return n; }); }}
+                        className="w-14 rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme text-center focus:border-escola-dourado focus:outline-none" />
+                      <span className="text-[9px] text-escola-creme-50">s</span>
+                    </div>
+
+                    {/* Transition In */}
+                    <div className="flex items-center gap-1">
+                      <label className="text-[9px] text-escola-creme-50">Entrada:</label>
+                      <select value={scene.transitionIn || "fade"}
+                        onChange={(e) => { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], transitionIn: e.target.value }; return n; }); }}
+                        className="rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme focus:border-escola-dourado focus:outline-none">
+                        <option value="fade">Fade</option>
+                        <option value="none">Nenhuma</option>
+                      </select>
+                    </div>
+
+                    {/* Transition Out */}
+                    <div className="flex items-center gap-1">
+                      <label className="text-[9px] text-escola-creme-50">Saida:</label>
+                      <select value={scene.transitionOut || "fade"}
+                        onChange={(e) => { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], transitionOut: e.target.value }; return n; }); }}
+                        className="rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme focus:border-escola-dourado focus:outline-none">
+                        <option value="fade">Fade</option>
+                        <option value="none">Nenhuma</option>
+                      </select>
+                    </div>
+
+                    {/* Text delay */}
+                    <div className="flex items-center gap-1">
+                      <label className="text-[9px] text-escola-creme-50">Texto em:</label>
+                      <input type="number" min={0} max={5} step={0.5} value={scene.textDelaySec ?? (scene.type === "abertura" ? 1.5 : 1)}
+                        onChange={(e) => { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], textDelaySec: Number(e.target.value) }; return n; }); }}
+                        className="w-12 rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme text-center focus:border-escola-dourado focus:outline-none" />
+                      <span className="text-[9px] text-escola-creme-50">s</span>
+                    </div>
+
+                    {/* Narration volume */}
+                    <div className="flex items-center gap-1">
+                      <label className="text-[9px] text-escola-creme-50">Vol voz:</label>
+                      <input type="range" min={0} max={100} value={scene.narrationVolume ?? 100}
+                        onChange={(e) => { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], narrationVolume: Number(e.target.value) }; return n; }); }}
+                        className="w-16 h-1 accent-escola-dourado" />
+                      <span className="text-[9px] text-escola-creme-50 w-6">{scene.narrationVolume ?? 100}%</span>
+                    </div>
+                  </div>
+
+                  {/* Overlay text — editable */}
+                  {scene.overlayText && (
+                    <div>
+                      <label className="text-[9px] text-escola-creme-50">Texto na tela:</label>
+                      <input type="text" value={scene.overlayText}
+                        onChange={(e) => { setScenes((prev) => { const n = [...prev]; n[i] = { ...n[i], overlayText: e.target.value }; return n; }); }}
+                        className="w-full mt-0.5 rounded border border-escola-border bg-escola-bg px-2 py-1 text-[10px] text-escola-creme focus:border-escola-dourado focus:outline-none" />
+                    </div>
+                  )}
+
+                  {/* Preview row: thumbnail + audio */}
+                  <div className="flex items-center gap-3">
+                    {scene.animationUrl ? (
+                      <video src={scene.animationUrl} className="w-24 aspect-video object-cover rounded" muted />
+                    ) : scene.imageUrl ? (
+                      <img src={scene.imageUrl} alt="" className="w-24 aspect-video object-cover rounded opacity-70" />
+                    ) : null}
+                    {scene.audioUrl && (
+                      <audio controls src={scene.audioUrl} className="h-7 flex-1 max-w-xs" />
+                    )}
+                  </div>
+                </div>
+                );
+              })}
             </div>
 
             {/* Music — 3 tracks */}
