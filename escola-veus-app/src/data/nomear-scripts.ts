@@ -142,7 +142,7 @@ O desconto que deste não foi generosidade.
 
 Foi medo a passar por generosidade.
 
-A isto chamamos o desconto automático.
+É o desconto automático.
 
 Aprendeste-o antes de saberes cobrar. Aprendeste-o em mulheres da tua família que serviam primeiro os outros e comiam o que restava. Em mães que diziam que não tinham fome para que os filhos pudessem repetir. Em avós que passaram a vida inteira a pedir desculpa por ocuparem espaço que era delas.
 
@@ -782,7 +782,7 @@ Podes sair da reunião para comer. Não podes sair para chorar.
 
 Podes abrir o frigorífico à meia-noite. Não podes ligar a alguém à meia-noite só para dizer que te sentes sozinha.
 
-A isto chamamos o único pedido que aprendeste a fazer sem vergonha.
+Chamemos-lhe o único pedido que aprendeste a fazer sem vergonha.
 
 E o truque não é fechar a boca. É aprender a fazer os outros pedidos.
 
@@ -3431,7 +3431,7 @@ Mas estão em ti.
 
 Alguns gestos são dons. Outros são fardos. E outros, ainda, são as duas coisas ao mesmo tempo.
 
-A isto chamamos transmissão silenciosa.
+O nome é transmissão silenciosa.
 
 Recebeste tudo sem teres sido perguntada.
 
@@ -3467,7 +3467,7 @@ Mas fazias.
 
 O teu corpo sabia. Tinha observado durante anos, sem nunca registar que estava a observar. E replicava.
 
-A isto chamamos memória somática transgeracional.
+Há nome para isto: memória somática transgeracional.
 
 Os gestos atravessam gerações com mais persistência do que os conselhos. Podes não lembrar-te do que a tua avó te dizia — mas o teu corpo sabe exactamente como ela pousava uma chávena.
 
@@ -3507,7 +3507,7 @@ E crescem com um arquivo de informação sobre a mãe que a própria mãe nunca 
 
 Esse arquivo é incómodo. Porque tu sabias. Mas não podias dizer que sabias.
 
-A isto chamamos conhecimento não autorizado.
+É conhecimento não autorizado.
 
 É um arquivo que nenhuma amiga pode validar. Ninguém além de ti conhece a tua mãe como tu a conheceste — em silêncio, por leitura de corpo.
 
@@ -3543,7 +3543,7 @@ A mãe quis ter voz e não lhe foi dada. A filha expõe-se. Fala em palcos. Escr
 
 Estas filhas carregam um mandato que nunca foi explicitamente entregue.
 
-A isto chamamos continuação silenciosa.
+Chamemos-lhe continuação silenciosa.
 
 E o mandato tem custos.
 
@@ -3672,7 +3672,7 @@ Aqueles cinco minutos a sós no carro, depois de saíres da reunião e antes de 
 
 Quem és tu nesse intervalo?
 
-A isto chamamos a mulher entre versões.
+É a mulher entre versões.
 
 E ela é a que mais precisa de ser reconhecida.
 
@@ -3708,7 +3708,7 @@ Nunca te sentes completamente à vontade — porque estás sempre a escolher.
 
 E a mulher que escolhe sempre é uma mulher exausta.
 
-A isto chamamos carga de performance.
+O nome é carga de performance.
 
 Os homens, em muitos contextos, não conhecem esta carga com a mesma intensidade. Para muitos, há uma versão de si que é mais ou menos estável em vários contextos. Adaptam o tom, mas não se reescrevem.
 
@@ -3742,7 +3742,7 @@ E a sala muda.
 
 Alguém olha para ti diferente. Outra pessoa fica desconfortável. Alguém ri com alívio — talvez estivesse à espera que tu falasses.
 
-A isto chamamos o dia do descolamento.
+Chamemos-lhe o dia do descolamento.
 
 Não é dramático. Não precisa de grito.
 
@@ -3778,7 +3778,7 @@ Numa sala em que todas estão parcialmente adaptadas, uma mulher que não se ada
 
 E o grupo nota. Por vezes com admiração. Por vezes com distância.
 
-A isto chamamos o preço da inteireza.
+É o preço da inteireza.
 
 Ser inteira não é ser popular. Não é, necessariamente, ser querida por todos.
 
@@ -3822,7 +3822,7 @@ Eram mulheres que entravam numa sala e a sala notava. Que diziam o que pensavam 
 
 Lembraste-te delas depois de anos sem as ver. Porque fizeram marca.
 
-A isto chamamos testemunhas de possibilidade.
+Chamemos-lhes testemunhas de possibilidade.
 
 Elas, sem saberem, mostraram-te que isto é possível.
 
@@ -3905,7 +3905,7 @@ Não é maldade delas. Elas nem fazem ideia do efeito.
 
 Tens, apenas, uma sensibilidade específica àquela energia delas.
 
-A isto chamamos permeabilidade relacional.
+É permeabilidade relacional.
 
 Algumas mulheres são mais permeáveis a certos tipos de pessoa. Para outras, essas mesmas pessoas não têm nenhum efeito.
 
@@ -3941,7 +3941,7 @@ Disseste: ah, foi sorte. Ou: era o mínimo. Ou: mas tu é que... — e redirecci
 
 O elogio ficou no ar. Sem destinatário.
 
-A isto chamamos desvio reflexo.
+O nome é desvio reflexo.
 
 E é das formas mais subtis de te diminuíres.
 
@@ -3987,7 +3987,7 @@ Não é que te estejas a enganar.
 
 É que o amor, uma vez instalado, redesenha.
 
-A isto chamamos leitura afectuosa.
+Chamemos-lhe leitura afectuosa.
 
 Pessoas de fora, às vezes, olham para a pessoa que tu amas e vêem algo muito diferente do que tu vês.
 
@@ -4073,7 +4073,7 @@ Elas aprenderam, num contexto em que competiam por espaço escasso, que mulheres
 
 E o reflexo defende-se antes da razão decidir.
 
-A isto chamamos competição herdada.
+É competição herdada.
 
 Não é sobre ti especificamente.
 
@@ -4164,7 +4164,7 @@ Agora já não serve.
 
 Viste demasiada coisa para ainda presumir. Foste magoada em sítios onde a ingenuidade te deixou exposta. Cresceste, e ver é responsabilidade que chega com a idade.
 
-A isto chamamos fim da inocência útil.
+O nome é fim da inocência útil.
 
 Não é cinismo. O cinismo é cansaço sem análise.
 
@@ -4244,7 +4244,7 @@ Viste.
 
 O que viste, em cada caso, foi doloroso. Mas também foi o início de alguma coisa.
 
-A isto chamamos queda dos filtros.
+Chamemos-lhe queda dos filtros.
 
 Os filtros caem quando o sistema está pronto. Não antes. Nunca antes.
 
@@ -4784,7 +4784,7 @@ E esses minutos, horas, dias — não eram neutros.
 
 Roubavam energia. Roubavam clareza. Roubavam a possibilidade de estares presente na tua própria vida.
 
-A isto chamamos tempo subtraído.
+É tempo subtraído.
 
 Não é tempo gasto. É tempo tirado.
 
@@ -4820,7 +4820,7 @@ Nem sempre consegues usá-la. Às vezes há exigências. Às vezes há sono. Às
 
 Mas quando consegues, a hora faz-te diferente no resto do dia.
 
-A isto chamamos hora própria.
+Há nome para isto: hora própria.
 
 Não é igual para todas as mulheres. Cada uma tem a sua.
 
@@ -4945,7 +4945,7 @@ Nasceram para ouvir outras pessoas a sério. Nasceram para cuidar de seres vivos
 
 E não há emprego que corresponda exactamente a estas vocações.
 
-A isto chamamos vocação sem cargo.
+Chamemos-lhe vocação sem cargo.
 
 Muitas mulheres, durante décadas, ficam frustradas por não encontrarem uma profissão que corresponda ao que são.
 
