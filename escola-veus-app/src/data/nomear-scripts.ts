@@ -1604,11 +1604,9 @@ Mas a tua capacidade é real.
 
 E cada vez que a diminuis em público, estás a dizer-te a ti mesma que não mereces ser vista inteira.
 
-Começa, em silêncio, pelo reconhecimento privado.
+O reconhecimento privado vem primeiro. A coroa começa lá, no silêncio, na intimidade contigo.
 
-Anota. Escreve. Diz-te a ti: eu sei fazer isto. Isto é meu.
-
-Antes de te vestires em público de coroa — experimenta usá-la em casa.
+Antes de ser vestida em público, ela precisa de existir em casa.
 
 Sem pedir licença.
 
@@ -2484,9 +2482,9 @@ O teu prazer é teu.
 
 Não precisa de doador. Não precisa de merecedor. Não precisa de permissão.
 
-Começa por te conhecer a ti. Em silêncio. Sem vergonha. Sem explicação a ninguém.
+E há um ponto em que ele se reconhece em silêncio, sem ninguém ter sido o merecedor.
 
-E quando depois o partilhares com alguém, será de um lugar diferente.
+A partir desse ponto, quando é partilhado, é de outro lugar.
 
 De doadora. Não de recebedora.
 
@@ -2716,11 +2714,13 @@ Ela ainda pode voltar. Mas precisa de espaço sem gestão.
 
 Precisa de minutos em que não estás a organizar nada. Em que não és útil a ninguém. Em que não tens de resolver.
 
-Começa por um bocadinho. Dez minutos. Sem telefone. Sem agenda. Sem preocupação organizada.
+A alegria sem função não volta por esforço. Volta quando o teu tempo deixa de estar sempre a caminho de outra coisa.
 
-E espera.
+E aí, sem aviso, ela regressa. Por piscadelas de luz.
 
-A alegria sem função volta quando a deixas de antecipar.
+Não ao dia todo. Não de uma vez.
+
+Mas o suficiente para te lembrares que existe.
 
 [long pause]
 
@@ -3258,7 +3258,15 @@ Não é arrogância. É devolução.
 
 A tua coroa esteve escondida porque os outros estavam desconfortáveis.
 
-Não precisas de continuar a suportar o desconforto deles à custa do teu.
+E tu passaste anos a gerir o desconforto deles à custa do teu.
+
+Há uma vida inteira pousada nesse cálculo.
+
+É possível deixar de a fazer.
+
+Não de uma vez. Em pequenas doses, começando pelas salas onde o custo é menor.
+
+A coroa aparece devagar — e, quanto mais aparece, menos desculpas tem de dar.
 
 [long pause]
 
@@ -4270,7 +4278,7 @@ O comentário passivo-agressivo num jantar de família — e tu vês. Antes, atr
 
 A forma como certas mulheres se apagam — e tu vês. Antes, pensavas que era personalidade.
 
-A isto chamamos visão afinada.
+É visão afinada.
 
 Não é paranoia. É precisão.
 
@@ -4308,7 +4316,7 @@ Vês coisas que pessoas à tua volta ainda não vêem. Dizes-o. Elas não perceb
 
 E tu ficas sozinha — com o conhecimento.
 
-A isto chamamos solidão lúcida.
+Há nome para isto: solidão lúcida.
 
 Não é depressão. Não é isolamento.
 
@@ -4365,7 +4373,7 @@ E logo a seguir, culpa.
 
 Como te atreves a rir quando perdeste tanto? Como podes permitir-te alegria quando ainda dói?
 
-A isto chamamos alegria envergonhada.
+É alegria envergonhada.
 
 E é das experiências mais comuns — e menos ditas — no meio do luto.
 
@@ -4411,7 +4419,7 @@ Não é distracção. Não é fingimento.
 
 É outra coisa.
 
-A isto chamamos o cuidado depois.
+O nome é antigo: o cuidado depois.
 
 Quem passou por muito aprende que a vida não se faz das coisas grandes. As coisas grandes acontecem raramente — e quando acontecem, muitas vezes não podemos contar com elas.
 
@@ -4447,7 +4455,7 @@ Aprendeste a não prometer.
 
 Não por cinismo. Por humildade.
 
-A isto chamamos esperança sem anúncio.
+Chamemos-lhe esperança sem anúncio.
 
 É outra forma de ter esperança.
 
@@ -4489,7 +4497,7 @@ E é nesse momento — quando deixas de olhar — que o que tanto quiseste come�
 
 Uma amizade que aparece sem convite. Uma oportunidade que chega por uma via impensável. Uma paz que se instala quando paras de a procurar.
 
-A isto chamamos florescimento por distracção.
+Há um nome para isto: florescimento por distracção.
 
 Não é mágico. É natural.
 
@@ -4533,7 +4541,7 @@ Ficaste surpreendida contigo mesma.
 
 Porque há muito tempo que não te acontecia. Ou porque a fase por que tens passado não parecia ter lugar para sorrisos inesperados.
 
-A isto chamamos reaparecimento da alegria base.
+É o reaparecimento da alegria base.
 
 A alegria base é a que existe debaixo de tudo. Não é felicidade com causa. É uma espécie de presença alegre no próprio existir.
 
@@ -4575,7 +4583,7 @@ Não deixaram manuais. Não tinham vocabulário para explicar.
 
 Apenas continuaram.
 
-A isto chamamos resistência sem linguagem.
+Chamamos-lhe resistência sem linguagem.
 
 Elas continuaram porque não havia outra opção. Porque ninguém lhes ofereceu colapso.
 
@@ -4628,7 +4636,7 @@ A tua mãe tinha pressa. A tua avó tinha pressa. As mulheres da tua família ti
 
 Aprendeste a pressa antes de saberes ler um relógio.
 
-A isto chamamos pressa hereditária.
+É pressa hereditária.
 
 É o ritmo em que as mulheres da tua família aprenderam a operar. Porque sempre houve mais um filho a tratar, mais uma refeição a fazer, mais uma exigência invisível a cumprir.
 
@@ -4700,7 +4708,7 @@ Cada uma destas fases chega sem aviso.
 
 E cada uma tem o seu próprio luto. A sua própria reconstrução. A sua própria solidão.
 
-A isto chamamos transições invisíveis.
+Chamamos-lhes transições invisíveis.
 
 Invisíveis porque não têm rituais. Não há festa. Não há cerimónia. Não há marco claro.
 
@@ -4744,7 +4752,7 @@ As tuas tardes estão reservadas sem tu teres escolhido.
 
 As tuas férias estão definidas sem tu teres imaginado o que terias vontade de fazer se o tempo fosse mesmo teu.
 
-A isto chamamos tempo colonizado.
+É tempo colonizado.
 
 E é um dos custos mais invisíveis de seres uma mulher a cuidar.
 
@@ -4857,7 +4865,7 @@ As pessoas que te conhecem reconhecem esta coisa, embora também não saibam com
 
 Tu também a reconheces — mas, muitas vezes, só quando alguém a nomeia por ti.
 
-A isto chamamos ofício de ser.
+O nome é ofício de ser.
 
 Não se ensina. Não se formaliza. Não cabe num CV.
 
@@ -4901,7 +4909,7 @@ Não faria.
 
 A maioria das pessoas é genuinamente má em algumas destas coisas.
 
-A isto chamamos a arte invisível da mulher comum.
+É a arte invisível da mulher comum.
 
 E é invisível sobretudo para a própria.
 
@@ -4979,7 +4987,7 @@ A facilidade com que explicas um conceito complexo. A naturalidade com que organ
 
 O que te sai sem esforço é, muito provavelmente, precisamente o que é teu.
 
-A isto chamamos natureza expressa.
+Chamemos-lhe natureza expressa.
 
 A tua natureza não se adquire. Está lá. Foi-te dada.
 
@@ -5059,7 +5067,7 @@ Tu és a única pessoa, neste momento do mundo, que viu o que viste, sentiu o qu
 
 E do cruzamento disto tudo emerge uma possibilidade que só tu podes realizar.
 
-A isto chamamos o ofício irrepetível.
+Há nome: o ofício irrepetível.
 
 Não precisa de ser grandioso. Não precisa de ser famoso.
 
