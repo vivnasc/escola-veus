@@ -1304,6 +1304,99 @@ export default function ProductionPage() {
         {step === 5 && (
           <div className="mt-4 space-y-4">
 
+            {/* ── DESCARGA RAPIDA: script + imagens + instrumental ── */}
+            <div className="border-2 border-escola-dourado/50 rounded-xl p-4 bg-escola-dourado/10 space-y-4">
+              <h3 className="font-serif text-base font-medium text-escola-dourado">Descarga rapida — montar fora</h3>
+
+              {/* 1. Script continuo */}
+              <div className="space-y-1.5">
+                <p className="text-[11px] text-escola-creme font-medium">1. Script continuo (para ElevenLabs — 1 audio)</p>
+                <button onClick={() => {
+                  const continuous = scenes
+                    .filter((s) => s.narration?.trim())
+                    .map((s) => s.narration.trim())
+                    .join("\n\n");
+                  navigator.clipboard.writeText(continuous);
+                  setError("Script continuo copiado! Cola no ElevenLabs como 1 audio."); setTimeout(() => setError(null), 3000);
+                }}
+                  className="rounded-lg bg-escola-dourado px-4 py-2 text-xs font-medium text-escola-bg hover:opacity-90">
+                  Copiar script continuo
+                </button>
+                <textarea readOnly value={scenes.filter((s) => s.narration?.trim()).map((s) => s.narration.trim()).join("\n\n")}
+                  rows={6}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-[10px] text-escola-creme-50 font-mono resize-y focus:outline-none" />
+                <p className="text-[9px] text-escola-creme-50 italic">
+                  Inclui tags [pause], [calm], etc. Cola direto no ElevenLabs v3 com a voz que escolheste.
+                </p>
+              </div>
+
+              {/* 2. Imagens */}
+              {scenes.some((s) => s.imageUrl) && (
+                <div className="space-y-1.5 border-t border-escola-dourado/20 pt-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[11px] text-escola-creme font-medium">
+                      2. Imagens ({scenes.filter((s) => s.imageUrl).length} de {scenes.length})
+                    </p>
+                    <button onClick={() => {
+                      scenes.forEach((s) => { if (s.imageUrl) window.open(s.imageUrl, "_blank"); });
+                    }}
+                      className="text-[10px] text-escola-dourado border border-escola-dourado/30 rounded px-2 py-1 hover:bg-escola-dourado/10">
+                      Abrir todas em tabs novas
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                    {scenes.map((scene, i) => scene.imageUrl ? (
+                      <a key={i} href={scene.imageUrl} target="_blank" rel="noopener noreferrer" download
+                        className="block border border-escola-border rounded overflow-hidden hover:border-escola-dourado transition-colors group">
+                        <img src={scene.imageUrl} alt={scene.type} className="w-full aspect-video object-cover" />
+                        <p className="text-[8px] text-center text-escola-creme-50 py-0.5 group-hover:text-escola-dourado bg-escola-bg">
+                          {i + 1}. {SCENE_LABELS[scene.type] || scene.type}
+                        </p>
+                      </a>
+                    ) : (
+                      <div key={i} className="border border-escola-border rounded aspect-video bg-escola-bg flex items-center justify-center">
+                        <span className="text-[8px] text-escola-creme-50/50">{i + 1}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[9px] text-escola-creme-50 italic">
+                    Click em cada = abre pagina. Botao direito → Guardar imagem como... ou usa &quot;Abrir todas&quot;.
+                  </p>
+                </div>
+              )}
+
+              {/* 3. Instrumental */}
+              {(bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse]) && (
+                <div className="space-y-1.5 border-t border-escola-dourado/20 pt-3">
+                  <p className="text-[11px] text-escola-creme font-medium">3. Instrumental</p>
+                  <audio controls src={bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse]} className="w-full max-w-md h-8" />
+                  <a href={bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse]} target="_blank" rel="noopener noreferrer" download
+                    className="inline-block rounded bg-escola-dourado/20 border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/30">
+                    Descarregar instrumental (.mp3)
+                  </a>
+                </div>
+              )}
+
+              {/* 4. Abertura/Fecho se existirem */}
+              {(openingMusicUrl || closingMusicUrl) && (
+                <div className="space-y-1.5 border-t border-escola-dourado/20 pt-3">
+                  <p className="text-[11px] text-escola-creme font-medium">Outras faixas</p>
+                  {openingMusicUrl && (
+                    <a href={openingMusicUrl} target="_blank" rel="noopener noreferrer" download
+                      className="block text-[10px] text-escola-dourado hover:underline">
+                      Abertura — {openingMusicUrl.slice(0, 60)}...
+                    </a>
+                  )}
+                  {closingMusicUrl && (
+                    <a href={closingMusicUrl} target="_blank" rel="noopener noreferrer" download
+                      className="block text-[10px] text-escola-dourado hover:underline">
+                      Fecho — {closingMusicUrl.slice(0, 60)}...
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* ── RUNWAY CLIPS — prompts calculados ── */}
             {scenes.length > 0 && (() => {
               const clipDur = 10; // seconds per Runway clip
