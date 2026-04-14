@@ -2955,4 +2955,139 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-15",
+    titulo: "Série Nomear — Ampliação Depois do Fogo (Ep 72-74)",
+    descricao: "Mais 3 scripts de Depois do Fogo.",
+    scripts: [
+      {
+        id: "nomear-ep72",
+        titulo: "As cinzas que guardaste num canto",
+        curso: "depois-do-fogo",
+        texto: `Houve um fogo na tua vida.
+
+Algo que ardeu. Uma relação. Um emprego. Uma versão tua. Uma família que já não existe como existia.
+
+E depois, quando tudo se acalmou, restaram cinzas.
+
+Não as varreste. Não as lançaste ao vento. Guardaste-as num canto.
+
+Ficam lá. Não as olhas todos os dias. Mas sabes que estão.
+
+E às vezes, sem razão aparente, o cheiro do fogo volta. Numa foto antiga. Num lugar por onde passas. Numa pessoa que te lembra a que perdeste.
+
+Tem nome o que guardaste.
+
+Chama-se luto arquivado.
+
+Não está resolvido. Só está contido.
+
+E contido não é o mesmo que ultrapassado.
+
+Há dias em que precisas de voltar às cinzas. Não para reabrir a ferida — para a honrar.
+
+Acendeste aquela parte da tua vida com tudo o que tinhas.
+
+Não foi nada em vão só por ter acabado em fogo.
+
+As cinzas são o que sobrou da tua entrega.
+
+Merecem, uma vez por ano, pelo menos, que as olhes com cuidado.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep73",
+        titulo: "O recomeço que demora mais do que os outros esperam",
+        curso: "depois-do-fogo",
+        texto: `Os outros querem que já estejas bem.
+
+Passaram-se seis meses. Passaram-se dois anos. Passaram-se cinco.
+
+E a pergunta, feita em tom de quem pensa que isto já foi há muito tempo, aparece: então, já estás melhor?
+
+Tu sorris. Dizes que sim. Não é mentira completa. Estás a viver. Estás a funcionar.
+
+Mas por dentro há uma parte que ainda está em reconstrução. Em silêncio. Em lentidão.
+
+E os outros, já há muito, mudaram de assunto.
+
+Tem nome o que vives.
+
+Chama-se recomeço a solo.
+
+Porque chega um ponto em que ninguém mais acompanha. Todos presumem que já ultrapassaste.
+
+Mas tu sabes que ainda não. E ao mesmo tempo, já não podes continuar a explicar.
+
+Então segues sozinha.
+
+Não é fraqueza teu processo ser mais longo. É profundidade.
+
+As coisas a que te entregaste tinham muito significado. É natural que a reconstrução demore.
+
+Não precisas de pedir desculpa por isso.
+
+Mas também não precisas de continuar a explicar.
+
+Podes simplesmente seguir o teu ritmo.
+
+E quem for para ficar na tua vida vai aprender que tu tens um tempo diferente.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep74",
+        titulo: "A vida que não pediste mas vai começar na mesma",
+        curso: "depois-do-fogo",
+        texto: `Há vidas que tu não pediste.
+
+Casaste, e a vida mudou numa direcção que não escolheste completamente. Tiveste um filho, e a vida nunca mais foi a mesma. Foste despedida, e o caminho que vinha a construir desmoronou. Ficaste doente, e o corpo passou a pedir coisas que tu não querias dar-lhe.
+
+E, em cada uma destas vezes, ficaste por uns tempos em choque.
+
+Como se a vida certa tivesse ficado algures atrás de ti, e esta, a que te apareceu, fosse uma substituta forçada.
+
+Tem nome o que sentes.
+
+Chama-se vida não escolhida.
+
+E é legítimo o teu luto pela vida que pensavas que ias ter.
+
+Mas há uma verdade desconfortável: a vida que não pediste vai começar na mesma.
+
+Vai escrever-se, dia a dia, com ou sem tua permissão.
+
+Podes passar os próximos anos a lamentar a vida que não foi.
+
+Ou podes, em algum ponto, olhar para esta e perguntar: o que é possível aqui?
+
+Não como rendição. Como curiosidade.
+
+Porque a vida que não pediste pode ainda assim ser, a pouco e pouco, uma vida que se torna tua.
+
+Por escolha. Dentro dela.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
