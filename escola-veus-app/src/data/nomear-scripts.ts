@@ -1355,4 +1355,367 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-5",
+    titulo: "Série Nomear — Ep 35-43 (Depois do Fogo + A Teia + A Coroa Escondida)",
+    descricao: "Depois do Fogo (luto, recomeços) + A Teia (rede de mulheres) + A Coroa Escondida (autoridade interna).",
+    scripts: [
+      {
+        id: "nomear-ep35",
+        titulo: "O luto que ninguém te deixou fazer",
+        curso: "depois-do-fogo",
+        texto: `Há perdas que tiveste e nunca pudeste chorar.
+
+Uma amizade que se desfez sem explicação. Um emprego que te mostrou a porta. Uma versão tua que desapareceu sem que ninguém notasse.
+
+Não houve ritual. Não houve condolências. Não houve tempo.
+
+Continuaste a viver como se nada tivesse acontecido.
+
+Mas o corpo sabia. O corpo guardou.
+
+Tem nome o que te aconteceu.
+
+Chama-se luto não autorizado.
+
+E é das formas mais pesadas de tristeza — porque não tem onde cair. Não tem nome social. Não tem apoio.
+
+Continuas com ela dentro. A pesar sem pedir.
+
+Podes fazer o luto agora. Não precisas de autorização de ninguém. Não precisas de data.
+
+Só precisas de admitir que perdeste alguma coisa real.
+
+E dar-te permissão para te despedires dela, mesmo que tenha sido há muito tempo.
+
+O luto não respeita calendário.
+
+Espera para ser finalmente visto.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep36",
+        titulo: "As coisas que perdeste sem ninguém te abraçar",
+        curso: "depois-do-fogo",
+        texto: `Quando morre alguém, há abraços. Há flores. Há quem pergunte se estás bem.
+
+Mas há outras perdas para as quais não há luto público.
+
+A tua saúde mudou — e ninguém veio acompanhar-te nisso. A tua identidade profissional caiu — e os amigos mudaram de assunto. Um relacionamento importante terminou — mas não tinhas casado, então ninguém achou que fosse de verdade.
+
+Perdeste sem testemunhas.
+
+Tem nome o que isso faz.
+
+Chama-se perda invisível.
+
+É das dores mais solitárias — porque tens de chorar sozinha uma coisa que os outros nem consideraram perda.
+
+E continuaste a funcionar porque ninguém te deu a opção de parar.
+
+Hoje, nesta voz, dou-te uma testemunha.
+
+Vi o que perdeste. Sei que foi grande. Sei que não tiveste abraço nenhum.
+
+E isso é injusto.
+
+Mas agora podes começar a honrar, tu mesma, o que outros não souberam honrar.
+
+Um pequeno ritual privado. Um momento em que finalmente te permites chorar o que não choraste a tempo.
+
+Ainda é tempo.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep37",
+        titulo: "O dia em que acordas sem a dor",
+        curso: "depois-do-fogo",
+        texto: `Houve um dia em que a dor te acompanhava desde o momento em que abrias os olhos.
+
+Depois um dia em que ela chegou só a meio da manhã.
+
+Depois um dia em que ela só apareceu ao fim da tarde — e tu pensaste: estava quase a esquecer-me.
+
+E um dia, muito mais tarde, acordaste e ela não veio.
+
+Não percebeste logo. Foste fazendo as coisas da manhã. Fizeste café. Abriste a janela. E, de repente, paraste. Porque algo estava estranhamente em silêncio dentro de ti.
+
+Era a ausência da dor.
+
+Tem nome este dia.
+
+Chama-se o princípio da recuperação.
+
+Não é um fim. Não é "já passou". É apenas isto: houve uma manhã em que acordaste e ela não estava. E isso, só isso, é enorme.
+
+E a partir daqui ela ainda vai voltar. Vai visitar-te. Às vezes com força. Às vezes fraquinha.
+
+Mas os espaços entre as visitas vão crescendo.
+
+E um dia reparas que já há mais vida no meio do que dor.
+
+E foste tu que, sem saberes, fizeste este caminho.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep38",
+        titulo: "As amigas que nunca te falaram de dinheiro",
+        curso: "a-teia",
+        texto: `Há muitos anos que conheces estas amigas.
+
+Sabes o nome dos ex-namorados delas. Sabes os problemas com as mães. Sabes quem tem dificuldades a dormir. Sabes quem está a pensar em terapia.
+
+Mas não sabes quanto ganham.
+
+Não sabes se têm dívidas. Não sabes se estão a conseguir poupar. Não sabes se há meses em que ficam sem conseguir pagar tudo.
+
+Aprendeste, tacitamente, que entre mulheres não se fala de dinheiro.
+
+Fala-se de emoções, de relações, de corpo. Mas dinheiro é o último tabu.
+
+Tem nome o que aprendeste.
+
+Chama-se silêncio que isola.
+
+Porque enquanto cada uma cala sozinha, cada uma pensa que o seu problema é pessoal.
+
+Quando é estrutural. Partilhado. Político.
+
+E uma conversa — uma só — em que uma amiga te diz em voz alta o quanto ganha, o quanto deve, o quanto teme — pode mudar a forma como te vês.
+
+Porque, de repente, já não estás sozinha.
+
+A teia que te falta entre mulheres é, muitas vezes, feita de uma conversa que ninguém teve coragem de começar.
+
+Talvez possas ser tu a começar.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep39",
+        titulo: "As mulheres que precisas de encontrar",
+        curso: "a-teia",
+        texto: `Há mulheres que ainda não encontraste.
+
+Não porque não existam — existem. Estão a viver a versão dos problemas que tu vives. A lutar as lutas que tu lutas. A nomear as coisas que tu ainda não aprendeste a nomear.
+
+Mas não te cruzaste com elas.
+
+Porque vives onde vives. Porque frequentas os mesmos lugares. Porque as tuas amigas são as amigas que a vida te deu — não as que escolherias hoje, conhecendo-te melhor.
+
+Tem nome o que te falta.
+
+Chama-se comunidade escolhida.
+
+É diferente de família. É diferente de amigas antigas. É um grupo de mulheres que te vê não pela tua história — mas pela tua direcção.
+
+Procurar esta comunidade não é infidelidade às amizades antigas.
+
+É admitir que estás a crescer para um lugar que ainda não tem pessoas suficientes à tua volta.
+
+E quando encontrares as primeiras mulheres desta comunidade, vais reconhecê-las imediatamente.
+
+Pelo que dizem em voz alta. Pelo que não precisam de esconder. Pela forma como te olham quando falas.
+
+Elas existem.
+
+Estão à tua espera em lugares onde ainda não estiveste.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep40",
+        titulo: "A rede que ainda não sabes que tens",
+        curso: "a-teia",
+        texto: `Há uma rede que não sabes que tens.
+
+Não são as pessoas óbvias. Não são as tuas amigas de sempre. Não é a tua família.
+
+É uma rede mais discreta.
+
+A colega de trabalho de há dez anos que pensa em ti em silêncio. A ex-aluna que escreveu sobre ti numa entrada de diário que nunca te mostrou. A prima distante que te admira de longe sem te dizer.
+
+Estas pessoas não aparecem nos dias maus.
+
+Porque tu nem sabes que elas existem assim para ti.
+
+Mas elas existem.
+
+E no dia em que precisares de pedir alguma coisa fora do teu círculo óbvio, elas vão ser as primeiras a responder sim.
+
+Tem nome esta rede.
+
+Chama-se presença invisível.
+
+E a maioria das mulheres tem uma muito maior do que imagina. Porque é treinada a pedir pouco e a não chatear.
+
+Quando começares a pedir — mais, melhor, sem desculpa — vais descobrir quem estava ali.
+
+E vais ficar surpreendida.
+
+Não estás tão sozinha quanto te disseram.
+
+Só nunca pediste.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep41",
+        titulo: "A coroa que aprendeste a esconder",
+        curso: "a-coroa-escondida",
+        texto: `Há algo que tu sabes fazer muito bem.
+
+Sabes tão bem que, há muito tempo, deixou de te parecer especial.
+
+Os outros comentam. Os outros pedem. Os outros apoiam-se em ti nesta coisa.
+
+E tu encolhes os ombros. Dizes que não é nada. Dizes que qualquer um faria igual. Dizes que tiveste sorte.
+
+Aprendeste a diminuir o teu talento.
+
+Porque tens medo de ser vista como arrogante. Porque as mulheres que reconhecem as suas próprias forças são chamadas pretensiosas. Porque é mais seguro ser modesta do que ser precisa.
+
+Tem nome o que escondes.
+
+Chama-se coroa disfarçada de humildade.
+
+Mas a tua capacidade é real.
+
+E cada vez que a diminuis em público, estás a dizer-te a ti mesma que não mereces ser vista inteira.
+
+Começa, em silêncio, pelo reconhecimento privado.
+
+Anota. Escreve. Diz-te a ti: eu sei fazer isto. Isto é meu.
+
+Antes de te vestires em público de coroa — experimenta usá-la em casa.
+
+Sem pedir licença.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep42",
+        titulo: "O teu sim que não precisa de confirmação",
+        curso: "a-coroa-escondida",
+        texto: `Há decisões tuas que tu tomas e depois procuras confirmação.
+
+Mandas mensagem a uma amiga. Pergunas à tua mãe. Testas a ideia num jantar. Esperas que alguém te diga: sim, isso faz sentido.
+
+Tu já tinhas decidido. A tua voz já sabia.
+
+Mas não confias que a tua voz chegue, sozinha, como autoridade.
+
+Precisas de coro.
+
+Aprendeste isto onde? Em mulheres que nunca tomaram uma decisão sem consultar o marido. Em avós que pediam opinião antes de comprar o detergente. Em mães que, mesmo aos sessenta anos, ainda perguntavam à família se podiam fazer uma viagem sozinhas.
+
+Aprendeste a decidir consultando.
+
+Tem nome o que aprendeste.
+
+Chama-se autoridade delegada.
+
+Está na hora de repatriar.
+
+As tuas decisões têm o direito de existir antes da confirmação dos outros. O teu sim pode ser sim, sem validação.
+
+Não tens de parar de falar com as pessoas que amas.
+
+Mas podes começar a dizer-lhes a tua decisão — em vez de lha ir pedir.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep43",
+        titulo: "O lugar onde a tua autoridade vive",
+        curso: "a-coroa-escondida",
+        texto: `Há um lugar no teu corpo onde a tua autoridade vive.
+
+Não é na cabeça. A cabeça pensa, duvida, procura evidência.
+
+É mais abaixo. No plexo solar. No centro do teu peito. Num ponto que, quando é respeitado, faz a tua voz sair firme sem que tu tenhas de te preparar.
+
+Tens visitado pouco este lugar.
+
+Porque te habituaste a decidir de cima. A pedir razões. A argumentar antes de sentires.
+
+Mas a tua autoridade não é argumento. É postura. É um saber do corpo que chega antes da frase.
+
+Tem nome este lugar.
+
+Chama-se centro.
+
+E é reconhecível. Pelas manhãs em que sais de casa e sabes exactamente para onde vais. Pelas conversas em que falas devagar e não precisas de o fazer mais alto. Pelas decisões que tomas e, depois, dormes sem as rever.
+
+Quando estás no centro, os outros notam.
+
+Não porque te impones.
+
+Porque não precisas de ganhar a conversa. Já estás no lugar a partir do qual falas.
+
+Podes voltar a este lugar.
+
+Ele nunca saiu de ti. Só andavas a viver em cima dele, sem descer.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
