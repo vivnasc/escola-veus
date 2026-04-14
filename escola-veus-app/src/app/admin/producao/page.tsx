@@ -1250,8 +1250,110 @@ export default function ProductionPage() {
               </div>
             </div>
 
+            {/* ── Export for CapCut ── */}
+            <div className="border border-escola-dourado/40 rounded-xl p-4 bg-escola-dourado/5 space-y-3">
+              <h3 className="font-serif text-base font-medium text-escola-dourado">Exportar assets para CapCut</h3>
+              <p className="text-[11px] text-escola-creme-50">
+                Descarrega todos os ficheiros por cena — monta o video no CapCut com controlo total.
+              </p>
+
+              <div className="space-y-2">
+                {scenes.map((scene, i) => (
+                  <div key={i} className="border border-escola-border rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[10px] font-mono text-escola-creme-50 w-4">{i + 1}</span>
+                      <span className="text-xs text-escola-dourado font-medium">{SCENE_LABELS[scene.type] || scene.type}</span>
+                      <span className="text-[9px] text-escola-creme-50">({scene.durationSec}s)</span>
+                    </div>
+
+                    <div className="flex items-center gap-3 flex-wrap">
+                      {/* Animation clip */}
+                      {scene.animationUrl ? (
+                        <a href={scene.animationUrl} target="_blank" rel="noopener noreferrer" download
+                          className="inline-flex items-center gap-1 rounded border border-green-500/30 bg-green-500/10 px-2 py-1 text-[10px] text-green-400 hover:bg-green-500/20">
+                          Video clip (.mp4)
+                        </a>
+                      ) : (
+                        <span className="text-[10px] text-escola-creme-50/50 border border-escola-border rounded px-2 py-1">
+                          Sem clip
+                        </span>
+                      )}
+
+                      {/* Image */}
+                      {scene.imageUrl && (
+                        <a href={scene.imageUrl} target="_blank" rel="noopener noreferrer" download
+                          className="inline-flex items-center gap-1 rounded border border-escola-dourado/30 bg-escola-dourado/10 px-2 py-1 text-[10px] text-escola-dourado hover:bg-escola-dourado/20">
+                          Imagem (.png)
+                        </a>
+                      )}
+
+                      {/* Audio */}
+                      {scene.audioUrl && (
+                        <a href={scene.audioUrl} target="_blank" rel="noopener noreferrer" download
+                          className="inline-flex items-center gap-1 rounded border border-escola-creme/20 bg-escola-creme/5 px-2 py-1 text-[10px] text-escola-creme hover:bg-escola-creme/10">
+                          Audio (.mp3)
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Narration + overlay text reference */}
+                    <div className="mt-1.5 space-y-0.5">
+                      {scene.overlayText && (
+                        <p className="text-[9px] text-escola-dourado/70">Texto: {scene.overlayText}</p>
+                      )}
+                      {scene.narration && (
+                        <p className="text-[9px] text-escola-creme-50 italic line-clamp-1">
+                          {scene.narration.replace(/\[.*?\]/g, "").slice(0, 100)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Music tracks */}
+              <div className="border-t border-escola-border pt-3 space-y-1.5">
+                <p className="text-[10px] text-escola-creme-50 font-medium">Musica:</p>
+                {openingMusicUrl && (
+                  <a href={openingMusicUrl} target="_blank" rel="noopener noreferrer" download
+                    className="block text-[10px] text-escola-dourado hover:underline">
+                    Abertura (comecar no seg {openingMusicStart}, vol {openingMusicVol}%)
+                  </a>
+                )}
+                {bgMusicUrl && (
+                  <a href={bgMusicUrl} target="_blank" rel="noopener noreferrer" download
+                    className="block text-[10px] text-escola-dourado hover:underline">
+                    Instrumental (comecar no seg {bgMusicStart}, vol {bgMusicVol}%)
+                  </a>
+                )}
+                {closingMusicUrl && (
+                  <a href={closingMusicUrl} target="_blank" rel="noopener noreferrer" download
+                    className="block text-[10px] text-escola-dourado hover:underline">
+                    Fecho (comecar no seg {closingMusicStart}, vol {closingMusicVol}%)
+                  </a>
+                )}
+                {!openingMusicUrl && !bgMusicUrl && !closingMusicUrl && (
+                  <p className="text-[10px] text-escola-creme-50/50">Nenhuma musica configurada.</p>
+                )}
+              </div>
+
+              {/* SRT subtitles */}
+              {srt && (
+                <div className="border-t border-escola-border pt-3">
+                  <button onClick={() => downloadFile(srt, `hook-${selectedHook + 1}.srt`)}
+                    className="text-[10px] text-escola-dourado hover:underline">
+                    Descarregar legendas (.srt)
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* ── Per-scene timeline editor ── */}
-            <div className="border border-escola-border rounded-lg p-4 space-y-3">
+            <details className="group">
+              <summary className="text-xs text-escola-creme-50 cursor-pointer hover:text-escola-dourado">
+                Render automatico (Shotstack) — abrir editor de timeline
+              </summary>
+            <div className="mt-3 border border-escola-border rounded-lg p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-xs text-escola-creme-50 font-medium">Timeline — ajusta cada cena antes de renderizar</p>
                 <span className="text-[10px] text-escola-creme-50">
@@ -1351,7 +1453,7 @@ export default function ProductionPage() {
               })}
             </div>
 
-            {/* Music — 3 tracks */}
+            {/* Music — 3 tracks (inside details) */}
             <div className="border border-escola-border rounded-lg p-4 space-y-4">
               <p className="text-xs text-escola-creme-50 font-medium">Musica (3 faixas):</p>
 
@@ -1498,6 +1600,7 @@ export default function ProductionPage() {
                 </div>
               )}
             </div>
+            </details>
 
             {/* YouTube metadata */}
             {manifestUrl && (
