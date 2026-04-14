@@ -3842,4 +3842,255 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-20",
+    titulo: "Série Nomear — O Espelho do Outro (Ep 93-98)",
+    descricao: "O Espelho do Outro (Fronteiras) — relações como espelhos, projecção, rejeição, o que vemos no outro que é de nós.",
+    scripts: [
+      {
+        id: "nomear-ep93",
+        titulo: "O que te irrita no outro",
+        curso: "o-espelho-do-outro",
+        texto: `Há algo, numa pessoa, que te irrita desproporcionalmente.
+
+Não é a coisa em si. Outras pessoas fazem-no também e a ti não incomoda.
+
+É naquela pessoa especificamente que aquele pequeno gesto te tira do sério.
+
+A forma como ela pede. A voz que faz. A insistência. A indirecção. O facto de ser como é.
+
+A isto chamamos irritação desproporcional.
+
+E quase sempre, quando a irritação é desproporcional, há um espelho.
+
+A pessoa está a fazer algo que te mostra um pedaço teu que rejeitaste.
+
+Ela pede demais — e tu rejeitaste em ti a parte que pede. Ela fala alto — e tu silenciaste em ti a parte que queria ser ouvida. Ela é insegura — e tu escondeste a tua insegurança tão fundo que nem te lembras dela.
+
+Não é a outra que te irrita.
+
+É o lembrete que ela te dá, sem querer, do que recusaste em ti.
+
+Isto não significa que tenhas de gostar dela.
+
+Mas a irritação é informação. Valiosa.
+
+Aponta para o que tu ainda não te perdoaste.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep94",
+        titulo: "As pessoas que te desmontam sem saber",
+        curso: "o-espelho-do-outro",
+        texto: `Há pessoas que, sem te fazerem nada, te desmontam.
+
+Chegam perto e tu sentes a tua firmeza a desaparecer. Fazem uma pergunta inofensiva e tu respondes de forma que não reconheces. Estão cinco minutos na tua companhia e tu sais daquele momento sem saber o que aconteceu.
+
+Não é maldade delas. Elas nem fazem ideia do efeito.
+
+Tens, apenas, uma sensibilidade específica àquela energia delas.
+
+A isto chamamos permeabilidade relacional.
+
+Algumas mulheres são mais permeáveis a certos tipos de pessoa. Para outras, essas mesmas pessoas não têm nenhum efeito.
+
+Não és frágil.
+
+És especificamente sensível a um padrão.
+
+Normalmente esse padrão vem da tua infância. Aquela pessoa recorda-te, sem saber, alguém da tua família de origem. E o teu corpo, ao reconhecer, entra em modo antigo — de adaptação, de tentativa de agradar, de recolhimento.
+
+A permeabilidade não é defeito.
+
+É memória por integrar.
+
+E quanto mais reconheces o padrão, mais te torna imune à desmontagem.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep95",
+        titulo: "O elogio que não consegues receber",
+        curso: "o-espelho-do-outro",
+        texto: `Alguém fez-te um elogio. Real. Específico. Sem pedir nada.
+
+E tu desviaste.
+
+Disseste: ah, foi sorte. Ou: era o mínimo. Ou: mas tu é que... — e redireccionaste para a outra pessoa.
+
+O elogio ficou no ar. Sem destinatário.
+
+A isto chamamos desvio reflexo.
+
+E é das formas mais subtis de te diminuíres.
+
+Porque o elogio que não é recebido não é apenas rejeição de uma gentileza. É confirmação a ti mesma de que não mereces ser elogiada.
+
+Com o tempo, os elogios começam a aparecer menos. Porque as pessoas cansam-se de ter os seus gestos devolvidos.
+
+E tu ficas no lugar que parece confortável: a que se diminui.
+
+Mas esse lugar não é confortável. É apenas conhecido.
+
+O conforto real está do outro lado do desconforto de dizer, simplesmente: obrigada.
+
+Sem piada. Sem devolver. Sem diminuir.
+
+Obrigada.
+
+Só isso.
+
+A outra pessoa fica em paz. E tu ficas a tremer um pouco — é natural.
+
+Receber elogios, afinal, é uma prática. Não é talento.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep96",
+        titulo: "O que vês em quem amas",
+        curso: "o-espelho-do-outro",
+        texto: `Há características em quem tu amas que já não são objectivas.
+
+Viste-as tantas vezes, com tanto afecto, que estão pintadas com a cor que tu pões.
+
+Achas-lhe inteligente onde talvez seja apenas confiante. Acha-lo vulnerável onde talvez seja fechado. Acha-lo engraçado onde talvez seja só familiar.
+
+Não é que te estejas a enganar.
+
+É que o amor, uma vez instalado, redesenha.
+
+A isto chamamos leitura afectuosa.
+
+Pessoas de fora, às vezes, olham para a pessoa que tu amas e vêem algo muito diferente do que tu vês.
+
+Não significa que estejam certas. Nem que tu estejas errada. Significa, apenas, que o amor é uma lente.
+
+E uma lente deforma. Às vezes para melhor. Às vezes para pior.
+
+Isto torna-se relevante quando a pessoa amada mostra algo difícil de ver — uma crueldade pequena, uma desatenção repetida, uma incapacidade de estar presente.
+
+Pelos teus olhos, esse sinal atenua. Pelos olhos de fora, é nítido.
+
+Há um ponto em que ouvir quem não partilha da tua lente deixa de ser deslealdade.
+
+Passa a ser a única forma de não te perderes naquilo que o amor redesenhou.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep97",
+        titulo: "A rejeição que fala mais de ti do que da outra pessoa",
+        curso: "o-espelho-do-outro",
+        texto: `Foste rejeitada.
+
+Numa candidatura. Numa relação. Por alguém de quem esperavas mais.
+
+A primeira reacção foi dor. A segunda, talvez, a leitura da pessoa: ela é assim, ele é assado, faz sentido que tenham feito isso.
+
+Mas há uma terceira camada que raramente se olha.
+
+A rejeição, além de ser sobre a outra pessoa, é um texto sobre ti.
+
+Não sobre o teu valor. Nunca sobre isso.
+
+Sobre o que estava em jogo para ti.
+
+Se a rejeição te desmontou completamente — provavelmente estavas a tentar confirmar algo sobre ti através daquela aceitação.
+
+Se a rejeição te deixou triste mas funcional — provavelmente a tua identidade não estava dependente.
+
+Se quase nem sentiste — provavelmente nem era a coisa certa para ti, e tu, lá no fundo, já sabias.
+
+A isto chamamos a rejeição como informação.
+
+Não sobre como és vista. Sobre como dependes do olhar do outro.
+
+E isso, a longo prazo, é o trabalho mais importante.
+
+Libertar a tua identidade do que os outros dizem sobre ti.
+
+Cada rejeição é uma oportunidade de saberes onde ainda não libertaste.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep98",
+        titulo: "As mulheres que te desafiam sem razão aparente",
+        curso: "o-espelho-do-outro",
+        texto: `Há mulheres que, em certas salas, te desafiam sem razão aparente.
+
+Não tens história com elas. Não lhes fizeste nada. Mas quando falas, elas interrompem. Quando estás a ser ouvida, elas contam uma história maior. Quando ofereces uma ideia, elas encontram um problema.
+
+Parece hostilidade.
+
+Às vezes é.
+
+Mas às vezes é outra coisa.
+
+É que tu, a estares numa sala de forma mais inteira, ameaças uma posição delas — sem saberes e sem quereres.
+
+Elas aprenderam, num contexto em que competiam por espaço escasso, que mulheres inteiras eram ameaça.
+
+E o reflexo defende-se antes da razão decidir.
+
+A isto chamamos competição herdada.
+
+Não é sobre ti especificamente.
+
+É sobre a escassez em que elas aprenderam a operar.
+
+Isto não te obriga a gostar delas. Não te obriga a estar no mesmo espaço se te desgasta.
+
+Mas muda o que sentes.
+
+Já não é pessoal.
+
+É uma herança delas.
+
+E tu, que vês, podes continuar presente — sem competir e sem recuar.
+
+Às vezes, é isso que desarma o reflexo.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
