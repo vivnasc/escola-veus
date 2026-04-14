@@ -3605,4 +3605,241 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-19",
+    titulo: "Série Nomear — A Arte da Inteireza (Ep 87-92)",
+    descricao: "A Arte da Inteireza (Fronteiras) — integridade, ser quem se é sem se partir para caber nos outros.",
+    scripts: [
+      {
+        id: "nomear-ep87",
+        titulo: "As mulheres que aprenderam a dividir-se",
+        curso: "a-arte-da-inteireza",
+        texto: `Ensinaram-te, desde muito cedo, a dividir-te.
+
+Uma versão tua para a mãe. Outra para o pai. Outra para a escola. Outra para o amigo que não se dava com o outro amigo.
+
+Aprendeste a ser várias antes de seres uma.
+
+E aperfeiçoaste isto ao longo da vida. A mulher no trabalho, a mulher no grupo de amigas, a mulher em casa, a mulher sozinha de madrugada. Todas tuas, todas diferentes, todas geridas.
+
+Aprendeste a ser uma mulher de muitas máscaras.
+
+A isto chamamos fragmentação adaptativa.
+
+Foi estratégia. Foi sobrevivência.
+
+Mas tem preço. Com o tempo, já não sabes bem qual é a tua voz real. Porque todas as versões são tão tuas que nenhuma parece mais tua do que as outras.
+
+E ficas partida sem teres sido quebrada.
+
+Inteira não é uma mulher que nunca se adaptou.
+
+É uma mulher que, debaixo das adaptações, continua a saber qual é a voz que sobra quando está só.
+
+Essa voz, em ti, ainda existe.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep88",
+        titulo: "A versão de ti que entra em cada sala",
+        curso: "a-arte-da-inteireza",
+        texto: `Há uma versão tua que entra em cada sala antes de ti.
+
+Entra numa reunião de trabalho como a mulher profissional. Entra num jantar de família como a filha, ou a irmã, ou a tia. Entra com as amigas como a amiga. Entra com um parceiro como uma versão da amante.
+
+Estas versões não são mentira. São pedaços teus.
+
+O problema não está em existirem.
+
+O problema está em teres deixado de te reconhecer nos intervalos entre elas.
+
+Aqueles cinco minutos a sós no carro, depois de saíres da reunião e antes de entrares em casa. Esses minutos em que nenhuma das versões está activa.
+
+Quem és tu nesse intervalo?
+
+A isto chamamos a mulher entre versões.
+
+E ela é a que mais precisa de ser reconhecida.
+
+Se continuas a preencher os intervalos com outra versão, com o telefone, com pensamentos sobre a próxima sala — não chegas nunca a ti.
+
+Chegas a uma versão tua.
+
+E há uma diferença.
+
+A inteireza não é uma versão perfeita.
+
+É a mulher nos intervalos.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep89",
+        titulo: "O cansaço de ser muitas",
+        curso: "a-arte-da-inteireza",
+        texto: `Há um cansaço específico em ser muitas versões de ti.
+
+Não é físico. Não é emocional, exactamente. É um cansaço de gestão.
+
+Toda a tua energia vai para saber qual versão se apresenta aqui. Qual tom de voz. Qual palavra. Qual conversa serve neste grupo. Qual piada cai bem naquele outro.
+
+Nunca te sentes completamente à vontade — porque estás sempre a escolher.
+
+E a mulher que escolhe sempre é uma mulher exausta.
+
+A isto chamamos carga de performance.
+
+Os homens, em muitos contextos, não conhecem esta carga com a mesma intensidade. Para muitos, há uma versão de si que é mais ou menos estável em vários contextos. Adaptam o tom, mas não se reescrevem.
+
+As mulheres, pelo contrário, aprendem a reescrever-se em cada sala.
+
+E ao fim do dia — quando chegas a casa, quando te deitas, quando finalmente ninguém te observa — és atingida pelo cansaço de teres sido quatro ou cinco mulheres desde que te levantaste.
+
+Não és fraca.
+
+És uma mulher que geriu performances em regime permanente.
+
+E isso, por mais cultural que seja, é ainda assim um peso.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep90",
+        titulo: "O dia em que paraste de te adaptar",
+        curso: "a-arte-da-inteireza",
+        texto: `Há um dia — às vezes é uma decisão, às vezes é uma exaustão — em que paras de te adaptar.
+
+A conversa vai numa direcção. Tu já não a acompanhas. Ficas calada. Ou, pela primeira vez, dizes o que pensas sem suavizar.
+
+E a sala muda.
+
+Alguém olha para ti diferente. Outra pessoa fica desconfortável. Alguém ri com alívio — talvez estivesse à espera que tu falasses.
+
+A isto chamamos o dia do descolamento.
+
+Não é dramático. Não precisa de grito.
+
+É só o momento em que deixa de valer o esforço de seres a que se adapta.
+
+E percebes, com espanto, que o mundo continua.
+
+As pessoas ajustam-se. A vida continua. Algumas relações reagem mal — mas outras, que nem sabias que tinhas, ficam de repente mais próximas.
+
+Porque, sem o saberes, havia pessoas à tua volta à espera de te verem inteira.
+
+Só não sabiam se tu ias aparecer.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep91",
+        titulo: "A inteireza que assusta",
+        curso: "a-arte-da-inteireza",
+        texto: `A mulher inteira assusta.
+
+Não por ser agressiva. Não por ter feito algo errado.
+
+Assusta porque é rara.
+
+Numa sala em que todas estão parcialmente adaptadas, uma mulher que não se adapta — que fala do que sente, que discorda sem pedir desculpa, que ri alto sem olhar à volta — parece fora do lugar.
+
+E o grupo nota. Por vezes com admiração. Por vezes com distância.
+
+A isto chamamos o preço da inteireza.
+
+Ser inteira não é ser popular. Não é, necessariamente, ser querida por todos.
+
+É ser reconhecida por quem tem capacidade de te reconhecer.
+
+E isso é menos gente do que gostarias. Pelo menos no início.
+
+As relações que resistirem à tua inteireza são relações reais.
+
+As que não resistirem — eram relações com uma versão tua. Não contigo.
+
+E não ter essas relações não é perda.
+
+É limpeza.
+
+A mulher inteira, aos poucos, tem menos pessoas à volta.
+
+Mas as que tem, conhece.
+
+E elas conhecem-na.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep92",
+        titulo: "As mulheres inteiras que reconheceste",
+        curso: "a-arte-da-inteireza",
+        texto: `Viste, na tua vida, algumas mulheres inteiras.
+
+Não muitas. Talvez três ou quatro. Se tiveste sorte, mais.
+
+Não eram mulheres famosas. Nem, necessariamente, bem-sucedidas nos termos convencionais.
+
+Eram mulheres que entravam numa sala e a sala notava. Que diziam o que pensavam sem pedir desculpa. Que sabiam rir e sabiam ficar em silêncio.
+
+Lembraste-te delas depois de anos sem as ver. Porque fizeram marca.
+
+A isto chamamos testemunhas de possibilidade.
+
+Elas, sem saberem, mostraram-te que isto é possível.
+
+Que uma mulher pode, de facto, existir sem se pulverizar.
+
+E isso ficou como referência em ti — mesmo que durante anos tivesses continuado a fragmentar-te.
+
+Agora, no ponto em que estás, podes chamá-las à memória.
+
+Não para as imitares. Não são receita.
+
+São apenas testemunhos de que o que procuras é possível.
+
+Existe. Existiu. Elas conseguiram.
+
+Tu também.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
