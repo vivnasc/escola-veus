@@ -4607,4 +4607,235 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-23",
+    titulo: "Série Nomear — O Relógio Partido (Ep 111-116)",
+    descricao: "O Relógio Partido (Ciclos) — tempo subjetivo, urgência herdada, fases da vida, comparação.",
+    scripts: [
+      {
+        id: "nomear-ep111",
+        titulo: "A pressa que herdaste",
+        curso: "o-relogio-partido",
+        texto: `Tens pressa.
+
+Acordas com ela. Levas-a para as tuas conversas. Deitas-te com a sensação de que mais alguma coisa ficou por fazer.
+
+A pressa não é novidade. Tens-na há anos.
+
+Mas se pensares com atenção — não começou em ti.
+
+A tua mãe tinha pressa. A tua avó tinha pressa. As mulheres da tua família tinham sempre mais coisas para fazer do que tempo para as fazer.
+
+Aprendeste a pressa antes de saberes ler um relógio.
+
+A isto chamamos pressa hereditária.
+
+É o ritmo em que as mulheres da tua família aprenderam a operar. Porque sempre houve mais um filho a tratar, mais uma refeição a fazer, mais uma exigência invisível a cumprir.
+
+E tu herdaste o andamento.
+
+Mesmo quando a tua vida, hoje, não exige este ritmo, ele continua contigo.
+
+A pressa é um modo de funcionamento. Não tem, muitas vezes, relação com a urgência real.
+
+E o que aparentemente resolves com a pressa paga-se noutros sítios.
+
+No corpo. No sono. Na qualidade de como estás com quem amas.
+
+A pressa herdada é uma das heranças mais invisíveis — e mais universalmente feminina.
+
+Reconhecê-la é o primeiro gesto para decidir se ela ainda é tua.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep112",
+        titulo: "O tempo em que já deverias ter X",
+        curso: "o-relogio-partido",
+        texto: `Há uma lista invisível.
+
+Aos vinte e cinco, já deverias estar a construir carreira. Aos trinta, já deverias estar casada. Aos trinta e cinco, já deverias ter filhos. Aos quarenta, já deverias ter casa. Aos cinquenta, já deverias estar no sossego.
+
+Ninguém escreveu esta lista. Mas ela opera.
+
+Opera dentro de ti, e opera na forma como os outros te olham.
+
+E quando estás fora da lista, há um desconforto constante. Uma sensação de que estás atrasada. Ou, pior, de que algo em ti falhou.
+
+A isto chamamos calendário social herdado.
+
+Ele não é universal. Mudou de geração para geração. Está a mudar em tempo real. E tu, em certos aspectos, vais viver muito fora dele sem que isso seja uma falha.
+
+Mas enquanto não reconheces que é calendário — não tua verdade — ele pesa.
+
+Pesa no momento em que fazes anos e listas, mentalmente, o que não aconteceu ainda. Pesa quando vês os filhos das amigas e sentes um aperto. Pesa quando alguém te pergunta, num jantar, quando é que vais X.
+
+Não é a tua vida que está fora da hora.
+
+É a hora que te deram não serve para a tua vida.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep113",
+        titulo: "As fases que ninguém te prepara",
+        curso: "o-relogio-partido",
+        texto: `Há fases da vida para as quais ninguém te prepara.
+
+A fase em que percebes que os teus pais estão a envelhecer mais depressa do que tu pensavas. A fase em que os filhos deixam de precisar de ti da forma a que estavas habituada. A fase em que o corpo começa a mudar de formas que nenhum livro te explicou. A fase em que o teu trabalho, que sempre foi significativo, deixa de ser suficiente.
+
+Cada uma destas fases chega sem aviso.
+
+E cada uma tem o seu próprio luto. A sua própria reconstrução. A sua própria solidão.
+
+A isto chamamos transições invisíveis.
+
+Invisíveis porque não têm rituais. Não há festa. Não há cerimónia. Não há marco claro.
+
+Mas transformam-te tanto como os marcos que se celebram.
+
+Muitas mulheres chegam às transições sem linguagem para elas. Sem terem visto outras mulheres falarem sobre isto. Sem manual.
+
+Isto faz com que cada uma pense, secretamente, que o que sente é estranho. Que mais ninguém está a passar pelo mesmo.
+
+Não é verdade.
+
+Todas as mulheres que atravessaram a fase em que estás agora passaram pelo que tu estás a passar.
+
+Só não te foi dito.
+
+Porque a linguagem, até agora, ainda não chegou plenamente a estas transições.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep114",
+        titulo: "O calendário dos outros na tua vida",
+        curso: "o-relogio-partido",
+        texto: `Há pessoas que operam em ti num calendário que não é o teu.
+
+A tua mãe quer que tu passes lá todos os domingos. A tua amiga espera que respondas às mensagens dela em horas. O teu parceiro espera que as férias sejam as que ele planeia. A família espera que tu compareças a todas as ocasiões.
+
+Cada um tem uma expectativa sobre como o teu tempo deve ser distribuído.
+
+E tu, sem te apercebermos de quando isto aconteceu, passaste a viver segundo o calendário deles.
+
+Os teus fins-de-semana estão preenchidos sem tu teres decidido.
+
+As tuas tardes estão reservadas sem tu teres escolhido.
+
+As tuas férias estão definidas sem tu teres imaginado o que terias vontade de fazer se o tempo fosse mesmo teu.
+
+A isto chamamos tempo colonizado.
+
+E é um dos custos mais invisíveis de seres uma mulher a cuidar.
+
+A tua vida financeira pode ser tua. A tua vida profissional pode ser tua. Mas o teu tempo — esse, muitas vezes, pertence a um conjunto de outras agendas.
+
+Recuperar o teu calendário não é rebeldia. É condição.
+
+Condição para que outras decisões que fazes sobre a tua vida tenham espaço para respirar.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep115",
+        titulo: "O tempo que perdeste a comparar-te",
+        curso: "o-relogio-partido",
+        texto: `Houve momentos, na tua vida, em que perdeste tempo a comparar-te.
+
+Comparaste-te com amigas que pareciam ter tudo resolvido. Com colegas que pareciam mais à frente. Com irmãs que pareciam fazer tudo mais fácil. Com pessoas nas redes sociais que viviam uma vida que não era nada como a tua.
+
+Cada comparação durava minutos. Às vezes horas. Às vezes dias.
+
+E esses minutos, horas, dias — não eram neutros.
+
+Roubavam energia. Roubavam clareza. Roubavam a possibilidade de estares presente na tua própria vida.
+
+A isto chamamos tempo subtraído.
+
+Não é tempo gasto. É tempo tirado.
+
+E se somares — aproximadamente — quanto tempo ao longo da tua vida perdeste em comparação, o número é assustador. Semanas. Meses. Talvez anos.
+
+Isto não é para te culpar. Ninguém te ensinou a não te comparar. Aprendeste em famílias que comparavam filhos. Em escolas que ordenavam por mérito. Em redes sociais cujo modelo de negócio é a comparação.
+
+Mas agora que reconheces, cada vez que a comparação chega e tu a identificas antes de te perderes nela, estás a recuperar minutos.
+
+Minutos que, somados, começam a devolver-te tempo que pensavas perdido.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep116",
+        titulo: "A hora que só tu reconheces",
+        curso: "o-relogio-partido",
+        texto: `Há uma hora do dia que é especificamente tua.
+
+Talvez seja antes de todos acordarem. Talvez seja depois de todos se deitarem. Talvez seja aquela meia-hora a meio da tarde em que, inexplicavelmente, o mundo fica mais silencioso.
+
+Esta hora tem qualidade diferente. Uma espécie de espaço que nem sabias que podia existir.
+
+Tu reconheces esta hora no corpo.
+
+Nem sempre consegues usá-la. Às vezes há exigências. Às vezes há sono. Às vezes há a tentação de a preencher com telefone ou tarefas.
+
+Mas quando consegues, a hora faz-te diferente no resto do dia.
+
+A isto chamamos hora própria.
+
+Não é igual para todas as mulheres. Cada uma tem a sua.
+
+E quase nenhuma reconheceu ainda qual é a dela.
+
+Porque a maioria vive com um ritmo imposto de fora. O ritmo do trabalho. O ritmo da família. O ritmo dos filhos, se os tem.
+
+A hora própria é a que resiste apesar de todos os outros ritmos. Aquela que insiste em chegar, mesmo quando tu a ignoras.
+
+Descobrir qual é a tua — e dar-lhe nome — é dos actos mais simples e mais revolucionários que podes fazer.
+
+Porque a partir dela, a tua vida ganha um ponto de referência que não é dos outros.
+
+É teu.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
