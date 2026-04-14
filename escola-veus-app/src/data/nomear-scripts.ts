@@ -46,7 +46,15 @@ Estás a ouvir mulheres que já não podem decidir se isto ainda te serve.
 
 O que te pesa quando gastas em ti não é a conta bancária.
 
-É o peso de quem veio antes.`,
+É o peso de quem veio antes.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep02",
@@ -72,7 +80,15 @@ O extracto sabe coisas sobre ti que tu ainda não tiveste coragem de nomear.
 
 E tu, quando o fechas depressa, não estás a adiar um número.
 
-Estás a adiar uma conversa.`,
+Estás a adiar uma conversa.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep03",
@@ -100,7 +116,15 @@ Tu és a que "não gosta muito de jantares". A que "prefere ficar em casa". A qu
 
 E cada vez que dizes não assim, não poupas dinheiro.
 
-Perdes uma noite que era para ser tua.`,
+Perdes uma noite que era para ser tua.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep04",
@@ -130,7 +154,15 @@ O desconto que ninguém te pediu não é um gesto pequeno.
 
 E cada vez que baixas o preço antes da outra pessoa falar, não estás a ser gentil.
 
-Estás a ensinar o mundo onde te colocas.`,
+Estás a ensinar o mundo onde te colocas.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep05",
@@ -160,7 +192,15 @@ E não é uma prisão com grades. Basta não haver para onde ir.
 
 A liberdade não é um sentimento.
 
-É um número que precisas de conhecer.`,
+É um número que precisas de conhecer.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep06",
@@ -190,7 +230,15 @@ Faz-se devagar.
 
 Por gestos pequenos que começam por parecer desperdícios.
 
-Até se tornarem a única coisa que faz sentido.`,
+Até se tornarem a única coisa que faz sentido.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep07",
@@ -216,7 +264,15 @@ Chama-se o sim automático. O sim que já existia antes da pergunta. O sim que a
 
 O corpo sabe dizer não.
 
-Só não te ensinaram a ouvi-lo a tempo.`,
+Só não te ensinaram a ouvi-lo a tempo.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep08",
@@ -250,7 +306,15 @@ E a boa notícia — se a conseguires ouvir — é esta.
 
 O silêncio também se pousa.
 
-Mas só depois de lhe dares nome.`,
+Mas só depois de lhe dares nome.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep09",
@@ -290,7 +354,15 @@ Não és tu a pensar isso.
 
 Metade do que acreditas sobre dinheiro não é teu.
 
-Foi-te dado antes de saberes recusar.`,
+Foi-te dado antes de saberes recusar.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
       {
         id: "nomear-ep10",
@@ -320,7 +392,15 @@ Porque passas a saber exactamente onde estás, e exactamente o que te falta.
 
 E isso, mesmo que não mude a conta amanhã, muda o corpo hoje.
 
-A liberdade começa na hora em que decides saber.`,
+A liberdade começa na hora em que decides saber.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
       },
     ],
   },
