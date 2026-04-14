@@ -2317,13 +2317,17 @@ Chama-se a demonstração silenciosa de que não queres demais.
 
 Mas é uma performance diária de contenção. Um treino. Uma confirmação de que mereces um pouco menos do que o que te foi posto à frente.
 
-Experimenta um dia acabar o prato sem culpa.
+O prato vazio, quando finalmente acontece, é um gesto pequeno e político.
 
-Nota o que aparece no corpo.
+Uma confirmação silenciosa de que mereces o que foi posto à tua frente.
 
-Não é fome que ficou. É permissão que ainda não te deste.
+A maior parte das mulheres nunca chegará a saber o peso que carregam nestas pequenas contenções diárias.
 
-E o prato vazio, nesse dia, é um exercício político mais sério do que parece.
+Mas tu já sabes.
+
+E quando finalmente deixares de deixar o pedaço, não é sobre comida.
+
+É sobre a permissão que decidiste finalmente dar-te.
 
 [long pause]
 
@@ -2407,11 +2411,15 @@ Estás a ter dificuldade em receber.
 
 E receber, quando não se aprendeu, é tão desconfortável como qualquer outra coisa nova.
 
-Da próxima vez que algo bom chegar, experimenta ficar com ele alguns minutos.
+Há uma parte de ti que resiste ao bom.
 
-Sem comer. Sem resolver. Sem mover.
+Que quer levantar-se. Que quer fechar o instante depressa. Que precisa de o diluir em comida ou compra ou distracção.
 
-Deixa-te receber.
+Essa parte aprendeu a proteger-te do que não sabia receber.
+
+E agora pesa.
+
+Porque o bom vai continuar a chegar. E continuas a não saber ficar com ele.
 
 [long pause]
 
@@ -2581,11 +2589,19 @@ Durante o dia, tu és socialmente funcional. Responde ao que te perguntam, cumpr
 
 À noite, no sonho, eles ganham voz.
 
-Não precisas de acreditar em tudo o que sonhas.
+Não é que os sonhos tenham de ser obedecidos.
 
-Mas podes começar a anotá-lo. Deixar o sonho existir no dia que se segue. Dar-lhe o benefício da dúvida — pelo menos uma vez.
+É que, quando os descartas sempre, estás a desacreditar a parte de ti que sabia antes do dia começar.
 
-E vais ver que o sonho, muitas vezes, sabia antes da razão.
+E essa parte aprende.
+
+Aprende que a sua voz não conta.
+
+Vai-se calando.
+
+Até uma noite em que nem os sonhos regista.
+
+O corpo, sem aviso, retira-se para onde já não chegas.
 
 [long pause]
 
@@ -2623,11 +2639,17 @@ Aprendeste a concluir isto em vez da coisa mais verdadeira: não disseste porque
 
 Custo social é informação, também. Mas não pode ser o único critério.
 
-Começa por dizer uma frase — uma frase pequena — em que normalmente te calavas.
+E o preço de não dizeres não é do grupo. É teu.
 
-Nota o que acontece no grupo.
+Ficas sentada à mesa, a participar do lado de fora da tua própria presença.
 
-E nota, sobretudo, o que acontece em ti.
+À noite, em casa, repões mentalmente a conversa. Dizes agora o que não disseste antes.
+
+Ninguém te ouve.
+
+O grupo sem a tua voz continuou sem notar a ausência.
+
+Só tu ficas com o peso de ter sido quase.
 
 [long pause]
 
@@ -2655,19 +2677,19 @@ Chama-se escrita como saber.
 
 A mão sabe coisas antes da cabeça. Porque a mão está ligada ao corpo. E o corpo guarda muita coisa que a mente, organizada como é, tem vergonha de admitir.
 
-E este acesso — através da mão, ao saber do corpo — é das formas mais simples e subutilizadas de te conheceres.
+E este acesso — através da mão, ao saber do corpo — é das formas mais antigas de uma mulher se ouvir a si.
 
-Não precisas de saber escrever bem. Não precisas de frases bonitas. Não precisas de relê o que escreveste.
+As mulheres sempre tiveram diários escondidos. Não por terem menos a dizer em voz alta.
 
-Precisas de escrever sem parar durante alguns minutos.
+Por saberem que o que vinha quando a mão se movia sozinha era mais verdadeiro do que o que a boca se atrevia a formular.
 
-E no fim, lês. E vais encontrar coisas que, se alguém tivesses perguntado em voz alta, nunca terias respondido.
-
-Porque a cabeça, em voz alta, tem filtros.
+A cabeça, em voz alta, tem filtros.
 
 A mão, no silêncio da página, tem menos.
 
-É uma porta.
+É uma porta antiga.
+
+E continua aberta para quem chega com pressa de se ouvir.
 
 [long pause]
 
