@@ -2953,17 +2953,17 @@ Porque o corpo, quando relaxa, já está no chão. Já pertence ao mundo. Já é
 
 É a tensão — não a gravidade — que te faz sentir que podes cair.
 
-Experimenta, num momento qualquer do dia, parar.
-
-Sentes o peso do teu corpo. Sente o chão debaixo dos pés, se estás de pé. Sente o assento debaixo de ti, se estás sentada. Sente a cama, se estás deitada.
-
-Deixa-te pousar.
-
 Não és tu que te seguras.
 
-É a terra que te segura.
+É a terra que sempre te segurou.
 
-E ela nunca falhou.
+Os teus pés não caem. A cadeira onde te sentas não cede. A cama onde te deitas aguenta.
+
+Mas a tensão com que te habituaste a viver — essa, sim, é tua.
+
+E é ela que te faz parecer que podes cair.
+
+A terra nunca falhou.
 
 Tu é que te esqueceste de lhe entregar o peso.
 
@@ -3215,19 +3215,19 @@ Tem nome o que te falta.
 
 Chama-se comunidade escolhida entre iguais.
 
-E ninguém a entrega. Tens de a construir.
+E ninguém a entrega.
 
-Não é dramático. Não é um projecto gigante. É uma conversa de cada vez.
+Não aparece como apareceram as amigas da escola ou do bairro. Essa era outra fase.
 
-Com aquela mulher que ouviste falar e sentiste que sabia coisas. Com aquela colega que sempre te intrigou. Com aquela amiga da amiga de quem gostas mas nunca pediste o número.
+Nesta, as mulheres que te podem acompanhar não se cruzam contigo por sorte.
 
-Estende a mão. Convida para um café. Faz uma pergunta a mais do que o habitual.
+Estão perto. Algumas já as conheces e ainda não reconheceste. Outras vais encontrar em salas onde ainda não entraste.
 
-E nota quem responde com igual profundidade.
+E a primeira desta irmandade, muitas vezes, é uma mulher antiga — a quem nunca tinhas feito a pergunta maior.
 
-Essas são as tuas futuras irmãs.
+As futuras irmãs não te foram dadas.
 
-Não te apareceram. Começaram a ser construídas.
+Vão ser reconhecidas por ti, uma de cada vez, ao longo dos próximos anos.
 
 [long pause]
 
@@ -3306,13 +3306,15 @@ Chama-se voz da autoridade serena.
 
 E as mulheres têm dificuldade particular em encontrá-la. Porque oscilam entre a voz suave que acomoda e a voz dura que se defende — sem o registo intermédio que muitos homens têm como norma.
 
-Esta voz aprende-se.
+Esta voz não é característica. É prática.
 
-Começa por falar mais devagar. Por baixar o tom, sem o forçar. Por não preencher silêncios. Por dizer frases completas em vez de meias-frases.
+As mulheres que hoje a têm foram mulheres que, num ponto da vida, decidiram não gritar mais e não sussurrar mais.
 
-E nota: quando falas com esta voz, algo muda nas outras pessoas.
+Entre os dois registos, havia uma voz intermédia que elas tiveram de inventar.
 
-Elas ouvem-te diferente. Esperam até que acabes. Respondem com mais cuidado.
+Muitas vezes inventaram sozinhas. Porque não havia modelo.
+
+E quando a voz começa a sair assim, o mundo ouve diferente. Espera o fim da frase. Responde com mais cuidado.
 
 Não é a voz que muda tudo.
 
@@ -3358,17 +3360,19 @@ Quando uma mulher está centrada em si, ela não precisa de grito. A sua voz, me
 
 E esta centralidade não é privilégio de umas poucas.
 
-É uma prática.
+É reconhecimento da posse do próprio lugar.
 
-Começa por sentires o teu corpo na cadeira. Por notares a tua respiração antes de falares. Por confiares que a frase que vais dizer não precisa de adornos para ser ouvida.
+A maioria das mulheres passa a vida a pedir autorização silenciosa para existir em cada sala que entra.
+
+Entra com a agenda dos outros. Senta-se onde convém. Fala quando há espaço.
+
+A centralidade, que já existia dentro, fica adiada por décadas.
 
 A coroa não é brilho.
 
 É postura.
 
-Com o tempo, os outros começam a ver-te sem teres de te anunciar.
-
-Porque finalmente, tu mesma, sabes estar.
+E os outros começam a ver-te sem teres de te anunciar quando, finalmente, tu mesma, sabes estar.
 
 [long pause]
 
