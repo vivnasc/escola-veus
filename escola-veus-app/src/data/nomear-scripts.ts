@@ -1718,4 +1718,173 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-6",
+    titulo: "Série Nomear — Ampliação Limite Sagrado (Ep 44-47)",
+    descricao: "Mais 4 scripts de Limite Sagrado para equilibrar cobertura.",
+    scripts: [
+      {
+        id: "nomear-ep44",
+        titulo: "A raiva que nunca deixaste sair",
+        curso: "limite-sagrado",
+        texto: `Há uma raiva em ti que nunca deixaste sair.
+
+Não é a pequena irritação do dia-a-dia. É mais antiga. Mais profunda.
+
+É a raiva do que sentiste que não foi justo. Daquilo que te fizeram e ninguém pediu desculpa. Daquilo que engoliste para manter a paz.
+
+Aprendeste cedo que mulheres com raiva eram ingratas. Difíceis. Amargas. Histéricas.
+
+Então calaste-a.
+
+E a raiva calada não desaparece. Transforma-se.
+
+Torna-se cansaço. Torna-se tristeza difusa. Torna-se dor no corpo que os médicos não explicam.
+
+Tem nome o que fizeste.
+
+Chama-se internalização.
+
+E a raiva não é suja. É informação. Diz-te onde foste atravessada. Onde o teu limite foi ignorado. Onde alguém passou por cima de ti.
+
+Não tens de gritar. Não tens de fazer cena.
+
+Mas podes finalmente reconhecer-lhe o nome dentro de ti.
+
+Ela estava certa.
+
+Sempre esteve.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep45",
+        titulo: "O obrigada que dizes quando devias dizer não",
+        curso: "limite-sagrado",
+        texto: `Alguém faz-te um pedido.
+
+O corpo fecha-se. A respiração fica curta.
+
+E tu dizes: obrigada, claro, com todo o gosto.
+
+Obrigada por quê, se ninguém te perguntou se podias?
+
+Mas aprendeste que ser amável era dizer sim com gratidão. Que recusar era rude. Que hesitar era dar mau exemplo.
+
+Então aprendeste a agradecer por aquilo que te custa.
+
+Tem nome o que fazes.
+
+Chama-se cortesia sacrificada.
+
+E cada obrigada que dás quando devias dizer não é uma traição pequena a ti. Uma traição acumulada ao longo dos anos constrói uma mulher exausta, ressentida, e — pior — incapaz de receber quando finalmente alguém oferece algo genuíno.
+
+Porque passaste tanto tempo a agradecer o que não querias, que já não sabes distinguir o que queres.
+
+Começa pelo pequeno. Não precisa de ser uma recusa dramática.
+
+Podes dizer: deixa-me pensar. Ou: hoje não consigo. Ou: prefiro não.
+
+E sobretudo, podes parar de dizer obrigada por coisas que te pesam.
+
+Poupa o obrigada para o que é mesmo recebido com alegria.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep46",
+        titulo: "Os limites que só defines depois de já terem sido atravessados",
+        curso: "limite-sagrado",
+        texto: `Há limites que só definiste depois de já terem sido atravessados muitas vezes.
+
+Não sabias onde estavam. Ninguém te ensinou. E então aprendeste pelos atropelamentos.
+
+Aquela amiga que te pedia sempre favores e nunca retribuía — só percebeste que havia um limite no dia em que disseste, exausta, não posso mais.
+
+Aquele chefe que te fazia trabalhar fins-de-semana — só definiste um limite depois de um burnout que te deitou duas semanas.
+
+Aquela relação em que ias cedendo — só definiste um limite quando já te sentias uma estranha dentro de ti.
+
+Tem nome o que aprendeste.
+
+Chama-se limite por exaustão.
+
+E é válido. Mas é caro. Muito caro.
+
+A próxima vez, podes tentar o limite antes. Antes de doer tanto. Antes de te perderes.
+
+Não tens de esperar o colapso para saberes onde está o teu limite.
+
+Ele está onde já está agora. Pequeno sinal. Aperto no peito antes de dizeres sim. Vontade de cancelar depois de combinar. Cansaço que chega mais depressa do que faz sentido.
+
+Esses sinais são o teu limite a falar devagar.
+
+Antes de precisar de gritar.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep47",
+        titulo: "A diferença entre ser boa e ser leal a ti",
+        curso: "limite-sagrado",
+        texto: `Tu aprendeste que ser boa era pensar primeiro nos outros.
+
+Ceder o lugar. Ouvir sem te impores. Dar sem calcular. Acomodar. Adaptar. Sorrir.
+
+E durante muito tempo pensaste que ser leal a ti e ser boa eram opostos.
+
+Ou és boa para os outros, ou és boa para ti. Não os dois.
+
+Mas isso nunca foi verdade.
+
+Tem nome a confusão.
+
+Chama-se falsa escolha entre bondade e fidelidade a si própria.
+
+Porque uma mulher que se abandona para ser boa para os outros não é, na verdade, boa. É esgotada. E o que parece bondade é, na maioria das vezes, medo disfarçado de virtude.
+
+A verdadeira bondade não te custa a ti.
+
+Se te custa, não é bondade. É sacrifício. E são coisas diferentes.
+
+Podes escolher sacrifícios conscientes, quando faz sentido para ti.
+
+Mas não podes confundir o sacrifício permanente com a tua natureza.
+
+A tua natureza não é sacrifício. É presença. Inteireza. Voz.
+
+E a mulher inteira é, afinal, mais generosa com os outros do que a mulher que se apaga para os acomodar.
+
+Ser boa e ser leal a ti são, no fim, a mesma coisa.
+
+Só precisas de aprender a não as separar mais.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
