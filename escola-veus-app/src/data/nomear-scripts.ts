@@ -3366,4 +3366,243 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-18",
+    titulo: "Série Nomear — O Fio Invisível (Ep 81-86)",
+    descricao: "O Fio Invisível (Heranças) — conexões invisíveis entre mulheres, transmissão silenciosa entre gerações.",
+    scripts: [
+      {
+        id: "nomear-ep81",
+        titulo: "O fio que liga a tua avó ao teu cansaço",
+        curso: "o-fio-invisivel",
+        texto: `Há um cansaço em ti que não começou em ti.
+
+Dormes bem. Comes bem. Fazes o que consegues pelo corpo.
+
+E mesmo assim — às vezes, sem aviso — vem um cansaço que não faz sentido para a tua vida.
+
+Talvez já tenhas sentido em velórios. Em conversas longas com a tua mãe. Numa tarde qualquer em que te sentas e de repente pesa-te tudo.
+
+Este cansaço não é teu sozinho.
+
+É o cansaço de mulheres antes de ti que não tiveram tempo de o pousar.
+
+A tua avó, que acordava às cinco para toda a gente. A sua mãe, que enterrou três filhos sem parar de cozinhar para os outros. Quatro gerações atrás, uma mulher cujo nome já ninguém sabe — que carregou o que nenhum corpo devia carregar sozinho.
+
+A isto chamamos herança somática.
+
+O cansaço delas ficou no fio. E o fio chegou a ti.
+
+Não podes apagá-lo.
+
+Mas podes, em ti, fazer aquilo que elas não puderam.
+
+Pousar.
+
+Por elas. Por ti. Pelas que ainda vêm.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep82",
+        titulo: "As heranças que chegam sem carta",
+        curso: "o-fio-invisivel",
+        texto: `Herdaste coisas que ninguém mencionou em testamento.
+
+Uma certa tendência a suspirar antes de começar uma frase difícil. Uma forma específica de preocupar-te. Uma maneira de olhar que é igual à da tua tia — a que não conheces bem, mas que, quando te mostraram a fotografia, reconheceste no imediato.
+
+Estas heranças não têm escritura. Não pagaste imposto sobre elas. Ninguém te entregou uma lista do que te cabia.
+
+Mas estão em ti.
+
+Alguns gestos são dons. Outros são fardos. E outros, ainda, são as duas coisas ao mesmo tempo.
+
+A isto chamamos transmissão silenciosa.
+
+Recebeste tudo sem teres sido perguntada.
+
+E podes passar a vida inteira a agir segundo heranças que nunca escolheste receber.
+
+Ou, em algum ponto, pôr-te a olhar para cada gesto e perguntar: isto é meu, ou é antigo?
+
+A revisão da herança é o trabalho silencioso das mulheres que finalmente se sentam a sós com a própria vida.
+
+E perguntam: de tudo isto que carrego, quanto é mesmo meu?
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep83",
+        titulo: "Os gestos que fazes como ela sem saber",
+        curso: "o-fio-invisivel",
+        texto: `Há um gesto teu que não te lembras de teres aprendido.
+
+A forma como pões a mão na anca quando estás a ouvir alguém. A maneira como mexes o cabelo quando estás nervosa. O som que fazes antes de dares uma opinião dura.
+
+Alguém — uma tia, talvez — um dia disse-te: és tal e qual a tua avó.
+
+E tu riste. Disseste que não fazias ideia.
+
+Mas fazias.
+
+O teu corpo sabia. Tinha observado durante anos, sem nunca registar que estava a observar. E replicava.
+
+A isto chamamos memória somática transgeracional.
+
+Os gestos atravessam gerações com mais persistência do que os conselhos. Podes não lembrar-te do que a tua avó te dizia — mas o teu corpo sabe exactamente como ela pousava uma chávena.
+
+E tu, sem saber, continuas-lhe o corpo.
+
+Não te tira a identidade. Tu és nova. És tu. És a versão que ela não conseguiu ser.
+
+Mas és também uma cadeia. Uma forma de ela continuar a mover-se no mundo.
+
+E isso, se olhares bem, é bonito.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep84",
+        titulo: "O que a tua mãe não te disse mas tu já sabias",
+        curso: "o-fio-invisivel",
+        texto: `Há coisas que a tua mãe nunca te disse.
+
+Mas tu já sabias.
+
+Sabias, sem saber como, que ela não tinha sido completamente feliz no casamento. Sabias que aquele emprego dela a tinha esgotado mais do que ela deixava transparecer. Sabias que havia uma amiga em quem ela confiava mais do que em qualquer pessoa da família.
+
+Sabias tudo isto sem que ela te tivesse contado.
+
+Porque as crianças — especialmente as filhas — sabem.
+
+As filhas lêem as mães antes de saberem ler livros. Aprendem a decifrar o que não é dito. Captam o suspiro antes da frase. Reconhecem a cara antes do gesto.
+
+E crescem com um arquivo de informação sobre a mãe que a própria mãe nunca partilhou.
+
+Esse arquivo é incómodo. Porque tu sabias. Mas não podias dizer que sabias.
+
+A isto chamamos conhecimento não autorizado.
+
+É um arquivo que nenhuma amiga pode validar. Ninguém além de ti conhece a tua mãe como tu a conheceste — em silêncio, por leitura de corpo.
+
+É uma solidão filial específica.
+
+E a única forma de a aliviar é reconhecê-la.
+
+Sim. Eu sabia.
+
+Sabia antes de me ser dito.
+
+E isso não é culpa minha. É filial.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep85",
+        titulo: "As filhas que recebem o que as mães não puderam deixar",
+        curso: "o-fio-invisivel",
+        texto: `Há mulheres, às vezes, que terminam o que as mães começaram.
+
+A mãe quis estudar e não pôde. A filha estuda tudo o que a mãe não pôde estudar.
+
+A mãe quis viajar e ficou. A filha atravessa fronteiras como se lhe devessem.
+
+A mãe quis ter voz e não lhe foi dada. A filha expõe-se. Fala em palcos. Escreve livros.
+
+Estas filhas carregam um mandato que nunca foi explicitamente entregue.
+
+A isto chamamos continuação silenciosa.
+
+E o mandato tem custos.
+
+Porque a filha que termina o que a mãe começou nem sempre sabe o que é dela e o que é da missão herdada. Nem sempre sabe se quer fazer isto ou se está só a pagar uma dívida emocional antiga.
+
+Muitas mulheres chegam aos quarenta e percebem: fiz tanto, tão bem — e pouco disto era verdadeiramente meu.
+
+Isto é doloroso. Mas não é o fim.
+
+É o início de outra coisa.
+
+Porque depois desta percepção, passa a ser possível escolher pela primeira vez. Com conhecimento de causa. Com a história desmontada.
+
+Tens o direito de continuar — ou de parar.
+
+Honras a tua mãe em qualquer das duas escolhas.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep86",
+        titulo: "O silêncio que atravessa gerações",
+        curso: "o-fio-invisivel",
+        texto: `Há silêncios que atravessam três, quatro, cinco gerações.
+
+Um avô que nunca falou da guerra. Uma avó que nunca falou de um filho perdido. Uma tia-avó que nunca falou da violência de alguém próximo.
+
+Esses silêncios não morrem com quem os guarda.
+
+Atravessam.
+
+Passam para os filhos como peso. Para os netos como inquietação. Para as bisnetas como tema sem rosto.
+
+Tu, talvez, sintas inquietação com certos assuntos sem saber porquê. Uma resistência a certos sítios. Um medo herdado de coisas que nunca te aconteceram.
+
+A isto chamamos silêncio geracional.
+
+É um fantasma sem nome que habita a família.
+
+E há uma geração — normalmente, uma mulher — que se torna a que fala.
+
+Talvez sejas tu.
+
+Talvez sejas a que finalmente faz as perguntas que ninguém fez. Que junta as peças que ninguém juntou. Que dá nome ao que andava sem nome há décadas.
+
+É um trabalho solitário. E muitas vezes incompreendido.
+
+Mas é o trabalho que liberta.
+
+Não só a ti.
+
+A todas as que vêm depois.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
