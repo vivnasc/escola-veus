@@ -982,4 +982,377 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-4",
+    titulo: "Série Nomear — Ep 26-34 (Voz de Dentro + Mulher Antes de Mãe + Peso e Chão)",
+    descricao: "Voz de Dentro (intuição) + A Mulher Antes de Mãe (maternidade) + O Peso e o Chão (cansaço, peso).",
+    scripts: [
+      {
+        id: "nomear-ep26",
+        titulo: "A voz que sabia primeiro",
+        curso: "voz-de-dentro",
+        texto: `Houve sempre uma voz que sabia primeiro.
+
+Antes da prova. Antes da confirmação. Antes de teres argumentos para o que estavas a sentir.
+
+Sabia que aquela amizade não era segura, apesar dos sinais todos dizerem o contrário.
+
+Sabia que aquele trabalho não era para ti, mesmo quando todos diziam que era a oportunidade da tua vida.
+
+Sabia que aquela relação já tinha acabado, meses antes de ter acabado oficialmente.
+
+E tu, quase sempre, calavas a voz.
+
+Esperavas pela prova. Achavas que estavas a exagerar. Disseste a ti mesma "não posso decidir assim, sem razão".
+
+Tem nome o que calaste.
+
+Chama-se intuição.
+
+E foi-te ensinado a desconfiar dela. A esperar por argumento racional. A pedir opinião. A procurar consenso.
+
+Mas a voz que sabia primeiro continua lá.
+
+Desde o início, não se enganou uma única vez.
+
+Só não tiveste coragem, nem permissão, nem prática — de a ouvir a tempo.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep27",
+        titulo: "O sim que dizes quando o corpo diz não",
+        curso: "voz-de-dentro",
+        texto: `Há momentos em que dizes sim com a boca e não com o corpo.
+
+O aperto no peito. A respiração que fica curta. A barriga que se fecha. As costas que ficam tensas.
+
+O corpo grita não.
+
+E tu sorris, e dizes claro, e combinas a data.
+
+Aprendeste a interpretar o não do corpo como timidez. Como insegurança. Como dificuldade em ser agradável.
+
+Então passas por cima. Achas que estás a crescer. Achas que é assim que se supera o medo.
+
+Mas nem sempre era medo.
+
+Às vezes era sabedoria.
+
+Tem nome o que atropelas.
+
+Chama-se informação do corpo.
+
+E quando atropelas sistematicamente, o corpo vai deixando de avisar. Torna-se mais quieto. Menos preciso. Mais cansado.
+
+Até um dia em que olhas para a tua vida e não entendes como chegaste aqui.
+
+Chegaste porque disseste muitos sins quando o corpo estava a dizer não.
+
+E agora é bonito começar a ouvir mesmo a primeira resposta que o corpo dá.
+
+Antes de tu a traduzires para o que é aceitável.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep28",
+        titulo: "A certeza que chega sem razão",
+        curso: "voz-de-dentro",
+        texto: `Há certezas que chegam antes das razões.
+
+Não são opiniões. Não são palpites.
+
+São uma espécie de saber anterior à explicação. Uma clareza que nasce sem que consigas dizer de onde vem.
+
+E como não a consegues justificar, desconfias dela.
+
+Procuras argumentos. Pedes opinião. Adias a decisão enquanto tentas montar um caso racional para uma coisa que, no fundo, já está decidida em ti.
+
+Às vezes a razão chega. E confirma.
+
+Às vezes a razão nunca chega. E tu percebes, anos depois, que o saber original estava certo.
+
+Tem nome esta certeza.
+
+Chama-se saber do corpo.
+
+Um conhecimento antigo, anterior à linguagem, que o teu sistema nervoso soube primeiro. Porque leu tudo ao mesmo tempo — o tom de voz, a pausa antes da palavra, a postura da pessoa, a pequena inconsistência que a mente não captou.
+
+Não é magia.
+
+É inteligência mais rápida do que a razão.
+
+E tu podes, a pouco e pouco, aprender a confiar nela outra vez.
+
+Sem pedir autorização a ninguém.
+
+Nem a ti própria.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep29",
+        titulo: "A mulher que existia antes de seres mãe",
+        curso: "a-mulher-antes-de-mae",
+        texto: `Houve uma mulher, antes de seres mãe.
+
+Tinha gostos. Tinha roupa que escolhia para ela. Tinha vontade de ir a sítios. Tinha projectos que não eram sobre ninguém.
+
+Nem sempre te lembras dela.
+
+Porque desde que te tornaste mãe, a tua identidade foi sendo escrita por cima da anterior. Como um palimpsesto. Vê-se vagamente o que estava lá. Mas o que se lê agora é outra coisa.
+
+Ser mãe tornou-se uma categoria total.
+
+Não a tua profissão. Não uma das tuas dimensões. Uma identidade que, se a retirasses, parecia sobrar pouco.
+
+Tem nome o que se apagou.
+
+Chama-se mulher anterior.
+
+E ela não desapareceu. Só se calou porque havia coisas mais urgentes do que ela.
+
+Mas em noites calmas, em silêncios inesperados, quando os miúdos dormem e tu tens uma hora só para ti — ela ainda está ali. A pedir para ser lembrada.
+
+Não é contra os teus filhos. É a favor da mulher que eles precisam de encontrar quando forem adultos.
+
+Uma que ainda saiba quem é.
+
+Sem pedir desculpa por isso.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep30",
+        titulo: "O nome que perdeste quando te chamaram mãe",
+        curso: "a-mulher-antes-de-mae",
+        texto: `A partir de um certo dia, passaram a chamar-te mãe.
+
+Nas consultas. Na escola. Nos grupos de whatsapp. Às vezes até em casa.
+
+"A mãe da Maria." "A mãe do João." "Mãe, podes vir?"
+
+O teu nome foi-se apagando devagar. Sem ninguém o fazer de propósito.
+
+Mas tu foste perdendo o hábito de o ouvir.
+
+E às vezes, numa reunião, quando alguém te pergunta "como é que tu estás?" — ficas sem resposta. Porque o "tu" em ti está sem prática.
+
+Tem nome o que se perdeu.
+
+Chama-se identidade própria, submergida pelo papel.
+
+E não há nada errado em seres mãe. Não há nada errado em amares os teus filhos intensamente.
+
+Mas há algo triste quando a mulher que te habita só é chamada pelo nome dos outros.
+
+Recupera o teu nome. Em silêncio, primeiro. Em voz alta, depois.
+
+Mesmo que seja só uma ou duas vezes por dia.
+
+Tu continuas a ser tu.
+
+Mesmo quando és mãe.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep31",
+        titulo: "As coisas que deixaste de querer porque te convenceste que não era hora",
+        curso: "a-mulher-antes-de-mae",
+        texto: `Houve coisas que querias.
+
+Um curso. Uma viagem. Um projecto. Uma mudança profissional. Um momento só para ti.
+
+E tu foste adiando.
+
+Quando eles forem mais crescidos. Quando a casa estiver mais calma. Quando tiver mais dinheiro. Quando não fizer falta a ninguém.
+
+Aprendeste a versão nobre do adiamento.
+
+Chama-se-lhe sacrifício. Chama-se-lhe dedicação. Chama-se-lhe ser boa mãe.
+
+Mas a verdade, que ninguém diz em voz alta, é esta: os filhos nunca param de precisar. A casa nunca fica calma. O dinheiro nunca é suficiente.
+
+Se esperares pelo momento certo, o momento certo não chega.
+
+E as coisas que querias deixam, a pouco e pouco, de ser desejadas. Não porque desaparecessem.
+
+Porque tu aprendeste a calá-las.
+
+Tem nome o que calaste.
+
+Chama-se renúncia disfarçada de hora errada.
+
+E tu podes querer outra vez. Pequenas coisas primeiro. Uma hora na semana. Uma tarde no mês.
+
+Não para abandonar quem amas.
+
+Para te reencontrares antes de ser tarde.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep32",
+        titulo: "O cansaço que não passa com descanso",
+        curso: "o-peso-e-o-chao",
+        texto: `Há um cansaço que não passa com descanso.
+
+Dormes oito horas. Acordas cansada.
+
+Tens um fim-de-semana inteiro. E quando chega segunda, sentes-te vazia.
+
+Vais de férias. E voltas exausta.
+
+Este cansaço não é físico. É mais profundo.
+
+Tem nome.
+
+Chama-se esgotamento de quem carrega o que não é só seu.
+
+O peso emocional das pessoas à tua volta. As decisões que tens de tomar em silêncio. A vigilância constante por todos os detalhes que ninguém mais nota.
+
+As mulheres, sobretudo as que cuidam, aprendem cedo a fazer isto. E a nunca pousar.
+
+O teu corpo pede descanso.
+
+O teu sistema nervoso pede outra coisa.
+
+Pede um lugar onde possas finalmente não pensar em ninguém. Onde ninguém precise de ti. Onde não tens de ser útil, nem competente, nem responsável.
+
+Esse lugar não é férias.
+
+É um direito.
+
+E enquanto não o tiveres, o cansaço vai parecer um defeito teu.
+
+Não é.
+
+É uma consequência de teres feito tempo inteiro o trabalho que é suposto dividir-se.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep33",
+        titulo: "O peso que chamas aguentar",
+        curso: "o-peso-e-o-chao",
+        texto: `Aprendeste a chamar aguentar ao que não tem nome.
+
+Aguentas o emprego que te desgasta. Aguentas a relação que já não é relação. Aguentas a conversa difícil em família. Aguentas o silêncio em que te sentes sozinha.
+
+Aguentar tornou-se a tua linguagem.
+
+E como aguentar é uma virtude que aprendeste a honrar — vieste de mulheres que aguentaram muito — tu continuas. Sem perguntar até quando.
+
+Tem nome o que cresce por baixo.
+
+Chama-se peso acumulado.
+
+E este peso não se vê num exame. Não se mede num check-up. Não tem diagnóstico.
+
+Mas vê-se nos teus ombros. Nas tuas noites sem dormir. Na forma como, ao fim do dia, pareces mais velha do que estavas de manhã.
+
+Aguentar não é nobre quando é crónico.
+
+É só uma forma lenta de te perderes.
+
+Há alturas em que a coisa mais corajosa não é aguentar mais um pouco.
+
+É dizer, em voz alta ou em silêncio, mas dizer: isto já pesa demais. E eu não tenho de levar isto sozinha.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep34",
+        titulo: "O corpo que pede para parar",
+        curso: "o-peso-e-o-chao",
+        texto: `O teu corpo tem pedido para parar há algum tempo.
+
+Tu já reparaste. A dor nas costas que não desaparece. A tensão na mandíbula que acordas a sentir. A respiração que só consegues aprofundar quando te lembras — e logo volta ao curto.
+
+O corpo pede de várias formas. Primeiro sussurra. Depois fala. Depois grita. Depois força-te a parar.
+
+Se não o ouves, ele escolhe por ti.
+
+Uma gripe que te deita três dias. Uma dor que te impede de trabalhar. Um sintoma que exige atenção médica.
+
+Tem nome o que o corpo faz.
+
+Chama-se protecção forçada.
+
+Porque quando tu não escolhes parar, ele escolhe por ti.
+
+Não é castigo. É sabedoria.
+
+Mas é brutal. E evitável.
+
+O corpo não pede descanso porque és fraca. Pede porque estás a pedir-lhe demais.
+
+E cada vez que o ignoras por mais um dia, estás a confirmar-lhe que ele só será ouvido quando partir.
+
+Podes mudar isto.
+
+Começar a parar antes de seres parada.
+
+Começar a escolher antes de deixares de poder escolher.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
