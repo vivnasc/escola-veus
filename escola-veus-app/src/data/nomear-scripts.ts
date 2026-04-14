@@ -2288,4 +2288,139 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-10",
+    titulo: "Série Nomear — Ampliação A Fome (Ep 57-59)",
+    descricao: "Mais 3 scripts de A Fome.",
+    scripts: [
+      {
+        id: "nomear-ep57",
+        titulo: "O pedaço que deixas sempre no prato",
+        curso: "a-fome",
+        texto: `Há um gesto que repetes sem pensar.
+
+Deixas sempre um pedaço no prato. Um bocado de comida. Uma dentada. Uma coisa pequena que ninguém notaria.
+
+Aprendeste este gesto muito cedo.
+
+Aprendeste que uma mulher educada não come tudo. Que deixar um pouco é sinal de delicadeza. Que terminar o prato inteiro é avidez.
+
+E aprendeste isto a par com outra coisa: a mulher deve querer pouco.
+
+Querer pouco de comida. Querer pouco espaço. Querer pouco do tempo dos outros. Querer pouco da atenção.
+
+Tem nome o que deixas no prato.
+
+Chama-se a demonstração silenciosa de que não queres demais.
+
+É um gesto tão pequeno que parece irrelevante.
+
+Mas é uma performance diária de contenção. Um treino. Uma confirmação de que mereces um pouco menos do que o que te foi posto à frente.
+
+Experimenta um dia acabar o prato sem culpa.
+
+Nota o que aparece no corpo.
+
+Não é fome que ficou. É permissão que ainda não te deste.
+
+E o prato vazio, nesse dia, é um exercício político mais sério do que parece.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep58",
+        titulo: "A comida que comes escondida",
+        curso: "a-fome",
+        texto: `Há uma comida que tu comes escondida.
+
+À noite, quando ninguém te vê. No carro, entre casa e trabalho. De pé na cozinha, antes de te sentares à mesa com a família e fingires que é agora que começas a comer.
+
+Não é vergonha do que comes. É vergonha de seres vista a comer.
+
+Porque aprendeste que o teu apetite devia ser controlado — pelo menos em público.
+
+E como não consegues controlar sempre, comes escondida.
+
+Tem nome.
+
+Chama-se comer secreto.
+
+Ele tem sabores particulares. É mais rápido. É mais culposo. É, muitas vezes, mais satisfatório — porque ali, naquele momento, ninguém te avalia.
+
+Mas tem um custo.
+
+Cada vez que comes escondida, confirmas a ti mesma: a minha fome é suja. O meu desejo por comida é demasiado.
+
+E vais vivendo partida entre duas: a que come em público, contida e apropriada. E a que come em privado, escondida e envergonhada.
+
+Nenhuma das duas é, plenamente, tu.
+
+O dia em que comeres em paz à frente dos outros — e em paz contigo em privado — é o dia em que o teu apetite volta a ser só apetite.
+
+Nada mais.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep59",
+        titulo: "A fome que chega depois de uma boa notícia",
+        curso: "a-fome",
+        texto: `Esperas há muito por esta notícia.
+
+A promoção. A aprovação. O convite. O sim.
+
+Ela chega. Tu sentes uma onda de alegria — e em seguida, uma fome.
+
+Não é fome de comemorar. É uma fome estranha, quase ansiosa.
+
+Queres comer. Queres comprar algo. Queres distrair-te com qualquer coisa.
+
+Isto não te parece lógico. Afinal, era suposto estares feliz.
+
+Tem nome o que sentes.
+
+Chama-se desconforto com o bom que chega.
+
+Aprendeste cedo que se tinhas demasiada alegria em público, alguém poderia invejar-te. Que as coisas boas deviam ser contidas. Que celebrar demais era convocar o mau olhado.
+
+Então quando as coisas boas chegam, tens de as diluir. De as gerir. De as tornar mais pequenas do que são.
+
+E a fome — o comer depressa, o comprar, a distracção — faz exactamente isso.
+
+Dilui a alegria num gesto mais controlável.
+
+Não estás a ter um vício.
+
+Estás a ter dificuldade em receber.
+
+E receber, quando não se aprendeu, é tão desconfortável como qualquer outra coisa nova.
+
+Da próxima vez que algo bom chegar, experimenta ficar com ele alguns minutos.
+
+Sem comer. Sem resolver. Sem mover.
+
+Deixa-te receber.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
