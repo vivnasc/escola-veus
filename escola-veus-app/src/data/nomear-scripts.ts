@@ -4172,7 +4172,7 @@ Isto é outra coisa. É lucidez sem amargura — quando consegues chegar lá.
 
 A lucidez não presume o pior. Mas também não presume o melhor sem prova.
 
-Observa. Escuta. Confia quando há razão para confiar. Desconfia quando há razão para desconfiar.
+É observação sem veredicto antecipado. Escuta sem agenda. Confiança quando há razão. Desconfiança quando há razão.
 
 A ingenuidade, por mais bonita que parecesse, era uma forma de não teres de ler o mundo.
 
@@ -4879,11 +4879,11 @@ Descobrir o teu ofício de ser é um trabalho de uma vida.
 
 Mas se fores olhando, vai-se revelando. Peça por peça.
 
-Começa pelas coisas que, quando as fazes, as pessoas dizem: só tu poderias ter feito isto assim.
+As primeiras pistas costumam estar nas coisas que, quando as fazes, as pessoas dizem: só tu poderias ter feito isto assim.
 
-Essas são pistas.
+Essas frases, quando chegam, não são elogio.
 
-E acumulam-se.
+São mapa.
 
 [long pause]
 
@@ -4923,9 +4923,9 @@ Se te custa imenso, talvez seja trabalho — mas não é necessariamente o teu t
 
 Se te sai com fluidez, talvez seja precisamente aquilo que foste trazida para fazer.
 
-Olha para o que parece fácil demais para ter valor.
+Muitas vezes, o que parece fácil demais para ter valor é exactamente onde está a pista sobre o que é realmente teu.
 
-É provável que esteja lá uma pista sobre o que é realmente teu.
+E passa despercebido, para ti, toda a vida.
 
 [long pause]
 
@@ -4979,9 +4979,9 @@ Escola dos Véus. seteveus.space.`,
         id: "nomear-ep120",
         titulo: "O que te sai sem esforço",
         curso: "o-oficio-de-ser",
-        texto: `Observa, nos próximos dias, o que te sai sem esforço.
+        texto: `Há coisas que te saem sem esforço.
 
-Não a tarefa que te custa a fazer. A que sai sem tu pensares.
+Não as tarefas que te custam. As que saem sem tu pensares.
 
 A facilidade com que explicas um conceito complexo. A naturalidade com que organizas um evento. A intuição com que escolhes a roupa de uma amiga. A forma como resolves um conflito sem gritar.
 
