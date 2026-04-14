@@ -1887,4 +1887,141 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-7",
+    titulo: "Série Nomear — Ampliação Sangue e Seda (Ep 48-50)",
+    descricao: "Mais 3 scripts de Sangue e Seda.",
+    scripts: [
+      {
+        id: "nomear-ep48",
+        titulo: "A primeira vez que sangraste e ninguém te preparou",
+        curso: "sangue-e-seda",
+        texto: `Aconteceu. E tu estavas sozinha.
+
+Talvez numa casa de banho da escola. Talvez em casa, numa tarde qualquer.
+
+O corpo tinha mudado sem aviso.
+
+E a pergunta na cabeça não era "o que é isto". Era "o que fiz de errado".
+
+Porque ninguém te tinha preparado. Ninguém te tinha dito, em linguagem humana, que isto ia acontecer, que era normal, que podias chegar com uma pergunta.
+
+Aprendeste por ti. Embrulhaste qualquer coisa. Disseste a alguém quando não tinhas outra opção.
+
+E a pessoa a quem disseste, na maior parte dos casos, também não teve palavras.
+
+Tem nome esta estreia.
+
+Chama-se menarca sem testemunho.
+
+E fez uma marca.
+
+Aprendeste que o teu corpo faria coisas sem aviso — e que tu terias de lidar sozinha.
+
+Aprendeste que o essencial do teu corpo era do domínio privado, quase envergonhado.
+
+Ainda hoje, muitas das decisões que tomas sobre o teu corpo são tomadas sozinha, a meio da noite, sem testemunhas.
+
+Não porque escolheste assim.
+
+Porque foi assim que começou.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep49",
+        titulo: "A noite em que o teu corpo disse basta",
+        curso: "sangue-e-seda",
+        texto: `Houve uma noite em que o teu corpo disse basta.
+
+Talvez numa consulta. Talvez numa viagem longa. Talvez numa conversa que se prolongou.
+
+De repente, algo dentro de ti ficou sem força.
+
+Não era cansaço normal. Era mais profundo. Uma rendição do corpo. Uma retirada que a cabeça não pediu.
+
+Ficaste em pânico. Achaste que estavas a ter um ataque. Achaste que estavas a adoecer.
+
+Não estavas.
+
+Era o corpo a dizer o que tu, há muito tempo, não querias ouvir: isto já dura há demasiado tempo.
+
+Tem nome o que aconteceu.
+
+Chama-se colapso regulatório.
+
+Não é doença. É sabedoria num corpo que foi ignorado sistematicamente.
+
+E quando o corpo diz basta desta forma, não é para te assustar. É para te obrigar a parar.
+
+Se tiveres uma noite destas, guarda-a.
+
+Não é um sintoma a tratar. É uma mensagem a ouvir.
+
+O teu corpo já deu muitos sinais mais pequenos antes deste.
+
+Este foi o que não pudeste ignorar.
+
+E isso, por mais assustador que tenha sido, é um favor que ele te fez.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep50",
+        titulo: "As mulheres que te olham com o olhar da tua avó",
+        curso: "sangue-e-seda",
+        texto: `Às vezes olhas para outras mulheres mais velhas e encontras, no rosto delas, um olhar que já conheces.
+
+Um olhar de quem aguentou muito.
+
+Um olhar que, no silêncio, diz: eu sei.
+
+Não é piedade. Não é maternalismo. É reconhecimento.
+
+Elas viram-te a ti porque viram-se a elas mesmas quando tinham a tua idade.
+
+E elas sabem coisas que tu ainda não aprendeste a nomear.
+
+Sabem a conta não dita dos casamentos antigos. Sabem o esforço invisível das mães que não puderam parar. Sabem os silêncios pesados das avós cuja opinião nunca foi pedida.
+
+Tem nome este olhar.
+
+Chama-se linhagem.
+
+E é precioso.
+
+Quando encontrares uma mulher mais velha com este olhar, para. Faz uma pergunta a mais. Deixa a conversa demorar-se.
+
+Ela tem coisas para te dizer que os livros não têm.
+
+E tu, no teu tempo, vais olhar para mulheres mais novas com o mesmo olhar.
+
+E elas vão reconhecer-te.
+
+E a linhagem continua.
+
+Não em livros. Em conversas de cozinha.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
