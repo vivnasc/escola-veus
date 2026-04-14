@@ -2423,4 +2423,133 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-11",
+    titulo: "Série Nomear — Ampliação A Chama (Ep 60-62)",
+    descricao: "Mais 3 scripts de A Chama.",
+    scripts: [
+      {
+        id: "nomear-ep60",
+        titulo: "A primeira vez que sentiste desejo e te assustaste",
+        curso: "a-chama",
+        texto: `Houve uma primeira vez em que sentiste desejo e te assustaste.
+
+Tinhas talvez catorze, quinze anos. Talvez mais. Aconteceu por dentro — um calor, uma abertura, uma vontade que não conseguias nomear.
+
+E a primeira reacção, antes de qualquer prazer, foi medo.
+
+Medo de já não seres quem eras. Medo de seres vista como as mulheres que os adultos criticavam. Medo de não conseguires voltar atrás.
+
+Tem nome o que sentiste.
+
+Chama-se pânico do desejo.
+
+Não por o desejo ser mau — mas porque nunca ninguém te disse que ia acontecer assim. Ou, se disseram, foi como um aviso. Como uma coisa a conter, não uma coisa a receber.
+
+Aprendeste a ter medo de uma parte viva de ti antes de a conhecer.
+
+Durante anos, cada vez que o desejo voltou, o medo veio colado.
+
+Por baixo do prazer, sempre o mesmo pânico.
+
+Não é tua culpa. É a educação que as mulheres recebem sobre o próprio desejo — tratar-lo como perigo antes de o tratar como território.
+
+E o teu desejo, apesar de todos estes anos de medo, não desistiu.
+
+Continua ali.
+
+A pedir que o conheças sem susto.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep61",
+        titulo: "O prazer que te foi dado como presente",
+        curso: "a-chama",
+        texto: `Houve prazeres que te foram dados como se fossem presente.
+
+Alguém tocou-te. Alguém beijou-te. Alguém disse-te coisas bonitas. E aquilo foi apresentado como dádiva.
+
+Agradeceste. Devolveste. Compensaste.
+
+Aprendeste que o teu prazer era algo que recebias — não algo que produzias.
+
+E então, mesmo na tua vida adulta, continuaste a esperar. Por alguém que te desse. Alguém que fizesse acontecer. Alguém que te merecesse, com o seu esforço, aquele território.
+
+Tem nome o que aprendeste.
+
+Chama-se prazer condicionado a outro.
+
+E enquanto o teu prazer depender da acção de outra pessoa, ele vai sempre chegar filtrado pela atenção, pelo humor, pela disponibilidade dessa pessoa.
+
+Não é tua.
+
+O teu prazer é teu.
+
+Não precisa de doador. Não precisa de merecedor. Não precisa de permissão.
+
+Começa por te conhecer a ti. Em silêncio. Sem vergonha. Sem explicação a ninguém.
+
+E quando depois o partilhares com alguém, será de um lugar diferente.
+
+De doadora. Não de recebedora.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep62",
+        titulo: "A intimidade que não precisa de explicação",
+        curso: "a-chama",
+        texto: `Há uma intimidade que tu esperaste a vida inteira e ainda não conheceste.
+
+Não é a intimidade física. Essa conheces.
+
+É a intimidade em que não precisas de explicar.
+
+Em que alguém te olha e sabe o que se passa sem te obrigar a traduzir. Em que estás em silêncio e não é desconforto. Em que dizes uma coisa imperfeita e não é corrigida — é recebida.
+
+Aprendeste, desde muito nova, a traduzir-te. A tornar-te legível. A explicar-te antes de ser pedido.
+
+E então habituaste-te a não ter intimidade real.
+
+Porque intimidade real é ser vista sem explicação.
+
+Tem nome o que te falta.
+
+Chama-se intimidade não mediada.
+
+E é rara. Porque quase todas as pessoas à tua volta foram, como tu, ensinadas a pedir tradução.
+
+Mas podes começar por ti.
+
+Deixar de te explicares tanto. Deixar de antecipares o que a outra pessoa poderia precisar de saber. Confiar que, se for para alguém ficar, vai ficar pelo que és — não pelas tuas traduções.
+
+A intimidade real começa no dia em que paras de pedir autorização para existires.
+
+E deixas os outros responderem-te com a intimidade deles — ou com o silêncio.
+
+Ambos são informação.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
