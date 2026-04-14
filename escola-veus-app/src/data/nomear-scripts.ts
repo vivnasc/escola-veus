@@ -646,9 +646,7 @@ Aprendeste, em algum momento, que o teu corpo nu não era uma coisa boa.
 
 Talvez numa comparação. Talvez numa piada. Talvez num silêncio da tua mãe quando te mediste. Talvez num manual para meninas que te entregaram sem te perguntarem se o querias.
 
-Tem nome o que aprendeste.
-
-Chama-se vergonha do corpo sem vestido.
+Há palavra para isto: vergonha do corpo sem vestido.
 
 E o mais cruel é isto: o corpo nunca te deu motivo para essa vergonha.
 
@@ -680,9 +678,7 @@ A primeira vez que te sentiste vista de uma forma que não pediste.
 
 A tua pele nunca foi só tua.
 
-Tem nome o que cresceu em ti.
-
-Chama-se a vigilância precoce do próprio corpo.
+O que cresceu em ti tem nome antigo: a vigilância precoce do próprio corpo.
 
 E agora, já adulta, ainda te medes antes de ser medida. Ainda te corriges antes de ser corrigida. Ainda te explicas antes de alguém perguntar.
 
@@ -710,9 +706,7 @@ Não é que não te reconheças. É que esperavas outra coisa.
 
 A mulher do espelho parece cansada. Parece mais velha. Parece menos do que tu achavas que ias ser nesta altura da tua vida.
 
-Tem nome o que sentes.
-
-Chama-se luto de uma versão de ti que não aconteceu.
+É luto. Luto de uma versão de ti que não aconteceu.
 
 E esse luto é silencioso. Não tem ritual. Não tem data. Ninguém te pergunta se estás bem.
 
@@ -754,9 +748,7 @@ Comes sem fome.
 
 E, enquanto comes, o buraco fecha-se um bocado.
 
-Tem nome esta fome.
-
-Chama-se fome emocional.
+Esta fome tem nome: é a fome emocional.
 
 E não é fraqueza. É inteligência. O corpo encontrou uma forma de regular o que a mente ainda não sabe nomear.
 
@@ -790,9 +782,7 @@ Podes sair da reunião para comer. Não podes sair para chorar.
 
 Podes abrir o frigorífico à meia-noite. Não podes ligar a alguém à meia-noite só para dizer que te sentes sozinha.
 
-Tem nome o que a tua boca faz.
-
-Chama-se o único pedido que aprendeste a fazer sem vergonha.
+A isto chamamos o único pedido que aprendeste a fazer sem vergonha.
 
 E o truque não é fechar a boca. É aprender a fazer os outros pedidos.
 
