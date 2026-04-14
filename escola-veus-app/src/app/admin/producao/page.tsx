@@ -1252,10 +1252,23 @@ export default function ProductionPage() {
 
             {/* ── Export for CapCut ── */}
             <div className="border border-escola-dourado/40 rounded-xl p-4 bg-escola-dourado/5 space-y-3">
-              <h3 className="font-serif text-base font-medium text-escola-dourado">Exportar assets para CapCut</h3>
+              <h3 className="font-serif text-base font-medium text-escola-dourado">Exportar para CapCut</h3>
               <p className="text-[11px] text-escola-creme-50">
-                Descarrega todos os ficheiros por cena — monta o video no CapCut com controlo total.
+                Descarrega clips, imagens e copia texto para gerar audio no ElevenLabs.
               </p>
+
+              {/* Copy all narration text at once */}
+              <button onClick={() => {
+                const allText = scenes
+                  .filter((s) => s.narration?.trim())
+                  .map((s, i) => `--- Cena ${i + 1}: ${SCENE_LABELS[s.type] || s.type} ---\n${s.narration}`)
+                  .join("\n\n");
+                navigator.clipboard.writeText(allText);
+                setError("Script completo copiado!"); setTimeout(() => setError(null), 2000);
+              }}
+                className="rounded-lg border border-escola-dourado/40 px-4 py-2 text-xs text-escola-dourado hover:bg-escola-dourado/10">
+                Copiar todo o script (para ElevenLabs)
+              </button>
 
               <div className="space-y-2">
                 {scenes.map((scene, i) => (
@@ -1296,15 +1309,21 @@ export default function ProductionPage() {
                       )}
                     </div>
 
-                    {/* Narration + overlay text reference */}
+                    {/* Narration + overlay text + copy button */}
                     <div className="mt-1.5 space-y-0.5">
                       {scene.overlayText && (
-                        <p className="text-[9px] text-escola-dourado/70">Texto: {scene.overlayText}</p>
+                        <p className="text-[9px] text-escola-dourado/70">Overlay: {scene.overlayText}</p>
                       )}
                       {scene.narration && (
-                        <p className="text-[9px] text-escola-creme-50 italic line-clamp-1">
-                          {scene.narration.replace(/\[.*?\]/g, "").slice(0, 100)}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-[9px] text-escola-creme-50 italic line-clamp-1 flex-1">
+                            {scene.narration.replace(/\[.*?\]/g, "").slice(0, 120)}
+                          </p>
+                          <button onClick={() => { navigator.clipboard.writeText(scene.narration); setError(`Texto cena ${i + 1} copiado!`); setTimeout(() => setError(null), 2000); }}
+                            className="text-[9px] text-escola-dourado hover:underline whitespace-nowrap shrink-0">
+                            Copiar
+                          </button>
+                        </div>
                       )}
                     </div>
                   </div>
