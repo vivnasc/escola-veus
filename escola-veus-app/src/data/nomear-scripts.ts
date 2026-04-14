@@ -2024,4 +2024,137 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-8",
+    titulo: "Série Nomear — Ampliação Silêncio que Grita (Ep 51-53)",
+    descricao: "Mais 3 scripts de O Silêncio que Grita.",
+    scripts: [
+      {
+        id: "nomear-ep51",
+        titulo: "As coisas que descobriste demasiado tarde sobre a tua família",
+        curso: "o-silencio-que-grita",
+        texto: `Houve coisas sobre a tua família que descobriste demasiado tarde.
+
+Uma doença que a tua mãe teve e nunca te contou. Um aborto que a tua avó sofreu e se enterrou sozinha na cozinha. Um irmão que o teu pai teve e que ninguém nunca mencionou. Uma ruína financeira que atravessou duas gerações sem nome.
+
+Descobriste por acaso. Numa caixa de fotografias. Numa conversa com uma tia no funeral. Num comentário casual que alguém deixou escapar.
+
+E a primeira reacção foi raiva.
+
+Porque se soubesses antes, tantas coisas teriam feito sentido.
+
+O cansaço da tua mãe. O silêncio do teu pai. A tristeza que atravessava a família e que ninguém sabia dizer de onde vinha.
+
+Tem nome o que te esconderam.
+
+Chama-se protecção que se tornou isolamento.
+
+Eles achavam que estavam a poupar-te. Não estavam.
+
+Estavam a deixar-te crescer num mistério.
+
+E o mistério, sem nome, torna-se peso próprio. Herdaste o peso sem herdares a história.
+
+Agora, com a história, podes finalmente pousar o peso.
+
+Não o que aconteceu. Aconteceu.
+
+Mas a parte que era tua sem ser tua.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep52",
+        titulo: "O segredo que todos sabiam menos tu",
+        curso: "o-silencio-que-grita",
+        texto: `Havia um segredo que todos sabiam.
+
+Todos menos tu.
+
+Eras a mais nova. Ou eras a que "não era suposto saber". Ou eras a que falava demais e não podiam arriscar.
+
+Então na tua família, à tua volta, funcionava assim: tu não sabias. Mas sentias.
+
+Sentias as pausas nas conversas. Sentias os olhares entre os adultos. Sentias a tensão de um jantar de família quando alguém chegava tarde.
+
+Aprendeste a ler silêncios com precisão.
+
+E uma criança que aprende a ler silêncios torna-se uma adulta hipervigilante.
+
+Tem nome o que ficou em ti.
+
+Chama-se alerta permanente.
+
+Nas relações, notas tudo. Pequenas mudanças no tom. Sabes quando algo está errado antes da outra pessoa saber. És quase telepática.
+
+Mas é uma habilidade que te custa.
+
+Porque o teu sistema nervoso nunca descansa. Está sempre a rastrear. Sempre a esperar pelo segredo seguinte.
+
+O segredo de infância não te foi dito. Mas treinou-te.
+
+E tu podes, a pouco e pouco, começar a não precisar de antecipar tudo.
+
+Nem todas as pausas escondem segredo.
+
+Algumas são apenas pausas.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep53",
+        titulo: "As perguntas que agora fazes ao vazio",
+        curso: "o-silencio-que-grita",
+        texto: `Há pessoas a quem quereis fazer perguntas que já não podem ser feitas.
+
+A tua avó morreu antes de lhe poderes perguntar sobre a juventude. O teu pai afastou-se antes de lhe poderes perguntar sobre o primeiro casamento. A tua mãe fechou-se em depressão e nunca conseguiu responder ao que lhe perguntavas com os olhos.
+
+As perguntas ficaram contigo.
+
+E agora fazes-lhas ao vazio.
+
+De madrugada, em conversas mentais. Em sonhos. Em memórias que se tornam obsessivas.
+
+Tem nome o que te acontece.
+
+Chama-se luto inacabado pela pergunta sem resposta.
+
+Este luto é difícil. Porque não se trata só da pessoa. Trata-se do que ela poderia ter-te dito e nunca te disse.
+
+Mas há uma forma — inesperada — de encontrar resposta.
+
+Não através delas. Através de ti.
+
+Pergunta ao vazio. Deixa a pergunta ficar no ar.
+
+E nota: em dias improváveis, uma resposta chega. Numa conversa com um estranho. Num livro. Num sonho.
+
+Como se aquela pessoa tivesse deixado, pelo mundo, pedaços do que te queria dizer.
+
+E tu, se ouvires, vais encontrar.
+
+Não tudo. Mas o suficiente.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
