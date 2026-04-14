@@ -3217,4 +3217,145 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-17",
+    titulo: "Série Nomear — Ampliação Coroa Escondida (Ep 78-80)",
+    descricao: "Mais 3 scripts de A Coroa Escondida (fecho da ampliação).",
+    scripts: [
+      {
+        id: "nomear-ep78",
+        titulo: "O poder que aprendeste a esconder para ser querida",
+        curso: "a-coroa-escondida",
+        texto: `Desde cedo aprendeste: o poder, numa mulher, causava incómodo.
+
+Viste o que acontecia às mulheres que mandavam sem pedir licença. Eram chamadas difíceis. Ambiciosas. Frias. Demasiado.
+
+Viste o que acontecia às mulheres que sabiam muito. Eram desafiadas. Interrompidas. Postas à prova.
+
+Viste o que acontecia às mulheres que tinham posição. Eram avaliadas não pelo que faziam — mas pelo tom, pela roupa, pelo sorriso.
+
+Então aprendeste a suavizar.
+
+A sorrir no fim das frases. A fazer perguntas em vez de afirmações. A deixar o poder dos outros estar à vontade na tua presença.
+
+Tem nome o que fazes.
+
+Chama-se contenção estratégica.
+
+E funcionou. És querida. És boa colega. És a que "sabe estar".
+
+Mas o preço foi este: há uma versão tua que ninguém conhece.
+
+A versão completa. A que sabe. A que decide. A que não precisa de sorrir no final da frase.
+
+Podes começar a deixá-la aparecer. Em pequenas doses. Com pessoas seguras primeiro. Depois em contextos mais visíveis.
+
+Não é arrogância. É devolução.
+
+A tua coroa esteve escondida porque os outros estavam desconfortáveis.
+
+Não precisas de continuar a suportar o desconforto deles à custa do teu.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep79",
+        titulo: "A voz que é firme sem ser dura",
+        curso: "a-coroa-escondida",
+        texto: `Há uma voz que tu ainda não aprendeste a usar.
+
+Não é a voz aguda que usas para agradar. Não é a voz dura que, quando finalmente explodes, te envergonha a ti mesma.
+
+É outra voz.
+
+É uma voz firme. Calma. Sem pedido de desculpa na entoação. Sem agressão na afirmação.
+
+Uma voz que diz o que tem de dizer — e deixa a frase pousar.
+
+Tem nome.
+
+Chama-se voz da autoridade serena.
+
+E as mulheres têm dificuldade particular em encontrá-la. Porque oscilam entre a voz suave que acomoda e a voz dura que se defende — sem o registo intermédio que muitos homens têm como norma.
+
+Esta voz aprende-se.
+
+Começa por falar mais devagar. Por baixar o tom, sem o forçar. Por não preencher silêncios. Por dizer frases completas em vez de meias-frases.
+
+E nota: quando falas com esta voz, algo muda nas outras pessoas.
+
+Elas ouvem-te diferente. Esperam até que acabes. Respondem com mais cuidado.
+
+Não é a voz que muda tudo.
+
+É que finalmente falas de um lugar que os outros reconhecem como autoridade.
+
+E a autoridade, uma vez reconhecida, não precisa de ser repetida.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep80",
+        titulo: "A presença que não precisa de grito",
+        curso: "a-coroa-escondida",
+        texto: `Há uma presença que tu já viste em outras mulheres.
+
+Elas entram numa sala e, sem falarem alto, a sala ajusta-se.
+
+Não é carisma no sentido comum. Não é magnetismo. É outra coisa — uma presença que parece ocupar o seu espaço sem competir pelo dos outros.
+
+Estas mulheres não se esforçam por ser notadas. E são, na mesma.
+
+Tu, se fores honesta, quiseste, em algum ponto, ser uma destas.
+
+Mas não sabias como.
+
+Porque aprendeste que para ser vista tinhas de aumentar o volume. Falar mais. Insistir. Provar.
+
+E quanto mais tentavas, mais pequenas ficavas. Porque a presença real não se constrói com esforço.
+
+Constrói-se com pousos.
+
+Tem nome.
+
+Chama-se centralidade.
+
+Quando uma mulher está centrada em si, ela não precisa de grito. A sua voz, mesmo baixa, chega. O seu silêncio pesa. A sua presença é reconhecida antes do seu nome.
+
+E esta centralidade não é privilégio de umas poucas.
+
+É uma prática.
+
+Começa por sentires o teu corpo na cadeira. Por notares a tua respiração antes de falares. Por confiares que a frase que vais dizer não precisa de adornos para ser ouvida.
+
+A coroa não é brilho.
+
+É postura.
+
+Com o tempo, os outros começam a ver-te sem teres de te anunciar.
+
+Porque finalmente, tu mesma, sabes estar.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
