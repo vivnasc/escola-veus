@@ -102,9 +102,9 @@ As palavras saem fáceis. Já as tens de cor.
 
 Mas não era de cansaço que te protegias. Não era de tempo. Era de uma outra coisa, mais antiga, que não consegues dizer em voz alta sem que o corpo se contraia.
 
-Tem nome.
+Tem nome — e é antigo.
 
-Chama-se vergonha.
+Vergonha.
 
 A vergonha de não ter como os outros. A vergonha de dividir a conta e ficar sem dinheiro até sexta. A vergonha de escolher o prato mais barato e depois mentir que era isso mesmo que querias.
 
@@ -142,9 +142,7 @@ O desconto que deste não foi generosidade.
 
 Foi medo a passar por generosidade.
 
-Tem nome.
-
-Chama-se o desconto automático.
+A isto chamamos o desconto automático.
 
 Aprendeste-o antes de saberes cobrar. Aprendeste-o em mulheres da tua família que serviam primeiro os outros e comiam o que restava. Em mães que diziam que não tinham fome para que os filhos pudessem repetir. Em avós que passaram a vida inteira a pedir desculpa por ocuparem espaço que era delas.
 
@@ -220,9 +218,7 @@ Raramente acerta.
 
 Porque a fome não é por aquilo que lhe dás. É por aquilo que não lhe consegues dar.
 
-Tem nome.
-
-Chama-se falta de presença. Falta de pertença. Falta de permissão para ser quem és quando ninguém está a ver.
+Há palavra antiga para isto: falta de presença. Falta de pertença. Falta de permissão para ser quem és quando ninguém está a ver.
 
 Isto não se compra. Não se poupa. Não se herda.
 
@@ -258,9 +254,7 @@ O corpo estava a dizer outra coisa. O corpo queria dizer não.
 
 Mas o sim foi mais rápido.
 
-Tem nome.
-
-Chama-se o sim automático. O sim que já existia antes da pergunta. O sim que aprendeste em cada vez que a tua hesitação foi interpretada como rudeza. Em cada vez que alguém ficou zangado contigo por tu teres precisado de tempo. Em cada vez que foi mais fácil concordar do que explicar.
+O nome é antigo: o sim automático. O sim que já existia antes da pergunta. O sim que aprendeste em cada vez que a tua hesitação foi interpretada como rudeza. Em cada vez que alguém ficou zangado contigo por tu teres precisado de tempo. Em cada vez que foi mais fácil concordar do que explicar.
 
 O corpo sabe dizer não.
 
@@ -531,9 +525,7 @@ E agora, já adulta, percebes que não sabes ter certas conversas.
 
 Porque nunca as viste acontecer.
 
-Tem nome o que aprendeste.
-
-Chama-se silêncio que mantém a ordem.
+Herdaste palavra para isto: silêncio que mantém a ordem.
 
 Mas a ordem que se mantém com silêncio é apenas silêncio organizado.
 
