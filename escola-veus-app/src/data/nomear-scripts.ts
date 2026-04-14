@@ -2552,4 +2552,131 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-12",
+    titulo: "Série Nomear — Ampliação Voz de Dentro (Ep 63-65)",
+    descricao: "Mais 3 scripts de Voz de Dentro.",
+    scripts: [
+      {
+        id: "nomear-ep63",
+        titulo: "O saber que aparece em sonhos",
+        curso: "voz-de-dentro",
+        texto: `Há coisas que tu só sabes quando dormes.
+
+Acordas com uma certeza estranha sobre alguém. Sabes que aquela relação não vai resistir. Sabes que tens de mudar de casa. Sabes que aquela amiga está a mentir-te.
+
+Não tens provas. Só tens o sonho. E uma sensação clara no corpo, antes mesmo de abrires os olhos.
+
+E depois, durante o dia, a razão chega. E diz: não sejas ridícula. Dormiste mal. Foi só um sonho.
+
+Aprendeste a descartar o que o sonho te mostrou.
+
+Tem nome o que fazes.
+
+Chama-se descarte do saber nocturno.
+
+Mas os sonhos não são aleatórios. São a forma como a mente processa informação que, acordada, tinha de filtrar.
+
+Durante o dia, tu és socialmente funcional. Responde ao que te perguntam, cumpres os compromissos, adaptas-te. O corpo e a intuição ficam em segundo plano.
+
+À noite, no sonho, eles ganham voz.
+
+Não precisas de acreditar em tudo o que sonhas.
+
+Mas podes começar a anotá-lo. Deixar o sonho existir no dia que se segue. Dar-lhe o benefício da dúvida — pelo menos uma vez.
+
+E vais ver que o sonho, muitas vezes, sabia antes da razão.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep64",
+        titulo: "A voz que se cala em grupo",
+        curso: "voz-de-dentro",
+        texto: `A sós, a tua voz é clara.
+
+Sabes o que pensas. Sabes o que queres. Sabes o que recusas.
+
+Em grupo, ela desaparece.
+
+Há cinco pessoas à mesa. A conversa flui. Toma um rumo com o qual tu não concordas. Tens a frase certa a formar-se na boca. E não a dizes.
+
+Esperas por outra pessoa. Esperas que alguém diga primeiro. Esperas pela altura certa. E a altura certa não chega.
+
+Tem nome o que te cala.
+
+Chama-se autocensura em grupo.
+
+E o que se torna silêncio em público não é apenas ausência de voz — é, ao longo do tempo, desconfiança na tua própria percepção.
+
+Porque se a tua opinião fosse válida, terias dito.
+
+Como não disseste, deve não ter sido importante.
+
+Aprendeste a concluir isto em vez da coisa mais verdadeira: não disseste porque estavas a avaliar o custo social de dizer.
+
+Custo social é informação, também. Mas não pode ser o único critério.
+
+Começa por dizer uma frase — uma frase pequena — em que normalmente te calavas.
+
+Nota o que acontece no grupo.
+
+E nota, sobretudo, o que acontece em ti.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep65",
+        titulo: "O que a tua mão já escreveu antes da tua cabeça pensar",
+        curso: "voz-de-dentro",
+        texto: `Pegas numa caneta sem saber muito bem porquê.
+
+Começas a escrever.
+
+E a mão escreve coisas que tu não sabias que sabias.
+
+Aparecem frases que te surpreendem. Ligações que a mente, a pensar, não teria feito. Emoções que tinhas escondido de ti mesma, escritas com letras em que te reconheces.
+
+Tem nome o que acontece.
+
+Chama-se escrita como saber.
+
+A mão sabe coisas antes da cabeça. Porque a mão está ligada ao corpo. E o corpo guarda muita coisa que a mente, organizada como é, tem vergonha de admitir.
+
+E este acesso — através da mão, ao saber do corpo — é das formas mais simples e subutilizadas de te conheceres.
+
+Não precisas de saber escrever bem. Não precisas de frases bonitas. Não precisas de relê o que escreveste.
+
+Precisas de escrever sem parar durante alguns minutos.
+
+E no fim, lês. E vais encontrar coisas que, se alguém tivesses perguntado em voz alta, nunca terias respondido.
+
+Porque a cabeça, em voz alta, tem filtros.
+
+A mão, no silêncio da página, tem menos.
+
+É uma porta.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
