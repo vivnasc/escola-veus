@@ -404,4 +404,231 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-2",
+    titulo: "Série Nomear — Ep 11-16 (Sangue e Seda + Silêncio)",
+    descricao: "Sangue e Seda (corpo feminino, ciclo, herança materna) + O Silêncio que Grita (silêncio familiar).",
+    scripts: [
+      {
+        id: "nomear-ep11",
+        titulo: "O ciclo que te ensinaram a esconder",
+        curso: "sangue-e-seda",
+        texto: `Era sempre assim. Um embrulho discreto, um tom mais baixo, um sorriso de canto.
+
+Aprendeste a esconder isto antes de saberes o que era isto.
+
+Tem nome. Chama-se ciclo. Menstruação. Sangue.
+
+Nenhuma destas palavras foi fácil na tua casa. Eram ditas quase em código. Como se o teu corpo tivesse de pedir desculpa por uma coisa que fazia há milhões de anos.
+
+Aprendeste a embalar. A esconder os pensos. A não deixar marcas. A sorrir num dia em que o corpo ardia.
+
+E agora, décadas depois, ainda te calas quando era para dizeres: hoje não posso. Hoje dói. Hoje preciso de parar.
+
+Tem nome o que te prende.
+
+Chama-se vergonha do que o corpo faz sem licença tua.
+
+É das heranças mais antigas que se atravessam entre mulheres. Passam da avó para a mãe, da mãe para ti. Sem ninguém declarar. Como se fosse peso e não legado.
+
+Não és tu que pedes desculpa.
+
+Eram todas as que vieram antes. E deixaram o pedido contigo — sem saber que te estavam a deixar um fardo.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep12",
+        titulo: "A dor que tu chamas normal",
+        curso: "sangue-e-seda",
+        texto: `Há uma dor que tu chamas normal.
+
+Dói-te a cabeça. O peito. A barriga. As costas.
+
+E a primeira reacção já nem é de te doer. É de continuares. De tirar o comprimido. De não parar.
+
+Chamas normal ao que devia parar-te a vida e não para.
+
+Aprendeste isto onde? Em mulheres que continuaram. Em avós que lavaram roupa com as mãos gretadas e não se queixaram. Em mães que foram para o trabalho com febre. Em amigas que disseram "já passou" quando claramente não tinha passado.
+
+O que tu chamas normal é resistência crónica.
+
+E resistência crónica tem um preço.
+
+Sabes o preço.
+
+Não é a dor que pede para ser ouvida. É a parte de ti que decidiu há muito tempo que tinha de aguentar para ser respeitada.
+
+Essa parte está cansada.
+
+E dói-te também por isso.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep13",
+        titulo: "As mulheres que vieram antes do teu útero",
+        curso: "sangue-e-seda",
+        texto: `O teu útero não começou em ti. Começou muito antes.
+
+Cada óvulo que hoje habita o teu corpo já habitou o corpo da tua mãe. Ela já os carregava quando ainda era feto no corpo da tua avó.
+
+Três gerações, ao mesmo tempo, num único corpo.
+
+Tu és fisicamente composta de mulheres que nunca conheceste.
+
+As decisões delas sobre o corpo. O que tiveram de engolir. O que nunca puderam dizer. As escolhas que fizeram por amor, por medo, por falta de outra opção.
+
+Tudo isso corre em ti sem precisar de explicação.
+
+Tem nome.
+
+Chama-se herança biológica.
+
+E quando sentes um aperto sem razão, uma tristeza que não é tua, um cansaço mais antigo que os teus anos — não estás a ser dramática. Estás a sentir uma linha inteira de mulheres que te trouxe até aqui.
+
+Não és só tu que habitas este corpo.
+
+Tu és a primeira destas mulheres que vai ter tempo para se ouvir.
+
+E isso, só isso, muda tudo.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep14",
+        titulo: "As coisas que não se falam à mesa",
+        curso: "o-silencio-que-grita",
+        texto: `Havia uma mesa, na tua infância, onde não se falava.
+
+Falavam. Sobre o tempo. Sobre a comida. Sobre a vizinha. Sobre a novela.
+
+Mas as coisas importantes ficavam do lado de fora da mesa.
+
+A depressão da tua tia. O primeiro casamento da tua mãe. A dívida que se arrastava. A dor que se mascarava de paciência.
+
+Aprendeste a mesa como se aprende uma regra: o que importa não se diz. O que dói cala-se. A harmonia é mais importante do que a verdade.
+
+E agora, já adulta, percebes que não sabes ter certas conversas.
+
+Porque nunca as viste acontecer.
+
+Tem nome o que aprendeste.
+
+Chama-se silêncio que mantém a ordem.
+
+Mas a ordem que se mantém com silêncio é apenas silêncio organizado.
+
+Não é paz.
+
+E quando finalmente começas a dizer o que te foi sendo calado, não estás a quebrar a família.
+
+Estás a deixar de a manter inteira sozinha.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep15",
+        titulo: "O que o silêncio do teu pai te ensinou",
+        curso: "o-silencio-que-grita",
+        texto: `O teu pai talvez não fosse violento. Talvez nunca tenha levantado a voz. Talvez fosse, até, um homem bom.
+
+Mas era um homem silencioso.
+
+E o silêncio de um pai ensina.
+
+Ensina que o que sentes é assunto teu. Que pedir ajuda é incomodar. Que perguntar é indiscreto. Que mostrar tristeza é fraco.
+
+Aprendeste a ser forte antes de perceberes que ainda eras criança.
+
+Aprendeste a resolver sozinha coisas que não cabiam nas tuas mãos.
+
+Não foi o que ele disse que te marcou. Foi o que ele não disse.
+
+Tem nome.
+
+Chama-se herança silenciosa.
+
+E agora, já adulta, procuras homens que te perguntem.
+
+E assustas-te quando te perguntam mesmo.
+
+Porque não sabes como se recebe uma pergunta que não tens de resolver sozinha.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep16",
+        titulo: "As perguntas que não podias fazer em criança",
+        curso: "o-silencio-que-grita",
+        texto: `Havia perguntas que sabias, desde muito nova, que não se faziam.
+
+Sobre dinheiro. Sobre sexo. Sobre a morte. Sobre aquela pessoa da família que ninguém mais mencionava. Sobre por que é que o teu pai tinha aquela cicatriz. Sobre por que é que a tua mãe chorava sozinha na cozinha.
+
+Não era ninguém que te tinha proibido. Era uma coisa que aprendias por instinto.
+
+Do silêncio que vinha depois de certas palavras.
+
+Do olhar que se desviava.
+
+Da mão que mudava de assunto.
+
+Aprendeste a censura antes de ter a palavra para ela.
+
+E agora, já adulta, há perguntas que continuas a evitar. Até contigo mesma.
+
+Tem nome.
+
+Chama-se curiosidade morta à nascença.
+
+E a verdade é esta: há perguntas tuas que só tu podes finalmente fazer.
+
+A ti. Em voz alta. Ou em silêncio, se for o caso.
+
+Mas fazer.
+
+Porque enquanto não perguntas, outro silêncio cresce dentro de ti.
+
+E o silêncio que herdaste não precisa de filhos.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
