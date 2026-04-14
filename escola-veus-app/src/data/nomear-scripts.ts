@@ -4093,4 +4093,255 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-21",
+    titulo: "Série Nomear — Olhos Abertos (Ep 99-104)",
+    descricao: "Olhos Abertos (Ciclos) — ver sem ilusões, despertar lúcido, consciência ganha.",
+    scripts: [
+      {
+        id: "nomear-ep99",
+        titulo: "O dia em que deixaste de conseguir não ver",
+        curso: "olhos-abertos",
+        texto: `Durante anos, conseguiste não ver.
+
+Era útil. Continuavas a viver. Continuavas a amar. Continuavas a acreditar.
+
+Alguns sinais passavam. Tu explicavas-os. Encaixavas-os numa narrativa que fazia sentido.
+
+E um dia — sem teres decidido — deixou de ser possível.
+
+Aquele sinal que ignoravas começou a não desaparecer. Aquela pergunta que afastavas começou a voltar sozinha. Aquela dúvida que minimizavas começou a pesar.
+
+E tu viste.
+
+Viste inteira. Sem filtro. Sem conforto.
+
+A isto chamamos despertar não solicitado.
+
+Não foi escolha. Foi um acontecimento que chegou sem aviso.
+
+E depois dele, não há regresso. Não podes ver menos. Não podes esquecer a pergunta. Não podes voltar ao estado anterior.
+
+Algumas mulheres tentam. Ficam anos a tentar voltar a não ver.
+
+Não funciona.
+
+A consciência, uma vez acontecida, não desinstala.
+
+E isto, apesar de doer, é um favor.
+
+Porque a vida que seguia sem a tua presença era uma vida a menos.
+
+Agora, pelo menos, é a tua.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep100",
+        titulo: "A ingenuidade que já não te protege",
+        curso: "olhos-abertos",
+        texto: `Durante muito tempo, a ingenuidade funcionou.
+
+Achavas que as pessoas tinham boas intenções. Acreditavas que as coisas se resolveriam se tu continuasses a dar. Pensavas que a verdade acabaria por prevalecer.
+
+Viveste com este conjunto de presunções e até te serviu.
+
+Agora já não serve.
+
+Viste demasiada coisa para ainda presumir. Foste magoada em sítios onde a ingenuidade te deixou exposta. Cresceste, e ver é responsabilidade que chega com a idade.
+
+A isto chamamos fim da inocência útil.
+
+Não é cinismo. O cinismo é cansaço sem análise.
+
+Isto é outra coisa. É lucidez sem amargura — quando consegues chegar lá.
+
+A lucidez não presume o pior. Mas também não presume o melhor sem prova.
+
+Observa. Escuta. Confia quando há razão para confiar. Desconfia quando há razão para desconfiar.
+
+A ingenuidade, por mais bonita que parecesse, era uma forma de não teres de ler o mundo.
+
+Agora lês.
+
+O mundo, lido, é menos confortável.
+
+Mas é mais teu.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep101",
+        titulo: "As verdades que ficam mais claras com os anos",
+        curso: "olhos-abertos",
+        texto: `Há verdades sobre a tua vida que só ficam claras com os anos.
+
+Aos vinte, certas coisas pareciam dramas. Aos trinta, perspectiva. Aos quarenta, lições. Aos cinquenta, piadas.
+
+O tempo não resolveu. Decantou.
+
+Alguns pedaços que pareciam perdas foram-se revelando protecções. Alguns que pareciam sortes foram-se revelando enganos. Alguns que pareciam importantes perderam cor. Alguns que pareciam triviais ganharam peso.
+
+A isto chamamos decantação.
+
+Não é sabedoria retroactiva. É apenas o que acontece quando se vive o suficiente para ver o que cada acontecimento se tornou.
+
+E esta decantação é uma das pouquíssimas vantagens de envelhecer.
+
+Os que eram teus aos vinte e já não são aos cinquenta — não eram para durar.
+
+Os que continuam a ser teus ao longo das décadas — esses são permanência.
+
+Não sabes à partida quais vão ficar e quais vão embora.
+
+Mas sabes, agora, que a decantação existe.
+
+E podes, já, deixar de lutar tanto contra ela.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep102",
+        titulo: "Os filtros que caíram sem tu pedires",
+        curso: "olhos-abertos",
+        texto: `Havia filtros que te protegiam.
+
+Um filtro pelo qual vias o teu pai sempre como figura protectora, mesmo quando não o era. Um filtro pelo qual certa amiga era sempre leal, mesmo quando não foi. Um filtro pelo qual o teu casamento estava bem, mesmo quando todos à volta já viam que não.
+
+Os filtros existiam porque olhar sem eles era insuportável. O filtro era cuidado do teu sistema psicológico — de te deixar funcionar.
+
+E depois, algures, caíram.
+
+Sem teres pedido. Sem teres decidido.
+
+Viste.
+
+O que viste, em cada caso, foi doloroso. Mas também foi o início de alguma coisa.
+
+A isto chamamos queda dos filtros.
+
+Os filtros caem quando o sistema está pronto. Não antes. Nunca antes.
+
+Se caíram agora, é porque já tens estrutura suficiente para suportar o que vês.
+
+Confia no tempo do teu sistema.
+
+Ele protegeu-te até ao ponto em que já não precisavas de ser protegida.
+
+A verdade que agora vês não é cruel.
+
+É pontualidade.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep103",
+        titulo: "O que tu vês agora que antes não vias",
+        curso: "olhos-abertos",
+        texto: `Há coisas que vês hoje, em situações vulgares, que antes passavam despercebidas.
+
+O momento em que alguém te interrompe repetidamente — e tu vês. Antes, aceitavas.
+
+O comentário passivo-agressivo num jantar de família — e tu vês. Antes, atribuías a mau dia.
+
+A forma como certas mulheres se apagam — e tu vês. Antes, pensavas que era personalidade.
+
+A isto chamamos visão afinada.
+
+Não é paranoia. É precisão.
+
+Esta visão tem custo. Muitas situações que antes corriam sem te magoarem agora magoam. Muitas conversas que antes eram normais agora soam como opressão.
+
+Isto não é regressão. É progressão.
+
+O que mudou não foi o mundo.
+
+Foste tu a ganhar olhos novos.
+
+E às vezes, quando a visão é nova, tu duvidas dela. Pensas: talvez seja eu que estou a exagerar.
+
+Não estás.
+
+A visão afinada, no início, assusta.
+
+Mas é a ferramenta que te vai permitir escolher, a partir daqui, o que vais aceitar e o que vais recusar.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep104",
+        titulo: "A solidão de quem vê",
+        curso: "olhos-abertos",
+        texto: `Há uma solidão específica de quem começou a ver.
+
+Vês coisas que pessoas à tua volta ainda não vêem. Dizes-o. Elas não percebem. Ou percebem mas não querem ver. Ou percebem e ficam desconfortáveis contigo por teres visto.
+
+E tu ficas sozinha — com o conhecimento.
+
+A isto chamamos solidão lúcida.
+
+Não é depressão. Não é isolamento.
+
+É apenas o intervalo entre tu veres e os outros verem.
+
+Esse intervalo pode durar meses. Pode durar anos. Pode durar o resto da vida de algumas relações.
+
+Algumas pessoas nunca vão chegar ao sítio onde tu já estás.
+
+Não por serem inferiores. Por terem escolhido outra coisa, ou por ainda não ter chegado a hora delas, ou por nunca vir a chegar.
+
+E tu, ao longo do tempo, vais encontrando mulheres que vêem contigo.
+
+Elas existem.
+
+São poucas. Mas existem.
+
+Quando se encontram — uma reconhece a outra imediatamente.
+
+Pelos olhos. Pelo que se cala quando a outra fala. Pelo peso do que partilham.
+
+A solidão lúcida é preço do ver.
+
+Mas termina, a certa altura, nas companhias certas.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
