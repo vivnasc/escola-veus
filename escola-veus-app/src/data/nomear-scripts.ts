@@ -2157,4 +2157,135 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-9",
+    titulo: "Série Nomear — Ampliação Pele Nua (Ep 54-56)",
+    descricao: "Mais 3 scripts de Pele Nua.",
+    scripts: [
+      {
+        id: "nomear-ep54",
+        titulo: "O peso que aprendeste a detestar antes de saberes o que era",
+        curso: "pele-nua",
+        texto: `Aprendeste a detestar o teu peso antes de entenderes o que ele era.
+
+Havia uma balança na casa de banho dos teus pais. Viste-a a mais velha pesar-se com uma expressão que te ensinou. Ouviste comentários à mesa sobre quem "tinha engordado". Notaste quem era vista com alívio e quem era vista com reserva.
+
+Cresceste a olhar para o teu corpo à luz desses comentários.
+
+Não era o espelho que te dizia se estavas bem. Eram as outras pessoas.
+
+Aprendeste a controlar antes de entender o que estavas a controlar.
+
+Aprendeste a restringir antes de ter fome. Aprendeste a exercitar como castigo antes de perceber que o corpo merecia outro tipo de atenção.
+
+Tem nome o que aprendeste.
+
+Chama-se vigilância precoce do peso.
+
+E é das heranças mais silenciosas — porque parece cuidado.
+
+Parece saúde. Parece disciplina.
+
+Mas se olhares com atenção, vais ver que não é cuidado que te move. É medo. Medo de seres vista como as mulheres que ouviste serem criticadas em criança.
+
+O teu corpo não é um inimigo a controlar.
+
+É um lugar onde tu vives.
+
+E se passas a vida em vigilância contra a tua própria casa — quem é que está a habitar nela?
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep55",
+        titulo: "A cicatriz que sempre escondes mesmo de ti",
+        curso: "pele-nua",
+        texto: `Há uma cicatriz no teu corpo que escondes mesmo quando estás sozinha.
+
+Pode ser visível. Pode ser um sinal. Pode ser uma prega. Pode ser uma parte que mudou depois de um parto, de uma cirurgia, de algo que te aconteceu.
+
+Não olhas para ela.
+
+Vestes de certa maneira para que, mesmo à frente do espelho, não apareça.
+
+Não é só por vergonha do que os outros veriam.
+
+É por vergonha de olhares tu.
+
+Tem nome.
+
+Chama-se desapropriação da própria pele.
+
+E a cicatriz, quando escondida tanto tempo, deixa de ser parte do corpo — torna-se uma coisa à parte. Uma ameaça. Um território proibido dentro de ti.
+
+Mas a cicatriz é uma palavra do corpo.
+
+Conta uma história. Da vez em que o corpo te protegeu. Da vez em que o corpo aguentou o que não devia ter aguentado. Da vez em que o corpo mudou para dar espaço a outra vida.
+
+Olhar para a cicatriz, finalmente, com atenção — não com avaliação, com atenção — é começar a reconciliar-te com o que o corpo fez por ti.
+
+Não precisas de gostar dela.
+
+Precisas de a reconhecer.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep56",
+        titulo: "A primeira vez que alguém te olhou de uma forma que te ensinou",
+        curso: "pele-nua",
+        texto: `Houve uma primeira vez em que alguém te olhou de uma forma que te ensinou.
+
+Talvez tivesses onze anos. Talvez treze. Estavas num sítio comum — uma rua, um autocarro, uma festa de família.
+
+E percebeste que o teu corpo era olhado de uma maneira nova.
+
+Não sabias o que era. Mas sabias que era.
+
+E o que aprendeste, naquele momento, foi que o teu corpo passou a ser visto pelos outros antes de tu o teres visto por ti.
+
+Aprendeste a vigiar-te de fora.
+
+Antes de sentires o teu corpo por dentro, já o via-lo pelos olhos dos outros.
+
+Tem nome.
+
+Chama-se o olhar antecipado.
+
+E ficou contigo. No shopping. Nas redes sociais. Nas conversas. Estás sempre a antecipar como serás vista antes de decidires como te queres sentir.
+
+É cansativo. Mas aprendeste assim tão cedo que parece normal.
+
+Reclamar o teu corpo passa, primeiro, por parar de o antecipar pelos olhos dos outros.
+
+Por olhar para ti no espelho não para corrigir.
+
+Para conhecer.
+
+Foste desapossada do teu corpo aos treze anos.
+
+Podes reclamá-lo agora.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
