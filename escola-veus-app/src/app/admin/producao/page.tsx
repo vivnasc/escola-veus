@@ -93,6 +93,75 @@ const COURSE_BACKGROUND_MUSIC: Record<string, string> = {
 const LORA_TRIGGER = "veus_figure";
 const ANIMATION_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
+// ─── DURATION ESTIMATION ────────────────────────────────────────────────────
+// Portuguese narration: ~2.2 words/sec (calm, emotional delivery)
+
+const PAUSE_DURATIONS: Record<string, number> = {
+  "[long pause]": 2.0,
+  "[pause]": 1.0,
+  "[short pause]": 0.3,
+  "[calm]": 0.5,
+  "[thoughtful]": 0.5,
+  "[whispers]": 0.5,
+  "[sighs]": 0.8,
+};
+
+function estimateNarrationDuration(text: string): number {
+  if (!text?.trim()) return 0;
+  let pauseTime = 0;
+  let cleaned = text;
+  for (const [tag, dur] of Object.entries(PAUSE_DURATIONS)) {
+    const count = (cleaned.match(new RegExp(tag.replace(/[[\]]/g, "\\$&"), "g")) || []).length;
+    pauseTime += count * dur;
+    cleaned = cleaned.replaceAll(tag, "");
+  }
+  const words = cleaned.trim().split(/\s+/).filter((w) => w.length > 0).length;
+  const speakTime = words / 2.2;
+  return Math.round((speakTime + pauseTime) * 10) / 10;
+}
+
+// ─── RUNWAY VIDEO PROMPT GENERATOR ──────────────────────────────────────────
+
+const RUNWAY_STYLE_BASE = "cinematic dark scene, elegant faceless feminine silhouette with visible body language and natural human posture, translucent flowing fabric layers, warm terracotta skin tones through semi-transparent veils over dark navy-purple, warm golden light glowing softly from within, no face no eyes no mouth, smooth organic shapes, dark navy background, 16:9 widescreen, intimate emotional mood";
+
+const CLIP_PROGRESSION: Record<string, string[]> = {
+  first: [
+    "slow reveal, figure emerging from darkness, establishing shot",
+    "gentle camera drift forward, figure becoming visible",
+    "fade from black, silhouette taking form against dark background",
+  ],
+  middle: [
+    "figure gesturing with hands, natural body language, breathing rhythm",
+    "subtle weight shift, fabric flowing with movement, intimate framing",
+    "figure in contemplative pose, one hand rising gently, golden light shifting",
+  ],
+  last: [
+    "figure settling into stillness, golden light softening, peaceful resolution",
+    "slow zoom out, figure standing calm, fabric settling",
+    "figure exhaling, light dimming gradually, serene closing",
+  ],
+};
+
+function buildRunwayVideoPrompt(scene: SceneData, clipIndex: number, totalClips: number): string {
+  const sceneMotion = MOTION[scene.type] || "slow cinematic movement, figure breathing naturally";
+
+  // Determine clip position
+  const position = clipIndex === 0 ? "first" : clipIndex === totalClips - 1 ? "last" : "middle";
+  const progressions = CLIP_PROGRESSION[position];
+  const progression = progressions[clipIndex % progressions.length];
+
+  // Build scene-specific visual from visualNote if available
+  let sceneVisual = "";
+  if (scene.visualNote && scene.visualNote.length > 20) {
+    const cleaned = scene.visualNote.replace(/#[0-9A-Fa-f]{6}/g, "").replace(/\(.*?\)/g, "").trim();
+    sceneVisual = cleaned + ", ";
+  }
+
+  return `${RUNWAY_STYLE_BASE}, ${sceneVisual}${sceneMotion}, ${progression}, no text no words no letters`;
+}
+
+// ─── EXISTING FUNCTIONS ─────────────────────────────────────────────────────
+
 function buildMotionPrompt(scene: SceneData): string {
   const fallback = MOTION[scene.type] || "slow cinematic movement, figure breathing naturally, subtle body movement";
   if (!scene.visualNote || scene.visualNote.length < 20) return fallback;
@@ -853,6 +922,10 @@ export default function ProductionPage() {
                 <>
                   <span className="text-xs text-green-400 bg-green-400/10 px-3 py-1 rounded-full">Aprovado</span>
                   <button onClick={() => setScriptApproved(false)} className="text-xs text-escola-creme-50 hover:text-escola-creme">Editar</button>
+                  <button onClick={() => { markComplete(0); setStep(5); }}
+                    className="rounded-lg bg-escola-dourado px-5 py-2 text-sm font-medium text-escola-bg hover:opacity-90">
+                    Exportar (prompts Runway + texto)
+                  </button>
                 </>
               ) : (
                 <button onClick={() => { setScriptApproved(true); markComplete(0); setStep(1); }}
@@ -1221,15 +1294,203 @@ export default function ProductionPage() {
 
       {/* ─── STEP 6: RESULT ──────────────────────────────────────────────── */}
       <div className={`rounded-xl border bg-escola-card p-6 mb-4 ${step === 5 ? "border-escola-dourado/50" : "border-escola-border"}`}>
-        <button onClick={() => completed[3] && setStep(5)} className="w-full text-left">
+        <button onClick={() => setStep(5)} className="w-full text-left">
           <h2 className="font-serif text-lg font-medium text-escola-creme flex items-center gap-2">
             {completed[5] && <span className="text-green-400 text-sm">&#10003;</span>}
-            6. Resultado Final
+            6. Exportar
           </h2>
         </button>
 
         {step === 5 && (
           <div className="mt-4 space-y-4">
+
+            {/* ── DESCARGA RAPIDA: script + imagens + instrumental ── */}
+            <div className="border-2 border-escola-dourado/50 rounded-xl p-4 bg-escola-dourado/10 space-y-4">
+              <h3 className="font-serif text-base font-medium text-escola-dourado">Descarga rapida — montar fora</h3>
+
+              {/* 1. Script continuo */}
+              <div className="space-y-1.5">
+                <p className="text-[11px] text-escola-creme font-medium">1. Script continuo (para ElevenLabs — 1 audio)</p>
+                <button onClick={() => {
+                  const continuous = scenes
+                    .filter((s) => s.narration?.trim())
+                    .map((s) => s.narration.trim())
+                    .join("\n\n");
+                  navigator.clipboard.writeText(continuous);
+                  setError("Script continuo copiado! Cola no ElevenLabs como 1 audio."); setTimeout(() => setError(null), 3000);
+                }}
+                  className="rounded-lg bg-escola-dourado px-4 py-2 text-xs font-medium text-escola-bg hover:opacity-90">
+                  Copiar script continuo
+                </button>
+                <textarea readOnly value={scenes.filter((s) => s.narration?.trim()).map((s) => s.narration.trim()).join("\n\n")}
+                  rows={6}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-[10px] text-escola-creme-50 font-mono resize-y focus:outline-none" />
+                <p className="text-[9px] text-escola-creme-50 italic">
+                  Inclui tags [pause], [calm], etc. Cola direto no ElevenLabs v3 com a voz que escolheste.
+                </p>
+              </div>
+
+              {/* 2. Imagens */}
+              {scenes.some((s) => s.imageUrl) && (
+                <div className="space-y-1.5 border-t border-escola-dourado/20 pt-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[11px] text-escola-creme font-medium">
+                      2. Imagens ({scenes.filter((s) => s.imageUrl).length} de {scenes.length})
+                    </p>
+                    <button onClick={() => {
+                      scenes.forEach((s) => { if (s.imageUrl) window.open(s.imageUrl, "_blank"); });
+                    }}
+                      className="text-[10px] text-escola-dourado border border-escola-dourado/30 rounded px-2 py-1 hover:bg-escola-dourado/10">
+                      Abrir todas em tabs novas
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                    {scenes.map((scene, i) => scene.imageUrl ? (
+                      <a key={i} href={scene.imageUrl} target="_blank" rel="noopener noreferrer" download
+                        className="block border border-escola-border rounded overflow-hidden hover:border-escola-dourado transition-colors group">
+                        <img src={scene.imageUrl} alt={scene.type} className="w-full aspect-video object-cover" />
+                        <p className="text-[8px] text-center text-escola-creme-50 py-0.5 group-hover:text-escola-dourado bg-escola-bg">
+                          {i + 1}. {SCENE_LABELS[scene.type] || scene.type}
+                        </p>
+                      </a>
+                    ) : (
+                      <div key={i} className="border border-escola-border rounded aspect-video bg-escola-bg flex items-center justify-center">
+                        <span className="text-[8px] text-escola-creme-50/50">{i + 1}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[9px] text-escola-creme-50 italic">
+                    Click em cada = abre pagina. Botao direito → Guardar imagem como... ou usa &quot;Abrir todas&quot;.
+                  </p>
+                </div>
+              )}
+
+              {/* 3. Instrumental */}
+              {(bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse]) && (
+                <div className="space-y-1.5 border-t border-escola-dourado/20 pt-3">
+                  <p className="text-[11px] text-escola-creme font-medium">3. Instrumental</p>
+                  <audio controls src={bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse]} className="w-full max-w-md h-8" />
+                  <a href={bgMusicUrl || COURSE_BACKGROUND_MUSIC[selectedCourse]} target="_blank" rel="noopener noreferrer" download
+                    className="inline-block rounded bg-escola-dourado/20 border border-escola-dourado/40 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/30">
+                    Descarregar instrumental (.mp3)
+                  </a>
+                </div>
+              )}
+
+              {/* 4. Abertura/Fecho se existirem */}
+              {(openingMusicUrl || closingMusicUrl) && (
+                <div className="space-y-1.5 border-t border-escola-dourado/20 pt-3">
+                  <p className="text-[11px] text-escola-creme font-medium">Outras faixas</p>
+                  {openingMusicUrl && (
+                    <a href={openingMusicUrl} target="_blank" rel="noopener noreferrer" download
+                      className="block text-[10px] text-escola-dourado hover:underline">
+                      Abertura — {openingMusicUrl.slice(0, 60)}...
+                    </a>
+                  )}
+                  {closingMusicUrl && (
+                    <a href={closingMusicUrl} target="_blank" rel="noopener noreferrer" download
+                      className="block text-[10px] text-escola-dourado hover:underline">
+                      Fecho — {closingMusicUrl.slice(0, 60)}...
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* ── RUNWAY CLIPS — prompts calculados ── */}
+            {scenes.length > 0 && (() => {
+              const clipDur = 10; // seconds per Runway clip
+              const sceneData = scenes.map((s) => {
+                const estDur = s.narration?.trim() ? estimateNarrationDuration(s.narration) : s.durationSec;
+                const clips = Math.max(1, Math.ceil(estDur / clipDur));
+                return { scene: s, estDur, clips };
+              });
+              const totalClips = sceneData.reduce((sum, d) => sum + d.clips, 0);
+              const totalDur = sceneData.reduce((sum, d) => sum + d.estDur, 0);
+              const totalMin = Math.floor(totalDur / 60);
+              const totalSec = Math.round(totalDur % 60);
+
+              return (
+                <div className="border border-escola-dourado/40 rounded-xl p-4 bg-escola-dourado/5 space-y-4">
+                  <h3 className="font-serif text-base font-medium text-escola-dourado">Clips Runway — prompts por cena</h3>
+
+                  {/* Summary bar */}
+                  <div className="flex items-center gap-4 flex-wrap rounded-lg border border-escola-border bg-escola-bg/50 px-4 py-2.5">
+                    <span className="text-xs text-escola-creme">
+                      Video: ~{totalMin}m{totalSec}s
+                    </span>
+                    <span className="text-xs text-escola-dourado font-medium">
+                      {totalClips} clips de {clipDur}s
+                    </span>
+                    <span className="text-xs text-escola-creme-50">
+                      {scenes.length} cenas
+                    </span>
+                    <button onClick={() => {
+                      const allPrompts = sceneData.flatMap((d, si) =>
+                        Array.from({ length: d.clips }, (_, ci) =>
+                          `--- Cena ${si + 1}: ${SCENE_LABELS[d.scene.type] || d.scene.type} — Clip ${ci + 1}/${d.clips} ---\n${buildRunwayVideoPrompt(d.scene, ci, d.clips)}`
+                        )
+                      ).join("\n\n");
+                      navigator.clipboard.writeText(allPrompts);
+                      setError(`${totalClips} prompts copiados!`); setTimeout(() => setError(null), 2000);
+                    }}
+                      className="ml-auto text-[10px] text-escola-dourado border border-escola-dourado/30 rounded px-2 py-1 hover:bg-escola-dourado/10">
+                      Copiar todos os prompts
+                    </button>
+                  </div>
+
+                  {/* Per-scene breakdown */}
+                  <div className="space-y-3">
+                    {sceneData.map((d, si) => (
+                      <div key={si} className="border border-escola-border rounded-lg p-3 space-y-2">
+                        {/* Scene header */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-[10px] font-mono text-escola-creme-50 w-4">{si + 1}</span>
+                          <span className="text-xs text-escola-dourado font-medium">{SCENE_LABELS[d.scene.type] || d.scene.type}</span>
+                          <span className="text-[10px] text-escola-creme-50">~{d.estDur.toFixed(0)}s</span>
+                          <span className="text-[10px] text-escola-dourado">{d.clips} clip{d.clips > 1 ? "s" : ""}</span>
+                          {d.scene.narration?.trim() && (
+                            <button onClick={() => { navigator.clipboard.writeText(d.scene.narration); setError(`Texto cena ${si + 1} copiado!`); setTimeout(() => setError(null), 2000); }}
+                              className="ml-auto text-[9px] text-escola-creme-50 hover:text-escola-dourado border border-escola-border rounded px-1.5 py-0.5">
+                              Copiar narracao
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Narration preview */}
+                        {d.scene.narration?.trim() && (
+                          <p className="text-[9px] text-escola-creme-50 italic line-clamp-2">
+                            {d.scene.narration.replace(/\[.*?\]/g, "").slice(0, 150)}
+                          </p>
+                        )}
+
+                        {/* Clip prompts */}
+                        <div className="space-y-1.5">
+                          {Array.from({ length: d.clips }, (_, ci) => {
+                            const prompt = buildRunwayVideoPrompt(d.scene, ci, d.clips);
+                            return (
+                              <div key={ci} className="rounded border border-escola-border/50 bg-escola-bg/80 p-2">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-[9px] text-escola-dourado font-medium">Clip {ci + 1}/{d.clips}</span>
+                                  <button onClick={() => { navigator.clipboard.writeText(prompt); setError(`Prompt clip ${ci + 1} cena ${si + 1} copiado!`); setTimeout(() => setError(null), 1500); }}
+                                    className="text-[9px] text-escola-dourado hover:underline">
+                                    Copiar prompt
+                                  </button>
+                                </div>
+                                <p className="text-[9px] text-escola-creme-50 font-mono leading-relaxed break-all">
+                                  {prompt}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* Summary */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
               <div className="border border-escola-border rounded-lg p-3 text-center">
@@ -1250,8 +1511,129 @@ export default function ProductionPage() {
               </div>
             </div>
 
+            {/* ── Export for CapCut ── */}
+            <div className="border border-escola-dourado/40 rounded-xl p-4 bg-escola-dourado/5 space-y-3">
+              <h3 className="font-serif text-base font-medium text-escola-dourado">Exportar para CapCut</h3>
+              <p className="text-[11px] text-escola-creme-50">
+                Descarrega clips, imagens e copia texto para gerar audio no ElevenLabs.
+              </p>
+
+              {/* Copy all narration text at once */}
+              <button onClick={() => {
+                const allText = scenes
+                  .filter((s) => s.narration?.trim())
+                  .map((s, i) => `--- Cena ${i + 1}: ${SCENE_LABELS[s.type] || s.type} ---\n${s.narration}`)
+                  .join("\n\n");
+                navigator.clipboard.writeText(allText);
+                setError("Script completo copiado!"); setTimeout(() => setError(null), 2000);
+              }}
+                className="rounded-lg border border-escola-dourado/40 px-4 py-2 text-xs text-escola-dourado hover:bg-escola-dourado/10">
+                Copiar todo o script (para ElevenLabs)
+              </button>
+
+              <div className="space-y-2">
+                {scenes.map((scene, i) => (
+                  <div key={i} className="border border-escola-border rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[10px] font-mono text-escola-creme-50 w-4">{i + 1}</span>
+                      <span className="text-xs text-escola-dourado font-medium">{SCENE_LABELS[scene.type] || scene.type}</span>
+                      <span className="text-[9px] text-escola-creme-50">({scene.durationSec}s)</span>
+                    </div>
+
+                    <div className="flex items-center gap-3 flex-wrap">
+                      {/* Animation clip */}
+                      {scene.animationUrl ? (
+                        <a href={scene.animationUrl} target="_blank" rel="noopener noreferrer" download
+                          className="inline-flex items-center gap-1 rounded border border-green-500/30 bg-green-500/10 px-2 py-1 text-[10px] text-green-400 hover:bg-green-500/20">
+                          Video clip (.mp4)
+                        </a>
+                      ) : (
+                        <span className="text-[10px] text-escola-creme-50/50 border border-escola-border rounded px-2 py-1">
+                          Sem clip
+                        </span>
+                      )}
+
+                      {/* Image */}
+                      {scene.imageUrl && (
+                        <a href={scene.imageUrl} target="_blank" rel="noopener noreferrer" download
+                          className="inline-flex items-center gap-1 rounded border border-escola-dourado/30 bg-escola-dourado/10 px-2 py-1 text-[10px] text-escola-dourado hover:bg-escola-dourado/20">
+                          Imagem (.png)
+                        </a>
+                      )}
+
+                      {/* Audio */}
+                      {scene.audioUrl && (
+                        <a href={scene.audioUrl} target="_blank" rel="noopener noreferrer" download
+                          className="inline-flex items-center gap-1 rounded border border-escola-creme/20 bg-escola-creme/5 px-2 py-1 text-[10px] text-escola-creme hover:bg-escola-creme/10">
+                          Audio (.mp3)
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Narration + overlay text + copy button */}
+                    <div className="mt-1.5 space-y-0.5">
+                      {scene.overlayText && (
+                        <p className="text-[9px] text-escola-dourado/70">Overlay: {scene.overlayText}</p>
+                      )}
+                      {scene.narration && (
+                        <div className="flex items-center gap-2">
+                          <p className="text-[9px] text-escola-creme-50 italic line-clamp-1 flex-1">
+                            {scene.narration.replace(/\[.*?\]/g, "").slice(0, 120)}
+                          </p>
+                          <button onClick={() => { navigator.clipboard.writeText(scene.narration); setError(`Texto cena ${i + 1} copiado!`); setTimeout(() => setError(null), 2000); }}
+                            className="text-[9px] text-escola-dourado hover:underline whitespace-nowrap shrink-0">
+                            Copiar
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Music tracks */}
+              <div className="border-t border-escola-border pt-3 space-y-1.5">
+                <p className="text-[10px] text-escola-creme-50 font-medium">Musica:</p>
+                {openingMusicUrl && (
+                  <a href={openingMusicUrl} target="_blank" rel="noopener noreferrer" download
+                    className="block text-[10px] text-escola-dourado hover:underline">
+                    Abertura (comecar no seg {openingMusicStart}, vol {openingMusicVol}%)
+                  </a>
+                )}
+                {bgMusicUrl && (
+                  <a href={bgMusicUrl} target="_blank" rel="noopener noreferrer" download
+                    className="block text-[10px] text-escola-dourado hover:underline">
+                    Instrumental (comecar no seg {bgMusicStart}, vol {bgMusicVol}%)
+                  </a>
+                )}
+                {closingMusicUrl && (
+                  <a href={closingMusicUrl} target="_blank" rel="noopener noreferrer" download
+                    className="block text-[10px] text-escola-dourado hover:underline">
+                    Fecho (comecar no seg {closingMusicStart}, vol {closingMusicVol}%)
+                  </a>
+                )}
+                {!openingMusicUrl && !bgMusicUrl && !closingMusicUrl && (
+                  <p className="text-[10px] text-escola-creme-50/50">Nenhuma musica configurada.</p>
+                )}
+              </div>
+
+              {/* SRT subtitles */}
+              {srt && (
+                <div className="border-t border-escola-border pt-3">
+                  <button onClick={() => downloadFile(srt, `hook-${selectedHook + 1}.srt`)}
+                    className="text-[10px] text-escola-dourado hover:underline">
+                    Descarregar legendas (.srt)
+                  </button>
+                </div>
+              )}
+            </div>
+
             {/* ── Per-scene timeline editor ── */}
-            <div className="border border-escola-border rounded-lg p-4 space-y-3">
+            <details className="group">
+              <summary className="text-xs text-escola-creme-50 cursor-pointer hover:text-escola-dourado">
+                Render automatico (Shotstack) — abrir editor de timeline
+              </summary>
+            <div className="mt-3 border border-escola-border rounded-lg p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <p className="text-xs text-escola-creme-50 font-medium">Timeline — ajusta cada cena antes de renderizar</p>
                 <span className="text-[10px] text-escola-creme-50">
@@ -1351,7 +1733,7 @@ export default function ProductionPage() {
               })}
             </div>
 
-            {/* Music — 3 tracks */}
+            {/* Music — 3 tracks (inside details) */}
             <div className="border border-escola-border rounded-lg p-4 space-y-4">
               <p className="text-xs text-escola-creme-50 font-medium">Musica (3 faixas):</p>
 
@@ -1498,6 +1880,7 @@ export default function ProductionPage() {
                 </div>
               )}
             </div>
+            </details>
 
             {/* YouTube metadata */}
             {manifestUrl && (
