@@ -4344,4 +4344,267 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-22",
+    titulo: "Série Nomear — Flores no Escuro (Ep 105-110)",
+    descricao: "Flores no Escuro (Ciclos) — esperança sem otimismo, beleza no difícil, vida que insiste.",
+    scripts: [
+      {
+        id: "nomear-ep105",
+        titulo: "A alegria que chega no meio do luto",
+        curso: "flores-no-escuro",
+        texto: `Estás em luto.
+
+E um dia, a meio de uma manhã qualquer, a alegria chega.
+
+Não é grande. É pequena. Uma luz que atravessa a cortina. Uma música na rádio. Uma cor que te agrada sem saberes porquê.
+
+E, por um instante, ris. Ou sorris.
+
+E logo a seguir, culpa.
+
+Como te atreves a rir quando perdeste tanto? Como podes permitir-te alegria quando ainda dói?
+
+A isto chamamos alegria envergonhada.
+
+E é das experiências mais comuns — e menos ditas — no meio do luto.
+
+Mas a alegria que chegou não é deslealdade.
+
+É prova de que estás viva. De que o teu sistema não te abandonou. De que, por dentro, algo continuou a fazer trabalho quando tu nem te apercebias.
+
+A alegria no meio do luto não invalida o luto.
+
+Ela é parte de como se volta.
+
+Não pouco a pouco. Por piscadelas pequenas de luz.
+
+A primeira alegria envergonhada é sempre a mais difícil.
+
+As seguintes chegam mais facilmente.
+
+E um dia, sem notares, a alegria volta a ocupar mais espaço do que a dor.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep106",
+        titulo: "As coisas pequenas que continuam a importar",
+        curso: "flores-no-escuro",
+        texto: `Há pessoas que passaram por muito.
+
+Viram coisas que nenhuma preparação possível podia evitar. Perderam gente. Atravessaram doenças. Viveram anos sem luz à frente.
+
+E quando as conheces, o que te surpreende não é a gravidade delas.
+
+É o cuidado que têm com as coisas pequenas.
+
+O café da manhã feito com atenção. A cama feita antes de saírem. A planta regada. O telefonema curto à velha amiga.
+
+Não é distracção. Não é fingimento.
+
+É outra coisa.
+
+A isto chamamos o cuidado depois.
+
+Quem passou por muito aprende que a vida não se faz das coisas grandes. As coisas grandes acontecem raramente — e quando acontecem, muitas vezes não podemos contar com elas.
+
+A vida faz-se das coisas pequenas.
+
+E quando chegas a essa compreensão, já não desprezas o café lento. Já não reclamas da rotina. Já não achas que o teu dia foi pouco se só foste passear.
+
+As coisas pequenas ficaram grandes.
+
+Porque eram, sempre, tudo o que verdadeiramente se tinha.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep107",
+        titulo: "A esperança que aprendeste a não prometer",
+        curso: "flores-no-escuro",
+        texto: `Houve um tempo em que fazias promessas.
+
+Ias ser isto. Ias conseguir aquilo. Ias construir. Ias resolver. Ias mudar.
+
+E a vida, a certas alturas, mostrou-te que as promessas não estavam nas tuas mãos.
+
+Algumas coisas que prometeste não aconteceram. Algumas que aconteceram não eram as que prometias. Algumas pessoas que não prometeste apareceram, e foram as mais importantes.
+
+Aprendeste a não prometer.
+
+Não por cinismo. Por humildade.
+
+A isto chamamos esperança sem anúncio.
+
+É outra forma de ter esperança.
+
+Não é a esperança dos vinte, pública e ruidosa. É a esperança dos quarenta, privada e paciente.
+
+Continuas a esperar. Continuas a desejar. Continuas a trabalhar para que algumas coisas aconteçam.
+
+Mas já não anuncias. Já não dizes, em voz alta, que sim, vai acontecer, está tudo encaminhado.
+
+Sabes que não está.
+
+E mesmo assim, continuas.
+
+Esta esperança mais silenciosa é mais dura e mais fiel.
+
+Não precisa de plateia. Não precisa de confirmação externa. Vive em ti.
+
+E, por isso, resiste.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep108",
+        titulo: "O que floresce quando não estás a olhar",
+        curso: "flores-no-escuro",
+        texto: `Há coisas que florescem quando tu não estás a olhar.
+
+Estiveste meses a tentar fazer algo acontecer. A forçar. A procurar. A pressionar.
+
+E um dia, desistes. Ou simplesmente distrais-te. Viras a atenção para outra coisa.
+
+E é nesse momento — quando deixas de olhar — que o que tanto quiseste começa a acontecer.
+
+Uma amizade que aparece sem convite. Uma oportunidade que chega por uma via impensável. Uma paz que se instala quando paras de a procurar.
+
+A isto chamamos florescimento por distracção.
+
+Não é mágico. É natural.
+
+A pressão constante sobre uma coisa, muitas vezes, impede-a de acontecer. O teu olhar insistente bloqueia o fluxo.
+
+Quando olhas para outro lado, o espaço abre.
+
+E a coisa que esperavas, liberta, chega.
+
+Isto não é incentivo à passividade. Nem todas as coisas acontecem sem esforço.
+
+Mas algumas sim.
+
+E quando começares a reconhecer o padrão, vais saber quando é altura de empurrar.
+
+E quando é altura de olhar para outro lado, por uns dias, e deixar o mundo trabalhar.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep109",
+        titulo: "O dia em que sorriste sem motivo",
+        curso: "flores-no-escuro",
+        texto: `Houve um dia, talvez recente, em que sorriste sem motivo.
+
+Acordaste normal. Não tinha acontecido nada extraordinário. Estavas a fazer uma coisa banal — lavar louça, esperar pelo autocarro, pôr açúcar no café.
+
+E sorriste.
+
+Não porque algo engraçado te tivesse lembrado. Não porque uma boa notícia tivesse chegado.
+
+Apenas sorriste.
+
+Ficaste surpreendida contigo mesma.
+
+Porque há muito tempo que não te acontecia. Ou porque a fase por que tens passado não parecia ter lugar para sorrisos inesperados.
+
+A isto chamamos reaparecimento da alegria base.
+
+A alegria base é a que existe debaixo de tudo. Não é felicidade com causa. É uma espécie de presença alegre no próprio existir.
+
+Foste-a perdendo com os anos e com os pesos.
+
+E volta, às vezes, quando há menos a bloquear.
+
+Quando sorris sem motivo, não é frivolidade.
+
+É sinal de que alguma coisa dentro de ti está a curar-se sozinha.
+
+Sem tu teres trabalhado.
+
+Sem tu teres pedido.
+
+A cura também acontece assim. Às vezes.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep110",
+        titulo: "As mulheres que continuaram sem saber como",
+        curso: "flores-no-escuro",
+        texto: `Houve mulheres, na tua família, que continuaram.
+
+Não tinham livros sobre resiliência. Não tinham psicólogos. Não tinham comunidade. Tinham, quase sempre, muito menos do que tu tens agora.
+
+E continuaram.
+
+A tua avó, depois de a morte do primeiro filho. A tua tia, depois do divórcio quando isso ainda era escândalo. A tua bisavó, depois da fome, da guerra, do que nunca foi contado.
+
+Não deixaram manuais. Não tinham vocabulário para explicar.
+
+Apenas continuaram.
+
+A isto chamamos resistência sem linguagem.
+
+Elas continuaram porque não havia outra opção. Porque ninguém lhes ofereceu colapso.
+
+E essa continuação é, ainda hoje, património silencioso que te pertence.
+
+Tu continuas, de alguma forma, por causa delas.
+
+Não é romantização. Algumas pagaram caro. Muitas estavam em depressão profunda sem saberem o nome.
+
+Mas a capacidade que tu tens, mesmo nos piores dias, de te levantares, de fazeres o que tem de ser feito, de continuares — essa capacidade não começou em ti.
+
+Começou muito antes.
+
+E quando honras as tuas próprias continuações, sem dramatizar mas também sem menosprezar, estás a honrá-las a elas.
+
+A linha de continuação não partiu.
+
+Passou por ti.
+
+E continua depois de ti.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
