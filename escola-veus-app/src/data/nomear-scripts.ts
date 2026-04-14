@@ -3090,4 +3090,131 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-16",
+    titulo: "Série Nomear — Ampliação A Teia (Ep 75-77)",
+    descricao: "Mais 3 scripts de A Teia.",
+    scripts: [
+      {
+        id: "nomear-ep75",
+        titulo: "A amizade que terminou sem explicação",
+        curso: "a-teia",
+        texto: `Houve uma amizade na tua vida que acabou sem explicação.
+
+Não houve discussão. Não houve motivo claro. As mensagens começaram a espaçar-se. Os convites deixaram de chegar. Uma das duas desapareceu primeiro e a outra não foi atrás.
+
+E ficou isso. Uma pessoa que um dia era parte essencial da tua vida — e agora é uma ausência que não tem funeral.
+
+Tem nome o que vives.
+
+Chama-se luto de amizade.
+
+E é das formas de perda mais desrespeitadas.
+
+As pessoas fazem luto por casamentos que acabaram. Por pais que morreram. Por amores que partiram.
+
+Mas por amigas que desapareceram sem explicação — ninguém te oferece condolências.
+
+E tu continuas a carregar essa ausência em silêncio.
+
+Podes fazer o luto agora, anos depois se preciso.
+
+Escreve sobre a amizade. Sobre o que ela te deu. Sobre o que partiu quando terminou.
+
+Não tens de procurar a pessoa. Não tens de exigir uma explicação.
+
+Tens de reconhecer, a ti mesma, que aquilo foi importante.
+
+E que doeu perder — mesmo quando ninguém veio perguntar se estavas bem.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep76",
+        titulo: "As mulheres que te ensinaram mais do que sabiam",
+        curso: "a-teia",
+        texto: `Há mulheres na tua vida que te ensinaram mais do que elas próprias sabiam.
+
+A professora da escola primária que te disse, uma única vez, que eras inteligente. E tu carregaste essa frase durante trinta anos.
+
+A vizinha que te abria a porta quando a tua mãe estava exausta e te deixava ficar sem perguntar nada. E tu aprendeste que havia lugares de acolhimento fora da família.
+
+A estranha numa conferência que te disse uma frase em dez segundos que mudou a forma como vês a tua carreira.
+
+Elas não faziam ideia do que estavam a fazer.
+
+Mas deixaram-te marcas profundas.
+
+Tem nome o que elas foram.
+
+Chama-se mestras acidentais.
+
+E tu, provavelmente, já foste isto para outras mulheres sem teres sabido.
+
+Um comentário teu mudou a vida de alguém. Uma gentileza tua foi guardada por anos. Uma frase que tu nem te lembras de teres dito ficou gravada em alguém.
+
+Não és só a mulher que conheces.
+
+És todas as versões que ficaram em quem te cruzou.
+
+Tens uma influência silenciosa que nunca vais saber dimensionar.
+
+Isso é humildade. E é honra.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep77",
+        titulo: "A irmandade que te falta e tens de construir",
+        curso: "a-teia",
+        texto: `Há uma irmandade que te falta.
+
+Não é família. Não é amizade antiga. É outra coisa.
+
+É um grupo de mulheres com quem podes falar do que é realmente difícil. Sem edição. Sem explicação. Com a certeza de seres reconhecida, não apenas tolerada.
+
+A maioria das mulheres chega à meia-idade sem este grupo.
+
+Porque nunca aprendeu a construí-lo. Porque as amizades eram dadas pela escola, pelo bairro, pelo trabalho. E essas nem sempre se aprofundaram para o lugar onde queres ir agora.
+
+Tem nome o que te falta.
+
+Chama-se comunidade escolhida entre iguais.
+
+E ninguém a entrega. Tens de a construir.
+
+Não é dramático. Não é um projecto gigante. É uma conversa de cada vez.
+
+Com aquela mulher que ouviste falar e sentiste que sabia coisas. Com aquela colega que sempre te intrigou. Com aquela amiga da amiga de quem gostas mas nunca pediste o número.
+
+Estende a mão. Convida para um café. Faz uma pergunta a mais do que o habitual.
+
+E nota quem responde com igual profundidade.
+
+Essas são as tuas futuras irmãs.
+
+Não te apareceram. Começaram a ser construídas.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
