@@ -631,4 +631,355 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-3",
+    titulo: "Série Nomear — Ep 17-25 (Pele Nua + A Fome + A Chama)",
+    descricao: "Pele Nua (corpo nu, vergonha do corpo) + A Fome (fome emocional) + A Chama (desejo).",
+    scripts: [
+      {
+        id: "nomear-ep17",
+        titulo: "O corpo que só olhas com roupa",
+        curso: "pele-nua",
+        texto: `Há um corpo que só olhas quando está vestido.
+
+No espelho da entrada, antes de saíres. No reflexo da montra, de passagem. Na fotografia em que já escolhes o ângulo antes de aparecer.
+
+Mas sem roupa, não olhas.
+
+Vestes-te depressa depois do banho. Apagas a luz antes de te despires à noite. Evitas o espelho do quarto como quem evita uma sala de interrogatório.
+
+Não é só pudor. É mais antigo.
+
+Aprendeste, em algum momento, que o teu corpo nu não era uma coisa boa.
+
+Talvez numa comparação. Talvez numa piada. Talvez num silêncio da tua mãe quando te mediste. Talvez num manual para meninas que te entregaram sem te perguntarem se o querias.
+
+Tem nome o que aprendeste.
+
+Chama-se vergonha do corpo sem vestido.
+
+E o mais cruel é isto: o corpo nunca te deu motivo para essa vergonha.
+
+Ela foi-te ensinada antes dele ter tempo de se mostrar a ti.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep18",
+        titulo: "A pele que nunca foi só tua",
+        curso: "pele-nua",
+        texto: `Desde muito cedo, o teu corpo foi um corpo olhado.
+
+Antes de saberes o que sentias sobre ele, já sabias o que os outros sentiam.
+
+Os comentários dos adultos sobre o teu peso. Sobre a tua altura. Sobre os teus cabelos. Sobre se "estavas a ficar uma mulherzinha".
+
+A avó que te puxava para o colo quando eras fininha e se afastava quando cresceste.
+
+O tio que disse, num jantar, uma frase que nunca esqueceste — mesmo não sendo capaz, agora, de a repetir.
+
+A primeira vez que te sentiste vista de uma forma que não pediste.
+
+A tua pele nunca foi só tua.
+
+Tem nome o que cresceu em ti.
+
+Chama-se a vigilância precoce do próprio corpo.
+
+E agora, já adulta, ainda te medes antes de ser medida. Ainda te corriges antes de ser corrigida. Ainda te explicas antes de alguém perguntar.
+
+Mas a pele pode voltar a ser tua.
+
+Começa pelo dia em que deixas de pedir licença para a tua própria forma.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep19",
+        titulo: "O espelho que evitas de manhã",
+        curso: "pele-nua",
+        texto: `Há um espelho que evitas de manhã.
+
+Passas por ele depressa. Fazes o que tens de fazer sem o olhar de frente. Quando, por descuido, o olhas, há um pequeno vazio — como se tivesses apanhado uma estranha no espelho.
+
+Não é que não te reconheças. É que esperavas outra coisa.
+
+A mulher do espelho parece cansada. Parece mais velha. Parece menos do que tu achavas que ias ser nesta altura da tua vida.
+
+Tem nome o que sentes.
+
+Chama-se luto de uma versão de ti que não aconteceu.
+
+E esse luto é silencioso. Não tem ritual. Não tem data. Ninguém te pergunta se estás bem.
+
+Tu simplesmente continuas.
+
+Mas o espelho, esse, nota tudo.
+
+E a cada manhã em que passas por ele sem o olhar, perdes a hipótese de dizer à mulher real: eu vejo-te.
+
+Ela espera por isso há anos.
+
+Não para seres diferente.
+
+Para seres finalmente olhada por ti.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep20",
+        titulo: "A fome que chega antes das 11",
+        curso: "a-fome",
+        texto: `Há uma fome que chega quase sempre à mesma hora.
+
+Não é a das três da tarde, nem a das oito.
+
+É a das onze da manhã. Ou a da meia-noite. Ou a das três, numa madrugada que não conseguias dormir.
+
+Chega quando o trabalho aperta. Quando uma conversa termina mal. Quando alguém diz uma coisa que te abriu um buraco onde não devia haver buraco nenhum.
+
+Vais ao frigorífico. Ao armário. À gaveta das bolachas.
+
+Comes sem fome.
+
+E, enquanto comes, o buraco fecha-se um bocado.
+
+Tem nome esta fome.
+
+Chama-se fome emocional.
+
+E não é fraqueza. É inteligência. O corpo encontrou uma forma de regular o que a mente ainda não sabe nomear.
+
+Comes para estar presente. Comes para te distrair. Comes para sentir qualquer coisa além do que estavas a sentir.
+
+Não precisas de parar de comer.
+
+Precisas de saber que comer não é o problema. O problema é a coisa que tu ainda não nomeaste antes de abrires a porta do frigorífico.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep21",
+        titulo: "O que a tua boca pede que não é comida",
+        curso: "a-fome",
+        texto: `Há coisas que a tua boca pede que não são comida.
+
+Pede conversa quando não há ninguém. Pede toque quando estás há semanas sem ser tocada. Pede descanso quando só te dás pausas para comer.
+
+Como a mente não te deixa parar para pedir o que realmente precisas, o corpo aprende a pedir pela boca.
+
+Porque pela boca é aceitável.
+
+Podes sair da reunião para comer. Não podes sair para chorar.
+
+Podes abrir o frigorífico à meia-noite. Não podes ligar a alguém à meia-noite só para dizer que te sentes sozinha.
+
+Tem nome o que a tua boca faz.
+
+Chama-se o único pedido que aprendeste a fazer sem vergonha.
+
+E o truque não é fechar a boca. É aprender a fazer os outros pedidos.
+
+Em voz alta. A ti e aos outros.
+
+A boca já faz o trabalho dela há muito tempo.
+
+Está cansada de pedir sozinha por todo o corpo.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep22",
+        titulo: "As noites em que te esqueces de ti até ao frigorífico",
+        curso: "a-fome",
+        texto: `Há noites em que só te lembras que existes quando chegas ao frigorífico.
+
+Passaste o dia a cuidar. A responder. A resolver. A estar presente para todos menos para ti.
+
+E quando finalmente a casa se cala e tu ficas sozinha, o corpo começa a pedir.
+
+Pede sal. Pede açúcar. Pede gordura.
+
+Pede com urgência. Como se tivesse estado a segurar-se o dia inteiro.
+
+Porque tinha.
+
+O que tu chamas gula, à meia-noite, tem outro nome.
+
+Chama-se a primeira vez que te dás atenção desde que acordaste.
+
+Não é a comida que procuras.
+
+É a presença.
+
+E como a única presença disponível àquela hora é a tua — e a tua só se lembra de ti na boca — vais ao frigorífico.
+
+Não precisas de parar de ir.
+
+Precisas de começares a chegar a ti mais cedo no dia.
+
+Antes do frigorífico.
+
+Antes do cansaço.
+
+Enquanto ainda era possível escolheres de outra forma.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep23",
+        titulo: "O desejo que aprendeste a esconder",
+        curso: "a-chama",
+        texto: `Houve uma idade em que o teu desejo se calou.
+
+Não desapareceu. Só aprendeu que era melhor não ser visto.
+
+Aprendeu com um comentário de família. Com um silêncio estranho quando perguntaste algo a uma amiga. Com a primeira vez que um corpo adulto olhou o teu e tu não soubeste se aquilo era bom ou perigoso.
+
+O desejo recolheu-se.
+
+E tu aprendeste que havia duas versões de ti: a versão aceitável e a que tinha vontades.
+
+A que tinha vontades passou a ser privada. Guardada. Às vezes até a ti mesma.
+
+Tem nome o que aprendeste.
+
+Chama-se educação do desejo feminino. A aprendizagem silenciosa de que querer era perigoso.
+
+E agora, já adulta, há partes de ti que nem sabes se ainda sabem o que querem.
+
+Porque não lhes deste palavras.
+
+Porque nunca ninguém as deixou em voz alta sem escândalo.
+
+O desejo não se perdeu.
+
+Só está à espera de ser devolvido a ti.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep24",
+        titulo: "O prazer que pedes sempre desculpa",
+        curso: "a-chama",
+        texto: `Há um prazer que, mesmo quando o tens, vem com um pedido de desculpa.
+
+A comida que te soube demasiado bem — e tu dizes "hoje exagerei".
+
+A noite em que rires alto demais — e tu dizes "desculpa, estou eufórica".
+
+O prazer físico que chega sem que estivesses à espera — e tu o desmontas depressa, antes de te sentires frívola.
+
+Aprendeste, em algum momento, que sentir bem demais era perigoso.
+
+Que mulheres que se deixavam sentir eram julgadas.
+
+Que ter prazer sem função era indecente.
+
+Então construíste um filtro entre ti e o prazer.
+
+Todo o que sentes passa por ele. Chega-te mais fraco. Mais seguro. Mais apropriado.
+
+Tem nome o filtro.
+
+Chama-se culpa do prazer.
+
+E não tens de o tirar hoje. Mas podes, um dia de cada vez, deixar passar uma coisa sem filtrar.
+
+Um pequeno prazer inteiro.
+
+Sem desculpa.
+
+E o corpo lembra-se, de repente, do que era ser teu.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep25",
+        titulo: "As noites em que o corpo pede e tu calas",
+        curso: "a-chama",
+        texto: `Há noites em que o corpo pede.
+
+Não de uma forma escandalosa. De uma forma quieta. Uma vontade de ser tocada. Uma fome pela tua própria pele. Uma inquietação que não é ansiedade — é vida.
+
+E tu calas.
+
+Achas que é tarde. Que não é a altura. Que não é apropriado desejares sozinha. Que vais dormir em vez disso.
+
+Dormes. Mas algo dentro de ti fica acordado.
+
+Tem nome o que cala.
+
+Chama-se renúncia automática ao próprio corpo.
+
+Aprendeste-a cedo. De cada vez que o teu desejo era mais inconveniente do que o horário. De cada vez que havia mais coisas importantes do que escutar o que o corpo estava a pedir.
+
+Hoje, já adulta, renúncias no automático. Sem pensar. Sem notar.
+
+Mas o corpo nota tudo.
+
+E cada pedido teu que é calado é uma retirada pequena — da vitalidade, da ligação contigo, do sentires-te inteira.
+
+Ouvir o corpo não começa com sexo.
+
+Começa com notar que ele, afinal, estava a pedir alguma coisa.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
