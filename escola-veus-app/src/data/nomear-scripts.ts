@@ -2679,4 +2679,137 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-13",
+    titulo: "Série Nomear — Ampliação Mulher Antes de Mãe (Ep 66-68)",
+    descricao: "Mais 3 scripts de A Mulher Antes de Mãe.",
+    scripts: [
+      {
+        id: "nomear-ep66",
+        titulo: "A alegria que tinhas antes de te tornares responsável",
+        curso: "a-mulher-antes-de-mae",
+        texto: `Havia uma alegria que tinhas antes.
+
+Uma alegria fácil. Uma alegria sem explicação. Uma alegria que podia aparecer numa rua qualquer, num café com um estranho, numa música que passou na rádio.
+
+Era uma alegria leve. Não pesava.
+
+E depois, algures nos teus trinta, começaste a notar que ela já não chegava com a mesma facilidade.
+
+Não é só por causa dos filhos. Não é só por causa do trabalho. É um peso que foi crescendo contigo.
+
+O peso de seres responsável. Por eles. Por eles. Por eles.
+
+E responsabilidade, quando crónica, rouba leveza.
+
+Tem nome o que perdeste.
+
+Chama-se alegria sem função.
+
+A alegria que não serve para nada. A alegria que não comemora nada. A alegria que chega só porque estás viva num dia como outro.
+
+Ela ainda pode voltar. Mas precisa de espaço sem gestão.
+
+Precisa de minutos em que não estás a organizar nada. Em que não és útil a ninguém. Em que não tens de resolver.
+
+Começa por um bocadinho. Dez minutos. Sem telefone. Sem agenda. Sem preocupação organizada.
+
+E espera.
+
+A alegria sem função volta quando a deixas de antecipar.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep67",
+        titulo: "Os hobbies que eram tuas quando ainda eras só tu",
+        curso: "a-mulher-antes-de-mae",
+        texto: `Havia coisas que tu fazias só porque te davam prazer.
+
+Tocavas um instrumento. Desenhavas. Lias romances. Dançavas. Ias a exposições. Corrias. Escrevias diários.
+
+Coisas sem utilidade aparente. Coisas que eram tuas.
+
+E, com o passar dos anos, foste deixando. Não foi uma decisão consciente. Foi um desaparecimento gradual — uma prioridade a empurrar a outra, um cansaço a tomar o tempo do hobby, uma culpa em gastar tempo em coisas "para nada".
+
+Tem nome o que se perdeu.
+
+Chama-se desligamento dos próprios prazeres.
+
+E esses hobbies não eram irrelevantes. Eram canais de expressão que te mantinham inteira.
+
+Quando os perdes, perdes uma forma de ti.
+
+Não precisas de voltar a todos. Não precisas de ser exímia em nenhum.
+
+Mas escolhe um — aquele que lembraste enquanto ouvias isto — e devolve-lhe meia hora por semana.
+
+É um gesto pequeno.
+
+Que restitui uma parte tua que já quase não reconhecias.
+
+Porque a mulher antes de ser mãe, de ser profissional, de ser filha cuidadora — fazia estas coisas.
+
+Ela continua aí.
+
+Só precisa de ser chamada pelo nome.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep68",
+        titulo: "O corpo que tinhas quando ainda dormias oito horas",
+        curso: "a-mulher-antes-de-mae",
+        texto: `Lembras-te do corpo que tinhas quando dormias oito horas seguidas?
+
+Não é só a pele. Não é só a energia. É uma qualidade de presença que tinhas.
+
+As coisas magoavam-te menos. Tinhas paciência onde já não tens. Reagias de outra forma às pequenas contrariedades.
+
+Não eras uma pessoa diferente. Eras a mesma pessoa — num corpo descansado.
+
+E foi-te sendo tirado este direito.
+
+Primeiro pelos filhos. Depois pelo trabalho. Depois pelas preocupações a chegarem à noite. Depois pela fase da vida em que dormir se tornou, ele mesmo, um privilégio raro.
+
+Tem nome o que perdeste.
+
+Chama-se direito ao descanso.
+
+E é considerado, para mulheres que cuidam, quase escandaloso reclamá-lo.
+
+Mas o corpo sem descanso crónico é um corpo doente à espera de acontecer.
+
+Dormir bem não é luxo. É fundação.
+
+Se perdeste o direito ao sono, precisas de o reclamar.
+
+Nem que seja pedindo ajuda. Reorganizando tarefas. Falando a sério com quem te rodeia.
+
+Porque a mulher que dorme oito horas é uma mulher diferente.
+
+E merece, no mínimo, uma hipótese de voltar a ser.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
