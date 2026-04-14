@@ -2812,4 +2812,147 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-14",
+    titulo: "Série Nomear — Ampliação Peso e Chão (Ep 69-71)",
+    descricao: "Mais 3 scripts de O Peso e o Chão.",
+    scripts: [
+      {
+        id: "nomear-ep69",
+        titulo: "O peso de ser sempre a que resolve",
+        curso: "o-peso-e-o-chao",
+        texto: `Em qualquer grupo em que entras, acabas por te tornar a que resolve.
+
+No trabalho. Em casa. Na família. Entre amigas.
+
+Há sempre uma crise. Há sempre alguém em descontrolo. Há sempre uma situação que precisa de cabeça fria.
+
+E tu apareces. Organizas. Decides. Acalmas.
+
+Quando tudo se resolve, o grupo respira.
+
+Tu ficas com o peso do que foi resolvido.
+
+Ninguém te pergunta como foi. Ninguém te pergunta se precisas de descansar. Ninguém te pergunta se, depois disto tudo, estás bem.
+
+Assume-se que estás. Porque resolveste.
+
+Tem nome o que te acontece.
+
+Chama-se invisibilidade da resolutora.
+
+E é uma armadilha perversa.
+
+Quanto mais resolves, menos pedem como estás.
+
+Quanto mais aguentas, mais os outros esperam.
+
+E tu, uma noite, percebes que tens cinquenta anos e ninguém — ninguém — nunca te perguntou: e tu?
+
+A competência tornou-se a tua cela.
+
+Começa a deixar cair. Uma coisa pequena por mês. Algo que costumavas resolver e agora não resolves.
+
+E nota quem aparece para preencher.
+
+Vais descobrir-te mais acompanhada do que pensavas.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep70",
+        titulo: "A gravidade que se aprende aos trinta",
+        curso: "o-peso-e-o-chao",
+        texto: `Até aos vinte, tinhas leveza.
+
+As decisões podiam ser mudadas. As relações, refeitas. Os empregos, deixados. A vida tinha uma mobilidade que parecia natural.
+
+E depois, algures nos trinta, algo mudou.
+
+As decisões começaram a ter peso. As consequências, duração. As relações, filhos. Os empregos, carreiras. A vida passou a ter uma espécie de gravidade.
+
+Chegavas a um ponto em que já não podias voltar atrás sem perder muito.
+
+Tem nome o que aprendeste.
+
+Chama-se gravidade acumulada.
+
+E ninguém te preparou para este peso.
+
+As gerações anteriores passaram por ele sem terem linguagem para o que era. Eram avós cansadas. Mães exaustas. Tias amargas.
+
+Agora tu chegaste a este lugar e sentes o mesmo.
+
+Mas tens, ao contrário delas, a possibilidade de nomear.
+
+De dizer em voz alta: isto é pesado. Não é fraqueza minha. É o peso da fase da vida em que estou.
+
+E nomear isto é o primeiro gesto para não acabares, como elas, sem linguagem para a própria exaustão.
+
+A gravidade não vai embora.
+
+Mas quando sabes o seu nome, é menos solitária.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep71",
+        titulo: "O chão que só encontras quando paras de lutar com ele",
+        curso: "o-peso-e-o-chao",
+        texto: `Há um chão que tu nunca encontraste.
+
+Não por falta de esforço. Pelo contrário — passas o dia a pedir a ti mesma que encontres apoio. Que sejas estável. Que resistas.
+
+E quanto mais pedes, menos ele aparece.
+
+O chão não é uma coisa que se procura.
+
+É uma coisa que se deixa encontrar.
+
+Tem nome o que fazes.
+
+Chama-se luta contra a gravidade.
+
+E é das formas mais esgotantes de existir.
+
+Porque o corpo, quando relaxa, já está no chão. Já pertence ao mundo. Já é suportado pela terra.
+
+É a tensão — não a gravidade — que te faz sentir que podes cair.
+
+Experimenta, num momento qualquer do dia, parar.
+
+Sentes o peso do teu corpo. Sente o chão debaixo dos pés, se estás de pé. Sente o assento debaixo de ti, se estás sentada. Sente a cama, se estás deitada.
+
+Deixa-te pousar.
+
+Não és tu que te seguras.
+
+É a terra que te segura.
+
+E ela nunca falhou.
+
+Tu é que te esqueceste de lhe entregar o peso.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
