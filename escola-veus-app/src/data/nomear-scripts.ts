@@ -4838,4 +4838,259 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "nomear-serie-24",
+    titulo: "Série Nomear — O Ofício de Ser (Ep 117-122)",
+    descricao: "O Ofício de Ser (Ciclos) — identidade, propósito emergente, vocação sem carreira, o que tu és.",
+    scripts: [
+      {
+        id: "nomear-ep117",
+        titulo: "A coisa que tu és e não tem nome",
+        curso: "o-oficio-de-ser",
+        texto: `Há algo em ti que não tem nome.
+
+Não é profissão. Não é papel familiar. Não é função social.
+
+É uma qualidade tua que atravessa todos os contextos em que te encontras. Uma forma de olhar. Uma forma de estar. Uma espécie de cheiro tua que fica nos sítios por onde passas.
+
+As pessoas que te conhecem reconhecem esta coisa, embora também não saibam como se chama.
+
+Tu também a reconheces — mas, muitas vezes, só quando alguém a nomeia por ti.
+
+A isto chamamos ofício de ser.
+
+Não se ensina. Não se formaliza. Não cabe num CV.
+
+Mas é o que torna possível tu fazeres o que fazes à maneira específica como o fazes.
+
+Se amanhã mudares completamente de profissão, de país, de vida — esta coisa vai contigo. É inalienável.
+
+Descobrir o teu ofício de ser é um trabalho de uma vida.
+
+Às vezes só o reconheces aos cinquenta. Às vezes aos setenta.
+
+Mas se fores olhando, vai-se revelando. Peça por peça.
+
+Começa pelas coisas que, quando as fazes, as pessoas dizem: só tu poderias ter feito isto assim.
+
+Essas são pistas.
+
+E acumulam-se.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep118",
+        titulo: "O que fazes bem e nem sabes",
+        curso: "o-oficio-de-ser",
+        texto: `Há coisas que fazes bem e nem sabes.
+
+Consegues ler uma sala em segundos. Sabes dizer a frase certa a quem está em colapso. Tens um ouvido particular para quando alguém está a mentir. Fazes perguntas que mudam conversas.
+
+Estas coisas, tu fazes sem pensar.
+
+Por isso não lhes chamas competências. Achas que qualquer pessoa faria igual.
+
+Não faria.
+
+A maioria das pessoas é genuinamente má em algumas destas coisas.
+
+A isto chamamos a arte invisível da mulher comum.
+
+E é invisível sobretudo para a própria.
+
+Porque aprendeste, desde sempre, que coisas que fazes facilmente não são valiosas. Só teria valor aquilo que te custasse. Só mereceria reconhecimento aquilo que fosse trabalho duro.
+
+Mas o que é teu chega-te facilmente.
+
+É a definição de talento próprio.
+
+Se te custa imenso, talvez seja trabalho — mas não é necessariamente o teu trabalho.
+
+Se te sai com fluidez, talvez seja precisamente aquilo que foste trazida para fazer.
+
+Olha para o que parece fácil demais para ter valor.
+
+É provável que esteja lá uma pista sobre o que é realmente teu.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep119",
+        titulo: "A vocação que não tem carreira",
+        curso: "o-oficio-de-ser",
+        texto: `Há pessoas que têm uma vocação que não cabe em nenhuma carreira.
+
+Nasceram para ouvir outras pessoas a sério. Nasceram para cuidar de seres vivos. Nasceram para reconhecer beleza em lugares onde ninguém repara. Nasceram para ter presença estabilizadora nos grupos.
+
+E não há emprego que corresponda exactamente a estas vocações.
+
+A isto chamamos vocação sem cargo.
+
+Muitas mulheres, durante décadas, ficam frustradas por não encontrarem uma profissão que corresponda ao que são.
+
+Procuram e não encontram.
+
+Tentam adaptar-se a profissões existentes e fica sempre algo a faltar.
+
+E pensam: talvez a minha vocação seja errada. Talvez o que sinto em mim não seja viável. Talvez tenha de desistir e aceitar fazer outra coisa.
+
+Mas a vocação não falhou.
+
+O mercado é que é pequeno.
+
+Algumas das vocações mais importantes do mundo nunca terão nome de profissão. Nunca estarão no LinkedIn. Nunca vão aparecer nas listas de carreiras mais bem pagas.
+
+E continuam a ser vocação.
+
+Tu podes viver a tua vocação dentro da profissão que tiveres. Ou ao lado dela. Ou em vez dela, se as circunstâncias permitirem.
+
+Mas não tens de a abandonar só porque não há nome formal para ela.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep120",
+        titulo: "O que te sai sem esforço",
+        curso: "o-oficio-de-ser",
+        texto: `Observa, nos próximos dias, o que te sai sem esforço.
+
+Não a tarefa que te custa a fazer. A que sai sem tu pensares.
+
+A facilidade com que explicas um conceito complexo. A naturalidade com que organizas um evento. A intuição com que escolhes a roupa de uma amiga. A forma como resolves um conflito sem gritar.
+
+O que te sai sem esforço é, muito provavelmente, precisamente o que é teu.
+
+A isto chamamos natureza expressa.
+
+A tua natureza não se adquire. Está lá. Foi-te dada.
+
+O trabalho de uma vida é reconhecê-la.
+
+E depois, a partir do reconhecimento, alinhar cada vez mais a tua vida com ela.
+
+Muitas pessoas passam a vida inteira a fazer coisas que exigem esforço constante para serem feitas. E interpretam esse esforço como virtude.
+
+Pode ser virtude. Pode também ser sinal de que estás a fazer aquilo que não é teu.
+
+O teu ofício, quando está a acontecer, é reconhecível pela leveza. Não é necessariamente fácil. Mas é alinhado.
+
+E alinhado é diferente de exigente.
+
+O que é exigente pode ser teu. O que é forçado raramente é.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep121",
+        titulo: "A mulher que te pedem para ser vs. a que és",
+        curso: "o-oficio-de-ser",
+        texto: `Há uma mulher que te pedem para seres.
+
+É filha boa. Esposa atenta. Mãe dedicada. Profissional competente. Amiga disponível.
+
+Tu aceitaste esta mulher quase sem pensar. Porque pareceu sempre o que fazia sentido.
+
+E há outra mulher dentro de ti.
+
+Que quer menos. Ou quer outras coisas. Que precisa de silêncio em vez de conversa. Que prefere solidão em vez de grupos. Que tem tendências e gostos que não batem certo com a primeira mulher.
+
+Durante anos, esta segunda mulher foi gerida. Controlada. Oferecida apenas em pequenas doses, em momentos privados, quando ninguém te via.
+
+A isto chamamos duas mulheres numa só.
+
+A mulher que te pedem e a que és verdadeiramente.
+
+Viver em dois registos é cansativo. E progressivamente insustentável.
+
+Porque a segunda mulher não desaparece. Ela tem energia própria. E se for calada demais, começa a manifestar-se em sintomas — inquietação, tristeza, cansaço inexplicável, sonhos repetitivos.
+
+A integração destas duas mulheres não é dramática.
+
+É gradual.
+
+É permitires que a segunda apareça, de cada vez, um pouco mais. Até que a primeira deixe de ser um traje e passe a ser uma versão da segunda, adaptada para certos contextos.
+
+Uma mulher só. Com várias expressões.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+      {
+        id: "nomear-ep122",
+        titulo: "O ofício que só tu podes fazer",
+        curso: "o-oficio-de-ser",
+        texto: `Há algo que só tu podes fazer.
+
+Não porque tenhas talento único — há muitas pessoas talentosas.
+
+Porque o teu conjunto específico de vivências, carácter, tempo e corpo cria uma combinação que não se repete.
+
+Tu és a única pessoa, neste momento do mundo, que viu o que viste, sentiu o que sentiste, sobreviveu ao que sobreviveste, amou quem amaste.
+
+E do cruzamento disto tudo emerge uma possibilidade que só tu podes realizar.
+
+A isto chamamos o ofício irrepetível.
+
+Não precisa de ser grandioso. Não precisa de ser famoso.
+
+Pode ser uma forma de estar com os outros. Uma forma de escrever uma mensagem a uma amiga. Uma forma de cuidar de uma planta. Uma forma de desenhar uma sala. Uma forma de ensinar alguém a fazer uma coisa.
+
+Pequeno ou grande, é teu.
+
+E se tu não o fizeres — ninguém fará igual.
+
+Não sei se isto deve ser uma pressão ou um alívio.
+
+Provavelmente as duas coisas.
+
+Pressão: o que é teu não pode ser delegado.
+
+Alívio: não tens de competir com ninguém. Ninguém está a fazer o que és para fazer.
+
+O teu ofício de ser não vai aparecer numa lista de tarefas.
+
+Vai emergindo, ao longo de uma vida atenta, nas coisas que fazes sem perceberes que já estás a fazer.
+
+E um dia, pela retrospectiva, vais ver que foi isso que, afinal, estavas a fazer desde sempre.
+
+[long pause]
+
+Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.
+
+[pause]
+
+Escola dos Véus. seteveus.space.`,
+      },
+    ],
+  },
 ];
