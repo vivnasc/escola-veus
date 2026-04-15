@@ -16901,7 +16901,7 @@ Esta antecipação tornou-se hábito tão profundo que tu já nem a notas.
 
 [pause]
 
-Acontece automaticamente. Em milisegundos. Antes de qualquer pensamento consciente.
+Acontece automaticamente. Em milissegundos. Antes de qualquer pensamento consciente.
 
 [short pause]
 
@@ -16929,11 +16929,11 @@ E libertar o resto do tempo desta vigilância automática.
 
 Esta semana, durante alguns momentos do dia, repara.
 
-Quando te avalias num reflexo. Quando ajustas a roupa em frente a uma sala. Quando antecipa-lo a impressão que vais causar antes de entrares.
+Quando te avalias num reflexo. Quando ajustas a roupa em frente a uma sala. Quando antecipas a impressão que vais causar antes de entrares.
 
 [pause]
 
-Quantas vezes ao dia faz isto?
+Quantas vezes ao dia fazes isto?
 
 [short pause]
 
@@ -17472,7 +17472,7 @@ No conjunto, são coreografia constante.
 
 [short pause]
 
-Coreografia que mantém o teu corpo permanentemente ajustado a uma versão que tu antecipa-te ser mais aceitável do que a versão natural.
+Coreografia que mantém o teu corpo permanentemente ajustado a uma versão que tu antecipas ser mais aceitável do que a versão natural.
 
 [pause]
 
@@ -18176,7 +18176,7 @@ Mas pedir é, na verdade, gesto de confiança.
 
 [pause]
 
-E pessoas que amam-te, em geral, acolhem o pedido com gosto.
+E pessoas que te amam, em geral, acolhem o pedido com gosto.
 
 Porque é confiança nelas. E porque, sem o pedido, elas próprias podem estar a sentir-se em distância sem saber como aproximar-se.
 
@@ -19752,7 +19752,7 @@ Isto, se for o teu caminho nos próximos anos, é mais do que muitas mulheres co
 
 [long pause]
 
-E é mais do que suficiente para uma vida significativamente diferente daquela que tu teve até aqui.`,
+E é mais do que suficiente para uma vida significativamente diferente daquela que tu tiveste até aqui.`,
       },
       {
         id: "pele-nua-m8c",
