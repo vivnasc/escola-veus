@@ -17498,4 +17498,399 @@ E menos com administração permanente.`,
       },
     ],
   },
+  {
+    id: "curso-pele-nua-m3",
+    titulo: "Curso Pele Nua — Módulo 3 (Aulas A, B, C)",
+    descricao: "O Corpo no Espaço Público.",
+    scripts: [
+      {
+        id: "pele-nua-m3a",
+        titulo: "M3.A — Roupa como armadura",
+        curso: "pele-nua",
+        texto: `Há roupa, no teu armário, que tu vestes para te sentires protegida.
+
+[pause]
+
+Para reuniões importantes. Para situações em que tu antecipas ser olhada com mais atenção. Para dias em que estás emocionalmente vulnerável.
+
+[long pause]
+
+Esta roupa funciona como armadura.
+
+[pause]
+
+Cobre. Estrutura. Compõe.
+
+E permite que tu enfrentes o mundo com sensação reduzida de exposição.
+
+[short pause]
+
+Esta função é legítima. Toda a gente, em algum grau, usa a roupa assim.
+
+[pause]
+
+Mas para muitas mulheres, a função armadura tornou-se quase a única função da roupa.
+
+[long pause]
+
+Quase tudo o que tens no armário foi escolhido com critério defensivo.
+
+[pause]
+
+Esconde isto. Estrutura aquilo. Não chama atenção para o outro.
+
+[short pause]
+
+E, ao longo dos anos, o teu armário tornou-se inventário de defesas — não inventário de expressão.
+
+[pause]
+
+A pergunta "o que é que eu gostaria de vestir hoje?" desaparece.
+
+E é substituída por "o que é que tem menos risco de ser comentado hoje?"
+
+[long pause]
+
+Esta substituição opera silenciosamente durante anos.
+
+Até que, em algum momento, tu percebes que já não sabes ao certo qual seria a tua escolha de roupa se as considerações defensivas desaparecessem.
+
+[pause]
+
+Não é fácil aceder a esta resposta — porque a vigilância está tão integrada que parece a tua preferência genuína.
+
+[short pause]
+
+Mas é, no fundo, herança defensiva.
+
+[long pause]
+
+Faz uma experiência, esta semana.
+
+Vai a uma loja onde nunca ias normalmente. Não para comprar.
+
+Apenas para experimentar.
+
+[pause]
+
+Experimenta peças que normalmente nunca experimentarias.
+
+Cores que evitas. Silhuetas que rejeitas. Estilos que consideras "não para ti".
+
+[short pause]
+
+Algumas vão confirmar que não te servem. Outras — e estas são as importantes — vão surpreender-te.
+
+[pause]
+
+Vais descobrir que algumas peças que tinhas excluído por hábito defensivo são, na verdade, peças que te ficam bem ou que te dão prazer ao ver.
+
+[short pause]
+
+Estas peças contêm informação sobre a versão de ti que vivia atrás da armadura.
+
+[long pause]
+
+Não tens de comprar tudo.
+
+Mas leva uma para casa.
+
+[pause]
+
+Uma única peça que tu, normalmente, nunca terias escolhido.
+
+E que, na cabine de prova, te fez sentir alguma coisa nova.
+
+[short pause]
+
+Esta peça é experiência.
+
+[pause]
+
+Vai-te ensinar, ao longo das próximas semanas, como te sentes a sair de casa com algo escolhido por outra parte de ti — não pela parte defensiva.
+
+[long pause]
+
+A roupa pode ser armadura.
+
+Pode também ser exploração.
+
+[pause]
+
+E, em algumas alturas da vida, vale a pena reconfigurar o equilíbrio entre as duas — para o lado da exploração ganhar algum espaço de volta.`,
+      },
+      {
+        id: "pele-nua-m3b",
+        titulo: "M3.B — A postura herdada",
+        curso: "pele-nua",
+        texto: `A tua postura foi-te ensinada antes de saberes.
+
+[pause]
+
+Como te sentas. Como ficas em pé. Como caminhas. Como ocupas o teu corpo no espaço.
+
+[long pause]
+
+Tudo isto, em ti, tem influência directa de quem foi a primeira mulher próxima.
+
+[pause]
+
+A tua mãe.
+
+[short pause]
+
+A forma como ela ocupava o espaço, em criança, foi a tua referência inicial.
+
+E a maioria das pessoas, ao longo da vida, mantém uma postura semelhante à da figura materna — mesmo sem se aperceber.
+
+[pause]
+
+Se a tua mãe encolhia os ombros, tu provavelmente também.
+
+Se ela se sentava com pernas cruzadas e os pés escondidos, tu provavelmente também.
+
+Se ela falava com a mão à frente da boca, tu provavelmente também.
+
+[long pause]
+
+Esta herança postural é tão profunda que muitas mulheres só a notam quando alguém lha aponta.
+
+"És mesmo igual à tua mãe na forma como te sentas."
+
+[pause]
+
+E tu, em geral, ris desconfortavelmente. Porque até esse momento não tinhas reparado.
+
+[short pause]
+
+A herança postural tem implicações para além do estético.
+
+[pause]
+
+A postura que herdaste reflecte, de alguma forma, a posição emocional que a tua mãe tinha em relação ao mundo.
+
+[short pause]
+
+Ombros encolhidos sugerem proteção habitual.
+
+Pernas escondidas sugerem instinto de não tomar muito espaço.
+
+Mão à frente da boca sugere autocensura corporal.
+
+[pause]
+
+Estas posturas podem ter sido necessárias para ela, na época em que ela viveu.
+
+Mas podem já não ser necessárias para ti.
+
+[long pause]
+
+Mudar a postura é difícil.
+
+Não por preguiça — por enraizamento.
+
+[pause]
+
+A postura está integrada no sistema nervoso a um nível que nenhuma decisão consciente, isolada, consegue alterar.
+
+[short pause]
+
+Mas pode ser modulada com prática lenta.
+
+[pause]
+
+Algumas semanas de yoga. Algumas sessões com fisioterapeuta especializada. Aulas de dança com foco em alinhamento.
+
+[short pause]
+
+Ou, mais simples, exercício diário de tomar consciência de como ocupas o espaço.
+
+[long pause]
+
+Esta semana, observa-te durante o dia.
+
+Como te sentas em reuniões? Como ocupas o lugar no autocarro? Como caminhas em ruas movimentadas?
+
+[pause]
+
+Vais notar padrões.
+
+E em quase todos eles, vais reconhecer ecos da tua mãe.
+
+[short pause]
+
+Não para a julgar. Apenas para reconhecer a influência.
+
+[pause]
+
+Depois desta consciência, podes começar a experimentar pequenos ajustes.
+
+[short pause]
+
+Senta-te com as pernas a ocupar mais espaço durante uma reunião. Caminha com os ombros mais relaxados durante um passeio. Fala em voz natural sem cobrir a boca durante uma conversa.
+
+[pause]
+
+Sente o que muda — em ti e na reacção das pessoas.
+
+[long pause]
+
+A postura é um dos veículos silenciosos de transmissão entre gerações de mulheres.
+
+[pause]
+
+Quebrar parte desta herança, conscientemente, é dos actos mais discretos e mais importantes que podes fazer pela tua autonomia corporal.
+
+[short pause]
+
+Não para ser diferente da tua mãe.
+
+Para descobrir, finalmente, qual seria a tua postura se ela tivesse sido escolhida por ti — e não absorvida em criança.`,
+      },
+      {
+        id: "pele-nua-m3c",
+        titulo: "M3.C — Onde o corpo se encolhe",
+        curso: "pele-nua",
+        texto: `Há sítios específicos onde o teu corpo se encolhe.
+
+[pause]
+
+Nem te apercebes que aconteceu — mas aconteceu.
+
+[long pause]
+
+No autocarro, quando se senta alguém ao teu lado.
+
+Em reuniões com pessoas que te intimidam.
+
+Em jantares de família onde determinada pessoa está presente.
+
+Em consultórios médicos.
+
+[pause]
+
+Em cada um destes contextos, o teu corpo encolheu uns centímetros.
+
+Sem ordem consciente. Por reflexo.
+
+[short pause]
+
+E permaneceu encolhido durante o tempo que durou a situação.
+
+[long pause]
+
+Estes encolhimentos automáticos são informação importante.
+
+[pause]
+
+Dizem-te onde, dizem-te quando, dizem-te perto de quem o teu corpo não se sente seguro.
+
+[short pause]
+
+Não no sentido de perigo físico necessariamente. Mas no sentido de não ter espaço para ser inteiro.
+
+[pause]
+
+E o teu corpo, sabiamente, recolhe-se quando antecipa que o seu tamanho natural não vai caber.
+
+[long pause]
+
+Reconhecer estes encolhimentos transforma a tua leitura das situações sociais.
+
+[pause]
+
+Onde antes pensavas "esta pessoa intimida-me", podes agora dizer "o meu corpo encolhe perto desta pessoa".
+
+A diferença é importante.
+
+[short pause]
+
+A primeira frase é vaga. A segunda é diagnóstica.
+
+[pause]
+
+E o diagnóstico permite escolha consciente sobre a continuação da relação.
+
+[long pause]
+
+Em algumas situações, o encolhimento é razoável e adaptativo.
+
+Quando estás num espaço público apertado, encolheres-te ligeiramente é cortesia.
+
+[pause]
+
+Quando estás com alguém que efectivamente tem autoridade legítima sobre ti — um chefe directo numa avaliação importante — encolheres-te ligeiramente é estratégia.
+
+[short pause]
+
+Estes encolhimentos não são problemáticos.
+
+[pause]
+
+Mas há outros que merecem atenção.
+
+[long pause]
+
+Os encolhimentos repetidos com pessoas próximas, ao longo dos anos, são sinal de uma dinâmica relacional que está a custar-te corpo.
+
+[pause]
+
+Se há uma pessoa específica perto de quem o teu corpo automaticamente se encolhe, há informação relacional ali a precisar de ser ouvida.
+
+[short pause]
+
+Não significa que tens de cortar a relação.
+
+Significa que vale a pena pensar no que está a fazer com que o teu corpo recolha quando essa pessoa está presente.
+
+[pause]
+
+Pode ser histórico. Pode ser dinâmica actual. Pode ser ambas.
+
+[long pause]
+
+Esta semana, faz uma observação cuidadosa.
+
+Em que situações é que o teu corpo se encolhe?
+
+Em que momentos do dia? Perto de quem?
+
+[pause]
+
+Faz uma lista.
+
+[short pause]
+
+Provavelmente vai aparecer uma pessoa, ou uma situação, em que isto acontece com regularidade.
+
+[pause]
+
+E essa pessoa ou situação merece reflexão consciente.
+
+[long pause]
+
+O corpo encolhido não é fraqueza.
+
+É sinalização.
+
+[pause]
+
+Ouvir esta sinalização é o primeiro passo para começar a ter relações em que o teu corpo possa, finalmente, ocupar o espaço que naturalmente ocuparia.
+
+[short pause]
+
+Sem encolhimentos automáticos.
+
+Sem recolhimentos defensivos.
+
+Apenas o teu corpo, em tamanho real, em ambientes onde isso é seguro.
+
+[pause]
+
+E quanto mais tu reduzires o tempo passado em ambientes onde tens de te encolher, mais o teu corpo lembra como é estar inteiro.
+
+E começa a expandir-se de novo.`,
+      },
+    ],
+  },
 ];
