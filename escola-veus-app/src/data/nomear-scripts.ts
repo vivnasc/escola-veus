@@ -5683,4 +5683,335 @@ E escolher já é liberdade.`,
       },
     ],
   },
+  {
+    id: "curso-ouro-proprio-m3",
+    titulo: "Curso Ouro Próprio — Módulo 3 (Aulas A, B, C)",
+    descricao: "A Vergonha do Dinheiro. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m3a",
+        titulo: "M3.A — Vergonha de não ter",
+        curso: "ouro-proprio",
+        texto: `Já inventaste uma desculpa para não ir a um jantar porque não querias que vissem que não podias pagar?
+
+[pause]
+
+Já disseste que não te apetecia quando, na verdade, não tinhas como?
+
+[long pause]
+
+O grupo de amigas combina um jantar num restaurante novo.
+
+Tu vês o preço no Instagram e o estômago contrai.
+
+[pause]
+
+Não é fome. É vergonha.
+
+[short pause]
+
+Sabes que se fores, vais ter de escolher o prato mais barato e fingir que era o que querias.
+
+Ou vais dividir a conta por igual e ficar sem dinheiro para o resto da semana.
+
+[pause]
+
+Então dizes: hoje não posso, tenho um compromisso.
+
+E ficas em casa. Sozinha. Com a vergonha intacta.
+
+[long pause]
+
+Porque a vergonha não era do jantar.
+
+Era de não ter.
+
+E não ter, nesta história que carregas, significa não ser suficiente.
+
+[long pause]
+
+Já fizeste isto com viagens. Com presentes. Com o dentista que adias. Com o curso que querias fazer.
+
+Cada vez que dizes não por vergonha, a vergonha cresce.
+
+Porque a confirmaste.
+
+[long pause]
+
+A vergonha de não ter não é sobre dinheiro. É sobre pertença.
+
+[pause]
+
+Quando não tens o que os outros têm, o corpo sente que não pertences. Que és de fora. Que há um clube ao qual não tens acesso — e o bilhete de entrada é o saldo da tua conta.
+
+[long pause]
+
+Esta vergonha é silenciosa.
+
+Ninguém fala dela.
+
+Ninguém diz: tenho vergonha de ser pobre. Ninguém diz: tenho vergonha de não conseguir pagar o jantar.
+
+Porque a própria vergonha tem vergonha de si mesma.
+
+[pause]
+
+E então esconde-se. Atrás de desculpas. Atrás de silêncio. Atrás de uma vida mais pequena do que precisava de ser.
+
+[short pause]
+
+E o mais cruel: a vergonha faz-te sentir que mereces a vida pequena.
+
+Que é o teu lugar.
+
+[long pause]
+
+Da próxima vez que sentires aquele aperto — o da vergonha financeira, o que te faz inventar uma desculpa — para.
+
+Antes de responder.
+
+Põe os pés bem assentes no chão.
+
+Sente o peso do teu corpo na cadeira ou no chão.
+
+[pause]
+
+E pergunta-te: o que é que eu diria se não tivesse vergonha?
+
+Não precisas de dizer. Só de saber.
+
+[short pause]
+
+Saber a resposta verdadeira já é diferente de fugir dela.
+
+[long pause]
+
+A vergonha de não ter faz-te viver menos.
+
+E viver menos nunca resolveu a falta.`,
+      },
+      {
+        id: "ouro-proprio-m3b",
+        titulo: "M3.B — Vergonha de querer mais",
+        curso: "ouro-proprio",
+        texto: `Já te sentiste culpada por querer ganhar mais dinheiro?
+
+[pause]
+
+Já pensaste: devia ser grata pelo que tenho — e usaste a gratidão como forma de calar o desejo?
+
+[long pause]
+
+Estás numa conversa com alguém — uma amiga, uma irmã, uma colega.
+
+E surge o assunto.
+
+[pause]
+
+Ela fala dos seus planos: quer mudar de casa, quer investir, quer crescer.
+
+E tu sentes uma coisa estranha.
+
+[short pause]
+
+Não é inveja — é mais subtil.
+
+É uma voz que diz: eu também quero.
+
+[pause]
+
+Mas logo atrás vem outra: quem és tu para querer mais? Tens tecto. Tens comida. Há gente que não tem nada. O que é que te falta?
+
+[pause]
+
+E engoles o desejo.
+
+Mudas de assunto.
+
+Dizes: eu estou bem assim.
+
+[short pause]
+
+Mas não estás.
+
+[long pause]
+
+Há algo dentro de ti que sabe que querer mais não é ganância.
+
+Que sabe que podes ser grata e ambiciosa ao mesmo tempo.
+
+Mas essa voz — a que te permite querer — foi silenciada tantas vezes que já quase não a ouves.
+
+[long pause]
+
+Há um pacto silencioso que muitas mulheres fazem sem saber: para ser boa, tens de querer pouco.
+
+Para ser humilde, tens de te contentar.
+
+Para ser decente, tens de não ambicionar demais.
+
+[pause]
+
+Este pacto não foi escrito — foi sentido.
+
+[short pause]
+
+Sentiste-o quando a tua mãe se sacrificou e foi elogiada por isso.
+
+Quando viste mulheres ambiciosas serem chamadas frias, calculistas, egoístas.
+
+Quando aprendeste que querer para ti era tirar aos outros.
+
+[long pause]
+
+Mas isto é mentira.
+
+Uma mentira cómoda para quem beneficia de mulheres que não pedem.
+
+[short pause]
+
+Querer mais não é ingratidão. Querer mais é ouvires-te.
+
+[pause]
+
+E há uma diferença enorme entre ganância e permissão.
+
+Ganância é querer sem fim.
+
+Permissão é dizer: eu também posso.
+
+[long pause]
+
+Fecha os olhos. Respira fundo.
+
+E diz, em voz alta, devagar: eu quero mais.
+
+Só isso. Eu quero mais.
+
+[pause]
+
+Repara no que acontece.
+
+Encolheste os ombros? Baixaste a voz? Olhaste à volta para ver se alguém ouviu?
+
+[pause]
+
+Agora diz outra vez. Mais devagar.
+
+Sem pedir desculpa.
+
+[short pause]
+
+Se a vergonha vier, deixa-a estar.
+
+Não és tu a vergonha.
+
+És tu a dizer a verdade.
+
+[long pause]
+
+A vergonha de querer mais protege um mundo que nunca te protegeu a ti.`,
+      },
+      {
+        id: "ouro-proprio-m3c",
+        titulo: "M3.C — Dinheiro e dignidade",
+        curso: "ouro-proprio",
+        texto: `Alguma vez sentiste que o teu valor como pessoa dependia do número na tua conta?
+
+[pause]
+
+Que eras mais ou menos digna conforme o que tinhas — ou não tinhas?
+
+[long pause]
+
+Foste a uma consulta. Ou a uma loja. Ou a uma reunião.
+
+E algo na forma como te olharam mudou quando perceberam que não tinhas tanto quanto pensavam.
+
+[pause]
+
+Talvez tenha sido subtil — um tom de voz, um olhar, uma pausa a mais.
+
+Talvez tenha sido explícito.
+
+[short pause]
+
+Mas sentiste.
+
+No corpo, sentiste.
+
+[long pause]
+
+Uma contracção. Uma vontade de te fazer mais pequena.
+
+Ou o contrário: uma vontade de provar que és mais do que a tua carteira.
+
+Compraste algo que não precisavas para não parecer que não podias.
+
+Ou ficaste calada quando devias ter falado porque sentiste que não tinhas crédito — não financeiro, mas humano.
+
+[pause]
+
+Como se o dinheiro fosse uma língua e tu estivesses a falar com sotaque.
+
+[long pause]
+
+Vivemos num mundo que confunde valor económico com valor humano.
+
+Não é suposto — mas é assim que funciona.
+
+[pause]
+
+E tu absorveste isso.
+
+Não porque sejas fraca, mas porque é quase impossível não absorver.
+
+[short pause]
+
+Quando toda a gente à tua volta trata o dinheiro como medida de competência, de inteligência, de merecimento, o corpo aprende: quanto tenho é quanto valho.
+
+[pause]
+
+Mas isto é uma ilusão.
+
+Uma ilusão poderosa, porque toda a gente acredita nela.
+
+[long pause]
+
+Separar o teu valor do teu saldo é um dos actos mais difíceis e mais necessários que podes fazer.
+
+[pause]
+
+Não porque o dinheiro não importa — importa.
+
+Mas porque tu importas independentemente dele.
+
+[short pause]
+
+A tua dignidade não tem cifrão.
+
+[long pause]
+
+Completa esta frase por escrito: eu valho o mesmo quando tenho muito e quando tenho pouco porque...
+
+Lê a tua resposta.
+
+[pause]
+
+Se não acreditares nela — tudo bem. Escreve-a na mesma.
+
+Escreve-a todos os dias desta semana.
+
+[pause]
+
+Não porque repetir mude tudo — mas porque começar a ouvir-te é o primeiro passo para te acreditares.
+
+[long pause]
+
+O teu valor não é um número.
+
+Nunca foi.`,
+      },
+    ],
+  },
 ];
