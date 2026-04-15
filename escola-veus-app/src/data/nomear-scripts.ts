@@ -21283,4 +21283,471 @@ E, ao contrário do bolo, não traz vergonha na manhã seguinte.`,
       },
     ],
   },
+  {
+    id: "curso-a-fome-m4",
+    titulo: "Curso A Fome — Módulo 4 (Aulas A, B, C)",
+    descricao: "A Comida da Mãe.",
+    scripts: [
+      {
+        id: "a-fome-m4a",
+        titulo: "M4.A — A frase à mesa que ficou em ti",
+        curso: "a-fome",
+        texto: `Quase todas as mulheres carregam, na relação com a comida, uma frase específica que alguém disse à mesa.
+
+[pause]
+
+Nem sempre te lembras claramente.
+
+Mas a frase está lá. A operar.
+
+[long pause]
+
+Pode ter sido a mãe a olhar para o teu prato e dizer:
+
+"Tens a certeza de que precisas de mais?"
+
+[pause]
+
+Pode ter sido o pai a comentar, sem maldade, num jantar de família:
+
+"Esta menina, se não a controlamos, come tudo."
+
+[short pause]
+
+Pode ter sido uma tia, uma avó, um irmão a brincar:
+
+"Olha quem está a engordar."
+
+[long pause]
+
+Provavelmente foi dito num momento aparentemente banal.
+
+[pause]
+
+Provavelmente quem disse já se esqueceu há décadas.
+
+[short pause]
+
+Mas tu não esqueceste.
+
+Não no plano consciente — talvez não te lembres de imediato. Mas no plano corporal, sim.
+
+[long pause]
+
+Esta frase ficou registada como regra.
+
+[pause]
+
+E desde aí, todas as vezes que tu te sentas à mesa, há uma parte de ti que está a obedecer a essa regra, mesmo que tu já não a saibas dizer em voz alta.
+
+[short pause]
+
+A regra pode ser:
+
+"Não comas tudo o que está no prato."
+
+"Não peças mais do que os outros."
+
+"Tem cuidado, ou vais ficar como aquela tia."
+
+"Mulher bonita não tem apetite."
+
+[long pause]
+
+Estas regras não foram escolhidas por ti.
+
+[pause]
+
+Foram instaladas em ti.
+
+[short pause]
+
+Por palavras casuais ditas em momentos casuais por pessoas que não tinham ideia do peso que essas palavras iam ter.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno mas importante.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Frases sobre comida que ficaram em mim."
+
+[short pause]
+
+E vai escrevendo, ao longo dos dias, à medida que te lembras.
+
+[pause]
+
+Não esforça a memória.
+
+Quando estiveres a comer e reparares que algo te fez pousar o garfo antes de estares cheia, repara.
+
+Quando estiveres a calcular se podes ou não pedir a sobremesa, repara.
+
+Quando sentires vergonha sem razão presente, repara.
+
+[long pause]
+
+Em cada um destes momentos, a tua cabeça tem uma frase a operar.
+
+[pause]
+
+Não é tua. Foi-te dada.
+
+E a tua tarefa é, durante esta semana, identificar o nome de quem ta deu.
+
+[short pause]
+
+Ao lado de cada frase que escreveres, escreve um segundo dado:
+
+"Esta frase, na minha cabeça, soa à voz de —"
+
+[pause]
+
+Pode ser a mãe. O pai. Uma irmã mais velha. Uma chefe. Uma amiga da adolescência.
+
+[long pause]
+
+Quando consegues atribuir a frase a alguém específico, ela perde alguma coisa.
+
+[pause]
+
+Deixa de parecer verdade tua.
+
+Passa a parecer empréstimo.
+
+[short pause]
+
+E o que é empréstimo pode, com tempo, ser devolvido.
+
+[long pause]
+
+Não amanhã.
+
+Mas a partir do momento em que a frase tem nome de outra pessoa, a tua relação com ela começa a mudar.
+
+[pause]
+
+Já não a obedeces porque é tua.
+
+Começas a obedecê-la, ou não, sabendo que é dela.`,
+      },
+      {
+        id: "a-fome-m4b",
+        titulo: "M4.B — A relação que ela tinha com o próprio corpo",
+        curso: "a-fome",
+        texto: `Antes de tu teres uma relação com a comida, viste a relação que a tua mãe tinha.
+
+[pause]
+
+Antes de qualquer livro, qualquer conselho, qualquer aula de educação alimentar.
+
+[long pause]
+
+Viste-a aos seis, sete, dez anos, sem saber que estavas a aprender.
+
+[pause]
+
+Viste-a olhar-se ao espelho de manhã.
+
+Viste-a queixar-se da barriga depois das festas.
+
+Viste-a dizer "hoje não como, ainda estou cheia de ontem" — e percebeste, sem palavras, que isso era forma adulta de ser mulher.
+
+[short pause]
+
+Viste-a a fazer uma dieta. Depois outra. Depois outra.
+
+Viste-a celebrar quilos perdidos como se fosse vitória pessoal.
+
+Viste-a ficar de mau humor quando a balança não cooperava.
+
+[long pause]
+
+Tu não imitaste o que ela disse sobre o corpo.
+
+Imitaste o que ela fez com o corpo.
+
+[pause]
+
+E o que ela fez foi, em quase todos os casos, uma versão da guerra silenciosa que ela própria tinha aprendido com a tua avó.
+
+[short pause]
+
+Esta cadeia é longa.
+
+[pause]
+
+Avó. Mãe. Tu.
+
+[long pause]
+
+E a maior parte das mulheres adultas vive com uma relação com o corpo e com a comida que não desenharam.
+
+[pause]
+
+Herdaram.
+
+[short pause]
+
+Herdaram a vigilância matinal ao espelho.
+
+Herdaram as frases ao prato.
+
+Herdaram a culpa pela sobremesa.
+
+Herdaram a sensação de que comer com prazer, em adulta, é forma de fraqueza.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de genealogia.
+
+[pause]
+
+Numa folha grande, divide-a em três colunas.
+
+[short pause]
+
+Em cima da primeira escreve o nome da tua avó.
+
+Em cima da segunda escreve o nome da tua mãe.
+
+Em cima da terceira escreve o teu nome.
+
+[pause]
+
+E em cada coluna, escreve três frases.
+
+[long pause]
+
+Como é que ela falava do próprio corpo?
+
+Como é que ela comia em frente aos outros?
+
+O que é que ela disse, em algum momento, sobre comida e mulheres?
+
+[short pause]
+
+Algumas destas perguntas tu não saberás responder pela tua avó.
+
+[pause]
+
+Tudo bem.
+
+Escreve o que sabes. Pergunta à tua mãe, ou a uma tia, se conseguires.
+
+[short pause]
+
+A coluna pode ficar com lacunas.
+
+A própria lacuna é informação — a tua avó pode ter tido uma relação com a comida que ninguém na família registou.
+
+[long pause]
+
+Quando acabares as três colunas, lê-as em sequência.
+
+[pause]
+
+Da esquerda para a direita.
+
+[short pause]
+
+Vais reparar numa coisa.
+
+[pause]
+
+Há frases que se repetem, com pequenas variações, em todas as três colunas.
+
+[long pause]
+
+Há gestos que tu fazes hoje à mesa que a tua avó já fazia há cinquenta anos.
+
+[pause]
+
+Não porque te ensinou.
+
+Porque atravessou três gerações sem te perguntar.
+
+[short pause]
+
+Quando vês isto desenhado, em letra escrita, alguma coisa muda.
+
+[long pause]
+
+A tua relação com a comida deixa de parecer falha tua.
+
+Passa a parecer herança a ser gerida.
+
+[pause]
+
+E as heranças, ao contrário das falhas, podem ser reorganizadas.
+
+[short pause]
+
+Pode haver itens da herança que escolhes manter.
+
+E há outros que, sabendo agora a origem, podes começar a recusar.
+
+[pause]
+
+Não para a tua mãe.
+
+Não para a tua avó.
+
+Para a próxima geração — tua filha, tua sobrinha, qualquer mulher nova que te observe à mesa sem que tu te apercebas.`,
+      },
+      {
+        id: "a-fome-m4c",
+        titulo: "M4.C — O prato que tu ainda comes por causa dela",
+        curso: "a-fome",
+        texto: `Há um prato que tu ainda comes hoje, em adulta, pelo qual tu não escolherias.
+
+[pause]
+
+Mas comes.
+
+[long pause]
+
+Pode ser o assado de domingo.
+
+Pode ser a sopa que ela fazia sempre quando estavas constipada.
+
+Pode ser o doce típico do Natal que ninguém em tua casa actualmente gosta a sério, mas que tu insistes em fazer todos os anos.
+
+[short pause]
+
+Estes pratos não são neutros.
+
+[pause]
+
+São pontes.
+
+[long pause]
+
+Cada um deles é uma forma silenciosa de continuares uma relação com alguém que talvez já não esteja.
+
+[pause]
+
+Ou que está, mas com quem a relação se tornou complicada.
+
+Ou que tu, há muito tempo, deixaste de saber como abraçar — mas que ainda alimentas, em ti, através do prato.
+
+[short pause]
+
+A comida, neste caso, não é alimento.
+
+É memória.
+
+[long pause]
+
+Quase todas as mulheres adultas têm pelo menos um destes pratos.
+
+[pause]
+
+E quase todas o comem sem reparar no que ele está, na verdade, a fazer.
+
+[short pause]
+
+A acordar, em ti, uma criança que ainda quer estar perto da mãe, da avó, da tia.
+
+[pause]
+
+A trazer-te de volta a uma cozinha que provavelmente já não existe.
+
+A repor, durante quinze minutos, uma sensação de ser cuidada que tu, em adulta, raramente recebes.
+
+[long pause]
+
+Isto não é mau.
+
+[pause]
+
+A comida-memória é, em muitas culturas, das formas mais saudáveis de manter relação com quem nos foi importante.
+
+[short pause]
+
+O problema só aparece quando tu, sem saberes, comes este prato com mais frequência do que faz sentido.
+
+[pause]
+
+Quando reparas que apetecesse-te o doce da avó num momento em que estás sozinha, triste, sem ninguém para conversar.
+
+E quando, depois de o comer, ficas com a sensação difusa de que aquilo, afinal, não preencheu o que precisavas.
+
+[long pause]
+
+Esta semana, identifica o teu prato-ponte.
+
+[pause]
+
+O que é? De quem vem? Quando é que apetece?
+
+[short pause]
+
+Numa folha, escreve três coisas:
+
+[pause]
+
+Primeira — que prato é.
+
+Segunda — a quem te liga.
+
+Terceira — que fome real está a tentar resolver, para além da fome física.
+
+[long pause]
+
+A terceira é a mais difícil de escrever.
+
+[pause]
+
+Mas é a mais útil.
+
+[short pause]
+
+Porque revela, por exemplo, que o doce da avó aparece quando tens saudades de ter alguém que te trate como criança.
+
+Que o assado de domingo aparece quando a casa está silenciosa demais.
+
+Que a sopa de constipações aparece quando estás a precisar de ser cuidada e ninguém o está a fazer.
+
+[long pause]
+
+Quando tens esta informação, podes fazer duas coisas.
+
+[pause]
+
+A primeira: continuar a comer o prato. Mas agora com consciência do que ele faz por ti.
+
+[short pause]
+
+Comer-lo lentamente. Fazer dele uma pequena cerimónia. Honrar a pessoa de onde ele vem.
+
+[pause]
+
+A segunda: começar a procurar formas alternativas de obter o que o prato está a tentar dar.
+
+[long pause]
+
+Se o prato é forma de teres saudades de uma avó morta, podes ler uma carta antiga dela.
+
+Se o prato é forma de te sentires cuidada, podes ligar a alguém que ainda está vivo e que ainda te trata bem.
+
+Se o prato é forma de teres companhia, podes convidar alguém para o partilhar.
+
+[short pause]
+
+A comida-memória, quando bem usada, é gesto de amor.
+
+[pause]
+
+Quando usada em automático, no escuro, sozinha — torna-se substituto da relação que ela queria comemorar.
+
+[short pause]
+
+E essa diferença, sabendo-a, podes começar a viver melhor.`,
+      },
+    ],
+  },
 ];
