@@ -45,8 +45,9 @@ export async function POST(req: NextRequest) {
       output_format: "mp3_44100_128",
     };
 
-    // Language code SO se explicitamente enviado.
-    if (languageCode) {
+    // Language code SO se explicitamente enviado E se o modelo suporta.
+    // eleven_v3 NAO aceita language_code — auto-detecta.
+    if (languageCode && modelId !== "eleven_v3") {
       body.language_code = languageCode;
     }
 
