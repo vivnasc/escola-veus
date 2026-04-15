@@ -97,69 +97,55 @@ export default function AudioBulkPage() {
     return "youtube";
   }
 
+  // Acumula novos scripts à lista, sem duplicar os que já lá estão (por id).
+  // Preserva status/audioUrl dos que já foram gerados.
+  const appendScripts = useCallback((newOnes: NomearScript[]) => {
+    setScripts((prev) => {
+      const existingIds = new Set(prev.map((s) => s.id));
+      const toAdd: ScriptRow[] = newOnes
+        .filter((s) => !existingIds.has(s.id))
+        .map((s) => ({ id: s.id, titulo: s.titulo, texto: s.texto, status: "pending" }));
+      return [...prev, ...toAdd];
+    });
+  }, []);
+
   const loadPreset = useCallback((presetId: string) => {
     const preset = NOMEAR_PRESETS.find((p) => p.id === presetId);
     if (!preset) return;
-    const rows: ScriptRow[] = preset.scripts.map((s: NomearScript) => ({
-      id: s.id,
-      titulo: s.titulo,
-      texto: s.texto,
-      status: "pending",
-    }));
-    setScripts(rows);
+    appendScripts(preset.scripts);
     // Auto-muda pasta Supabase conforme o tipo de preset (youtube vs curso)
     setFolder(folderFromPresetId(presetId));
     setError(null);
-    // Auto-scroll para a lista (para utilizadora ver o que foi carregado)
     setTimeout(() => {
       document.getElementById("scripts-list-anchor")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
-  }, []);
+  }, [appendScripts]);
 
-  // Carrega TODOS os presets de uma vez (acumula em vez de substituir).
-  // Usa o folder do primeiro preset (normalmente "youtube" = Nomear Ep 1-10).
-  // Utilizadora pode depois mudar a pasta se quiser separar.
+  // Carrega TODOS os presets (acumula, nao substitui, nao duplica)
   const loadAllPresets = useCallback(() => {
-    const allRows: ScriptRow[] = [];
-    for (const preset of NOMEAR_PRESETS) {
-      for (const s of preset.scripts) {
-        allRows.push({
-          id: s.id,
-          titulo: s.titulo,
-          texto: s.texto,
-          status: "pending",
-        });
-      }
-    }
-    setScripts(allRows);
+    const all: NomearScript[] = [];
+    for (const p of NOMEAR_PRESETS) for (const s of p.scripts) all.push(s);
+    appendScripts(all);
     setError(null);
     setTimeout(() => {
       document.getElementById("scripts-list-anchor")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
-  }, []);
+  }, [appendScripts]);
 
-  // Carrega apenas presets cujo id bate com um filtro (ex: "nomear-serie-" ou "curso-ouro-proprio")
   const loadPresetsByPrefix = useCallback((prefix: string, targetFolder: string) => {
-    const allRows: ScriptRow[] = [];
-    for (const preset of NOMEAR_PRESETS) {
-      if (preset.id.startsWith(prefix)) {
-        for (const s of preset.scripts) {
-          allRows.push({
-            id: s.id,
-            titulo: s.titulo,
-            texto: s.texto,
-            status: "pending",
-          });
-        }
+    const all: NomearScript[] = [];
+    for (const p of NOMEAR_PRESETS) {
+      if (p.id.startsWith(prefix)) {
+        for (const s of p.scripts) all.push(s);
       }
     }
-    setScripts(allRows);
+    appendScripts(all);
     setFolder(targetFolder);
     setError(null);
     setTimeout(() => {
       document.getElementById("scripts-list-anchor")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
-  }, []);
+  }, [appendScripts]);
 
   const addManual = useCallback(() => {
     if (!newTitle.trim() || !newText.trim()) {
