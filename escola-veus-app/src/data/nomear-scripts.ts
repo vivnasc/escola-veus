@@ -13299,4 +13299,447 @@ Os três estão disponíveis — se os procurares.`,
       },
     ],
   },
+  {
+    id: "curso-sangue-e-seda-m8",
+    titulo: "Curso Sangue e Seda — Módulo 8 (Aulas A, B, C)",
+    descricao: "A Mulher que Habita o Corpo. Fecho do curso.",
+    scripts: [
+      {
+        id: "sangue-e-seda-m8a",
+        titulo: "M8.A — O corpo como lugar",
+        curso: "sangue-e-seda",
+        texto: `Pensa, por um momento, no teu corpo não como ferramenta — mas como lugar.
+
+[pause]
+
+Um lugar onde tu vives desde que nasceste. Um lugar que nunca abandonaste, nem por um dia.
+
+[long pause]
+
+A cultura contemporânea trata o corpo, sobretudo o corpo feminino, como objecto.
+
+Objecto a melhorar. Objecto a exibir. Objecto a manter.
+
+[pause]
+
+Quando tratas o teu corpo como objecto, ele torna-se estranho para ti.
+
+Ficas de fora, a olhá-lo criticamente.
+
+[short pause]
+
+Nunca realmente dentro dele.
+
+[long pause]
+
+Mas o teu corpo não é objecto.
+
+É o único lugar que nunca perdes.
+
+[pause]
+
+Perdes casas. Perdes relações. Perdes trabalhos. Perdes até pessoas.
+
+O corpo fica.
+
+Muda, envelhece, reorganiza-se. Mas fica.
+
+[short pause]
+
+E habitá-lo bem é uma das aprendizagens mais longas da vida.
+
+[long pause]
+
+A mulher que habita o corpo é diferente da mulher que o administra.
+
+[pause]
+
+A administradora passa o dia a verificar-se. Avaliar-se. Ajustar-se.
+
+A habitante apenas está. Sabe como se sente hoje. Reconhece o que o corpo pede. Responde conforme pode.
+
+[short pause]
+
+A habitante tem uma relação com o corpo que se parece mais com uma relação duradoura do que com uma gestão de projecto.
+
+[pause]
+
+Aceita os dias difíceis sem dramatizar.
+
+Recebe os dias bons sem se apegar.
+
+[short pause]
+
+E, com o tempo, conhece o seu corpo de forma íntima que não tem equivalente em nenhuma outra intimidade.
+
+[long pause]
+
+Esta qualidade de habitação não vem por decisão única.
+
+Vem por prática repetida, ao longo de anos.
+
+[pause]
+
+Pequenos gestos de atenção ao corpo. Sem objectivo. Sem correcção.
+
+Apenas presença.
+
+[short pause]
+
+Uma manhã em que reparas, ao levantar-te, em como te sentes de facto.
+
+Uma tarde em que paras para notar o cansaço, sem tentar fazê-lo desaparecer.
+
+Uma noite em que, antes de dormir, agradeces ao corpo — em silêncio — pelo que ele fez durante o dia.
+
+[pause]
+
+Estes momentos parecem pequenos.
+
+Acumulados ao longo dos anos, transformam a relação.
+
+[long pause]
+
+A mulher que habita o corpo não é invulnerável.
+
+Tem dias em que ainda se critica. Momentos em que ainda se avalia.
+
+Mas essas reacções já não são o estado dominante.
+
+[pause]
+
+O estado dominante é uma espécie de cooperação serena entre ela e o corpo dela.
+
+[short pause]
+
+Uma cooperação que dura — com todas as mudanças — até ao fim da vida.
+
+[long pause]
+
+Esta noite, antes de dormires, experimenta uma coisa nova.
+
+Sem pressa. Deitada, no escuro ou com luz baixa.
+
+[pause]
+
+Percorre mentalmente o teu corpo. Dos pés à cabeça.
+
+Não para avaliar se está bem. Apenas para reconhecer que ele está ali.
+
+[short pause]
+
+Em cada parte que percorres, diz em silêncio: reconheço-te.
+
+Sem mais. Apenas reconhecimento.
+
+[pause]
+
+Este gesto, repetido algumas noites ao longo de semanas, é uma das formas mais simples de começares a habitar o teu corpo em vez de o administrares.
+
+[long pause]
+
+O teu corpo não está à espera de ser perfeito para ser tua casa.
+
+Já é tua casa.
+
+[pause]
+
+A única coisa que ele espera é que tu, finalmente, entres.`,
+      },
+      {
+        id: "sangue-e-seda-m8b",
+        titulo: "M8.B — A reconciliação com o próprio corpo",
+        curso: "sangue-e-seda",
+        texto: `A reconciliação com o próprio corpo raramente acontece de uma vez.
+
+[pause]
+
+Não é um dia em que decides amá-lo e tudo se resolve.
+
+É um processo longo, com avanços e recuos, que dura praticamente a vida inteira.
+
+[long pause]
+
+Algumas mulheres chegam aos setenta sem se terem reconciliado plenamente com o próprio corpo.
+
+Outras começam a reconciliação aos trinta e fazem-na em etapas.
+
+[pause]
+
+A idade não determina o momento.
+
+Determina, apenas, a quantidade de tempo que ficou por usar.
+
+[short pause]
+
+Começar agora, independentemente da idade, é sempre melhor do que adiar.
+
+[long pause]
+
+A reconciliação tem, normalmente, três fases.
+
+[pause]
+
+A primeira é de reconhecimento — perceberes o quanto tens vivido em guerra com o teu corpo.
+
+A segunda é de tréguas — parares, activamente, de atacá-lo com palavras internas, comparações, exigências.
+
+A terceira é de intimidade — começares a conhecê-lo como parceiro, não como adversário.
+
+[short pause]
+
+Estas três fases não são lineares.
+
+Podes estar na segunda com um aspecto do corpo e na primeira com outro.
+
+[pause]
+
+É normal. O corpo é vasto.
+
+[long pause]
+
+Uma coisa que acelera a reconciliação é, inesperadamente, a observação do corpo doente ou ferido.
+
+[pause]
+
+Quando tu — ou alguém próximo — atravessa um problema de saúde sério, a relação com o corpo muda.
+
+De repente, as queixas que pareciam grandes encolhem.
+
+A celulite, os quilos a mais, a pele menos firme — tudo isto torna-se profundamente irrelevante quando estão em causa coisas mais sérias.
+
+[short pause]
+
+Não é preciso passar por doença grave para aceder a esta clareza.
+
+Podes acedê-la por observação.
+
+[pause]
+
+Pensa em mulheres que conheces — ou de que já ouviste falar — que passaram por doença grave.
+
+Como é que elas falam do corpo delas depois da doença?
+
+[short pause]
+
+Na grande maioria das vezes, falam com outra humildade.
+
+Uma humildade que reconhece que o corpo fez o trabalho dele mesmo quando foi atacado.
+
+[pause]
+
+Esta humildade não precisa de ser paga com doença.
+
+Pode ser cultivada em silêncio, antes que ela apareça.
+
+[long pause]
+
+Outra coisa que acelera a reconciliação é a comparação com mulheres mais velhas.
+
+[pause]
+
+Quando estás com mulheres de setenta, oitenta anos que estão em paz com o próprio corpo — mesmo com todas as marcas da idade — algo se move em ti.
+
+Vês que a paz é possível.
+
+Mesmo depois de mudanças que tu, hoje, temes.
+
+[short pause]
+
+E começas a perguntar: o que é que elas fizeram que eu posso começar a fazer agora?
+
+[pause]
+
+Quase sempre, o que elas fizeram foi deixar de lutar mais cedo.
+
+Não resignaram-se.
+
+Apenas pararam de travar guerra contra a passagem do tempo no próprio corpo.
+
+[long pause]
+
+Reconciliação não significa celebração constante.
+
+Significa trégua sustentada.
+
+[pause]
+
+A trégua é diferente da celebração.
+
+A celebração é declarativa: "amo o meu corpo".
+
+A trégua é prática: "paro de o atacar".
+
+[short pause]
+
+A prática é mais eficaz.
+
+[pause]
+
+Porque remove o sintoma principal da guerra — o ataque verbal interno — sem exigir um entusiasmo que pode não estar disponível.
+
+[long pause]
+
+Esta semana, em vez de tentares amar o teu corpo, pratica parar de o atacar.
+
+[pause]
+
+Cada vez que uma voz interna criticar o teu corpo, não a combatas. Não lhe respondas com afirmação positiva.
+
+Apenas: não a repitas em voz alta. Não a confirmes por comentário. Não a alimentes.
+
+[short pause]
+
+Deixa-a passar.
+
+E segue em silêncio.
+
+[pause]
+
+Este silêncio, repetido ao longo do tempo, é a trégua.
+
+E a trégua é a fundação da reconciliação.
+
+[long pause]
+
+Amor virá — se vier — depois.
+
+Mas a trégua é o que tu podes começar a fazer hoje.`,
+      },
+      {
+        id: "sangue-e-seda-m8c",
+        titulo: "M8.C — A mulher inteira",
+        curso: "sangue-e-seda",
+        texto: `No fim deste curso, pensa na mulher que queres ser daqui a cinco anos.
+
+[pause]
+
+Não a versão ideal. Não a versão rejuvenescida.
+
+A versão inteira.
+
+[long pause]
+
+Uma mulher inteira, na altura da vida em que estará, conhece o seu corpo.
+
+Conhece as suas fases. Conhece os seus ritmos. Conhece as suas exigências e os seus prazeres.
+
+[pause]
+
+Conhece as heranças que carrega e trabalha com elas, não contra elas.
+
+[short pause]
+
+Sabe o que o corpo dela sempre soube, e começa — finalmente — a confiar nesse saber.
+
+[long pause]
+
+A mulher inteira não é perfeita.
+
+Tem dias difíceis. Tem momentos em que ainda se critica. Tem memórias antigas que ainda doem.
+
+[pause]
+
+Mas já não tenta esconder nada disto.
+
+Porque aprendeu, ao longo dos anos, que o que é escondido não desaparece — apenas se infiltra em outros sítios onde se torna mais difícil de tratar.
+
+[short pause]
+
+E aprendeu que o que é reconhecido, mesmo quando não é resolvido imediatamente, começa a abrandar.
+
+[long pause]
+
+Esta mulher tem linhagem consciente.
+
+[pause]
+
+Reconhece as mulheres que a antecederam. Sabe, com razoável precisão, o que cada uma atravessou. Honra o que recebeu delas — e liberta-se do que já não serve.
+
+[short pause]
+
+Não por confronto com o passado.
+
+Por respeito pelo futuro.
+
+[pause]
+
+As mulheres que vêm depois dela — filhas biológicas ou não — merecem receber menos peso inconsciente.
+
+Merecem uma linhagem mais leve.
+
+[short pause]
+
+E ela, com o trabalho que fez, pode ser o ponto em que esse peso começa a ser reduzido.
+
+[long pause]
+
+Ela conhece o seu ciclo — ou, se já passou por ele, conhece o que o ciclo lhe deixou como herança emocional.
+
+Conhece o seu desejo — e não o esconde de si mesma.
+
+Conhece a sua dor — e sabe quando pedir acompanhamento em vez de aguentar em silêncio.
+
+[pause]
+
+E, sobretudo, conhece o seu corpo como lugar.
+
+O lugar onde vive.
+
+O único lugar que nunca vai abandonar.
+
+[short pause]
+
+Este reconhecimento transforma tudo.
+
+[pause]
+
+Porque a mulher que reconhece o corpo como casa, trata-o diferente.
+
+Não como projecto. Não como produto. Não como problema.
+
+Como casa.
+
+[long pause]
+
+Se este curso te deixou alguma coisa, que seja isto.
+
+A possibilidade de chegares, devagar, à mulher inteira que já existe dentro de ti.
+
+[pause]
+
+Não como versão futura distante.
+
+Como versão que está em construção lenta, todos os dias, em gestos pequenos.
+
+[short pause]
+
+Cada escuta do corpo. Cada pergunta à linhagem. Cada honestidade sobre a dor. Cada recusa de performance.
+
+[pause]
+
+Tudo isto, somado, desenha a mulher que vais ser.
+
+[long pause]
+
+A vida é longa.
+
+E a mulher inteira não se faz de uma vez.
+
+[pause]
+
+Mas faz-se. Se tu, com paciência, continuas.
+
+[short pause]
+
+E no fim — quando olhares para trás — vais perceber que a inteireza nunca foi destino.
+
+[pause]
+
+Foi caminho.
+
+E o caminho, por si só, já era a mulher que procuravas.`,
+      },
+    ],
+  },
 ];
