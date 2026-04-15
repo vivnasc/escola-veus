@@ -12870,4 +12870,433 @@ Em forma diferente. Mas real.`,
       },
     ],
   },
+  {
+    id: "curso-sangue-e-seda-m7",
+    titulo: "Curso Sangue e Seda — Módulo 7 (Aulas A, B, C)",
+    descricao: "A Transformação do Corpo. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "sangue-e-seda-m7a",
+        titulo: "M7.A — O corpo que deixa de ser o que era",
+        curso: "sangue-e-seda",
+        texto: `Há um momento, algures entre os trinta e poucos e os cinquenta, em que o teu corpo deixa de ser o que era.
+
+[pause]
+
+Não é catástrofe.
+
+Mas não é, também, apenas imaginação.
+
+[long pause]
+
+Acordas numa manhã e há uma dor nas costas que não costumava estar lá.
+
+A tua pele reage diferente ao sol.
+
+O teu cabelo muda de textura sem tu teres mudado de champô.
+
+A tua digestão já não é a mesma.
+
+[pause]
+
+E, mais subtilmente, a tua energia distribui-se de outra forma ao longo do dia.
+
+[short pause]
+
+Isto não é sinal de decadência.
+
+É informação de transição.
+
+[long pause]
+
+Mas a cultura contemporânea trata esta transição como problema a adiar.
+
+Há um discurso permanente de "manter-se como era".
+
+Manter a pele. Manter o peso. Manter a energia. Manter tudo.
+
+[pause]
+
+O custo deste discurso é alto.
+
+Mulheres que passam a vida inteira em guerra com o próprio corpo por ele estar a mudar naturalmente.
+
+[short pause]
+
+Esta guerra é inganhável.
+
+Porque o corpo vai mudar, com ou sem a tua permissão.
+
+[pause]
+
+A única coisa que podes escolher é se acompanhas a mudança com conhecimento, ou se a resistes com cansaço.
+
+[long pause]
+
+O primeiro sinal de que estás em transição, muitas vezes, não é corporal óbvio.
+
+É emocional.
+
+[pause]
+
+Uma paciência menor com coisas que antes toleravas. Uma clareza nova sobre relações que antes aguentavas. Uma vontade quieta de mudanças que antes adiavas.
+
+[short pause]
+
+Isto não é crise de meia-idade.
+
+É recalibração interior que acompanha a recalibração hormonal.
+
+[long pause]
+
+Se pudesses olhar para o ciclo da vida feminina sem o filtro da cultura que exige juventude, verias algo diferente.
+
+[pause]
+
+Verias que cada fase tem um tipo específico de inteligência.
+
+A juventude tem energia, pouca experiência.
+
+A meia-idade tem experiência, alguma energia.
+
+A idade mais avançada tem sabedoria, menos energia.
+
+[short pause]
+
+Nenhuma fase é melhor. Cada uma tem capacidades próprias.
+
+[pause]
+
+Mas a cultura actual tenta manter todas as fases com a aparência da juventude — e com isso, impede que cada fase mostre o que tem de bom.
+
+[long pause]
+
+Se consegues abraçar a tua meia-idade como fase própria — não como juventude prolongada nem como antecipação da velhice — algo muda na forma como habitas este corpo.
+
+[pause]
+
+Começas a vestir-te para o corpo que tens, não para o corpo que já não tens.
+
+Começas a organizar o teu tempo em função da energia real, não da energia que tinhas aos vinte.
+
+Começas a fazer escolhas relacionais com critério diferente.
+
+[short pause]
+
+E descobres que esta fase, se vivida com consciência, tem autoridade própria que as anteriores não tinham.
+
+[long pause]
+
+Esta semana, olha para três coisas no teu corpo que mudaram nos últimos anos e que te incomodam.
+
+Ao lado de cada uma, escreve: o que é que esta mudança me está a dizer?
+
+[pause]
+
+Não é pergunta filosófica.
+
+É pergunta concreta.
+
+[short pause]
+
+Muitas vezes, a resposta tem a ver com ritmo. Com limites. Com atenção ao que o corpo já não suporta.
+
+[pause]
+
+E esta informação, se for ouvida a tempo, poupa-te anos de resistência inútil.
+
+[long pause]
+
+O corpo que tu tens não é o corpo de antes.
+
+Mas é corpo.
+
+E merece — como o anterior mereceu — ser habitado com atenção, respeito, e escuta das suas novas indicações.`,
+      },
+      {
+        id: "sangue-e-seda-m7b",
+        titulo: "M7.B — A meia-idade e os sintomas",
+        curso: "sangue-e-seda",
+        texto: `Há sintomas específicos que aparecem na meia-idade feminina sobre os quais quase ninguém fala.
+
+[pause]
+
+Não a menopausa em si. Isso já tem alguma visibilidade.
+
+Os anos antes da menopausa. A peri-menopausa.
+
+[long pause]
+
+Que pode durar dez anos.
+
+E durante os quais muitas mulheres não sabem o que lhes está a acontecer.
+
+[pause]
+
+Ondas de calor esporádicas que aparecem antes do fim do ciclo.
+
+Ciclos que ficam irregulares.
+
+Insónias novas sem razão aparente.
+
+Ansiedade que aparece do nada, sem evento que a justifique.
+
+Alterações de humor que não batem certo com a tua história habitual.
+
+[short pause]
+
+Palpitações. Dores articulares novas. Queda de cabelo. Pele mais seca. Memória menos ágil.
+
+[pause]
+
+Tudo isto, durante a peri-menopausa, pode aparecer — antes de qualquer "ausência de menstruação".
+
+[long pause]
+
+E a maioria das mulheres, quando procura ajuda médica para qualquer um destes sintomas isoladamente, é diagnosticada como algo diferente.
+
+Stress. Depressão. Ansiedade. Mau estilo de vida.
+
+[pause]
+
+Porque poucos médicos de clínica geral — e mesmo alguns ginecologistas — reconhecem a peri-menopausa como quadro coerente.
+
+[short pause]
+
+As mulheres são, muitas vezes, medicadas para cada sintoma individual em vez de serem vistas como um todo em transição.
+
+[long pause]
+
+Isto tem consequências sérias.
+
+[pause]
+
+Uma mulher recebe antidepressivos para ansiedade que, na verdade, é hormonal.
+
+Recebe sonífero para insónia que, na verdade, é flutuação de estrogénio.
+
+Recebe dieta para subida de peso que, na verdade, é reconfiguração metabólica natural da fase.
+
+[short pause]
+
+Nenhum destes tratamentos é errado em absoluto. Mas se a causa de fundo é hormonal, os tratamentos sintomáticos nunca atingem a raiz.
+
+[pause]
+
+E a mulher passa anos a acumular medicações e a sentir-se cada vez mais distante do próprio corpo.
+
+[long pause]
+
+Se tens mais de trinta e cinco anos e começaste a notar sintomas novos, há algo concreto a fazer.
+
+[pause]
+
+Procura um ginecologista com especialização em climatério.
+
+Não um ginecologista geral. Um especialista em peri-menopausa e menopausa.
+
+[short pause]
+
+Estes profissionais vão fazer exames hormonais mais completos do que os standard.
+
+Vão olhar para os teus sintomas em conjunto.
+
+Vão propor, se for o caso, acompanhamento hormonal adequado à tua situação específica.
+
+[pause]
+
+Em muitos países, há escassez destes especialistas. Investiga, pede referências, viaja se preciso.
+
+Este investimento é dos mais importantes que podes fazer na tua saúde durante esta década da vida.
+
+[long pause]
+
+A peri-menopausa mal acompanhada é causa silenciosa de deterioração de qualidade de vida em milhões de mulheres.
+
+[pause]
+
+Tu tens o direito de atravessar esta fase com apoio adequado.
+
+Não com antidepressivos genéricos. Não com "é da idade". Não com "é stress".
+
+[short pause]
+
+Com acompanhamento hormonal sério, quando indicado.
+
+Com informação clara sobre o que está a acontecer.
+
+Com escolhas informadas sobre as opções disponíveis.
+
+[long pause]
+
+Escreve numa lista todos os sintomas novos que começaram a aparecer nos últimos anos.
+
+Mesmo os que pareciam desligados entre si.
+
+[pause]
+
+Leva a lista ao especialista.
+
+Pede leitura integrada.
+
+[short pause]
+
+E depois decide, em conjunto com profissional qualificado, o que fazer.
+
+[pause]
+
+A tua saúde na meia-idade depende desta investigação activa — mais do que dependeu em qualquer outra fase anterior da tua vida.`,
+      },
+      {
+        id: "sangue-e-seda-m7c",
+        titulo: "M7.C — A menopausa sem drama",
+        curso: "sangue-e-seda",
+        texto: `A menopausa, na cultura contemporânea, é apresentada de duas formas.
+
+[pause]
+
+Ou como fim — perda de algo essencial, envelhecimento inevitável, declínio.
+
+Ou como libertação triunfal — "agora és livre do ciclo, podes finalmente tudo".
+
+[long pause]
+
+As duas narrativas são falsas.
+
+Ou, mais precisamente, são parciais.
+
+[pause]
+
+A menopausa é transição.
+
+Como a adolescência foi transição. Como a gravidez, se tiveste, foi transição.
+
+Uma mudança de fase biológica e emocional que tem luzes e sombras, ganhos e perdas, facilidades e dificuldades.
+
+[short pause]
+
+E tratar a menopausa como "fim" ou como "libertação" é forçá-la a um enquadramento que não cabe.
+
+[long pause]
+
+O que acontece de facto na menopausa?
+
+[pause]
+
+Fisicamente: cessa a produção reprodutiva. Os hormonas principais descem. O corpo reorganiza-se em termos metabólicos, ósseos, cardiovasculares.
+
+Esta reorganização tem consequências reais — algumas benignas, outras que exigem atenção médica.
+
+[short pause]
+
+Emocionalmente: muitas mulheres experienciam clareza nova sobre a própria vida. Paciência menor com o que já não serve. Vontade de fazer mudanças que adiaram por décadas.
+
+[pause]
+
+Algumas experienciam também depressão, ansiedade, perda de interesse em actividades que antes gostavam.
+
+[short pause]
+
+Estes estados não são inevitáveis — muitas vezes estão ligados a desequilíbrios hormonais tratáveis ou a factores de vida que a menopausa expõe.
+
+[long pause]
+
+O grande erro cultural em relação à menopausa é tratá-la como fim da feminilidade.
+
+Como se a menstruação fosse a feminilidade.
+
+[pause]
+
+A feminilidade não está na menstruação.
+
+Está numa configuração biológica complexa que dura a vida inteira — da infância à idade mais avançada.
+
+[short pause]
+
+A menopausa não encerra esta configuração. Apenas modifica uma das suas dimensões.
+
+[pause]
+
+Mulheres pós-menopausa continuam a ter feminilidade plena. Desejo. Presença. Corpo. História.
+
+[long pause]
+
+Na maior parte das culturas tradicionais — antes da medicalização moderna — a pós-menopausa era, de facto, uma fase de autoridade.
+
+[pause]
+
+As mulheres mais velhas eram conselheiras da comunidade. Eram a memória cultural. Eram quem orientava as gerações mais novas sem ter de competir por recursos reprodutivos.
+
+[short pause]
+
+Esta posição social foi, em grande parte, apagada pela cultura ocidental contemporânea.
+
+Mas está a voltar, lentamente, à medida que cada vez mais mulheres vivem décadas depois da menopausa com saúde e presença.
+
+[pause]
+
+Tu, quando chegares a esta fase, tens a oportunidade de a habitar com outra qualidade.
+
+[long pause]
+
+Não como fim.
+
+Não como libertação triunfal.
+
+Como transição respeitada.
+
+[pause]
+
+Com acompanhamento médico adequado.
+
+Com consciência de que o corpo está a reorganizar-se, não a colapsar.
+
+Com abertura para descobrir o que esta fase permite que fases anteriores não permitiam.
+
+[short pause]
+
+Porque há coisas que só aparecem depois.
+
+[pause]
+
+Clareza sobre o que importa. Autoridade que vem da experiência acumulada. Uma relação com o corpo que já não depende de produtividade reprodutiva.
+
+[long pause]
+
+Se estás perto da menopausa, faz uma coisa simples.
+
+Procura uma mulher mais velha — dez, quinze, vinte anos mais velha que tu — e pergunta-lhe, sem pressa, como foi esta fase para ela.
+
+[pause]
+
+Não peças conselhos genéricos. Pergunta pela experiência concreta.
+
+[short pause]
+
+O que ela te disser é mapa real.
+
+[pause]
+
+Cada mulher que te conta a sua versão da menopausa, honestamente, está a fazer um acto silencioso de partilha de sabedoria entre gerações.
+
+Sabedoria que a cultura mais ampla não partilha.
+
+[long pause]
+
+E esta sabedoria, acumulada ao longo dos anos, vai preparar-te muito melhor do que qualquer livro ou artigo.
+
+Porque vem da vida. Da boca de mulheres reais. Com todas as nuances.
+
+[pause]
+
+A menopausa sem drama é possível.
+
+Mas exige informação real, acompanhamento adequado, e conversa intergeracional.
+
+[short pause]
+
+Os três estão disponíveis — se os procurares.`,
+      },
+    ],
+  },
 ];
