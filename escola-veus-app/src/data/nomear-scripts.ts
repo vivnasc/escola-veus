@@ -24970,4 +24970,595 @@ No desejo permitido.`,
       },
     ],
   },
+  {
+    id: "curso-a-chama-m3",
+    titulo: "Curso A Chama — Módulo 3 (Aulas A, B, C)",
+    descricao: "O Corpo que Esqueceu.",
+    scripts: [
+      {
+        id: "a-chama-m3a",
+        titulo: "M3.A — As partes do teu corpo que tu não tocas há anos",
+        curso: "a-chama",
+        texto: `Faz uma conta honesta.
+
+[pause]
+
+Há quanto tempo tu não tocas, com prazer e sem pressa, na pele atrás dos joelhos?
+
+[long pause]
+
+Há quanto tempo não passas devagar a mão pelo lado interior do braço?
+
+[pause]
+
+Há quanto tempo não te olhas, demoradamente, no espelho do quarto, sem objectivo de avaliar?
+
+[short pause]
+
+Há quanto tempo não pões a mão no centro do peito e a deixas lá ficar, simplesmente?
+
+[long pause]
+
+Para muitas mulheres adultas, a resposta a estas perguntas é "não sei. Anos."
+
+[pause]
+
+E não é por falta de tempo.
+
+É por hábito.
+
+[short pause]
+
+O teu corpo, em adulta, é território onde tu praticamente só tocas com função.
+
+[pause]
+
+Tocas para te lavares.
+
+Tocas para te vestires.
+
+Tocas para verificar uma dor.
+
+[short pause]
+
+Tocas para te depilares, para te avaliares, para corrigires.
+
+[pause]
+
+Mas não tocas só para tocar.
+
+[long pause]
+
+E tocar só para tocar é coisa que tu, antes dos doze ou treze anos, fazias com naturalidade.
+
+[pause]
+
+Crianças tocam-se a si próprias o tempo todo. Pés. Cabelo. Pescoço. Nariz. Em silêncio. Sem objectivo.
+
+[short pause]
+
+Em algum momento, tu paraste.
+
+[pause]
+
+Aprendeste que tocar-se em público era inadequado.
+
+E, ao longo dos anos, generalizaste para tocar-se em privado também.
+
+[long pause]
+
+Sem te aperceberes, deixaste de ter relação táctil com larga parte do teu próprio corpo.
+
+[pause]
+
+Há regiões inteiras de pele que tu, em adulta, só tocas para verificar problemas.
+
+[short pause]
+
+A barriga só quando dói. A face só para passar creme. As coxas só para depilar. A nuca só para arranjar o cabelo.
+
+[long pause]
+
+Esta perda táctil tem uma consequência subtil mas profunda.
+
+[pause]
+
+A tua pele, sem toque sem função, deixa de comunicar com a tua consciência.
+
+[short pause]
+
+Há receptores nervosos por todo o teu corpo que estão lá, biologicamente activos, mas que há anos não recebem estímulo de exploração não-utilitária.
+
+[pause]
+
+E sem estímulo, a tua sensibilidade nessas zonas reduz.
+
+Não fisicamente — biologicamente continuam a funcionar.
+
+[short pause]
+
+Mas a tua consciência aprende a não as registar.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de cartografia tua.
+
+[pause]
+
+Numa folha, desenha um corpo simples. Pode ser figurinho de palitos. Não importa.
+
+[short pause]
+
+E pinta, ou marca, as zonas em que tu, na última semana, tocaste.
+
+[pause]
+
+Mas não basta marcar. Distingue:
+
+Vermelho — zonas que tocaste só com função.
+
+Verde — zonas que tocaste com algum prazer ou atenção sem função.
+
+[long pause]
+
+Faz isto à noite, ao fim de cada dia, durante uma semana.
+
+[pause]
+
+A maioria das mulheres, quando vê o desenho ao fim da semana, fica em silêncio.
+
+[short pause]
+
+A figura está quase toda vermelha.
+
+E o verde, quando aparece, está concentrado em duas ou três zonas — em geral, mãos e cara.
+
+[long pause]
+
+Há zonas inteiras do corpo que tu não tocaste de forma não-utilitária durante uma semana inteira.
+
+[pause]
+
+Provavelmente, durante muitas semanas inteiras.
+
+[short pause]
+
+Provavelmente, durante anos.
+
+[long pause]
+
+A partir desta semana, vais começar a expandir a área verde do teu desenho.
+
+[pause]
+
+Não em prática complicada.
+
+[short pause]
+
+Quando estiveres a ver televisão à noite, em vez de olhares para o telemóvel, passa lentamente a mão pelo lado interior do antebraço durante um minuto.
+
+Quando estiveres deitada antes de dormir, deixa as duas mãos cruzadas sobre o peito, sem objectivo. Cinco minutos.
+
+Quando estiveres a tomar banho, em vez de te lavares com pressa, passa a mão devagar pela coxa durante mais uns segundos do que o costume.
+
+[pause]
+
+Sem objectivo sexual.
+
+Sem objectivo de relaxamento.
+
+[short pause]
+
+Apenas reabertura de comunicação táctil com a tua própria pele.
+
+[long pause]
+
+Repete a cartografia ao fim de duas semanas.
+
+[pause]
+
+Vais ver a área verde a aumentar.
+
+[short pause]
+
+E à medida que aumenta, vais reparar numa coisa que não esperas.
+
+[pause]
+
+A tua relação geral com o teu corpo começa a mudar.
+
+[long pause]
+
+Sentes-te ligeiramente mais habitada.
+
+Ligeiramente mais presente.
+
+Ligeiramente menos em fuga da pele que carregas.
+
+[pause]
+
+Esta mudança é pequena.
+
+Mas é base.
+
+[short pause]
+
+Sem toque sem função, o desejo não tem onde acordar.
+
+Com toque sem função, há terreno para ele voltar a aparecer.`,
+      },
+      {
+        id: "a-chama-m3b",
+        titulo: "M3.B — Os sítios onde aprendeste a não sentir",
+        curso: "a-chama",
+        texto: `Há sítios no teu corpo onde tu aprendeste, ao longo dos anos, a não sentir.
+
+[pause]
+
+Não por dano físico.
+
+Por treino emocional.
+
+[long pause]
+
+A maior parte das mulheres tem, no corpo, um ou dois ou três sítios assim.
+
+[pause]
+
+Sítios onde, em algum momento da vida, alguma coisa aconteceu que ficou difícil de processar.
+
+[short pause]
+
+E o teu sistema nervoso, sem te perguntar, decidiu reduzir a sensação naquele lugar.
+
+[pause]
+
+Para te proteger.
+
+[long pause]
+
+Pode ser uma zona da nuca onde alguém, há muitos anos, te magoou e tu nunca conseguiste ficar à vontade com toque ali.
+
+Pode ser a parte interior das coxas, em mulheres que tiveram experiências sexuais difíceis.
+
+Pode ser a barriga, em mulheres que cresceram com vergonha do volume.
+
+Pode ser o peito, em mulheres que foram comentadas demais cedo demais.
+
+Pode ser o pescoço inteiro, em mulheres que aprenderam que esse era o sítio onde se ficava em desvantagem.
+
+[short pause]
+
+Cada zona tem uma história específica.
+
+[pause]
+
+E em cada uma dessas zonas, a tua consciência aprendeu, por defesa, a não estar.
+
+[long pause]
+
+Esta ausência, no longo prazo, tem custo.
+
+[pause]
+
+Porque essas zonas, quando alguém te toca nelas — mesmo um parceiro com quem te sentes segura — não respondem.
+
+[short pause]
+
+Ou respondem com tensão.
+
+Ou respondem com dissociação subtil — de repente estás a pensar noutra coisa qualquer, sem perceberes que saíste mentalmente.
+
+[pause]
+
+E o desejo, nessas zonas, fica enrolado em medo antigo que ninguém sabe que está lá.
+
+[long pause]
+
+Esta semana, vais fazer um trabalho lento. Sem pressa. Sem dramatismo.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Sítios do meu corpo onde sinto menos do que devia."
+
+[short pause]
+
+E lista, com calma, o que reconheces.
+
+[pause]
+
+Não tens de saber porquê.
+
+Não tens de explicar.
+
+[short pause]
+
+Apenas: "Nuca." "Lado direito da barriga." "Coxas, parte de cima." "Peito, sobretudo o esquerdo."
+
+[long pause]
+
+Quando tens a lista, lê.
+
+[pause]
+
+E ao lado de cada zona, escreve uma única coisa:
+
+"O que me lembro que aconteceu nesta zona, ou a esta zona, em algum momento da vida."
+
+[short pause]
+
+Pode ser muito vago.
+
+Pode ser específico.
+
+[pause]
+
+Pode ser: "Não me lembro de nada concreto, mas sei que esta zona está sempre tensa."
+
+Pode ser: "Lembro-me de uma situação aos quinze anos."
+
+Pode ser: "Esta zona ficou diferente depois do nascimento da minha filha."
+
+[long pause]
+
+Não estás a fazer terapia.
+
+Não estás a tentar resolver nada hoje.
+
+[pause]
+
+Estás apenas a registar que essas zonas existem, têm história, e merecem ser, em algum momento, reconhecidas.
+
+[short pause]
+
+A partir desta semana, em cada uma destas zonas, começas uma prática de reaproximação muito devagar.
+
+[long pause]
+
+Uma vez por dia, durante alguns minutos, em momento privado, pões a mão nessa zona.
+
+[pause]
+
+Sem objectivo de massagem.
+
+Sem objectivo de cura.
+
+[short pause]
+
+Apenas pousas a mão.
+
+[pause]
+
+E ficas com ela ali, durante um minuto ou dois.
+
+[long pause]
+
+Não é meditação.
+
+Não estás a "enviar amor" à zona.
+
+[pause]
+
+Estás apenas a recomeçar comunicação.
+
+[short pause]
+
+A tua mão e a tua pele, a partir do momento em que se tocam regularmente — em zonas que não se tocavam há anos — voltam, devagar, a comunicar.
+
+[long pause]
+
+Algumas semanas depois, vais reparar em mudanças subtis.
+
+[pause]
+
+A zona deixa de estar tão tensa.
+
+A zona começa a registar mais facilmente toque de outras pessoas.
+
+A zona começa, em alguns momentos, a participar em sensações de prazer que antes ela ignorava.
+
+[short pause]
+
+Esta reabertura é processo. Não é evento.
+
+[pause]
+
+Mas começa em algo tão simples como pousar uma mão num sítio do teu corpo onde tu aprendeste, há muito tempo, a não estar.
+
+[long pause]
+
+E voltar.
+
+Devagar.
+
+[pause]
+
+Para que essa parte de ti, finalmente, possa reentrar na vivência completa do teu próprio corpo.`,
+      },
+      {
+        id: "a-chama-m3c",
+        titulo: "M3.C — A pele que precisava de toque sem função",
+        curso: "a-chama",
+        texto: `A tua pele tem uma necessidade que raramente é nomeada em adulta.
+
+[pause]
+
+Toque sem função.
+
+[long pause]
+
+Toque que não serve para nada.
+
+[pause]
+
+Que não está a lavar. Que não está a curar. Que não está a preparar para algo.
+
+Que não está, sequer, a iniciar sexo.
+
+[short pause]
+
+Apenas toque que existe pelo prazer de tocar.
+
+[long pause]
+
+Em criança, recebias muito deste toque.
+
+[pause]
+
+Adultos pegavam-te ao colo. Davam-te beijos sem motivo. Despenteavam-te o cabelo enquanto te falavam de outra coisa. Faziam-te festas no braço enquanto viam televisão.
+
+[short pause]
+
+Este toque ocupava uma parte significativa do teu dia.
+
+[pause]
+
+E o teu sistema nervoso, em desenvolvimento, organizava-se em torno desta presença táctil constante.
+
+[long pause]
+
+Em adulta, o toque sem função reduziu-se drasticamente.
+
+[pause]
+
+Os adultos não se tocam casualmente como as crianças.
+
+E mesmo nas relações próximas — casais, amizades, família — o toque sem função tornou-se raro.
+
+[short pause]
+
+Há toque com função sexual. Há toque com função de saudação. Há toque com função de consolo num momento difícil.
+
+[pause]
+
+Mas o toque casual, prolongado, sem destino — que era a base da tua infância — quase não existe.
+
+[long pause]
+
+Esta privação táctil tem nome.
+
+[pause]
+
+Em estudos sobre adultos isolados, o termo é skin hunger — fome de pele.
+
+[short pause]
+
+E muitas mulheres que vivem em relações longas têm, paradoxalmente, fome de pele.
+
+[pause]
+
+Porque o toque que recebem dos seus parceiros é predominantemente sexualizado — caminha sempre, em poucos minutos, para um pedido mais.
+
+[short pause]
+
+E o toque casual, prolongado, não-direccionado, simplesmente não acontece.
+
+[long pause]
+
+A consequência é específica.
+
+[pause]
+
+A tua pele aprendeu, ao longo dos anos, que toque é prelúdio.
+
+E qualquer toque, em ti, activa imediatamente o cálculo: o que vai ele querer a seguir?
+
+[short pause]
+
+Este cálculo, repetido durante anos, mata a possibilidade de prazer puramente táctil.
+
+[pause]
+
+Porque tu não estás presente no toque. Estás em segundo plano, a antecipar o pedido.
+
+[long pause]
+
+Esta semana, vais fazer um pedido específico ao teu parceiro — se tens parceiro.
+
+[pause]
+
+Se não tens, podes adaptar com uma amiga próxima.
+
+[short pause]
+
+O pedido é o seguinte:
+
+"Quero que me toques durante quinze minutos sem que isto leve a nada. Sem sexo. Sem início de sexo. Sem expectativa de qualquer outra coisa a seguir."
+
+[pause]
+
+Vai ser estranho para ele. Provavelmente.
+
+[long pause]
+
+Porque o toque sem destino sexual, em casais de longa data, pode parecer artificial.
+
+[pause]
+
+Mas pede.
+
+[short pause]
+
+E sê específica sobre o tipo de toque.
+
+[pause]
+
+"Quero que me passes a mão pelo braço, devagar."
+
+"Quero que me massajes os pés sem pressa."
+
+"Quero que me deites a cabeça ao colo enquanto vês televisão."
+
+[long pause]
+
+Ao fim destes quinze minutos, repara como te sentes.
+
+[pause]
+
+A maioria das mulheres, quando recebe toque puramente casual prolongado, sente uma coisa específica.
+
+[short pause]
+
+Saciedade.
+
+[pause]
+
+A pele, finalmente, recebeu o que andava a pedir.
+
+[long pause]
+
+E aqui há uma reviravolta interessante.
+
+[pause]
+
+Mulheres que conseguem instalar este tipo de toque sem-função na rotina da relação, ao fim de algumas semanas, descobrem que o desejo sexual aumenta.
+
+[short pause]
+
+Não diminui, como elas temiam.
+
+Aumenta.
+
+[pause]
+
+Porque a pele, finalmente saciada na sua necessidade básica de toque, fica disponível para também receber toque sexual.
+
+[long pause]
+
+Sem fome de pele acumulada, o sexo deixa de ser a única forma que tu tens de receber proximidade física.
+
+[pause]
+
+E quando deixa de ser a única forma, pode voltar a ser o que devia ter sido sempre.
+
+[short pause]
+
+Coisa que escolhes quando te apetece.
+
+Não única via possível para um pedido mais antigo, mais simples, e raramente nomeado: o de seres tocada sem que ninguém te peça nada em troca.`,
+      },
+    ],
+  },
 ];
