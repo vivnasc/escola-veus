@@ -21750,4 +21750,529 @@ E essa diferença, sabendo-a, podes começar a viver melhor.`,
       },
     ],
   },
+  {
+    id: "curso-a-fome-m5",
+    titulo: "Curso A Fome — Módulo 5 (Aulas A, B, C)",
+    descricao: "O Ciclo da Vergonha.",
+    scripts: [
+      {
+        id: "a-fome-m5a",
+        titulo: "M5.A — O remorso depois de comer",
+        curso: "a-fome",
+        texto: `Há um momento, depois de comeres mais do que tinhas planeado, em que aparece sempre a mesma coisa.
+
+[pause]
+
+Não é fome.
+
+Não é cansaço.
+
+É remorso.
+
+[long pause]
+
+Aparece nos primeiros vinte minutos depois da última garfada.
+
+[pause]
+
+Antes ainda da digestão começar a sério.
+
+Antes de teres tempo para racionalizar.
+
+[short pause]
+
+É reacção automática que se instala em ti há tantos anos que tu já não a notas como reacção — pareces achar que é apenas como te sentes.
+
+[long pause]
+
+Mas é reacção. E foi treinada.
+
+[pause]
+
+Ninguém nasce a sentir remorso depois de comer.
+
+Cada uma de nós aprendeu, em algum momento da infância ou da adolescência, que comer com prazer trazia consequência emocional negativa.
+
+[short pause]
+
+Talvez tenhas aprendido com uma frase à mesa.
+
+Talvez tenhas aprendido a ver a tua mãe a recusar a sobremesa enquanto se queixava do peso.
+
+Talvez tenhas aprendido a ver outras raparigas, a partir dos doze anos, a comentar entre elas o que tinham comido nesse dia.
+
+[long pause]
+
+A partir daí, comer deixou de ser apenas necessidade biológica.
+
+[pause]
+
+Passou a ser acto com peso moral.
+
+[short pause]
+
+E todas as vezes que tu, em adulta, comes mais do que o teu critério interno permite, esse critério aparece imediatamente a cobrar.
+
+[long pause]
+
+Repara no que o remorso faz em ti.
+
+[pause]
+
+Faz-te ficar em silêncio nos cinco minutos a seguir à refeição.
+
+Faz-te abrir o telemóvel para te distraíres da sensação.
+
+Faz-te começar a planear, mentalmente, o que vais fazer no dia seguinte para compensar.
+
+[short pause]
+
+E, sobretudo, faz-te ficar com uma sensação difusa de que falhaste.
+
+[pause]
+
+Falhaste o quê, exactamente, é difícil de nomear.
+
+Mas a sensação está lá.
+
+[long pause]
+
+Esta semana, vais começar a separar duas coisas que estão coladas em ti.
+
+[pause]
+
+A refeição em si.
+
+E a reacção emocional à refeição.
+
+[short pause]
+
+Numa folha, desenha duas colunas.
+
+Em cima da primeira escreve: "O que comi de facto."
+
+Em cima da segunda escreve: "O que senti depois."
+
+[long pause]
+
+E ao longo de uma semana, sempre que terminares uma refeição em que sentiste qualquer coisa para além de saciedade neutra, escreves nas duas colunas.
+
+[pause]
+
+Na primeira, factos: "Comi um prato de massa, salada, dois bocados de pão, uma sobremesa pequena."
+
+Na segunda, sensação: "Senti culpa. Senti que tinha comido demais. Comecei a planear o jantar mais leve."
+
+[short pause]
+
+Sem comentário moral. Sem julgar a sensação.
+
+Apenas registar.
+
+[long pause]
+
+Ao fim da semana, lê as duas colunas em paralelo.
+
+[pause]
+
+Vais reparar numa coisa importante.
+
+[short pause]
+
+A reacção emocional, na maior parte dos dias, não é proporcional ao que comeste.
+
+[pause]
+
+Há refeições normais que geraram remorso desproporcional.
+
+Há refeições maiores que, por algum motivo, passaram sem culpa.
+
+[long pause]
+
+A partir destes dados, fica claro que o remorso não é informação sobre a refeição.
+
+[pause]
+
+É reacção independente, com vida própria, treinada em ti há décadas.
+
+[short pause]
+
+E o que tem vida própria pode, com tempo, ser observado em vez de obedecido.
+
+[long pause]
+
+Não pares de comer porque o remorso aparece.
+
+Continua a comer conforme o teu corpo precisa.
+
+[pause]
+
+E deixa o remorso aparecer ao lado, como visita não convidada que tu já conheces de cor.
+
+[short pause]
+
+Com o tempo, a visita começa a ficar menos demorada.
+
+E, em alguns dias, começa a não aparecer.`,
+      },
+      {
+        id: "a-fome-m5b",
+        titulo: "M5.B — A promessa de amanhã começo",
+        curso: "a-fome",
+        texto: `Há uma frase que tu já disseste mil vezes na tua vida.
+
+[pause]
+
+Provavelmente disseste-a esta semana.
+
+Provavelmente vais voltar a dizê-la dentro de alguns dias.
+
+[long pause]
+
+Amanhã começo.
+
+[pause]
+
+Amanhã começo a comer melhor.
+
+Amanhã começo a beber dois litros de água.
+
+Amanhã começo a fazer exercício a sério.
+
+[short pause]
+
+Amanhã. Sempre amanhã.
+
+[long pause]
+
+Esta frase parece inocente.
+
+[pause]
+
+Parece motivação.
+
+Parece compromisso.
+
+[short pause]
+
+Mas é, em quase todos os casos, uma das coisas mais sabotadoras que dizes a ti mesma.
+
+[long pause]
+
+Porque ela permite-te, hoje, comer o que te apetece sem estares presente nessa decisão.
+
+[pause]
+
+Comes em piloto automático, com a justificação implícita de que isto é a "última vez antes de começar".
+
+E como tu já disseste isto cinquenta vezes nos últimos dois anos, sabes, no fundo, que o "amanhã começo" não é compromisso real.
+
+[short pause]
+
+É amortecedor.
+
+[pause]
+
+Permite-te continuar a comer no padrão antigo sem ter que sentir a contradição entre o que estás a comer e o que dizes que queres.
+
+[long pause]
+
+A frase "amanhã começo" tem uma função específica.
+
+[pause]
+
+Adia o trabalho real.
+
+[short pause]
+
+E o trabalho real não é o "começar".
+
+É olhar honestamente para o que está a acontecer agora.
+
+[long pause]
+
+Esta semana, vais fazer um exercício que vai parecer estranho.
+
+[pause]
+
+Vais banir a frase "amanhã começo" do teu vocabulário interno durante sete dias.
+
+[short pause]
+
+Sempre que ela aparecer — e vai aparecer muitas vezes — substituis por outra frase.
+
+[pause]
+
+A frase é:
+
+"Hoje estou a comer isto, e isto é o que estou a comer."
+
+[long pause]
+
+Sem promessa de futuro.
+
+Sem amortecedor.
+
+Sem desculpa.
+
+[pause]
+
+Apenas reconhecimento factual do que está, neste momento, a entrar em ti.
+
+[short pause]
+
+Esta frase parece banal.
+
+[pause]
+
+Mas tem efeito específico.
+
+[long pause]
+
+Quando tu não podes mais dizer "amanhã começo", tens duas opções.
+
+[pause]
+
+Ou começas, agora, a comer com mais atenção — porque já não tens o amortecedor para te justificares depois.
+
+Ou continuas a comer como antes — mas agora, sem a promessa de futuro, tens de aceitar conscientemente que estás a fazer essa escolha.
+
+[short pause]
+
+Os dois caminhos são honestos.
+
+O "amanhã começo" não.
+
+[long pause]
+
+Esta semana, escreve numa folha que ponhas em sítio visível — perto da cozinha, na agenda — esta frase:
+
+"Hoje estou a comer isto. Isto é o que estou a comer."
+
+[pause]
+
+Cada vez que reparares no automatismo do "amanhã começo", olha para a folha.
+
+[short pause]
+
+E nota o que muda em ti.
+
+[long pause]
+
+Vais perceber, ao longo dos dias, uma coisa importante.
+
+[pause]
+
+A maior parte das tuas decisões alimentares não é consciente.
+
+[short pause]
+
+É feita por uma parte de ti que está sempre a apostar no futuro hipotético — na "tua vida quando começares" — para te permitir adiar a relação real com a comida no presente.
+
+[long pause]
+
+E quando tu retiras o amortecedor, a relação no presente fica visível.
+
+[pause]
+
+A primeira semana é desconfortável.
+
+[short pause]
+
+Mas a partir da segunda, acontece uma coisa nova.
+
+Começas a comer com mais consciência sem teres tido de te disciplinar.
+
+[pause]
+
+Não porque te obrigaste a mudar.
+
+Porque, sem o "amanhã começo", a parte de ti que estava em piloto automático finalmente percebe que tu estás a olhar.
+
+[short pause]
+
+E o olhar honesto, sozinho, muda mais do que qualquer dieta começada na segunda-feira.`,
+      },
+      {
+        id: "a-fome-m5c",
+        titulo: "M5.C — A semana de restrição que vira a noite de descontrolo",
+        curso: "a-fome",
+        texto: `Há um padrão que se repete em quase todas as mulheres que tentaram alguma vez controlar a alimentação.
+
+[pause]
+
+Começa na segunda-feira.
+
+[long pause]
+
+Começa com vontade. Com lista de coisas a comprar. Com refeições preparadas em frascos no frigorífico.
+
+[pause]
+
+Segunda corre bem. Terça também. Quarta, com algum esforço. Quinta, alguma irritabilidade.
+
+[short pause]
+
+Sexta — ou, no mais tardar, sábado à noite — algo cede.
+
+[long pause]
+
+Pode ser num jantar com amigas. Pode ser sozinha em casa depois de uma semana exaustiva. Pode ser numa visita à família.
+
+[pause]
+
+E o que cede não é um bocadinho.
+
+É tudo.
+
+[short pause]
+
+Comes muito mais do que terias comido se tivesses comido normalmente toda a semana.
+
+[long pause]
+
+Na manhã seguinte, acordas com a sensação familiar.
+
+[pause]
+
+Vergonha. Frustração. Sensação de teres falhado outra vez.
+
+E a decisão imediata: a partir de segunda-feira, vou começar a sério.
+
+[short pause]
+
+E o ciclo recomeça.
+
+[long pause]
+
+Este ciclo tem nome.
+
+[pause]
+
+Restrição-descontrolo.
+
+[short pause]
+
+Não é falta de força de vontade tua.
+
+É como o teu sistema nervoso responde a privação.
+
+[long pause]
+
+Quando tu restringes — quando comes menos do que precisas durante dias seguidos — o teu corpo entra em modo de alarme.
+
+[pause]
+
+E o teu cérebro começa a libertar sinais cada vez mais fortes a dizer que precisa de comida.
+
+[short pause]
+
+Tu, durante a semana, consegues ignorar estes sinais por força de vontade.
+
+[pause]
+
+Mas a força de vontade é recurso finito.
+
+E quando se esgota — em geral, à sexta à noite — os sinais ficam mais fortes do que tu.
+
+[long pause]
+
+E aquilo a que tu chamas "descontrolo" é, na verdade, o teu corpo a forçar a entrada de calorias que andou dias a pedir e não recebeu.
+
+[pause]
+
+Não é falha tua.
+
+É biologia a ganhar à determinação.
+
+[short pause]
+
+E a biologia ganha sempre, ao longo do tempo.
+
+[long pause]
+
+A partir desta semana, vais fazer uma experiência incómoda mas reveladora.
+
+[pause]
+
+Vais escolher um dia da semana em que normalmente restringes.
+
+E nesse dia, vais comer normalmente.
+
+[short pause]
+
+Não em excesso.
+
+Normalmente.
+
+[pause]
+
+Três refeições. Um lanche se te apetecer. Pão se for o que te apetece. Sobremesa se for o caso.
+
+[long pause]
+
+Sem cálculo de calorias. Sem comparação com o que comeste ontem. Sem promessa de compensação amanhã.
+
+[pause]
+
+Apenas comer como pessoa que tem fome e responde à fome.
+
+[short pause]
+
+Vai ser estranho.
+
+[pause]
+
+A tua cabeça vai protestar.
+
+Vai aparecer ansiedade — "se eu comer assim todos os dias, vou engordar".
+
+[long pause]
+
+À noite, antes de dormir, escreve numa folha o que aconteceu nesse dia.
+
+[pause]
+
+Como te sentiste.
+
+Se houve momento em que apareceu a vontade de comer descontroladamente.
+
+Se houve momento em que reparaste que estavas saciada e simplesmente paraste.
+
+[short pause]
+
+Repete a experiência durante quatro ou cinco semanas, num dia diferente cada semana.
+
+[long pause]
+
+A maior parte das mulheres que faz isto descobre uma coisa que parece inacreditável no primeiro mês.
+
+[pause]
+
+Quando tu comes normalmente — sem restrição — durante a semana, o ciclo de descontrolo de fim-de-semana começa a desaparecer.
+
+[short pause]
+
+Não porque tu te disciplinaste.
+
+Porque o teu corpo deixou de estar em alarme.
+
+[pause]
+
+E quando o corpo não está em alarme, ele come o que precisa, pára quando está cheio, e segue em frente.
+
+[long pause]
+
+A "perda de controlo" não é a tua tendência natural.
+
+[pause]
+
+É a resposta inevitável a períodos de restrição.
+
+[short pause]
+
+Tira a restrição. E a maior parte do "descontrolo" desaparece sozinho, sem que tu tenhas de o controlar.`,
+      },
+    ],
+  },
 ];
