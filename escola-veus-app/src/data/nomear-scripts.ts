@@ -23313,4 +23313,535 @@ Esta é, na verdade, uma das ferramentas mais simples e mais eficazes que tens p
       },
     ],
   },
+  {
+    id: "curso-a-fome-m8",
+    titulo: "Curso A Fome — Módulo 8 (Aulas A, B, C)",
+    descricao: "A Fome em Paz.",
+    scripts: [
+      {
+        id: "a-fome-m8a",
+        titulo: "M8.A — A primeira refeição em que comeste sem calcular",
+        curso: "a-fome",
+        texto: `Houve, em algum momento, uma primeira refeição em que tu comeste sem calcular.
+
+[pause]
+
+Talvez tenhas sido pequena.
+
+Talvez tenhas sido tão pequena que não te lembras.
+
+[long pause]
+
+Mas houve.
+
+[pause]
+
+Houve uma fase, na tua infância, em que tu comias o que te apetecia, parando quando estavas cheia, sem conta nenhuma a fazer.
+
+[short pause]
+
+Comias bolacha ao lanche sem te perguntares se podias.
+
+Comias massa ao jantar sem hesitar entre primeiro ou segundo prato.
+
+Pedias mais sumo sem te sentires culpada.
+
+[pause]
+
+E nem sequer te lembravas, no dia seguinte, do que tinhas comido na véspera.
+
+Porque comer não era tema. Era apenas coisa que se fazia.
+
+[long pause]
+
+Esta fase, em ti, existiu mesmo.
+
+[pause]
+
+Não é fantasia.
+
+Não é idealização.
+
+[short pause]
+
+Existiu até alguém — uma mãe, uma avó, um médico, uma colega de escola — entrar na tua relação com a comida e instalar a primeira camada de cálculo.
+
+[long pause]
+
+A partir daí, comer deixou de ser apenas comer.
+
+[pause]
+
+Passou a ser acto carregado de regras, expectativas, julgamentos.
+
+[short pause]
+
+E essa camada nunca mais foi totalmente embora.
+
+[long pause]
+
+A maioria das mulheres adultas tem, sobre a comida, um trabalho mental contínuo.
+
+[pause]
+
+Pensam no que comeram. Pensam no que vão comer. Pensam no que outros estão a comer. Pensam na balança. Pensam no espelho. Pensam na próxima dieta.
+
+[short pause]
+
+Este trabalho mental, somado, é equivalente a um segundo emprego não pago que ocupa horas por dia, todos os dias, durante décadas.
+
+[long pause]
+
+E é por isso que muitas mulheres, ao final do dia, estão exaustas sem razão aparente.
+
+[pause]
+
+A razão está aparente. É só silenciosa.
+
+[short pause]
+
+Tu passaste o dia a fazer cálculo alimentar de fundo, mesmo enquanto fazias todas as outras coisas.
+
+[long pause]
+
+A reconciliação com a fome não significa esquecer todo este aprendizado.
+
+[pause]
+
+Significa, com o tempo, devolver-lhe o lugar que a comida tinha quando tu eras criança.
+
+[short pause]
+
+Necessidade humana básica. Coisa que se faz quando se tem fome. Coisa que se pára quando se está cheia. Coisa que se esquece logo a seguir.
+
+[long pause]
+
+Esta semana, vais experimentar uma única refeição como criança.
+
+[pause]
+
+Escolhe um almoço ou um jantar. Quando puderes estar sozinha, sem pressa.
+
+[short pause]
+
+E faz uma única regra: vais comer sem qualquer cálculo.
+
+[pause]
+
+Não vais pensar em calorias. Não vais pensar em proteínas. Não vais pensar no jantar. Não vais pensar no peso.
+
+[long pause]
+
+Vais escolher o que te apetece.
+
+Vais comer a porção que te apetece.
+
+Vais parar quando estiveres cheia.
+
+E vais levantar-te da mesa sem registo mental do que comeste.
+
+[short pause]
+
+Vai ser estranho.
+
+[pause]
+
+Provavelmente, vais conseguir manter o silêncio mental durante apenas dez minutos da refeição.
+
+Depois disso, a cabeça vai voltar a tentar calcular alguma coisa.
+
+[short pause]
+
+Tudo bem. Não te exijas perfeição.
+
+[pause]
+
+Volta ao silêncio. Continua a comer. Pára quando estiveres cheia.
+
+[long pause]
+
+Numa folha, à noite, escreve apenas uma frase:
+
+"Hoje tive uma refeição sem cálculo. Senti —"
+
+[pause]
+
+E completa com a sensação que ficou.
+
+[short pause]
+
+A maioria das mulheres, da primeira vez que faz isto, escreve uma palavra.
+
+[pause]
+
+Liberdade.
+
+[long pause]
+
+Não liberdade abstracta.
+
+[pause]
+
+Liberdade pequena, concreta, quase esquecida — a de comer um almoço como qualquer pessoa que não foi treinada a calcular.
+
+[short pause]
+
+Repete uma vez por semana, durante alguns meses.
+
+[pause]
+
+E lentamente, sem te aperceberes, esta forma de comer começa a contaminar outras refeições da tua semana.
+
+[long pause]
+
+Não todas. Não imediatamente.
+
+[pause]
+
+Mas o suficiente para tu, ao fim de meses, perceberes que estás a comer com mais paz do que comias há anos.
+
+[short pause]
+
+Não porque encontraste a dieta certa.
+
+Porque, finalmente, lembraste-te do que era comer sem dieta nenhuma.`,
+      },
+      {
+        id: "a-fome-m8b",
+        titulo: "M8.B — O dia em que não te pesaste",
+        curso: "a-fome",
+        texto: `Há um pequeno ritual matinal que organiza, em silêncio, o resto do teu dia.
+
+[pause]
+
+Tu pesas-te.
+
+[long pause]
+
+Talvez todos os dias.
+
+Talvez algumas vezes por semana.
+
+Talvez só ao fim-de-semana.
+
+[pause]
+
+Mas pesas-te com regularidade.
+
+E o número que aparece na balança organiza, sem tu reparares, o tom interior das próximas horas.
+
+[short pause]
+
+Se o número desceu, sentes ligeireza. Estás de bom humor. Permites-te a chávena de café com leite. Falas com o teu marido com mais paciência.
+
+[pause]
+
+Se o número subiu, sentes peso emocional muito superior aos cem gramas físicos.
+
+Ficas em silêncio. Decides reduzir o pequeno-almoço. Estás mais irritável durante a manhã.
+
+[long pause]
+
+A balança, em ti, não é instrumento neutro de medida.
+
+[pause]
+
+É juíza.
+
+[short pause]
+
+E juíza com poder desproporcional sobre como tu vais habitar o teu próprio dia.
+
+[long pause]
+
+Repara que tu, neste momento, estás a entregar o teu humor matinal a um pedaço de plástico no chão da casa de banho.
+
+[pause]
+
+Um pedaço de plástico que não sabe como é que tu dormiste.
+
+Que não sabe se a tua filha esteve doente toda a noite.
+
+Que não sabe se estás na fase do ciclo em que reténs líquidos.
+
+Que não sabe se ontem comeste sal a mais.
+
+Que não sabe nada, na verdade, sobre a tua vida.
+
+[short pause]
+
+E, ainda assim, é a primeira coisa que tu consultas de manhã.
+
+[long pause]
+
+Esta semana, vais fazer uma experiência.
+
+[pause]
+
+Vais tirar a balança da casa de banho.
+
+[short pause]
+
+Não tens de a deitar fora. Não tens de a partir.
+
+[pause]
+
+Pega na balança e leva-a para outro lado. Pode ser um arrumo, um sótão, a despensa, a garagem, a casa de uma amiga.
+
+[short pause]
+
+Algum lugar onde não a vejas todas as manhãs.
+
+[long pause]
+
+E durante sete dias, não te peses.
+
+[pause]
+
+A primeira manhã vai ser estranha.
+
+[short pause]
+
+A tua mão vai procurar instintivamente a balança. Vais sentir um vazio pequeno. Vais sentir que falta uma informação.
+
+[pause]
+
+Vai aparecer ansiedade — "como é que sei se estou bem se não me peso?"
+
+[long pause]
+
+Continua. Não desistas no segundo dia.
+
+[pause]
+
+Ao fim de quatro ou cinco dias, vai acontecer uma coisa que não esperas.
+
+[short pause]
+
+Vais começar a perceber, sem o número, como o teu corpo se sente.
+
+[pause]
+
+Vais reparar se estás com energia ou sem energia.
+
+Vais reparar se a barriga está confortável ou apertada.
+
+Vais reparar se as roupas estão como costumam ou diferentes.
+
+[long pause]
+
+Toda esta informação estava sempre lá.
+
+[pause]
+
+Mas estava abafada por uma única medida que a substituía.
+
+[short pause]
+
+Quando tiras o número, o corpo recupera voz.
+
+[long pause]
+
+Ao fim da semana, antes de pores a balança de volta — se decidires que queres pô-la de volta — escreve numa folha:
+
+"Sem balança, esta semana, o meu corpo —"
+
+[pause]
+
+E completa.
+
+[short pause]
+
+A maior parte das mulheres descobre, ao fim de uma semana, que a balança não estava a dar-lhes informação.
+
+Estava a dar-lhes ansiedade.
+
+[pause]
+
+E que sem ela, conseguem perceber muito melhor como o seu corpo está realmente.
+
+[long pause]
+
+Algumas mulheres, depois deste exercício, decidem voltar a pesar-se mas com menos frequência.
+
+Outras decidem deixar a balança fora da casa de banho permanentemente.
+
+[pause]
+
+Não há resposta certa. Há a resposta tua, depois de finalmente teres tido uma semana para ver o que sentes sem ela.
+
+[short pause]
+
+A balança não é o teu corpo.
+
+É um instrumento.
+
+[long pause]
+
+E quando tu deixas de tratar o instrumento como autoridade sobre como te sentes, recuperas autoridade tu — sobre a tua relação com a tua própria carne.`,
+      },
+      {
+        id: "a-fome-m8c",
+        titulo: "M8.C — A relação possível com a fome",
+        curso: "a-fome",
+        texto: `Este curso acaba.
+
+[pause]
+
+E tu continuas nele.
+
+[long pause]
+
+Não vais sair daqui curada da relação com a comida.
+
+[pause]
+
+Vais sair com instrumentos que não tinhas há oito módulos.
+
+[short pause]
+
+E os instrumentos, ao contrário das curas prometidas, ficam.
+
+[long pause]
+
+Antes de fechar, vamos fazer um inventário do que tu, agora, sabes fazer.
+
+[pause]
+
+Pega numa folha. Escreve em cima:
+
+"Antes deste curso, eu não sabia —"
+
+[long pause]
+
+E vai escrevendo, devagar, à medida que reconheces.
+
+[pause]
+
+Não sabia que comer escondida, em segredo no frigorífico, era forma de gerir vergonha pública à mesa.
+
+Não sabia que a fome que aparece ao fim da tarde podia não ser fome — mas cansaço, tristeza, ou pedido de companhia.
+
+Não tinha mapa das frases sobre comida que herdei da minha mãe e da minha avó.
+
+Não tinha visto, em letra escrita, quantas dietas fiz na vida e qual foi o resultado real.
+
+Não tinha percebido que a "perda de controlo" de fim-de-semana era resposta inevitável à restrição da semana.
+
+Não tinha reparado que, em jantares com amigas e em encontros românticos, comia em função delas e dele, quase nunca em função de mim.
+
+Não tinha experimentado, em adulta, uma única refeição sem cálculo.
+
+[short pause]
+
+Vai escrevendo o que for verdadeiro para ti.
+
+Algumas linhas. Não muitas. As que importam.
+
+[long pause]
+
+Quando acabares, lê em voz baixa, para ti.
+
+[pause]
+
+E repara numa coisa.
+
+[short pause]
+
+Cada linha desta lista é um instrumento.
+
+[pause]
+
+Não é frase motivacional. Não é resolução de Ano Novo. É hábito novo, pequeno, instalado em ti depois de oito módulos de trabalho silencioso.
+
+[long pause]
+
+A mulher em paz com a fome não é versão idealizada que aparece daqui a dois anos.
+
+[pause]
+
+É a soma dos pequenos hábitos que tu, ao longo dos meses, vais continuando a praticar depois deste curso terminar.
+
+[short pause]
+
+É a mulher que continua a perguntar-se, antes de comer, se é fome ou outra coisa.
+
+A mulher que continua a notar quem está à mesa antes de escolher a porção.
+
+A mulher que continua a olhar para a balança como instrumento, e não como juíza.
+
+[long pause]
+
+Esta mulher não chega.
+
+Constrói-se em cada gesto pequeno repetido.
+
+[pause]
+
+E tu, neste momento, és exactamente isso — uma mulher a meio dessa construção.
+
+[short pause]
+
+Não no fim.
+
+A meio.
+
+[long pause]
+
+A relação possível com a fome não é a ausência de fome.
+
+[pause]
+
+Não é a ausência de prazer pela comida.
+
+Não é a perda de peso permanente.
+
+Não é a indiferença ao corpo.
+
+[short pause]
+
+É outra coisa.
+
+[long pause]
+
+É chegar a um ponto em que a comida volta a ser comida.
+
+[pause]
+
+Coisa que se prepara, se come com gosto, se partilha quando há gente boa por perto.
+
+E que se esquece a seguir, porque há outras coisas mais interessantes para fazer com a vida.
+
+[short pause]
+
+Este é o objectivo.
+
+[pause]
+
+Não a magreza. Não a perfeição alimentar. Não a iluminação corporal.
+
+A devolução da comida ao seu lugar — necessidade humana entre muitas outras, deixada de ser tema central da tua existência diária.
+
+[long pause]
+
+E a partir daí, o resto da tua vida — o trabalho, as relações, a criação, o descanso, o prazer — recupera o espaço que a comida lhe estava a roubar.
+
+[pause]
+
+Este espaço é, em última análise, o que este curso te dá.
+
+[short pause]
+
+Não menos quilos.
+
+Mais vida.
+
+[pause]
+
+E o que vier a seguir não é transformação prometida.
+
+É o que tu, com estes instrumentos na mão, fizeres todos os dias quando ninguém estiver a ver.`,
+      },
+    ],
+  },
 ];
