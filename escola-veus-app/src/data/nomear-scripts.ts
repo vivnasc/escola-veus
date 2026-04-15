@@ -7280,7 +7280,7 @@ Estás a regressar ao único lugar que o teu corpo conhece como casa.`,
 
 [pause]
 
-E se atingisses esse número, acreditas mesmo que parariaspor?
+E se atingisses esse número, acreditas mesmo que pararias?
 
 Ou o número subiria?
 
@@ -7397,6 +7397,387 @@ Mas para não adiares a vida até lá chegares.
 Suficiente não é um número.
 
 É uma decisão de estar presente no que já existe.`,
+      },
+    ],
+  },
+  {
+    id: "curso-ouro-proprio-m8",
+    titulo: "Curso Ouro Próprio — Módulo 8 (Aulas A, B, C)",
+    descricao: "Dinheiro como Liberdade. Fecho do curso. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m8a",
+        titulo: "M8.A — De sobrevivência a direcção",
+        curso: "ouro-proprio",
+        texto: `O teu dinheiro serve para sobreviver ou para viver?
+
+[pause]
+
+Há quanto tempo estás no modo de sobrevivência — a pagar contas, a cobrir buracos, a reagir ao que aparece — sem nunca te perguntares: para onde quero ir?
+
+[long pause]
+
+O mês começa e tu já sabes como vai ser.
+
+Entra o salário. Sai a renda. Sai a água, a luz, a internet. Sai o supermercado. Sai o transporte. Sai a escola. Sai o imprevisto que aparece sempre.
+
+[pause]
+
+E quando tudo sai, o que resta não é teu — é do próximo imprevisto.
+
+Não há sobra. Não há folga. Não há direcção.
+
+[short pause]
+
+Há sobrevivência.
+
+[long pause]
+
+E a sobrevivência financeira é eficiente: mantém-te à tona.
+
+Mas não te leva a lado nenhum.
+
+[pause]
+
+Estás no mesmo sítio há meses, talvez anos.
+
+Não porque sejas incapaz, mas porque toda a tua energia vai para a reacção.
+
+[short pause]
+
+Pagar o que aparece. Resolver o que surge. Apagar o fogo.
+
+[pause]
+
+Nunca sobra atenção para pensar: se o dinheiro não fosse só para sobreviver — para que o queria?
+
+[long pause]
+
+A sobrevivência financeira é um modo.
+
+Não é um destino.
+
+[pause]
+
+Mas quando ficas nele tempo demais, parece ser tudo o que existe.
+
+Parece que o dinheiro só serve para isso: cobrir custos.
+
+[short pause]
+
+E perdes de vista a outra função do dinheiro: a de construir.
+
+[long pause]
+
+Construir não significa ser rica.
+
+Significa ter direcção.
+
+[pause]
+
+Saber para onde vai o próximo euro que sobrar — não por obrigação, mas por escolha.
+
+[short pause]
+
+A diferença entre sobrevivência e direcção não é o quanto ganhas.
+
+É a pergunta que fazes.
+
+[pause]
+
+Na sobrevivência, a pergunta é: como vou pagar?
+
+Na direcção, a pergunta é: para onde quero ir?
+
+[long pause]
+
+E esta segunda pergunta — a da direcção — assusta mais.
+
+Porque obriga-te a querer. A imaginar. A permitir-te um futuro.
+
+[pause]
+
+E muitas mulheres pararam de se permitir futuro há tanto tempo que já nem sabem o que querem.
+
+[long pause]
+
+Amanhã de manhã, antes de começares o dia, fica parada dois minutos.
+
+De pé. Em silêncio.
+
+[pause]
+
+E em vez de pensares no que tens de pagar, pergunta: para onde quero ir?
+
+Não precisas de resposta. Só de fazer a pergunta.
+
+[short pause]
+
+Repete isto durante três manhãs.
+
+Ao terceiro dia, repara se algo mudou — na forma como entras no dia, na forma como olhas para o dinheiro, na forma como sentes o peso das contas.
+
+[pause]
+
+A pergunta não resolve.
+
+Mas muda a direcção do olhar.
+
+[long pause]
+
+Sobreviver é reagir.
+
+Viver é escolher para onde vai o próximo passo.`,
+      },
+      {
+        id: "ouro-proprio-m8b",
+        titulo: "M8.B — O mapa do futuro que queres financiar",
+        curso: "ouro-proprio",
+        texto: `Se o dinheiro fosse um veículo — não um problema, não um peso, não uma fonte de ansiedade, mas um veículo — para onde o conduzirias?
+
+[pause]
+
+Que vida construirias se pudesses usar o dinheiro com intenção em vez de desespero?
+
+[long pause]
+
+Imagina que estás sentada à mesa.
+
+Não à mesa da cozinha cheia de contas — outra mesa.
+
+Uma mesa limpa, com uma folha em branco.
+
+[pause]
+
+E alguém te diz: desenha a vida que queres.
+
+Não a perfeita — a tua.
+
+[short pause]
+
+Onde vives? Com quem? Como passas as manhãs? O que fazes com o teu tempo?
+
+Que tipo de cansaço sentes — o bom ou o que te desgasta?
+
+Quanto precisas por mês para isso?
+
+[long pause]
+
+A maioria das pessoas nunca fez este exercício.
+
+Não porque não queiram — porque nunca se permitiram.
+
+[pause]
+
+Porque quando vives em modo sobrevivência, imaginar um futuro parece luxo.
+
+Parece ingratidão. Parece delírio.
+
+[short pause]
+
+Mas não é nada disso.
+
+[pause]
+
+É o acto mais prático que podes fazer: saber para onde queres ir para poderes começar a caminhar.
+
+[long pause]
+
+Sem mapa, qualquer caminho serve.
+
+E é assim que muitas pessoas vivem a sua vida financeira: sem mapa.
+
+[pause]
+
+Ganham. Gastam. Sobra ou não sobra. Reagem.
+
+Mas nunca param para perguntar: isto está a levar-me para algum sítio?
+
+[long pause]
+
+O mapa não é um orçamento.
+
+O orçamento é o como.
+
+O mapa é o para quê.
+
+[pause]
+
+O orçamento diz: não gastes mais de X em comida.
+
+O mapa diz: quero viver num sítio com mais luz, perto do mar, com tempo para ler.
+
+[short pause]
+
+O orçamento sem mapa é uma prisão.
+
+O mapa sem orçamento é um sonho.
+
+Precisas dos dois.
+
+[pause]
+
+Mas o mapa vem primeiro.
+
+Porque sem saber para onde vais, não há número que te dê paz.
+
+[long pause]
+
+Escreve, em detalhe, um dia normal na vida que queres ter daqui a três anos.
+
+Não a vida perfeita — a tua.
+
+[pause]
+
+Desde que acordas até que adormeces. Com quem estás. O que fazes. O que comes. O que sentes.
+
+Depois lê o que escreveste e pergunta: quanto custa este dia?
+
+[short pause]
+
+Não precisa de ser exacto. Mas precisa de ser real.
+
+[pause]
+
+E quando tiveres o número, já não é um sonho.
+
+É um destino.
+
+[long pause]
+
+O dinheiro não te dá uma vida.
+
+Mas pode levar-te até ela — se souberes para onde queres ir.`,
+      },
+      {
+        id: "ouro-proprio-m8c",
+        titulo: "M8.C — Liberdade, não acumulação",
+        curso: "ouro-proprio",
+        texto: `Se o objectivo do dinheiro não for ter mais — mas ser mais livre — o que muda?
+
+[pause]
+
+O que farias diferente amanhã se o teu norte não fosse acumulação, mas liberdade?
+
+[long pause]
+
+Há pessoas que têm muito e não são livres.
+
+Trabalham setenta horas por semana para manter o que têm. Não dormem. Não param. Não aproveitam.
+
+[pause]
+
+O dinheiro está lá — mas a vida não.
+
+[long pause]
+
+E há pessoas que têm pouco e são livres.
+
+Não porque o pouco baste — mas porque fizeram uma escolha.
+
+[pause]
+
+Escolheram o que importa. E o dinheiro serve isso.
+
+Só isso.
+
+[long pause]
+
+Tu estás algures no meio.
+
+Talvez com mais do que precisas para sobreviver e menos do que achas que precisas para viver.
+
+[pause]
+
+Mas a pergunta não é quanto.
+
+A pergunta é: para quê?
+
+[short pause]
+
+Se o teu dinheiro te permite fazer o que importa — tens o suficiente.
+
+Se o teu dinheiro te prende a fazer o que não importa para ter mais do que não precisas — não tens liberdade.
+
+Tens gaiola dourada.
+
+[long pause]
+
+O mundo ensinou-te que o objectivo do dinheiro é ter mais.
+
+Mais poupança. Mais investimento. Mais segurança.
+
+Mais, mais, mais.
+
+[pause]
+
+Mas mais não é um destino — é uma esteira.
+
+E quem corre numa esteira está sempre a mexer-se e nunca sai do sítio.
+
+[long pause]
+
+A liberdade financeira não é ter tanto que nunca mais precisas de trabalhar.
+
+É ter clareza suficiente para que cada euro que gastas ou guardas esteja alinhado com a vida que queres.
+
+[pause]
+
+E quando isso acontece, algo muda no corpo.
+
+O aperto desaparece.
+
+[short pause]
+
+Não porque os números mudaram — mas porque a relação mudou.
+
+[pause]
+
+O dinheiro deixa de ser um juiz e torna-se uma ferramenta.
+
+Deixa de ser uma sentença e torna-se uma escolha.
+
+[short pause]
+
+E tu, finalmente, podes olhar para o extracto sem medo.
+
+Porque o que está lá dentro já não te define.
+
+[pause]
+
+Serves-te dele — ele não te serve a si mesmo.
+
+[long pause]
+
+Escreve três coisas que o dinheiro te permite fazer que te fazem sentir livre.
+
+E três coisas que o dinheiro te obriga a fazer que te prendem.
+
+[pause]
+
+Olha para as duas listas.
+
+E pergunta: posso ter mais da primeira e menos da segunda?
+
+[short pause]
+
+Não amanhã — ao longo do próximo ano?
+
+Começa por uma. Uma única mudança.
+
+Pequena. Concreta.
+
+[pause]
+
+Que te aproxime da liberdade e te afaste da acumulação sem sentido.
+
+[long pause]
+
+O dinheiro nunca foi o destino.
+
+É o caminho.
+
+E o caminho só tem valor se souberes para onde te leva.`,
       },
     ],
   },
