@@ -10623,7 +10623,7 @@ Durante séculos, as mulheres chamaram a isto lunática — porque seguia a lua.
 
 Não era loucura.
 
-Era sabedoria corporal que uma sociedade afoita não sabe aceitar.
+Era sabedoria corporal que uma sociedade apressada não sabe aceitar.
 
 [pause]
 
@@ -11391,7 +11391,7 @@ Fazes análises. Os resultados vêm "dentro do normal".
 
 O médico diz que está tudo bem.
 
-Tu sais da consulta com a sensação estranha de teres sido inválidada — porque tu sabes que não está tudo bem, mesmo que nenhum exame o prove.
+Tu sais da consulta com a sensação estranha de teres sido invalidada — porque tu sabes que não está tudo bem, mesmo que nenhum exame o prove.
 
 [pause]
 
@@ -11563,91 +11563,115 @@ Não guarda por maldade. Não guarda por apego. Guarda porque foi treinado, ao l
 
 A questão não é fazer o corpo esquecer.
 
-É trazer para consciência o que ele ainda guarda — para que, aos poucos, ele perceba que a ameaça passou.
+É trazer para consciência o que ele ainda guarda — não em meditação, em registo simples, depois.
 
 [long pause]
 
-Uma das formas de o fazer é, curiosamente, falar com o corpo.
-
-Não através de palavras ditas em voz alta.
-
-Através de atenção corporal dirigida.
+E o registo simples é mais eficaz do que parece.
 
 [pause]
 
-Quando reparas que o teu corpo está a reagir a algo do passado, podes fazer uma pausa interna e perguntar, em silêncio, sem pressa.
+Porque o que liberta o arquivo corporal não é introspecção dirigida em tempo real.
 
-O que estás a lembrar agora?
-
-[short pause]
-
-Não é pergunta metafórica. É pergunta concreta dirigida ao sistema corporal.
-
-E, muitas vezes, o corpo responde.
-
-[pause]
-
-Com uma imagem que volta. Com uma frase antiga. Com uma sensação mais específica.
+É padrão visível ao longo do tempo.
 
 [short pause]
 
-Tu não estás a imaginar. Estás a abrir o arquivo que até aqui só se abria por reflexo.
+E padrão só aparece quando há dados a olhar.
 
 [long pause]
 
-Quando o arquivo é aberto conscientemente, não automaticamente, algo começa a mudar.
-
-O corpo começa a perceber que tu estás aqui.
-
-Que a ameaça registada é antiga.
-
-Que tu, hoje, tens recursos que não tinhas quando a ameaça aconteceu.
+Esta semana, tem ao alcance um caderno pequeno.
 
 [pause]
 
-E começa, devagar, a relaxar a vigilância.
+Pode ser uma agenda. Um bloco de notas no telemóvel. Uma folha dobrada na carteira.
+
+Não importa o suporte. Importa estar acessível.
 
 [short pause]
 
-Não de uma vez. Ao longo de meses.
+E, sempre que reparares que o teu corpo reagiu a alguma coisa sem causa presente óbvia, escreves uma única linha.
 
-Mas começa.
+[pause]
+
+Não no momento.
+
+Depois.
 
 [long pause]
 
-Escolhe uma reacção corporal tua que se repete e que não tem causa presente óbvia.
-
-Da próxima vez que ela aparecer, em vez de tentares afastá-la ou racionalizá-la, para.
-
-Pergunta em silêncio, com atenção: o que guardas aqui?
+Quando estiveres em casa, ou ao fim do dia, escreve apenas três coisas:
 
 [pause]
 
-E escuta.
+O que estavas a fazer.
 
-Não a resposta em palavras. A resposta em imagens, sensações, memórias que sobem.
+Que reacção apareceu no corpo — e onde.
+
+E uma palavra ou frase, se te ocorrer, sobre a que cheirou aquela reacção.
 
 [short pause]
 
-Escreve, depois, num caderno, o que apareceu.
+Por exemplo:
+
+"Estava a passar pelo café da minha rua. Peito apertou. Cheirou à conversa com a minha mãe há dois meses."
+
+"Estava a ouvir uma música no carro. Estômago contraiu. Cheirou ao verão antes do divórcio."
+
+"Estava numa reunião com X. Garganta fechou. Cheirou a uma chefia antiga."
+
+[long pause]
+
+Três linhas por entrada. Não mais.
 
 [pause]
 
-Ao longo dos meses, vais construir um pequeno mapa do que o corpo guarda.
+Não tens de saber porquê. Não tens de elaborar. Não tens de chorar.
 
-E cada ponto do mapa, uma vez visto, torna-se menos operativo.
+[short pause]
+
+Só registar.
+
+[long pause]
+
+Ao fim de duas ou três semanas, lê todas as entradas em sequência.
+
+[pause]
+
+Vais reparar em padrões que sozinhos eram invisíveis.
+
+[short pause]
+
+Os mesmos cheiros emocionais aparecem em sítios diferentes.
+
+A mesma reacção corporal repete-se em contextos aparentemente sem ligação.
+
+Há uma ou duas memórias-base que estão a operar em vinte situações diferentes, sem que tu o soubesses.
+
+[long pause]
+
+Este mapa, escrito em letra tua, faz uma coisa que a meditação interior não faz.
+
+[pause]
+
+Mostra-te, em factos, o que o teu corpo carrega.
+
+[short pause]
+
+E o que é visto em factos perde, devagar, o poder de operar invisivelmente.
 
 [long pause]
 
 O corpo guarda para te proteger.
 
-Quando tu mostras ao corpo que já és capaz de te proteger conscientemente, ele pode, finalmente, largar a vigilância.
+Quando tu, em letra escrita, mostras ao corpo que já viste o que ele guarda, ele pode, finalmente, largar parte da vigilância.
 
 [pause]
 
-Esta é uma das formas mais silenciosas e mais profundas de liberdade.
+Não pelo mistério da introspecção.
 
-Libertar o corpo do trabalho de guardar sozinho o que já não precisas de carregar assim.`,
+Pela clareza simples do que está, finalmente, anotado num caderno.`,
       },
     ],
   },
@@ -11752,7 +11776,7 @@ E o corpo regista esta atenção retroactiva.
 
 [pause]
 
-Não como ilusão. Como atenção real. Porque o corpo não distingue, emocionalmente, entre a atenção dada naquele momento e a atenção dada agora com intenção.
+Não como ilusão. Como atenção real. Porque o corpo não distingue, emocionalmente, entre a atenção dada naquele momento e a atenção dada agora, deliberadamente.
 
 [long pause]
 
@@ -12255,7 +12279,7 @@ E essa independência, durante muito tempo, era inconveniente.
 
 [long pause]
 
-Tu, se pertences a uma geração que cresceu num tempo mais aberto, talvez achas que isto não te afectou.
+Tu, se pertences a uma geração que cresceu num tempo mais aberto, talvez aches que isto não te afectou.
 
 Mas olha com atenção.
 
@@ -12297,9 +12321,17 @@ Não é encontro sexual contigo.
 
 [short pause]
 
-Começa pelos pés. Demora-te. Repara no que sentes.
+Sem roteiro prescrito. Sem ordem certa. Sem partes que tens de tocar primeiro.
 
-Vai subindo pelo corpo sem apressar. Sem saltar para os sítios que já conheces como "certos".
+[pause]
+
+Apenas tempo livre, sem plano, em que o corpo pode ser descoberto onde calhar.
+
+[short pause]
+
+Sem saltar para os sítios que já conheces como "certos" — porque os "certos" foram, em geral, ensinados.
+
+E sem repetir a coreografia rápida que aprendeste para acabar depressa.
 
 [pause]
 
@@ -12496,7 +12528,7 @@ Assumida como fase natural. Como próximo capítulo óbvio. Como uma coisa que i
 
 [short pause]
 
-Esta assumpção não é inocente.
+Este pressuposto não é inocente.
 
 É cultural.
 
@@ -12923,7 +12955,7 @@ Mulheres que passam a vida inteira em guerra com o próprio corpo por ele estar 
 
 [short pause]
 
-Esta guerra é inganhável.
+Esta guerra está perdida à partida.
 
 Porque o corpo vai mudar, com ou sem a tua permissão.
 
@@ -12971,7 +13003,7 @@ Mas a cultura actual tenta manter todas as fases com a aparência da juventude �
 
 [long pause]
 
-Se consegues abraçar a tua meia-idade como fase própria — não como juventude prolongada nem como antecipação da velhice — algo muda na forma como habitas este corpo.
+Se consegues habitar a tua meia-idade como fase própria — não como juventude prolongada nem como antecipação da velhice — algo muda na forma como vives este corpo.
 
 [pause]
 
@@ -13183,7 +13215,7 @@ O que acontece de facto na menopausa?
 
 [pause]
 
-Fisicamente: cessa a produção reprodutiva. Os hormonas principais descem. O corpo reorganiza-se em termos metabólicos, ósseos, cardiovasculares.
+Fisicamente: termina a fase reprodutiva. As hormonas principais descem. O corpo reorganiza-se em termos metabólicos, ósseos, cardiovasculares.
 
 Esta reorganização tem consequências reais — algumas benignas, outras que exigem atenção médica.
 
@@ -13390,7 +13422,7 @@ Uma manhã em que reparas, ao levantar-te, em como te sentes de facto.
 
 Uma tarde em que paras para notar o cansaço, sem tentar fazê-lo desaparecer.
 
-Uma noite em que, antes de dormir, agradeces ao corpo — em silêncio — pelo que ele fez durante o dia.
+Uma noite em que, ao deitares-te, registas numa frase como o corpo passou o dia.
 
 [pause]
 
@@ -13416,25 +13448,65 @@ Uma cooperação que dura — com todas as mudanças — até ao fim da vida.
 
 [long pause]
 
-Esta noite, antes de dormires, experimenta uma coisa nova.
-
-Sem pressa. Deitada, no escuro ou com luz baixa.
+Esta semana, vais começar a construir essa cooperação por uma via concreta.
 
 [pause]
 
-Percorre mentalmente o teu corpo. Dos pés à cabeça.
-
-Não para avaliar se está bem. Apenas para reconhecer que ele está ali.
+Pega numa folha — ou usa a contracapa de uma agenda, ou um caderno pequeno que fique perto da tua cama.
 
 [short pause]
 
-Em cada parte que percorres, diz em silêncio: reconheço-te.
+E em cima escreve um cabeçalho:
 
-Sem mais. Apenas reconhecimento.
+"Como o meu corpo passou hoje —"
+
+[long pause]
+
+À noite, antes de dormires, em vez de fazeres meditações ou exercícios mentais, escreves uma única linha.
 
 [pause]
 
-Este gesto, repetido algumas noites ao longo de semanas, é uma das formas mais simples de começares a habitar o teu corpo em vez de o administrares.
+Não como o teu corpo te pareceu. Como ele realmente passou o dia.
+
+[short pause]
+
+Pode ser:
+
+"Hoje aguentou seis horas em pé na consulta da minha mãe. Tem o pé esquerdo a doer."
+
+"Hoje digeriu mal o jantar de ontem. Sentiu peso na barriga até à tarde."
+
+"Hoje teve mais energia do que o habitual a meio da tarde. Não sei porquê."
+
+"Hoje passou por dentro de uma reunião difícil sem se queixar. Mas a mandíbula ficou apertada."
+
+[long pause]
+
+Uma linha por dia. Sem comentário moral. Sem auto-cuidado prescrito. Sem agradecer.
+
+[pause]
+
+Apenas relato factual de como o corpo passou o dia.
+
+[short pause]
+
+Como quem regista as condições meteorológicas de uma casa onde vive.
+
+[long pause]
+
+Ao fim de duas semanas, lê tudo de uma vez.
+
+[pause]
+
+Vais ter, em letra escrita, um retrato do teu corpo que nunca tinhas tido.
+
+[short pause]
+
+Não imaginado. Observado.
+
+[pause]
+
+E é a partir desse retrato observado — não da meditação, não da gratidão silenciosa — que a cooperação serena entre tu e o corpo começa, devagar, a instalar-se.
 
 [long pause]
 
@@ -13444,7 +13516,7 @@ Já é tua casa.
 
 [pause]
 
-A única coisa que ele espera é que tu, finalmente, entres.`,
+A única coisa que ele espera é que tu, finalmente, prestes atenção a como ele passa o dia em que vive contigo.`,
       },
       {
         id: "sangue-e-seda-m8b",
@@ -13552,7 +13624,7 @@ E começas a perguntar: o que é que elas fizeram que eu posso começar a fazer 
 
 Quase sempre, o que elas fizeram foi deixar de lutar mais cedo.
 
-Não resignaram-se.
+Não se resignaram.
 
 Apenas pararam de travar guerra contra a passagem do tempo no próprio corpo.
 
@@ -18659,71 +18731,115 @@ Estás a tratar como problema o que, na verdade, é um dos maiores aliados da tu
 
 [long pause]
 
-Aceitar o corpo que aguentou muito é, em parte, gratidão consciente.
+Aceitar o corpo que aguentou muito não é gratidão performativa.
 
 [pause]
 
-Não gratidão performativa.
-
-Reconhecimento privado, regular, do trabalho silencioso que ele faz.
+Não é repetir frases bonitas em frente ao espelho.
 
 [short pause]
 
-Pode ser uma frase pequena ao final do dia, antes de adormeceres.
-
-"Obrigada por hoje."
+É outra coisa, mais concreta.
 
 [pause]
 
-Não tens de elaborar. O corpo entende.
+É começar a ter dados específicos sobre o trabalho que ele fez.
 
 [long pause]
 
-Esta gratidão básica, quando praticada com regularidade, muda a forma como o corpo te responde no longo prazo.
+A maior parte das mulheres consegue listar com facilidade tudo o que não gosta no próprio corpo.
 
 [pause]
 
-Não é magia. É comunicação.
+A celulite. A flacidez. A barriga. As pernas.
 
 [short pause]
 
-Quando o corpo é reconhecido pelo que faz, em vez de criticado pelo que parece, começa a relaxar uma vigilância antiga.
+Mas, se lhes pedires para listar cinco coisas concretas que o corpo fez bem na última semana, ficam paradas.
 
 [pause]
 
-E pessoas que praticam esta gratidão simples descrevem, depois de meses, alteração na qualidade de presença no próprio corpo.
+Não conseguem.
 
-[short pause]
-
-Mais relaxado. Menos reactivo. Mais em paz.
+Porque nunca olharam por esse ângulo.
 
 [long pause]
 
-Esta semana, instala uma prática nova.
-
-Antes de adormeceres, dirige uma frase silenciosa ao teu corpo.
+Esta semana, vais corrigir esse desequilíbrio.
 
 [pause]
 
-Pode ser "obrigada".
+Numa folha, escreve uma lista com cabeçalho:
 
-Pode ser "vejo-te".
-
-Pode ser apenas "boa noite, corpo".
+"Esta semana, o meu corpo —"
 
 [short pause]
 
-A frase específica importa menos do que o gesto.
+E, ao longo de sete dias, vais juntando entradas concretas.
 
 [pause]
 
-Estás a reconhecer.
-
-E o reconhecimento, repetido, reorganiza a relação interior.
+Não abstractas. Concretas.
 
 [long pause]
 
-O corpo que aguentou muito merece, em algum ponto, ser visto pelo que tem feito.
+Pode ser:
+
+"Combateu uma constipação que mal cheguei a sentir."
+
+"Compensou uma noite em que dormi quatro horas."
+
+"Digeriu o jantar pesado de sábado sem se queixar."
+
+"Aguentou três horas de pé na consulta da minha mãe."
+
+"Recuperou da semana intensa de trabalho num único fim-de-semana."
+
+[short pause]
+
+São coisas pequenas.
+
+São coisas que tu darias por garantidas.
+
+[pause]
+
+Mas escreves.
+
+Uma por dia, no mínimo. Mais, se reparares.
+
+[long pause]
+
+Ao fim da semana, lê a lista inteira de uma só vez.
+
+[pause]
+
+E repara no que sentes ao ler.
+
+[short pause]
+
+A maioria das mulheres, quando faz este exercício pela primeira vez, sente uma coisa específica.
+
+[pause]
+
+Surpresa.
+
+[long pause]
+
+Surpresa porque é a primeira vez na vida que viram, em letra escrita, o trabalho real do corpo.
+
+[pause]
+
+Não em discurso bonito sobre auto-cuidado.
+
+Em factos.
+
+[short pause]
+
+E os factos, ao contrário das frases, ficam.
+
+[long pause]
+
+O corpo que aguentou muito merece ser visto pelo que tem feito.
 
 [pause]
 
@@ -18733,27 +18849,7 @@ Pelo que tem sustentado.
 
 [short pause]
 
-E essa visão, quando se instala em ti, transforma a tua presença na pele.
-
-Mais habitação. Menos administração.
-
-[pause]
-
-Mais habitada. Menos crítica.
-
-[long pause]
-
-E o corpo, em troca, retribui.
-
-Com mais energia, mais presença, mais disposição.
-
-[pause]
-
-Como qualquer relação importante: o cuidado consciente gera retorno tangível.
-
-[short pause]
-
-Mesmo na relação com a tua própria pele.`,
+E uma lista escrita, à mão, é a forma mais simples e mais sólida de começar a ver.`,
       },
     ],
   },
@@ -19010,115 +19106,125 @@ Acontece em momentos pequenos, sem narração.
 
 [pause]
 
-A primeira hora da manhã, antes do telefone. Um banho com calma, sem pressa para terminar. Uma caminhada em que tu reparas como o pé pousa no chão.
+E acontece, sobretudo, fora da auto-observação consciente.
 
 [short pause]
 
-Em cada um destes momentos, tu estás a habitar a pele.
+Tu não habitas a pele a tentar habitá-la.
 
-[pause]
-
-Não estás fora dela, a observá-la. Estás dentro, a senti-la.
+Habitas quando te esqueces que estás a habitá-la.
 
 [long pause]
 
-A maioria das pessoas modernas habita pouco a pele.
+Esta é a inversão importante.
 
 [pause]
 
-Vive na cabeça — em pensamentos, planos, preocupações.
-
-E o corpo torna-se transporte da cabeça, não casa.
+Quanto mais tu vigias a tua presença no corpo, menos presente ficas.
 
 [short pause]
 
-Habitar a pele requer redução do tempo passado fora dela.
-
-E aumento do tempo passado dentro.
+Porque a vigilância é, em si, uma forma de saída do corpo. É um pedaço de ti a observar, em vez de outro pedaço a viver.
 
 [long pause]
 
-Esta semana, identifica três momentos diários em que tu, normalmente, estás na cabeça enquanto fazes algo no corpo.
+Habitar a pele não se constrói por exercício de atenção.
 
 [pause]
 
-A escovar os dentes — em geral, distraída.
-
-A tomar banho — em geral, planeando o resto do dia.
-
-A comer — em geral, sem prestar atenção ao sabor.
+Constrói-se por redução das coisas que te tiram dela.
 
 [short pause]
 
-Em cada um destes três momentos, esta semana, faz uma coisa nova.
-
-Estar na actividade física que estás a fazer.
-
-[pause]
-
-A escovar — sentir os dentes a serem escovados.
-
-A tomar banho — sentir a água na pele.
-
-A comer — sentir o sabor, a temperatura, a textura.
-
-[short pause]
-
-Não é meditação. É presença simples no corpo.
-
-[pause]
-
-E é, surpreendentemente, difícil.
-
-Porque o cérebro está habituado a viajar para fora destas actividades automáticas.
+E essa redução é mais prática do que mística.
 
 [long pause]
 
-Aos poucos, com prática, o corpo recupera espaço na tua atenção diária.
+A maioria das mulheres adultas tem três a cinco hábitos diários que retiram presença do corpo.
 
 [pause]
 
-E tu, lentamente, começas a habitar a pele em vez de a usar.
+O telemóvel à mesa.
+
+A televisão durante o jantar.
+
+A cabeça em três conversas ao mesmo tempo enquanto vais a conduzir.
+
+A planear amanhã enquanto estás a tomar banho hoje.
 
 [short pause]
 
-A diferença é difícil de explicar a quem nunca a sentiu.
+Cada um destes hábitos, sozinho, parece pequeno.
+
+No conjunto, são horas por dia em que o teu corpo está a fazer coisas sem ti.
+
+[long pause]
+
+Esta semana, em vez de prescrever atenção em tempo real — o que costuma virar mais um trabalho —, vais mapear o que te tira do corpo.
 
 [pause]
 
-Mas quem a sente, sabe.
+Numa folha, escreve em cima:
+
+"Hoje saí do corpo quando —"
 
 [short pause]
 
-A vida ganha textura. Os pequenos momentos têm peso. O corpo deixa de ser zona de problema e torna-se território onde se acontece.
+E, ao longo do dia, escreves entradas.
+
+[pause]
+
+Não em tempo real. Não a interromper.
+
+À noite, antes de dormir, lembra-te do dia e escreve.
+
+[long pause]
+
+Pode ser:
+
+"Saí do corpo quando estava a almoçar com o telemóvel ao lado e nem reparei no que comi."
+
+"Saí do corpo quando ia a conduzir a planear a reunião e cheguei sem dar conta do percurso."
+
+"Saí do corpo quando tomei banho a recapitular a discussão com a minha filha."
+
+[short pause]
+
+Três entradas por dia.
+
+Sete dias.
+
+[pause]
+
+Ao fim da semana, lê a lista.
+
+[long pause]
+
+Vais reparar num padrão.
+
+[pause]
+
+Há momentos do dia que te tiram do corpo quase sempre.
+
+E há outros, talvez, em que ainda consegues estar.
+
+[short pause]
+
+A lista, sozinha, não muda nada.
+
+[pause]
+
+Mas mostra-te onde, especificamente, começar.
 
 [long pause]
 
 Habitar a pele não é objectivo a alcançar.
 
-É prática a manter.
+É consequência de teres reduzido, em pequenos pontos, o que te tira dela.
 
 [pause]
 
-Como manter uma casa em ordem. Não se faz uma vez. Faz-se um pouco todos os dias.
-
-[short pause]
-
-Mas o resultado, ao longo dos meses, é uma diferença qualitativa profunda na tua vida.
-
-[pause]
-
-Vives com mais corpo presente.
-
-E menos cabeça desconectada.
-
-[long pause]
-
-Esta é, em última análise, a única forma sustentável de te reconciliares com o teu corpo.
-
-[pause]
-
-Não pelo que ele aparenta.
+Não pelo que o corpo aparenta.
 
 Pelo facto de tu, pela primeira vez em muito tempo, estares finalmente nele.`,
       },
@@ -19281,103 +19387,137 @@ E a pele, paradoxalmente, costuma ficar melhor.`,
         id: "pele-nua-m7b",
         titulo: "M7.B — A vergonha residual da menopausa",
         curso: "pele-nua",
-        texto: `Há uma vergonha residual que muitas mulheres experienciam à volta da menopausa.
+        texto: `Há uma vergonha que aparece muito específicamente quando alguém te pergunta a idade.
 
 [pause]
 
-Não a menopausa em si. A vergonha de ter chegado a essa fase.
+Tu já reparaste.
 
 [long pause]
 
-Esta vergonha vem da cultura que equacionou feminilidade com fertilidade, juventude e atractividade reprodutiva.
+A pergunta chega — num jantar, numa consulta, num formulário.
+
+E o teu corpo, antes de a tua cabeça responder, faz qualquer coisa.
 
 [pause]
 
-Quando a menopausa chega, parte deste enquadramento cultural deixa de se aplicar.
+Os ombros sobem ligeiramente.
 
-E muitas mulheres sentem, em silêncio, que perderam algo essencial da sua identidade pública.
+A respiração interrompe-se durante meio segundo.
+
+A face fica ligeiramente mais quente.
+
+Há um cálculo silencioso a acontecer dentro de ti — quanto custa dizer o número exacto, quanto custa arredondar, quanto custa mentir.
 
 [short pause]
 
-Esta sensação não é fraqueza individual.
-
-É produto cultural.
-
-[pause]
-
-Foste socializada durante décadas para acreditar que ser mulher era estar em determinada fase do ciclo reprodutivo.
-
-E quando essa fase termina, há uma reorganização interior dolorosa que poucas pessoas conversam abertamente.
+Este cálculo é vergonha residual a aparecer no corpo em tempo real.
 
 [long pause]
 
-A vergonha residual aparece em sítios subtis.
+Não é a tua vergonha individual.
 
 [pause]
 
-Não querer mencionar a menopausa em conversas profissionais.
-
-Sentir desconforto quando alguém pergunta a tua idade.
-
-Comprar produtos com promessas de "rejuvenescimento" mesmo sabendo, racionalmente, que não funcionam como prometem.
+É vergonha colectiva, herdada de décadas a ouvir que mulher acima de certa idade vale menos.
 
 [short pause]
 
-Estes comportamentos são tentativas de manter, à superfície, uma identidade que culturalmente se está a desactualizar.
-
-[pause]
-
-E custam energia.
+E o teu corpo, sem te perguntar, aprendeu a contrair-se quando a idade é mencionada.
 
 [long pause]
 
-Reconhecer esta vergonha residual é o primeiro passo para a reduzir.
+Repara nos sítios onde isto acontece em ti.
 
 [pause]
 
-Não desaparece imediatamente. Mas perde poder.
+A boca, que por momentos não consegue formar a sílaba do número exacto.
+
+A barriga, que se aperta um bocadinho sem razão aparente.
+
+Os olhos, que evitam o contacto visual da pessoa que perguntou.
 
 [short pause]
 
-Quando tu, em privado, admites: sim, há vergonha em mim sobre este momento da vida. Sim, isto é influência cultural. Sim, está em mim mas não tem de me dirigir.
+A vergonha da idade não vive na cabeça.
 
-[pause]
-
-Esta admissão é libertação parcial.
+Vive em pontos específicos do corpo.
 
 [long pause]
 
-Esta semana, faz uma reflexão privada.
-
-Em que momentos da semana sentiste, mesmo subtilmente, vergonha relacionada com a tua idade ou com a fase do corpo em que estás?
+E é por isso que argumentos racionais — "não tenho razão para sentir vergonha", "a idade é só um número" — não a dissolvem.
 
 [pause]
 
-Lista esses momentos.
+Porque ela não é argumento.
+
+É reacção corporal aprendida.
 
 [short pause]
 
-Talvez uma fotografia em que evitaste sair. Uma conversa em que mudaste de assunto. Uma compra que fizeste com pensamento implícito de "preciso de parecer mais nova".
-
-[pause]
-
-Ao identificar estes momentos, eles deixam de operar invisivelmente.
-
-E começam a poder ser observados — e, com o tempo, alguns começam a perder força.
+E reacções corporais aprendidas só se desinstalam por outra reacção corporal.
 
 [long pause]
 
-Não tens de te livrar da vergonha residual de uma vez.
-
-Tens, sim, de a parar de tratar como verdade pessoal — e começar a tratá-la como produto cultural que tu, em algum grau, herdas.
+Esta semana, durante sete dias, vais fazer uma observação muito específica.
 
 [pause]
 
-E ao longo dos anos, à medida que mais mulheres da tua geração vivem fases pós-reprodutivas com presença e autoridade, a vergonha colectiva vai-se reduzindo.
+De cada vez que alguém te perguntar a idade — ou que tu mesma a tiveres de mencionar, num formulário, num cartão, numa apresentação — repara, em vez de responder em automático.
 
 [short pause]
 
-E tu fazes parte dessa redução. Quando vives a tua idade sem desculpa.`,
+Repara onde, no corpo, sentes alguma coisa.
+
+São os ombros? É o estômago? É a respiração? É a garganta?
+
+[pause]
+
+Não tentes mudar a reacção.
+
+Só repara.
+
+[long pause]
+
+À noite, antes de dormir, anota numa folha:
+
+"Hoje, quando a idade apareceu, senti em —"
+
+[pause]
+
+E completa com o sítio do corpo. Uma frase. Sem comentário.
+
+[short pause]
+
+Ao fim da semana, lê as anotações em sequência.
+
+[long pause]
+
+Vais reparar duas coisas.
+
+[pause]
+
+A primeira: a reacção repete-se quase sempre no mesmo sítio. O teu corpo tem um lugar específico onde guarda esta vergonha.
+
+[short pause]
+
+A segunda: o simples acto de reparar começa, lentamente, a reduzir a intensidade.
+
+[pause]
+
+Não desaparece numa semana.
+
+Mas começa a deixar de operar invisivelmente.
+
+[long pause]
+
+A vergonha que tu não sabes que tens dirige-te.
+
+A vergonha que tu sabes onde mora deixa, devagar, de te dirigir.
+
+[pause]
+
+E o corpo que reconhece a sua reacção tem, pela primeira vez, hipótese de a recompor.`,
       },
       {
         id: "pele-nua-m7c",
@@ -19758,149 +19898,129 @@ E é mais do que suficiente para uma vida significativamente diferente daquela q
         id: "pele-nua-m8c",
         titulo: "M8.C — A mulher que habita a sua pele",
         curso: "pele-nua",
-        texto: `Imagina, no fim deste curso, a mulher que tu vais ser daqui a cinco anos.
+        texto: `Este curso acaba.
 
 [pause]
 
-Uma mulher que, depois de muito trabalho silencioso, finalmente habita a sua pele.
+E tu continuas nele.
 
 [long pause]
 
-Esta mulher tem uma qualidade específica.
-
-Não é beleza convencional. Não é juventude prolongada.
-
-É presença plena.
+Não vais sair daqui transformada.
 
 [pause]
 
-Quando ela entra numa sala, há algo que muda no ambiente.
-
-Não pelo que ela faz. Pelo facto de ela estar inteiramente onde está.
+Vais sair com instrumentos que ainda há semanas não tinhas.
 
 [short pause]
 
-Ela não está, mentalmente, a observar-se de fora.
-
-Está dentro do corpo, em tempo real, sem fuga.
+Que é coisa diferente. E mais honesta.
 
 [long pause]
 
-Esta presença é rara.
+Antes de fechar, vamos fazer um inventário.
 
 [pause]
 
-Porque a maioria das mulheres adultas vive em fuga parcial do próprio corpo — projectada na cabeça, no que vão fazer a seguir, no que outros vão pensar.
+Não de futuro imaginado.
+
+De presente real — o que tu, ao longo destes oito módulos, aprendeste a fazer.
 
 [short pause]
 
-A mulher que habita a pele resgatou-se desta fuga.
+Pega numa folha. Escreve em cima:
 
-[pause]
-
-Não totalmente — ninguém o faz totalmente.
-
-Mas o suficiente para a sua vida ter qualidade nova.
+"Antes deste curso, eu não fazia —"
 
 [long pause]
 
-Esta mulher já não passa as manhãs em batalha com o espelho.
-
-Já não compra produtos por ansiedade.
-
-Já não pede desculpa por marcas, mudanças, ou idade.
+E vai escrevendo, devagar, à medida que reconheces.
 
 [pause]
 
-Não porque ignora as mudanças.
+Não fazia contas dos olhares automáticos sobre o meu corpo durante o dia.
 
-Porque as integrou.
+Não tinha lista escrita do que o meu corpo aguentou esta semana.
+
+Não sabia em que sítio do corpo se aperta a vergonha quando alguém me pergunta a idade.
+
+Não tinha nomeado as três marcas que carrego e as histórias delas.
+
+Não tinha mapeado os momentos em que saio do corpo sem dar conta.
+
+Não tinha admitido em letra escrita o que aprendi a calar sobre a relação com a minha pele.
 
 [short pause]
 
-E porque, em algum ponto, decidiu que a sua vida era mais importante do que a permanente correcção do seu corpo.
+Vai escrevendo o que for verdadeiro para ti.
+
+Algumas linhas. Não muitas. As que importam.
 
 [long pause]
 
-Tu podes ser esta mulher.
+Quando acabares, lê a lista.
 
 [pause]
 
-Não amanhã. Não numa semana.
-
-Mas ao longo dos próximos anos, em pequenos gestos repetidos, podes começar a aproximar-te dela.
+E repara numa coisa.
 
 [short pause]
 
-Cada vez que olhas para o espelho sem corrigir.
-
-Cada vez que vestes algo por prazer e não por aceitação social.
-
-Cada vez que te recusas a entrar numa comparação automática.
+Cada um destes pontos é um instrumento que ficou em ti.
 
 [pause]
 
-Cada um destes gestos é um passo na direcção dela.
+Não é frase motivacional. Não é insight passageiro. É hábito novo, pequeno, instalado.
 
 [long pause]
 
-E ao fim de anos, sem ninguém te ter feito cerimónia, vais perceber que te tornaste essa mulher.
+A mulher que habita a sua pele não é versão idealizada que aparece daqui a cinco anos.
 
 [pause]
 
-A mulher que habita a sua pele.
-
-A mulher que parou de viver em batalha contra a casa permanente em que vive.
-
-A mulher que, finalmente, está em casa em si mesma.
+É a soma dos pequenos hábitos que tu, ao longo dos meses, vais continuando a praticar depois deste curso terminar.
 
 [short pause]
 
-Este é o objectivo deste curso.
+É a mulher que continua a fazer a contagem dos olhares.
 
-[pause]
+A mulher que continua a escrever a lista do que o corpo aguentou.
 
-Não a cosmética. Não a aparência. Não a juventude prolongada.
-
-A habitação plena da casa permanente.
+A mulher que continua a notar onde a vergonha mora — e, por isso, deixa lentamente de ser dirigida por ela.
 
 [long pause]
 
-E essa habitação é, em última análise, o presente mais profundo que tu te podes dar a ti mesma.
+Esta mulher não chega.
+
+Constrói-se em cada gesto pequeno repetido.
 
 [pause]
 
-Mais profundo do que qualquer compra. Mais duradouro do que qualquer relação.
+E tu, neste momento, és exactamente isso — uma mulher a meio dessa construção.
 
 [short pause]
 
-Porque é a relação contigo mesma — a única que vai durar a vida inteira.
+Não no fim.
 
-[pause]
-
-E se essa relação for finalmente acolhedora, todas as outras melhoram em consequência.
+A meio.
 
 [long pause]
 
-A pele é tua.
-
-A casa é tua.
-
-E tu, com tempo, podes finalmente habitá-la inteiramente.
+Este curso acaba. Os instrumentos ficam.
 
 [pause]
 
-Esta é a possibilidade que este curso te oferece.
-
-Não promessa de transformação.
-
-Convite para a habitação que tu sempre tiveste o direito de fazer — mas que durante demasiado tempo te foi roubada por exigências externas.
+Cada vez que pegas num deles, mesmo sem te lembrares deste curso, estás a continuar o trabalho.
 
 [short pause]
 
-A casa esperou por ti.
+A pele é tua. A casa é tua. Os instrumentos para a habitar agora também.
 
-E continua disponível para que tu, finalmente, regresses.`,
+[pause]
+
+E o que vier a seguir não é transformação prometida.
+
+É o que tu, com estes instrumentos na mão, fizeres todos os dias quando ninguém estiver a ver.`,
       },
     ],
   },
@@ -21160,6 +21280,473 @@ Mandar mensagem a alguém à noite é alimentar a parte de ti que tem fome de se
 [short pause]
 
 E, ao contrário do bolo, não traz vergonha na manhã seguinte.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-fome-m4",
+    titulo: "Curso A Fome — Módulo 4 (Aulas A, B, C)",
+    descricao: "A Comida da Mãe.",
+    scripts: [
+      {
+        id: "a-fome-m4a",
+        titulo: "M4.A — A frase à mesa que ficou em ti",
+        curso: "a-fome",
+        texto: `Quase todas as mulheres carregam, na relação com a comida, uma frase específica que alguém disse à mesa.
+
+[pause]
+
+Nem sempre te lembras claramente.
+
+Mas a frase está lá. A operar.
+
+[long pause]
+
+Pode ter sido a mãe a olhar para o teu prato e dizer:
+
+"Tens a certeza de que precisas de mais?"
+
+[pause]
+
+Pode ter sido o pai a comentar, sem maldade, num jantar de família:
+
+"Esta menina, se não a controlamos, come tudo."
+
+[short pause]
+
+Pode ter sido uma tia, uma avó, um irmão a brincar:
+
+"Olha quem está a engordar."
+
+[long pause]
+
+Provavelmente foi dito num momento aparentemente banal.
+
+[pause]
+
+Provavelmente quem disse já se esqueceu há décadas.
+
+[short pause]
+
+Mas tu não esqueceste.
+
+Não no plano consciente — talvez não te lembres de imediato. Mas no plano corporal, sim.
+
+[long pause]
+
+Esta frase ficou registada como regra.
+
+[pause]
+
+E desde aí, todas as vezes que tu te sentas à mesa, há uma parte de ti que está a obedecer a essa regra, mesmo que tu já não a saibas dizer em voz alta.
+
+[short pause]
+
+A regra pode ser:
+
+"Não comas tudo o que está no prato."
+
+"Não peças mais do que os outros."
+
+"Tem cuidado, ou vais ficar como aquela tia."
+
+"Mulher bonita não tem apetite."
+
+[long pause]
+
+Estas regras não foram escolhidas por ti.
+
+[pause]
+
+Foram instaladas em ti.
+
+[short pause]
+
+Por palavras casuais ditas em momentos casuais por pessoas que não tinham ideia do peso que essas palavras iam ter.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno mas importante.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Frases sobre comida que ficaram em mim."
+
+[short pause]
+
+E vai escrevendo, ao longo dos dias, à medida que te lembras.
+
+[pause]
+
+Não esforça a memória.
+
+Quando estiveres a comer e reparares que algo te fez pousar o garfo antes de estares cheia, repara.
+
+Quando estiveres a calcular se podes ou não pedir a sobremesa, repara.
+
+Quando sentires vergonha sem razão presente, repara.
+
+[long pause]
+
+Em cada um destes momentos, a tua cabeça tem uma frase a operar.
+
+[pause]
+
+Não é tua. Foi-te dada.
+
+E a tua tarefa é, durante esta semana, identificar o nome de quem ta deu.
+
+[short pause]
+
+Ao lado de cada frase que escreveres, escreve um segundo dado:
+
+"Esta frase, na minha cabeça, soa à voz de —"
+
+[pause]
+
+Pode ser a mãe. O pai. Uma irmã mais velha. Uma chefe. Uma amiga da adolescência.
+
+[long pause]
+
+Quando consegues atribuir a frase a alguém específico, ela perde alguma coisa.
+
+[pause]
+
+Deixa de parecer verdade tua.
+
+Passa a parecer empréstimo.
+
+[short pause]
+
+E o que é empréstimo pode, com tempo, ser devolvido.
+
+[long pause]
+
+Não amanhã.
+
+Mas a partir do momento em que a frase tem nome de outra pessoa, a tua relação com ela começa a mudar.
+
+[pause]
+
+Já não a obedeces porque é tua.
+
+Começas a obedecê-la, ou não, sabendo que é dela.`,
+      },
+      {
+        id: "a-fome-m4b",
+        titulo: "M4.B — A relação que ela tinha com o próprio corpo",
+        curso: "a-fome",
+        texto: `Antes de tu teres uma relação com a comida, viste a relação que a tua mãe tinha.
+
+[pause]
+
+Antes de qualquer livro, qualquer conselho, qualquer aula de educação alimentar.
+
+[long pause]
+
+Viste-a aos seis, sete, dez anos, sem saber que estavas a aprender.
+
+[pause]
+
+Viste-a olhar-se ao espelho de manhã.
+
+Viste-a queixar-se da barriga depois das festas.
+
+Viste-a dizer "hoje não como, ainda estou cheia de ontem" — e percebeste, sem palavras, que isso era forma adulta de ser mulher.
+
+[short pause]
+
+Viste-a a fazer uma dieta. Depois outra. Depois outra.
+
+Viste-a celebrar quilos perdidos como se fosse vitória pessoal.
+
+Viste-a ficar de mau humor quando a balança não cooperava.
+
+[long pause]
+
+Tu não imitaste o que ela disse sobre o corpo.
+
+Imitaste o que ela fez com o corpo.
+
+[pause]
+
+E o que ela fez foi, em quase todos os casos, uma versão da guerra silenciosa que ela própria tinha aprendido com a tua avó.
+
+[short pause]
+
+Esta cadeia é longa.
+
+[pause]
+
+Avó. Mãe. Tu.
+
+[long pause]
+
+E a maior parte das mulheres adultas vive com uma relação com o corpo e com a comida que não desenharam.
+
+[pause]
+
+Herdaram.
+
+[short pause]
+
+Herdaram a vigilância matinal ao espelho.
+
+Herdaram as frases ao prato.
+
+Herdaram a culpa pela sobremesa.
+
+Herdaram a sensação de que comer com prazer, em adulta, é forma de fraqueza.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de genealogia.
+
+[pause]
+
+Numa folha grande, divide-a em três colunas.
+
+[short pause]
+
+Em cima da primeira escreve o nome da tua avó.
+
+Em cima da segunda escreve o nome da tua mãe.
+
+Em cima da terceira escreve o teu nome.
+
+[pause]
+
+E em cada coluna, escreve três frases.
+
+[long pause]
+
+Como é que ela falava do próprio corpo?
+
+Como é que ela comia em frente aos outros?
+
+O que é que ela disse, em algum momento, sobre comida e mulheres?
+
+[short pause]
+
+Algumas destas perguntas tu não saberás responder pela tua avó.
+
+[pause]
+
+Tudo bem.
+
+Escreve o que sabes. Pergunta à tua mãe, ou a uma tia, se conseguires.
+
+[short pause]
+
+A coluna pode ficar com lacunas.
+
+A própria lacuna é informação — a tua avó pode ter tido uma relação com a comida que ninguém na família registou.
+
+[long pause]
+
+Quando acabares as três colunas, lê-as em sequência.
+
+[pause]
+
+Da esquerda para a direita.
+
+[short pause]
+
+Vais reparar numa coisa.
+
+[pause]
+
+Há frases que se repetem, com pequenas variações, em todas as três colunas.
+
+[long pause]
+
+Há gestos que tu fazes hoje à mesa que a tua avó já fazia há cinquenta anos.
+
+[pause]
+
+Não porque te ensinou.
+
+Porque atravessou três gerações sem te perguntar.
+
+[short pause]
+
+Quando vês isto desenhado, em letra escrita, alguma coisa muda.
+
+[long pause]
+
+A tua relação com a comida deixa de parecer falha tua.
+
+Passa a parecer herança a ser gerida.
+
+[pause]
+
+E as heranças, ao contrário das falhas, podem ser reorganizadas.
+
+[short pause]
+
+Pode haver itens da herança que escolhes manter.
+
+E há outros que, sabendo agora a origem, podes começar a recusar.
+
+[pause]
+
+Não para a tua mãe.
+
+Não para a tua avó.
+
+Para a próxima geração — tua filha, tua sobrinha, qualquer mulher nova que te observe à mesa sem que tu te apercebas.`,
+      },
+      {
+        id: "a-fome-m4c",
+        titulo: "M4.C — O prato que tu ainda comes por causa dela",
+        curso: "a-fome",
+        texto: `Há um prato que tu ainda comes hoje, em adulta, pelo qual tu não escolherias.
+
+[pause]
+
+Mas comes.
+
+[long pause]
+
+Pode ser o assado de domingo.
+
+Pode ser a sopa que ela fazia sempre quando estavas constipada.
+
+Pode ser o doce típico do Natal que ninguém em tua casa actualmente gosta a sério, mas que tu insistes em fazer todos os anos.
+
+[short pause]
+
+Estes pratos não são neutros.
+
+[pause]
+
+São pontes.
+
+[long pause]
+
+Cada um deles é uma forma silenciosa de continuares uma relação com alguém que talvez já não esteja.
+
+[pause]
+
+Ou que está, mas com quem a relação se tornou complicada.
+
+Ou que tu, há muito tempo, deixaste de saber como abraçar — mas que ainda alimentas, em ti, através do prato.
+
+[short pause]
+
+A comida, neste caso, não é alimento.
+
+É memória.
+
+[long pause]
+
+Quase todas as mulheres adultas têm pelo menos um destes pratos.
+
+[pause]
+
+E quase todas o comem sem reparar no que ele está, na verdade, a fazer.
+
+[short pause]
+
+A acordar, em ti, uma criança que ainda quer estar perto da mãe, da avó, da tia.
+
+[pause]
+
+A trazer-te de volta a uma cozinha que provavelmente já não existe.
+
+A repor, durante quinze minutos, uma sensação de ser cuidada que tu, em adulta, raramente recebes.
+
+[long pause]
+
+Isto não é mau.
+
+[pause]
+
+A comida-memória é, em muitas culturas, das formas mais saudáveis de manter relação com quem nos foi importante.
+
+[short pause]
+
+O problema só aparece quando tu, sem saberes, comes este prato com mais frequência do que faz sentido.
+
+[pause]
+
+Quando reparas que apetecesse-te o doce da avó num momento em que estás sozinha, triste, sem ninguém para conversar.
+
+E quando, depois de o comer, ficas com a sensação difusa de que aquilo, afinal, não preencheu o que precisavas.
+
+[long pause]
+
+Esta semana, identifica o teu prato-ponte.
+
+[pause]
+
+O que é? De quem vem? Quando é que apetece?
+
+[short pause]
+
+Numa folha, escreve três coisas:
+
+[pause]
+
+Primeira — que prato é.
+
+Segunda — a quem te liga.
+
+Terceira — que fome real está a tentar resolver, para além da fome física.
+
+[long pause]
+
+A terceira é a mais difícil de escrever.
+
+[pause]
+
+Mas é a mais útil.
+
+[short pause]
+
+Porque revela, por exemplo, que o doce da avó aparece quando tens saudades de ter alguém que te trate como criança.
+
+Que o assado de domingo aparece quando a casa está silenciosa demais.
+
+Que a sopa de constipações aparece quando estás a precisar de ser cuidada e ninguém o está a fazer.
+
+[long pause]
+
+Quando tens esta informação, podes fazer duas coisas.
+
+[pause]
+
+A primeira: continuar a comer o prato. Mas agora com consciência do que ele faz por ti.
+
+[short pause]
+
+Comer-lo lentamente. Fazer dele uma pequena cerimónia. Honrar a pessoa de onde ele vem.
+
+[pause]
+
+A segunda: começar a procurar formas alternativas de obter o que o prato está a tentar dar.
+
+[long pause]
+
+Se o prato é forma de teres saudades de uma avó morta, podes ler uma carta antiga dela.
+
+Se o prato é forma de te sentires cuidada, podes ligar a alguém que ainda está vivo e que ainda te trata bem.
+
+Se o prato é forma de teres companhia, podes convidar alguém para o partilhar.
+
+[short pause]
+
+A comida-memória, quando bem usada, é gesto de amor.
+
+[pause]
+
+Quando usada em automático, no escuro, sozinha — torna-se substituto da relação que ela queria comemorar.
+
+[short pause]
+
+E essa diferença, sabendo-a, podes começar a viver melhor.`,
       },
     ],
   },
