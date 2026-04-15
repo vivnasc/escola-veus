@@ -18274,4 +18274,401 @@ E, com paciência, aceita ser deixada em paz.`,
       },
     ],
   },
+  {
+    id: "curso-pele-nua-m5",
+    titulo: "Curso Pele Nua — Módulo 5 (Aulas A, B, C)",
+    descricao: "A Cicatriz, A Estria, A Marca.",
+    scripts: [
+      {
+        id: "pele-nua-m5a",
+        titulo: "M5.A — As marcas que são histórias",
+        curso: "pele-nua",
+        texto: `O teu corpo tem marcas.
+
+[pause]
+
+Cicatrizes de operações antigas. Marcas de partos. Estrias de fases em que o corpo cresceu mais depressa do que a pele conseguia acompanhar. Manchas que apareceram com o sol acumulado dos anos.
+
+[long pause]
+
+Cada uma destas marcas é uma história.
+
+[pause]
+
+Não estética. Histórica.
+
+[short pause]
+
+A cicatriz da apendicite que tiveste aos catorze. A estria que apareceu na adolescência. A linha que ficou depois do parto. A marca de uma queda que nunca mais saiu.
+
+[pause]
+
+Cada uma marca uma vida que aconteceu no teu corpo.
+
+[long pause]
+
+A cultura cosmética contemporânea ensina que estas marcas são problemas a corrigir.
+
+[pause]
+
+Cremes para reduzir cicatrizes. Tratamentos para apagar estrias. Lasers para tirar manchas.
+
+[short pause]
+
+Mensagem implícita: o corpo ideal é corpo sem marca de história.
+
+[pause]
+
+Como se viver não tivesse efeito.
+
+E o corpo perfeito fosse o que aparenta nunca ter atravessado nada.
+
+[long pause]
+
+Mas as marcas são, na verdade, prova de vida.
+
+[pause]
+
+Um corpo sem marca é corpo de quem não viveu.
+
+E muitas vezes, o que parece marca de imperfeição é, vista de outra forma, marca de coragem.
+
+[short pause]
+
+A cicatriz que ficou depois daquela operação difícil. A estria que veio depois da gravidez que escolheste. A mancha que está ali há anos porque tu vives, ao sol, como uma mulher que sai de casa.
+
+[long pause]
+
+Reconciliar-te com as marcas exige uma alteração de olhar.
+
+[pause]
+
+Não decisão de "amar as cicatrizes". Isso é frase motivacional vazia.
+
+Mas reconhecimento honesto do que cada marca representa.
+
+[short pause]
+
+Nesta cicatriz, salvei a vida ao meu filho.
+
+Nesta estria, o meu corpo abriu para fazer espaço a outra vida.
+
+Nesta marca, vivi anos de sol sem me esconder do mundo.
+
+[pause]
+
+Estas frases, ditas em silêncio quando olhas para as marcas, mudam a sua qualidade emocional.
+
+[short pause]
+
+Deixam de ser defeitos a esconder.
+
+Passam a ser indicações de uma vida real.
+
+[long pause]
+
+Esta semana, escolhe três marcas no teu corpo.
+
+Para cada uma, escreve numa folha o que aconteceu para a marca aparecer.
+
+[pause]
+
+Lê o que escreveste.
+
+Olha para a marca enquanto lês.
+
+[short pause]
+
+A marca, à luz da história, ganha outra dignidade.
+
+[pause]
+
+Não fica mais bonita esteticamente.
+
+Mas torna-se mais bela existencialmente.
+
+[long pause]
+
+E há diferença importante entre os dois tipos de beleza.
+
+[pause]
+
+A primeira passa com a idade.
+
+A segunda só cresce.`,
+      },
+      {
+        id: "pele-nua-m5b",
+        titulo: "M5.B — A reconciliação com o que mudou",
+        curso: "pele-nua",
+        texto: `O teu corpo já não é o de há vinte anos.
+
+[pause]
+
+E a partir desta verdade simples começa, para muitas mulheres, um luto silencioso.
+
+[long pause]
+
+Luto por uma firmeza que era automática e deixou de ser.
+
+Por uma silhueta que não voltou ao normal depois do último parto.
+
+Por braços, ombros, mãos que envelheceram de uma forma que tu não estavas a esperar.
+
+[pause]
+
+Este luto raramente é admitido em voz alta.
+
+[short pause]
+
+Porque admiti-lo soa a vaidade. Soa a falta de aceitação. Soa a inveja da juventude alheia.
+
+[pause]
+
+E nada disto é elogio social.
+
+Por isso o luto fica em privado.
+
+E em silêncio.
+
+[long pause]
+
+Mas o luto silencioso continua a operar.
+
+[pause]
+
+Aparece em momentos pequenos.
+
+Quando vês uma fotografia tua de há anos. Quando experimentas uma roupa que costumava assentar de outra forma. Quando alguém te chama "senhora" num sítio em que antes te chamava "menina".
+
+[short pause]
+
+Estes momentos doem.
+
+Mais do que tu, em geral, admite.
+
+[long pause]
+
+Reconciliar-te com o que mudou exige permitir-te o luto.
+
+[pause]
+
+Não negá-lo. Não envergonhar-te dele.
+
+Reconhecê-lo como reacção legítima a uma transição real.
+
+[short pause]
+
+O teu corpo mudou. E é razoável sentir alguma coisa em relação a isso.
+
+[pause]
+
+Não tens de celebrar a mudança imediatamente.
+
+Tens, primeiro, de chorar — em silêncio, em privado — o corpo que já não é.
+
+[long pause]
+
+Algumas mulheres encontram alívio em escrever uma carta de despedida ao corpo de uma fase anterior.
+
+[pause]
+
+Não é exercício teatral. É reconhecimento.
+
+[short pause]
+
+"Corpo de meus vinte anos, obrigada por tudo o que fizeste comigo. Já não és. E está bem assim. Agora habito um corpo diferente."
+
+[pause]
+
+Esta despedida explícita liberta espaço interno.
+
+[short pause]
+
+Espaço que estava ocupado, sem saberes, com a esperança de que o corpo de antes pudesse, com algum esforço, voltar.
+
+[pause]
+
+Quando tu reconheces que não vai voltar — e que está bem assim — uma quantidade de energia mental fica disponível para a relação com o corpo actual.
+
+[long pause]
+
+E a relação com o corpo actual, sem a sombra constante do corpo anterior, pode finalmente começar a desenvolver-se.
+
+[pause]
+
+Como uma relação nova.
+
+Não comparada com nada.
+
+[short pause]
+
+Apenas presente.
+
+[pause]
+
+Esta semana, se te apetecer, escreve a carta.
+
+Em privado. Sem público. Sem propósito além do reconhecimento.
+
+[short pause]
+
+E guarda-a.
+
+[pause]
+
+Vais perceber, ao longo das semanas seguintes, que algo dentro de ti relaxou.
+
+[short pause]
+
+A despedida foi feita.
+
+E o corpo actual, sem mais comparação, pode começar a ser habitado em paz.`,
+      },
+      {
+        id: "pele-nua-m5c",
+        titulo: "M5.C — Aceitar o corpo que aguentou muito",
+        curso: "pele-nua",
+        texto: `O teu corpo aguentou muito.
+
+[pause]
+
+Décadas de funcionamento contínuo. Doenças que ele resolveu sem que tu sequer soubesses. Esforços que ele fez quando tu nem percebeste a exigência.
+
+[long pause]
+
+Se pudesses ver, em vídeo acelerado, tudo o que o teu corpo fez por ti desde que nasceste, ficavas espantada.
+
+[pause]
+
+Cada infecção que ele combateu silenciosamente. Cada noite mal dormida que ele compensou. Cada refeição mal feita que ele processou apesar das circunstâncias. Cada queda, cada gripe, cada período de stress — superados sem te mandar conta directa.
+
+[short pause]
+
+O teu corpo é a infraestrutura silenciosa que tornou tudo possível.
+
+[pause]
+
+E na maioria dos dias, tu nem reparas nele — excepto quando algo dói.
+
+[long pause]
+
+Esta é a relação que muitas pessoas têm com o próprio corpo.
+
+[pause]
+
+Tomam-no como dado.
+
+Notam-no apenas quando algo está mal.
+
+E queixam-se dele com regularidade pelos defeitos estéticos que ele tem.
+
+[short pause]
+
+Há injustiça nesta relação.
+
+[pause]
+
+Estás a tratar como problema o que, na verdade, é um dos maiores aliados da tua vida.
+
+[long pause]
+
+Aceitar o corpo que aguentou muito é, em parte, gratidão consciente.
+
+[pause]
+
+Não gratidão performativa.
+
+Reconhecimento privado, regular, do trabalho silencioso que ele faz.
+
+[short pause]
+
+Pode ser uma frase pequena ao final do dia, antes de adormeceres.
+
+"Obrigada por hoje."
+
+[pause]
+
+Não tens de elaborar. O corpo entende.
+
+[long pause]
+
+Esta gratidão básica, quando praticada com regularidade, muda a forma como o corpo te responde no longo prazo.
+
+[pause]
+
+Não é magia. É comunicação.
+
+[short pause]
+
+Quando o corpo é reconhecido pelo que faz, em vez de criticado pelo que parece, começa a relaxar uma vigilância antiga.
+
+[pause]
+
+E pessoas que praticam esta gratidão simples descrevem, depois de meses, alteração na qualidade de presença no próprio corpo.
+
+[short pause]
+
+Mais relaxado. Menos reactivo. Mais em paz.
+
+[long pause]
+
+Esta semana, instala uma prática nova.
+
+Antes de adormeceres, dirige uma frase silenciosa ao teu corpo.
+
+[pause]
+
+Pode ser "obrigada".
+
+Pode ser "vejo-te".
+
+Pode ser apenas "boa noite, corpo".
+
+[short pause]
+
+A frase específica importa menos do que o gesto.
+
+[pause]
+
+Estás a reconhecer.
+
+E o reconhecimento, repetido, reorganiza a relação interior.
+
+[long pause]
+
+O corpo que aguentou muito merece, em algum ponto, ser visto pelo que tem feito.
+
+[pause]
+
+Não pelo que aparenta.
+
+Pelo que tem sustentado.
+
+[short pause]
+
+E essa visão, quando se instala em ti, transforma a tua presença na pele.
+
+Mais habitação. Menos administração.
+
+[pause]
+
+Mais habitada. Menos crítica.
+
+[long pause]
+
+E o corpo, em troca, retribui.
+
+Com mais energia, mais presença, mais disposição.
+
+[pause]
+
+Como qualquer relação importante: o cuidado consciente gera retorno tangível.
+
+[short pause]
+
+Mesmo na relação com a tua própria pele.`,
+      },
+    ],
+  },
 ];
