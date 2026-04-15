@@ -20722,4 +20722,445 @@ E essa atenção, sozinha, já começa a reduzir o tamanho da fome escondida que
       },
     ],
   },
+  {
+    id: "curso-a-fome-m3",
+    titulo: "Curso A Fome — Módulo 3 (Aulas A, B, C)",
+    descricao: "A Fome de Outras Coisas.",
+    scripts: [
+      {
+        id: "a-fome-m3a",
+        titulo: "M3.A — A fome que era na verdade cansaço",
+        curso: "a-fome",
+        texto: `Há um momento, quase todos os dias, em que a tua mão vai automaticamente buscar comida.
+
+[pause]
+
+Costuma ser ao fim da tarde.
+
+Costuma ser entre uma reunião e outra. Entre arrumar a casa e começar o jantar. Entre acabar o trabalho e ir buscar os filhos.
+
+[long pause]
+
+A mão vai. E tu nem reparas que foi.
+
+[pause]
+
+Já estás com o biscoito, com a fatia, com a barra, com o café e o pastel — antes de teres feito uma única pergunta.
+
+[short pause]
+
+A pergunta seria muito simples.
+
+Tenho fome?
+
+[long pause]
+
+Mas tu não fazes esta pergunta.
+
+[pause]
+
+Porque a comida é resposta automática a outra coisa que ainda não aprendeste a nomear.
+
+[short pause]
+
+E essa outra coisa, na maioria das mulheres adultas, é cansaço.
+
+[long pause]
+
+Cansaço acumulado de várias horas a funcionar.
+
+Cansaço que não pediu para ser cansaço, porque o teu dia ainda não acabou.
+
+Cansaço que, se fosse reconhecido, exigiria uma pausa que tu não te dás.
+
+[pause]
+
+A comida é, neste momento, substituto da pausa.
+
+[short pause]
+
+É energia rápida que te permite continuar sem teres que parar.
+
+[long pause]
+
+Repara na inversão.
+
+[pause]
+
+Tu não comes porque tens fome.
+
+Tu comes porque é a única forma socialmente aceitável de te dares uma pausa de cinco minutos.
+
+[short pause]
+
+Sentar e não fazer nada por cinco minutos sem comer chama-se preguiça.
+
+Sentar e comer um bolo nesses mesmos cinco minutos chama-se merenda.
+
+[long pause]
+
+A diferença é cultural.
+
+[pause]
+
+E é por isso que mulheres em alta exigência — mães, profissionais, cuidadoras — comem mais do que precisariam.
+
+[short pause]
+
+Não é apetite.
+
+É a única forma de pararem.
+
+[long pause]
+
+Esta semana, faz uma experiência.
+
+[pause]
+
+Quando sentires a mão a ir automaticamente buscar comida ao fim da tarde, não a impeças.
+
+[short pause]
+
+Mas, antes de comeres, senta-te.
+
+Senta-te numa cadeira. Não em pé. Não a andar.
+
+Numa cadeira.
+
+[pause]
+
+Pousa o que ias comer à tua frente, mas ainda não comas.
+
+Olha para a coisa durante um minuto.
+
+[long pause]
+
+Provavelmente, em vinte segundos, vais reparar que o que querias não era a comida.
+
+[pause]
+
+Era a cadeira.
+
+[short pause]
+
+Era o gesto de parar.
+
+Era os cinco minutos sentada sem ter que justificar.
+
+[long pause]
+
+Quando reparares nisto, podes fazer uma escolha.
+
+[pause]
+
+Podes comer e levantar-te imediatamente — como costumas fazer.
+
+Ou podes ficar sentada cinco minutos, mesmo depois de comer, mesmo sem fazer nada.
+
+[short pause]
+
+A segunda opção desinstala lentamente o automatismo.
+
+[pause]
+
+Porque ensina ao teu sistema nervoso uma coisa nova:
+
+[long pause]
+
+Que parar é permitido.
+
+Sem ter que comer para o justificar.`,
+      },
+      {
+        id: "a-fome-m3b",
+        titulo: "M3.B — A fome que era na verdade tristeza",
+        curso: "a-fome",
+        texto: `Há mulheres que sabem exactamente o que comem quando estão tristes.
+
+[pause]
+
+Tu provavelmente sabes.
+
+[long pause]
+
+Para algumas, é gelado.
+
+Para outras, pão com manteiga.
+
+Para outras ainda, batatas fritas. Chocolate. O bolo da padaria do bairro que ninguém em casa come.
+
+[pause]
+
+Cada mulher tem o seu repertório de tristeza-comida.
+
+[short pause]
+
+E este repertório foi-se construindo ao longo da vida, refeição emocional após refeição emocional.
+
+[long pause]
+
+A primeira vez que comeste a comida da tristeza, provavelmente eras nova.
+
+Provavelmente alguém te tinha magoado. Ou tinha morrido alguém. Ou tinhas chumbado num exame que querias passar.
+
+[pause]
+
+E alguém — uma mãe, uma avó, uma amiga — pegou em comida e deu-ta.
+
+Não para te alimentar.
+
+Para te consolar.
+
+[short pause]
+
+Isto não é mau.
+
+Comida é, em muitas culturas, gesto de cuidado.
+
+[long pause]
+
+O problema é que, se este foi o único cuidado que aprendeste a receber em momentos difíceis, ele tornou-se hábito.
+
+[pause]
+
+E em adulta, sozinha, quando aparece tristeza — a tua mão vai buscar a mesma coisa que te deram em criança.
+
+[short pause]
+
+Não porque tens fome.
+
+Porque tens tristeza e a tristeza, no teu corpo, foi sempre acompanhada de comida.
+
+[long pause]
+
+A comida não cura a tristeza.
+
+Tu sabes isto.
+
+[pause]
+
+Mas distrai. Ocupa as mãos. Ocupa a boca. Ocupa o estômago.
+
+[short pause]
+
+E enquanto comes, há um espaço de cinco a quinze minutos em que a tristeza fica em segundo plano.
+
+[long pause]
+
+Depois volta.
+
+[pause]
+
+E, frequentemente, volta acompanhada de uma segunda tristeza — a vergonha de teres comido aquilo, naquela quantidade, naquela hora.
+
+[short pause]
+
+Duas tristezas em vez de uma.
+
+[long pause]
+
+Esta semana, quando reparares que estás a comer com tristeza no peito, faz uma coisa.
+
+[pause]
+
+Não pares de comer.
+
+[short pause]
+
+Acaba a porção que ias comer.
+
+Mas, quando acabares, em vez de te levantares, fica.
+
+[pause]
+
+Pega numa folha. Pega num caderno. Pega num bocado de papel onde possas escrever.
+
+[long pause]
+
+E escreve uma única frase:
+
+Estou triste por causa de —
+
+[pause]
+
+E completa.
+
+[short pause]
+
+Pode ser específico — "estou triste porque a minha irmã não me ligou no aniversário".
+
+Pode ser difuso — "estou triste e não sei muito bem porquê".
+
+Pode ser antigo — "estou triste por uma coisa que aconteceu há vinte anos e ainda dói".
+
+[long pause]
+
+Quando escreves a tristeza, ela passa de difusa para nomeada.
+
+[pause]
+
+E a tristeza nomeada deixa de precisar de ser comida.
+
+[short pause]
+
+Não em todas as vezes.
+
+Não imediatamente.
+
+[long pause]
+
+Mas, com o tempo, a tua mão vai começar a ir buscar a folha em vez do biscoito.
+
+[pause]
+
+Porque vai aprender que escrever a tristeza alivia mais do que a comer.
+
+[short pause]
+
+E que, ao contrário da comida, escrever a tristeza não traz a segunda tristeza atrás.`,
+      },
+      {
+        id: "a-fome-m3c",
+        titulo: "M3.C — A fome que era na verdade solidão",
+        curso: "a-fome",
+        texto: `Há um tipo de fome que aparece muito especificamente em mulheres que vivem sozinhas.
+
+[pause]
+
+Mas não é só dessas.
+
+Aparece também em mulheres que vivem cercadas de gente — marido, filhos, netos — e que, ainda assim, sentem por dentro um silêncio que ninguém ocupa.
+
+[long pause]
+
+Esta fome chega quase sempre à mesma hora.
+
+[pause]
+
+Costuma ser depois do jantar.
+
+Quando a casa fica quieta. Quando os filhos foram dormir. Quando o homem está a ver televisão na sala e não há nada para fazer.
+
+[short pause]
+
+E, de repente, apetece.
+
+[long pause]
+
+Apetece comer qualquer coisa.
+
+Não é fome física.
+
+É outra coisa.
+
+[pause]
+
+É a sensação de que falta companhia para a noite.
+
+É a sensação de que a casa é grande demais e tu pequena demais.
+
+É a sensação, antiga e sem nome, de que se houvesse alguém ali com quem partilhar uma chávena de chá, talvez não precisasses do bolo.
+
+[short pause]
+
+Mas não há.
+
+E então comes.
+
+[long pause]
+
+A comida, neste momento, é substituto de presença.
+
+[pause]
+
+É pseudo-companhia.
+
+É o gesto de pôr alguma coisa em contacto com a tua boca quando o que querias era pôr palavras em contacto com a boca de outra pessoa.
+
+[short pause]
+
+Comer sozinha à noite, no escuro, sem fome física — é uma das formas mais discretas em que a solidão aparece em mulheres adultas.
+
+[long pause]
+
+E é especialmente discreta porque é socialmente invisível.
+
+[pause]
+
+Ninguém te vê. Tu própria, na manhã seguinte, não a chamas solidão.
+
+Chamas-lhe descontrolo. Chamas-lhe falta de força de vontade. Chamas-lhe, quando és muito honesta, ansiedade.
+
+[short pause]
+
+Mas raramente lhe chamas o que ela é.
+
+Estou só, e a comida ocupa o lugar de quem não está.
+
+[long pause]
+
+Esta semana, à hora em que costumas ter esta fome — provavelmente entre as nove e as onze da noite — faz uma coisa diferente.
+
+[pause]
+
+Pega no telemóvel.
+
+[short pause]
+
+Manda uma mensagem a uma única pessoa. Pode ser uma irmã, uma amiga antiga, uma colega que gostas mas com quem nunca falas fora do trabalho.
+
+[pause]
+
+A mensagem pode ser banal:
+
+"Estava só a pensar em ti. Como tens andado?"
+
+[long pause]
+
+Não esperes resposta imediata.
+
+Não condiciones nada à resposta.
+
+[pause]
+
+O acto de mandares já é, em si, gesto de companhia.
+
+É gesto de te lembrares que existem pessoas. Que estás em rede. Que não és só corpo sozinho na cozinha às dez da noite.
+
+[short pause]
+
+Provavelmente, depois de mandares, a fome diminui.
+
+[long pause]
+
+Não vai sempre.
+
+Não em todas as noites.
+
+[pause]
+
+Mas o suficiente para começares a perceber que muito do que tu comes à noite — não é fome.
+
+[short pause]
+
+É um pedido de companhia que aprendeste a fazer com a boca, em vez de fazer com palavras.
+
+[pause]
+
+E mudar a direcção do pedido — da boca para o telemóvel, da comida para a mensagem — é uma das coisas mais simples e mais eficazes que podes fazer pela tua relação com a fome.
+
+[long pause]
+
+Comer é alimentar o corpo.
+
+[pause]
+
+Mandar mensagem a alguém à noite é alimentar a parte de ti que tem fome de ser vista.
+
+[short pause]
+
+E, ao contrário do bolo, não traz vergonha na manhã seguinte.`,
+      },
+    ],
+  },
 ];
