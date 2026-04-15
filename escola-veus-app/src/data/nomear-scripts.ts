@@ -25561,4 +25561,563 @@ Não única via possível para um pedido mais antigo, mais simples, e raramente 
       },
     ],
   },
+  {
+    id: "curso-a-chama-m4",
+    titulo: "Curso A Chama — Módulo 4 (Aulas A, B, C)",
+    descricao: "O Prazer Solitário.",
+    scripts: [
+      {
+        id: "a-chama-m4a",
+        titulo: "M4.A — A primeira vez que tocaste em ti mesma",
+        curso: "a-chama",
+        texto: `Tenta lembrar-te da primeira vez que tu te tocaste a ti mesma com alguma forma de prazer.
+
+[pause]
+
+Não estou a falar de sexo. Estou a falar de toque com alguma carga de curiosidade.
+
+[long pause]
+
+Provavelmente foi cedo.
+
+[pause]
+
+Entre os sete e os onze, para a maior parte das mulheres.
+
+[short pause]
+
+Aconteceu, em geral, por acidente.
+
+[pause]
+
+Estavas deitada na cama, ou a brincar no chão, ou a tomar banho — e sentiste algo.
+
+Uma sensação nova. Interessante. Confusa.
+
+[short pause]
+
+E tu, sem pensar, exploraste um pouco mais.
+
+[long pause]
+
+Nesse momento, pela primeira vez na vida, tu tinhas uma relação directa, privada, com o teu próprio prazer.
+
+[pause]
+
+Sem palavras. Sem autoridade externa. Sem modelo aprendido.
+
+[short pause]
+
+Apenas tu e uma sensação tua.
+
+[long pause]
+
+Na maior parte das mulheres adultas, esta memória existe.
+
+[pause]
+
+Mas está enterrada debaixo de camadas.
+
+[short pause]
+
+Camadas de vergonha. Camadas de aviso. Camadas de uma frase que alguém disse em algum momento que transformou aquela primeira experiência em algo sobre o qual não se fala.
+
+[long pause]
+
+Talvez foi a mãe a entrar inesperadamente no quarto e a fazer uma cara.
+
+Talvez foi uma catequista a explicar que certos toques eram pecado.
+
+Talvez foi uma colega mais velha a rir de uma conversa sobre isto no recreio.
+
+[pause]
+
+Ou, mais subtil, talvez não foi ninguém especificamente.
+
+Foi apenas a ausência total de qualquer conversa adulta sobre o facto de que o teu corpo era fonte de prazer legítimo.
+
+[short pause]
+
+E essa ausência, em si, foi mensagem.
+
+[long pause]
+
+A mensagem era: isto não se nomeia. Isto não se partilha. Isto é zona privada onde tu, sozinha, terás de descobrir o que está bem e o que não está.
+
+[pause]
+
+E a maior parte das mulheres, aos onze, doze anos, não tinha ferramentas para fazer essa descoberta sozinha.
+
+[short pause]
+
+Por isso, simplificou.
+
+[pause]
+
+Decidiu que era melhor não tocar.
+
+Ou, se tocasse, fazer depressa, no escuro, sem pensar.
+
+[long pause]
+
+Esta decisão infantil manteve-se.
+
+[pause]
+
+E é por isso que, em adulta, o teu prazer solitário — se o tens — tem ainda, muitas vezes, qualidade apressada.
+
+[short pause]
+
+É feito em poucos minutos. Por vezes no banho. Com ansiedade difusa. Com culpa residual.
+
+[pause]
+
+Raramente com a vagareza, a curiosidade e o prazer táctil que poderia ter.
+
+[long pause]
+
+Esta semana, vais fazer uma coisa simples mas subversiva.
+
+[pause]
+
+Reservar uma noite.
+
+[short pause]
+
+Trinta, quarenta minutos, sem ninguém em casa ou todos a dormir.
+
+[pause]
+
+Não é encontro com orgasmo como objectivo.
+
+É reencontro com a curiosidade que tinhas aos oito anos.
+
+[long pause]
+
+Sem roteiro. Sem ordem certa. Sem partes que "tens de tocar primeiro".
+
+[pause]
+
+Apenas tempo em que o teu corpo pode ser descoberto devagar, sem pressa, sem performance.
+
+[short pause]
+
+Podes descobrir que há sítios em que ainda não tinhas reparado há décadas.
+
+Podes descobrir que o que te dava prazer aos vinte já não é exactamente o mesmo.
+
+Podes descobrir que algumas zonas, quando tocadas sem pressa, acordam sensibilidades que tinhas esquecido.
+
+[pause]
+
+Ou podes descobrir, simplesmente, que está difícil.
+
+[short pause]
+
+Que não apareceu sensação nenhuma.
+
+Que a tua cabeça não parava de planear o dia de amanhã.
+
+Que o teu corpo, sem estímulo de outro, não respondeu.
+
+[long pause]
+
+Tudo isto é informação.
+
+[pause]
+
+Se correu bem, tomaste contacto com uma zona de ti que estava adormecida.
+
+Se correu difícil, tomaste contacto com a dimensão da distância entre tu e o teu prazer próprio.
+
+[short pause]
+
+Ambas as descobertas são ponto de partida.
+
+[pause]
+
+Numa folha, à noite, escreve três linhas:
+
+"Esta noite, ao tocar em mim mesma sem pressa —
+
+Reparei —
+
+E senti —"
+
+[long pause]
+
+Pode ser dez palavras. Pode ser meia página.
+
+[pause]
+
+O importante é deixar em letra escrita que aconteceu.
+
+[short pause]
+
+Porque, na maior parte das mulheres adultas, este tipo de encontro privado com o próprio corpo nunca foi registado por escrito.
+
+[pause]
+
+Vive como secreto, mesmo dentro de ti.
+
+[long pause]
+
+Quando passa a ser registado, mesmo que só para ti, muda de estatuto.
+
+[pause]
+
+Deixa de ser coisa sobre a qual não se fala.
+
+Passa a ser coisa que existe na tua vida, que tem lugar, que faz parte do que tu és.
+
+[short pause]
+
+E esse passo — o de reconhecer, em letra própria, o que costumavas ter apenas no escuro — é maior do que parece.`,
+      },
+      {
+        id: "a-chama-m4b",
+        titulo: "M4.B — A culpa que não tinhas mas ficou",
+        curso: "a-chama",
+        texto: `Depois de te tocares, aparece, muitas vezes, uma coisa pequena.
+
+[pause]
+
+Culpa.
+
+[long pause]
+
+Não violenta. Não dramática.
+
+[pause]
+
+Culpa difusa. Sensação de ter feito algo que devia ser guardado em silêncio.
+
+Vontade de não olhar ninguém nos olhos nos minutos seguintes.
+
+Uma tristeza pequena e difícil de explicar.
+
+[short pause]
+
+Esta reacção é tão comum em mulheres adultas que muitas nem lhe ligam.
+
+[pause]
+
+Assumem que é normal.
+
+[short pause]
+
+Não é.
+
+[long pause]
+
+Em mulheres que tiveram educação sexual saudável, que cresceram em ambientes onde o corpo feminino não era tabu, esta reacção simplesmente não aparece.
+
+[pause]
+
+Elas tocam-se. Sentem prazer. Dormem.
+
+E no dia seguinte não sentem nada de especial relacionado com o acto.
+
+[short pause]
+
+A culpa pós-prazer não é característica do prazer feminino.
+
+[pause]
+
+É característica da educação que tu recebeste.
+
+[long pause]
+
+Pensa, por um momento, onde é que a culpa te chega.
+
+[pause]
+
+Chega sob a forma de uma voz?
+
+Chega sob a forma de uma imagem — a tua mãe, uma catequista, alguém a olhar-te com cara de reprovação?
+
+Chega sob a forma de pensamento racional — "isto foi ridículo"?
+
+Chega sob a forma de sensação corporal — peso no peito, vazio no estômago?
+
+[short pause]
+
+Cada mulher tem a sua forma.
+
+[pause]
+
+Mas se te observares atentamente, consegues identificar a tua.
+
+[long pause]
+
+Esta semana, depois de qualquer momento de prazer próprio — sozinha ou em casal — vais fazer uma coisa pequena.
+
+[pause]
+
+Vais ficar deitada, em silêncio, durante um minuto.
+
+Sem abrir o telemóvel. Sem te levantares logo. Sem fugir da sensação.
+
+[short pause]
+
+E vais observar o que aparece.
+
+[pause]
+
+Se aparecer culpa, observa como aparece. Em que forma. De onde te parece vir. Em que parte do corpo a sentes.
+
+[long pause]
+
+Não lutes contra ela.
+
+Não tentes convencer-te de que não devia estar ali.
+
+[pause]
+
+Apenas observa.
+
+[short pause]
+
+Depois, nesse dia ou no dia seguinte, numa folha, escreve:
+
+"Quando sinto culpa depois de prazer, ela aparece em —
+
+E faz-me sentir —
+
+E soa à voz de —"
+
+[long pause]
+
+Esta terceira pergunta — à voz de — é a mais importante.
+
+[pause]
+
+A culpa pós-prazer, em mulheres adultas, raramente é tua.
+
+É voz de outra pessoa, incorporada em ti há décadas.
+
+[short pause]
+
+Pode ser a tua mãe. Pode ser a tua avó. Pode ser uma catequista que te marcou aos nove anos. Pode ser um professor de religião. Pode ser uma frase específica de um livro antigo que leste.
+
+[long pause]
+
+Quando consegues atribuir a culpa a alguém específico, ela muda.
+
+[pause]
+
+Deixa de parecer verdade sobre ti.
+
+Passa a parecer eco de uma voz exterior que se alojou em ti sem o teu consentimento.
+
+[short pause]
+
+E os ecos, ao contrário das verdades, podem ser reduzidos com o tempo.
+
+[long pause]
+
+Não por força de vontade.
+
+Por repetição.
+
+[pause]
+
+Todas as vezes que tu sentes prazer e, imediatamente, observas a culpa como eco em vez de a obedecer como verdade — a culpa perde, ligeiramente, poder.
+
+[short pause]
+
+Não desaparece numa semana.
+
+Não desaparece num mês.
+
+[pause]
+
+Mas ao fim de alguns meses de atenção regular, muitas mulheres descobrem que a culpa pós-prazer simplesmente aparece menos frequentemente.
+
+[short pause]
+
+E quando aparece, já não dirige o resto do dia.
+
+[long pause]
+
+O teu prazer, em ti adulta, não precisa de pagar imposto emocional a uma voz que te foi imposta aos oito, nove, dez anos.
+
+[pause]
+
+Mas não basta saberes isto intelectualmente.
+
+[short pause]
+
+A desinstalação acontece por observação repetida em tempo real — no momento em que a culpa aparece — até que o sistema nervoso percebe que não está em perigo e deixa de activar a reacção.
+
+[pause]
+
+Esta observação é trabalho paciente.
+
+E é dos mais libertadores que podes fazer contigo mesma.`,
+      },
+      {
+        id: "a-chama-m4c",
+        titulo: "M4.C — O que não tens de pedir permissão a ninguém",
+        curso: "a-chama",
+        texto: `Há uma lista de coisas que tu fazes, em adulta, e que tu, sem perceber, continuas a pedir permissão silenciosa para fazer.
+
+[pause]
+
+Permissão que ninguém te pede.
+
+Permissão que tu, em algum momento, foste treinada a pedir.
+
+[long pause]
+
+Pedes permissão silenciosa para comer uma sobremesa num jantar.
+
+Pedes permissão silenciosa para descansar um fim-de-semana.
+
+Pedes permissão silenciosa para sair sozinha ao cinema.
+
+Pedes permissão silenciosa para ter uma tarde em que ninguém te chateia.
+
+Pedes permissão silenciosa para te tocares.
+
+[short pause]
+
+Estas permissões silenciosas são pedidas a ninguém específico.
+
+[pause]
+
+São pedidas a uma autoridade difusa — a soma de todas as vozes que, ao longo da tua vida, te ensinaram que precisavas de autorização para prazer próprio.
+
+[long pause]
+
+O teu prazer solitário pertence a esta lista.
+
+[pause]
+
+Em adulta, tu tens legalmente, fisicamente, moralmente, todo o direito de te tocares quando quiseres, como quiseres, e quantas vezes quiseres.
+
+[short pause]
+
+Ninguém — nenhum marido, nenhuma religião, nenhuma mãe, nenhuma cultura — tem autoridade real sobre esta zona da tua vida.
+
+[pause]
+
+Esta é, talvez, uma das únicas zonas em que a tua autoridade é absoluta.
+
+[long pause]
+
+E, no entanto, muitas mulheres adultas continuam a pedir permissão silenciosa para exercer este direito.
+
+[pause]
+
+Permissão que nunca lhes foi concedida explicitamente.
+
+E que, por isso, elas continuam a adiar.
+
+[short pause]
+
+"Quando o meu marido estiver fora."
+
+"Quando os miúdos estiverem a dormir profundamente."
+
+"Quando eu tiver mais tempo."
+
+"Quando me sentir mais confortável."
+
+[pause]
+
+O quando chega raramente.
+
+[long pause]
+
+Este módulo termina com um gesto escrito, privado, que pode parecer estranho, mas que tem efeito específico.
+
+[pause]
+
+Numa folha que só tu vais ver, vais escrever uma autorização.
+
+[short pause]
+
+Escrita por ti. Assinada por ti. Dirigida a ti.
+
+[long pause]
+
+Podes escrever qualquer coisa como:
+
+"Eu, pela minha própria autoridade, dou-me permissão a partir de hoje para tocar em mim mesma quando me apetecer. Não preciso de autorização de ninguém. Não tenho de justificar a ninguém. Este é o meu corpo e o meu prazer. Não devo nada a ninguém nesta zona da minha vida."
+
+[pause]
+
+Assina. Põe a data.
+
+[short pause]
+
+E guarda esta folha num sítio onde a voltes a ver daqui a alguns meses.
+
+[long pause]
+
+O gesto parece infantil.
+
+[pause]
+
+Mas é, na verdade, um dos actos mais adultos que podes fazer contigo mesma.
+
+[short pause]
+
+Porque pôr em letra escrita aquilo que está implícito — a tua autoridade sobre o teu próprio prazer — dá a essa autoridade uma presença tangível.
+
+[pause]
+
+Ela deixa de ser ideia abstracta.
+
+Passa a ser documento que existe em papel, com a tua letra, com a tua assinatura.
+
+[long pause]
+
+E na próxima vez que a culpa silenciosa, ou a permissão silenciosa, voltar a aparecer, tu tens algo a que recorrer.
+
+[pause]
+
+Não em pensamento.
+
+Em objecto real.
+
+[short pause]
+
+Podes ir buscar a folha. Ler.
+
+E lembrar-te, em letra concreta, que a autorização já foi dada.
+
+[long pause]
+
+Por ti. A ti. Há quanto tempo for necessário.
+
+[pause]
+
+E ao longo dos meses, vais deixar de precisar de ir buscar a folha.
+
+[short pause]
+
+Porque a autorização, à medida que vai sendo exercida, vai deixando de precisar de ser reactivada.
+
+[pause]
+
+Torna-se, finalmente, estado interior.
+
+[long pause]
+
+A mulher que não pede permissão silenciosa para o seu próprio prazer é mulher em outro estado de liberdade.
+
+[pause]
+
+Não é mulher mais sexual, necessariamente.
+
+É mulher mais livre na relação com este pedaço da sua vida.
+
+[short pause]
+
+E essa liberdade, pequena no papel, é uma das bases sobre a qual a chama, com tempo, volta a acender.`,
+      },
+    ],
+  },
 ];
