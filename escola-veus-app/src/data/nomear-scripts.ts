@@ -10877,4 +10877,383 @@ Não como desculpa. Como diagnóstico do que, no resto do mês, está por dizer.
       },
     ],
   },
+  {
+    id: "curso-sangue-e-seda-m2",
+    titulo: "Curso Sangue e Seda — Módulo 2 (Aulas A, B, C)",
+    descricao: "A Linha Materna. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "sangue-e-seda-m2a",
+        titulo: "M2.A — As mulheres que vieram antes do teu útero",
+        curso: "sangue-e-seda",
+        texto: `Sabias que cada óvulo que hoje habita o teu corpo já habitou o corpo da tua mãe?
+
+[pause]
+
+Que ela já os carregava quando ainda era feto no corpo da tua avó?
+
+[long pause]
+
+Três gerações, ao mesmo tempo, num único corpo.
+
+A tua avó, grávida da tua mãe.
+
+A tua mãe, dentro da tua avó, já com o que seria a matéria-prima de ti.
+
+[pause]
+
+Tu és, literalmente, feita de mulheres que nunca conheceste.
+
+[short pause]
+
+Esta não é uma metáfora poética.
+
+É biologia.
+
+[long pause]
+
+A ciência deu-lhe um nome nas últimas décadas: herança epigenética.
+
+Significa que as experiências que as tuas antepassadas tiveram — traumas, fomes, perdas, alegrias, desregulações hormonais — marcaram o material genético que te formou.
+
+[pause]
+
+Não alteraram o ADN.
+
+Alteraram a forma como o ADN se expressa.
+
+[short pause]
+
+E essa alteração passou para a tua mãe.
+
+E dela, para ti.
+
+[long pause]
+
+Tu podes ter inquietações que não são exactamente tuas.
+
+Sensações de fome residual ainda que sempre tenhas tido comida. Medos de abandono mesmo sem experiência pessoal de abandono. Vigilância excessiva sem razão biográfica clara.
+
+[pause]
+
+Isto não significa que estás condenada a reviver o passado delas.
+
+Mas significa que, às vezes, o que sentes não começou em ti.
+
+E isso, estranhamente, é um alívio.
+
+[long pause]
+
+Porque se parte do teu peso emocional vem de séculos de mulheres que carregaram o que não podiam largar, então o teu cansaço não é fraqueza tua.
+
+É herança.
+
+[pause]
+
+Herança com nome. Herança com história. Herança com início antes de ti.
+
+[short pause]
+
+E por ser herança, pode ser revisitada. Nomeada. Trabalhada.
+
+Não em vida única — em gestos pequenos ao longo dos anos.
+
+[long pause]
+
+Pensa numa mulher da tua linhagem que já partiu. Pode ser uma avó, uma bisavó, uma tia-avó.
+
+Alguém de quem tu sabes alguma coisa, por mais vaga que seja.
+
+[pause]
+
+Escreve num papel, em duas linhas: o que sei da vida dela, o que imagino que ela sentiu e nunca pôde dizer.
+
+[short pause]
+
+Guarda o papel.
+
+Algumas das coisas que ela não pôde dizer, tu é que agora as vais conseguir.
+
+[pause]
+
+Não porque lhe pertencessem — mas porque passaram por ti enquanto estavas a ser feita.
+
+E agora fazem parte do que tu podes finalmente transformar.
+
+[long pause]
+
+A linha materna não é metáfora.
+
+É material.
+
+E cada mulher consciente, na sua geração, pode interromper padrões que vêm de longe.
+
+[pause]
+
+Não para todas as que vêm antes.
+
+Para todas as que vêm depois.`,
+      },
+      {
+        id: "sangue-e-seda-m2b",
+        titulo: "M2.B — O que a tua mãe não te contou sobre o corpo dela",
+        curso: "sangue-e-seda",
+        texto: `Há coisas sobre o corpo da tua mãe que ela nunca te contou.
+
+[pause]
+
+Não porque te quisesse esconder.
+
+Porque, na geração dela, estas coisas não se diziam.
+
+[long pause]
+
+Talvez ela tenha tido dores menstruais severas durante décadas, sem investigação médica.
+
+Talvez tenha tido um aborto espontâneo — ou mais do que um — e enterrou-os sozinha, sem ritual, sem palavras.
+
+[pause]
+
+Talvez tenha tido um parto traumático que a marcou e sobre o qual ninguém lhe perguntou, depois, como ela estava.
+
+Talvez tenha atravessado a menopausa sem informação, sem acompanhamento, sem saber distinguir o normal do que merecia atenção.
+
+[short pause]
+
+Talvez tenha tido uma relação difícil com o próprio corpo que nunca soube como nomear.
+
+[long pause]
+
+Se olhares com atenção, a mulher que te pariu provavelmente carregou várias destas coisas.
+
+E carregou-as sozinha.
+
+[pause]
+
+Porque quando ela tinha a tua idade, não havia linguagem pública para o que acontecia ao corpo feminino fora do consultório.
+
+As amigas não falavam disto. As irmãs escondiam. As mães daquela geração tinham ainda menos ferramentas.
+
+[short pause]
+
+A tua mãe herdou o silêncio. E, em grande parte, transmitiu-o.
+
+Não por escolha consciente — por falta de modelo.
+
+[long pause]
+
+Isto tem consequências para ti.
+
+[pause]
+
+Há coisas que te acontecem no corpo — dores, mudanças, inquietações — sobre as quais tu nem sabes se podes perguntar à tua mãe.
+
+Porque ela nunca normalizou conversar sobre isto.
+
+[short pause]
+
+E tu, por respeito ou por receio, também não abres a porta.
+
+[pause]
+
+O silêncio continua.
+
+[long pause]
+
+Mas há uma forma — para algumas mulheres — de começar a desmontar isto.
+
+Não em confrontação. Em curiosidade.
+
+[pause]
+
+Se a tua mãe ainda está viva, há perguntas que podes fazer-lhe num jantar tranquilo, numa tarde sem pressa.
+
+Não perguntas dramáticas. Perguntas comuns que, na verdade, nunca foram feitas.
+
+[short pause]
+
+"Como é que foi o teu primeiro período?"
+
+"Tiveste cólicas muito fortes ao longo da vida?"
+
+"Como é que era a menopausa para ti quando começou?"
+
+[pause]
+
+A maioria das mães, quando tais perguntas são feitas sem drama, responde.
+
+Respondem com espanto pela pergunta. Respondem a hesitar, mas respondem.
+
+[short pause]
+
+E nessas respostas, tu recebes informação que te pertence.
+
+Informação sobre o teu próprio corpo, via a mulher que o gerou.
+
+[long pause]
+
+Se a tua mãe já partiu, há outras formas.
+
+Tias-avós. Irmãs mais velhas. Mulheres da família que conheceram a tua mãe quando ela estava no corpo que hoje tu herdas.
+
+[pause]
+
+Ou, se ninguém estiver disponível, uma carta para a tua mãe imaginária.
+
+Escrita. Perguntando-lhe o que ela nunca te disse.
+
+[short pause]
+
+A resposta vai aparecer dentro de ti — sob a forma de intuição, de memória inesperada, de uma frase que sobe sem aviso.
+
+[pause]
+
+Porque o corpo que ela te deu ainda guarda parte do que ela sabia.
+
+E, com paciência, podes aceder a isso.
+
+[long pause]
+
+A tua mãe disse-te pouco sobre o corpo.
+
+Mas o corpo que ela te deu — esse — guarda a informação toda.
+
+E é teu direito recuperá-la.`,
+      },
+      {
+        id: "sangue-e-seda-m2c",
+        titulo: "M2.C — As avós que não tiveram escolha",
+        curso: "sangue-e-seda",
+        texto: `As mulheres que vieram antes da tua mãe viveram num tempo em que o corpo feminino não era objecto de escolha.
+
+[pause]
+
+A tua avó, talvez.
+
+A tua bisavó, quase certamente.
+
+[long pause]
+
+Engravidaram quando engravidaram. Tiveram os filhos que tiveram. Ficaram com as dores que ficaram. Envelheceram como podiam.
+
+[pause]
+
+A ideia de "escolher" como viver no corpo — quando engravidar, quando não, se fazer sexo por prazer, se usar ou não contracepção — era, para a maioria delas, abstracta ou proibida.
+
+[short pause]
+
+O corpo delas era terreno de obrigação.
+
+Obrigação para com o marido. Obrigação para com a família. Obrigação para com uma ordem social em que a autonomia corporal de uma mulher era quase inexistente.
+
+[long pause]
+
+Quando tu, hoje, fazes escolhas sobre o teu corpo — tomar a pílula, adiar a maternidade, recusar um parto com intervenção excessiva, procurar prazer por ti mesma — estás a fazer algo que as tuas antepassadas não tiveram direito de fazer.
+
+[pause]
+
+Isto é privilégio histórico raro.
+
+[short pause]
+
+E tem um peso específico.
+
+[pause]
+
+Porque, quando tu fazes uma escolha corporal que te favorece, há uma sombra emocional que, às vezes, chega junto.
+
+Uma culpa vaga. Uma tristeza sem endereço.
+
+[short pause]
+
+Talvez sintas isto quando decides não ter filhos e alguém te diz "a tua mãe teria adorado ser avó". Talvez sintas quando interrompes uma gravidez. Talvez sintas quando recusas um parto natural que te impuseram como ideal. Talvez sintas quando escolhes um parceiro que a tua avó teria julgado.
+
+[long pause]
+
+Esta culpa vaga, na maior parte das vezes, não é tua.
+
+É ecoada.
+
+[pause]
+
+É a memória das mulheres anteriores a ti que não tiveram aquela escolha e que, por isso, têm dentro de ti uma espécie de voz silenciosa que duvida.
+
+[short pause]
+
+Elas não te estão a julgar — não têm, já, capacidade de julgar.
+
+Mas as suas vidas, atravessadas por renúncia, deixaram um eco.
+
+E esse eco, em ti, veste-se de culpa.
+
+[long pause]
+
+Reconhecer isto é libertador.
+
+[pause]
+
+A culpa que sentes por escolher o que elas não puderam escolher não é proporcional a nada que tenhas feito de mal.
+
+É proporcional ao tamanho da liberdade que estás a exercer.
+
+[short pause]
+
+Quanto maior a liberdade, maior a sombra da impossibilidade anterior.
+
+[pause]
+
+E isto é paradoxo — mas é também dádiva.
+
+[long pause]
+
+Porque se tu, nesta geração, conseguires fazer as escolhas que te cabem sem seres consumida pela culpa herdada, estás a abrir caminho.
+
+Não só para ti.
+
+Para as filhas, sobrinhas, afilhadas, alunas que vêm depois.
+
+[pause]
+
+Para as mulheres que vão viver no teu rasto e que poderão fazer, um dia, as mesmas escolhas com menos culpa do que tu.
+
+[short pause]
+
+Porque tu, tendo ido à frente, diluíste o eco.
+
+[long pause]
+
+Pensa nas escolhas corporais que já fizeste ao longo da tua vida que as tuas antepassadas não teriam podido fazer.
+
+Lista três.
+
+[pause]
+
+Depois, ao lado de cada uma, escreve a quem da tua linhagem isso teria sido impossível.
+
+[short pause]
+
+Esta consciência — não celebração nem lamento, apenas consciência — transforma a escolha em acto histórico.
+
+[pause]
+
+E transforma a culpa vaga em reconhecimento de dívida.
+
+[short pause]
+
+Mas a dívida não é para pagar renunciando ao que conquistaste.
+
+É para pagar exercendo o direito com mais plenitude — e deixando o rasto para quem vem depois.
+
+[long pause]
+
+As tuas avós não tiveram escolha.
+
+Tu tens.
+
+A forma mais fiel de as honrar não é renunciar ao que elas não puderam ter.
+
+É viver inteiramente o que elas não puderam viver.`,
+      },
+    ],
+  },
 ];
