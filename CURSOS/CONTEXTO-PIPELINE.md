@@ -60,39 +60,42 @@ Três domínios:
 | Componente | Fonte | Estado |
 |---|---|---|
 | Áudio narração | ElevenLabs (via `/admin/audio-bulk`) | 🟡 em curso |
-| **Imagens contemplativas** | Flux + LoRA `veus_figure` | ❌ por gerar em batch |
+| **Clips de vídeo contemplativos** | Runway Gen-4 **text-to-video** — Vivianne processa no runway.app, app só gera os prompts | ❌ |
 | **Música ambiente a condizer** | Suno API (instrumental) | ❌ por gerar |
-| **Clips animados (Runway)** | Runway Gen-4 — Vivianne processa externamente, app gera só os prompts | ❌ |
 | **Texto em formas aleatórias** | Highlight overlay (só em momentos-chave, não o script todo) | ❌ por definir visualmente |
 | Legendas (accessibility) | Whisper ou manual | ❌ |
-| Thumbnail | Flux + texto | ❌ |
+| Thumbnail | Frame do Runway + texto | ❌ |
 | Título/descrição YouTube (SEO) | Manual ou GPT | ❌ |
 | Tags YouTube | Manual | ❌ |
 
+**NÃO se geram imagens.** Runway faz text-to-video directo. O LoRA `veus_figure` fica só para thumbnails estáticas (se for preciso) e para continuidade de identidade se a Vivianne decidir depois usar image-to-video em casos específicos.
+
 **Pipeline técnico necessário:**
 
-1. Para cada hook, identificar 2-4 "momentos-destaque" do script (as frases que ficam).
-2. Gerar 4-8 imagens contemplativas (Flux + LoRA) cobrindo a duração do áudio.
-3. Gerar uma faixa Suno instrumental com tom a condizer (lento, meditativo, acústico).
-4. Gerar prompts Runway (10s cada) para animação subtil das imagens — Vivianne processa **fora do app** em runway.app, depois carrega os clips de volta para o editor.
-5. **Editar tudo no editor interno do app** (ver secção 4.4) — a Vivianne monta timeline com áudio + clips animados + música + texto overlay nos destaques.
-6. Renderizar o vídeo final **dentro do app** e publicar directamente no YouTube.
+1. Para cada hook/script, o app gera uma **lista de prompts Runway text-to-video** — um por clip de 10s, cobrindo a duração do áudio (60-90s = 6-9 clips).
+2. Cada prompt é afinado ao tom nomeador: contemplativo, feminino, sem rosto visível, luz dourada suave, movimento lento. Mantém coerência visual com o LoRA/estética da escola (ver `IDENTIDADE-VISUAL-VIDEOS.md`).
+3. Vivianne copia cada prompt, cola no runway.app, processa, descarrega os MP4s.
+4. Vivianne carrega os MP4s de volta no editor interno do app.
+5. App gera também uma faixa Suno instrumental com tom a condizer.
+6. Para cada hook, identificar 2-4 "momentos-destaque" do script (frases que ficam).
+7. **Editar tudo no editor interno do app** (ver secção 4.4) — áudio + clips Runway + música + texto overlay nos destaques.
+8. Renderizar o vídeo final **dentro do app** e publicar directamente no YouTube.
 
 ### 3.2. Vídeos das Aulas (curso — 168 aulas, em crescimento)
 
-**Formato:** Mais simples que YouTube. Slides estáticos com música ambiente. Produto pago para alunas.
+**Formato:** Mais simples que YouTube. Visual contemplativo + música ambiente. Produto pago para alunas.
 
 **Componentes:**
 
 | Componente | Fonte | Estado |
 |---|---|---|
 | Áudio narração | ElevenLabs | 🟡 em curso |
-| **Slides (imagens estáticas)** | Flux + LoRA, 2-4 por aula | ❌ |
+| **Clips de vídeo curtos** | Runway text-to-video (2-3 clips por aula, em loop/fade) OU 1 clip longo contemplativo | ❌ |
 | **Música ambiente** | Suno (ou Loranne) — 1 faixa por módulo | ❌ |
 | Legendas opcionais | SRT | ❌ |
 | Sem highlights de texto | (diferente de YouTube) | — |
 
-**Pipeline:** mais leve que YouTube. Apenas slides + áudio + música de fundo. Sem Runway, sem animação.
+**Pipeline:** mais leve que YouTube. Áudio + 2-3 clips Runway suaves + música de fundo. Sem texto overlay. Sem cortes bruscos.
 
 ### 3.3. Shorts (YouTube/Instagram/TikTok)
 
