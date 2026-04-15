@@ -5388,7 +5388,7 @@ Fica com o que sentires sem tentar mudá-lo.
 
 [pause]
 
-Faz isto três vezes esta semana. Ao terceiro dia, vais começar a reconhecer algo que sempre esteve lá — mas que nunca teve nome.
+Faz isto algumas vezes ao longo da semana. Ao fim de alguns dias, talvez comeces a reconhecer algo que sempre esteve lá — mas que nunca teve nome.
 
 [long pause]
 
@@ -5882,9 +5882,7 @@ Permissão é dizer: eu também posso.
 
 [long pause]
 
-Fecha os olhos. Respira fundo.
-
-E diz, em voz alta, devagar: eu quero mais.
+Diz, em voz alta, devagar: eu quero mais.
 
 Só isso. Eu quero mais.
 
@@ -6608,7 +6606,7 @@ Quando a culpa vier — e vai vir — não a combatas.
 
 [short pause]
 
-Diz-lhe: eu sei que estás aí. Mas hoje estou a praticar prazer.
+Diz-lhe: eu sei que estás aí. Mas hoje fico com isto.
 
 E depois fica com o que compraste. Sem devolver. Sem compensar.
 
@@ -7531,27 +7529,29 @@ E muitas mulheres pararam de se permitir futuro há tanto tempo que já nem sabe
 
 [long pause]
 
-Amanhã de manhã, antes de começares o dia, fica parada dois minutos.
+Esta semana, no momento exacto em que normalmente abres a app do banco — e sentes o aperto — não abras.
 
-De pé. Em silêncio.
+Antes de abrir, escreve numa frase só: o que quero ver aqui daqui a um ano?
 
 [pause]
 
-E em vez de pensares no que tens de pagar, pergunta: para onde quero ir?
+Não "o que tenho medo de ver". O que quero ver.
 
-Não precisas de resposta. Só de fazer a pergunta.
+Depois abre.
 
 [short pause]
 
-Repete isto durante três manhãs.
+Nem precisas de resposta final.
 
-Ao terceiro dia, repara se algo mudou — na forma como entras no dia, na forma como olhas para o dinheiro, na forma como sentes o peso das contas.
+A pergunta, feita uma vez, começa a mudar a direcção do olhar.
 
 [pause]
 
-A pergunta não resolve.
+Porque até agora, cada vez que abrias a app, vinhas com a pergunta errada.
 
-Mas muda a direcção do olhar.
+A pergunta do medo é sempre a mesma: quanto sobra?
+
+A pergunta da direcção é outra: para onde isto vai?
 
 [long pause]
 
@@ -7571,17 +7571,15 @@ Que vida construirias se pudesses usar o dinheiro com intenção em vez de deses
 
 [long pause]
 
-Imagina que estás sentada à mesa.
+Pega num papel em branco e senta-te onde ninguém te interrompe.
 
-Não à mesa da cozinha cheia de contas — outra mesa.
-
-Uma mesa limpa, com uma folha em branco.
+Não à mesa da cozinha cheia de contas — noutra mesa.
 
 [pause]
 
-E alguém te diz: desenha a vida que queres.
+Escreve, sem pensar muito: um dia normal na vida que quero ter daqui a três anos.
 
-Não a perfeita — a tua.
+Não a vida perfeita. A tua.
 
 [short pause]
 
