@@ -6014,4 +6014,355 @@ Nunca foi.`,
       },
     ],
   },
+  {
+    id: "curso-ouro-proprio-m4",
+    titulo: "Curso Ouro Próprio — Módulo 4 (Aulas A, B, C)",
+    descricao: "Cobrar, Receber, Merecer. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m4a",
+        titulo: "M4.A — O desconto automático",
+        curso: "ouro-proprio",
+        texto: `Quando foi a última vez que deste desconto no teu trabalho antes de alguém pedir?
+
+[pause]
+
+Quando foi a última vez que baixaste o preço — não porque era justo, mas porque sentiste que não podias pedir o valor inteiro?
+
+[long pause]
+
+Alguém te pede um orçamento. Pelo teu trabalho, pela tua consultoria, pelo teu tempo, pelo produto que fizeste.
+
+Tu sabes quanto vale.
+
+[pause]
+
+Fizeste as contas. É um número justo.
+
+[short pause]
+
+Mas na hora de escrever o valor, a mão treme.
+
+Não literalmente — mas algo dentro de ti hesita.
+
+[pause]
+
+E antes de enviar, tiras um bocado.
+
+Só um pouco.
+
+[short pause]
+
+Para não assustar. Para não parecer demais. Para não ouvir não.
+
+[long pause]
+
+O desconto já estava dado antes de a outra pessoa abrir a boca.
+
+Ninguém regateou. Ninguém pressionou.
+
+Foste tu.
+
+[pause]
+
+Tu e a voz que diz: se pedir o valor inteiro, vão achar que não valho tanto. Ou pior: vão perceber que não valho tanto.
+
+[pause]
+
+Então baixas.
+
+E cada vez que baixas, o corpo aprende que é assim que se faz.
+
+Que o teu preço real é demasiado.
+
+[short pause]
+
+Que precisas de ser mais barata para ser escolhida.
+
+[long pause]
+
+O desconto automático não é generosidade.
+
+É medo disfarçado.
+
+[pause]
+
+Medo de rejeição, medo de confronto, medo de ocupar espaço com o teu valor.
+
+E muitas vezes vem de um lugar antigo: a ideia de que pedir o que mereces é arrogância.
+
+Que cobrar bem é ganância.
+
+Que ser acessível é o mesmo que ser barata.
+
+[short pause]
+
+Mas não é.
+
+Acessibilidade é uma escolha consciente.
+
+Desconto automático é uma reacção ao medo.
+
+[pause]
+
+E há uma diferença enorme entre as duas coisas.
+
+[short pause]
+
+Uma vem da generosidade. A outra vem da falta de permissão.
+
+[long pause]
+
+Quando baixas o preço por medo, não estás a ser generosa.
+
+Estás a dizer ao mundo e a ti mesma que o teu valor é negociável.
+
+[pause]
+
+E o mundo aceita.
+
+O mundo aceita sempre o desconto que ofereces.
+
+[long pause]
+
+Na próxima vez que tiveres de dizer um preço — qualquer preço, mesmo que não seja profissional — nota o momento exacto em que a vontade de baixar aparece.
+
+Não baixas. Não sobes.
+
+Apenas nota.
+
+[pause]
+
+Sente onde isso vive: no peito? Na garganta? Nas mãos?
+
+Depois, diz o número.
+
+O número que realmente querias dizer.
+
+[short pause]
+
+E vê o que acontece. Não no outro — em ti.
+
+[long pause]
+
+O desconto que ninguém te pediu é a medida exacta do quanto ainda não te permites valer.`,
+      },
+      {
+        id: "ouro-proprio-m4b",
+        titulo: "M4.B — A ligação cobrar-merecer",
+        curso: "ouro-proprio",
+        texto: `Já repararam que cobrar e merecer, para ti, são a mesma coisa?
+
+[pause]
+
+Que quando sentes que não mereces, não consegues cobrar — e quando não cobras, confirmas que não mereces?
+
+[long pause]
+
+Fizeste um trabalho excelente.
+
+Sabes que ficou bom.
+
+O cliente também sabe — agradeceu, elogiou, disse que superaste as expectativas.
+
+[pause]
+
+Chega o momento de cobrar.
+
+E algo emperra.
+
+[short pause]
+
+Não é o valor — o valor está definido.
+
+É o acto de dizer: paga-me.
+
+[pause]
+
+Há uma resistência quase física.
+
+Como se cobrar fosse rude.
+
+Como se pedir o que é teu fosse pedir demais.
+
+[long pause]
+
+Então esperas. Mandas a factura com um pedido de desculpa embutido: quando puderes. Sem pressa. À tua conveniência.
+
+[pause]
+
+Usas palavras suaves para suavizar o facto de que estás a pedir dinheiro pelo teu trabalho.
+
+E se a pessoa demora a pagar, não cobras de novo. Esperas.
+
+[short pause]
+
+Porque cobrar uma vez já custou.
+
+Cobrar duas seria demais.
+
+[long pause]
+
+Cobrar não é um acto financeiro. É um acto de identidade.
+
+[pause]
+
+Quando não cobras o que vale, não é porque não saibas o valor.
+
+É porque não sentes que tens direito a ele.
+
+[short pause]
+
+Há uma parte de ti que ainda acredita que receber é um privilégio, não um direito.
+
+Que o dinheiro é algo que se ganha por mérito excepcional, não pelo simples facto de teres dado algo de valor.
+
+[long pause]
+
+Esta crença cria um ciclo: não cobras porque não sentes que mereces. Não recebes porque não cobras. E como não recebes, confirmas a crença: vês, não era para mim.
+
+[pause]
+
+Mas a crença veio primeiro.
+
+O resultado é só a prova que ela inventou.
+
+[long pause]
+
+Pensa no último trabalho que fizeste e que sentiste dificuldade em cobrar.
+
+Escreve: este trabalho vale X porque...
+
+[pause]
+
+Preenche com razões concretas. Tempo, competência, resultado, dedicação.
+
+Lê a lista. Lê-a como se fosse de outra pessoa.
+
+[short pause]
+
+Estarias confortável a pagar este valor a outra pessoa?
+
+Se sim — o problema não é o valor.
+
+É a permissão.
+
+[long pause]
+
+Cobrar o que vale não é pedir demais.
+
+É tratar-te como tratas os outros.`,
+      },
+      {
+        id: "ouro-proprio-m4c",
+        titulo: "M4.C — Receber sem devolver imediatamente",
+        curso: "ouro-proprio",
+        texto: `Quando alguém te dá algo — um presente, um elogio, uma ajuda — qual é o teu primeiro impulso?
+
+[pause]
+
+Receber?
+
+Ou devolver imediatamente para não ficar a dever?
+
+[long pause]
+
+Uma amiga paga-te o almoço.
+
+Tu dizes: não, deixa, eu pago o meu.
+
+Ela insiste. Tu aceitas, mas já estás a calcular quando vais poder retribuir.
+
+[pause]
+
+Na semana seguinte pagas o café, o almoço e o estacionamento — para ficar quite.
+
+[short pause]
+
+Alguém te oferece um presente caro.
+
+Agradeces, mas o pensamento imediato é: tenho de lhe dar algo à altura. Não depois — agora.
+
+[pause]
+
+O teu chefe dá-te um bónus.
+
+Em vez de sentires: mereço isto, sentes: agora vou ter de trabalhar o dobro para justificar.
+
+[long pause]
+
+Nunca estás só a receber.
+
+Estás sempre a compensar.
+
+[pause]
+
+Cada coisa que te dão abre uma conta no teu corpo — e o teu corpo não descansa até a fechar.
+
+[short pause]
+
+Como se receber criasse uma dívida.
+
+Como se aceitar fosse perigoso.
+
+[long pause]
+
+A dificuldade de receber não é educação — é protecção.
+
+[pause]
+
+Algures aprendeste que receber te coloca em posição de vulnerabilidade.
+
+Que quem dá tem poder. Que ficar a dever é ficar em perigo.
+
+[short pause]
+
+Talvez na tua família receber vinha com condições.
+
+Talvez a generosidade era uma moeda de troca.
+
+Talvez alguém te deu algo e depois usou isso contra ti.
+
+[pause]
+
+E ficou gravado: receber não é seguro.
+
+[long pause]
+
+E agora, cada vez que algo bom chega, a tua primeira reacção não é prazer — é calcular o custo.
+
+[pause]
+
+Isto estende-se ao dinheiro de forma directa: se não consegues receber um presente sem angústia, como vais receber um aumento? Uma proposta melhor? Uma oportunidade que não pediste?
+
+[short pause]
+
+Receber é uma capacidade.
+
+E pode estar atrofiada.
+
+[long pause]
+
+Esta semana, quando alguém te der algo — um elogio, um café, uma ajuda — experimenta só dizer: obrigada.
+
+Sem adicionar nada. Sem oferecer nada de volta. Sem justificar.
+
+Só obrigada.
+
+[pause]
+
+Sente o desconforto. Fica com ele. Não o resolvas.
+
+[short pause]
+
+Deixa o corpo aprender que receber não é dívida.
+
+[long pause]
+
+Receber não é ficar a dever.
+
+É deixar entrar o que já era teu.`,
+      },
+    ],
+  },
 ];
