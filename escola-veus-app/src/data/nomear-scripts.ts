@@ -19904,4 +19904,367 @@ E continua disponível para que tu, finalmente, regresses.`,
       },
     ],
   },
+  {
+    id: "curso-a-fome-m1",
+    titulo: "Curso A Fome — Módulo 1 (Aulas A, B, C)",
+    descricao: "A Fome que Não é Fome.",
+    scripts: [
+      {
+        id: "a-fome-m1a",
+        titulo: "M1.A — A fome que chega antes das onze",
+        curso: "a-fome",
+        texto: `Há uma fome que chega quase sempre à mesma hora.
+
+[pause]
+
+Não a das três da tarde. Não a das oito.
+
+A das onze da manhã. Ou a da meia-noite. Ou a das três numa madrugada que não conseguias dormir.
+
+[long pause]
+
+Esta fome chega sem ter passado fisicamente muito tempo desde a refeição anterior.
+
+[pause]
+
+Aparece quando o trabalho aperta.
+
+Quando uma conversa termina mal.
+
+Quando alguém diz uma coisa que te abriu um buraco onde não devia haver buraco nenhum.
+
+[short pause]
+
+Vais ao frigorífico. Ao armário. À gaveta das bolachas.
+
+E comes sem fome real.
+
+[pause]
+
+Enquanto comes, o buraco fecha-se um bocado.
+
+[long pause]
+
+Esta fome tem nome.
+
+É fome emocional.
+
+[pause]
+
+E não é fraqueza tua.
+
+É inteligência.
+
+[short pause]
+
+O teu corpo encontrou uma forma de regular o que a tua mente ainda não sabe nomear.
+
+[pause]
+
+Comer é regulação rápida. Distrai. Acalma. Preenche.
+
+[short pause]
+
+Não resolve o que estava na origem — mas alivia o sintoma imediato.
+
+[long pause]
+
+Reconhecer esta fome como emocional não é diagnóstico para vergonha.
+
+É informação.
+
+[pause]
+
+Informação sobre o que o teu sistema está a tentar gerir.
+
+[short pause]
+
+Quando tu vais ao frigorífico às onze, normalmente, é porque algo aconteceu na hora anterior que precisava de processamento.
+
+E o teu sistema escolheu o atalho disponível.
+
+[pause]
+
+A maioria das mulheres modernas pratica esta regulação várias vezes por semana.
+
+Sem se aperceber.
+
+[long pause]
+
+Esta semana, durante alguns dias, faz uma observação.
+
+Cada vez que te aproximares de comida fora dos horários de refeição, para um segundo.
+
+[pause]
+
+Pergunta-te uma única coisa: o que aconteceu na hora anterior?
+
+[short pause]
+
+Não para te impedires de comer. Apenas para registar.
+
+[pause]
+
+Algumas vezes a resposta vai ser: nada de especial.
+
+Outras vezes vai aparecer: discuti com X. Recebi um email difícil. Pensei naquela coisa que me preocupa.
+
+[long pause]
+
+Esta consciência, em si mesma, muda a relação com a fome emocional.
+
+[pause]
+
+Porque deixa de ser comportamento inexplicável que tu fazes envergonhada.
+
+Passa a ser comportamento com causa identificada.
+
+[short pause]
+
+E uma causa identificada pode, com tempo, ser tratada de outras formas.
+
+[pause]
+
+Não imediatamente. Mas com prática.
+
+[long pause]
+
+A fome que chega antes das onze é mensagem.
+
+Se a souberes ler, podes começar a responder ao que ela está realmente a pedir — em vez de oferecer apenas comida que ela aceita por falta de outra opção.`,
+      },
+      {
+        id: "a-fome-m1b",
+        titulo: "M1.B — O que a tua boca pede que não é comida",
+        curso: "a-fome",
+        texto: `Há coisas que a tua boca pede que não são comida.
+
+[pause]
+
+Pede conversa quando não há ninguém.
+
+Pede toque quando estás há semanas sem ser tocada.
+
+Pede descanso quando só te dás pausas para comer.
+
+[long pause]
+
+Como a mente não te deixa parar para pedir o que realmente precisas, o corpo aprende a pedir pela boca.
+
+[pause]
+
+Porque pela boca é aceitável.
+
+[short pause]
+
+Podes sair da reunião para comer. Não podes sair para chorar.
+
+Podes abrir o frigorífico à meia-noite. Não podes ligar a alguém à meia-noite só para dizer que te sentes sozinha.
+
+[pause]
+
+A boca passou a ser canal universal de pedido.
+
+[long pause]
+
+Tem nome o que a tua boca faz.
+
+É o único pedido que aprendeste a fazer sem vergonha.
+
+[pause]
+
+Esta substituição funciona — em parte.
+
+[short pause]
+
+Comer alivia algumas das fomes que não são alimentares.
+
+Mas raramente as resolve.
+
+[pause]
+
+E ao longo dos anos, a substituição acumula.
+
+[long pause]
+
+A mulher que come muito quando se sente só tem, no fim de cinco anos, ganho de peso que não corresponde à sua relação com comida.
+
+Corresponde à sua relação com solidão.
+
+[pause]
+
+A mulher que come quando está cansada tem, no fim de uma década, problemas de saúde que se diagnosticam como alimentares.
+
+Mas a causa é exaustão crónica.
+
+[short pause]
+
+Tratar o sintoma — a comida — sem tratar a causa não funciona.
+
+[pause]
+
+E muitas mulheres passam décadas a fazer dietas sem entender que o problema não é o que está no prato.
+
+É o que falta na vida.
+
+[long pause]
+
+Esta semana, identifica três coisas que a tua boca pede mas que não são comida.
+
+Pode ser: conversa profunda, toque físico, descanso real, silêncio sem agenda, atenção genuína.
+
+[pause]
+
+Para cada uma, escreve: a quem podia pedir esta coisa explicitamente?
+
+[short pause]
+
+Algumas pessoas vão aparecer com facilidade.
+
+Outras vão exigir reflexão.
+
+[pause]
+
+E para algumas das tuas fomes não-alimentares, talvez não haja ainda pessoa disponível na tua vida — e essa percepção é, em si mesma, dado importante.
+
+[long pause]
+
+A boca está cansada de pedir tudo.
+
+E começar a fazer pedidos diferentes em sítios diferentes alivia o trabalho que ela tem feito sozinha durante anos.
+
+[pause]
+
+Não vais parar de comer emocionalmente de uma vez.
+
+Mas, ao longo do tempo, a frequência reduz.
+
+[short pause]
+
+Porque outras fomes começam a ser atendidas onde realmente pertencem.
+
+E a comida pode voltar a ser, simplesmente, comida.`,
+      },
+      {
+        id: "a-fome-m1c",
+        titulo: "M1.C — As noites em que te esqueces de ti até ao frigorífico",
+        curso: "a-fome",
+        texto: `Há noites em que só te lembras que existes quando chegas ao frigorífico.
+
+[pause]
+
+Passaste o dia a cuidar. A responder. A resolver. A estar presente para todos menos para ti.
+
+[long pause]
+
+E quando finalmente a casa se cala e tu ficas sozinha, o corpo começa a pedir.
+
+[pause]
+
+Pede sal. Pede açúcar. Pede gordura.
+
+Pede com urgência. Como se tivesse estado a segurar-se o dia inteiro.
+
+[short pause]
+
+Porque tinha.
+
+[pause]
+
+O que tu chamas gula, à meia-noite, tem outro nome.
+
+[long pause]
+
+É a primeira vez que te dás atenção desde que acordaste.
+
+[pause]
+
+Não é a comida que procuras.
+
+É a presença.
+
+[short pause]
+
+E como a única presença disponível àquela hora é a tua — e a tua só se lembra de ti na boca — vais ao frigorífico.
+
+[pause]
+
+Esta dinâmica é particularmente comum em mulheres que cuidam — de filhos, de pais, de equipas, de alunos, de qualquer pessoa que dependa delas durante o dia.
+
+[long pause]
+
+A culpa que sentes a comer à meia-noite não é proporcional ao que comeste.
+
+É proporcional ao quanto te abandonaste durante o dia.
+
+[pause]
+
+E a comida está, simplesmente, a tentar resolver o sintoma da abandono.
+
+[short pause]
+
+Não vai conseguir.
+
+[pause]
+
+Mas é a única ferramenta que tu, sozinha em cozinha silenciosa às onze da noite, tens disponível naquele momento.
+
+[long pause]
+
+A solução não é parar de comer à noite.
+
+É começar a chegar a ti mais cedo no dia.
+
+[pause]
+
+Antes do frigorífico.
+
+Antes do cansaço.
+
+Enquanto ainda era possível escolheres de outra forma.
+
+[long pause]
+
+Esta semana, identifica os momentos do dia em que tu, normalmente, te perdes.
+
+[pause]
+
+Em geral, são os momentos depois das transições — quando termina uma tarefa exigente e tu, em vez de fazeres uma pausa, partes imediatamente para a próxima.
+
+[short pause]
+
+Estes momentos são oportunidade.
+
+[pause]
+
+Cinco minutos de presença para ti.
+
+Não cinco minutos no telefone. Cinco minutos sentada, em silêncio, perto do corpo.
+
+[short pause]
+
+Estes pequenos momentos, repetidos ao longo do dia, reduzem a urgência da fome nocturna.
+
+[long pause]
+
+Porque o corpo, sentindo presença ao longo do dia, não chega à noite com sede acumulada de atenção.
+
+[pause]
+
+E a comida da noite, quando vier, vem sem tanta urgência.
+
+E pode ser, por isso, comida e não substituto.
+
+[short pause]
+
+Esta é a forma mais sustentável de mudar a relação com a fome emocional nocturna.
+
+[pause]
+
+Não restringir à noite.
+
+Mas começar a chegar a ti durante o dia.`,
+      },
+    ],
+  },
 ];
