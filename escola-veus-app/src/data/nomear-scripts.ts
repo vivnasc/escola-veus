@@ -8742,4 +8742,323 @@ A paz dos que sabem parar não é privilégio.
       },
     ],
   },
+  {
+    id: "curso-limite-sagrado-m4",
+    titulo: "Curso Limite Sagrado — Módulo 4 (Aulas A, B, C)",
+    descricao: "Pessoas que Atravessam Limites. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m4a",
+        titulo: "M4.A — Quem não ouve o teu não",
+        curso: "limite-sagrado",
+        texto: `Há pessoas na tua vida a quem já disseste não.
+
+Várias vezes.
+
+E elas continuam a perguntar o mesmo.
+
+[long pause]
+
+Não é falta de atenção. É outra coisa.
+
+[pause]
+
+Há uma categoria específica de pessoas para quem o teu não é uma proposta a ser negociada, não uma resposta final.
+
+Insistem com doçura. Voltam mais tarde. Apresentam a mesma pergunta com novas palavras.
+
+[short pause]
+
+E tu, ao fim de umas vezes, acabas por ceder. Não porque tenhas mudado de ideia.
+
+Por exaustão.
+
+[long pause]
+
+Aprendeste isto cedo, em casa.
+
+Alguém da tua família não aceitava um não como resposta definitiva.
+
+Talvez tenha sido um pai que insistia até tu cederes. Uma mãe que usava a culpa como forma de renegociação. Um irmão que transformava a tua recusa num problema de relação.
+
+[pause]
+
+Aprendeste que dizer não uma vez raramente bastava.
+
+Que precisavas de sustentar o não várias vezes, com crescente desconforto, até a outra pessoa desistir.
+
+[short pause]
+
+E muitas vezes a outra pessoa não desistia. Tu é que desistias primeiro.
+
+[long pause]
+
+Isto treinou-te para uma realidade específica: o teu não é uma sugestão.
+
+Por isso, hoje, quando alguém te pede uma coisa pela primeira vez, tu já te estás a preparar para ceder.
+
+[pause]
+
+A primeira recusa é apenas o começo da negociação, na tua cabeça.
+
+Uma formalidade. Uma abertura de processo.
+
+[short pause]
+
+Este é um dos treinos mais invisíveis — e mais corrosivos — que uma mulher pode receber.
+
+[long pause]
+
+O primeiro passo para romper este padrão é reconhecê-lo especificamente.
+
+Quem, na tua vida, não aceita o teu primeiro não?
+
+Faz a lista.
+
+[pause]
+
+Não precisas de confrontar ninguém. Só de reconhecer.
+
+Depois, quando essas pessoas te pedirem algo, tem em mente uma regra.
+
+A tua resposta é definitiva à primeira vez. Não à terceira.
+
+[short pause]
+
+E se insistirem, a tua segunda resposta é igual à primeira.
+
+E a terceira. E a quarta.
+
+[pause]
+
+Não é rigidez. É coerência.
+
+Esta coerência — repetida ao longo do tempo — ensina as pessoas a ouvirem-te à primeira.
+
+E liberta-te do trabalho constante de manter limites que nunca são reconhecidos.
+
+[long pause]
+
+O teu não é uma frase completa.
+
+Mesmo que alguém precise de ouvi-la dez vezes para aprender que é.`,
+      },
+      {
+        id: "limite-sagrado-m4b",
+        titulo: "M4.B — A energia que te drena",
+        curso: "limite-sagrado",
+        texto: `Há pessoas que, depois de estares com elas uma hora, tu precisas de duas para recuperar.
+
+[pause]
+
+Não fizeram nada de errado.
+
+Foram educadas. Pagaram o café. Disseram coisas interessantes.
+
+[short pause]
+
+E mesmo assim, saíste esgotada.
+
+[long pause]
+
+Outras pessoas, pelo contrário, deixam-te ligeiramente mais leve.
+
+Mesmo quando falam de assuntos difíceis. Mesmo quando tu não falas muito. Mesmo quando o encontro foi curto.
+
+[pause]
+
+Há algo na qualidade de presença delas que alivia.
+
+[long pause]
+
+A diferença entre estes dois tipos não é carácter.
+
+É um mecanismo muito concreto.
+
+[pause]
+
+As pessoas que te drenam, quase sempre, pedem algo de ti em permanência — atenção, validação, cuidado, reflexo. Mesmo quando não estão a pedir explicitamente, o corpo delas está a puxar o teu.
+
+[short pause]
+
+As pessoas que te recuperam, pelo contrário, não estão a pedir.
+
+Estão apenas a estar.
+
+[long pause]
+
+E tu, por seres sensível a este pedido implícito, respondes sem te aperceberes.
+
+Ajustas o teu tom ao tom delas.
+
+Ouves com mais concentração do que precisarias.
+
+Antecipas as respostas para não as fazeres esperar.
+
+[pause]
+
+Ao fim de uma hora, deste muita energia sem te aperceberes.
+
+Por isso saíste vazia.
+
+[long pause]
+
+Isto não é bom ou mau da outra pessoa.
+
+É uma configuração relacional que, para mulheres sensíveis, é especialmente desgastante.
+
+[short pause]
+
+A identificação é a protecção.
+
+Quando sabes que uma pessoa te drena, podes preparar-te antes do encontro. Podes planear um tempo de recuperação depois. Podes limitar a frequência.
+
+[pause]
+
+Não precisas de cortar relações.
+
+Precisas de orçamentar o custo.
+
+[long pause]
+
+Esta semana, faz uma lista pequena.
+
+Três pessoas à tua volta que te drenam.
+
+Três pessoas que te recuperam.
+
+[pause]
+
+Ao lado de cada uma, escreve quantas horas ao mês costumas passar com elas.
+
+[short pause]
+
+Olha para a lista.
+
+Provavelmente vais descobrir algo desconfortável: passas mais tempo com as que te drenam do que com as que te recuperam.
+
+[pause]
+
+Muitas mulheres vivem nesta configuração sem se aperceberem.
+
+[short pause]
+
+Uma mudança pequena nesta proporção ao longo dos meses muda a qualidade da tua vida inteira.`,
+      },
+      {
+        id: "limite-sagrado-m4c",
+        titulo: "M4.C — O afastamento silencioso",
+        curso: "limite-sagrado",
+        texto: `Há relações que precisam de um confronto explícito para serem resolvidas.
+
+[pause]
+
+E há outras que não.
+
+[long pause]
+
+Para algumas pessoas, cada vez que tu te afastas, elas voltam.
+
+Escrevem a perguntar o que se passa. Fazem-se próximas de novo. Insistem.
+
+[pause]
+
+Para outras, basta tu espaçares.
+
+Respondes mais devagar. Sugeres encontros menos frequentes. Dás menos detalhes sobre a tua vida.
+
+[short pause]
+
+E elas, sem precisar de explicação, começam a espaçar também.
+
+A relação, sem nunca ter havido um confronto, vai-se tornando periférica.
+
+[long pause]
+
+A isto chamamos afastamento silencioso.
+
+E é, para muitas mulheres, o único tipo de recolocação possível.
+
+[pause]
+
+Porque as mulheres foram ensinadas que a ruptura de relações exige justificação, discussão, desculpa.
+
+Que não podes simplesmente afastar-te sem explicar.
+
+[short pause]
+
+Mas esta regra não se aplica a todas as relações.
+
+[pause]
+
+Algumas relações mereceram conversa difícil — e tu deves essa conversa a quem já foi, ao longo do tempo, fiel ao teu bem.
+
+[short pause]
+
+Outras relações não mereceram. Não porque sejam más — mas porque nunca tiveram a profundidade que exigiria a cortesia de um término explicado.
+
+[long pause]
+
+Para estas, o afastamento silencioso é suficiente.
+
+É respeitoso. Não humilha ninguém. Não exige a outra pessoa a confrontar aspectos de si que talvez não queira ver.
+
+[pause]
+
+Deixa a relação diminuir até não ser mais relação.
+
+Sem drama. Sem acusação. Sem fantasmas.
+
+[long pause]
+
+O afastamento silencioso é, muitas vezes, a forma mais gentil de recuperares tempo e energia.
+
+Tempo que estava a ser comido por dinâmicas sem futuro.
+
+Energia que não ia para lado nenhum.
+
+[pause]
+
+E este tempo e energia, de volta a ti, transformam-se noutra coisa.
+
+Em disponibilidade para as pessoas que realmente importam.
+
+[short pause]
+
+Em silêncio para te escutares.
+
+Em atenção para o teu próprio corpo.
+
+[long pause]
+
+Pensa em duas ou três pessoas na tua vida com quem a energia há muito não flui.
+
+Não inimigas. Não pessoas com problema grave.
+
+Apenas relações que já não são.
+
+[pause]
+
+Não é preciso anúncio.
+
+Nos próximos meses, responde com um dia de atraso. Não marques novos encontros. Sê menos acessível.
+
+[short pause]
+
+E vê o que acontece.
+
+A maioria destas relações vai-se dissolver sozinha. Sem ressentimento.
+
+[pause]
+
+E tu, ao fim de uns meses, vais olhar para trás e perceber: afastei-me de quem precisava de me afastar. Sem nunca ter tido a conversa. Sem nunca ter gerado conflito.
+
+[long pause]
+
+Esta é uma competência feminina antiga, muitas vezes subestimada.
+
+A arte de deixar sair sem ter de expulsar.`,
+      },
+    ],
+  },
 ];
