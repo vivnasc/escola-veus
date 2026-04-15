@@ -11256,4 +11256,399 @@ A forma mais fiel de as honrar não é renunciar ao que elas não puderam ter.
       },
     ],
   },
+  {
+    id: "curso-sangue-e-seda-m3",
+    titulo: "Curso Sangue e Seda — Módulo 3 (Aulas A, B, C)",
+    descricao: "O Corpo como Arquivo. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "sangue-e-seda-m3a",
+        titulo: "M3.A — A memória do corpo é mais antiga que tu",
+        curso: "sangue-e-seda",
+        texto: `Há sensações no teu corpo que não têm origem nesta vida.
+
+[pause]
+
+Medo que aparece sem razão. Vigilância que nunca desliga. Tensão que não se dissolve com descanso.
+
+Procuras a causa na tua biografia e não encontras correspondência proporcional.
+
+[long pause]
+
+Isto não é imaginação.
+
+O teu corpo tem memória que precede a tua memória consciente.
+
+[pause]
+
+Parte desta memória é individual — registos corporais dos teus primeiros anos, antes de teres linguagem para os nomear.
+
+Parte é mais antiga — transmitida por gerações de corpos que te antecederam.
+
+[short pause]
+
+O sistema nervoso não se limita a registar o que tu vives.
+
+Regista também o que os corpos anteriores ao teu precisaram de aprender para sobreviver.
+
+[long pause]
+
+Uma mulher cuja avó viveu a guerra pode ter reflexos de alerta que não se explicam pela sua própria vida.
+
+Uma mulher cuja bisavó foi empobrecida pode ter ansiedade financeira que excede em muito a sua situação real.
+
+Uma mulher cuja linhagem atravessou violência pode reagir, sem razão aparente, a situações que apenas evocam vagamente essa história.
+
+[pause]
+
+Estas reacções não são patológicas.
+
+São adaptativas.
+
+[short pause]
+
+Foram úteis para quem esteve antes de ti.
+
+Para ti, podem ser desproporcionais.
+
+[long pause]
+
+Reconhecer isto muda a forma como olhas para as tuas próprias reacções.
+
+[pause]
+
+Quando o teu corpo reage com uma intensidade que a situação presente não justifica, não tens de te julgar como exagerada.
+
+Podes perguntar, em vez disso, onde começou isto.
+
+[short pause]
+
+Não para encontrar resposta exacta — muitas vezes não há.
+
+Mas para reconhecer que a intensidade pode não ser proporcional à situação actual porque a memória que está a responder é mais antiga do que a situação.
+
+[long pause]
+
+Quando tu falas com o teu corpo a partir deste entendimento, muitas coisas mudam.
+
+[pause]
+
+A vergonha por reagir demais diminui.
+
+A raiva contra ti mesma por ser "demasiado sensível" afrouxa.
+
+E abre-se espaço para uma conversa nova entre ti e o que te habita.
+
+[short pause]
+
+Uma conversa onde tu não tentas expulsar as reacções.
+
+Tentas, apenas, compreender a origem delas.
+
+[long pause]
+
+Faz uma lista curta. Três reacções corporais tuas que te parecem desproporcionais às situações que as provocam.
+
+[pause]
+
+Ao lado de cada uma, escreve o que sabes sobre a vida das mulheres que te antecederam — avós, bisavós, tias-avós — que pudesse ter gerado essa mesma reacção nelas.
+
+[short pause]
+
+Não precisas de certeza. Podes escrever "talvez".
+
+Mas olha para a lista inteira.
+
+[pause]
+
+Provavelmente vais encontrar correspondências que nunca tinhas feito.
+
+[long pause]
+
+O teu corpo é um arquivo.
+
+E muitas das tuas reacções aparentemente inexplicáveis começam a fazer sentido quando entendes que o arquivo tem capítulos que vêm de antes do teu nascimento.
+
+[pause]
+
+Não para te resignares a elas.
+
+Mas para parares de as tratar como defeito teu — quando são, na verdade, herança.`,
+      },
+      {
+        id: "sangue-e-seda-m3b",
+        titulo: "M3.B — Sintomas sem nome",
+        curso: "sangue-e-seda",
+        texto: `Há sintomas no teu corpo para os quais nenhum médico te deu nome.
+
+[pause]
+
+Cansaço crónico que não aparece em exames. Dores migratórias que mudam de sítio. Inflamações pontuais que vêm e vão. Desequilíbrios hormonais que ficam no limite do normal mas que tu sabes que não são só tua imaginação.
+
+[long pause]
+
+Fazes análises. Os resultados vêm "dentro do normal".
+
+O médico diz que está tudo bem.
+
+Tu sais da consulta com a sensação estranha de teres sido inválidada — porque tu sabes que não está tudo bem, mesmo que nenhum exame o prove.
+
+[pause]
+
+Isto acontece muito às mulheres.
+
+[short pause]
+
+Mais do que aos homens.
+
+[long pause]
+
+Uma das razões é que muita investigação médica, durante décadas, foi feita com o corpo masculino como padrão.
+
+Os "normais" dos exames foram calibrados em populações maioritariamente masculinas.
+
+O que nelas é normal pode não ser neles.
+
+[pause]
+
+Outra razão é que o corpo feminino tem variações cíclicas complexas que os exames pontuais não captam.
+
+Tu fazes uma análise hormonal num dia qualquer. O resultado reflecte o estado hormonal daquele dia — não do ciclo inteiro.
+
+[short pause]
+
+Uma terceira razão, mais difícil de admitir, é cultural.
+
+[pause]
+
+Médicos, por mais bem-intencionados que sejam, ainda têm viés treinado de subestimar o relato subjectivo das mulheres.
+
+As queixas femininas são ouvidas com filtro. "Estás a trabalhar demais." "É stress." "É idade."
+
+[short pause]
+
+Estas respostas, por vezes, são verdadeiras.
+
+Por vezes, são tampa para sintomas que mereciam investigação mais profunda.
+
+[long pause]
+
+Tu, como paciente, precisas de aprender a distinguir as duas coisas.
+
+[pause]
+
+Se um médico te desvaloriza um sintoma e tu saíste da consulta com a sensação de não teres sido levada a sério, há algo importante a fazer.
+
+Pedir segunda opinião.
+
+[short pause]
+
+Não por desconfiança do primeiro médico.
+
+Por respeito ao teu próprio corpo.
+
+[pause]
+
+A medicina, como qualquer profissão, tem variação de qualidade e atenção.
+
+Um médico que te desvaloriza não tem, necessariamente, razão.
+
+[long pause]
+
+Se tens sintomas persistentes que foram sistematicamente desvalorizados, faz uma coisa específica.
+
+Escreve um diário corporal durante um mês inteiro.
+
+Cada dia, anota: o que senti, em que parte do corpo, quanto tempo durou, em que fase do ciclo estava.
+
+[pause]
+
+No fim do mês, lê o diário inteiro.
+
+Vais encontrar padrões que um exame pontual nunca podia ter detectado.
+
+[short pause]
+
+Leva o diário à próxima consulta.
+
+Apresenta-o como dado clínico.
+
+[pause]
+
+Um médico sério — e existem — vai valorizar esta informação.
+
+Se não valorizar, muda de médico.
+
+[long pause]
+
+O teu corpo tem sintomas que merecem nome.
+
+E tu tens o direito de insistir até encontrares um profissional que te ajude a encontrar esse nome — sem te fazer sentir que és exagerada.
+
+[pause]
+
+A paciência para investigar é investimento.
+
+O tempo que ganhas agora, a pedir uma segunda opinião ou a mudar de médico, é tempo que poupas depois em anos de sintomas não explicados.
+
+[long pause]
+
+As mulheres têm sido ensinadas a suportar.
+
+Mas suportar não é o mesmo que investigar.
+
+[pause]
+
+E muitas vezes, o suporte silencioso transforma-se em condição crónica que, se tivesse sido investigada a tempo, seria tratável.
+
+[short pause]
+
+A tua saúde merece investigação — mesmo quando o primeiro médico te diz que não.`,
+      },
+      {
+        id: "sangue-e-seda-m3c",
+        titulo: "M3.C — O que o corpo sabe sobre a tua história",
+        curso: "sangue-e-seda",
+        texto: `Pensa numa história difícil que tu viveste e que preferirias esquecer.
+
+[pause]
+
+Talvez uma separação. Um luto. Uma traição. Uma rejeição. Um momento em que te sentiste profundamente só.
+
+[long pause]
+
+A tua mente, ao longo dos anos, foi arrumando essa história.
+
+Arrumou-a num sítio onde não incomoda tanto. Deu-lhe uma narrativa que permite funcionar. Suavizou algumas partes.
+
+[pause]
+
+Mas o teu corpo não arrumou.
+
+[short pause]
+
+O corpo guarda a história original. Não a versão editada. A versão crua, tal como aconteceu no momento.
+
+[long pause]
+
+Por isso, às vezes, o teu corpo reage de forma que a tua mente não compreende.
+
+[pause]
+
+Passas por um sítio que te recorda vagamente o passado e o peito contrai.
+
+Ouves uma música que tocava na altura e algo no estômago aperta.
+
+Vês uma pessoa que se parece com alguém que te magoou e a respiração fica mais curta por segundos.
+
+[short pause]
+
+A tua mente diz: aquilo foi há anos, já não interessa.
+
+O teu corpo, em dois segundos, prova que ainda interessa.
+
+[long pause]
+
+Isto não é patologia.
+
+É arquivo.
+
+[pause]
+
+O corpo guarda o que a mente preferiu esquecer porque guardar é função dele.
+
+Não guarda por maldade. Não guarda por apego. Guarda porque foi treinado, ao longo da evolução, a lembrar-se do que pode voltar a ameaçar — para te proteger.
+
+[short pause]
+
+A questão não é fazer o corpo esquecer.
+
+É trazer para consciência o que ele ainda guarda — para que, aos poucos, ele perceba que a ameaça passou.
+
+[long pause]
+
+Uma das formas de o fazer é, curiosamente, falar com o corpo.
+
+Não através de palavras ditas em voz alta.
+
+Através de atenção corporal dirigida.
+
+[pause]
+
+Quando reparas que o teu corpo está a reagir a algo do passado, podes fazer uma pausa interna e perguntar, em silêncio, sem pressa.
+
+O que estás a lembrar agora?
+
+[short pause]
+
+Não é pergunta metafórica. É pergunta concreta dirigida ao sistema corporal.
+
+E, muitas vezes, o corpo responde.
+
+[pause]
+
+Com uma imagem que volta. Com uma frase antiga. Com uma sensação mais específica.
+
+[short pause]
+
+Tu não estás a imaginar. Estás a abrir o arquivo que até aqui só se abria por reflexo.
+
+[long pause]
+
+Quando o arquivo é aberto conscientemente, não automaticamente, algo começa a mudar.
+
+O corpo começa a perceber que tu estás aqui.
+
+Que a ameaça registada é antiga.
+
+Que tu, hoje, tens recursos que não tinhas quando a ameaça aconteceu.
+
+[pause]
+
+E começa, devagar, a relaxar a vigilância.
+
+[short pause]
+
+Não de uma vez. Ao longo de meses.
+
+Mas começa.
+
+[long pause]
+
+Escolhe uma reacção corporal tua que se repete e que não tem causa presente óbvia.
+
+Da próxima vez que ela aparecer, em vez de tentares afastá-la ou racionalizá-la, para.
+
+Pergunta em silêncio, com atenção: o que guardas aqui?
+
+[pause]
+
+E escuta.
+
+Não a resposta em palavras. A resposta em imagens, sensações, memórias que sobem.
+
+[short pause]
+
+Escreve, depois, num caderno, o que apareceu.
+
+[pause]
+
+Ao longo dos meses, vais construir um pequeno mapa do que o corpo guarda.
+
+E cada ponto do mapa, uma vez visto, torna-se menos operativo.
+
+[long pause]
+
+O corpo guarda para te proteger.
+
+Quando tu mostras ao corpo que já és capaz de te proteger conscientemente, ele pode, finalmente, largar a vigilância.
+
+[pause]
+
+Esta é uma das formas mais silenciosas e mais profundas de liberdade.
+
+Libertar o corpo do trabalho de guardar sozinho o que já não precisas de carregar assim.`,
+      },
+    ],
+  },
 ];
