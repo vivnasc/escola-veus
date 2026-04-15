@@ -5,15 +5,28 @@ export const maxDuration = 30;
 /**
  * POST /api/admin/audio-bulk/test-voice
  *
- * Generates a short audio sample (no Supabase upload) for voice/model testing.
- * Returns base64 data URL so frontend can play immediately.
- *
- * Body: { text, voiceId, modelId? }
+ * Sample curto de audio para testar voz/modelo.
+ * Body: { text, voiceId, modelId?, languageCode? }
  * Returns: { audioDataUrl, sizeBytes }
  */
+
+function processTextForModel(rawText: string, modelId: string): string {
+  const isV3 = modelId === "eleven_v3";
+  if (isV3) {
+    return rawText.replace(/\n{4,}/g, "\n\n\n").trim();
+  }
+  let t = rawText
+    .replace(/\[long pause\]/gi, "\n\n\n")
+    .replace(/\[pause\]/gi, "\n\n")
+    .replace(/\[short pause\]/gi, ". ")
+    .replace(/\[(calm|thoughtful|whispers|sighs|laughs|excited|sad)\]/gi, "");
+  t = t.replace(/\n{4,}/g, "\n\n\n").trim();
+  return t;
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { text, voiceId, modelId = "eleven_multilingual_v2" } = await req.json();
+    const { text, voiceId, modelId = "eleven_multilingual_v2", languageCode } = await req.json();
 
     if (!text || !voiceId) {
       return NextResponse.json({ erro: "text e voiceId obrigatorios" }, { status: 400 });
@@ -24,12 +37,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "ELEVENLABS_API_KEY nao configurada" }, { status: 400 });
     }
 
-    // Normalize text: convert \n\n to [pause] tags, collapse whitespace
-    const processedText = text
-      .replace(/\n{3,}/g, "\n\n")
-      .replace(/\n\n/g, " [pause] ")
-      .replace(/\s+/g, " ")
-      .trim();
+    const processedText = processTextForModel(text, modelId);
 
     const body: Record<string, unknown> = {
       text: processedText,
@@ -37,9 +45,9 @@ export async function POST(req: NextRequest) {
       output_format: "mp3_44100_128",
     };
 
-    // Multilingual models accept language_code; v3 handles it via tags
-    if (modelId.includes("multilingual")) {
-      body.language_code = "pt";
+    // Language code SO se explicitamente enviado.
+    if (languageCode) {
+      body.language_code = languageCode;
     }
 
     const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
