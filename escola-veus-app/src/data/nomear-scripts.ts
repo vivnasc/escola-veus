@@ -14671,7 +14671,7 @@ Por vezes, simples imaginação informada — pondo-se na pele de quem viveu a �
 
 [pause]
 
-À medida que reconstróis, algo dentro de ti aliviou.
+À medida que reconstróis, algo dentro de ti alivia.
 
 [short pause]
 
@@ -14773,7 +14773,7 @@ Se tu, em alguma altura da tua vida adulta, tentaste falar de algo que a famíli
 
 E talvez tenhas recuado.
 
-Não por covardia. Por sensatez.
+Não por cobardia. Por sensatez.
 
 [short pause]
 
@@ -14841,7 +14841,7 @@ E a clareza, mesmo sem decisão imediata, muda a forma como tu, daqui em diante,
 
 Algumas famílias só conseguem mudar quando alguém tem coragem de quebrar acordos antigos.
 
-Outras família mudam menos do que se gostaria.
+Outras famílias mudam menos do que se gostaria.
 
 [pause]
 
@@ -14954,21 +14954,35 @@ Tornam-se ecos de algo que entrou e ficou.
 
 [long pause]
 
-Esta semana, pensa em três reacções tuas — em adulta — que sempre te pareceram desproporcionais.
+Esta semana, escreve numa folha três reacções tuas — em adulta — que sempre te pareceram desproporcionais.
 
 Pessoas com quem tens dificuldade sem razão clara. Lugares que evitas sem saber porquê. Conversas que te activam mais do que parece justificado.
 
 [pause]
 
-Para cada uma, pergunta: terei eu, em criança, ouvido alguma coisa relacionada?
+Em frente a cada uma, escreve uma segunda coluna: que conversa de adultos podes ter ouvido em criança que se relacionasse com isto?
+
+Tia em depressão. Discussão financeira. Doença que ninguém explicava. Ausência de alguém. Frase repetida sobre certo tipo de pessoa.
 
 [short pause]
 
-A resposta nem sempre vai aparecer imediatamente.
+Não precisas de certeza. Podes escrever "talvez" ou pôr um ponto de interrogação.
 
-Mas a pergunta, deixada em aberto, começa a trabalhar dentro de ti.
+[pause]
 
-E memórias antigas, com paciência, podem surgir — fragmentos que finalmente dão contexto.`,
+Olha para as duas colunas em paralelo.
+
+[short pause]
+
+Para algumas reacções, vais encontrar correspondência clara — e isso, sozinho, alivia.
+
+Para outras, a resposta vai chegar nas semanas seguintes, em conversas com familiares ou em memórias que sobem do nada.
+
+[pause]
+
+Volta à folha quando isso acontecer. Adiciona o que aparecer.
+
+Aos poucos, o mapa entre o que ouviste em criança e o que sentes em adulta começa a desenhar-se.`,
       },
       {
         id: "o-silencio-que-grita-m4b",
@@ -15483,23 +15497,33 @@ Não a primeira que te ocorrer. Aquela que continua a aparecer mesmo quando tent
 
 [pause]
 
-Pergunta-te: quanto tempo mais consigo continuar nesta relação como está?
+Pega num papel.
+
+Em cima, escreve o nome dessa pessoa.
+
+Por baixo, faz duas listas curtas.
 
 [short pause]
 
-A resposta vai variar. Para algumas pessoas, mais alguns anos. Para outras, já não muito tempo.
+Lista A: os três temas que vocês os dois evitam.
+
+Lista B: o que cada um destes silêncios já te custou — em sono, em corpo, em qualidade de presença na relação.
 
 [pause]
 
-A resposta honesta determina o que tu vais fazer a seguir.
+Olha para as duas listas em conjunto.
 
 [short pause]
 
-Não há urgência forçada.
+Esta visualização — concreta, escrita — torna visível o que normalmente fica difuso na cabeça.
 
-Mas há urgência crescente, mesmo que não admitida.
+[pause]
 
-[long pause]
+Não tens de tomar decisão imediata.
+
+Mas, com as duas listas em frente, podes começar a sentir, com mais clareza, qual delas pesa mais.
+
+[short pause]
 
 Algumas relações merecem ser tentadas com nova honestidade.
 
@@ -15884,17 +15908,43 @@ Identifica também a pessoa com quem podia ser tida.
 
 [pause]
 
-Não marca a conversa ainda.
+Escreve, num papel, a frase de abertura que tu usarias.
 
-Apenas escreve no caderno: a conversa, a pessoa, e o que tu gostarias de poder dizer.
+A frase concreta. A real. A que tu, se a coragem aparecesse, ias dizer.
 
 [short pause]
 
-Guarda o caderno.
+Depois, num momento em que estejas sozinha em casa, lê a frase em voz alta.
+
+Em frente a um espelho, se quiseres. Ou simplesmente para o ar.
 
 [pause]
 
-Quando o momento certo aparecer — e ele aparece, quando estás aberta — vais ter clareza interna sobre o essencial.
+Lê devagar. Como se a outra pessoa estivesse à tua frente.
+
+[short pause]
+
+Vai sentir, no corpo, como é.
+
+[pause]
+
+A primeira vez é estranha. A segunda também.
+
+À terceira ou quarta, a frase começa a sair com peso natural — em vez de forçado.
+
+[short pause]
+
+Esta prática privada faz duas coisas.
+
+Familiariza o corpo com a frase. E mostra-te se a frase tal como está formulada serve, ou se precisa de ajuste antes de ser dita à pessoa real.
+
+[long pause]
+
+Não vais marcar a conversa só pelo facto de teres ensaiado.
+
+Mas quando o momento certo aparecer — em jantar tranquilo, em conversa que abre por acaso — a frase vai estar disponível na tua boca.
+
+Pronta para sair sem hesitação.
 
 [short pause]
 
@@ -16141,7 +16191,7 @@ Quantos silêncios importantes tu carregas neste momento?
 
 [pause]
 
-Não preciso ser exacto.
+Não precisa de ser exacto.
 
 Apenas ordem de grandeza. Cinco? Dez? Vinte?
 
@@ -16265,25 +16315,45 @@ Mas ambos começam com a mesma admissão: estou só dentro da minha família.
 
 [long pause]
 
-Esta semana, em privado, sem dramatizar, escreve uma única frase.
+Esta semana, faz uma lista — privada — de duas colunas.
 
-Uma frase honesta sobre o quanto te sentes ou não vista pela tua família actual.
+À esquerda, lista as pessoas do teu núcleo familiar com quem mais convives.
+
+À direita, ao lado de cada nome, escreve qual a parte tua que essa pessoa, na verdade, não conhece. A versão tua que, perto dela, fica sempre por mostrar.
 
 [pause]
 
-Lê a frase.
-
-Se ela te magoa, é porque é verdadeira.
+Olha para a lista.
 
 [short pause]
 
-E a verdade, mesmo a dolorosa, é o ponto de partida de qualquer mudança real.
+Provavelmente vais ver, repetidamente, partes tuas que nenhuma das pessoas do núcleo conhece.
 
 [pause]
 
-A solidão não tem cura imediata.
+Faz agora uma terceira coluna, à direita.
 
-Tem, sim, atenuação ao longo do tempo — quando deixa de ser negada.`,
+Quem, fora do núcleo, conhece estas partes — ou poderia conhecê-las se tu deixasses?
+
+[short pause]
+
+Pode ser uma amiga. Uma colega. Uma terapeuta. Uma prima distante. Uma mulher que conheceste recentemente e em quem sentiste algo diferente.
+
+[pause]
+
+Esta terceira coluna é mapa de possibilidade.
+
+Mostra-te onde, fora do núcleo, podes começar a investir tempo e presença.
+
+[short pause]
+
+Não para abandonar o núcleo. Para deixar de exigir dele a totalidade da intimidade.
+
+[pause]
+
+A solidão dentro da família não tem cura imediata.
+
+Tem, sim, atenuação ao longo do tempo — quando começas a construir, em paralelo, relações onde mais partes tuas cabem.`,
       },
       {
         id: "o-silencio-que-grita-m7c",
@@ -16602,23 +16672,39 @@ Mas é o único caminho realista para que a comunicação verdadeira aconteça n
 
 [long pause]
 
-Esta semana, se decidires falar de algo importante a alguém próximo, prepara-te para uma resposta imperfeita.
+Esta semana, se tens uma conversa importante por ter, faz uma preparação concreta.
+
+Pega num papel.
 
 [pause]
 
-Em vez de te magoares com a primeira reacção, observa-a como informação parcial — não como veredicto final.
+Escreve, em três linhas separadas, as três reacções imperfeitas mais prováveis da outra pessoa.
+
+A defesa que ela vai fazer. A minimização. A mudança de assunto.
 
 [short pause]
 
-Continua a relação. Não recolhas imediatamente.
+Em frente a cada uma, escreve uma resposta breve tua.
 
-E vê o que acontece nos dias e semanas seguintes.
+Não para vencer. Para continuar a conversa em vez de a fechar.
 
 [pause]
 
-Muitas vezes, vais ficar surpreendida.
+Por exemplo.
 
-A outra pessoa estava a processar. E o processamento, com tempo, leva-a mais longe do que a primeira reacção sugeriu.
+Se ela disser "estás a exagerar", a tua resposta pode ser: "Sei que pode parecer assim. Mas para mim isto é importante. Posso continuar?"
+
+Se ela mudar de assunto, a tua resposta pode ser: "Vamos voltar a isto. Não terminámos."
+
+Se ela ficar ofendida, a tua resposta pode ser: "Não te quero magoar. Quero que finalmente percebas como me sinto."
+
+[short pause]
+
+Estas frases prontas, escritas antes da conversa, evitam que tu fiques sem palavras quando a primeira reacção imperfeita aparecer.
+
+[pause]
+
+E mantêm a porta aberta para a compreensão real que, quase sempre, chega depois — mas só se tu não tiveres recolhido entretanto.
 
 [long pause]
 
