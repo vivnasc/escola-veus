@@ -53,49 +53,81 @@ Três domínios:
 
 ### 3.1. Vídeos YouTube (série Nomear — 122 hooks)
 
-**Formato:** Vídeo contemplativo curto (60-90s), publicação ~2× semana.
+**Formato:** Vídeo contemplativo curto (60-90s), publicação ~2× semana. Horizontal 16:9 + versão Shorts 9:16.
 
-**Componentes:**
+**Estética:** **NATUREZA** (não figuras humanas). Text-to-video funciona bem para natureza — Vivianne já validou com Shorts TikTok.
 
 | Componente | Fonte | Estado |
 |---|---|---|
 | Áudio narração | ElevenLabs (via `/admin/audio-bulk`) | 🟡 em curso |
-| **Clips de vídeo contemplativos** | Runway Gen-4 **text-to-video** — Vivianne processa no runway.app, app só gera os prompts | ❌ |
-| **Música ambiente a condizer** | Suno API (instrumental) | ❌ por gerar |
-| **Texto em formas aleatórias** | Highlight overlay (só em momentos-chave, não o script todo) | ❌ por definir visualmente |
-| Legendas (accessibility) | Whisper ou manual | ❌ |
-| Thumbnail | Frame do Runway + texto | ❌ |
-| Título/descrição YouTube (SEO) | Manual ou GPT | ❌ |
+| **Clips de natureza** | Runway Gen-4 **text-to-video** (plano ilimitado) — Vivianne processa no runway.app | ❌ |
+| **Música ambiente** | Suno API (instrumental) | ❌ por gerar |
+| **Texto em formas aleatórias** | Highlight overlay (só nos 2-4 momentos-destaque) | ❌ |
+| Legendas | Whisper ou manual | ❌ |
+| **Thumbnail** | Frame de Runway (nature) + texto sobreposto | ❌ |
+| Título/descrição SEO | Manual ou GPT | ❌ |
 | Tags YouTube | Manual | ❌ |
+| **Intro/outro bumper** | 2-3s com logo da escola + signature sound | ❌ |
 
-**NÃO se geram imagens.** Runway faz text-to-video directo. O LoRA `veus_figure` fica só para thumbnails estáticas (se for preciso) e para continuidade de identidade se a Vivianne decidir depois usar image-to-video em casos específicos.
+**NÃO se usa LoRA. NÃO se gera figura humana. Só natureza.**
 
-**Pipeline técnico necessário:**
+**Pipeline técnico:**
 
-1. Para cada hook/script, o app gera uma **lista de prompts Runway text-to-video** — um por clip de 10s, cobrindo a duração do áudio (60-90s = 6-9 clips).
-2. Cada prompt é afinado ao tom nomeador: contemplativo, feminino, sem rosto visível, luz dourada suave, movimento lento. Mantém coerência visual com o LoRA/estética da escola (ver `IDENTIDADE-VISUAL-VIDEOS.md`).
-3. Vivianne copia cada prompt, cola no runway.app, processa, descarrega os MP4s.
-4. Vivianne carrega os MP4s de volta no editor interno do app.
-5. App gera também uma faixa Suno instrumental com tom a condizer.
-6. Para cada hook, identificar 2-4 "momentos-destaque" do script (frases que ficam).
-7. **Editar tudo no editor interno do app** (ver secção 4.4) — áudio + clips Runway + música + texto overlay nos destaques.
-8. Renderizar o vídeo final **dentro do app** e publicar directamente no YouTube.
+1. Para cada hook, o app gera uma **lista de prompts Runway text-to-video de natureza**, mapeados ao tema do hook.
+   - Ex: hook sobre perda → vento em ramos secos, folhas a cair, luz crepuscular
+   - Ex: hook sobre raiva → fogo lento, brasas, água a ferver em câmara lenta
+   - Ex: hook sobre descanso → água parada, nevoeiro em floresta, nuvens em movimento lento
+2. Vivianne cola cada prompt em runway.app, processa, descarrega MP4s, carrega-os no editor interno.
+3. App gera faixa Suno a condizer com o mood (ambient, lento, sem bateria).
+4. Vivianne marca 2-4 momentos-destaque, escreve texto em formas aleatórias.
+5. Render no editor interno → MP4.
+6. Publica no YouTube (horizontal) + versão Shorts (vertical, 9:16, corte dos melhores 15-45s).
 
-### 3.2. Vídeos das Aulas (curso — 168 aulas, em crescimento)
+**Biblioteca de prompts de natureza (a construir):**
 
-**Formato:** Mais simples que YouTube. Visual contemplativo + música ambiente. Produto pago para alunas.
+Banco de ~30 motivos organizados por mood:
+- **Água:** rio lento, gotas em pedra, chuva em janela, mar calmo ao crepúsculo, nevoeiro sobre lago
+- **Fogo:** vela a tremer, brasas, fogo lento em madeira, cinzas a voar
+- **Vento:** campo de trigo, folhas a girar, bandeira em poste, véus ao vento
+- **Luz:** raios entre árvores, amanhecer, luz dourada em parede, reflexos em água
+- **Terra:** areia a escorrer, musgo em pedra, raízes, folhas húmidas
+- **Céu:** nuvens lentas, chuva a começar, pôr-do-sol, estrelas em time-lapse
+- **Flora:** flor a abrir em time-lapse, ramo seco, campo de ervas altas, rosas murchas
 
-**Componentes:**
+Cada hook mapeia para 6-9 destes motivos (um por clip de 10s).
+
+### 3.2. Vídeos das Aulas (curso — 168 aulas)
+
+**Formato:** **Slideshow**. Imagens estáticas + áudio narração + música ambiente suave. Produto pago para alunas.
 
 | Componente | Fonte | Estado |
 |---|---|---|
 | Áudio narração | ElevenLabs | 🟡 em curso |
-| **Clips de vídeo curtos** | Runway text-to-video (2-3 clips por aula, em loop/fade) OU 1 clip longo contemplativo | ❌ |
-| **Música ambiente** | Suno (ou Loranne) — 1 faixa por módulo | ❌ |
-| Legendas opcionais | SRT | ❌ |
-| Sem highlights de texto | (diferente de YouTube) | — |
+| **Slides (imagens estáticas)** | Stock de natureza (Unsplash/Pexels API) OU Flux sem LoRA | ❌ |
+| **Música ambiente** | Suno instrumental (volume 10-15%) | ❌ |
+| Transições | Cross-fade lento entre slides | ❌ |
+| Legendas | Opcionais, off por defeito | ❌ |
 
-**Pipeline:** mais leve que YouTube. Áudio + 2-3 clips Runway suaves + música de fundo. Sem texto overlay. Sem cortes bruscos.
+**NÃO se usa LoRA. NÃO se usa Runway. Só slides estáticos.**
+
+**Estrutura de uma aula em vídeo:**
+- Aula típica: 3-5 min de áudio
+- 6-10 slides por aula (1 slide a cada ~30s)
+- Cross-fade de 2s entre slides
+- Música de fundo contínua (10-15% volume, não compete com narração)
+- Sem texto overlay
+- Sem cortes bruscos
+
+**Fonte de imagens para slides (a decidir):**
+
+| Opção | Prós | Contras |
+|---|---|---|
+| **Unsplash API** (grátis, licença comercial) | Rápido, qualidade, gratuito | Estética menos controlada, alguém já viu as fotos |
+| **Pexels API** (grátis, licença comercial) | Mesmo que Unsplash, alternativa | Mesmo que Unsplash |
+| **Flux sem LoRA** (~$0.03/imagem) | Único, estética consistente se usar mesmo prompt-base | Custo (168 aulas × 8 = 1344 imagens × $0.03 = $40) |
+| **Unsplash curado à mão** | Baratíssimo, pessoal | Muitas horas a escolher |
+
+**Sugestão:** Unsplash API com prompts temáticos por aula. Baratíssimo, rápido, licença limpa para uso comercial.
 
 ### 3.3. Shorts (YouTube/Instagram/TikTok)
 
@@ -254,42 +286,100 @@ Vivianne está a gerar manualmente via `/admin/audio-bulk`. ~112/290 gerados.
 
 ## 5. O que provavelmente esqueceste (lista para decidir)
 
-### Conteúdo auxiliar dos cursos (alunas pagantes)
+### Assinatura visual consistente (SEM LoRA)
 
-- ❌ **Manuais PDF** por curso (1/20 feito — Ouro Próprio draft)
-- ❌ **Cadernos de exercícios** por módulo (8/160 feitos — Ouro Próprio draft)
-- ❌ **Guias de acompanhamento** semanais
-- ❌ **Check-ins** por aula (perguntas para a aluna responder)
+Sem LoRA e sem Flux, a identidade visual tem de vir de:
+- ❌ **Paleta de cor fixa** em TODOS os overlays/thumbnails (navy `#1A1A2E`, dourado `#D4A853`, terracota `#C4745A`, creme)
+- ❌ **Tipografia única** (serif Cormorant ou similar — já definida em `IDENTIDADE-VISUAL-VIDEOS.md`)
+- ❌ **Intro/outro bumper** de 2-3s com logo "Escola dos Véus" + signature sound (repetido em todos os vídeos)
+- ❌ **Biblioteca de 8-12 shapes aleatórios** para texto overlay (círculo, blob, linha manuscrita, rectângulo solto) — assinatura única da escola
+- ❌ **Filtro/LUT** em pós-produção para unificar clips Runway (ligeiro warm tone dourado)
 
-### Marketing / captação
+### Hosting das aulas pagas
 
-- ❌ **Thumbnails** dos vídeos YouTube (cada hook precisa)
-- ❌ **Títulos + descrições SEO** para YouTube
-- ❌ **Tags YouTube** por vídeo
-- ❌ **Emails automáticos** para subscritoras (Sequence: welcome → primeiro curso grátis → upgrade)
-- ❌ **Posts Instagram** derivados dos scripts Nomear
-- ❌ **Landing pages** por curso
-- ❌ **Testemunhos** de alunas
+❌ **Decisão crítica:** onde ficam os vídeos das aulas (que são PAGOS)?
+
+| Opção | Prós | Contras |
+|---|---|---|
+| YouTube não-listado | Grátis, fácil | Link pode ser partilhado, sem controlo |
+| Vimeo Plus ($12/mês) | Privacidade, domain restriction | Custo mensal |
+| Supabase Storage (self-hosted player) | Controlo total, sem custo extra | Streaming pode ser pesado, player a construir |
+| Wistia / SproutVideo | Profissional, analytics | Caro ($30-100/mês) |
+
+**Sugestão:** Supabase Storage + player HTML5 custom com autenticação Supabase. Já tens a infra.
+
+### YouTube algorithm essentials
+
+- ❌ **Primeiros 3 segundos** são decisivos — hook visual forte + frase-gancho
+- ❌ **End cards** (últimos 20s do vídeo) com links para outros vídeos + subscribe
+- ❌ **Cards** durante o vídeo (popups pequenos) para cross-link
+- ❌ **Playlist organization** — séries Nomear agrupadas, uma playlist por curso
+- ❌ **Pinned comment** em cada vídeo com CTA + link para seteveus.space
+- ❌ **Consistent upload schedule** — YouTube favorece 2× semana fixo
+- ❌ **Shorts vs long-form** — estratégia diferente; Shorts captam, long-form convertem
+
+### Música / Suno
+
+- ❌ **Licença comercial Suno confirmada** — Suno Pro ($10/mês) permite uso comercial. Suno Free NÃO.
+- ❌ **API Suno está a dar 404** — verificar endpoint actual antes de construir. Se não funcionar, alternativas: Mubert, Soundraw, AIVA.
+- ❌ **Volume mix** — música a 10-15% em aulas, 15-25% em hooks YouTube (para não competir com voz)
+- ❌ **Ducking automático** — música baixa ligeiramente quando voz fala (opcional mas polido)
+
+### Subtítulos / Legendas
+
+- ❌ **Burned-in** (queimados na imagem) ou `.srt` como CC do YouTube?
+- ❌ **Estilo** — font serif escola, dourado, tamanho, posição (ex: terço inferior centrado)
+- ❌ **Whisper API** para gerar SRT automaticamente a partir do áudio ElevenLabs
+- ❌ **Timing por palavra** (word-level, estilo TikTok moderno) vs por linha
+
+### Thumbnails
+
+- ❌ **Template único** para a escola (frame Runway + barra dourada + texto + logo)
+- ❌ **A/B test** dos thumbnails (YouTube Studio permite)
+- ❌ **Texto legível em mobile** (tamanho mínimo 80px)
+- ❌ **Contraste alto** — cores da escola ajudam
 
 ### Monetização
 
-- ❌ **Stripe** ou outro gateway — como recebem as subscrições?
-- ❌ **Preços** definidos por curso e por plano (mensal/anual)
-- ❌ **Cupons/códigos promocionais**
-- ❌ **Upsell** (depois de YouTube → curso pago)
+- ❌ **Stripe ou Paddle** (Paddle lida com IVA europeu automaticamente — melhor para PT)
+- ❌ **Preços** definidos por curso e plano (mensal/anual, trial grátis?)
+- ❌ **Subscription vs compra única** — decisão estratégica
+- ❌ **YouTube AdSense** — activar quando atingires 1000 subs + 4000h watchtime
+- ❌ **Afiliados** — programa para alunas que trouxerem outras
 
-### Legal / técnico
+### Conteúdo auxiliar
 
-- ❌ **Direitos autorais** — confirmar licença comercial Suno (se der problema, usar Loranne ou biblioteca própria)
-- ❌ **Termos e condições** + política de privacidade
-- ❌ **RGPD** — consentimento, armazenamento de dados
-- ❌ **Backup automático** Supabase (ter cópia dos áudios num segundo storage)
-- ❌ **Domínio e SSL** em todos os subdomínios
+- ❌ **Manuais PDF** (1/20 feito)
+- ❌ **Cadernos de exercícios** (8/160 feitos)
+- ❌ **Check-ins por aula** (questionário curto)
+- ❌ **Certificados de conclusão** (PDF gerado auto)
 
-### Qualidade
+### Comunidade / retenção
 
-- ❌ **Ouvir amostra** de áudio de cada curso antes de publicar (minutos de investimento, horas de vergonha poupadas)
-- ❌ **Testar fluxo** de aluna nova, do YouTube à conclusão do primeiro módulo
+- ❌ **Newsletter** — Mailchimp/Substack/ConvertKit
+- ❌ **Grupo privado** para alunas — Telegram, Discord, ou comunidade Circle
+- ❌ **Sessões ao vivo** mensais — Zoom/YouTube Live
+- ❌ **Q&A** em formato de vídeo ou post
+
+### Legal
+
+- ❌ **Termos e condições** + política de privacidade (RGPD)
+- ❌ **Política de reembolso** — 14 dias por lei na UE
+- ❌ **Copyright** — declarar que tudo é original/licenciado
+- ❌ **Disclaimer** — "este material não substitui acompanhamento psicológico/médico"
+
+### Qualidade / teste
+
+- ❌ **Ouvir 1-2 áudios de cada curso** antes de publicar
+- ❌ **Testar fluxo aluna nova** de ponta a ponta
+- ❌ **Beta test** com 3-5 mulheres antes do lançamento público
+- ❌ **Feedback loop** — como recolher opinião das alunas
+
+### Backup / disaster recovery
+
+- ❌ **Backup Supabase** — cópia semanal dos áudios/vídeos num storage alternativo (Cloudflare R2, Backblaze B2)
+- ❌ **Backup do código** — já existe via GitHub
+- ❌ **Backup dos scripts** — já em git
 
 ---
 
