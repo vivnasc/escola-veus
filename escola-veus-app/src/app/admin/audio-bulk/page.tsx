@@ -223,7 +223,17 @@ export default function AudioBulkPage() {
             languageCode: modelId === "eleven_v3" ? undefined : (languageCode || undefined),
           }),
         });
-        const data = await res.json();
+        // Tenta JSON. Se falhar, e' provavelmente HTML do Vercel (timeout/504).
+        let data: { erro?: string; audioUrl?: string; durationSec?: number; charsUsed?: number };
+        try {
+          data = await res.json();
+        } catch {
+          throw new Error(
+            res.status === 504
+              ? `Timeout do servidor (504). Script demasiado longo — texto tem ${script.texto.length} chars.`
+              : `Resposta nao-JSON do servidor (${res.status}). Provavelmente timeout. Tenta de novo individualmente.`
+          );
+        }
         if (!res.ok) throw new Error(data.erro || `Erro ${res.status}`);
         setScripts((prev) =>
           prev.map((s, i) =>

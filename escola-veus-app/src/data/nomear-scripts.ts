@@ -14468,4 +14468,393 @@ Em pequenas decisões privadas, ao longo dos anos, sobre o que tu vais e não va
       },
     ],
   },
+  {
+    id: "curso-o-silencio-que-grita-m3",
+    titulo: "Curso O Silêncio que Grita — Módulo 3 (Aulas A, B, C)",
+    descricao: "O Que Foi Calado e Pesa. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "o-silencio-que-grita-m3a",
+        titulo: "M3.A — Os segredos que toda a gente sabia",
+        curso: "o-silencio-que-grita",
+        texto: `Há segredos na tua família que toda a gente sabia.
+
+[pause]
+
+Toda a gente menos tu. Pelo menos durante muito tempo.
+
+[long pause]
+
+Talvez tenhas descoberto, em adolescente ou em adulta, que aquele tio teve um filho fora do casamento. Que aquela tia teve uma depressão grave. Que o avô tinha problemas de dinheiro de que ninguém falava. Que houve um aborto, uma traição, uma quase ruptura.
+
+[pause]
+
+Quando descobriste, a primeira reacção foi espanto.
+
+A segunda foi raiva.
+
+[short pause]
+
+Raiva específica: porque é que toda a gente sabia menos eu?
+
+[long pause]
+
+A resposta não é simples.
+
+A justificação habitual — "queríamos proteger-te" — é parcialmente verdadeira e parcialmente falsa.
+
+[pause]
+
+Verdadeira porque, em criança, não havia capacidade de processar.
+
+Falsa porque, em adulta, o silêncio continuou — não para te proteger, mas para proteger a estrutura familiar.
+
+[short pause]
+
+Estrutura que se mantinha em pé porque ninguém dizia o que sabia.
+
+[long pause]
+
+Esta dinâmica tem nome.
+
+[pause]
+
+A pessoa que é mantida fora da informação é colocada numa posição assimétrica em relação ao resto do grupo.
+
+Os outros sabem mais sobre ti — sobre a tua história, sobre o teu contexto familiar, sobre o que tu carregas — do que tu sabes sobre ti mesma.
+
+[short pause]
+
+E essa assimetria tem efeito.
+
+[pause]
+
+Cresceste em ambiente em que parte da informação sobre a tua família era manipulada acima da tua cabeça.
+
+Isto distorce a forma como percebes o mundo, mesmo em adulta.
+
+[long pause]
+
+Quando finalmente descobres o que toda a gente sabia, há um trabalho específico a fazer.
+
+[pause]
+
+Não tanto sobre o segredo em si.
+
+Sobre o facto de te ter sido escondido.
+
+[short pause]
+
+Esta é a ferida real, muitas vezes mais profunda do que o conteúdo do segredo.
+
+[pause]
+
+A ferida de ter sido tratada como criança até demasiado tarde. De ter sido excluída de informação sobre a tua própria origem. De ter sido considerada incapaz de saber.
+
+[long pause]
+
+Reconciliar-te com isto exige tempo.
+
+[pause]
+
+Não exige confronto com toda a família.
+
+Mas exige reconhecimento honesto de que a omissão foi uma forma de poder — exercido sobre ti, sem o teu consentimento.
+
+[short pause]
+
+E que esta omissão tem consequências legítimas no que tu sentes.
+
+[long pause]
+
+Esta semana, se há algum segredo de família que tu, em adulta, descobriste tarde, escreve uma frase específica num caderno.
+
+"O que mais me magoou neste segredo não foi o conteúdo. Foi..."
+
+[pause]
+
+Completa a frase honestamente.
+
+[short pause]
+
+Provavelmente vais escrever algo como: foi descobrir que durante anos tantas pessoas me olharam sabendo o que eu não sabia.
+
+Ou: foi sentir que sou a última a saber.
+
+Ou: foi perceber que a minha versão da história nunca foi completa.
+
+[pause]
+
+Esta dor merece ser nomeada.
+
+[short pause]
+
+E nomeada, mesmo só em privado, deixa de ocupar espaço difuso e passa a ter contorno reconhecível.
+
+[long pause]
+
+Os segredos que toda a gente sabia podem agora, em adulta, ser tratados como informação.
+
+Não como fonte de vergonha. Não como cumplicidade obrigatória.
+
+Como dado da tua história que finalmente tens em tua posse.`,
+      },
+      {
+        id: "o-silencio-que-grita-m3b",
+        titulo: "M3.B — As tragédias sem nome",
+        curso: "o-silencio-que-grita",
+        texto: `Em quase todas as famílias, há tragédias que nunca foram propriamente nomeadas.
+
+[pause]
+
+Uma morte que ficou em volta de uma palavra ambígua. Uma doença grave de que se falava por insinuação. Um problema mental que nunca foi diagnosticado em voz alta. Uma violência que ficou marcada como "uma coisa que aconteceu".
+
+[long pause]
+
+Estas tragédias não nomeadas têm uma característica particular.
+
+Atravessam gerações.
+
+[pause]
+
+A primeira geração viveu o evento. Talvez parcialmente compreendido, parcialmente reprimido.
+
+A segunda geração ouviu fragmentos. Não sabe a história inteira mas sente o peso.
+
+A terceira geração — talvez tu — não tem versão coerente, mas vive com uma sombra residual sem rosto.
+
+[short pause]
+
+Esta sombra opera silenciosamente.
+
+[pause]
+
+Pode aparecer como ansiedade que tu sentes em relação a certos temas sem saber porquê.
+
+Como receio de certas idades — porque foi naquela idade que a tragédia tocou alguém da família.
+
+Como reactividade em situações que evocam, vagamente, algo que nunca te foi explicado.
+
+[long pause]
+
+Trabalhar com tragédias sem nome exige um movimento específico.
+
+[pause]
+
+Reconstruir, com a informação disponível, a história mais aproximada do que aconteceu.
+
+Não para reviver o trauma.
+
+Para o nomear.
+
+[short pause]
+
+Porque o que tem nome perde grande parte do poder difuso.
+
+[pause]
+
+A tia que teve "uma coisa esquisita aos quarenta anos" pode ter tido depressão pós-parto. A avó que "morreu sem se saber bem" pode ter morrido de cancro do útero por falta de acesso médico. O irmão da bisavó que "desapareceu" pode ter morrido na guerra.
+
+[short pause]
+
+A informação concreta, quando recuperada, dá rosto à sombra.
+
+[long pause]
+
+Recuperar esta informação exige paciência.
+
+Conversas com tias-avós, primas mais velhas, vizinhas antigas que ainda se lembrem.
+
+Documentos: certidões, registos paroquiais, fotografias antigas.
+
+Por vezes, simples imaginação informada — pondo-se na pele de quem viveu a época, perguntando o que era, naquela altura, "uma coisa esquisita".
+
+[pause]
+
+À medida que reconstróis, algo dentro de ti aliviou.
+
+[short pause]
+
+A sombra começa a ter contorno.
+
+E o contorno permite trabalho consciente onde antes só havia peso difuso.
+
+[long pause]
+
+Esta semana, escolhe uma tragédia familiar sobre a qual tens informação parcial.
+
+Faz uma lista de tudo o que sabes — mesmo os fragmentos.
+
+[pause]
+
+Depois, faz uma lista de quem ainda está vivo que poderia saber mais.
+
+[short pause]
+
+Identifica uma pessoa. Marca um café com ela, sem agenda explícita.
+
+[pause]
+
+Numa conversa relaxada, pergunta com naturalidade sobre essa parte do passado.
+
+[short pause]
+
+Vais ficar surpreendida com o quanto as pessoas, quando não são confrontadas, contam.
+
+[pause]
+
+Fragmentos vão começar a juntar-se.
+
+E a tragédia sem nome vai começar a ter forma.
+
+[long pause]
+
+Não é ressentimento o que procuras.
+
+É história.
+
+[pause]
+
+A tua história, finalmente conhecida.
+
+E a tua relação com a sombra, finalmente possível.`,
+      },
+      {
+        id: "o-silencio-que-grita-m3c",
+        titulo: "M3.C — O que a tua família combinou nunca dizer",
+        curso: "o-silencio-que-grita",
+        texto: `Em algumas famílias, há um acordo implícito sobre o que nunca será dito em voz alta.
+
+[pause]
+
+Não foi assinado. Não foi explicitado. Mas existe.
+
+[long pause]
+
+Pode ser sobre uma pessoa específica que magoou alguém da família e nunca foi confrontada. Sobre uma injustiça antiga que continua a operar. Sobre uma forma de tratamento desigual entre filhos que toda a gente nota mas ninguém menciona.
+
+[pause]
+
+Este acordo é mantido por todos os membros da família, simultaneamente.
+
+Quando alguém quase o quebra, há uma reacção colectiva — quase como se o ar mudasse.
+
+[short pause]
+
+Tu sentes-a, mesmo quando não consegues nomeá-la.
+
+[long pause]
+
+Os acordos de "nunca dizer" têm grande poder porque dependem da participação de todos.
+
+[pause]
+
+Se uma só pessoa começar a dizer, o acordo enfraquece.
+
+E é por isso que tantas famílias têm formas subtis — e não tão subtis — de pressionar quem ameaça quebrá-lo.
+
+[short pause]
+
+A pessoa que tenta nomear é, muitas vezes, marginalizada.
+
+Etiquetada como "complicada", como "demasiado sensível", como "a que faz sempre questão de complicar tudo".
+
+[pause]
+
+Esta etiquetagem é instrumento de pressão.
+
+Funciona porque, em ambientes familiares, a marginalização emocional dói genuinamente.
+
+[long pause]
+
+Se tu, em alguma altura da tua vida adulta, tentaste falar de algo que a família combinou nunca dizer — provavelmente experimentaste esta pressão.
+
+[pause]
+
+E talvez tenhas recuado.
+
+Não por covardia. Por sensatez.
+
+[short pause]
+
+A sensatez de perceber que o custo de insistir era, naquele momento, maior do que o benefício.
+
+[pause]
+
+Recuar foi escolha legítima.
+
+[long pause]
+
+Mas o assunto, mesmo silenciado, continua.
+
+[pause]
+
+E há uma pergunta que vale a pena fazer-te a ti mesma agora, em silêncio.
+
+[short pause]
+
+O custo de continuar a manter este silêncio é maior ou menor do que o custo de finalmente o quebrar?
+
+[pause]
+
+A resposta varia muito conforme a pessoa, a situação, e a fase da vida.
+
+[short pause]
+
+Em alguns casos, a resposta sincera é: continua a valer a pena calar. As pessoas envolvidas estão velhas, frágeis, ou ausentes. Quebrar o silêncio só serviria para gerar dor sem benefício real.
+
+Em outros casos, a resposta sincera é: já não vale a pena calar. O silêncio está a custar-me em saúde, em qualidade de relação, em autenticidade.
+
+[long pause]
+
+Não há regra universal.
+
+Há resposta tua, neste momento da tua vida.
+
+[pause]
+
+E a única forma de chegar à resposta é fazer a pergunta — sem fugir dela.
+
+[short pause]
+
+Esta semana, pega no caderno.
+
+Escreve no topo da página: o que é que a minha família combinou nunca dizer?
+
+[pause]
+
+Lista os assuntos que te vêm à cabeça.
+
+Em frente a cada um, escreve duas linhas: o que custa continuar a calar, e o que custaria começar a falar.
+
+[short pause]
+
+Não é decisão para tomar agora.
+
+É clareza para ter agora.
+
+[pause]
+
+E a clareza, mesmo sem decisão imediata, muda a forma como tu, daqui em diante, vais viver com estes silêncios.
+
+[long pause]
+
+Algumas famílias só conseguem mudar quando alguém tem coragem de quebrar acordos antigos.
+
+Outras família mudam menos do que se gostaria.
+
+[pause]
+
+Mas mesmo nas que mudam pouco, tu — internamente — podes mudar.
+
+[short pause]
+
+E isto, ao longo do tempo, transforma a forma como habitas a tua família de origem.
+
+[pause]
+
+Mesmo quando ela continua, à superfície, exactamente como sempre foi.`,
+      },
+    ],
+  },
 ];

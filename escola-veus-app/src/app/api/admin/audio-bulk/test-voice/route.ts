@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const maxDuration = 30;
+export const maxDuration = 120;
 
 /**
  * POST /api/admin/audio-bulk/test-voice
