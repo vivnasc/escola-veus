@@ -6365,4 +6365,347 @@ Receber não é ficar a dever.
       },
     ],
   },
+  {
+    id: "curso-ouro-proprio-m5",
+    titulo: "Curso Ouro Próprio — Módulo 5 (Aulas A, B, C)",
+    descricao: "Gastar em Ti. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m5a",
+        titulo: "M5.A — A hierarquia dos gastos",
+        curso: "ouro-proprio",
+        texto: `Se olhares para os teus gastos do último mês, onde é que tu apareces?
+
+[pause]
+
+No topo da lista — ou no fim, depois de todos os outros?
+
+[long pause]
+
+Compras roupa nova para os filhos sem pensar.
+
+Pagas a mensalidade do ginásio do teu parceiro.
+
+Ofereces presentes generosos.
+
+Contribuis para jantares.
+
+[pause]
+
+Mas quando é para ti — aquele livro, aquele creme, aquele curso, aquela consulta — hesitas.
+
+Não porque não tenhas dinheiro.
+
+Mas porque há sempre algo mais urgente, mais importante, mais justificável.
+
+[long pause]
+
+O teu nome está no fundo da lista.
+
+Depois da renda. Depois das contas. Depois da escola das crianças. Depois do carro. Depois dos imprevistos.
+
+Depois de tudo.
+
+[pause]
+
+Se sobrar — e quase nunca sobra — talvez.
+
+[short pause]
+
+Não é que te esqueças de ti.
+
+É que te habituaste a vir depois.
+
+[pause]
+
+E a vir depois tornou-se tão natural que já nem notas. Já nem sentes que falta alguma coisa.
+
+Até que um dia o corpo reclama.
+
+[short pause]
+
+Cansaço que não passa. Irritação sem causa. Uma tristeza mansa que não sabes de onde vem.
+
+[long pause]
+
+A hierarquia dos teus gastos é um mapa da tua importância própria.
+
+Não é o que dizes sobre ti mesma — é o que fazes.
+
+[pause]
+
+E o que fazes, repetidamente, é colocar-te em último lugar.
+
+[short pause]
+
+Isto não é generosidade — é um padrão.
+
+Um padrão que te foi ensinado, não escolhido.
+
+[pause]
+
+Muitas mulheres aprendem desde cedo que cuidar de si é egoísmo.
+
+Que gastar em si é frivolidade.
+
+Que o bom é dar.
+
+[short pause]
+
+E então dão. Até não terem mais nada para dar.
+
+E quando chegam a esse ponto — vazias, cansadas, ressentidas — sentem culpa por estarem cansadas.
+
+Porque até o cansaço lhes parece egoísmo.
+
+[long pause]
+
+A hierarquia dos gastos não é só financeira.
+
+É um retrato da permissão que te dás para existir.
+
+[long pause]
+
+Esta semana, escolhe uma conta em que normalmente vens depois de todos os outros.
+
+Medicamento que adias. Consulta que nunca marcas. Algo teu que fica sempre por fazer.
+
+[pause]
+
+E trata disso primeiro — antes de pagares qualquer outra coisa do mês.
+
+Não um extra. Não um luxo.
+
+Uma coisa que já era tua de direito.
+
+[short pause]
+
+Paga-te antes de pagares a toda a gente.
+
+Nota o que isso faz ao corpo.
+
+[long pause]
+
+O lugar onde te pões na lista dos teus gastos é o lugar onde te pões na tua própria vida.`,
+      },
+      {
+        id: "ouro-proprio-m5b",
+        titulo: "M5.B — Culpa e prazer",
+        curso: "ouro-proprio",
+        texto: `Quando gastas dinheiro em algo que te dá prazer — prazer real, sem função prática — quanto tempo demora até a culpa aparecer?
+
+[pause]
+
+Segundos? Minutos?
+
+Ou chega antes, e impede-te de comprar?
+
+[long pause]
+
+Compraste aquele vestido. Ou aqueles sapatos. Ou aquela viagem.
+
+Algo que não era necessário.
+
+Algo que era bonito, que te fez sentir bem, que era só para ti.
+
+[pause]
+
+E sentiste prazer. Por um momento.
+
+Depois veio a culpa.
+
+[short pause]
+
+Podia ter guardado este dinheiro.
+
+Não precisava mesmo disto.
+
+Há coisas mais importantes.
+
+[long pause]
+
+A culpa não veio de fora — ninguém te criticou.
+
+Veio de dentro.
+
+[pause]
+
+De um lugar automático que diz: prazer é desperdício. Gastar em ti é frivolidade. Merecimento tem de ser ganho, não comprado.
+
+[long pause]
+
+E então fizeste uma de duas coisas: ou devolveste o que compraste, ou ficaste com ele mas sem conseguir aproveitar.
+
+Porque a culpa sentou-se ao lado do prazer e não saiu mais.
+
+[long pause]
+
+A culpa que sentes quando gastas em prazer não é sobre o dinheiro.
+
+É sobre a permissão.
+
+[pause]
+
+Algures aprendeste que o prazer tem de ser justificado.
+
+Que gastar em ti só é aceitável se for útil — um curso, uma ferramenta, algo que te torne mais produtiva.
+
+[short pause]
+
+Prazer puro, sem função, sem justificação, sem retorno — esse é perigoso.
+
+[long pause]
+
+E este é o padrão mais silencioso: não é que não tenhas dinheiro para prazer.
+
+É que não te permites ter prazer com o dinheiro.
+
+[pause]
+
+A culpa é a guarda que fica à porta.
+
+Cada vez que tentas entrar, ela pede-te a justificação.
+
+E se não tens uma boa o suficiente, não entras.
+
+[short pause]
+
+O resultado é uma vida funcional. Eficiente. Útil.
+
+E seca.
+
+[pause]
+
+Uma vida onde tudo serve para alguma coisa menos para ti.
+
+[long pause]
+
+Compra algo esta semana que seja só bonito.
+
+Que não sirva para nada.
+
+Que não tenhas de justificar a ninguém — nem a ti.
+
+[pause]
+
+Pode ser pequeno. Uma flor. Uma vela. Um chocolate bom.
+
+Quando a culpa vier — e vai vir — não a combatas.
+
+[short pause]
+
+Diz-lhe: eu sei que estás aí. Mas hoje estou a praticar prazer.
+
+E depois fica com o que compraste. Sem devolver. Sem compensar.
+
+[long pause]
+
+A culpa não te protege de nada.
+
+Só te tira o gosto do que já pagaste.`,
+      },
+      {
+        id: "ouro-proprio-m5c",
+        titulo: "M5.C — O investimento em ti como acto político",
+        curso: "ouro-proprio",
+        texto: `E se gastar dinheiro em ti não fosse egoísmo — mas a decisão mais quieta e mais importante que podes tomar por ti mesma?
+
+[long pause]
+
+Durante décadas, as mulheres à tua volta foram treinadas a gastar em tudo menos em si mesmas.
+
+Nos filhos. Nos maridos. Nas casas. Nos pais que envelheciam.
+
+[pause]
+
+A tua avó talvez nunca tenha tido uma conta bancária só dela.
+
+A tua mãe talvez tenha tido uma mas nunca gastasse sem pedir licença — a ninguém em particular, e a toda a gente ao mesmo tempo.
+
+[short pause]
+
+Tu herdaste esse treino.
+
+[pause]
+
+A hesitação antes de comprar um curso. O adiamento daquela consulta. O "ainda não é a altura" que já dura oito anos.
+
+[short pause]
+
+Isto não é coincidência individual.
+
+É história.
+
+[long pause]
+
+Quando uma mulher gasta dinheiro em si — não o mínimo, o necessário — alguma coisa se desloca.
+
+Não é espectacular. É quieta.
+
+[pause]
+
+Os limites ficam mais claros. As relações reajustam. O tempo, que parecia todo dos outros, começa a ter pedaços dela.
+
+[short pause]
+
+Isto parece pessoal, mas não é só pessoal.
+
+[long pause]
+
+Durante gerações, o dinheiro das mulheres serviu os projectos de outros.
+
+Quando decides que o teu serve o teu, estás a interromper um padrão mais antigo do que tu.
+
+[pause]
+
+E os padrões antigos defendem-se.
+
+[short pause]
+
+Por isso vem a culpa.
+
+Por isso vem a sensação de que é demais, é excesso, é egoísmo.
+
+[pause]
+
+Esse ruído não é fraqueza tua.
+
+É o som de um sistema a tentar continuar.
+
+[long pause]
+
+Investir em ti não é apenas cuidar de ti.
+
+É recusar uma herança.
+
+[pause]
+
+E essa recusa, repetida ao longo do tempo, é o que muda tanto a tua vida como a das que vêm depois.
+
+[long pause]
+
+Identifica uma coisa em que tens adiado investir em ti.
+
+Aquela. A mais óbvia. A que já hesitas em dizer em voz alta.
+
+[pause]
+
+Agora define uma data — não "quando sobrar", não "quando acalmar". Uma data. Escreve no calendário.
+
+Na mesma semana, conta a alguém — uma pessoa só, não é um anúncio — que vais fazer isto neste dia.
+
+[short pause]
+
+Não precisas de justificação.
+
+Deixa a data no calendário trabalhar por ti.
+
+[long pause]
+
+Quando investes em ti, não estás a gastar.
+
+Estás a decidir que existes.`,
+      },
+    ],
+  },
 ];
