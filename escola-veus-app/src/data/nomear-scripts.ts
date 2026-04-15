@@ -16046,4 +16046,377 @@ Mas só depois — não antes — da conversa começar.`,
       },
     ],
   },
+  {
+    id: "curso-o-silencio-que-grita-m7",
+    titulo: "Curso O Silêncio que Grita — Módulo 7 (Aulas A, B, C)",
+    descricao: "O Custo de Continuar Calada. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "o-silencio-que-grita-m7a",
+        titulo: "M7.A — O que o silêncio consome",
+        curso: "o-silencio-que-grita",
+        texto: `O silêncio prolongado consome.
+
+[pause]
+
+Não com explosão. Com lentidão.
+
+[long pause]
+
+Cada coisa que tu cala — em relações, em família, em trabalho — ocupa, dentro de ti, uma porção pequena de espaço.
+
+Sozinha, é insignificante.
+
+[pause]
+
+Acumulada ao longo dos anos, é peso que tu já mal consegues quantificar.
+
+[short pause]
+
+Porque o peso do silêncio não aparece num exame médico.
+
+Não aparece numa balança.
+
+Aparece em sintomas difusos que tu chamas cansaço, idade, stress.
+
+[long pause]
+
+Mas o silêncio, na verdade, está a fazer trabalho dentro de ti.
+
+[pause]
+
+Trabalho de manter o que ficou por dizer organizado e contido.
+
+Trabalho de gerir as emoções associadas a esse não-dito.
+
+Trabalho de recordar — todos os dias, mesmo sem te aperceberes — qual a versão que se mantém perante quem.
+
+[short pause]
+
+Este trabalho consome energia.
+
+Energia que poderia estar disponível para outras coisas.
+
+[long pause]
+
+A maioria das mulheres com silêncios acumulados, em algum ponto da meia-idade, sente uma exaustão que não se explica pela rotina.
+
+[pause]
+
+Médicos diagnosticam fadiga adrenal. Stress crónico. Burnout.
+
+Por vezes, todos correctos.
+
+Mas raramente alguém pergunta: quanto silêncio tu carregas?
+
+[short pause]
+
+Esta pergunta podia ser, em muitos casos, a mais reveladora de todas.
+
+[pause]
+
+Porque o silêncio carregado durante décadas é, em si mesmo, condição de saúde mental e física.
+
+[long pause]
+
+A boa notícia é que o efeito de quebrar o silêncio é mais rápido do que se imagina.
+
+[pause]
+
+Uma única conversa importante, tida ao fim de anos de silêncio, pode aliviar o sistema nervoso de forma que se nota dentro de poucas semanas.
+
+[short pause]
+
+Sono que melhora. Tensão que diminui. Energia que reaparece em sítios onde não estava.
+
+[pause]
+
+Não é magia. É a libertação de recursos que estavam alocados a manter o silêncio.
+
+[long pause]
+
+Esta semana, faz uma estimativa privada.
+
+Quantos silêncios importantes tu carregas neste momento?
+
+[pause]
+
+Não preciso ser exacto.
+
+Apenas ordem de grandeza. Cinco? Dez? Vinte?
+
+[short pause]
+
+E pergunta-te, com honestidade: qual seria o efeito, no meu corpo, de quebrar três deles ao longo do próximo ano?
+
+[pause]
+
+Não todos.
+
+Três.
+
+[short pause]
+
+Esta possibilidade — concreta, limitada, exequível — pode ser a base de uma decisão consciente sobre como tu vais gastar a tua energia nos próximos doze meses.
+
+[long pause]
+
+Manter os silêncios todos é continuar a pagar o preço.
+
+Quebrar três pode reduzir o preço significativamente — sem te exigir transformação dramática.
+
+[pause]
+
+Esta é, em muitas vidas adultas, a economia emocional mais importante que se pode fazer.
+
+[short pause]
+
+E, ao contrário das economias materiais, esta tem efeito imediato no corpo.`,
+      },
+      {
+        id: "o-silencio-que-grita-m7b",
+        titulo: "M7.B — A solidão dentro das famílias",
+        curso: "o-silencio-que-grita",
+        texto: `Há uma forma específica de solidão que aparece em famílias com muito silêncio.
+
+[pause]
+
+Não é a solidão de quem vive longe.
+
+É a solidão de quem está rodeado de pessoas próximas — e nunca é, completamente, vista por nenhuma delas.
+
+[long pause]
+
+Esta solidão é particular porque inverte a expectativa.
+
+[pause]
+
+Esperarias que o teu núcleo familiar fosse o sítio onde és mais conhecida.
+
+Mas se o silêncio impede o conhecimento mútuo, o teu núcleo familiar pode tornar-se o sítio onde és menos conhecida — porque é o sítio onde a versão pública de ti se mantém com mais consistência.
+
+[short pause]
+
+Estranhos podem, por vezes, conhecer aspectos de ti que a tua família nunca conheceu.
+
+[pause]
+
+Porque com estranhos não há toda uma estrutura de silêncio histórico para defender.
+
+[long pause]
+
+Esta inversão é causa de uma das ironias dolorosas da vida adulta.
+
+[pause]
+
+Mulheres rodeadas de família, com filhos, com pais ainda vivos, com irmãos próximos — sentem-se profundamente sós.
+
+E não sabem como nomear o que sentem, porque socialmente parece absurdo dizer que se está só quando se está rodeado.
+
+[short pause]
+
+Mas a solidão real não é função do número de pessoas à tua volta.
+
+É função da quantidade de partes tuas que essas pessoas conhecem.
+
+[pause]
+
+Se elas conhecem só a versão pública — a função, o papel, a parte da família — tu estás, em todos os sentidos importantes, só.
+
+[long pause]
+
+Reconhecer esta solidão — em vez de a negar — é o primeiro passo para a aliviar.
+
+[pause]
+
+Porque a negação consome energia. E a energia gasta em negação é energia que poderia ser usada para a aliviar.
+
+[short pause]
+
+Aceitar que estás só dentro da tua família é admissão dolorosa.
+
+Mas é também libertadora.
+
+[pause]
+
+Liberta-te da exigência de fingir que tudo está bem dentro do núcleo.
+
+E permite-te começar a procurar, fora ou dentro do núcleo, ligações mais reais.
+
+[long pause]
+
+Algumas mulheres, depois desta admissão, conseguem aprofundar relações dentro do próprio núcleo.
+
+Através das conversas difíceis que aprenderam a iniciar.
+
+[pause]
+
+Outras, descobrem que o núcleo já não é onde podem encontrar a intimidade real — e começam a investir noutras relações que se tornam, de facto, a sua família escolhida.
+
+[short pause]
+
+Nenhum dos dois caminhos é melhor.
+
+Cada uma escolhe o que faz sentido na sua situação concreta.
+
+[pause]
+
+Mas ambos começam com a mesma admissão: estou só dentro da minha família.
+
+[long pause]
+
+Esta semana, em privado, sem dramatizar, escreve uma única frase.
+
+Uma frase honesta sobre o quanto te sentes ou não vista pela tua família actual.
+
+[pause]
+
+Lê a frase.
+
+Se ela te magoa, é porque é verdadeira.
+
+[short pause]
+
+E a verdade, mesmo a dolorosa, é o ponto de partida de qualquer mudança real.
+
+[pause]
+
+A solidão não tem cura imediata.
+
+Tem, sim, atenuação ao longo do tempo — quando deixa de ser negada.`,
+      },
+      {
+        id: "o-silencio-que-grita-m7c",
+        titulo: "M7.C — As versões de ti que ficaram sem voz",
+        curso: "o-silencio-que-grita",
+        texto: `Há versões de ti que nunca chegaram a falar.
+
+[pause]
+
+Não porque não existissem. Porque foram caladas antes de poderem aparecer.
+
+[long pause]
+
+A criança que tu eras tinha opiniões. Tinha desejos. Tinha curiosidades específicas.
+
+Algumas delas conseguiram chegar a adulta.
+
+Outras foram caladas tantas vezes — por adultos cansados, por silêncios familiares, por reacções desencorajadoras — que nunca se desenvolveram.
+
+[pause]
+
+E ficaram dentro de ti como possibilidades não cumpridas.
+
+[short pause]
+
+Versões de ti que poderiam ter florescido em adulta — mas que foram silenciadas em criança.
+
+[long pause]
+
+Tu, hoje, podes não saber quais foram.
+
+Mas sentes, em momentos calmos, uma sensação difícil de nomear.
+
+Saudade de algo que nunca viveste. Inquietação face a determinadas pessoas que parecem ter escolhido caminhos que tu também terias escolhido se as condições tivessem sido outras.
+
+[pause]
+
+Esta sensação não é frustração simples.
+
+É luto pelas versões de ti que ficaram sem voz.
+
+[short pause]
+
+E o luto por possibilidades não vividas é, em algumas alturas da vida, mais doloroso do que o luto por coisas que aconteceram.
+
+[long pause]
+
+Não há forma de viver retroactivamente as versões que foram silenciadas.
+
+Mas há forma de as reconhecer.
+
+[pause]
+
+E o reconhecimento, mesmo sem cumprimento, alivia.
+
+[short pause]
+
+Porque permite que o que ficou em ti como inquietação difusa ganhe forma de história.
+
+E a história, ao contrário da inquietação, pode ser carregada com dignidade.
+
+[long pause]
+
+Algumas mulheres, em meia-idade, descobrem que ainda há tempo para dar voz a algumas das versões silenciadas.
+
+[pause]
+
+Não a todas.
+
+Mas a algumas.
+
+[short pause]
+
+A mulher que tinha curiosidade pela arte e foi desencorajada, pode começar a pintar aos cinquenta.
+
+A que tinha vocação para escrita e foi desviada para algo "prático", pode escrever aos sessenta.
+
+A que sempre quis viajar sozinha mas foi convencida que não era próprio, pode finalmente partir aos setenta.
+
+[pause]
+
+Nenhuma destas mulheres recupera as décadas perdidas.
+
+Mas todas recuperam alguma coisa que estava à espera dentro delas.
+
+[long pause]
+
+Esta semana, escreve numa folha.
+
+Quais são as versões de mim que ficaram sem voz?
+
+[pause]
+
+Vai pensando ao longo de vários dias.
+
+Provavelmente vão aparecer mais do que tu inicialmente esperavas.
+
+[short pause]
+
+Quando tiveres a lista, olha para ela.
+
+[pause]
+
+Pergunta, para cada uma: ainda há, na minha vida actual, algum espaço para esta voz aparecer — mesmo que parcialmente?
+
+[short pause]
+
+Para algumas, a resposta vai ser não. Esses ficam como reconhecimento.
+
+Para outras, a resposta vai ser sim — e tu, ao longo dos próximos anos, podes começar a dar-lhes lugar.
+
+[long pause]
+
+A vida adulta tardia tem esta possibilidade rara.
+
+[pause]
+
+A possibilidade de começar a dar voz ao que durante décadas foi calado.
+
+[short pause]
+
+Não para reescrever o passado.
+
+Para tornar o futuro mais inteiro do que o passado conseguiu ser.
+
+[long pause]
+
+E esta inteireza — mesmo parcial, mesmo tardia — é uma das formas mais profundas de liberdade que uma mulher pode alcançar.
+
+[pause]
+
+A liberdade de já não calar tudo o que durante demasiado tempo foi calado.`,
+      },
+    ],
+  },
 ];
