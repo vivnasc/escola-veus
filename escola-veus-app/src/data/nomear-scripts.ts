@@ -10502,4 +10502,379 @@ Com ele, tu és.`,
       },
     ],
   },
+  {
+    id: "curso-sangue-e-seda-m1",
+    titulo: "Curso Sangue e Seda — Módulo 1 (Aulas A, B, C)",
+    descricao: "O Sangue como Linguagem. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "sangue-e-seda-m1a",
+        titulo: "M1.A — O ciclo que te ensinaram a esconder",
+        curso: "sangue-e-seda",
+        texto: `Qual foi a primeira palavra que ouviste para nomear o teu ciclo menstrual?
+
+[pause]
+
+Não a palavra técnica da escola. A palavra que se usava em casa.
+
+Talvez fosse "aqueles dias". Talvez fosse "coisas de mulheres". Talvez fosse um silêncio, e tu nem sabias como perguntar.
+
+[long pause]
+
+Desde muito cedo aprendeste que havia uma coisa que acontecia ao teu corpo e que tinha regras.
+
+Regras de esconder.
+
+[pause]
+
+O penso era embrulhado num lenço de papel antes de ir para o lixo. A dor era engolida com uma bolsa de água quente e um sorriso. O mau humor era chamado mau humor — não dor hormonal real, não parte de um ciclo que o corpo faz há milhares de anos.
+
+[short pause]
+
+E em público, jamais se mencionava.
+
+[long pause]
+
+Esta discrição foi-te ensinada como delicadeza.
+
+Na verdade, era outra coisa.
+
+[pause]
+
+Era a continuação de uma longa tradição em que o corpo feminino, quando fazia o que o corpo feminino sempre fez, era tratado como problema a gerir.
+
+[short pause]
+
+As mulheres da tua linhagem aprenderam a esconder-se delas mesmas em proporção directa à visibilidade do ciclo.
+
+E ensinaram-te a fazer o mesmo.
+
+[long pause]
+
+Há uma sensação específica, para muitas mulheres, quando chegam os dias de sangue.
+
+Uma vontade de desaparecer.
+
+Não de descansar — de desaparecer.
+
+[pause]
+
+Como se o corpo estivesse a fazer uma coisa inconveniente e a melhor resposta fosse tornar-te invisível enquanto ela se passa.
+
+[short pause]
+
+Esta vontade não é hormonal. É cultural.
+
+Foi-te transmitida por gerações de mulheres que precisavam de continuar a funcionar mesmo quando o corpo pedia pausa.
+
+[long pause]
+
+E tu, hoje, aos trinta, quarenta, cinquenta anos, ainda carregas a regra.
+
+Ainda escondes o penso. Ainda finges que não estás em dor. Ainda te desculpas por precisares de parar.
+
+[pause]
+
+Mas o ciclo não é problema.
+
+O ciclo é informação.
+
+[short pause]
+
+Cada fase, cada subida hormonal, cada descida, cada dia de sangue — tudo isto é um mapa de energia que o teu corpo faz.
+
+[pause]
+
+Se soubesses lê-lo, organizavas a tua vida de forma diferente.
+
+Mas não te ensinaram a lê-lo.
+
+Ensinaram-te a escondê-lo.
+
+[long pause]
+
+Durante um mês inteiro, faz uma coisa nova.
+
+Pega num caderno pequeno.
+
+Cada dia, escreve uma palavra. Uma só. Que diga como o teu corpo está hoje.
+
+[pause]
+
+Cansado. Forte. Sensível. Agitado. Calmo. Furioso. Disponível.
+
+[short pause]
+
+Marca também — sem rodeios — os dias de sangue. De que dia a que dia.
+
+No final do mês, lê a lista.
+
+[pause]
+
+Vais ver um padrão que nunca ninguém te ensinou a ver.
+
+O teu ciclo tem uma música.
+
+E a música tem, afinal, coerência.
+
+[long pause]
+
+Durante séculos, as mulheres chamaram a isto lunática — porque seguia a lua.
+
+Não era loucura.
+
+Era sabedoria corporal que uma sociedade afoita não sabe aceitar.
+
+[pause]
+
+E que tu, agora, podes começar a escutar.`,
+      },
+      {
+        id: "sangue-e-seda-m1b",
+        titulo: "M1.B — A dor que tu chamaste normal",
+        curso: "sangue-e-seda",
+        texto: `Há uma dor no teu corpo que tu chamas normal.
+
+[pause]
+
+A dor antes do sangue. A dor durante o sangue. A dor nas costas que acompanha o ciclo. A dor de cabeça hormonal.
+
+Chamas normal porque se repete há anos.
+
+[short pause]
+
+E porque toda a gente à tua volta chama normal.
+
+[long pause]
+
+A tua mãe também tinha estas dores. A tua avó também. A tua irmã, a tua prima, a tua melhor amiga.
+
+Todas tiveram. Todas engoliram comprimidos. Todas continuaram a funcionar.
+
+[pause]
+
+Então aprendeste que esta dor era parte de ser mulher.
+
+Como quem aprende que chover no inverno faz parte do inverno.
+
+[short pause]
+
+Dor como estação.
+
+[long pause]
+
+Mas há algo desconfortável de admitir.
+
+Nem toda a dor de ciclo é inevitável. Nem toda a dor é proporcional ao que está a acontecer biologicamente.
+
+[pause]
+
+Muitas mulheres sofrem dores intensas que, se fossem investigadas com atenção médica séria, teriam causa específica — endometriose, adenomiose, quistos, fibromialgia hormonal, desequilíbrios tiroideus.
+
+[short pause]
+
+Condições que têm nome. Que têm tratamento. Que não deviam ser invisíveis.
+
+[pause]
+
+Mas como as mulheres foram ensinadas a não se queixar, a não dramatizar, a não valorizar a sua própria dor — estas condições passam décadas sem diagnóstico.
+
+[long pause]
+
+A tua avó talvez tivesse endometriose.
+
+A tua mãe talvez tenha tido.
+
+E tu, talvez, também tenhas.
+
+Nenhuma foi investigada. Todas chamaram dor normal ao que era dor de diagnóstico pendente.
+
+[pause]
+
+Isto é herança.
+
+Herança de silêncio médico que atravessa gerações de mulheres.
+
+[short pause]
+
+E não é culpa de ninguém em particular.
+
+É produto de uma medicina que foi desenhada, durante muito tempo, com o corpo masculino como padrão — e que só recentemente começa a prestar atenção séria às condições específicas do corpo feminino.
+
+[long pause]
+
+A tua dor pode ser normal.
+
+Ou pode ser sinal de algo específico que merece investigação.
+
+[pause]
+
+A única forma de saber é ser honesta sobre a intensidade real do que sentes.
+
+[short pause]
+
+Não a versão que tu contas às amigas — "estou com cólicas, nada de mais".
+
+A versão verdadeira — o que tu sentes sozinha na casa de banho, no momento em que ninguém te está a ver.
+
+[long pause]
+
+Esta semana, escreve num papel: qual é a pior dor menstrual que já tive?
+
+Descreve-a. Com detalhes corporais. Onde, como, quanto tempo, o que te impediu de fazer.
+
+[pause]
+
+Lê o que escreveste.
+
+Se a descrição te parece excessiva para ter sido chamada de normal por ti durante anos — então não era normal.
+
+[short pause]
+
+Era algo que merecia ser olhado, nomeado, medicado ou investigado.
+
+[pause]
+
+Se nunca fizeste uma ecografia ginecológica detalhada, ou se a última foi há mais de três anos, pede uma.
+
+Não como drama. Como direito.
+
+[long pause]
+
+A dor das mulheres foi invisibilizada durante séculos.
+
+Tu, neste século, não tens de continuar a tradição.`,
+      },
+      {
+        id: "sangue-e-seda-m1c",
+        titulo: "M1.C — O que o sangue diz que a boca não diz",
+        curso: "sangue-e-seda",
+        texto: `Nos dias antes do sangue, dizes coisas que não dirias nos outros dias.
+
+[pause]
+
+Às pessoas à tua volta, pode parecer irracional. Pode parecer hormonal. Pode parecer exagero.
+
+Mas se olhares com honestidade, quase nunca é irracional.
+
+[short pause]
+
+Quase sempre é — simplesmente — verdadeiro.
+
+[long pause]
+
+O que acontece nos dias antes do sangue é que o filtro social afrouxa.
+
+O filtro que normalmente mantém as frases diplomáticas. O filtro que transforma o cansaço em amabilidade. O filtro que traduz "isto está a magoar-me" em "não faz mal".
+
+[pause]
+
+Este filtro é trabalho. Energia. Esforço constante.
+
+E o corpo, quando entra na fase pré-menstrual, desliga-o parcialmente — para poupar recursos.
+
+[short pause]
+
+O que resta é a verdade, desprotegida.
+
+[long pause]
+
+Durante séculos, esta verdade foi chamada histeria.
+
+Foi medicada. Foi silenciada. Foi tratada como anomalia.
+
+[pause]
+
+Quando, na realidade, é diagnóstico.
+
+[short pause]
+
+As coisas que tu dizes nos dias pré-menstruais são, na sua grande maioria, verdade adiada.
+
+Verdade que tu andaste a engolir nas outras três semanas.
+
+[long pause]
+
+Se olhares para o que disseste no último período difícil — não com vergonha, com atenção — vais ver que não foste injusta.
+
+Foste directa.
+
+[pause]
+
+Disseste o que viste e ninguém ouvia. Nomeaste o que sentias e toda a gente fingia que não era nada. Recusaste o que outras vezes terias aceitado em silêncio.
+
+[short pause]
+
+E a outra pessoa, assustada com a tua clareza súbita, chamou-te hormonal.
+
+Como se hormonal fosse menos verdadeiro.
+
+[long pause]
+
+A verdade que sai dos dias antes do sangue é filha da observação acumulada das semanas anteriores.
+
+É apenas dita sem o filtro que normalmente a amortece.
+
+[pause]
+
+Isto não significa que toda a palavra pré-menstrual é perfeita.
+
+Algumas são mais ásperas do que precisariam. Algumas magoam mais do que querias.
+
+[short pause]
+
+Mas o conteúdo, na grande maioria dos casos, não é inventado.
+
+É apenas libertado.
+
+[long pause]
+
+Observa, neste ciclo, o que o teu corpo te puxa a dizer nos dias antes do sangue.
+
+Escreve essas frases num caderno.
+
+[pause]
+
+Não para as comunicar. Só para as ver.
+
+[short pause]
+
+E depois, dias depois, quando o sangue tiver passado e o filtro tiver voltado — lê o que escreveste.
+
+[pause]
+
+Com calma. Sem autocrítica.
+
+[short pause]
+
+Pergunta-te: o que disse era verdadeiro?
+
+[pause]
+
+Na maioria das vezes, a resposta vai ser sim.
+
+E a parte verdadeira, agora que podes escolher, pode ser dita de forma mais suave, com as palavras medidas, no momento certo.
+
+[long pause]
+
+Mas dita.
+
+[pause]
+
+Porque se o corpo esteve a empurrar para fora aquela verdade com tanta força que rasgou o filtro, então era mesmo para sair.
+
+[short pause]
+
+A fase pré-menstrual é um editor intransigente.
+
+Corta o desnecessário e revela o essencial.
+
+[long pause]
+
+Usa-o a teu favor.
+
+Não como desculpa. Como diagnóstico do que, no resto do mês, está por dizer.`,
+      },
+    ],
+  },
 ];
