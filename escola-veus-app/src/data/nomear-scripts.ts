@@ -18659,71 +18659,115 @@ Estás a tratar como problema o que, na verdade, é um dos maiores aliados da tu
 
 [long pause]
 
-Aceitar o corpo que aguentou muito é, em parte, gratidão consciente.
+Aceitar o corpo que aguentou muito não é gratidão performativa.
 
 [pause]
 
-Não gratidão performativa.
-
-Reconhecimento privado, regular, do trabalho silencioso que ele faz.
+Não é repetir frases bonitas em frente ao espelho.
 
 [short pause]
 
-Pode ser uma frase pequena ao final do dia, antes de adormeceres.
-
-"Obrigada por hoje."
+É outra coisa, mais concreta.
 
 [pause]
 
-Não tens de elaborar. O corpo entende.
+É começar a ter dados específicos sobre o trabalho que ele fez.
 
 [long pause]
 
-Esta gratidão básica, quando praticada com regularidade, muda a forma como o corpo te responde no longo prazo.
+A maior parte das mulheres consegue listar com facilidade tudo o que não gosta no próprio corpo.
 
 [pause]
 
-Não é magia. É comunicação.
+A celulite. A flacidez. A barriga. As pernas.
 
 [short pause]
 
-Quando o corpo é reconhecido pelo que faz, em vez de criticado pelo que parece, começa a relaxar uma vigilância antiga.
+Mas, se lhes pedires para listar cinco coisas concretas que o corpo fez bem na última semana, ficam paradas.
 
 [pause]
 
-E pessoas que praticam esta gratidão simples descrevem, depois de meses, alteração na qualidade de presença no próprio corpo.
+Não conseguem.
 
-[short pause]
-
-Mais relaxado. Menos reactivo. Mais em paz.
+Porque nunca olharam por esse ângulo.
 
 [long pause]
 
-Esta semana, instala uma prática nova.
-
-Antes de adormeceres, dirige uma frase silenciosa ao teu corpo.
+Esta semana, vais corrigir esse desequilíbrio.
 
 [pause]
 
-Pode ser "obrigada".
+Numa folha, escreve uma lista com cabeçalho:
 
-Pode ser "vejo-te".
-
-Pode ser apenas "boa noite, corpo".
+"Esta semana, o meu corpo —"
 
 [short pause]
 
-A frase específica importa menos do que o gesto.
+E, ao longo de sete dias, vais juntando entradas concretas.
 
 [pause]
 
-Estás a reconhecer.
-
-E o reconhecimento, repetido, reorganiza a relação interior.
+Não abstractas. Concretas.
 
 [long pause]
 
-O corpo que aguentou muito merece, em algum ponto, ser visto pelo que tem feito.
+Pode ser:
+
+"Combateu uma constipação que mal cheguei a sentir."
+
+"Compensou uma noite em que dormi quatro horas."
+
+"Digeriu o jantar pesado de sábado sem se queixar."
+
+"Aguentou três horas de pé na consulta da minha mãe."
+
+"Recuperou da semana intensa de trabalho num único fim-de-semana."
+
+[short pause]
+
+São coisas pequenas.
+
+São coisas que tu darias por garantidas.
+
+[pause]
+
+Mas escreves.
+
+Uma por dia, no mínimo. Mais, se reparares.
+
+[long pause]
+
+Ao fim da semana, lê a lista inteira de uma só vez.
+
+[pause]
+
+E repara no que sentes ao ler.
+
+[short pause]
+
+A maioria das mulheres, quando faz este exercício pela primeira vez, sente uma coisa específica.
+
+[pause]
+
+Surpresa.
+
+[long pause]
+
+Surpresa porque é a primeira vez na vida que viram, em letra escrita, o trabalho real do corpo.
+
+[pause]
+
+Não em discurso bonito sobre auto-cuidado.
+
+Em factos.
+
+[short pause]
+
+E os factos, ao contrário das frases, ficam.
+
+[long pause]
+
+O corpo que aguentou muito merece ser visto pelo que tem feito.
 
 [pause]
 
@@ -18733,27 +18777,7 @@ Pelo que tem sustentado.
 
 [short pause]
 
-E essa visão, quando se instala em ti, transforma a tua presença na pele.
-
-Mais habitação. Menos administração.
-
-[pause]
-
-Mais habitada. Menos crítica.
-
-[long pause]
-
-E o corpo, em troca, retribui.
-
-Com mais energia, mais presença, mais disposição.
-
-[pause]
-
-Como qualquer relação importante: o cuidado consciente gera retorno tangível.
-
-[short pause]
-
-Mesmo na relação com a tua própria pele.`,
+E uma lista escrita, à mão, é a forma mais simples e mais sólida de começar a ver.`,
       },
     ],
   },
@@ -19010,115 +19034,125 @@ Acontece em momentos pequenos, sem narração.
 
 [pause]
 
-A primeira hora da manhã, antes do telefone. Um banho com calma, sem pressa para terminar. Uma caminhada em que tu reparas como o pé pousa no chão.
+E acontece, sobretudo, fora da auto-observação consciente.
 
 [short pause]
 
-Em cada um destes momentos, tu estás a habitar a pele.
+Tu não habitas a pele a tentar habitá-la.
 
-[pause]
-
-Não estás fora dela, a observá-la. Estás dentro, a senti-la.
+Habitas quando te esqueces que estás a habitá-la.
 
 [long pause]
 
-A maioria das pessoas modernas habita pouco a pele.
+Esta é a inversão importante.
 
 [pause]
 
-Vive na cabeça — em pensamentos, planos, preocupações.
-
-E o corpo torna-se transporte da cabeça, não casa.
+Quanto mais tu vigias a tua presença no corpo, menos presente ficas.
 
 [short pause]
 
-Habitar a pele requer redução do tempo passado fora dela.
-
-E aumento do tempo passado dentro.
+Porque a vigilância é, em si, uma forma de saída do corpo. É um pedaço de ti a observar, em vez de outro pedaço a viver.
 
 [long pause]
 
-Esta semana, identifica três momentos diários em que tu, normalmente, estás na cabeça enquanto fazes algo no corpo.
+Habitar a pele não se constrói por exercício de atenção.
 
 [pause]
 
-A escovar os dentes — em geral, distraída.
-
-A tomar banho — em geral, planeando o resto do dia.
-
-A comer — em geral, sem prestar atenção ao sabor.
+Constrói-se por redução das coisas que te tiram dela.
 
 [short pause]
 
-Em cada um destes três momentos, esta semana, faz uma coisa nova.
-
-Estar na actividade física que estás a fazer.
-
-[pause]
-
-A escovar — sentir os dentes a serem escovados.
-
-A tomar banho — sentir a água na pele.
-
-A comer — sentir o sabor, a temperatura, a textura.
-
-[short pause]
-
-Não é meditação. É presença simples no corpo.
-
-[pause]
-
-E é, surpreendentemente, difícil.
-
-Porque o cérebro está habituado a viajar para fora destas actividades automáticas.
+E essa redução é mais prática do que mística.
 
 [long pause]
 
-Aos poucos, com prática, o corpo recupera espaço na tua atenção diária.
+A maioria das mulheres adultas tem três a cinco hábitos diários que retiram presença do corpo.
 
 [pause]
 
-E tu, lentamente, começas a habitar a pele em vez de a usar.
+O telemóvel à mesa.
+
+A televisão durante o jantar.
+
+A cabeça em três conversas ao mesmo tempo enquanto vais a conduzir.
+
+A planear amanhã enquanto estás a tomar banho hoje.
 
 [short pause]
 
-A diferença é difícil de explicar a quem nunca a sentiu.
+Cada um destes hábitos, sozinho, parece pequeno.
+
+No conjunto, são horas por dia em que o teu corpo está a fazer coisas sem ti.
+
+[long pause]
+
+Esta semana, em vez de prescrever atenção em tempo real — o que costuma virar mais um trabalho —, vais mapear o que te tira do corpo.
 
 [pause]
 
-Mas quem a sente, sabe.
+Numa folha, escreve em cima:
+
+"Hoje saí do corpo quando —"
 
 [short pause]
 
-A vida ganha textura. Os pequenos momentos têm peso. O corpo deixa de ser zona de problema e torna-se território onde se acontece.
+E, ao longo do dia, escreves entradas.
+
+[pause]
+
+Não em tempo real. Não a interromper.
+
+À noite, antes de dormir, lembra-te do dia e escreve.
+
+[long pause]
+
+Pode ser:
+
+"Saí do corpo quando estava a almoçar com o telemóvel ao lado e nem reparei no que comi."
+
+"Saí do corpo quando ia a conduzir a planear a reunião e cheguei sem dar conta do percurso."
+
+"Saí do corpo quando tomei banho a recapitular a discussão com a minha filha."
+
+[short pause]
+
+Três entradas por dia.
+
+Sete dias.
+
+[pause]
+
+Ao fim da semana, lê a lista.
+
+[long pause]
+
+Vais reparar num padrão.
+
+[pause]
+
+Há momentos do dia que te tiram do corpo quase sempre.
+
+E há outros, talvez, em que ainda consegues estar.
+
+[short pause]
+
+A lista, sozinha, não muda nada.
+
+[pause]
+
+Mas mostra-te onde, especificamente, começar.
 
 [long pause]
 
 Habitar a pele não é objectivo a alcançar.
 
-É prática a manter.
+É consequência de teres reduzido, em pequenos pontos, o que te tira dela.
 
 [pause]
 
-Como manter uma casa em ordem. Não se faz uma vez. Faz-se um pouco todos os dias.
-
-[short pause]
-
-Mas o resultado, ao longo dos meses, é uma diferença qualitativa profunda na tua vida.
-
-[pause]
-
-Vives com mais corpo presente.
-
-E menos cabeça desconectada.
-
-[long pause]
-
-Esta é, em última análise, a única forma sustentável de te reconciliares com o teu corpo.
-
-[pause]
-
-Não pelo que ele aparenta.
+Não pelo que o corpo aparenta.
 
 Pelo facto de tu, pela primeira vez em muito tempo, estares finalmente nele.`,
       },
@@ -19281,103 +19315,137 @@ E a pele, paradoxalmente, costuma ficar melhor.`,
         id: "pele-nua-m7b",
         titulo: "M7.B — A vergonha residual da menopausa",
         curso: "pele-nua",
-        texto: `Há uma vergonha residual que muitas mulheres experienciam à volta da menopausa.
+        texto: `Há uma vergonha que aparece muito específicamente quando alguém te pergunta a idade.
 
 [pause]
 
-Não a menopausa em si. A vergonha de ter chegado a essa fase.
+Tu já reparaste.
 
 [long pause]
 
-Esta vergonha vem da cultura que equacionou feminilidade com fertilidade, juventude e atractividade reprodutiva.
+A pergunta chega — num jantar, numa consulta, num formulário.
+
+E o teu corpo, antes de a tua cabeça responder, faz qualquer coisa.
 
 [pause]
 
-Quando a menopausa chega, parte deste enquadramento cultural deixa de se aplicar.
+Os ombros sobem ligeiramente.
 
-E muitas mulheres sentem, em silêncio, que perderam algo essencial da sua identidade pública.
+A respiração interrompe-se durante meio segundo.
+
+A face fica ligeiramente mais quente.
+
+Há um cálculo silencioso a acontecer dentro de ti — quanto custa dizer o número exacto, quanto custa arredondar, quanto custa mentir.
 
 [short pause]
 
-Esta sensação não é fraqueza individual.
-
-É produto cultural.
-
-[pause]
-
-Foste socializada durante décadas para acreditar que ser mulher era estar em determinada fase do ciclo reprodutivo.
-
-E quando essa fase termina, há uma reorganização interior dolorosa que poucas pessoas conversam abertamente.
+Este cálculo é vergonha residual a aparecer no corpo em tempo real.
 
 [long pause]
 
-A vergonha residual aparece em sítios subtis.
+Não é a tua vergonha individual.
 
 [pause]
 
-Não querer mencionar a menopausa em conversas profissionais.
-
-Sentir desconforto quando alguém pergunta a tua idade.
-
-Comprar produtos com promessas de "rejuvenescimento" mesmo sabendo, racionalmente, que não funcionam como prometem.
+É vergonha colectiva, herdada de décadas a ouvir que mulher acima de certa idade vale menos.
 
 [short pause]
 
-Estes comportamentos são tentativas de manter, à superfície, uma identidade que culturalmente se está a desactualizar.
-
-[pause]
-
-E custam energia.
+E o teu corpo, sem te perguntar, aprendeu a contrair-se quando a idade é mencionada.
 
 [long pause]
 
-Reconhecer esta vergonha residual é o primeiro passo para a reduzir.
+Repara nos sítios onde isto acontece em ti.
 
 [pause]
 
-Não desaparece imediatamente. Mas perde poder.
+A boca, que por momentos não consegue formar a sílaba do número exacto.
+
+A barriga, que se aperta um bocadinho sem razão aparente.
+
+Os olhos, que evitam o contacto visual da pessoa que perguntou.
 
 [short pause]
 
-Quando tu, em privado, admites: sim, há vergonha em mim sobre este momento da vida. Sim, isto é influência cultural. Sim, está em mim mas não tem de me dirigir.
+A vergonha da idade não vive na cabeça.
 
-[pause]
-
-Esta admissão é libertação parcial.
+Vive em pontos específicos do corpo.
 
 [long pause]
 
-Esta semana, faz uma reflexão privada.
-
-Em que momentos da semana sentiste, mesmo subtilmente, vergonha relacionada com a tua idade ou com a fase do corpo em que estás?
+E é por isso que argumentos racionais — "não tenho razão para sentir vergonha", "a idade é só um número" — não a dissolvem.
 
 [pause]
 
-Lista esses momentos.
+Porque ela não é argumento.
+
+É reacção corporal aprendida.
 
 [short pause]
 
-Talvez uma fotografia em que evitaste sair. Uma conversa em que mudaste de assunto. Uma compra que fizeste com pensamento implícito de "preciso de parecer mais nova".
-
-[pause]
-
-Ao identificar estes momentos, eles deixam de operar invisivelmente.
-
-E começam a poder ser observados — e, com o tempo, alguns começam a perder força.
+E reacções corporais aprendidas só se desinstalam por outra reacção corporal.
 
 [long pause]
 
-Não tens de te livrar da vergonha residual de uma vez.
-
-Tens, sim, de a parar de tratar como verdade pessoal — e começar a tratá-la como produto cultural que tu, em algum grau, herdas.
+Esta semana, durante sete dias, vais fazer uma observação muito específica.
 
 [pause]
 
-E ao longo dos anos, à medida que mais mulheres da tua geração vivem fases pós-reprodutivas com presença e autoridade, a vergonha colectiva vai-se reduzindo.
+De cada vez que alguém te perguntar a idade — ou que tu mesma a tiveres de mencionar, num formulário, num cartão, numa apresentação — repara, em vez de responder em automático.
 
 [short pause]
 
-E tu fazes parte dessa redução. Quando vives a tua idade sem desculpa.`,
+Repara onde, no corpo, sentes alguma coisa.
+
+São os ombros? É o estômago? É a respiração? É a garganta?
+
+[pause]
+
+Não tentes mudar a reacção.
+
+Só repara.
+
+[long pause]
+
+À noite, antes de dormir, anota numa folha:
+
+"Hoje, quando a idade apareceu, senti em —"
+
+[pause]
+
+E completa com o sítio do corpo. Uma frase. Sem comentário.
+
+[short pause]
+
+Ao fim da semana, lê as anotações em sequência.
+
+[long pause]
+
+Vais reparar duas coisas.
+
+[pause]
+
+A primeira: a reacção repete-se quase sempre no mesmo sítio. O teu corpo tem um lugar específico onde guarda esta vergonha.
+
+[short pause]
+
+A segunda: o simples acto de reparar começa, lentamente, a reduzir a intensidade.
+
+[pause]
+
+Não desaparece numa semana.
+
+Mas começa a deixar de operar invisivelmente.
+
+[long pause]
+
+A vergonha que tu não sabes que tens dirige-te.
+
+A vergonha que tu sabes onde mora deixa, devagar, de te dirigir.
+
+[pause]
+
+E o corpo que reconhece a sua reacção tem, pela primeira vez, hipótese de a recompor.`,
       },
       {
         id: "pele-nua-m7c",
@@ -19758,149 +19826,129 @@ E é mais do que suficiente para uma vida significativamente diferente daquela q
         id: "pele-nua-m8c",
         titulo: "M8.C — A mulher que habita a sua pele",
         curso: "pele-nua",
-        texto: `Imagina, no fim deste curso, a mulher que tu vais ser daqui a cinco anos.
+        texto: `Este curso acaba.
 
 [pause]
 
-Uma mulher que, depois de muito trabalho silencioso, finalmente habita a sua pele.
+E tu continuas nele.
 
 [long pause]
 
-Esta mulher tem uma qualidade específica.
-
-Não é beleza convencional. Não é juventude prolongada.
-
-É presença plena.
+Não vais sair daqui transformada.
 
 [pause]
 
-Quando ela entra numa sala, há algo que muda no ambiente.
-
-Não pelo que ela faz. Pelo facto de ela estar inteiramente onde está.
+Vais sair com instrumentos que ainda há semanas não tinhas.
 
 [short pause]
 
-Ela não está, mentalmente, a observar-se de fora.
-
-Está dentro do corpo, em tempo real, sem fuga.
+Que é coisa diferente. E mais honesta.
 
 [long pause]
 
-Esta presença é rara.
+Antes de fechar, vamos fazer um inventário.
 
 [pause]
 
-Porque a maioria das mulheres adultas vive em fuga parcial do próprio corpo — projectada na cabeça, no que vão fazer a seguir, no que outros vão pensar.
+Não de futuro imaginado.
+
+De presente real — o que tu, ao longo destes oito módulos, aprendeste a fazer.
 
 [short pause]
 
-A mulher que habita a pele resgatou-se desta fuga.
+Pega numa folha. Escreve em cima:
 
-[pause]
-
-Não totalmente — ninguém o faz totalmente.
-
-Mas o suficiente para a sua vida ter qualidade nova.
+"Antes deste curso, eu não fazia —"
 
 [long pause]
 
-Esta mulher já não passa as manhãs em batalha com o espelho.
-
-Já não compra produtos por ansiedade.
-
-Já não pede desculpa por marcas, mudanças, ou idade.
+E vai escrevendo, devagar, à medida que reconheces.
 
 [pause]
 
-Não porque ignora as mudanças.
+Não fazia contas dos olhares automáticos sobre o meu corpo durante o dia.
 
-Porque as integrou.
+Não tinha lista escrita do que o meu corpo aguentou esta semana.
+
+Não sabia em que sítio do corpo se aperta a vergonha quando alguém me pergunta a idade.
+
+Não tinha nomeado as três marcas que carrego e as histórias delas.
+
+Não tinha mapeado os momentos em que saio do corpo sem dar conta.
+
+Não tinha admitido em letra escrita o que aprendi a calar sobre a relação com a minha pele.
 
 [short pause]
 
-E porque, em algum ponto, decidiu que a sua vida era mais importante do que a permanente correcção do seu corpo.
+Vai escrevendo o que for verdadeiro para ti.
+
+Algumas linhas. Não muitas. As que importam.
 
 [long pause]
 
-Tu podes ser esta mulher.
+Quando acabares, lê a lista.
 
 [pause]
 
-Não amanhã. Não numa semana.
-
-Mas ao longo dos próximos anos, em pequenos gestos repetidos, podes começar a aproximar-te dela.
+E repara numa coisa.
 
 [short pause]
 
-Cada vez que olhas para o espelho sem corrigir.
-
-Cada vez que vestes algo por prazer e não por aceitação social.
-
-Cada vez que te recusas a entrar numa comparação automática.
+Cada um destes pontos é um instrumento que ficou em ti.
 
 [pause]
 
-Cada um destes gestos é um passo na direcção dela.
+Não é frase motivacional. Não é insight passageiro. É hábito novo, pequeno, instalado.
 
 [long pause]
 
-E ao fim de anos, sem ninguém te ter feito cerimónia, vais perceber que te tornaste essa mulher.
+A mulher que habita a sua pele não é versão idealizada que aparece daqui a cinco anos.
 
 [pause]
 
-A mulher que habita a sua pele.
-
-A mulher que parou de viver em batalha contra a casa permanente em que vive.
-
-A mulher que, finalmente, está em casa em si mesma.
+É a soma dos pequenos hábitos que tu, ao longo dos meses, vais continuando a praticar depois deste curso terminar.
 
 [short pause]
 
-Este é o objectivo deste curso.
+É a mulher que continua a fazer a contagem dos olhares.
 
-[pause]
+A mulher que continua a escrever a lista do que o corpo aguentou.
 
-Não a cosmética. Não a aparência. Não a juventude prolongada.
-
-A habitação plena da casa permanente.
+A mulher que continua a notar onde a vergonha mora — e, por isso, deixa lentamente de ser dirigida por ela.
 
 [long pause]
 
-E essa habitação é, em última análise, o presente mais profundo que tu te podes dar a ti mesma.
+Esta mulher não chega.
+
+Constrói-se em cada gesto pequeno repetido.
 
 [pause]
 
-Mais profundo do que qualquer compra. Mais duradouro do que qualquer relação.
+E tu, neste momento, és exactamente isso — uma mulher a meio dessa construção.
 
 [short pause]
 
-Porque é a relação contigo mesma — a única que vai durar a vida inteira.
+Não no fim.
 
-[pause]
-
-E se essa relação for finalmente acolhedora, todas as outras melhoram em consequência.
+A meio.
 
 [long pause]
 
-A pele é tua.
-
-A casa é tua.
-
-E tu, com tempo, podes finalmente habitá-la inteiramente.
+Este curso acaba. Os instrumentos ficam.
 
 [pause]
 
-Esta é a possibilidade que este curso te oferece.
-
-Não promessa de transformação.
-
-Convite para a habitação que tu sempre tiveste o direito de fazer — mas que durante demasiado tempo te foi roubada por exigências externas.
+Cada vez que pegas num deles, mesmo sem te lembrares deste curso, estás a continuar o trabalho.
 
 [short pause]
 
-A casa esperou por ti.
+A pele é tua. A casa é tua. Os instrumentos para a habitar agora também.
 
-E continua disponível para que tu, finalmente, regresses.`,
+[pause]
+
+E o que vier a seguir não é transformação prometida.
+
+É o que tu, com estes instrumentos na mão, fizeres todos os dias quando ninguém estiver a ver.`,
       },
     ],
   },
