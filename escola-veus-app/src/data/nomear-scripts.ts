@@ -5101,4 +5101,301 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "curso-ouro-proprio-m1",
+    titulo: "Curso Ouro Próprio — Módulo 1 (Aulas A, B, C)",
+    descricao: "O Extracto como Espelho. Material de áudio para alunos — estrutura pedagógica completa.",
+    scripts: [
+      {
+        id: "ouro-proprio-m1a",
+        titulo: "M1.A — O medo de olhar",
+        curso: "ouro-proprio",
+        texto: `Quando foi a última vez que abriste o teu extracto bancário sem aperto no peito?
+
+[pause]
+
+Sem desviar o olhar. Sem fechar a app depressa.
+
+[pause]
+
+Quando foi a última vez que olhaste para os teus números como quem olha para a própria cara — sem medo do que ia encontrar?
+
+[long pause]
+
+É segunda-feira à noite. Estás no sofá.
+
+O telefone está ali, à distância de um gesto.
+
+Sabes que a notificação do banco chegou há três dias. Ainda não abriste.
+
+[pause]
+
+Não porque não tenhas tempo — tens. Não porque não saibas — sabes mais ou menos o que está lá.
+
+Não abres porque há algo no corpo que trava.
+
+[pause]
+
+Uma espécie de aperto entre o estômago e o peito, como se abrir aquele ecrã fosse abrir uma porta que preferias manter fechada.
+
+[short pause]
+
+Então fazes outra coisa. Abres o Instagram. Respondes a uma mensagem. Verificas o email do trabalho. Tudo menos aquilo.
+
+[pause]
+
+E a conta continua ali, fechada, à espera. Como se os números pudessem desaparecer se não olhares para eles.
+
+[long pause]
+
+O que está a acontecer não é preguiça. Não é desorganização.
+
+É protecção.
+
+[pause]
+
+O teu corpo aprendeu, em algum momento, que olhar para o dinheiro dói. Que os números não são neutros — são um veredicto.
+
+[short pause]
+
+Se o saldo está baixo, diz algo sobre ti. Se está alto, também diz — e talvez te assuste de outra forma.
+
+[pause]
+
+Algures, associaste dinheiro a julgamento.
+
+E agora, cada vez que abres o extracto, não estás a ler números. Estás a ler uma sentença sobre o teu valor.
+
+[pause]
+
+E quem quer ler a própria sentença a segunda-feira à noite?
+
+[long pause]
+
+Esta semana, escolhe um momento calmo.
+
+Abre o extracto bancário — pode ser do mês passado, não precisa ser o de hoje.
+
+Antes de ler os números, põe a mão no peito. Respira.
+
+[pause]
+
+E depois lê. Devagar. Sem fazer contas de cabeça, sem planear nada, sem corrigir nada.
+
+Apenas lê.
+
+[pause]
+
+E nota: o que aparece no corpo? Onde?
+
+Não precisas de resolver nada. Só olhar.
+
+[long pause]
+
+O dinheiro não é o problema.
+
+O medo de olhar é que te mantém presa.`,
+      },
+      {
+        id: "ouro-proprio-m1b",
+        titulo: "M1.B — Ler o extracto como um diário",
+        curso: "ouro-proprio",
+        texto: `Se alguém lesse o teu extracto bancário sem saber quem és — o que diria sobre a pessoa que fez aquelas escolhas?
+
+[pause]
+
+Que história contam os teus gastos sobre aquilo que realmente te importa?
+
+[long pause]
+
+Olha para o extracto do último mês.
+
+Não para os totais — para as linhas. Uma a uma.
+
+[pause]
+
+Café no sítio do costume: um euro e vinte.
+
+Supermercado, sexta à noite: quarenta e sete euros e oitenta e três.
+
+Transferência para a tua mãe: cinquenta.
+
+Uber de madrugada: doze e quarenta.
+
+Presente para a amiga que fez anos: trinta e cinco.
+
+Medicamento na farmácia: oito e sessenta.
+
+[pause]
+
+Cada linha é um dia. Cada dia é uma decisão que tomaste sem pensar.
+
+[pause]
+
+Ninguém olha para o extracto assim — como quem lê um diário.
+
+Mas é exactamente isso que ele é.
+
+[short pause]
+
+Um registo honesto de onde pões a tua atenção, a tua energia, o teu cuidado.
+
+E também — onde não pões.
+
+[long pause]
+
+Quando lês o extracto como um diário, começas a notar coisas que a calculadora não mostra.
+
+Há meses em que gastas muito nos outros e quase nada em ti.
+
+Há semanas em que os gastos pequenos se acumulam. Não por necessidade — por compensação.
+
+[pause]
+
+Aquele café depois da reunião difícil. A encomenda online às duas da manhã, quando não conseguias dormir. A comida de fora porque não tinhas energia para cozinhar.
+
+[pause]
+
+Não há nada de errado com nenhuma destas coisas.
+
+Mas quando as vês juntas, começas a perceber: há um padrão.
+
+[short pause]
+
+E o padrão não é financeiro. É emocional.
+
+[pause]
+
+Gastas de uma certa forma quando estás cansada. De outra quando tens medo. De outra quando te sentes sozinha.
+
+[long pause]
+
+O extracto não mente.
+
+Tu podes mentir a ti mesma — ele não.
+
+[long pause]
+
+Imprime ou copia o extracto do último mês. Pega numa caneta.
+
+Ao lado de cada gasto, escreve uma única palavra: o que sentias quando fizeste aquela compra.
+
+[pause]
+
+Não o que estavas a fazer — o que sentias.
+
+Cansaço. Alívio. Culpa. Prazer. Obrigação. Solidão.
+
+[pause]
+
+Não precisas de mudar nada.
+
+Só de ler a história que o dinheiro conta sobre ti.
+
+[long pause]
+
+O teu extracto já sabe o que sentes.
+
+A questão é se tu também sabes.`,
+      },
+      {
+        id: "ouro-proprio-m1c",
+        titulo: "M1.C — O corpo e o dinheiro",
+        curso: "ouro-proprio",
+        texto: `Onde é que o dinheiro vive no teu corpo?
+
+[pause]
+
+Se te perguntasse agora — onde sentes o dinheiro? — para onde iria a tua atenção?
+
+Para o estômago? Para o peito? Para os ombros? Para a garganta?
+
+[long pause]
+
+Estás no restaurante com amigos. A conta chega.
+
+Alguém diz: dividimos?
+
+[pause]
+
+E naquele segundo — antes de qualquer cálculo, antes de qualquer palavra — há uma reacção no teu corpo.
+
+Talvez um aperto no estômago. Talvez um calor na cara. Talvez os ombros que sobem. Talvez a mandíbula que cerra.
+
+[pause]
+
+Dizes que sim, claro, dividimos.
+
+Mas o corpo já disse outra coisa.
+
+[short pause]
+
+O corpo reagiu ao dinheiro antes de tu teres tido tempo de pensar.
+
+[long pause]
+
+E isto acontece mais vezes do que imaginas.
+
+No supermercado, quando pões o artigo de volta na prateleira.
+
+Na loja, quando viras a etiqueta ao contrário para ninguém ver o preço.
+
+Quando recebes o salário e o alívio dura exactamente três segundos antes da lista de contas aparecer.
+
+[long pause]
+
+O dinheiro não é abstracto. Nunca foi.
+
+Mesmo que a tua mente finja que é só matemática, cada decisão financeira passa pelo corpo primeiro.
+
+[short pause]
+
+E o corpo guarda tudo.
+
+A vez que ouviste os teus pais a discutir por causa de dinheiro. A vez que pediste algo e te disseram que não havia. A vez que viste vergonha no rosto de alguém que amas por causa de uma conta.
+
+[pause]
+
+Essas memórias não ficaram na cabeça — ficaram no corpo, na forma como respiras quando o assunto aparece, no aperto que chega antes da palavra.
+
+[long pause]
+
+E agora, cada vez que o dinheiro aparece, a reacção chega antes do pensamento.
+
+Antes da razão. Antes da calculadora.
+
+Antes de ti.
+
+[pause]
+
+Se não reconheces essa reacção, não estás a tomar decisões financeiras.
+
+Estás a seguir memórias antigas sem as ver.
+
+[long pause]
+
+Na próxima vez que pagares algo — qualquer coisa, um café, uma conta, uma compra online — para um segundo antes.
+
+Põe uma mão na barriga.
+
+[pause]
+
+Onde está a tensão? Onde está o alívio? Há aperto ou há expansão?
+
+Respira.
+
+Fica com o que sentires sem tentar mudá-lo.
+
+[pause]
+
+Faz isto três vezes esta semana. Ao terceiro dia, vais começar a reconhecer algo que sempre esteve lá — mas que nunca teve nome.
+
+[long pause]
+
+O teu corpo tem uma relação com o dinheiro.
+
+E é mais antiga do que qualquer conta bancária.`,
+      },
+    ],
+  },
 ];
