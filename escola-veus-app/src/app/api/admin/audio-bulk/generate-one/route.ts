@@ -66,10 +66,11 @@ export async function POST(req: NextRequest) {
       output_format: "mp3_44100_128",
     };
 
-    // Language code SO se for explicitamente enviado (ex: "pt-PT", "pt").
-    // Sem ele, o voiceId determina o sotaque original do cloning/design.
-    // Default = nao enviar (evita que "pt" force pt-BR em multilingual v2).
-    if (languageCode) {
+    // Language code SO se explicitamente enviado E se o modelo suporta.
+    // IMPORTANTE: eleven_v3 NAO aceita language_code — auto-detecta o idioma.
+    // Tentar enviar resulta em erro 400 'unsupported_language'.
+    // Apenas v2/turbo aceitam language_code.
+    if (languageCode && modelId !== "eleven_v3") {
       body.language_code = languageCode;
     }
 

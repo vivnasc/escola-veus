@@ -9422,4 +9422,361 @@ E isso, muitas vezes, só fica visível quando tu, pela primeira vez, não traze
       },
     ],
   },
+  {
+    id: "curso-limite-sagrado-m6",
+    titulo: "Curso Limite Sagrado — Módulo 6 (Aulas A, B, C)",
+    descricao: "Limites no Trabalho. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m6a",
+        titulo: "M6.A — O trabalho que invade o domingo",
+        curso: "limite-sagrado",
+        texto: `Quando foi o último domingo em que não pensaste no trabalho?
+
+[pause]
+
+Não só não trabalhaste — não pensaste.
+
+[long pause]
+
+Há uma fronteira invisível que foi caindo ao longo dos últimos anos.
+
+A fronteira entre trabalho e o resto da vida.
+
+[pause]
+
+Não caiu de uma vez.
+
+Caiu num telefonema atendido à hora do jantar. Num email respondido a caminho da casa de banho. Numa reunião agendada para as oito da manhã de segunda.
+
+[short pause]
+
+Cada pequena rendição pareceu razoável no momento.
+
+Mas o conjunto de todas — ao longo do tempo — apagou a tua vida pessoal.
+
+[long pause]
+
+O trabalho actual está desenhado para se expandir até ao limite do que aceitares.
+
+Não é paranoia. É estrutural.
+
+[pause]
+
+Há mais estímulos, mais canais, mais notificações, mais expectativa de resposta rápida.
+
+E nenhum limite é dado por quem te paga — porque cada pessoa a dar-te trabalho beneficia da tua disponibilidade sem custo.
+
+[short pause]
+
+O limite só existe se tu o impores.
+
+[long pause]
+
+Mas há uma coisa que complica.
+
+Tu, provavelmente, internalizaste a ética do trabalho como parte da tua identidade.
+
+Trabalhar muito é virtude.
+
+Estar sempre disponível é ser profissional.
+
+Recusar pedidos fora do horário é ser difícil.
+
+[pause]
+
+E então o conflito não é só com o empregador. É contigo.
+
+Cada vez que ignoras um email fora de horas, algo dentro de ti sussurra: devia ter respondido.
+
+[short pause]
+
+Esta voz não é tua.
+
+É a voz da cultura laboral que foste absorvendo desde que começaste a trabalhar.
+
+[long pause]
+
+Recuperar o domingo — ou seja que tempo pessoal for teu — começa por uma decisão silenciosa.
+
+Decidir que há uma parte da tua semana em que o trabalho não existe.
+
+[pause]
+
+Não que trabalhas menos. Que, num bloco específico, deixa de existir.
+
+O telefone fica do outro lado da casa. O email não se abre. As notificações desligam-se.
+
+[short pause]
+
+Durante as primeiras semanas, a ansiedade vai estar alta.
+
+O corpo habituou-se a uma vigilância permanente.
+
+Vai haver momentos em que tu sentes: tenho de ir ver, pode haver algo urgente.
+
+[pause]
+
+Resiste.
+
+Na enorme maioria das vezes, não há nada urgente.
+
+E se houver, a pessoa vai ligar. Emails podem esperar seis horas.
+
+[short pause]
+
+Ao fim de umas semanas, o corpo começa a descansar outra vez.
+
+E o domingo — ou o bloco que escolheste — torna-se, pela primeira vez em muito tempo, realmente teu.
+
+[long pause]
+
+Esta semana, escolhe um único bloco de tempo pessoal.
+
+Pode ser uma tarde de sábado. Pode ser a primeira hora do dia. Pode ser duas horas à noite.
+
+Nesse bloco, não há trabalho.
+
+Nem o email. Nem mensagens profissionais. Nem pensamentos sobre projectos.
+
+[pause]
+
+Se aparecer um pensamento sobre trabalho, não o combatas.
+
+Diz-lhe: agora não. Volto a ti amanhã às nove.
+
+[short pause]
+
+E continua com o que estavas a fazer.
+
+A repetição deste gesto, semana após semana, devolve-te território.
+
+[long pause]
+
+A vida pessoal não é o que sobra depois do trabalho.
+
+É o que escolhes proteger antes de o trabalho começar a pedir.`,
+      },
+      {
+        id: "limite-sagrado-m6b",
+        titulo: "M6.B — Pedidos que chegam como ordens",
+        curso: "limite-sagrado",
+        texto: `Há pedidos de trabalho que chegam com a forma de pergunta mas o peso de ordem.
+
+[pause]
+
+"Consegues ver isto até ao fim do dia?"
+
+"Podias só confirmar aquela coisa?"
+
+"Achas que conseguias pôr isto para amanhã de manhã?"
+
+[long pause]
+
+Gramaticalmente, são perguntas.
+
+Emocionalmente, são obrigações.
+
+[pause]
+
+Porque quem pergunta — um chefe, um cliente, uma colega de hierarquia maior — não está realmente a perguntar.
+
+Está a anunciar a expectativa.
+
+[short pause]
+
+E tu, treinada a ser agradável, respondes ao verbo: sim, consigo.
+
+Mesmo quando o corpo, o calendário, e o bom senso dizem que não devias.
+
+[long pause]
+
+A diferença entre um pedido real e um pedido disfarçado de ordem é esta.
+
+Um pedido real aceita um não sem consequências.
+
+Um pedido disfarçado de ordem aceita um não mas regista-o como problema.
+
+[pause]
+
+E tu aprendeste, ao longo dos anos, a distinguir os dois.
+
+Sabes, pelo tom, pelo momento, pelo tipo de pessoa — qual é qual.
+
+[short pause]
+
+O problema é que tens respondido a ambos da mesma forma: com um sim.
+
+[long pause]
+
+Há uma resposta intermédia que muitas mulheres não praticam.
+
+Não é sim nem é não.
+
+É: deixa-me ver e volto a ti.
+
+[pause]
+
+Esta frase, pequena, cria espaço.
+
+Quebra a dinâmica imediata. Indica que tu estás a considerar, não a reagir.
+
+[short pause]
+
+E muitas vezes — mais vezes do que tu imaginas — a pessoa que fez o pedido responde: ok, não é urgente, podes dizer-me amanhã.
+
+[pause]
+
+A urgência implícita desaparece quando encontra resistência educada.
+
+[long pause]
+
+Porque a maioria dos pedidos disfarçados de ordem não é urgente.
+
+A urgência é invocada para forçar aceitação imediata — antes de tu teres tempo de considerar.
+
+Quando crias pausa, desconstróis a urgência.
+
+[short pause]
+
+E fica visível o pedido real: algo que pode ou não fazer sentido, num timing que pode ou não te servir.
+
+[long pause]
+
+Esta semana, quando receberes um pedido de trabalho que normalmente aceitarias imediatamente, pratica a frase intermédia.
+
+Deixa-me ver e volto a ti.
+
+[pause]
+
+Não precisas de justificar. Não precisas de dar data concreta.
+
+Só precisas de não dizer sim imediatamente.
+
+[short pause]
+
+Depois, com calma, decides.
+
+Podes aceitar. Podes recusar. Podes negociar prazo.
+
+A partir de um lugar teu — não do reflexo que foi instalado em ti pela dinâmica profissional.
+
+[long pause]
+
+O sim que dás de um lugar teu vale mais do que dez sins reflexos.
+
+E a pessoa que te pediu — mesmo que não saiba articular — vai começar a respeitar-te mais.`,
+      },
+      {
+        id: "limite-sagrado-m6c",
+        titulo: "M6.C — Reuniões que não te pertencem",
+        curso: "limite-sagrado",
+        texto: `Estás numa reunião que podia ter sido um email.
+
+[pause]
+
+Alguém está a falar há cinco minutos sobre algo que não te diz respeito.
+
+Outra pessoa acrescenta detalhes.
+
+Tu olhas para o relógio, contas quantas horas de trabalho perdeste esta semana assim.
+
+[long pause]
+
+E no fim, há um "resumo" que poderia ter sido enviado desde o início.
+
+[pause]
+
+Esta reunião, e as outras como ela, são um dos ladrões mais silenciosos do teu tempo profissional.
+
+[short pause]
+
+E tu, quase sempre, não podes recusar.
+
+A cultura de trabalho actual normalizou reuniões como forma default de colaboração — mesmo quando não são necessárias.
+
+[long pause]
+
+Há, no entanto, mais espaço para negociar do que tu pensas.
+
+Nem todas as reuniões a que és convidada têm o mesmo peso.
+
+[pause]
+
+Algumas são obrigatórias, hierarquicamente impostas. Estas aceitas.
+
+Outras são convites informais, de colegas ou projectos paralelos. Estas podem ser recusadas ou participadas parcialmente.
+
+[short pause]
+
+O problema é que, ao longo dos anos, tu aceitaste todas. E o teu calendário tornou-se uma colagem de compromissos que não te pertencem.
+
+[long pause]
+
+A recuperação começa por uma distinção.
+
+Olha para a tua semana passada.
+
+Liste as reuniões em que estiveste.
+
+Ao lado de cada uma, escreve: era obrigatória, ou eu podia ter recusado?
+
+[pause]
+
+Depois, ao lado de cada reunião em que podias ter recusado, escreve: precisava mesmo de estar lá? Fiz diferença?
+
+[short pause]
+
+Se tiveste diferença — perfeito, foi tempo bem gasto.
+
+Se não tiveste diferença, foi tempo roubado a ti por uma norma cultural que não questionaste.
+
+[long pause]
+
+A partir de próxima semana, pratica uma recusa educada a reuniões pouco relevantes.
+
+Formulações úteis.
+
+"Consigo participar nos primeiros dez minutos, depois tenho outro compromisso."
+
+"Podes actualizar-me depois por email?"
+
+"Vou ler a acta — não sinto que precisa da minha contribuição activa."
+
+[pause]
+
+Nenhuma destas frases é agressiva.
+
+Todas marcam posição.
+
+[short pause]
+
+Inicialmente, as pessoas vão ficar ligeiramente surpreendidas.
+
+Gradualmente, adaptam-se. E o teu calendário começa a voltar a ti.
+
+[long pause]
+
+O tempo profissional de uma mulher adulta deve ser ocupado com trabalho real.
+
+Não com performance de presença.
+
+[pause]
+
+Cada hora de reunião inútil é uma hora que não estás a fazer o trabalho para que foste paga.
+
+E é uma hora que não estás a fazer outras coisas também importantes — descanso, pensamento próprio, preparação para tarefas que exigem concentração.
+
+[long pause]
+
+Recuperar o calendário é, para mulheres adultas, um dos limites mais concretos que podem praticar.
+
+Menos convites aceites.
+
+Mais tempo para o trabalho que importa.
+
+E para a mulher que faz esse trabalho.`,
+      },
+    ],
+  },
 ];
