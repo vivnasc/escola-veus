@@ -42,6 +42,17 @@ export default function AudioBulkPage() {
 
   // ─── Actions ──────────────────────────────────────────────────────────
 
+  // Deriva a pasta Supabase a partir do id do preset.
+  // - curso-ouro-proprio-m1 → "curso-ouro-proprio"
+  // - curso-limite-sagrado-m1 → "curso-limite-sagrado"
+  // - nomear-serie-X → "youtube"
+  function folderFromPresetId(presetId: string): string {
+    if (presetId.startsWith("curso-ouro-proprio")) return "curso-ouro-proprio";
+    if (presetId.startsWith("curso-limite-sagrado")) return "curso-limite-sagrado";
+    if (presetId.startsWith("curso-")) return presetId.replace(/-m\d+$/, "");
+    return "youtube";
+  }
+
   const loadPreset = useCallback((presetId: string) => {
     const preset = NOMEAR_PRESETS.find((p) => p.id === presetId);
     if (!preset) return;
@@ -52,6 +63,8 @@ export default function AudioBulkPage() {
       status: "pending",
     }));
     setScripts(rows);
+    // Auto-muda pasta Supabase conforme o tipo de preset (youtube vs curso)
+    setFolder(folderFromPresetId(presetId));
     setError(null);
   }, []);
 
