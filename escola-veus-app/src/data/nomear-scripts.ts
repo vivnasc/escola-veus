@@ -22804,4 +22804,513 @@ Excepto tu — em saúde, em paz, em tempo recuperado para a tua vida real.`,
       },
     ],
   },
+  {
+    id: "curso-a-fome-m7",
+    titulo: "Curso A Fome — Módulo 7 (Aulas A, B, C)",
+    descricao: "Comer com Outros.",
+    scripts: [
+      {
+        id: "a-fome-m7a",
+        titulo: "M7.A — A mesa de família onde aprendeste",
+        curso: "a-fome",
+        texto: `Antes de teres opinião própria sobre comida, viste como se comia em tua casa.
+
+[pause]
+
+E o que viste ficou.
+
+[long pause]
+
+Quem servia primeiro.
+
+Quem comia mais.
+
+Quem deixava sempre alguma coisa no prato e quem limpava como se fosse a última refeição.
+
+Quem fazia comentários sobre o que os outros estavam a comer.
+
+Quem se levantava com pressa antes de acabar.
+
+[short pause]
+
+Tu não decoraste estas regras.
+
+[pause]
+
+Absorveste.
+
+[short pause]
+
+Da mesma forma que aprendeste a língua materna sem aulas formais.
+
+[long pause]
+
+A mesa de família é a primeira escola alimentar que existe na tua vida.
+
+[pause]
+
+E é a mais influente — porque acontece todos os dias, durante anos, antes de qualquer outra ideia entrar em ti.
+
+[short pause]
+
+Por isso, em adulta, há gestos que tu fazes à mesa sem perceber porquê.
+
+[pause]
+
+Comer depressa, mesmo quando tens tempo.
+
+Servir os outros antes de te servires.
+
+Pôr menos no prato do que comerias se ninguém estivesse a olhar.
+
+Recusar a sobremesa em sociedade e comê-la depois, sozinha, no frigorífico.
+
+[long pause]
+
+Estes gestos não são teus.
+
+[pause]
+
+São da tua mesa de origem.
+
+[short pause]
+
+E continuam a operar em ti, em adulta, em mesas completamente diferentes — em jantares de trabalho, em encontros, em casa de pessoas que nem conheces.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de memória.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"A mesa onde aprendi a comer."
+
+[short pause]
+
+E desenha, em palavras, essa mesa.
+
+[pause]
+
+Quem se sentava onde.
+
+Quem servia.
+
+Quem mandava em silêncio na refeição.
+
+Quem comentava o prato dos outros.
+
+Quem comia com prazer e quem comia com vergonha.
+
+[long pause]
+
+Não tens de ser exaustiva. Escreve o que vier — sete a dez observações chegam.
+
+[pause]
+
+Quando acabares, lê.
+
+[short pause]
+
+E faz uma única pergunta a seguir, e escreve a resposta noutra folha:
+
+"Quais destas coisas eu ainda faço hoje, mesmo sem reparar?"
+
+[long pause]
+
+Provavelmente vais reparar em três ou quatro coisas.
+
+[pause]
+
+Coisas pequenas. Mas que se repetem em todas as mesas em que te sentas há trinta anos.
+
+[short pause]
+
+Comes sempre depressa, mesmo quando ninguém te vai cobrar a tigela.
+
+Pões-te sempre a servir os outros, mesmo quando não és anfitriã.
+
+Reduzes sempre a porção quando há uma mulher mais magra à mesa.
+
+Calas a fome real para evitar comentário antigo que já ninguém faria.
+
+[long pause]
+
+Este reconhecimento, sozinho, não muda o gesto imediatamente.
+
+[pause]
+
+Mas começa, devagar, a tirar-lhe a invisibilidade.
+
+[short pause]
+
+E o que é visível pode, com tempo, ser escolhido em vez de obedecido.
+
+[long pause]
+
+Não tens de mudar tudo da tua mesa de origem.
+
+[pause]
+
+Há coisas que aprendeste lá que são boas — partilhar, conversar a comer, cuidar de quem se senta contigo.
+
+Essas, mantém.
+
+[short pause]
+
+Mas as outras — as que te tiraram a fome legítima sem te perguntar — essas, com o tempo, podes começar a deixar para trás.
+
+[pause]
+
+E a tua mesa, em adulta, pode finalmente passar a parecer mais tua e menos da mesa onde aprendeste.`,
+      },
+      {
+        id: "a-fome-m7b",
+        titulo: "M7.B — O jantar com amigas onde escolhes em função delas",
+        curso: "a-fome",
+        texto: `Quando jantas com amigas, raramente escolhes o que te apetece.
+
+[pause]
+
+Escolhes em função do que elas estão a escolher.
+
+[long pause]
+
+Repara na coreografia.
+
+[pause]
+
+A primeira amiga abre o menu e diz "vou pedir só uma salada, não tenho muita fome."
+
+A segunda olha para ti e para a terceira: "também vou só pelo leve."
+
+E tu, que entraste no restaurante com vontade de pedir massa com queijo, fechas o menu e dizes "também acho que vou pela salada."
+
+[short pause]
+
+Não foi escolha.
+
+Foi adaptação.
+
+[long pause]
+
+Esta adaptação acontece em quase todas as mulheres adultas, em quase todos os contextos sociais.
+
+[pause]
+
+E acontece tão automaticamente que tu nem reparas que a fizeste.
+
+[short pause]
+
+Só dás conta, mais tarde, quando chegas a casa e abres o frigorífico.
+
+[pause]
+
+Comes a sério aquilo que querias ter pedido no restaurante.
+
+Sozinha. Em pé. Sem o copo de vinho. Sem a conversa.
+
+[long pause]
+
+A pergunta é honesta.
+
+[pause]
+
+Porque é que, num jantar com amigas, tu não consegues pedir o que te apetece?
+
+[short pause]
+
+A resposta tem várias camadas.
+
+[long pause]
+
+Primeira camada: medo do julgamento silencioso das outras mulheres.
+
+[pause]
+
+Se tu pedes o prato pesado e elas pedem salada, tu, mesmo sem ninguém comentar, sentes que ficaste exposta.
+
+[short pause]
+
+Ficaste como a "que não tem auto-controlo".
+
+A "que come sem cuidado".
+
+A "que provavelmente é por isso que está com peso a mais".
+
+[long pause]
+
+Estes julgamentos podem nem existir nas cabeças delas.
+
+Mas existem na tua cabeça, projectados nelas.
+
+[pause]
+
+E isso chega para te fazer mudar a escolha.
+
+[long pause]
+
+Segunda camada: solidariedade reflexa.
+
+[pause]
+
+Se elas estão a "ter cuidado", tu, ao pedires um prato pesado, sentes que estás a quebrar a aliança feminina implícita.
+
+[short pause]
+
+A aliança implícita é: "todas nós somos mulheres em vigilância sobre o nosso corpo, todas estamos juntas neste esforço."
+
+[pause]
+
+Pedir o prato pesado é traição silenciosa a esta aliança.
+
+[long pause]
+
+Esta aliança é, em si, uma das coisas mais danosas entre mulheres adultas.
+
+[pause]
+
+Porque transforma um momento que devia ser de prazer partilhado em momento de vigilância partilhada.
+
+[short pause]
+
+E a vigilância partilhada não alimenta amizades. Esgota-as.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno mas corajoso.
+
+[pause]
+
+Da próxima vez que jantares com amigas, antes de chegares ao restaurante, decide o que te apetece comer.
+
+[short pause]
+
+Decide na rua, no carro, antes de ver o menu.
+
+[pause]
+
+E quando chegares e abrires o menu, pede o que decidiste.
+
+Independentemente do que as outras estão a pedir.
+
+[long pause]
+
+Vai ser desconfortável.
+
+[pause]
+
+Vais sentir, durante alguns minutos, que ficaste exposta.
+
+[short pause]
+
+Mas há uma coisa que vai acontecer que não esperas.
+
+[pause]
+
+Frequentemente, uma das outras mulheres à mesa, ao ver-te pedir o que querias, vai mudar a escolha dela e pedir o que ela queria mesmo.
+
+[long pause]
+
+Porque tu deste, sem palavras, permissão.
+
+[pause]
+
+A aliança da vigilância só se mantém enquanto todas concordarem.
+
+[short pause]
+
+Basta uma quebrar para as outras poderem, devagar, começar a quebrar também.
+
+[long pause]
+
+Este gesto pequeno — pedir o que te apetece num jantar com amigas — é gesto político maior do que parece.
+
+[pause]
+
+Porque liberta tu e, em consequência, liberta as outras.
+
+[short pause]
+
+E à noite, em casa, não vais precisar de abrir o frigorífico para comeres em segredo o que devias ter pedido à mesa.`,
+      },
+      {
+        id: "a-fome-m7c",
+        titulo: "M7.C — O encontro romântico onde finges não ter fome",
+        curso: "a-fome",
+        texto: `Há uma situação muito específica em que quase todas as mulheres adultas comem mal.
+
+[pause]
+
+O encontro romântico inicial.
+
+[long pause]
+
+Sobretudo se for jantar.
+
+Sobretudo se for com homem que te interessa.
+
+Sobretudo se for nas primeiras três ou quatro saídas.
+
+[pause]
+
+Repara no padrão.
+
+[short pause]
+
+Pedes algo leve.
+
+Não acabas o prato.
+
+Recusas a sobremesa, mesmo quando ele a pede e te oferece.
+
+Bebes com moderação para "controlar" a forma como te apresentas.
+
+[long pause]
+
+Tudo isto, em conjunto, é uma performance.
+
+[pause]
+
+A performance de mulher pequena.
+
+[short pause]
+
+Mulher que come pouco. Mulher que ocupa pouco espaço. Mulher que não tem necessidades incómodas.
+
+[long pause]
+
+Esta performance não é tua decisão consciente.
+
+[pause]
+
+É roteiro cultural antigo, instalado em ti em adolescente, que te diz que para seres desejável tens de parecer pouco exigente.
+
+[short pause]
+
+E pouco exigente, na cabeça do roteiro, começa pela mesa.
+
+[long pause]
+
+Porque uma mulher que tem fome real, que pede uma segunda dose, que limpa o prato, que pede sobremesa e a come com prazer — é mulher que mostra apetite.
+
+[pause]
+
+E o roteiro antigo diz: mulher com apetite é mulher difícil.
+
+[short pause]
+
+Mulher difícil afasta o homem.
+
+[pause]
+
+Por isso, sem te perguntar se concordas, o teu corpo aprende a esconder o apetite na presença masculina inicial.
+
+[long pause]
+
+A consequência desta performance é dupla.
+
+[pause]
+
+A primeira: chegas a casa com fome real e comes sozinha, no escuro, o que devias ter comido à mesa.
+
+[short pause]
+
+A segunda, mais grave: estás a estabelecer, desde o início da relação, um precedente.
+
+[pause]
+
+O precedente de mulher que esconde necessidades.
+
+[long pause]
+
+Se a relação avançar, esse precedente vai pesar.
+
+[pause]
+
+A mulher que escondeu fome no encontro inicial vai esconder cansaço no terceiro mês.
+
+Vai esconder vontade de não fazer sexo na sexta-feira em que está esgotada.
+
+Vai esconder o que pensa sobre a família dele que não gosta dela.
+
+[short pause]
+
+A mulher pequena, instalada à mesa do primeiro encontro, instala-se também em todas as áreas da relação.
+
+[long pause]
+
+Esta semana — ou no próximo encontro romântico que tiveres, mesmo que demore semanas — vais fazer uma coisa diferente.
+
+[pause]
+
+Vais comer o que te apetece comer.
+
+[short pause]
+
+Sem performance. Sem cálculo. Sem roteiro.
+
+[pause]
+
+Vais pedir o prato que te apetece. Vais comer a porção que precisas para ficar saciada. Vais aceitar a sobremesa, se te apetecer. Vais beber o copo de vinho extra, se for o caso.
+
+[long pause]
+
+E vais ver o que acontece.
+
+[pause]
+
+Há duas hipóteses.
+
+[short pause]
+
+Primeira hipótese: ele acolhe. Acha graça. Aprecia mulher que come com prazer. Sente-se mais à vontade na presença de pessoa real do que na presença de pessoa em performance.
+
+[pause]
+
+Segunda hipótese: ele recua subtilmente. Faz comentário sobre quanto comeste. Volta a sair com mulher mais "discreta" na próxima vez.
+
+[long pause]
+
+A segunda hipótese não é falha tua.
+
+[pause]
+
+É informação preciosa sobre o tipo de homem com quem estavas a sair.
+
+[short pause]
+
+Se ele recua porque tu comeste o que querias num jantar, ele ia recuar mais tarde por motivos piores.
+
+[pause]
+
+Por teres opinião. Por teres limites. Por teres dia mau.
+
+[long pause]
+
+A performance de mulher pequena à mesa filtra para fora os homens que não te queriam de qualquer forma — mas só percebes isso ao quinto mês.
+
+[pause]
+
+Comer como tu comes desde o primeiro encontro filtra-os logo. Em uma noite.
+
+[short pause]
+
+E poupa-te tempo, energia, e relação que ia acabar mal de qualquer forma.
+
+[long pause]
+
+Não comes para te apresentares como és para o homem de jantar.
+
+[pause]
+
+Comes para descobrires, com o mínimo de tempo perdido, se ele consegue jantar com a mulher que tu és.
+
+[short pause]
+
+Esta é, na verdade, uma das ferramentas mais simples e mais eficazes que tens para escolheres bem com quem ficar.`,
+      },
+    ],
+  },
 ];
