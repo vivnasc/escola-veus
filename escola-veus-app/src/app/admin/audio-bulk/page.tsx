@@ -241,6 +241,63 @@ export default function AudioBulkPage() {
     [scripts, voiceId, modelId, folder],
   );
 
+  // Consulta Supabase para saber quais scripts já têm audio gerado nesta pasta.
+  // Marca esses scripts como 'done' com o URL existente — evita re-gerar.
+  const syncWithSupabase = useCallback(async () => {
+    if (scripts.length === 0) {
+      setError("Carrega scripts primeiro");
+      return;
+    }
+    try {
+      const slugs = scripts.map((s) =>
+        (s.titulo || "audio")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 60),
+      );
+      const res = await fetch("/api/admin/audio-bulk/check-existing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ folder, slugs }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.erro || "Erro ao verificar Supabase");
+
+      const existing = data.existing as Record<string, string>;
+      const foundCount = Object.keys(existing).length;
+
+      setScripts((prev) =>
+        prev.map((s) => {
+          const slug = (s.titulo || "audio")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "")
+            .slice(0, 60);
+          if (existing[slug] && s.status !== "done") {
+            return {
+              ...s,
+              status: "done" as const,
+              audioUrl: existing[slug],
+            };
+          }
+          return s;
+        }),
+      );
+      setError(
+        foundCount > 0
+          ? `${foundCount} ficheiros encontrados em Supabase — marcados como prontos.`
+          : "Nenhum ficheiro existente encontrado na pasta.",
+      );
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erro");
+    }
+  }, [scripts, folder]);
+
   const generateAll = useCallback(async () => {
     setGenerating(true);
     setError(null);
@@ -513,6 +570,15 @@ export default function AudioBulkPage() {
                     : doneCount > 0
                       ? `Continuar (faltam ${scripts.length - doneCount})`
                       : `Gerar todos (${scripts.length})`}
+              </button>
+
+              <button
+                onClick={syncWithSupabase}
+                disabled={generating}
+                className="rounded-lg border-2 border-escola-dourado/60 px-4 py-2.5 text-sm font-medium text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40"
+                title="Verifica quais scripts ja tem audio gerado no Supabase (pasta actual) e marca como prontos — evita re-gerar"
+              >
+                🔍 Verificar Supabase (pasta {folder})
               </button>
 
               {doneCount > 0 && (
