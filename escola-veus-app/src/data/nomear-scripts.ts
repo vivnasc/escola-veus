@@ -16419,4 +16419,345 @@ A liberdade de já não calar tudo o que durante demasiado tempo foi calado.`,
       },
     ],
   },
+  {
+    id: "curso-o-silencio-que-grita-m8",
+    titulo: "Curso O Silêncio que Grita — Módulo 8 (Aulas A, B, C)",
+    descricao: "A Voz que Fica. Fecho do curso.",
+    scripts: [
+      {
+        id: "o-silencio-que-grita-m8a",
+        titulo: "M8.A — Começar a falar sem drama",
+        curso: "o-silencio-que-grita",
+        texto: `Quebrar décadas de silêncio não tem de ser dramático.
+
+[pause]
+
+Não é cena. Não é confronto. Não é ruptura.
+
+[long pause]
+
+Pode ser, simplesmente, começar a dizer pequenas verdades em momentos comuns.
+
+[pause]
+
+Numa conversa banal com a tua mãe, dizer "tenho andado cansada" em vez de "está tudo bem" automático.
+
+Num jantar de família, mencionar discretamente uma coisa que tu pensas e que normalmente não dizes.
+
+Numa conversa com o teu parceiro, partilhar uma observação que normalmente engoles.
+
+[short pause]
+
+Cada uma destas pequenas verdades é movimento de descoincidência.
+
+Descoincidência entre a versão pública de ti e a versão real.
+
+[long pause]
+
+Quando começas a praticar pequenas descoincidências, dois efeitos aparecem.
+
+[pause]
+
+O primeiro é desconforto. Tu sentes a estranheza de dizer algo verdadeiro num contexto onde costumavas dizer algo conveniente.
+
+O segundo é alívio. Pequeno mas real. Por baixo do desconforto.
+
+[short pause]
+
+Com o tempo, o alívio cresce e o desconforto diminui.
+
+[pause]
+
+E tu, sem cena, começas a ser mais inteira nas relações.
+
+[long pause]
+
+Esta forma de mudança — gradual, sem drama — é mais sustentável do que mudanças explosivas.
+
+[pause]
+
+Conversas dramáticas, em que tudo é dito de uma vez, costumam custar mais do que produzem.
+
+A relação fica em choque. As pessoas defendem-se. E muitas vezes as conversas seguintes voltam ao silêncio.
+
+[short pause]
+
+Pequenas descoincidências, ao longo dos meses, alteram a temperatura sem desencadear defesa.
+
+[pause]
+
+E ao fim de um ano, a relação é diferente — sem que ninguém possa apontar uma única conversa específica em que tudo mudou.
+
+[long pause]
+
+Esta semana, escolhe três contextos diferentes onde costumas dizer algo conveniente.
+
+Identifica, para cada um, a pequena verdade que normalmente fica por dizer.
+
+[pause]
+
+Não vais dizer todas de uma vez.
+
+Vais começar a praticar — em momentos confortáveis — a substituição da resposta automática pela resposta um pouco mais verdadeira.
+
+[short pause]
+
+Pequenos passos.
+
+Sem cena.
+
+[pause]
+
+E, ao longo do ano, vais notar que muitas das tuas relações têm mais ar do que tinham antes.
+
+[long pause]
+
+Falar sem drama é a forma mais sustentável de quebrar décadas de silêncio.
+
+[pause]
+
+E é também, ironicamente, a forma que produz mais transformação real ao longo do tempo.`,
+      },
+      {
+        id: "o-silencio-que-grita-m8b",
+        titulo: "M8.B — O direito de ser compreendida mesmo imperfeitamente",
+        curso: "o-silencio-que-grita",
+        texto: `Há uma exigência interna que muitas mulheres carregam.
+
+[pause]
+
+A exigência de ser compreendida perfeitamente quando finalmente decidem falar.
+
+[long pause]
+
+Esta exigência é, em parte, sequela do silêncio prolongado.
+
+[pause]
+
+Quando uma pessoa cala durante anos algo importante, e finalmente decide dizer, espera — implícita ou explicitamente — que a outra pessoa receba com profundidade equivalente ao tempo de silêncio.
+
+[short pause]
+
+Esta expectativa raramente é cumprida.
+
+[pause]
+
+A outra pessoa, ao receber a comunicação, processa em tempo real. Não tem o contexto interior que tu construíste durante décadas.
+
+E responde da forma que consegue no momento — quase sempre incompleta, por vezes até insatisfatória.
+
+[long pause]
+
+Quando a resposta é insatisfatória, a tendência é recolher.
+
+"Não valeu a pena. Não foi compreendida. Vou voltar ao silêncio."
+
+[pause]
+
+Esta tendência, embora compreensível, é trágica.
+
+Porque deixa morrer uma comunicação que, com paciência, podia evoluir.
+
+[short pause]
+
+A outra pessoa, depois da primeira reacção imperfeita, continua a processar.
+
+E muitas vezes, dias depois, semanas depois, mostra que afinal compreendeu mais do que parecia inicialmente.
+
+[pause]
+
+Mas se tu já recolheste, e voltaste ao silêncio, perdeu-se a oportunidade dessa compreensão se manifestar.
+
+[long pause]
+
+Aceita, à partida, que vais ser compreendida imperfeitamente.
+
+[pause]
+
+A primeira reacção da outra pessoa raramente é proporcional ao que tu estás a partilhar.
+
+E não é necessariamente desinteresse — é, simplesmente, processamento em tempo limitado.
+
+[short pause]
+
+A compreensão real costuma vir depois.
+
+Em pequenos sinais. Em comentários nas semanas seguintes. Em mudanças subtis na forma como a outra pessoa se relaciona contigo.
+
+[long pause]
+
+Tu tens o direito de ser compreendida — mesmo imperfeitamente, mesmo lentamente.
+
+[pause]
+
+E tens a responsabilidade, se queres realmente comunicar, de não exigir compreensão perfeita à primeira tentativa.
+
+[short pause]
+
+Esta paciência relacional é difícil. Especialmente para quem calou muito durante muito tempo.
+
+[pause]
+
+Mas é o único caminho realista para que a comunicação verdadeira aconteça nas relações importantes.
+
+[long pause]
+
+Esta semana, se decidires falar de algo importante a alguém próximo, prepara-te para uma resposta imperfeita.
+
+[pause]
+
+Em vez de te magoares com a primeira reacção, observa-a como informação parcial — não como veredicto final.
+
+[short pause]
+
+Continua a relação. Não recolhas imediatamente.
+
+E vê o que acontece nos dias e semanas seguintes.
+
+[pause]
+
+Muitas vezes, vais ficar surpreendida.
+
+A outra pessoa estava a processar. E o processamento, com tempo, leva-a mais longe do que a primeira reacção sugeriu.
+
+[long pause]
+
+Compreensão imperfeita imediata pode ser o início de compreensão profunda eventual.
+
+Mas só se tu tiveres paciência para deixar a compreensão crescer no seu tempo.`,
+      },
+      {
+        id: "o-silencio-que-grita-m8c",
+        titulo: "M8.C — A voz é legado",
+        curso: "o-silencio-que-grita",
+        texto: `No fim deste curso, pensa numa coisa.
+
+[pause]
+
+A voz que tu encontrares nos próximos anos não fica em ti.
+
+[long pause]
+
+Vai para as filhas. Para as sobrinhas. Para as alunas. Para as mulheres mais novas que te observam.
+
+[pause]
+
+Cada vez que tu falas algo que durante décadas foi calado na tua família, abres possibilidade de fala para quem vem depois.
+
+[short pause]
+
+Não porque elas tenham que repetir o que tu disseste.
+
+Mas porque o exemplo de uma mulher que conseguiu finalmente falar — depois de anos a calar — torna-se referência interna para outras.
+
+[long pause]
+
+Esta é a transmissão silenciosa mais importante.
+
+[pause]
+
+Não passa por palavras.
+
+Passa por presença.
+
+[short pause]
+
+Uma rapariga que cresce a ver a tia dizer o que pensa, mesmo quando é desconfortável, aprende algo que nenhum livro lhe pode ensinar.
+
+Aprende que isso é possível.
+
+[pause]
+
+E essa possibilidade, depositada nela em criança, opera o resto da vida.
+
+[long pause]
+
+Se tu, com este curso, começares a quebrar alguns silêncios das tuas relações, estás a fazer trabalho que beneficia muito mais gente do que imaginas.
+
+[pause]
+
+A tua filha, mesmo que não tenhas filha biológica.
+
+A tua sobrinha. A tua afilhada. A tua aluna. A tua amiga mais nova.
+
+[short pause]
+
+Cada uma destas mulheres está, de alguma forma, a observar-te.
+
+E cada vez que tu fizeres algo novo — falar onde antes calavas, perguntar onde antes não perguntavas, recusar onde antes aceitavas — estás a expandir o reportório de possibilidades delas.
+
+[long pause]
+
+Isto é legado.
+
+[pause]
+
+Não é legado escrito. Não é legado financeiro.
+
+É legado relacional.
+
+[short pause]
+
+E é, em muitas linhagens femininas, o legado que mais transforma.
+
+[pause]
+
+Porque rompe ciclos que podiam continuar indefinidamente.
+
+E abre, em quem vem depois, capacidade de viver de forma mais inteira do que as gerações anteriores conseguiram.
+
+[long pause]
+
+A voz que tu encontrares nos próximos anos não é só tua.
+
+[pause]
+
+Pertence-te.
+
+Mas ressoa para fora.
+
+E o eco dessa ressonância chega muito mais longe do que tu vais alguma vez saber.
+
+[long pause]
+
+Termina este curso com uma pergunta para guardar.
+
+[pause]
+
+Daqui a vinte anos, quando tu já fores uma mulher mais velha, qual é a voz que vais querer ter sido?
+
+[short pause]
+
+Calada — porque foi mais fácil?
+
+Ou tua — porque, em algum ponto, decidiste valer a pena dizer o que tinhas para dizer?
+
+[pause]
+
+A resposta a esta pergunta, repetida em silêncio nos próximos anos, vai orientar mais decisões do que tu imaginas.
+
+[long pause]
+
+A voz que fica é a voz que outras vão lembrar.
+
+[pause]
+
+Não pelo que disseste especificamente.
+
+Pela forma como, num momento da tua vida, decidiste finalmente falar — depois de gerações de mulheres que não puderam.
+
+[short pause]
+
+E essa decisão, mesmo que tu não a celebres, fica.
+
+[pause]
+
+Como semente.
+
+[short pause]
+
+Em mulheres que vão crescer com mais hipóteses de fala porque tu, antes delas, soubeste recuperar a tua.`,
+      },
+    ],
+  },
 ];
