@@ -27250,4 +27250,607 @@ Apenas na escala humana em que, ao longo dos anos, ele é sustentável.`,
       },
     ],
   },
+  {
+    id: "curso-a-chama-m7",
+    titulo: "Curso A Chama — Módulo 7 (Aulas A, B, C)",
+    descricao: "A Chama Fora da Cama.",
+    scripts: [
+      {
+        id: "a-chama-m7a",
+        titulo: "M7.A — O que te dava entusiasmo aos vinte e que já não sentes",
+        curso: "a-chama",
+        texto: `A chama, nesta altura do curso, já percebeste que não é só sobre sexo.
+
+[pause]
+
+É sobre capacidade geral de desejar.
+
+[long pause]
+
+E esta capacidade, em mulheres adultas, afecta todas as áreas da vida — não só a cama.
+
+[pause]
+
+Se tu não desejas nada durante o dia, é pouco provável que desejes muito à noite.
+
+[short pause]
+
+A chama é, no fundo, uma qualidade de relação com a vida.
+
+[pause]
+
+E quando ela se apaga em ti, apaga-se em várias frentes ao mesmo tempo.
+
+[long pause]
+
+Pensa em ti aos vinte, vinte e dois anos.
+
+[pause]
+
+O que te dava entusiasmo na altura?
+
+[short pause]
+
+Coisas específicas. Concretas.
+
+[pause]
+
+Pode ter sido um projecto que começaste. Um grupo de amigas com quem fazias planos constantemente. Uma disciplina na universidade que te fascinava. Um estilo de música, um hobby, um sonho concreto que te animava todas as manhãs.
+
+[short pause]
+
+Pode ter sido a ideia de viver sozinha. Ou de viajar. Ou de aprender uma língua. Ou de começar uma carreira.
+
+[long pause]
+
+Agora pensa em ti hoje.
+
+[pause]
+
+Qual destes entusiasmos ainda está em ti, com a mesma intensidade?
+
+[short pause]
+
+Em quase todas as mulheres adultas, a resposta honesta é: "quase nenhum."
+
+[long pause]
+
+Isto não é necessariamente sinal de depressão.
+
+[pause]
+
+É sinal de outra coisa, mais subtil.
+
+[short pause]
+
+Ao longo dos anos, tu foste substituindo os entusiasmos próprios pelos entusiasmos dos outros.
+
+[pause]
+
+Os sonhos do teu marido.
+
+Os projectos dos teus filhos.
+
+As necessidades da tua família alargada.
+
+O trabalho que pagava as contas, independentemente de te interessar ou não.
+
+[long pause]
+
+Cada uma destas substituições foi, no seu momento, legítima.
+
+[pause]
+
+Não se pode viver em vida adulta partilhada sem atender aos entusiasmos dos outros em algum grau.
+
+[short pause]
+
+O problema não foi atender aos outros.
+
+Foi parar de atender aos teus.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de arqueologia do entusiasmo.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Coisas que me davam entusiasmo aos vinte, antes de ter responsabilidades grandes."
+
+[short pause]
+
+E escreve tudo o que te lembras.
+
+[pause]
+
+Não filtres.
+
+Não julgues.
+
+Não digas "aquilo era infantil".
+
+[short pause]
+
+Escreve: leituras específicas, projectos que tinhas em mente, pessoas com quem te via com frequência, estilos de vida que te atraíam, conversas que podias ter durante horas, sonhos pequenos e grandes.
+
+[long pause]
+
+Pode ter quinze entradas. Pode ter trinta.
+
+Quanto mais, melhor.
+
+[pause]
+
+Quando acabares, lê.
+
+[short pause]
+
+E faz uma pergunta seca, em folha separada:
+
+"De todas estas coisas, quais ainda existem na minha vida, em alguma forma?"
+
+[long pause]
+
+A maioria das mulheres, ao fazer este exercício, fica em silêncio diante da folha.
+
+[pause]
+
+Porque percebe que cinco ou seis dos entusiasmos que a definiam aos vinte simplesmente desapareceram sem ela ter tomado consciência disso.
+
+[short pause]
+
+Não foram abandonados por decisão.
+
+Foram abandonados por acumulação.
+
+[long pause]
+
+A pergunta a seguir, então, é:
+
+"Qual destes entusiasmos, se eu o recuperasse em pequena dose, mudaria a qualidade do meu ar diário?"
+
+[pause]
+
+Não tens de recuperar tudo.
+
+Não tens de voltar a ser a pessoa de vinte anos.
+
+[short pause]
+
+Escolhe um.
+
+[pause]
+
+Um único entusiasmo pequeno — uma leitura, um grupo, uma prática, um tema.
+
+[long pause]
+
+E introduz, esta semana, uma mini-versão dele na tua vida actual.
+
+[pause]
+
+Pode ser uma hora por semana. Pode ser menos.
+
+[short pause]
+
+Mas de forma regular, durante algumas semanas.
+
+[pause]
+
+E repara no que acontece.
+
+[long pause]
+
+A maioria das mulheres, quando reintroduz um único entusiasmo antigo, descreve uma sensação curiosa.
+
+[pause]
+
+"Pareço eu outra vez."
+
+[short pause]
+
+E esta sensação — pareceres tu outra vez — é, em si, reabertura da chama.
+
+[pause]
+
+Porque a chama, antes de ser desejo sexual, é capacidade de quereres coisas.
+
+[short pause]
+
+E a mulher que quer coisas — mesmo coisas pequenas, mesmo hobbies, mesmo temas aparentemente banais — é mulher com chama.
+
+[pause]
+
+O resto segue-se.`,
+      },
+      {
+        id: "a-chama-m7b",
+        titulo: "M7.B — A vontade de coisas que não tem nome",
+        curso: "a-chama",
+        texto: `Há uma vontade, em algumas mulheres adultas, que não tem nome.
+
+[pause]
+
+Não é vontade de sexo.
+
+Não é vontade de mudar de vida.
+
+Não é vontade de nada específico.
+
+[long pause]
+
+É uma vontade difusa, silenciosa, que aparece em momentos estranhos.
+
+[pause]
+
+No carro, a caminho do trabalho.
+
+A fazer o jantar numa terça-feira.
+
+A olhar pela janela numa tarde em que devias estar a fazer outra coisa.
+
+[short pause]
+
+Aparece, fica alguns segundos, e vai-se embora.
+
+[pause]
+
+E tu, sem perceber bem o que era, continuas com o que estavas a fazer.
+
+[long pause]
+
+Esta vontade sem nome é sinal de vitalidade.
+
+[pause]
+
+É a tua chama a tentar comunicar — ainda não sabes sobre o quê.
+
+[short pause]
+
+A maioria das mulheres, quando sente esta vontade difusa, descarta.
+
+Porque não tem alvo. Porque não serve para nada prático. Porque parece perda de tempo considerá-la.
+
+[pause]
+
+E a chama, descartada vezes suficientes, deixa de enviar o sinal.
+
+[long pause]
+
+Esta semana, em vez de descartares, vais registar.
+
+[pause]
+
+Arranja um caderno pequeno. Ou um bloco de notas no telemóvel.
+
+[short pause]
+
+E todas as vezes que, durante a semana, sentires aparecer em ti uma vontade difusa e sem nome, escreves uma linha.
+
+[pause]
+
+Não tens de saber o que ela era.
+
+Escreves:
+
+"Hoje, na cozinha, apareceu uma vontade sem nome. Veio devagar. Durou poucos minutos. Foi."
+
+[short pause]
+
+Ou:
+
+"Terça de tarde, a caminho do supermercado, apareceu uma vontade que eu não sei nomear. Tinha algo a ver com movimento. Foi."
+
+[long pause]
+
+Não tens de interpretar. Não tens de elaborar. Apenas registar que aconteceu.
+
+[pause]
+
+Ao fim da semana, lê as entradas em sequência.
+
+[short pause]
+
+Vai aparecer um padrão.
+
+[pause]
+
+As vontades sem nome aparecem, em geral, em momentos específicos.
+
+Em transições. Em instantes em que tu não estás a fazer nada demasiado exigente. Em pequenas pausas entre actividades.
+
+[long pause]
+
+E elas têm, frequentemente, um tom consistente.
+
+[pause]
+
+Algumas mulheres descobrem que as suas vontades sem nome apontam todas para movimento físico — caminhar, nadar, dançar.
+
+Outras descobrem que apontam para criação — escrever, pintar, tocar.
+
+Outras, para intimidade de outro tipo — conversas profundas, amizades novas, tempo sozinha.
+
+Outras, para experiências sensoriais — luz, música, texturas, cheiros.
+
+[short pause]
+
+A tua tem tom específico.
+
+E quando começas a registar, o tom torna-se visível.
+
+[long pause]
+
+A partir daí, podes começar a responder a estas vontades em pequenas doses.
+
+[pause]
+
+Não mudar a vida toda.
+
+Apenas, quando reparares na vontade, responder uma vez, em pequena escala.
+
+[short pause]
+
+Se aponta para movimento, sai para caminhar cinco minutos.
+
+Se aponta para criação, escreve duas linhas num caderno.
+
+Se aponta para intimidade, manda mensagem a uma amiga.
+
+Se aponta para experiência sensorial, põe música que gostas durante cinco minutos.
+
+[long pause]
+
+Estas pequenas respostas são treino.
+
+[pause]
+
+Estás a ensinar ao teu sistema interior que as suas vontades difusas são ouvidas.
+
+[short pause]
+
+E o teu sistema interior, quando percebe que é ouvido, começa a enviar mais sinais.
+
+[pause]
+
+E mais claros.
+
+[long pause]
+
+Ao fim de alguns meses deste treino, muitas mulheres descobrem que a sua capacidade de querer aumentou.
+
+[pause]
+
+Não só em vontades sem nome. Também em vontades nomeáveis.
+
+[short pause]
+
+Querem mais. Sentem mais. Decidem mais.
+
+[pause]
+
+A chama difusa, ao ser registada e respondida em pequenas doses, torna-se, devagar, chama mais clara e mais exigente.
+
+[long pause]
+
+E essa chama, em adulta, dirige muito mais do que a cama.
+
+[pause]
+
+Dirige o tom da tua vida.
+
+[short pause]
+
+Dirige as escolhas pequenas que, somadas, compõem a qualidade do teu tempo.
+
+[pause]
+
+E quando a tua vida inteira está alinhada com a tua chama — mesmo que em pequena escala — a tua chama sexual acende-se como consequência.
+
+[short pause]
+
+Não como objectivo.
+
+Como resultado natural de estares finalmente a viver uma vida em que tu, também, queres alguma coisa.`,
+      },
+      {
+        id: "a-chama-m7c",
+        titulo: "M7.C — O prazer das pequenas coisas recuperado",
+        curso: "a-chama",
+        texto: `Há uma forma de prazer, em adulta, que não tem nada de sexual e que, ainda assim, é base da chama.
+
+[pause]
+
+O prazer das pequenas coisas.
+
+[long pause]
+
+O prazer da primeira chávena de café da manhã.
+
+O prazer de uma conversa rápida com uma pessoa simpática na padaria.
+
+O prazer de abrir uma janela e sentir o ar fresco no rosto.
+
+O prazer de caminhar em passo próprio, sem pressa, por um caminho familiar.
+
+O prazer de ler, deitada, uma página de um livro que gostas.
+
+[pause]
+
+Este prazer existia em ti, em grande quantidade, em algum momento da vida.
+
+[short pause]
+
+Provavelmente em criança.
+
+[pause]
+
+Tu, em criança, tinhas um acesso directo ao prazer das pequenas coisas que, em adulta, foste perdendo.
+
+[long pause]
+
+Em adulta, o teu cérebro aprendeu a não registar estas pequenas satisfações como prazer.
+
+[pause]
+
+Porque aprendeu, ao longo dos anos, a reservar o rótulo "prazer" para coisas grandes.
+
+[short pause]
+
+Férias. Festas. Compras especiais. Sexo. Refeições elaboradas.
+
+[pause]
+
+E o prazer quotidiano de uma chávena quente, de uma luz bonita, de um som bem colocado — foi ficando abaixo do limiar da tua atenção.
+
+[long pause]
+
+Esta perda é silenciosa mas tem custo grande.
+
+[pause]
+
+Porque o prazer quotidiano é a fundação sobre a qual os prazeres maiores se apoiam.
+
+[short pause]
+
+Mulheres que perderam contacto com os prazeres das pequenas coisas, em geral, também têm dificuldade com os grandes.
+
+[pause]
+
+Vão de férias e não conseguem estar completamente presentes.
+
+Recebem uma prenda e sentem satisfação breve.
+
+Têm sexo e registam como momento banal.
+
+[short pause]
+
+Porque o aparelho de registo de prazer, em ti, foi ficando desafinado por anos de não treino.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de recalibração.
+
+[pause]
+
+Numa folha pequena que possas trazer contigo, escreve em cima:
+
+"Pequenos prazeres de hoje."
+
+[short pause]
+
+E ao longo do dia, sempre que repararas num pequeno prazer, anotas.
+
+[pause]
+
+Não tens de fotografar. Não tens de elaborar. Uma linha chega.
+
+[long pause]
+
+Pode ser:
+
+"A luz da manhã no chão da cozinha às sete e meia."
+
+"O primeiro cheiro a café de hoje."
+
+"O momento em que encontrei estacionamento em frente a casa."
+
+"A sensação do lençol frio nos pés antes de adormecer ontem."
+
+[short pause]
+
+Cinco a dez entradas por dia.
+
+[pause]
+
+Durante sete dias.
+
+[long pause]
+
+Ao fim da semana, lê tudo em sequência.
+
+[pause]
+
+E repara numa coisa curiosa.
+
+[short pause]
+
+A quantidade de pequenos prazeres no teu dia — que antes passavam despercebidos — é muito maior do que tu pensavas.
+
+[long pause]
+
+Eles estavam sempre lá.
+
+[pause]
+
+Mas o teu aparelho de registo estava desligado.
+
+[short pause]
+
+Quando tu começas a registar, o aparelho reactiva.
+
+[pause]
+
+E os pequenos prazeres, registados, começam a contar.
+
+[short pause]
+
+Começam a dar densidade ao teu dia.
+
+[long pause]
+
+E a densidade de prazer quotidiano, acumulada ao longo das semanas, tem efeito específico.
+
+[pause]
+
+Mudas de qualidade interior.
+
+[short pause]
+
+A sensação difusa de que a tua vida "anda em baixo" — que muitas mulheres adultas têm — começa a diluir-se.
+
+[pause]
+
+Não porque a tua vida mudou.
+
+Porque tu, pela primeira vez em anos, estás a registar o que de bom, em pequena dose, ela sempre teve.
+
+[long pause]
+
+E quando esta densidade de prazer pequeno se instala, o teu sistema inteiro fica mais receptivo aos prazeres maiores.
+
+[pause]
+
+Incluindo os prazeres sexuais, que antes pareciam distantes.
+
+[short pause]
+
+Porque a chama, afinal, não se reacende por força de vontade sexual.
+
+[pause]
+
+Reacende-se por recuperação da capacidade de sentires prazer — em todas as escalas, a começar pela mais pequena.
+
+[long pause]
+
+E essa recuperação começa em coisas aparentemente banais.
+
+[pause]
+
+Uma chávena quente. Uma janela aberta. Uma conversa sem pressa na padaria.
+
+[short pause]
+
+Tudo isto, junto, é base da chama.
+
+[pause]
+
+Não é acessório.
+
+É a terra em que ela volta a crescer.`,
+      },
+    ],
+  },
 ];
