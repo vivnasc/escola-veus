@@ -483,7 +483,31 @@ export default function AudioBulkPage() {
                 onClick={() => loadPresetsByPrefix("curso-limite-sagrado-", "curso-limite-sagrado")}
                 className="rounded-lg border-2 border-escola-terracota px-4 py-3 text-sm font-medium text-escola-terracota hover:bg-escola-terracota/10"
               >
-                Só Limite Sagrado
+                Só Limite Sagrado (24 aulas)
+              </button>
+              <button
+                onClick={() => loadPresetsByPrefix("curso-sangue-e-seda-", "curso-sangue-e-seda")}
+                className="rounded-lg border-2 border-escola-terracota px-4 py-3 text-sm font-medium text-escola-terracota hover:bg-escola-terracota/10"
+              >
+                Só Sangue e Seda (24 aulas)
+              </button>
+              <button
+                onClick={() => loadPresetsByPrefix("curso-o-silencio-que-grita-", "curso-o-silencio-que-grita")}
+                className="rounded-lg border-2 border-escola-terracota px-4 py-3 text-sm font-medium text-escola-terracota hover:bg-escola-terracota/10"
+              >
+                Só O Silêncio que Grita (24 aulas)
+              </button>
+              <button
+                onClick={() => loadPresetsByPrefix("curso-pele-nua-", "curso-pele-nua")}
+                className="rounded-lg border-2 border-escola-terracota px-4 py-3 text-sm font-medium text-escola-terracota hover:bg-escola-terracota/10"
+              >
+                Só Pele Nua (24 aulas)
+              </button>
+              <button
+                onClick={() => loadPresetsByPrefix("curso-a-fome-", "curso-a-fome")}
+                className="rounded-lg border-2 border-escola-terracota px-4 py-3 text-sm font-medium text-escola-terracota hover:bg-escola-terracota/10"
+              >
+                Só A Fome (em curso)
               </button>
             </div>
           </div>

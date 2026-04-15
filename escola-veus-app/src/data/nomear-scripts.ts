@@ -21750,4 +21750,1058 @@ E essa diferença, sabendo-a, podes começar a viver melhor.`,
       },
     ],
   },
+  {
+    id: "curso-a-fome-m5",
+    titulo: "Curso A Fome — Módulo 5 (Aulas A, B, C)",
+    descricao: "O Ciclo da Vergonha.",
+    scripts: [
+      {
+        id: "a-fome-m5a",
+        titulo: "M5.A — O remorso depois de comer",
+        curso: "a-fome",
+        texto: `Há um momento, depois de comeres mais do que tinhas planeado, em que aparece sempre a mesma coisa.
+
+[pause]
+
+Não é fome.
+
+Não é cansaço.
+
+É remorso.
+
+[long pause]
+
+Aparece nos primeiros vinte minutos depois da última garfada.
+
+[pause]
+
+Antes ainda da digestão começar a sério.
+
+Antes de teres tempo para racionalizar.
+
+[short pause]
+
+É reacção automática que se instala em ti há tantos anos que tu já não a notas como reacção — pareces achar que é apenas como te sentes.
+
+[long pause]
+
+Mas é reacção. E foi treinada.
+
+[pause]
+
+Ninguém nasce a sentir remorso depois de comer.
+
+Cada uma de nós aprendeu, em algum momento da infância ou da adolescência, que comer com prazer trazia consequência emocional negativa.
+
+[short pause]
+
+Talvez tenhas aprendido com uma frase à mesa.
+
+Talvez tenhas aprendido a ver a tua mãe a recusar a sobremesa enquanto se queixava do peso.
+
+Talvez tenhas aprendido a ver outras raparigas, a partir dos doze anos, a comentar entre elas o que tinham comido nesse dia.
+
+[long pause]
+
+A partir daí, comer deixou de ser apenas necessidade biológica.
+
+[pause]
+
+Passou a ser acto com peso moral.
+
+[short pause]
+
+E todas as vezes que tu, em adulta, comes mais do que o teu critério interno permite, esse critério aparece imediatamente a cobrar.
+
+[long pause]
+
+Repara no que o remorso faz em ti.
+
+[pause]
+
+Faz-te ficar em silêncio nos cinco minutos a seguir à refeição.
+
+Faz-te abrir o telemóvel para te distraíres da sensação.
+
+Faz-te começar a planear, mentalmente, o que vais fazer no dia seguinte para compensar.
+
+[short pause]
+
+E, sobretudo, faz-te ficar com uma sensação difusa de que falhaste.
+
+[pause]
+
+Falhaste o quê, exactamente, é difícil de nomear.
+
+Mas a sensação está lá.
+
+[long pause]
+
+Esta semana, vais começar a separar duas coisas que estão coladas em ti.
+
+[pause]
+
+A refeição em si.
+
+E a reacção emocional à refeição.
+
+[short pause]
+
+Numa folha, desenha duas colunas.
+
+Em cima da primeira escreve: "O que comi de facto."
+
+Em cima da segunda escreve: "O que senti depois."
+
+[long pause]
+
+E ao longo de uma semana, sempre que terminares uma refeição em que sentiste qualquer coisa para além de saciedade neutra, escreves nas duas colunas.
+
+[pause]
+
+Na primeira, factos: "Comi um prato de massa, salada, dois bocados de pão, uma sobremesa pequena."
+
+Na segunda, sensação: "Senti culpa. Senti que tinha comido demais. Comecei a planear o jantar mais leve."
+
+[short pause]
+
+Sem comentário moral. Sem julgar a sensação.
+
+Apenas registar.
+
+[long pause]
+
+Ao fim da semana, lê as duas colunas em paralelo.
+
+[pause]
+
+Vais reparar numa coisa importante.
+
+[short pause]
+
+A reacção emocional, na maior parte dos dias, não é proporcional ao que comeste.
+
+[pause]
+
+Há refeições normais que geraram remorso desproporcional.
+
+Há refeições maiores que, por algum motivo, passaram sem culpa.
+
+[long pause]
+
+A partir destes dados, fica claro que o remorso não é informação sobre a refeição.
+
+[pause]
+
+É reacção independente, com vida própria, treinada em ti há décadas.
+
+[short pause]
+
+E o que tem vida própria pode, com tempo, ser observado em vez de obedecido.
+
+[long pause]
+
+Não pares de comer porque o remorso aparece.
+
+Continua a comer conforme o teu corpo precisa.
+
+[pause]
+
+E deixa o remorso aparecer ao lado, como visita não convidada que tu já conheces de cor.
+
+[short pause]
+
+Com o tempo, a visita começa a ficar menos demorada.
+
+E, em alguns dias, começa a não aparecer.`,
+      },
+      {
+        id: "a-fome-m5b",
+        titulo: "M5.B — A promessa de amanhã começo",
+        curso: "a-fome",
+        texto: `Há uma frase que tu já disseste mil vezes na tua vida.
+
+[pause]
+
+Provavelmente disseste-a esta semana.
+
+Provavelmente vais voltar a dizê-la dentro de alguns dias.
+
+[long pause]
+
+Amanhã começo.
+
+[pause]
+
+Amanhã começo a comer melhor.
+
+Amanhã começo a beber dois litros de água.
+
+Amanhã começo a fazer exercício a sério.
+
+[short pause]
+
+Amanhã. Sempre amanhã.
+
+[long pause]
+
+Esta frase parece inocente.
+
+[pause]
+
+Parece motivação.
+
+Parece compromisso.
+
+[short pause]
+
+Mas é, em quase todos os casos, uma das coisas mais sabotadoras que dizes a ti mesma.
+
+[long pause]
+
+Porque ela permite-te, hoje, comer o que te apetece sem estares presente nessa decisão.
+
+[pause]
+
+Comes em piloto automático, com a justificação implícita de que isto é a "última vez antes de começar".
+
+E como tu já disseste isto cinquenta vezes nos últimos dois anos, sabes, no fundo, que o "amanhã começo" não é compromisso real.
+
+[short pause]
+
+É amortecedor.
+
+[pause]
+
+Permite-te continuar a comer no padrão antigo sem ter que sentir a contradição entre o que estás a comer e o que dizes que queres.
+
+[long pause]
+
+A frase "amanhã começo" tem uma função específica.
+
+[pause]
+
+Adia o trabalho real.
+
+[short pause]
+
+E o trabalho real não é o "começar".
+
+É olhar honestamente para o que está a acontecer agora.
+
+[long pause]
+
+Esta semana, vais fazer um exercício que vai parecer estranho.
+
+[pause]
+
+Vais banir a frase "amanhã começo" do teu vocabulário interno durante sete dias.
+
+[short pause]
+
+Sempre que ela aparecer — e vai aparecer muitas vezes — substituis por outra frase.
+
+[pause]
+
+A frase é:
+
+"Hoje estou a comer isto, e isto é o que estou a comer."
+
+[long pause]
+
+Sem promessa de futuro.
+
+Sem amortecedor.
+
+Sem desculpa.
+
+[pause]
+
+Apenas reconhecimento factual do que está, neste momento, a entrar em ti.
+
+[short pause]
+
+Esta frase parece banal.
+
+[pause]
+
+Mas tem efeito específico.
+
+[long pause]
+
+Quando tu não podes mais dizer "amanhã começo", tens duas opções.
+
+[pause]
+
+Ou começas, agora, a comer com mais atenção — porque já não tens o amortecedor para te justificares depois.
+
+Ou continuas a comer como antes — mas agora, sem a promessa de futuro, tens de aceitar conscientemente que estás a fazer essa escolha.
+
+[short pause]
+
+Os dois caminhos são honestos.
+
+O "amanhã começo" não.
+
+[long pause]
+
+Esta semana, escreve numa folha que ponhas em sítio visível — perto da cozinha, na agenda — esta frase:
+
+"Hoje estou a comer isto. Isto é o que estou a comer."
+
+[pause]
+
+Cada vez que reparares no automatismo do "amanhã começo", olha para a folha.
+
+[short pause]
+
+E nota o que muda em ti.
+
+[long pause]
+
+Vais perceber, ao longo dos dias, uma coisa importante.
+
+[pause]
+
+A maior parte das tuas decisões alimentares não é consciente.
+
+[short pause]
+
+É feita por uma parte de ti que está sempre a apostar no futuro hipotético — na "tua vida quando começares" — para te permitir adiar a relação real com a comida no presente.
+
+[long pause]
+
+E quando tu retiras o amortecedor, a relação no presente fica visível.
+
+[pause]
+
+A primeira semana é desconfortável.
+
+[short pause]
+
+Mas a partir da segunda, acontece uma coisa nova.
+
+Começas a comer com mais consciência sem teres tido de te disciplinar.
+
+[pause]
+
+Não porque te obrigaste a mudar.
+
+Porque, sem o "amanhã começo", a parte de ti que estava em piloto automático finalmente percebe que tu estás a olhar.
+
+[short pause]
+
+E o olhar honesto, sozinho, muda mais do que qualquer dieta começada na segunda-feira.`,
+      },
+      {
+        id: "a-fome-m5c",
+        titulo: "M5.C — A semana de restrição que vira a noite de descontrolo",
+        curso: "a-fome",
+        texto: `Há um padrão que se repete em quase todas as mulheres que tentaram alguma vez controlar a alimentação.
+
+[pause]
+
+Começa na segunda-feira.
+
+[long pause]
+
+Começa com vontade. Com lista de coisas a comprar. Com refeições preparadas em frascos no frigorífico.
+
+[pause]
+
+Segunda corre bem. Terça também. Quarta, com algum esforço. Quinta, alguma irritabilidade.
+
+[short pause]
+
+Sexta — ou, no mais tardar, sábado à noite — algo cede.
+
+[long pause]
+
+Pode ser num jantar com amigas. Pode ser sozinha em casa depois de uma semana exaustiva. Pode ser numa visita à família.
+
+[pause]
+
+E o que cede não é um bocadinho.
+
+É tudo.
+
+[short pause]
+
+Comes muito mais do que terias comido se tivesses comido normalmente toda a semana.
+
+[long pause]
+
+Na manhã seguinte, acordas com a sensação familiar.
+
+[pause]
+
+Vergonha. Frustração. Sensação de teres falhado outra vez.
+
+E a decisão imediata: a partir de segunda-feira, vou começar a sério.
+
+[short pause]
+
+E o ciclo recomeça.
+
+[long pause]
+
+Este ciclo tem nome.
+
+[pause]
+
+Restrição-descontrolo.
+
+[short pause]
+
+Não é falta de força de vontade tua.
+
+É como o teu sistema nervoso responde a privação.
+
+[long pause]
+
+Quando tu restringes — quando comes menos do que precisas durante dias seguidos — o teu corpo entra em modo de alarme.
+
+[pause]
+
+E o teu cérebro começa a libertar sinais cada vez mais fortes a dizer que precisa de comida.
+
+[short pause]
+
+Tu, durante a semana, consegues ignorar estes sinais por força de vontade.
+
+[pause]
+
+Mas a força de vontade é recurso finito.
+
+E quando se esgota — em geral, à sexta à noite — os sinais ficam mais fortes do que tu.
+
+[long pause]
+
+E aquilo a que tu chamas "descontrolo" é, na verdade, o teu corpo a forçar a entrada de calorias que andou dias a pedir e não recebeu.
+
+[pause]
+
+Não é falha tua.
+
+É biologia a ganhar à determinação.
+
+[short pause]
+
+E a biologia ganha sempre, ao longo do tempo.
+
+[long pause]
+
+A partir desta semana, vais fazer uma experiência incómoda mas reveladora.
+
+[pause]
+
+Vais escolher um dia da semana em que normalmente restringes.
+
+E nesse dia, vais comer normalmente.
+
+[short pause]
+
+Não em excesso.
+
+Normalmente.
+
+[pause]
+
+Três refeições. Um lanche se te apetecer. Pão se for o que te apetece. Sobremesa se for o caso.
+
+[long pause]
+
+Sem cálculo de calorias. Sem comparação com o que comeste ontem. Sem promessa de compensação amanhã.
+
+[pause]
+
+Apenas comer como pessoa que tem fome e responde à fome.
+
+[short pause]
+
+Vai ser estranho.
+
+[pause]
+
+A tua cabeça vai protestar.
+
+Vai aparecer ansiedade — "se eu comer assim todos os dias, vou engordar".
+
+[long pause]
+
+À noite, antes de dormir, escreve numa folha o que aconteceu nesse dia.
+
+[pause]
+
+Como te sentiste.
+
+Se houve momento em que apareceu a vontade de comer descontroladamente.
+
+Se houve momento em que reparaste que estavas saciada e simplesmente paraste.
+
+[short pause]
+
+Repete a experiência durante quatro ou cinco semanas, num dia diferente cada semana.
+
+[long pause]
+
+A maior parte das mulheres que faz isto descobre uma coisa que parece inacreditável no primeiro mês.
+
+[pause]
+
+Quando tu comes normalmente — sem restrição — durante a semana, o ciclo de descontrolo de fim-de-semana começa a desaparecer.
+
+[short pause]
+
+Não porque tu te disciplinaste.
+
+Porque o teu corpo deixou de estar em alarme.
+
+[pause]
+
+E quando o corpo não está em alarme, ele come o que precisa, pára quando está cheio, e segue em frente.
+
+[long pause]
+
+A "perda de controlo" não é a tua tendência natural.
+
+[pause]
+
+É a resposta inevitável a períodos de restrição.
+
+[short pause]
+
+Tira a restrição. E a maior parte do "descontrolo" desaparece sozinho, sem que tu tenhas de o controlar.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-fome-m6",
+    titulo: "Curso A Fome — Módulo 6 (Aulas A, B, C)",
+    descricao: "As Dietas que Tentaste.",
+    scripts: [
+      {
+        id: "a-fome-m6a",
+        titulo: "M6.A — A primeira dieta de que te lembras",
+        curso: "a-fome",
+        texto: `Tenta lembrar-te da primeira dieta da tua vida.
+
+[pause]
+
+Não a primeira séria.
+
+A primeira de todas. A inicial.
+
+[long pause]
+
+Para muitas mulheres, foi por volta dos doze, treze anos.
+
+[pause]
+
+Talvez foi a tua mãe a sugerir, com cuidado, que talvez fosse altura de "começares a ter atenção".
+
+Talvez foi o pediatra a mencionar, num contexto banal, que a curva de peso estava "um pouco acima".
+
+Talvez foi tu sozinha, depois de uma comparação com uma colega, a decidir parar de comer pão ao lanche.
+
+[short pause]
+
+Foi pequena. Quase inocente.
+
+[long pause]
+
+Mas foi a porta de entrada.
+
+[pause]
+
+Porque, a partir desse momento, tu começaste a viver com uma camada nova entre ti e a comida.
+
+[short pause]
+
+Antes desse momento, comias o que te apetecia, parando quando estavas cheia, sem pensar.
+
+[pause]
+
+Depois desse momento, começou a haver cálculo.
+
+Cálculo silencioso, em segundo plano, todas as vezes que abrias um pacote, escolhias um prato, pegavas numa fatia de pão.
+
+[long pause]
+
+Esta camada de cálculo nunca mais foi embora.
+
+[pause]
+
+Pode ter mudado de forma — uma dieta diferente, um regime novo, um nutricionista actual — mas a camada permaneceu.
+
+[short pause]
+
+E é por isso que a relação com a comida, em quase todas as mulheres adultas, tem uma qualidade específica.
+
+[pause]
+
+Vigilância.
+
+[long pause]
+
+Vigilância silenciosa, contínua, instalada há tantos anos que tu já a confundes com responsabilidade.
+
+[pause]
+
+Mas não é responsabilidade.
+
+É hábito mental que se instalou em ti antes de teres tido voz para o recusar.
+
+[short pause]
+
+E que continua a operar agora, em ti adulta, sem que tu tenhas alguma vez decidido conscientemente continuar com ele.
+
+[long pause]
+
+Esta semana, faz uma coisa de arqueologia pessoal.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Linha do tempo das minhas dietas — desde a primeira."
+
+[short pause]
+
+E vai escrevendo, em ordem cronológica, todas as tentativas de controlar a alimentação que tu te lembras.
+
+[pause]
+
+A primeira: a idade. Quem sugeriu. O que era.
+
+A segunda. A terceira. E por aí fora.
+
+[long pause]
+
+Algumas vão estar muito presentes na tua memória.
+
+Outras vais ter dificuldade em distinguir umas das outras.
+
+[pause]
+
+Tudo bem. Escreve o que vier.
+
+[short pause]
+
+Quando acabares, conta quantas há.
+
+[long pause]
+
+A maior parte das mulheres, quando faz este exercício pela primeira vez, fica em choque.
+
+[pause]
+
+Não é uma. Não são duas. São quinze. Vinte. Trinta tentativas em vinte ou trinta anos.
+
+[short pause]
+
+Ao lado de cada uma, escreve uma única palavra: "resultado."
+
+E completa.
+
+[pause]
+
+Quase todas vão acabar com a mesma coisa.
+
+[long pause]
+
+Algumas semanas de perda. Alguns meses. Volta gradual ao peso anterior. Por vezes, um peso ligeiramente acima do que tinhas antes de começar.
+
+[pause]
+
+Quando tu vês isto desenhado em letra escrita, alguma coisa muda.
+
+[short pause]
+
+A tua relação com as dietas deixa de parecer caminho para a solução.
+
+[pause]
+
+Passa a parecer ciclo repetido que, em duas ou três décadas, não te deu o que prometia.
+
+[long pause]
+
+Esta informação é dura.
+
+[pause]
+
+Mas é a primeira honesta que tu olhas há muito tempo.
+
+[short pause]
+
+E a partir daqui, podes começar a desenhar uma relação com a comida que não dependa de mais uma dieta.
+
+[pause]
+
+Não porque te tornaste mais disciplinada.
+
+Porque, finalmente, viste em letra escrita que esse caminho não te leva lá.`,
+      },
+      {
+        id: "a-fome-m6b",
+        titulo: "M6.B — O que cada dieta te ensinou contra ti",
+        curso: "a-fome",
+        texto: `Cada dieta que tu fizeste deixou em ti uma frase.
+
+[pause]
+
+A frase ficou. Mesmo quando a dieta acabou.
+
+[long pause]
+
+A dieta dos hidratos ensinou-te que o pão é inimigo.
+
+A dieta detox ensinou-te que o teu corpo precisa de ser limpo, como se estivesse sujo.
+
+A dieta low-carb ensinou-te que comer fruta é problema.
+
+A dieta de jejum intermitente ensinou-te que comer ao pequeno-almoço é fraqueza.
+
+[short pause]
+
+Cada uma destas frases parece neutra. Apenas regra alimentar.
+
+[pause]
+
+Mas todas elas têm uma coisa em comum.
+
+[short pause]
+
+Estão a treinar-te, em silêncio, a desconfiar do teu corpo.
+
+[long pause]
+
+Nenhuma dieta começa por dizer:
+
+"O teu corpo sabe o que precisa. Aprende a escutá-lo."
+
+[pause]
+
+Todas começam por dizer:
+
+"O teu corpo, sozinho, vai escolher mal. Por isso, segue as minhas regras."
+
+[short pause]
+
+E todas as vezes que tu segues uma destas regras, estás a reforçar a ideia de que tu, sozinha, não consegues comer bem.
+
+[long pause]
+
+Esta ideia é a maior consequência de décadas de dietas.
+
+[pause]
+
+Não os quilos perdidos e recuperados.
+
+A perda de confiança no teu próprio corpo.
+
+[short pause]
+
+Em pessoas que nunca fizeram dieta, observas, em geral, que comem com naturalidade.
+
+[pause]
+
+Comem o que lhes apetece, na quantidade que precisam, e param quando estão cheias.
+
+Sem cálculo. Sem culpa. Sem preocupação no dia seguinte.
+
+[short pause]
+
+Tu, ao contrário, vives com a sensação permanente de que a tua relação com a comida é problema a gerir.
+
+[long pause]
+
+Não nasceste assim.
+
+[pause]
+
+Foste treinada a pensar assim por cada dieta que fizeste.
+
+[short pause]
+
+E a partida dolorosa é que mesmo quando tu paras de fazer dietas, a desconfiança no corpo permanece.
+
+[pause]
+
+Continuas a achar que comer maçã ao final do dia é demais.
+
+Continuas a achar que pão à noite é descontrolo.
+
+Continuas a achar que se não calculares, vais comer demais.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Frases que aprendi com dietas e que ainda dirigem a minha relação com a comida."
+
+[short pause]
+
+E lista cinco a dez frases.
+
+[pause]
+
+Pode ser:
+
+"Comer depois das oito engorda."
+
+"Hidratos à noite acumulam."
+
+"Fruta tem demasiado açúcar."
+
+"Não devo comer entre refeições."
+
+"Se sinto fome às onze da manhã, é porque comi mal ao pequeno-almoço."
+
+[long pause]
+
+Olha para a tua lista.
+
+[pause]
+
+Cada uma destas frases foi-te dada por uma dieta, um livro, uma revista, uma médica.
+
+[short pause]
+
+Nenhuma delas foi descoberta pelo teu corpo.
+
+[pause]
+
+E, sem que tu tenhas dado por isso, todas elas se instalaram em ti como verdades pessoais.
+
+[long pause]
+
+Ao lado de cada frase, escreve a fonte.
+
+[pause]
+
+Quem ta disse?
+
+A dieta de quê? O livro de qual?
+
+[short pause]
+
+Quando tu vês a fonte, a frase deixa de parecer saber teu.
+
+Passa a parecer ideia comprada.
+
+[pause]
+
+E o que é comprado pode, com tempo, ser devolvido.
+
+[long pause]
+
+Esta semana, escolhe uma única frase da lista — a que mais frequentemente te dirige — e fica atenta a ela.
+
+[pause]
+
+Quando ela aparecer na tua cabeça, repara.
+
+E faz uma pergunta:
+
+"Esta frase, quando aparece, está a responder ao meu corpo? Ou está a responder a uma regra antiga?"
+
+[short pause]
+
+Em quase todos os casos, vais perceber que está a responder à regra.
+
+[pause]
+
+E o teu corpo, sozinho, queria outra coisa.
+
+[long pause]
+
+Esta atenção, sozinha, não muda imediatamente como comes.
+
+[pause]
+
+Mas começa a abrir, lentamente, espaço para o teu corpo voltar a ter voz na decisão.
+
+[short pause]
+
+E quando o corpo recupera voz, a relação com a comida começa a recuperar a sanidade que tinha antes da primeira dieta.`,
+      },
+      {
+        id: "a-fome-m6c",
+        titulo: "M6.C — A indústria que vive da tua insatisfação",
+        curso: "a-fome",
+        texto: `Há uma verdade incómoda sobre a indústria das dietas.
+
+[pause]
+
+Se as dietas funcionassem, a indústria não existiria.
+
+[long pause]
+
+Pensa nisto por um momento.
+
+[pause]
+
+Se uma dieta — qualquer uma — efectivamente resolvesse a relação de uma mulher com o corpo e com a comida, ela faria essa dieta uma vez na vida e nunca mais precisaria.
+
+[short pause]
+
+A indústria perderia clientes em massa.
+
+[pause]
+
+Mas a indústria continua a crescer todos os anos.
+
+[long pause]
+
+Cresce porque depende de uma coisa específica.
+
+[pause]
+
+Da tua insatisfação contínua com o teu corpo.
+
+[short pause]
+
+Quanto mais insatisfeita tu estás, mais produtos compras.
+
+Mais regimes experimentas.
+
+Mais consultas marcas.
+
+Mais aplicações descarregas.
+
+[long pause]
+
+Esta é a estrutura económica que está por detrás da maior parte da informação que tu recebes sobre alimentação.
+
+[pause]
+
+Não é informação neutra.
+
+É informação concebida para te manter num ciclo de tentar, falhar, voltar a tentar.
+
+[short pause]
+
+Se tu encontrasses paz com o teu corpo, a indústria perdia uma cliente.
+
+[pause]
+
+E a indústria sabe disto melhor do que tu.
+
+[long pause]
+
+Por isso, cada novo método aparece com promessas ligeiramente diferentes do anterior.
+
+[pause]
+
+Para tu poderes recomeçar, com esperança nova, o ciclo que já fizeste vinte vezes.
+
+[short pause]
+
+Não estou a dizer que toda a informação sobre alimentação é falsa.
+
+[pause]
+
+Há saber médico real e útil. Há nutricionistas honestos. Há mudanças que efectivamente fazem diferença em saúde.
+
+[short pause]
+
+Mas a maior parte do que chega a uma mulher adulta sobre o seu corpo — através de revistas, redes sociais, publicidade, livros de auto-ajuda alimentar — é informação concebida para a manter dependente.
+
+[long pause]
+
+Esta semana, vais fazer um inventário.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Dinheiro que gastei em dietas, suplementos, programas, consultas, aplicações, livros sobre alimentação."
+
+[short pause]
+
+E começa a fazer estimativa, década a década.
+
+[pause]
+
+Dos vinte aos trinta. Dos trinta aos quarenta. Dos quarenta para cá.
+
+[long pause]
+
+Algumas mulheres, quando fazem este exercício pela primeira vez, ficam em silêncio diante do número.
+
+[pause]
+
+Pode chegar a milhares de euros.
+
+Em alguns casos, dezenas de milhares.
+
+[short pause]
+
+E, ao lado do número, podes escrever um segundo dado:
+
+"Resultado durável dessa despesa."
+
+[pause]
+
+Quase sempre vai ser zero.
+
+Ou negativo — porque alguns regimes deixaram danos metabólicos ou alimentares.
+
+[long pause]
+
+Esta tomada de consciência não é para te culpar.
+
+[pause]
+
+A culpa é mais um produto da indústria.
+
+Querem que sintas culpa por não conseguires manter os resultados — e que voltes a comprar.
+
+[short pause]
+
+A tomada de consciência é diferente.
+
+[pause]
+
+É veres, em letra escrita, que tu não és cliente fácil de uma indústria.
+
+És cliente capturada por uma indústria que te ensinou, durante décadas, a procurar fora o que só pode aparecer dentro.
+
+[long pause]
+
+E dentro, neste caso, não é frase espiritual.
+
+[pause]
+
+É exactamente o trabalho que estás a fazer agora.
+
+Escutar o corpo. Identificar as frases instaladas. Distinguir fome real de outras coisas. Comer sem cálculo.
+
+[short pause]
+
+Este trabalho não tem produto à venda.
+
+Não tem aplicação. Não tem livro novo todos os meses. Não tem programa de seis semanas com garantia de resultado.
+
+[pause]
+
+Tem só ti, contigo, ao longo dos anos.
+
+[long pause]
+
+E é por isso que a indústria nunca fala sobre este caminho.
+
+[pause]
+
+Porque, neste caminho, ninguém ganha dinheiro com o teu corpo.
+
+Excepto tu — em saúde, em paz, em tempo recuperado para a tua vida real.`,
+      },
+    ],
+  },
 ];

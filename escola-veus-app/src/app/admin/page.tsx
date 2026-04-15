@@ -176,6 +176,7 @@ export default function AdminDashboard() {
         <QuickAction href="/admin/alunas" label="Ver alunas" />
         <QuickAction href="/admin/conteudo" label="Publicar conteudo" />
         <QuickAction href="/admin/cursos" label="Gerir cursos" />
+        <QuickAction href="/admin/audio-bulk" label="Gerar audios em massa" />
         <QuickAction href="/admin/analytics" label="Ver analytics" />
         <QuickAction href="/" label="Ver site" />
       </div>
