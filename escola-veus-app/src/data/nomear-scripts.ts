@@ -5398,4 +5398,289 @@ E é mais antiga do que qualquer conta bancária.`,
       },
     ],
   },
+  {
+    id: "curso-ouro-proprio-m2",
+    titulo: "Curso Ouro Próprio — Módulo 2 (Aulas A, B, C)",
+    descricao: "A Herança Financeira Emocional. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m2a",
+        titulo: "M2.A — Os scripts de infância",
+        curso: "ouro-proprio",
+        texto: `Qual é a primeira frase sobre dinheiro que te lembras de ouvir em casa?
+
+[pause]
+
+Não a mais importante — a primeira.
+
+A que aparece quando fechas os olhos e pensas: dinheiro, na minha casa, era assim.
+
+[long pause]
+
+Tinhas sete, talvez oito anos.
+
+Estavas na cozinha, ou no corredor, ou no banco de trás do carro.
+
+E alguém disse uma frase.
+
+[pause]
+
+Talvez fosse a tua mãe: o dinheiro não chega para tudo.
+
+Talvez fosse o teu pai: na minha casa ninguém passa fome.
+
+Talvez ninguém dissesse nada — e o silêncio já era a frase.
+
+[long pause]
+
+Tu não estavas a prestar atenção. Estavas a brincar, ou a comer, ou a olhar pela janela.
+
+Mas o teu corpo ouviu.
+
+E guardou.
+
+[pause]
+
+Anos depois, quando o teu salário entra e tu pensas automaticamente que não vai chegar — não és tu a pensar. É aquela frase.
+
+Quando alguém te oferece algo e tu recusas antes de considerar — não és tu a recusar. É a voz de alguém que já nem se lembra de ter falado.
+
+[long pause]
+
+Antes dos dez anos, absorves frases como verdades absolutas.
+
+Não as questionas porque não tens com que comparar.
+
+[pause]
+
+O dinheiro é difícil.
+
+Quem tem dinheiro é diferente de nós.
+
+Não se fala de dinheiro.
+
+Dinheiro não dá em árvores.
+
+Temos que poupar para o que vem.
+
+[pause]
+
+Estas frases não são conselhos — são regras que o corpo decora.
+
+[short pause]
+
+E tu seguiste-as. Sem saber. Sem escolher.
+
+A tua relação com dinheiro não começou quando abriste a primeira conta bancária.
+
+Começou na cozinha da tua infância, com frases que nem te lembras de ter ouvido.
+
+[long pause]
+
+Pega num papel.
+
+Escreve, sem pensar muito, as cinco primeiras frases sobre dinheiro que te vêm à cabeça quando pensas na tua infância.
+
+[pause]
+
+Não precisam de ser exactas — podem ser sensações traduzidas em palavras.
+
+Depois lê-as em voz alta. Devagar.
+
+[pause]
+
+E pergunta: ainda acredito nisto? Ainda quero que isto me guie?
+
+[long pause]
+
+Metade do que acreditas sobre dinheiro não é teu.
+
+Foi-te dado antes de saberes recusar.`,
+      },
+      {
+        id: "ouro-proprio-m2b",
+        titulo: "M2.B — O que viste vs. o que ouviste",
+        curso: "ouro-proprio",
+        texto: `Na tua casa, o que se dizia sobre dinheiro era igual ao que se fazia?
+
+[pause]
+
+Ou havia uma distância entre as palavras e os gestos — uma distância que tu sentias no corpo sem conseguir nomear?
+
+[long pause]
+
+A tua mãe dizia: não precisamos de coisas caras.
+
+Mas notavas como olhava para a montra quando passavam por aquela loja.
+
+[pause]
+
+O teu pai dizia: o dinheiro não é importante.
+
+Mas via-lo contar as notas na carteira antes de sair, sempre com aquele vinco entre as sobrancelhas.
+
+[pause]
+
+Diziam-te: não te preocupes com isso.
+
+Mas a preocupação estava em todo o lado — na conversa que baixava de tom quando entravas na sala, no suspiro antes de abrir as cartas, na tensão à mesa quando alguém pedia mais.
+
+[long pause]
+
+Tu aprendeste duas coisas ao mesmo tempo: a versão oficial e a versão verdadeira.
+
+E como ninguém te explicou a diferença, ficaste com as duas.
+
+[pause]
+
+Até hoje, quando alguém te diz que dinheiro não importa, algo dentro de ti reconhece a mentira.
+
+Mas a tua boca repete a frase.
+
+[long pause]
+
+As crianças não aprendem o que lhes dizem. Aprendem o que vêem.
+
+[pause]
+
+Se o teu pai dizia que dinheiro não era problema mas vivia tenso por causa dele, tu aprendeste: o dinheiro é um problema que se esconde.
+
+Se a tua mãe dizia que era preciso poupar mas comprava coisas às escondidas, tu aprendeste: gastar é culpa, e a culpa esconde-se.
+
+[pause]
+
+Estas contradições não te confundiram.
+
+Programaram-te.
+
+[short pause]
+
+Deram-te duas instruções simultâneas que se anulam.
+
+Ganha dinheiro, mas não o mostres. Poupa, mas não sejas avarenta. Quer mais, mas não sejas ambiciosa.
+
+[pause]
+
+E tu ficas paralisada no meio.
+
+Não por falta de vontade.
+
+Por excesso de instruções contraditórias.
+
+[long pause]
+
+Faz duas colunas num papel.
+
+Na esquerda, escreve: o que se dizia sobre dinheiro em casa.
+
+Na direita: o que eu via acontecer.
+
+[pause]
+
+Preenche as duas.
+
+Depois olha para as diferenças.
+
+[pause]
+
+Não para julgar ninguém. Para perceber de onde vem a tua confusão.
+
+Para perceber que a paralisia não é tua.
+
+É herdada.
+
+[long pause]
+
+Tu não estás confusa sobre dinheiro.
+
+Estás a seguir duas instruções que se contradizem.`,
+      },
+      {
+        id: "ouro-proprio-m2c",
+        titulo: "M2.C — Reescrever os scripts",
+        curso: "ouro-proprio",
+        texto: `Se pudesses escolher — agora, hoje, com tudo o que sabes — que frase sobre dinheiro gostarias de ter ouvido em criança?
+
+[pause]
+
+Que frase te teria dado mais espaço?
+
+[long pause]
+
+Se te perguntassem hoje, aos quarenta, o que aprendeste sobre dinheiro em casa — o que dirias?
+
+Provavelmente uma lista de frases que já conheces de cor. Os ditos da tua mãe. A cara que o teu pai fazia quando o assunto aparecia. O silêncio a seguir.
+
+[pause]
+
+Mas essa lista não é só passado. É instrução activa.
+
+[short pause]
+
+Ainda hoje, quando o teu salário entra, há parte de ti que já sabe — antes de teres visto o número — que não vai chegar.
+
+Não és tu a pensar isso. É a voz que aprendeste antes de saberes o que era aprender.
+
+[long pause]
+
+A herança não é só o que está no passado. É o que decide sozinho, no presente, sem te pedir autorização.
+
+[pause]
+
+Não podes voltar atrás e mudar o que ouviste.
+
+Mas podes fazer uma coisa que ninguém fez por ti: escolher conscientemente o que fica e o que vai.
+
+[long pause]
+
+Os scripts de infância não são destino — são ponto de partida.
+
+Alguns servem-te: talvez o cuidado, a atenção, o respeito pelo que se tem.
+
+Outros prendem-te: o medo, a vergonha, o silêncio.
+
+[pause]
+
+A diferença entre repetir um padrão e escolher uma direcção está aqui: na consciência.
+
+[short pause]
+
+Enquanto não nomeias o que herdaste, ages no automático.
+
+Quando nomeias, há escolha.
+
+[pause]
+
+Não tens de rejeitar tudo. Não tens de honrar tudo. Tens de escolher.
+
+[long pause]
+
+Pega nas frases que escreveste nos exercícios anteriores. Escolhe uma que já não te serve.
+
+Essa, especificamente.
+
+[pause]
+
+Durante esta semana, quando reparares que ela apareceu — ao fazer um pagamento, ao olhar a conta, antes de dizeres um preço — não tentes combatê-la.
+
+Diz-lhe, em silêncio: reconheço-te.
+
+[pause]
+
+E depois faz o que ias fazer de qualquer forma.
+
+[short pause]
+
+A frase não desaparece assim. Mas deixa de mandar sozinha.
+
+[long pause]
+
+A herança não se apaga.
+
+Escolhe-se.
+
+E escolher já é liberdade.`,
+      },
+    ],
+  },
 ];
