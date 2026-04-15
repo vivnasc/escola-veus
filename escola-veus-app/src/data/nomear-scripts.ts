@@ -5101,4 +5101,2684 @@ Escola dos Véus. seteveus.space.`,
       },
     ],
   },
+  {
+    id: "curso-ouro-proprio-m1",
+    titulo: "Curso Ouro Próprio — Módulo 1 (Aulas A, B, C)",
+    descricao: "O Extracto como Espelho. Material de áudio para alunos — estrutura pedagógica completa.",
+    scripts: [
+      {
+        id: "ouro-proprio-m1a",
+        titulo: "M1.A — O medo de olhar",
+        curso: "ouro-proprio",
+        texto: `Quando foi a última vez que abriste o teu extracto bancário sem aperto no peito?
+
+[pause]
+
+Sem desviar o olhar. Sem fechar a app depressa.
+
+[pause]
+
+Quando foi a última vez que olhaste para os teus números como quem olha para a própria cara — sem medo do que ia encontrar?
+
+[long pause]
+
+É segunda-feira à noite. Estás no sofá.
+
+O telefone está ali, à distância de um gesto.
+
+Sabes que a notificação do banco chegou há três dias. Ainda não abriste.
+
+[pause]
+
+Não porque não tenhas tempo — tens. Não porque não saibas — sabes mais ou menos o que está lá.
+
+Não abres porque há algo no corpo que trava.
+
+[pause]
+
+Uma espécie de aperto entre o estômago e o peito, como se abrir aquele ecrã fosse abrir uma porta que preferias manter fechada.
+
+[short pause]
+
+Então fazes outra coisa. Abres o Instagram. Respondes a uma mensagem. Verificas o email do trabalho. Tudo menos aquilo.
+
+[pause]
+
+E a conta continua ali, fechada, à espera. Como se os números pudessem desaparecer se não olhares para eles.
+
+[long pause]
+
+O que está a acontecer não é preguiça. Não é desorganização.
+
+É protecção.
+
+[pause]
+
+O teu corpo aprendeu, em algum momento, que olhar para o dinheiro dói. Que os números não são neutros — são um veredicto.
+
+[short pause]
+
+Se o saldo está baixo, diz algo sobre ti. Se está alto, também diz — e talvez te assuste de outra forma.
+
+[pause]
+
+Algures, associaste dinheiro a julgamento.
+
+E agora, cada vez que abres o extracto, não estás a ler números. Estás a ler uma sentença sobre o teu valor.
+
+[pause]
+
+E quem quer ler a própria sentença a segunda-feira à noite?
+
+[long pause]
+
+Esta semana, escolhe um momento calmo.
+
+Abre o extracto bancário — pode ser do mês passado, não precisa ser o de hoje.
+
+Antes de ler os números, põe a mão no peito. Respira.
+
+[pause]
+
+E depois lê. Devagar. Sem fazer contas de cabeça, sem planear nada, sem corrigir nada.
+
+Apenas lê.
+
+[pause]
+
+E nota: o que aparece no corpo? Onde?
+
+Não precisas de resolver nada. Só olhar.
+
+[long pause]
+
+O dinheiro não é o problema.
+
+O medo de olhar é que te mantém presa.`,
+      },
+      {
+        id: "ouro-proprio-m1b",
+        titulo: "M1.B — Ler o extracto como um diário",
+        curso: "ouro-proprio",
+        texto: `Se alguém lesse o teu extracto bancário sem saber quem és — o que diria sobre a pessoa que fez aquelas escolhas?
+
+[pause]
+
+Que história contam os teus gastos sobre aquilo que realmente te importa?
+
+[long pause]
+
+Olha para o extracto do último mês.
+
+Não para os totais — para as linhas. Uma a uma.
+
+[pause]
+
+Café no sítio do costume: um euro e vinte.
+
+Supermercado, sexta à noite: quarenta e sete euros e oitenta e três.
+
+Transferência para a tua mãe: cinquenta.
+
+Uber de madrugada: doze e quarenta.
+
+Presente para a amiga que fez anos: trinta e cinco.
+
+Medicamento na farmácia: oito e sessenta.
+
+[pause]
+
+Cada linha é um dia. Cada dia é uma decisão que tomaste sem pensar.
+
+[pause]
+
+Ninguém olha para o extracto assim — como quem lê um diário.
+
+Mas é exactamente isso que ele é.
+
+[short pause]
+
+Um registo honesto de onde pões a tua atenção, a tua energia, o teu cuidado.
+
+E também — onde não pões.
+
+[long pause]
+
+Quando lês o extracto como um diário, começas a notar coisas que a calculadora não mostra.
+
+Há meses em que gastas muito nos outros e quase nada em ti.
+
+Há semanas em que os gastos pequenos se acumulam. Não por necessidade — por compensação.
+
+[pause]
+
+Aquele café depois da reunião difícil. A encomenda online às duas da manhã, quando não conseguias dormir. A comida de fora porque não tinhas energia para cozinhar.
+
+[pause]
+
+Não há nada de errado com nenhuma destas coisas.
+
+Mas quando as vês juntas, começas a perceber: há um padrão.
+
+[short pause]
+
+E o padrão não é financeiro. É emocional.
+
+[pause]
+
+Gastas de uma certa forma quando estás cansada. De outra quando tens medo. De outra quando te sentes sozinha.
+
+[long pause]
+
+O extracto não mente.
+
+Tu podes mentir a ti mesma — ele não.
+
+[long pause]
+
+Imprime ou copia o extracto do último mês. Pega numa caneta.
+
+Ao lado de cada gasto, escreve uma única palavra: o que sentias quando fizeste aquela compra.
+
+[pause]
+
+Não o que estavas a fazer — o que sentias.
+
+Cansaço. Alívio. Culpa. Prazer. Obrigação. Solidão.
+
+[pause]
+
+Não precisas de mudar nada.
+
+Só de ler a história que o dinheiro conta sobre ti.
+
+[long pause]
+
+O teu extracto já sabe o que sentes.
+
+A questão é se tu também sabes.`,
+      },
+      {
+        id: "ouro-proprio-m1c",
+        titulo: "M1.C — O corpo e o dinheiro",
+        curso: "ouro-proprio",
+        texto: `Onde é que o dinheiro vive no teu corpo?
+
+[pause]
+
+Se te perguntasse agora — onde sentes o dinheiro? — para onde iria a tua atenção?
+
+Para o estômago? Para o peito? Para os ombros? Para a garganta?
+
+[long pause]
+
+Estás no restaurante com amigos. A conta chega.
+
+Alguém diz: dividimos?
+
+[pause]
+
+E naquele segundo — antes de qualquer cálculo, antes de qualquer palavra — há uma reacção no teu corpo.
+
+Talvez um aperto no estômago. Talvez um calor na cara. Talvez os ombros que sobem. Talvez a mandíbula que cerra.
+
+[pause]
+
+Dizes que sim, claro, dividimos.
+
+Mas o corpo já disse outra coisa.
+
+[short pause]
+
+O corpo reagiu ao dinheiro antes de tu teres tido tempo de pensar.
+
+[long pause]
+
+E isto acontece mais vezes do que imaginas.
+
+No supermercado, quando pões o artigo de volta na prateleira.
+
+Na loja, quando viras a etiqueta ao contrário para ninguém ver o preço.
+
+Quando recebes o salário e o alívio dura exactamente três segundos antes da lista de contas aparecer.
+
+[long pause]
+
+O dinheiro não é abstracto. Nunca foi.
+
+Mesmo que a tua mente finja que é só matemática, cada decisão financeira passa pelo corpo primeiro.
+
+[short pause]
+
+E o corpo guarda tudo.
+
+A vez que ouviste os teus pais a discutir por causa de dinheiro. A vez que pediste algo e te disseram que não havia. A vez que viste vergonha no rosto de alguém que amas por causa de uma conta.
+
+[pause]
+
+Essas memórias não ficaram na cabeça — ficaram no corpo, na forma como respiras quando o assunto aparece, no aperto que chega antes da palavra.
+
+[long pause]
+
+E agora, cada vez que o dinheiro aparece, a reacção chega antes do pensamento.
+
+Antes da razão. Antes da calculadora.
+
+Antes de ti.
+
+[pause]
+
+Se não reconheces essa reacção, não estás a tomar decisões financeiras.
+
+Estás a seguir memórias antigas sem as ver.
+
+[long pause]
+
+Na próxima vez que pagares algo — qualquer coisa, um café, uma conta, uma compra online — para um segundo antes.
+
+Põe uma mão na barriga.
+
+[pause]
+
+Onde está a tensão? Onde está o alívio? Há aperto ou há expansão?
+
+Respira.
+
+Fica com o que sentires sem tentar mudá-lo.
+
+[pause]
+
+Faz isto três vezes esta semana. Ao terceiro dia, vais começar a reconhecer algo que sempre esteve lá — mas que nunca teve nome.
+
+[long pause]
+
+O teu corpo tem uma relação com o dinheiro.
+
+E é mais antiga do que qualquer conta bancária.`,
+      },
+    ],
+  },
+  {
+    id: "curso-ouro-proprio-m2",
+    titulo: "Curso Ouro Próprio — Módulo 2 (Aulas A, B, C)",
+    descricao: "A Herança Financeira Emocional. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m2a",
+        titulo: "M2.A — Os scripts de infância",
+        curso: "ouro-proprio",
+        texto: `Qual é a primeira frase sobre dinheiro que te lembras de ouvir em casa?
+
+[pause]
+
+Não a mais importante — a primeira.
+
+A que aparece quando fechas os olhos e pensas: dinheiro, na minha casa, era assim.
+
+[long pause]
+
+Tinhas sete, talvez oito anos.
+
+Estavas na cozinha, ou no corredor, ou no banco de trás do carro.
+
+E alguém disse uma frase.
+
+[pause]
+
+Talvez fosse a tua mãe: o dinheiro não chega para tudo.
+
+Talvez fosse o teu pai: na minha casa ninguém passa fome.
+
+Talvez ninguém dissesse nada — e o silêncio já era a frase.
+
+[long pause]
+
+Tu não estavas a prestar atenção. Estavas a brincar, ou a comer, ou a olhar pela janela.
+
+Mas o teu corpo ouviu.
+
+E guardou.
+
+[pause]
+
+Anos depois, quando o teu salário entra e tu pensas automaticamente que não vai chegar — não és tu a pensar. É aquela frase.
+
+Quando alguém te oferece algo e tu recusas antes de considerar — não és tu a recusar. É a voz de alguém que já nem se lembra de ter falado.
+
+[long pause]
+
+Antes dos dez anos, absorves frases como verdades absolutas.
+
+Não as questionas porque não tens com que comparar.
+
+[pause]
+
+O dinheiro é difícil.
+
+Quem tem dinheiro é diferente de nós.
+
+Não se fala de dinheiro.
+
+Dinheiro não dá em árvores.
+
+Temos que poupar para o que vem.
+
+[pause]
+
+Estas frases não são conselhos — são regras que o corpo decora.
+
+[short pause]
+
+E tu seguiste-as. Sem saber. Sem escolher.
+
+A tua relação com dinheiro não começou quando abriste a primeira conta bancária.
+
+Começou na cozinha da tua infância, com frases que nem te lembras de ter ouvido.
+
+[long pause]
+
+Pega num papel.
+
+Escreve, sem pensar muito, as cinco primeiras frases sobre dinheiro que te vêm à cabeça quando pensas na tua infância.
+
+[pause]
+
+Não precisam de ser exactas — podem ser sensações traduzidas em palavras.
+
+Depois lê-as em voz alta. Devagar.
+
+[pause]
+
+E pergunta: ainda acredito nisto? Ainda quero que isto me guie?
+
+[long pause]
+
+Metade do que acreditas sobre dinheiro não é teu.
+
+Foi-te dado antes de saberes recusar.`,
+      },
+      {
+        id: "ouro-proprio-m2b",
+        titulo: "M2.B — O que viste vs. o que ouviste",
+        curso: "ouro-proprio",
+        texto: `Na tua casa, o que se dizia sobre dinheiro era igual ao que se fazia?
+
+[pause]
+
+Ou havia uma distância entre as palavras e os gestos — uma distância que tu sentias no corpo sem conseguir nomear?
+
+[long pause]
+
+A tua mãe dizia: não precisamos de coisas caras.
+
+Mas notavas como olhava para a montra quando passavam por aquela loja.
+
+[pause]
+
+O teu pai dizia: o dinheiro não é importante.
+
+Mas via-lo contar as notas na carteira antes de sair, sempre com aquele vinco entre as sobrancelhas.
+
+[pause]
+
+Diziam-te: não te preocupes com isso.
+
+Mas a preocupação estava em todo o lado — na conversa que baixava de tom quando entravas na sala, no suspiro antes de abrir as cartas, na tensão à mesa quando alguém pedia mais.
+
+[long pause]
+
+Tu aprendeste duas coisas ao mesmo tempo: a versão oficial e a versão verdadeira.
+
+E como ninguém te explicou a diferença, ficaste com as duas.
+
+[pause]
+
+Até hoje, quando alguém te diz que dinheiro não importa, algo dentro de ti reconhece a mentira.
+
+Mas a tua boca repete a frase.
+
+[long pause]
+
+As crianças não aprendem o que lhes dizem. Aprendem o que vêem.
+
+[pause]
+
+Se o teu pai dizia que dinheiro não era problema mas vivia tenso por causa dele, tu aprendeste: o dinheiro é um problema que se esconde.
+
+Se a tua mãe dizia que era preciso poupar mas comprava coisas às escondidas, tu aprendeste: gastar é culpa, e a culpa esconde-se.
+
+[pause]
+
+Estas contradições não te confundiram.
+
+Programaram-te.
+
+[short pause]
+
+Deram-te duas instruções simultâneas que se anulam.
+
+Ganha dinheiro, mas não o mostres. Poupa, mas não sejas avarenta. Quer mais, mas não sejas ambiciosa.
+
+[pause]
+
+E tu ficas paralisada no meio.
+
+Não por falta de vontade.
+
+Por excesso de instruções contraditórias.
+
+[long pause]
+
+Faz duas colunas num papel.
+
+Na esquerda, escreve: o que se dizia sobre dinheiro em casa.
+
+Na direita: o que eu via acontecer.
+
+[pause]
+
+Preenche as duas.
+
+Depois olha para as diferenças.
+
+[pause]
+
+Não para julgar ninguém. Para perceber de onde vem a tua confusão.
+
+Para perceber que a paralisia não é tua.
+
+É herdada.
+
+[long pause]
+
+Tu não estás confusa sobre dinheiro.
+
+Estás a seguir duas instruções que se contradizem.`,
+      },
+      {
+        id: "ouro-proprio-m2c",
+        titulo: "M2.C — Reescrever os scripts",
+        curso: "ouro-proprio",
+        texto: `Se pudesses escolher — agora, hoje, com tudo o que sabes — que frase sobre dinheiro gostarias de ter ouvido em criança?
+
+[pause]
+
+Que frase te teria dado mais espaço?
+
+[long pause]
+
+Se te perguntassem hoje, aos quarenta, o que aprendeste sobre dinheiro em casa — o que dirias?
+
+Provavelmente uma lista de frases que já conheces de cor. Os ditos da tua mãe. A cara que o teu pai fazia quando o assunto aparecia. O silêncio a seguir.
+
+[pause]
+
+Mas essa lista não é só passado. É instrução activa.
+
+[short pause]
+
+Ainda hoje, quando o teu salário entra, há parte de ti que já sabe — antes de teres visto o número — que não vai chegar.
+
+Não és tu a pensar isso. É a voz que aprendeste antes de saberes o que era aprender.
+
+[long pause]
+
+A herança não é só o que está no passado. É o que decide sozinho, no presente, sem te pedir autorização.
+
+[pause]
+
+Não podes voltar atrás e mudar o que ouviste.
+
+Mas podes fazer uma coisa que ninguém fez por ti: escolher conscientemente o que fica e o que vai.
+
+[long pause]
+
+Os scripts de infância não são destino — são ponto de partida.
+
+Alguns servem-te: talvez o cuidado, a atenção, o respeito pelo que se tem.
+
+Outros prendem-te: o medo, a vergonha, o silêncio.
+
+[pause]
+
+A diferença entre repetir um padrão e escolher uma direcção está aqui: na consciência.
+
+[short pause]
+
+Enquanto não nomeias o que herdaste, ages no automático.
+
+Quando nomeias, há escolha.
+
+[pause]
+
+Não tens de rejeitar tudo. Não tens de honrar tudo. Tens de escolher.
+
+[long pause]
+
+Pega nas frases que escreveste nos exercícios anteriores. Escolhe uma que já não te serve.
+
+Essa, especificamente.
+
+[pause]
+
+Durante esta semana, quando reparares que ela apareceu — ao fazer um pagamento, ao olhar a conta, antes de dizeres um preço — não tentes combatê-la.
+
+Diz-lhe, em silêncio: reconheço-te.
+
+[pause]
+
+E depois faz o que ias fazer de qualquer forma.
+
+[short pause]
+
+A frase não desaparece assim. Mas deixa de mandar sozinha.
+
+[long pause]
+
+A herança não se apaga.
+
+Escolhe-se.
+
+E escolher já é liberdade.`,
+      },
+    ],
+  },
+  {
+    id: "curso-ouro-proprio-m3",
+    titulo: "Curso Ouro Próprio — Módulo 3 (Aulas A, B, C)",
+    descricao: "A Vergonha do Dinheiro. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m3a",
+        titulo: "M3.A — Vergonha de não ter",
+        curso: "ouro-proprio",
+        texto: `Já inventaste uma desculpa para não ir a um jantar porque não querias que vissem que não podias pagar?
+
+[pause]
+
+Já disseste que não te apetecia quando, na verdade, não tinhas como?
+
+[long pause]
+
+O grupo de amigas combina um jantar num restaurante novo.
+
+Tu vês o preço no Instagram e o estômago contrai.
+
+[pause]
+
+Não é fome. É vergonha.
+
+[short pause]
+
+Sabes que se fores, vais ter de escolher o prato mais barato e fingir que era o que querias.
+
+Ou vais dividir a conta por igual e ficar sem dinheiro para o resto da semana.
+
+[pause]
+
+Então dizes: hoje não posso, tenho um compromisso.
+
+E ficas em casa. Sozinha. Com a vergonha intacta.
+
+[long pause]
+
+Porque a vergonha não era do jantar.
+
+Era de não ter.
+
+E não ter, nesta história que carregas, significa não ser suficiente.
+
+[long pause]
+
+Já fizeste isto com viagens. Com presentes. Com o dentista que adias. Com o curso que querias fazer.
+
+Cada vez que dizes não por vergonha, a vergonha cresce.
+
+Porque a confirmaste.
+
+[long pause]
+
+A vergonha de não ter não é sobre dinheiro. É sobre pertença.
+
+[pause]
+
+Quando não tens o que os outros têm, o corpo sente que não pertences. Que és de fora. Que há um clube ao qual não tens acesso — e o bilhete de entrada é o saldo da tua conta.
+
+[long pause]
+
+Esta vergonha é silenciosa.
+
+Ninguém fala dela.
+
+Ninguém diz: tenho vergonha de ser pobre. Ninguém diz: tenho vergonha de não conseguir pagar o jantar.
+
+Porque a própria vergonha tem vergonha de si mesma.
+
+[pause]
+
+E então esconde-se. Atrás de desculpas. Atrás de silêncio. Atrás de uma vida mais pequena do que precisava de ser.
+
+[short pause]
+
+E o mais cruel: a vergonha faz-te sentir que mereces a vida pequena.
+
+Que é o teu lugar.
+
+[long pause]
+
+Da próxima vez que sentires aquele aperto — o da vergonha financeira, o que te faz inventar uma desculpa — para.
+
+Antes de responder.
+
+Põe os pés bem assentes no chão.
+
+Sente o peso do teu corpo na cadeira ou no chão.
+
+[pause]
+
+E pergunta-te: o que é que eu diria se não tivesse vergonha?
+
+Não precisas de dizer. Só de saber.
+
+[short pause]
+
+Saber a resposta verdadeira já é diferente de fugir dela.
+
+[long pause]
+
+A vergonha de não ter faz-te viver menos.
+
+E viver menos nunca resolveu a falta.`,
+      },
+      {
+        id: "ouro-proprio-m3b",
+        titulo: "M3.B — Vergonha de querer mais",
+        curso: "ouro-proprio",
+        texto: `Já te sentiste culpada por querer ganhar mais dinheiro?
+
+[pause]
+
+Já pensaste: devia ser grata pelo que tenho — e usaste a gratidão como forma de calar o desejo?
+
+[long pause]
+
+Estás numa conversa com alguém — uma amiga, uma irmã, uma colega.
+
+E surge o assunto.
+
+[pause]
+
+Ela fala dos seus planos: quer mudar de casa, quer investir, quer crescer.
+
+E tu sentes uma coisa estranha.
+
+[short pause]
+
+Não é inveja — é mais subtil.
+
+É uma voz que diz: eu também quero.
+
+[pause]
+
+Mas logo atrás vem outra: quem és tu para querer mais? Tens tecto. Tens comida. Há gente que não tem nada. O que é que te falta?
+
+[pause]
+
+E engoles o desejo.
+
+Mudas de assunto.
+
+Dizes: eu estou bem assim.
+
+[short pause]
+
+Mas não estás.
+
+[long pause]
+
+Há algo dentro de ti que sabe que querer mais não é ganância.
+
+Que sabe que podes ser grata e ambiciosa ao mesmo tempo.
+
+Mas essa voz — a que te permite querer — foi silenciada tantas vezes que já quase não a ouves.
+
+[long pause]
+
+Há um pacto silencioso que muitas mulheres fazem sem saber: para ser boa, tens de querer pouco.
+
+Para ser humilde, tens de te contentar.
+
+Para ser decente, tens de não ambicionar demais.
+
+[pause]
+
+Este pacto não foi escrito — foi sentido.
+
+[short pause]
+
+Sentiste-o quando a tua mãe se sacrificou e foi elogiada por isso.
+
+Quando viste mulheres ambiciosas serem chamadas frias, calculistas, egoístas.
+
+Quando aprendeste que querer para ti era tirar aos outros.
+
+[long pause]
+
+Mas isto é mentira.
+
+Uma mentira cómoda para quem beneficia de mulheres que não pedem.
+
+[short pause]
+
+Querer mais não é ingratidão. Querer mais é ouvires-te.
+
+[pause]
+
+E há uma diferença enorme entre ganância e permissão.
+
+Ganância é querer sem fim.
+
+Permissão é dizer: eu também posso.
+
+[long pause]
+
+Fecha os olhos. Respira fundo.
+
+E diz, em voz alta, devagar: eu quero mais.
+
+Só isso. Eu quero mais.
+
+[pause]
+
+Repara no que acontece.
+
+Encolheste os ombros? Baixaste a voz? Olhaste à volta para ver se alguém ouviu?
+
+[pause]
+
+Agora diz outra vez. Mais devagar.
+
+Sem pedir desculpa.
+
+[short pause]
+
+Se a vergonha vier, deixa-a estar.
+
+Não és tu a vergonha.
+
+És tu a dizer a verdade.
+
+[long pause]
+
+A vergonha de querer mais protege um mundo que nunca te protegeu a ti.`,
+      },
+      {
+        id: "ouro-proprio-m3c",
+        titulo: "M3.C — Dinheiro e dignidade",
+        curso: "ouro-proprio",
+        texto: `Alguma vez sentiste que o teu valor como pessoa dependia do número na tua conta?
+
+[pause]
+
+Que eras mais ou menos digna conforme o que tinhas — ou não tinhas?
+
+[long pause]
+
+Foste a uma consulta. Ou a uma loja. Ou a uma reunião.
+
+E algo na forma como te olharam mudou quando perceberam que não tinhas tanto quanto pensavam.
+
+[pause]
+
+Talvez tenha sido subtil — um tom de voz, um olhar, uma pausa a mais.
+
+Talvez tenha sido explícito.
+
+[short pause]
+
+Mas sentiste.
+
+No corpo, sentiste.
+
+[long pause]
+
+Uma contracção. Uma vontade de te fazer mais pequena.
+
+Ou o contrário: uma vontade de provar que és mais do que a tua carteira.
+
+Compraste algo que não precisavas para não parecer que não podias.
+
+Ou ficaste calada quando devias ter falado porque sentiste que não tinhas crédito — não financeiro, mas humano.
+
+[pause]
+
+Como se o dinheiro fosse uma língua e tu estivesses a falar com sotaque.
+
+[long pause]
+
+Vivemos num mundo que confunde valor económico com valor humano.
+
+Não é suposto — mas é assim que funciona.
+
+[pause]
+
+E tu absorveste isso.
+
+Não porque sejas fraca, mas porque é quase impossível não absorver.
+
+[short pause]
+
+Quando toda a gente à tua volta trata o dinheiro como medida de competência, de inteligência, de merecimento, o corpo aprende: quanto tenho é quanto valho.
+
+[pause]
+
+Mas isto é uma ilusão.
+
+Uma ilusão poderosa, porque toda a gente acredita nela.
+
+[long pause]
+
+Separar o teu valor do teu saldo é um dos actos mais difíceis e mais necessários que podes fazer.
+
+[pause]
+
+Não porque o dinheiro não importa — importa.
+
+Mas porque tu importas independentemente dele.
+
+[short pause]
+
+A tua dignidade não tem cifrão.
+
+[long pause]
+
+Completa esta frase por escrito: eu valho o mesmo quando tenho muito e quando tenho pouco porque...
+
+Lê a tua resposta.
+
+[pause]
+
+Se não acreditares nela — tudo bem. Escreve-a na mesma.
+
+Escreve-a todos os dias desta semana.
+
+[pause]
+
+Não porque repetir mude tudo — mas porque começar a ouvir-te é o primeiro passo para te acreditares.
+
+[long pause]
+
+O teu valor não é um número.
+
+Nunca foi.`,
+      },
+    ],
+  },
+  {
+    id: "curso-ouro-proprio-m4",
+    titulo: "Curso Ouro Próprio — Módulo 4 (Aulas A, B, C)",
+    descricao: "Cobrar, Receber, Merecer. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m4a",
+        titulo: "M4.A — O desconto automático",
+        curso: "ouro-proprio",
+        texto: `Quando foi a última vez que deste desconto no teu trabalho antes de alguém pedir?
+
+[pause]
+
+Quando foi a última vez que baixaste o preço — não porque era justo, mas porque sentiste que não podias pedir o valor inteiro?
+
+[long pause]
+
+Alguém te pede um orçamento. Pelo teu trabalho, pela tua consultoria, pelo teu tempo, pelo produto que fizeste.
+
+Tu sabes quanto vale.
+
+[pause]
+
+Fizeste as contas. É um número justo.
+
+[short pause]
+
+Mas na hora de escrever o valor, a mão treme.
+
+Não literalmente — mas algo dentro de ti hesita.
+
+[pause]
+
+E antes de enviar, tiras um bocado.
+
+Só um pouco.
+
+[short pause]
+
+Para não assustar. Para não parecer demais. Para não ouvir não.
+
+[long pause]
+
+O desconto já estava dado antes de a outra pessoa abrir a boca.
+
+Ninguém regateou. Ninguém pressionou.
+
+Foste tu.
+
+[pause]
+
+Tu e a voz que diz: se pedir o valor inteiro, vão achar que não valho tanto. Ou pior: vão perceber que não valho tanto.
+
+[pause]
+
+Então baixas.
+
+E cada vez que baixas, o corpo aprende que é assim que se faz.
+
+Que o teu preço real é demasiado.
+
+[short pause]
+
+Que precisas de ser mais barata para ser escolhida.
+
+[long pause]
+
+O desconto automático não é generosidade.
+
+É medo disfarçado.
+
+[pause]
+
+Medo de rejeição, medo de confronto, medo de ocupar espaço com o teu valor.
+
+E muitas vezes vem de um lugar antigo: a ideia de que pedir o que mereces é arrogância.
+
+Que cobrar bem é ganância.
+
+Que ser acessível é o mesmo que ser barata.
+
+[short pause]
+
+Mas não é.
+
+Acessibilidade é uma escolha consciente.
+
+Desconto automático é uma reacção ao medo.
+
+[pause]
+
+E há uma diferença enorme entre as duas coisas.
+
+[short pause]
+
+Uma vem da generosidade. A outra vem da falta de permissão.
+
+[long pause]
+
+Quando baixas o preço por medo, não estás a ser generosa.
+
+Estás a dizer ao mundo e a ti mesma que o teu valor é negociável.
+
+[pause]
+
+E o mundo aceita.
+
+O mundo aceita sempre o desconto que ofereces.
+
+[long pause]
+
+Na próxima vez que tiveres de dizer um preço — qualquer preço, mesmo que não seja profissional — nota o momento exacto em que a vontade de baixar aparece.
+
+Não baixas. Não sobes.
+
+Apenas nota.
+
+[pause]
+
+Sente onde isso vive: no peito? Na garganta? Nas mãos?
+
+Depois, diz o número.
+
+O número que realmente querias dizer.
+
+[short pause]
+
+E vê o que acontece. Não no outro — em ti.
+
+[long pause]
+
+O desconto que ninguém te pediu é a medida exacta do quanto ainda não te permites valer.`,
+      },
+      {
+        id: "ouro-proprio-m4b",
+        titulo: "M4.B — A ligação cobrar-merecer",
+        curso: "ouro-proprio",
+        texto: `Já repararam que cobrar e merecer, para ti, são a mesma coisa?
+
+[pause]
+
+Que quando sentes que não mereces, não consegues cobrar — e quando não cobras, confirmas que não mereces?
+
+[long pause]
+
+Fizeste um trabalho excelente.
+
+Sabes que ficou bom.
+
+O cliente também sabe — agradeceu, elogiou, disse que superaste as expectativas.
+
+[pause]
+
+Chega o momento de cobrar.
+
+E algo emperra.
+
+[short pause]
+
+Não é o valor — o valor está definido.
+
+É o acto de dizer: paga-me.
+
+[pause]
+
+Há uma resistência quase física.
+
+Como se cobrar fosse rude.
+
+Como se pedir o que é teu fosse pedir demais.
+
+[long pause]
+
+Então esperas. Mandas a factura com um pedido de desculpa embutido: quando puderes. Sem pressa. À tua conveniência.
+
+[pause]
+
+Usas palavras suaves para suavizar o facto de que estás a pedir dinheiro pelo teu trabalho.
+
+E se a pessoa demora a pagar, não cobras de novo. Esperas.
+
+[short pause]
+
+Porque cobrar uma vez já custou.
+
+Cobrar duas seria demais.
+
+[long pause]
+
+Cobrar não é um acto financeiro. É um acto de identidade.
+
+[pause]
+
+Quando não cobras o que vale, não é porque não saibas o valor.
+
+É porque não sentes que tens direito a ele.
+
+[short pause]
+
+Há uma parte de ti que ainda acredita que receber é um privilégio, não um direito.
+
+Que o dinheiro é algo que se ganha por mérito excepcional, não pelo simples facto de teres dado algo de valor.
+
+[long pause]
+
+Esta crença cria um ciclo: não cobras porque não sentes que mereces. Não recebes porque não cobras. E como não recebes, confirmas a crença: vês, não era para mim.
+
+[pause]
+
+Mas a crença veio primeiro.
+
+O resultado é só a prova que ela inventou.
+
+[long pause]
+
+Pensa no último trabalho que fizeste e que sentiste dificuldade em cobrar.
+
+Escreve: este trabalho vale X porque...
+
+[pause]
+
+Preenche com razões concretas. Tempo, competência, resultado, dedicação.
+
+Lê a lista. Lê-a como se fosse de outra pessoa.
+
+[short pause]
+
+Estarias confortável a pagar este valor a outra pessoa?
+
+Se sim — o problema não é o valor.
+
+É a permissão.
+
+[long pause]
+
+Cobrar o que vale não é pedir demais.
+
+É tratar-te como tratas os outros.`,
+      },
+      {
+        id: "ouro-proprio-m4c",
+        titulo: "M4.C — Receber sem devolver imediatamente",
+        curso: "ouro-proprio",
+        texto: `Quando alguém te dá algo — um presente, um elogio, uma ajuda — qual é o teu primeiro impulso?
+
+[pause]
+
+Receber?
+
+Ou devolver imediatamente para não ficar a dever?
+
+[long pause]
+
+Uma amiga paga-te o almoço.
+
+Tu dizes: não, deixa, eu pago o meu.
+
+Ela insiste. Tu aceitas, mas já estás a calcular quando vais poder retribuir.
+
+[pause]
+
+Na semana seguinte pagas o café, o almoço e o estacionamento — para ficar quite.
+
+[short pause]
+
+Alguém te oferece um presente caro.
+
+Agradeces, mas o pensamento imediato é: tenho de lhe dar algo à altura. Não depois — agora.
+
+[pause]
+
+O teu chefe dá-te um bónus.
+
+Em vez de sentires: mereço isto, sentes: agora vou ter de trabalhar o dobro para justificar.
+
+[long pause]
+
+Nunca estás só a receber.
+
+Estás sempre a compensar.
+
+[pause]
+
+Cada coisa que te dão abre uma conta no teu corpo — e o teu corpo não descansa até a fechar.
+
+[short pause]
+
+Como se receber criasse uma dívida.
+
+Como se aceitar fosse perigoso.
+
+[long pause]
+
+A dificuldade de receber não é educação — é protecção.
+
+[pause]
+
+Algures aprendeste que receber te coloca em posição de vulnerabilidade.
+
+Que quem dá tem poder. Que ficar a dever é ficar em perigo.
+
+[short pause]
+
+Talvez na tua família receber vinha com condições.
+
+Talvez a generosidade era uma moeda de troca.
+
+Talvez alguém te deu algo e depois usou isso contra ti.
+
+[pause]
+
+E ficou gravado: receber não é seguro.
+
+[long pause]
+
+E agora, cada vez que algo bom chega, a tua primeira reacção não é prazer — é calcular o custo.
+
+[pause]
+
+Isto estende-se ao dinheiro de forma directa: se não consegues receber um presente sem angústia, como vais receber um aumento? Uma proposta melhor? Uma oportunidade que não pediste?
+
+[short pause]
+
+Receber é uma capacidade.
+
+E pode estar atrofiada.
+
+[long pause]
+
+Esta semana, quando alguém te der algo — um elogio, um café, uma ajuda — experimenta só dizer: obrigada.
+
+Sem adicionar nada. Sem oferecer nada de volta. Sem justificar.
+
+Só obrigada.
+
+[pause]
+
+Sente o desconforto. Fica com ele. Não o resolvas.
+
+[short pause]
+
+Deixa o corpo aprender que receber não é dívida.
+
+[long pause]
+
+Receber não é ficar a dever.
+
+É deixar entrar o que já era teu.`,
+      },
+    ],
+  },
+  {
+    id: "curso-ouro-proprio-m5",
+    titulo: "Curso Ouro Próprio — Módulo 5 (Aulas A, B, C)",
+    descricao: "Gastar em Ti. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m5a",
+        titulo: "M5.A — A hierarquia dos gastos",
+        curso: "ouro-proprio",
+        texto: `Se olhares para os teus gastos do último mês, onde é que tu apareces?
+
+[pause]
+
+No topo da lista — ou no fim, depois de todos os outros?
+
+[long pause]
+
+Compras roupa nova para os filhos sem pensar.
+
+Pagas a mensalidade do ginásio do teu parceiro.
+
+Ofereces presentes generosos.
+
+Contribuis para jantares.
+
+[pause]
+
+Mas quando é para ti — aquele livro, aquele creme, aquele curso, aquela consulta — hesitas.
+
+Não porque não tenhas dinheiro.
+
+Mas porque há sempre algo mais urgente, mais importante, mais justificável.
+
+[long pause]
+
+O teu nome está no fundo da lista.
+
+Depois da renda. Depois das contas. Depois da escola das crianças. Depois do carro. Depois dos imprevistos.
+
+Depois de tudo.
+
+[pause]
+
+Se sobrar — e quase nunca sobra — talvez.
+
+[short pause]
+
+Não é que te esqueças de ti.
+
+É que te habituaste a vir depois.
+
+[pause]
+
+E a vir depois tornou-se tão natural que já nem notas. Já nem sentes que falta alguma coisa.
+
+Até que um dia o corpo reclama.
+
+[short pause]
+
+Cansaço que não passa. Irritação sem causa. Uma tristeza mansa que não sabes de onde vem.
+
+[long pause]
+
+A hierarquia dos teus gastos é um mapa da tua importância própria.
+
+Não é o que dizes sobre ti mesma — é o que fazes.
+
+[pause]
+
+E o que fazes, repetidamente, é colocar-te em último lugar.
+
+[short pause]
+
+Isto não é generosidade — é um padrão.
+
+Um padrão que te foi ensinado, não escolhido.
+
+[pause]
+
+Muitas mulheres aprendem desde cedo que cuidar de si é egoísmo.
+
+Que gastar em si é frivolidade.
+
+Que o bom é dar.
+
+[short pause]
+
+E então dão. Até não terem mais nada para dar.
+
+E quando chegam a esse ponto — vazias, cansadas, ressentidas — sentem culpa por estarem cansadas.
+
+Porque até o cansaço lhes parece egoísmo.
+
+[long pause]
+
+A hierarquia dos gastos não é só financeira.
+
+É um retrato da permissão que te dás para existir.
+
+[long pause]
+
+Esta semana, escolhe uma conta em que normalmente vens depois de todos os outros.
+
+Medicamento que adias. Consulta que nunca marcas. Algo teu que fica sempre por fazer.
+
+[pause]
+
+E trata disso primeiro — antes de pagares qualquer outra coisa do mês.
+
+Não um extra. Não um luxo.
+
+Uma coisa que já era tua de direito.
+
+[short pause]
+
+Paga-te antes de pagares a toda a gente.
+
+Nota o que isso faz ao corpo.
+
+[long pause]
+
+O lugar onde te pões na lista dos teus gastos é o lugar onde te pões na tua própria vida.`,
+      },
+      {
+        id: "ouro-proprio-m5b",
+        titulo: "M5.B — Culpa e prazer",
+        curso: "ouro-proprio",
+        texto: `Quando gastas dinheiro em algo que te dá prazer — prazer real, sem função prática — quanto tempo demora até a culpa aparecer?
+
+[pause]
+
+Segundos? Minutos?
+
+Ou chega antes, e impede-te de comprar?
+
+[long pause]
+
+Compraste aquele vestido. Ou aqueles sapatos. Ou aquela viagem.
+
+Algo que não era necessário.
+
+Algo que era bonito, que te fez sentir bem, que era só para ti.
+
+[pause]
+
+E sentiste prazer. Por um momento.
+
+Depois veio a culpa.
+
+[short pause]
+
+Podia ter guardado este dinheiro.
+
+Não precisava mesmo disto.
+
+Há coisas mais importantes.
+
+[long pause]
+
+A culpa não veio de fora — ninguém te criticou.
+
+Veio de dentro.
+
+[pause]
+
+De um lugar automático que diz: prazer é desperdício. Gastar em ti é frivolidade. Merecimento tem de ser ganho, não comprado.
+
+[long pause]
+
+E então fizeste uma de duas coisas: ou devolveste o que compraste, ou ficaste com ele mas sem conseguir aproveitar.
+
+Porque a culpa sentou-se ao lado do prazer e não saiu mais.
+
+[long pause]
+
+A culpa que sentes quando gastas em prazer não é sobre o dinheiro.
+
+É sobre a permissão.
+
+[pause]
+
+Algures aprendeste que o prazer tem de ser justificado.
+
+Que gastar em ti só é aceitável se for útil — um curso, uma ferramenta, algo que te torne mais produtiva.
+
+[short pause]
+
+Prazer puro, sem função, sem justificação, sem retorno — esse é perigoso.
+
+[long pause]
+
+E este é o padrão mais silencioso: não é que não tenhas dinheiro para prazer.
+
+É que não te permites ter prazer com o dinheiro.
+
+[pause]
+
+A culpa é a guarda que fica à porta.
+
+Cada vez que tentas entrar, ela pede-te a justificação.
+
+E se não tens uma boa o suficiente, não entras.
+
+[short pause]
+
+O resultado é uma vida funcional. Eficiente. Útil.
+
+E seca.
+
+[pause]
+
+Uma vida onde tudo serve para alguma coisa menos para ti.
+
+[long pause]
+
+Compra algo esta semana que seja só bonito.
+
+Que não sirva para nada.
+
+Que não tenhas de justificar a ninguém — nem a ti.
+
+[pause]
+
+Pode ser pequeno. Uma flor. Uma vela. Um chocolate bom.
+
+Quando a culpa vier — e vai vir — não a combatas.
+
+[short pause]
+
+Diz-lhe: eu sei que estás aí. Mas hoje estou a praticar prazer.
+
+E depois fica com o que compraste. Sem devolver. Sem compensar.
+
+[long pause]
+
+A culpa não te protege de nada.
+
+Só te tira o gosto do que já pagaste.`,
+      },
+      {
+        id: "ouro-proprio-m5c",
+        titulo: "M5.C — O investimento em ti como acto político",
+        curso: "ouro-proprio",
+        texto: `E se gastar dinheiro em ti não fosse egoísmo — mas a decisão mais quieta e mais importante que podes tomar por ti mesma?
+
+[long pause]
+
+Durante décadas, as mulheres à tua volta foram treinadas a gastar em tudo menos em si mesmas.
+
+Nos filhos. Nos maridos. Nas casas. Nos pais que envelheciam.
+
+[pause]
+
+A tua avó talvez nunca tenha tido uma conta bancária só dela.
+
+A tua mãe talvez tenha tido uma mas nunca gastasse sem pedir licença — a ninguém em particular, e a toda a gente ao mesmo tempo.
+
+[short pause]
+
+Tu herdaste esse treino.
+
+[pause]
+
+A hesitação antes de comprar um curso. O adiamento daquela consulta. O "ainda não é a altura" que já dura oito anos.
+
+[short pause]
+
+Isto não é coincidência individual.
+
+É história.
+
+[long pause]
+
+Quando uma mulher gasta dinheiro em si — não o mínimo, o necessário — alguma coisa se desloca.
+
+Não é espectacular. É quieta.
+
+[pause]
+
+Os limites ficam mais claros. As relações reajustam. O tempo, que parecia todo dos outros, começa a ter pedaços dela.
+
+[short pause]
+
+Isto parece pessoal, mas não é só pessoal.
+
+[long pause]
+
+Durante gerações, o dinheiro das mulheres serviu os projectos de outros.
+
+Quando decides que o teu serve o teu, estás a interromper um padrão mais antigo do que tu.
+
+[pause]
+
+E os padrões antigos defendem-se.
+
+[short pause]
+
+Por isso vem a culpa.
+
+Por isso vem a sensação de que é demais, é excesso, é egoísmo.
+
+[pause]
+
+Esse ruído não é fraqueza tua.
+
+É o som de um sistema a tentar continuar.
+
+[long pause]
+
+Investir em ti não é apenas cuidar de ti.
+
+É recusar uma herança.
+
+[pause]
+
+E essa recusa, repetida ao longo do tempo, é o que muda tanto a tua vida como a das que vêm depois.
+
+[long pause]
+
+Identifica uma coisa em que tens adiado investir em ti.
+
+Aquela. A mais óbvia. A que já hesitas em dizer em voz alta.
+
+[pause]
+
+Agora define uma data — não "quando sobrar", não "quando acalmar". Uma data. Escreve no calendário.
+
+Na mesma semana, conta a alguém — uma pessoa só, não é um anúncio — que vais fazer isto neste dia.
+
+[short pause]
+
+Não precisas de justificação.
+
+Deixa a data no calendário trabalhar por ti.
+
+[long pause]
+
+Quando investes em ti, não estás a gastar.
+
+Estás a decidir que existes.`,
+      },
+    ],
+  },
+  {
+    id: "curso-ouro-proprio-m6",
+    titulo: "Curso Ouro Próprio — Módulo 6 (Aulas A, B, C)",
+    descricao: "Dinheiro e Relações. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m6a",
+        titulo: "M6.A — Quem paga, manda?",
+        curso: "ouro-proprio",
+        texto: `Na tua relação, quem paga mais tem mais poder?
+
+[pause]
+
+Quem ganha mais decide mais?
+
+Há uma conta invisível a correr entre vocês — e quem está a ganhar?
+
+[long pause]
+
+Ele paga o jantar. Ela escolhe o restaurante — mas dentro do orçamento dele.
+
+Ele paga a renda. Ela sente que não pode reclamar do apartamento porque não contribui com a mesma parte.
+
+Ela quer comprar algo. Ele não diz que não — mas ergue a sobrancelha.
+
+E ela guarda o cartão.
+
+[long pause]
+
+Ninguém gritou. Ninguém proibiu. Ninguém disse: tu não decides.
+
+Mas há algo que registou tudo.
+
+[pause]
+
+Há uma assimetria que não está nos números — está nos gestos.
+
+Na pausa antes de comprar. No olhar antes de pedir. Na justificação antes de gastar.
+
+[long pause]
+
+Se ganhas menos, sentes que tens menos voz.
+
+Se não ganhas nada, sentes que não tens direito a voz nenhuma.
+
+[pause]
+
+Não porque te digam isso — mas porque o dinheiro fala uma língua que o corpo entende sem tradução.
+
+[long pause]
+
+Nas relações, o dinheiro nunca é só dinheiro.
+
+É poder. É segurança. É controlo. É liberdade.
+
+[pause]
+
+Quem paga mais sente, mesmo sem querer, que decide mais.
+
+Quem recebe mais sente, mesmo sem razão, que deve mais.
+
+[short pause]
+
+E cria-se uma dinâmica invisível: um que pode e outro que pede. Um que dá e outro que agradece. Um que decide e outro que se adapta.
+
+[long pause]
+
+Isto não é necessariamente intencional.
+
+Muitas vezes, quem paga mais nem sabe que está a exercer poder.
+
+E quem recebe mais nem sabe que está a ceder espaço.
+
+[pause]
+
+Mas tu sentes.
+
+Sentes cada vez que encolhes a tua vontade porque o dinheiro não é teu.
+
+E cada vez que engoles uma opinião porque não pagas a tua parte.
+
+[long pause]
+
+Pensa na tua relação actual — ou na última.
+
+Quem paga mais? Quem decide mais?
+
+Há uma correlação?
+
+[pause]
+
+Escreve dois momentos em que sentiste que o dinheiro influenciou quem tinha voz.
+
+Não para acusar ninguém — para ver a dinâmica com clareza.
+
+[short pause]
+
+Porque só o que se vê se pode mudar.
+
+[long pause]
+
+O dinheiro numa relação nunca é só dinheiro.
+
+É a linguagem silenciosa do poder.`,
+      },
+      {
+        id: "ouro-proprio-m6b",
+        titulo: "M6.B — Dependência financeira e medo",
+        curso: "ouro-proprio",
+        texto: `Se a tua relação acabasse amanhã, conseguirias pagar as tuas contas?
+
+[pause]
+
+Se a resposta te assusta — de onde vem o medo?
+
+Do dinheiro ou da solidão?
+
+[long pause]
+
+Há mulheres que ficam em relações não por amor — mas por matemática.
+
+[pause]
+
+O apartamento está no nome dele. A poupança é partilhada mas só um tem acesso. Se sair, vai para onde? Com que dinheiro?
+
+[short pause]
+
+A conversa com as amigas é sobre sentimentos.
+
+Mas à noite, sozinha, a conta que se faz é financeira.
+
+[pause]
+
+Quanto custa a minha liberdade?
+
+[long pause]
+
+Às vezes a resposta é: mais do que tenho.
+
+Então fica. Não porque queira — mas porque não pode.
+
+[pause]
+
+E cada dia que fica por não poder, perde um bocado de si mesma.
+
+Aos poucos. Como um gotejamento.
+
+[long pause]
+
+A dependência financeira não prende o corpo — prende a vontade.
+
+[pause]
+
+Não precisas de estar trancada para não sair. Basta não ter para onde ir.
+
+[short pause]
+
+Esta é a prisão mais invisível: não tem grades.
+
+[pause]
+
+Tem contas. Tem rendas. Tem a vergonha de voltar para casa dos pais.
+
+[long pause]
+
+Quando todo o teu mundo material depende de outra pessoa, sair não é uma mudança — é um colapso.
+
+[pause]
+
+E muitas mulheres ficam exactamente aqui: com o suficiente para não sair, mas nunca com o suficiente para se sentir livres.
+
+[long pause]
+
+Faz uma conta simples, sozinha, em silêncio.
+
+Quanto precisas por mês para viver — só tu?
+
+Renda, comida, transporte, o básico.
+
+[pause]
+
+Agora olha para o que ganhas — ou para o que ganharias se voltasses a ganhar.
+
+[short pause]
+
+Não é para tomar decisões agora.
+
+É para veres o número com clareza.
+
+[pause]
+
+Porque o medo odeia números concretos.
+
+O medo alimenta-se de vago, de talvez, de não sei.
+
+[short pause]
+
+Quando sabes o número exacto, o medo perde metade da força.
+
+[long pause]
+
+A liberdade não é um sentimento.
+
+É um número que precisas de conhecer.`,
+      },
+      {
+        id: "ouro-proprio-m6c",
+        titulo: "M6.C — A conversa sobre dinheiro que evitas",
+        curso: "ouro-proprio",
+        texto: `Há uma conversa sobre dinheiro que precisas de ter com alguém que amas.
+
+[pause]
+
+Sabes qual é.
+
+Há quanto tempo a adias?
+
+[long pause]
+
+Pode ser com o teu parceiro: precisamos de falar sobre como dividimos as coisas.
+
+Pode ser com a tua mãe: não posso continuar a pagar isto sozinha.
+
+Pode ser com uma amiga: não tenho condições de ir a esse sítio.
+
+Pode ser contigo mesma: preciso de ganhar mais.
+
+[long pause]
+
+Sabes a conversa.
+
+Já a ensaiaste na cabeça dezenas de vezes.
+
+[pause]
+
+No chuveiro. No carro. À noite, antes de dormir.
+
+Tens as palavras. Tens os argumentos.
+
+[short pause]
+
+Mas nunca é o momento certo.
+
+Nunca está tudo calmo o suficiente.
+
+Nunca tens a certeza de que não vai correr mal.
+
+[pause]
+
+E então adias. Mais um dia. Mais uma semana.
+
+[long pause]
+
+E a conversa que não tens torna-se um peso que carregas sozinha.
+
+Porque o problema não é só o dinheiro — é o silêncio que o dinheiro cria quando ninguém fala dele.
+
+[long pause]
+
+A maioria das conversas sobre dinheiro que evitas não são sobre dinheiro.
+
+São sobre medo.
+
+[pause]
+
+Medo de conflito: e se a outra pessoa se zangar?
+
+Medo de vulnerabilidade: e se percebem que não tenho tanto quanto pensam?
+
+Medo de rejeição: e se me acham mesquinha por levantar o assunto?
+
+[long pause]
+
+O dinheiro é o último tabu.
+
+[pause]
+
+Podes falar de sexo, de morte, de saúde mental.
+
+Mas dinheiro?
+
+[short pause]
+
+A conversa sobre dinheiro obriga-te a ser honesta sobre o que tens, o que não tens, o que precisas e o que sentes.
+
+[pause]
+
+E essa honestidade, para muita gente, é mais assustadora do que qualquer outro tema.
+
+[long pause]
+
+Mas o custo de não falar é sempre maior do que o custo de falar.
+
+[pause]
+
+O silêncio não protege — acumula.
+
+Até ao dia em que rebenta.
+
+[long pause]
+
+Escreve a conversa que precisas de ter. Toda.
+
+Num papel, como se estivesses a falar com a pessoa.
+
+[pause]
+
+Não para enviar — para ouvir-te.
+
+Depois lê em voz alta.
+
+[short pause]
+
+E repara: o que é que custa mais — as palavras ou o silêncio?
+
+[pause]
+
+Não tens de ter a conversa esta semana.
+
+Mas tens de a tirar de dentro de ti e pô-la num sítio onde a possas ver.
+
+[long pause]
+
+O silêncio sobre dinheiro não é elegância.
+
+É peso.
+
+E podes pousá-lo.`,
+      },
+    ],
+  },
+  {
+    id: "curso-ouro-proprio-m7",
+    titulo: "Curso Ouro Próprio — Módulo 7 (Aulas A, B, C)",
+    descricao: "Ganhar Mais Não Resolve. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m7a",
+        titulo: "M7.A — O buraco que o dinheiro não enche",
+        curso: "ouro-proprio",
+        texto: `Já tiveste mais dinheiro do que o costume — e mesmo assim a inquietação não passou?
+
+[pause]
+
+Já recebeste aquilo que querias e, em vez de alívio, sentiste: e agora?
+
+[long pause]
+
+Recebes o aumento. Ou o bónus. Ou o pagamento daquele projecto grande.
+
+O dinheiro entra na conta e, por um instante, respiras.
+
+Finalmente.
+
+[pause]
+
+Mas o instante dura pouco. Horas, talvez. Um dia.
+
+Depois o corpo volta ao mesmo sítio.
+
+[short pause]
+
+A mesma ansiedade. A mesma sensação de que não chega. A mesma conta mental que nunca fecha.
+
+[long pause]
+
+Pensavas que quando chegasses aqui — a este valor, a este salário, a esta estabilidade — a paz viria.
+
+Mas não veio.
+
+Veio outra lista. Veio outro objectivo. Veio a mesma inquietação com um número diferente.
+
+[pause]
+
+E começas a desconfiar: se isto não resolveu, o que resolve?
+
+Porque a promessa era essa: ganha mais e vais estar bem.
+
+E ganhaste mais.
+
+[short pause]
+
+E não estás bem.
+
+[long pause]
+
+Há um buraco que o dinheiro não enche.
+
+Não porque o dinheiro seja insuficiente — mas porque o buraco não é financeiro.
+
+É emocional.
+
+[long pause]
+
+Muitas pessoas usam o dinheiro como substituto: de segurança, de valor próprio, de controlo, de amor.
+
+[pause]
+
+Se não me sinto segura, preciso de mais dinheiro.
+
+Se não me sinto valorizada, preciso de ganhar mais.
+
+Se não tenho controlo sobre a minha vida, preciso de ter controlo sobre a minha conta.
+
+[short pause]
+
+O dinheiro torna-se a resposta para perguntas que não são financeiras.
+
+[pause]
+
+E como a resposta nunca encaixa na pergunta, a insatisfação permanece.
+
+[long pause]
+
+Mais dinheiro tapa o sintoma — mas não toca na causa.
+
+E a causa, quase sempre, é outra fome.
+
+[pause]
+
+Uma fome de algo que o dinheiro não compra: presença, pertença, permissão de ser quem és.
+
+[long pause]
+
+Senta-te num sítio calmo. Fecha os olhos.
+
+Imagina que a tua conta bancária tem exactamente o dobro do que tem agora.
+
+[pause]
+
+Sente isso no corpo.
+
+Onde está o alívio?
+
+[short pause]
+
+Agora pergunta: o que é que farias com esse alívio?
+
+Não com o dinheiro — com o alívio.
+
+[pause]
+
+O que te permitirias sentir? Ser? Fazer?
+
+[short pause]
+
+A resposta a essa pergunta é o que realmente procuras.
+
+E talvez não tenha preço.
+
+[long pause]
+
+Há fomes que o dinheiro não mata.
+
+Reconhecê-las é o primeiro passo para parar de comer a coisa errada.`,
+      },
+      {
+        id: "ouro-proprio-m7b",
+        titulo: "M7.B — Sabotagem financeira",
+        curso: "ouro-proprio",
+        texto: `Já conseguiste juntar dinheiro e depois gastaste tudo de uma vez — quase sem perceber como?
+
+[pause]
+
+Já estiveste perto de uma estabilidade financeira e algo aconteceu que te levou de volta ao zero?
+
+[long pause]
+
+Estiveste meses a poupar. A conta crescia.
+
+E começaste a sentir-te estranha.
+
+[pause]
+
+Não confortável — estranha.
+
+Como se aquele dinheiro não fosse teu. Como se houvesse uma data de validade invisível.
+
+[short pause]
+
+Depois, sem razão clara, gastaste.
+
+[pause]
+
+Uma compra grande. Pequenas fugas de madrugada. Coisas que já nem te lembras.
+
+[short pause]
+
+Quando viste a conta de novo, estava quase onde começou.
+
+[pause]
+
+E sentiste duas coisas ao mesmo tempo: frustração e alívio.
+
+[short pause]
+
+Frustração porque perdeste o que juntaste.
+
+Alívio porque estar sem dinheiro é mais familiar do que ter.
+
+[long pause]
+
+A sabotagem financeira não é falta de disciplina.
+
+É um regresso ao que conheces.
+
+[pause]
+
+Se cresceste com pouco, ter pode ser desconfortável.
+
+Se associas dinheiro a conflito, ter pode sentir-se como estar em perigo.
+
+[short pause]
+
+Se acreditas, lá no fundo, que não mereces — encontras formas de garantir que não tens.
+
+[long pause]
+
+Decisões que parecem razoáveis no momento mas que, vistas de longe, formam um padrão claro.
+
+[pause]
+
+Ganhas e perdes. Constróis e destróis.
+
+A sabotagem não é o problema.
+
+É o sintoma.
+
+[short pause]
+
+O que está por baixo é uma crença sobre o teu lugar no mundo.
+
+[long pause]
+
+Pensa no último momento em que gastaste dinheiro que tinhas poupado — sem planear, sem precisar.
+
+Não no que compraste.
+
+No que sentias antes.
+
+[pause]
+
+Fecha os olhos e volta lá.
+
+Estavas ansiosa? Inquieta? Havia algo que não querias sentir?
+
+[short pause]
+
+Põe a mão onde essa sensação vivia.
+
+Respira para esse sítio.
+
+[pause]
+
+A sabotagem começa sempre antes da compra.
+
+Começa na sensação que não quiseste ficar a sentir.
+
+[long pause]
+
+Não estás a falhar com o dinheiro.
+
+Estás a regressar ao único lugar que o teu corpo conhece como casa.`,
+      },
+      {
+        id: "ouro-proprio-m7c",
+        titulo: "M7.C — Suficiente: quando é suficiente?",
+        curso: "ouro-proprio",
+        texto: `Tens um número na cabeça — um valor a partir do qual tudo ficaria bem?
+
+[pause]
+
+E se atingisses esse número, acreditas mesmo que pararias?
+
+Ou o número subiria?
+
+[long pause]
+
+Quando ganhavas mil, pensavas: se ganhasse dois mil.
+
+Quando ganhaste dois mil, pensaste: se ganhasse três mil.
+
+[pause]
+
+O número muda.
+
+A sensação não.
+
+[long pause]
+
+Há sempre um próximo patamar, uma próxima meta, uma próxima prova de que ainda não chega.
+
+Não é ambição — ambição tem direcção.
+
+Isto é outra coisa.
+
+[pause]
+
+É uma incapacidade de dizer: chega. É suficiente. Estou bem.
+
+[short pause]
+
+Porque no momento em que paras, aparece o medo.
+
+[pause]
+
+Se paro de querer mais, o que acontece?
+
+Se me contento, não estou a desistir?
+
+Se não corro, não fico para trás?
+
+[short pause]
+
+E então continuas.
+
+Não porque queiras mais — mas porque tens medo de parar.
+
+[long pause]
+
+A corrida financeira não é sobre dinheiro.
+
+É sobre o silêncio que ficaria se parasses.
+
+[long pause]
+
+Se nunca é suficiente, o problema não está no quanto.
+
+Está no que o dinheiro está a substituir.
+
+[pause]
+
+Para algumas pessoas, acumular é segurança contra o caos.
+
+Para outras, é prova de valor.
+
+Para outras ainda, é a única linguagem de sucesso que aprenderam.
+
+[short pause]
+
+Quando o suficiente não existe, estás a pedir ao dinheiro que te dê algo que ele não pode dar: paz.
+
+[long pause]
+
+Porque a paz não vem de um número — vem de uma decisão.
+
+[pause]
+
+A decisão de dizer: o que tenho, neste momento, permite-me viver com dignidade.
+
+E o que me falta não é mais dinheiro — é mais presença no que já tenho.
+
+[short pause]
+
+Isto não é conformismo.
+
+É lucidez.
+
+[pause]
+
+E há uma diferença enorme entre estar conforme e estar presente.
+
+[long pause]
+
+Escreve o teu número.
+
+Aquele valor mensal a partir do qual acreditas que ficarias bem.
+
+[pause]
+
+Agora olha para ele. E pergunta: o que é que esse número me daria que eu não tenho agora?
+
+Segurança? Liberdade? Reconhecimento? Paz?
+
+[short pause]
+
+Depois pergunta: há alguma parte disso que já posso ter — sem esperar pelo número?
+
+[pause]
+
+Não para desistires do número.
+
+Mas para não adiares a vida até lá chegares.
+
+[long pause]
+
+Suficiente não é um número.
+
+É uma decisão de estar presente no que já existe.`,
+      },
+    ],
+  },
+  {
+    id: "curso-ouro-proprio-m8",
+    titulo: "Curso Ouro Próprio — Módulo 8 (Aulas A, B, C)",
+    descricao: "Dinheiro como Liberdade. Fecho do curso. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m8a",
+        titulo: "M8.A — De sobrevivência a direcção",
+        curso: "ouro-proprio",
+        texto: `O teu dinheiro serve para sobreviver ou para viver?
+
+[pause]
+
+Há quanto tempo estás no modo de sobrevivência — a pagar contas, a cobrir buracos, a reagir ao que aparece — sem nunca te perguntares: para onde quero ir?
+
+[long pause]
+
+O mês começa e tu já sabes como vai ser.
+
+Entra o salário. Sai a renda. Sai a água, a luz, a internet. Sai o supermercado. Sai o transporte. Sai a escola. Sai o imprevisto que aparece sempre.
+
+[pause]
+
+E quando tudo sai, o que resta não é teu — é do próximo imprevisto.
+
+Não há sobra. Não há folga. Não há direcção.
+
+[short pause]
+
+Há sobrevivência.
+
+[long pause]
+
+E a sobrevivência financeira é eficiente: mantém-te à tona.
+
+Mas não te leva a lado nenhum.
+
+[pause]
+
+Estás no mesmo sítio há meses, talvez anos.
+
+Não porque sejas incapaz, mas porque toda a tua energia vai para a reacção.
+
+[short pause]
+
+Pagar o que aparece. Resolver o que surge. Apagar o fogo.
+
+[pause]
+
+Nunca sobra atenção para pensar: se o dinheiro não fosse só para sobreviver — para que o queria?
+
+[long pause]
+
+A sobrevivência financeira é um modo.
+
+Não é um destino.
+
+[pause]
+
+Mas quando ficas nele tempo demais, parece ser tudo o que existe.
+
+Parece que o dinheiro só serve para isso: cobrir custos.
+
+[short pause]
+
+E perdes de vista a outra função do dinheiro: a de construir.
+
+[long pause]
+
+Construir não significa ser rica.
+
+Significa ter direcção.
+
+[pause]
+
+Saber para onde vai o próximo euro que sobrar — não por obrigação, mas por escolha.
+
+[short pause]
+
+A diferença entre sobrevivência e direcção não é o quanto ganhas.
+
+É a pergunta que fazes.
+
+[pause]
+
+Na sobrevivência, a pergunta é: como vou pagar?
+
+Na direcção, a pergunta é: para onde quero ir?
+
+[long pause]
+
+E esta segunda pergunta — a da direcção — assusta mais.
+
+Porque obriga-te a querer. A imaginar. A permitir-te um futuro.
+
+[pause]
+
+E muitas mulheres pararam de se permitir futuro há tanto tempo que já nem sabem o que querem.
+
+[long pause]
+
+Amanhã de manhã, antes de começares o dia, fica parada dois minutos.
+
+De pé. Em silêncio.
+
+[pause]
+
+E em vez de pensares no que tens de pagar, pergunta: para onde quero ir?
+
+Não precisas de resposta. Só de fazer a pergunta.
+
+[short pause]
+
+Repete isto durante três manhãs.
+
+Ao terceiro dia, repara se algo mudou — na forma como entras no dia, na forma como olhas para o dinheiro, na forma como sentes o peso das contas.
+
+[pause]
+
+A pergunta não resolve.
+
+Mas muda a direcção do olhar.
+
+[long pause]
+
+Sobreviver é reagir.
+
+Viver é escolher para onde vai o próximo passo.`,
+      },
+      {
+        id: "ouro-proprio-m8b",
+        titulo: "M8.B — O mapa do futuro que queres financiar",
+        curso: "ouro-proprio",
+        texto: `Se o dinheiro fosse um veículo — não um problema, não um peso, não uma fonte de ansiedade, mas um veículo — para onde o conduzirias?
+
+[pause]
+
+Que vida construirias se pudesses usar o dinheiro com intenção em vez de desespero?
+
+[long pause]
+
+Imagina que estás sentada à mesa.
+
+Não à mesa da cozinha cheia de contas — outra mesa.
+
+Uma mesa limpa, com uma folha em branco.
+
+[pause]
+
+E alguém te diz: desenha a vida que queres.
+
+Não a perfeita — a tua.
+
+[short pause]
+
+Onde vives? Com quem? Como passas as manhãs? O que fazes com o teu tempo?
+
+Que tipo de cansaço sentes — o bom ou o que te desgasta?
+
+Quanto precisas por mês para isso?
+
+[long pause]
+
+A maioria das pessoas nunca fez este exercício.
+
+Não porque não queiram — porque nunca se permitiram.
+
+[pause]
+
+Porque quando vives em modo sobrevivência, imaginar um futuro parece luxo.
+
+Parece ingratidão. Parece delírio.
+
+[short pause]
+
+Mas não é nada disso.
+
+[pause]
+
+É o acto mais prático que podes fazer: saber para onde queres ir para poderes começar a caminhar.
+
+[long pause]
+
+Sem mapa, qualquer caminho serve.
+
+E é assim que muitas pessoas vivem a sua vida financeira: sem mapa.
+
+[pause]
+
+Ganham. Gastam. Sobra ou não sobra. Reagem.
+
+Mas nunca param para perguntar: isto está a levar-me para algum sítio?
+
+[long pause]
+
+O mapa não é um orçamento.
+
+O orçamento é o como.
+
+O mapa é o para quê.
+
+[pause]
+
+O orçamento diz: não gastes mais de X em comida.
+
+O mapa diz: quero viver num sítio com mais luz, perto do mar, com tempo para ler.
+
+[short pause]
+
+O orçamento sem mapa é uma prisão.
+
+O mapa sem orçamento é um sonho.
+
+Precisas dos dois.
+
+[pause]
+
+Mas o mapa vem primeiro.
+
+Porque sem saber para onde vais, não há número que te dê paz.
+
+[long pause]
+
+Escreve, em detalhe, um dia normal na vida que queres ter daqui a três anos.
+
+Não a vida perfeita — a tua.
+
+[pause]
+
+Desde que acordas até que adormeces. Com quem estás. O que fazes. O que comes. O que sentes.
+
+Depois lê o que escreveste e pergunta: quanto custa este dia?
+
+[short pause]
+
+Não precisa de ser exacto. Mas precisa de ser real.
+
+[pause]
+
+E quando tiveres o número, já não é um sonho.
+
+É um destino.
+
+[long pause]
+
+O dinheiro não te dá uma vida.
+
+Mas pode levar-te até ela — se souberes para onde queres ir.`,
+      },
+      {
+        id: "ouro-proprio-m8c",
+        titulo: "M8.C — Liberdade, não acumulação",
+        curso: "ouro-proprio",
+        texto: `Se o objectivo do dinheiro não for ter mais — mas ser mais livre — o que muda?
+
+[pause]
+
+O que farias diferente amanhã se o teu norte não fosse acumulação, mas liberdade?
+
+[long pause]
+
+Há pessoas que têm muito e não são livres.
+
+Trabalham setenta horas por semana para manter o que têm. Não dormem. Não param. Não aproveitam.
+
+[pause]
+
+O dinheiro está lá — mas a vida não.
+
+[long pause]
+
+E há pessoas que têm pouco e são livres.
+
+Não porque o pouco baste — mas porque fizeram uma escolha.
+
+[pause]
+
+Escolheram o que importa. E o dinheiro serve isso.
+
+Só isso.
+
+[long pause]
+
+Tu estás algures no meio.
+
+Talvez com mais do que precisas para sobreviver e menos do que achas que precisas para viver.
+
+[pause]
+
+Mas a pergunta não é quanto.
+
+A pergunta é: para quê?
+
+[short pause]
+
+Se o teu dinheiro te permite fazer o que importa — tens o suficiente.
+
+Se o teu dinheiro te prende a fazer o que não importa para ter mais do que não precisas — não tens liberdade.
+
+Tens gaiola dourada.
+
+[long pause]
+
+O mundo ensinou-te que o objectivo do dinheiro é ter mais.
+
+Mais poupança. Mais investimento. Mais segurança.
+
+Mais, mais, mais.
+
+[pause]
+
+Mas mais não é um destino — é uma esteira.
+
+E quem corre numa esteira está sempre a mexer-se e nunca sai do sítio.
+
+[long pause]
+
+A liberdade financeira não é ter tanto que nunca mais precisas de trabalhar.
+
+É ter clareza suficiente para que cada euro que gastas ou guardas esteja alinhado com a vida que queres.
+
+[pause]
+
+E quando isso acontece, algo muda no corpo.
+
+O aperto desaparece.
+
+[short pause]
+
+Não porque os números mudaram — mas porque a relação mudou.
+
+[pause]
+
+O dinheiro deixa de ser um juiz e torna-se uma ferramenta.
+
+Deixa de ser uma sentença e torna-se uma escolha.
+
+[short pause]
+
+E tu, finalmente, podes olhar para o extracto sem medo.
+
+Porque o que está lá dentro já não te define.
+
+[pause]
+
+Serves-te dele — ele não te serve a si mesmo.
+
+[long pause]
+
+Escreve três coisas que o dinheiro te permite fazer que te fazem sentir livre.
+
+E três coisas que o dinheiro te obriga a fazer que te prendem.
+
+[pause]
+
+Olha para as duas listas.
+
+E pergunta: posso ter mais da primeira e menos da segunda?
+
+[short pause]
+
+Não amanhã — ao longo do próximo ano?
+
+Começa por uma. Uma única mudança.
+
+Pequena. Concreta.
+
+[pause]
+
+Que te aproxime da liberdade e te afaste da acumulação sem sentido.
+
+[long pause]
+
+O dinheiro nunca foi o destino.
+
+É o caminho.
+
+E o caminho só tem valor se souberes para onde te leva.`,
+      },
+    ],
+  },
 ];
