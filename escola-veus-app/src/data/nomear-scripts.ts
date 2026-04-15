@@ -24081,7 +24081,7 @@ E quando o corpo pára de pedir, a tua experiência subjectiva do corpo muda.
 
 Deixas de notar que tens fome até estares com tonturas.
 
-Deixas de notar que estás cansada até cairs com gripe.
+Deixas de notar que estás cansada até caíres com gripe.
 
 Deixas de notar que tens vontade de toque até teres uma crise relacional.
 
@@ -24181,7 +24181,7 @@ Pode ser:
 
 Não interpretes os sinais.
 
-Não os ajas.
+Não ajas sobre eles.
 
 Apenas regista.
 
@@ -25135,21 +25135,21 @@ Não em prática complicada.
 
 [short pause]
 
-Quando estiveres a ver televisão à noite, em vez de olhares para o telemóvel, passa lentamente a mão pelo lado interior do antebraço durante um minuto.
+Quando estiveres a ver televisão à noite, passa a mão casualmente pelo braço enquanto vês.
 
-Quando estiveres deitada antes de dormir, deixa as duas mãos cruzadas sobre o peito, sem objectivo. Cinco minutos.
+Quando estiveres a tomar banho, em vez de te lavares com pressa, não saltes zonas — passa a mão por toda a pele, em vez de só nas zonas utilitárias.
 
-Quando estiveres a tomar banho, em vez de te lavares com pressa, passa a mão devagar pela coxa durante mais uns segundos do que o costume.
+Quando vestires uma camisola, repara na textura do tecido em contacto com o abdómen, em vez de a pores em automático.
 
 [pause]
 
 Sem objectivo sexual.
 
-Sem objectivo de relaxamento.
+Sem prescrição de tempo.
 
 [short pause]
 
-Apenas reabertura de comunicação táctil com a tua própria pele.
+Apenas reabertura de contacto casual com a tua própria pele.
 
 [long pause]
 
@@ -25313,69 +25313,87 @@ Estás apenas a registar que essas zonas existem, têm história, e merecem ser,
 
 [short pause]
 
-A partir desta semana, em cada uma destas zonas, começas uma prática de reaproximação muito devagar.
-
-[long pause]
-
-Uma vez por dia, durante alguns minutos, em momento privado, pões a mão nessa zona.
+A partir deste reconhecimento escrito, abrem-se duas vias concretas.
 
 [pause]
 
-Sem objectivo de massagem.
+A primeira — para zonas com história mais simples, sem ligação a trauma agudo.
 
-Sem objectivo de cura.
+A segunda — para zonas onde a história é mais pesada.
+
+[long pause]
+
+Para as primeiras, o trabalho pode acontecer ao longo das semanas através de comunicação escrita.
+
+[pause]
+
+Numa folha separada, escreve uma carta curta à zona identificada.
 
 [short pause]
 
-Apenas pousas a mão.
+Não em linguagem mística.
 
 [pause]
 
-E ficas com ela ali, durante um minuto ou dois.
+Em linguagem directa:
+
+"Zona da nuca, reconheço que te ignorei durante anos por causa do que aconteceu em x. Sei que estás aí. Vou passar a reparar em ti."
 
 [long pause]
 
-Não é meditação.
-
-Não estás a "enviar amor" à zona.
+Três, cinco frases. Não mais.
 
 [pause]
 
-Estás apenas a recomeçar comunicação.
+Ao longo das semanas, quando essa zona aparecer em situação concreta — alguém te toca ali, tu reparas na tensão, uma roupa fica mal em cima dela — regista numa linha o que aconteceu.
 
 [short pause]
 
-A tua mão e a tua pele, a partir do momento em que se tocam regularmente — em zonas que não se tocavam há anos — voltam, devagar, a comunicar.
-
-[long pause]
-
-Algumas semanas depois, vais reparar em mudanças subtis.
+Vais construir, em letra escrita, um histórico da relação com essa zona.
 
 [pause]
 
-A zona deixa de estar tão tensa.
+E o histórico, acumulado, faz o que a prática silenciosa não consegue fazer sozinha: traz a zona para dentro do campo da linguagem.
 
-A zona começa a registar mais facilmente toque de outras pessoas.
+[long pause]
 
-A zona começa, em alguns momentos, a participar em sensações de prazer que antes ela ignorava.
+Para as zonas de história mais pesada — sobretudo se estão ligadas a experiências sexuais difíceis, violência, ou trauma corporal específico — este curso não substitui acompanhamento profissional.
+
+[pause]
+
+Se uma das zonas que escreveste está nesta categoria, o gesto desta semana é outro.
 
 [short pause]
 
-Esta reabertura é processo. Não é evento.
+Numa folha, escreve o nome de um profissional em quem tens confiança — terapeuta, psicóloga, médica de família — a quem podes, em algum ponto, falar sobre isto.
 
 [pause]
 
-Mas começa em algo tão simples como pousar uma mão num sítio do teu corpo onde tu aprendeste, há muito tempo, a não estar.
+Se não tens, escreve como primeiro passo "procurar recomendações com amigas em quem confio".
 
 [long pause]
 
-E voltar.
-
-Devagar.
+O corpo que guarda trauma específico precisa de ser acompanhado, não apenas observado.
 
 [pause]
 
-Para que essa parte de ti, finalmente, possa reentrar na vivência completa do teu próprio corpo.`,
+E reconhecer isto — em letra escrita, com nome — é, em si, acto de cuidado com a própria história.
+
+[short pause]
+
+Algumas zonas do teu corpo vão reabrir devagar, por registo escrito e comunicação com pessoas próximas.
+
+[pause]
+
+Outras vão reabrir em outro contexto, mais protegido, com ajuda qualificada.
+
+[long pause]
+
+A tarefa desta semana não é reabrir tudo.
+
+[pause]
+
+É mapear, em letra tua, onde estão as zonas — e escolher, para cada uma, a via adequada à história que ela carrega.`,
       },
       {
         id: "a-chama-m3c",
@@ -25570,7 +25588,7 @@ Não única via possível para um pedido mais antigo, mais simples, e raramente 
         id: "a-chama-m4a",
         titulo: "M4.A — A primeira vez que tocaste em ti mesma",
         curso: "a-chama",
-        texto: `Tenta lembrar-te da primeira vez que tu te tocaste a ti mesma com alguma forma de prazer.
+        texto: `Houve, em algum ponto da tua vida, uma primeira vez em que tu te tocaste a ti mesma com alguma forma de prazer.
 
 [pause]
 
@@ -25854,17 +25872,17 @@ Esta semana, depois de qualquer momento de prazer próprio — sozinha ou em cas
 
 [pause]
 
-Vais ficar deitada, em silêncio, durante um minuto.
+Em vez de abrir o telemóvel imediatamente ou de te levantares logo, fica ali um momento.
 
-Sem abrir o telemóvel. Sem te levantares logo. Sem fugir da sensação.
+Sem fugir da sensação.
 
 [short pause]
 
-E vais observar o que aparece.
+E depois, com o caderno ou o telemóvel ao lado, regista em uma linha o que reparaste.
 
 [pause]
 
-Se aparecer culpa, observa como aparece. Em que forma. De onde te parece vir. Em que parte do corpo a sentes.
+Se apareceu culpa: em que forma. De onde te parece vir. Em que parte do corpo a notaste.
 
 [long pause]
 
@@ -27144,7 +27162,7 @@ Mais subtil.
 
 [short pause]
 
-Aparece em pequenos momentos — olhar mantido por mais meio segundo do que o habitual, vontade de toque casual no cotovelo, sensação de alivio quando ouves a chave na porta à noite.
+Aparece em pequenos momentos — olhar mantido por mais meio segundo do que o habitual, vontade de toque casual no cotovelo, sensação de alívio quando ouves a chave na porta à noite.
 
 [long pause]
 
@@ -27741,7 +27759,7 @@ Numa folha pequena que possas trazer contigo, escreve em cima:
 
 [short pause]
 
-E ao longo do dia, sempre que repararas num pequeno prazer, anotas.
+E ao longo do dia, sempre que reparares num pequeno prazer, anotas.
 
 [pause]
 
@@ -27916,7 +27934,7 @@ Esta mulher não está em permanente negociação interna sobre se devia ou não
 
 [pause]
 
-Esse debate foi resolvido em ela.
+Esse debate foi resolvido nela.
 
 [short pause]
 
