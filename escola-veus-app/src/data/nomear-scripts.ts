@@ -8461,4 +8461,285 @@ E a pausa é a tua casa quando ninguém te vê.`,
       },
     ],
   },
+  {
+    id: "curso-limite-sagrado-m3",
+    titulo: "Curso Limite Sagrado — Módulo 3 (Aulas A, B, C)",
+    descricao: "A Arte de Não Fazer. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m3a",
+        titulo: "M3.A — Fazer menos é um acto radical",
+        curso: "limite-sagrado",
+        texto: `O que aconteceria se, amanhã, fizesses metade?
+
+[pause]
+
+Metade dos compromissos. Metade das mensagens respondidas. Metade das tarefas resolvidas.
+
+[long pause]
+
+A primeira resposta honesta é medo.
+
+O mundo ruiria. As pessoas zangariam-se. Alguém ficaria à espera.
+
+[pause]
+
+Mas espera — olha com cuidado.
+
+A maioria das coisas que tu fazes num dia, não tinhas sido tu que as pediste.
+
+Apareceram no teu tempo por expectativa, por hábito, por medo de decepcionar.
+
+[short pause]
+
+E tu, sem pensar, absorveste como tarefas tuas.
+
+[long pause]
+
+Fazer menos, numa sociedade que mede o valor pela produção, é um gesto radical.
+
+Não porque a preguiça seja virtude.
+
+Porque a possibilidade de fazer menos é a possibilidade de escolher o que fazes.
+
+[pause]
+
+Enquanto fazes tudo, não escolhes nada.
+
+[short pause]
+
+Quando reduzes, começas a ver — pela primeira vez em anos — o que é realmente essencial.
+
+O que era rotina automática. O que era obrigação invisível. O que era verdadeiramente tua escolha.
+
+[long pause]
+
+A arte de não fazer não é desistir.
+
+É uma pratica de discernimento.
+
+[pause]
+
+Requer que reconheças três categorias de tarefas.
+
+As que são tuas por escolha. As que são tuas por hábito. As que são tuas por imposição.
+
+[short pause]
+
+Só as primeiras merecem atenção plena.
+
+As outras duas precisam de ser repensadas.
+
+[long pause]
+
+Esta semana, faz uma lista de todas as tarefas que assumiste na última semana.
+
+Tudo. Do mais pequeno ao mais exigente.
+
+[pause]
+
+Ao lado de cada uma, escreve uma das três letras: E (escolha), H (hábito), ou I (imposição).
+
+Não penses muito. Primeira resposta.
+
+[short pause]
+
+Depois olha para o resultado.
+
+A proporção de E, H e I é o mapa da tua autonomia.
+
+[pause]
+
+Quando mais de metade é H ou I, tens um diagnóstico claro: a tua vida está a acontecer sem ti no assento do condutor.
+
+[long pause]
+
+Fazer menos não é preguiça.
+
+É o primeiro movimento para voltar a escolher.`,
+      },
+      {
+        id: "limite-sagrado-m3b",
+        titulo: "M3.B — Quando recusar é cuidado",
+        curso: "limite-sagrado",
+        texto: `Já sentiste que, ao dizeres sim a alguém, estavas a abandonar outra pessoa?
+
+[pause]
+
+A dizer sim a um convite e, ao mesmo tempo, a dizer não ao teu corpo cansado?
+
+A dizer sim a um pedido e, ao mesmo tempo, a dizer não a um projecto teu há muito adiado?
+
+[long pause]
+
+Cada sim que dás é, em silêncio, um não para outra coisa.
+
+Este não acontece nos bastidores.
+
+[pause]
+
+E na maioria das vezes, a outra coisa que perde o espaço — és tu.
+
+[long pause]
+
+As mulheres são treinadas a ver o sim como cuidado e o não como agressão.
+
+Mas a verdade é mais subtil.
+
+[pause]
+
+Um sim automático não é cuidado. É adaptação.
+
+Um não consciente, dito com respeito pela outra pessoa e por ti, pode ser o gesto mais cuidadoso da conversa.
+
+[short pause]
+
+Porque o não consciente protege a qualidade do que vais dar a seguir.
+
+[long pause]
+
+Quem diz sim a tudo, eventualmente, dá tudo mal.
+
+Chega à próxima pessoa cansada. Chega à conversa seguinte ausente. Chega ao próprio corpo vazia.
+
+[pause]
+
+O não, nesta lógica, é uma protecção de qualidade.
+
+Recusas agora para poderes dar mais inteiramente ao que fica.
+
+[short pause]
+
+Isto não é cálculo frio.
+
+É respeito pela finitude do teu corpo.
+
+[long pause]
+
+Pensa numa pessoa a quem tens dificuldade em dizer não.
+
+Pensa numa situação recente em que deste sim mas, horas depois, te ressentiste.
+
+[pause]
+
+Escreve em duas colunas. Na esquerda: o que dei ao dizer sim. Na direita: o que deixei de dar a outra pessoa — ou a mim — por ter dito sim.
+
+[short pause]
+
+A coluna da direita é, quase sempre, mais significativa do que imaginas.
+
+[pause]
+
+E é esta coluna que torna o não, quando ele aparecer, num acto de cuidado alargado.
+
+Não estás a dizer não a uma pessoa.
+
+Estás a dizer sim ao que fica fora da visão dela.
+
+[long pause]
+
+Recusar bem é uma forma de amor mais rara do que concordar mal.`,
+      },
+      {
+        id: "limite-sagrado-m3c",
+        titulo: "M3.C — A paz dos que sabem parar",
+        curso: "limite-sagrado",
+        texto: `Observaste alguma vez uma mulher que, inexplicavelmente, parece em paz?
+
+[pause]
+
+Não em euforia. Em paz.
+
+Uma qualidade quieta, que resiste à agitação ao redor.
+
+[long pause]
+
+Se olhares com atenção, vais notar uma coisa específica sobre esta mulher.
+
+Ela sabe parar.
+
+[pause]
+
+Não literalmente — nem sempre está parada.
+
+Mas quando chega um ponto, ela pára.
+
+Pára de discutir quando a discussão já não avança. Pára de trabalhar quando o dia cumpriu o que podia cumprir. Pára de esperar quando a espera já não faz sentido.
+
+[short pause]
+
+A capacidade de parar é uma das mais raras e mais respeitadas.
+
+[long pause]
+
+A maioria das pessoas não pára porque parar parece perigoso.
+
+Parar significa aceitar que algo não vai ficar resolvido hoje.
+
+Parar significa admitir que há um limite ao que o esforço pode fazer.
+
+Parar significa confiar que o mundo vai continuar sem a nossa intervenção constante.
+
+[pause]
+
+Quem parou pela primeira vez descobriu que o mundo, de facto, continuou.
+
+E que algumas coisas que pareciam urgentes, quando não foram atendidas, desapareceram sozinhas.
+
+[short pause]
+
+Outras, que eram importantes, voltaram no dia seguinte — mais definidas, mais claras.
+
+[long pause]
+
+Parar é um teste de fé.
+
+Fé em que a vida não depende de ti estares activa.
+
+Fé em que o teu valor não está ligado à tua produtividade.
+
+Fé em que, ao parares, estás a permitir que o teu corpo recupere o que é dele.
+
+[pause]
+
+A primeira pessoa a beneficiar da tua paragem é aquela com quem vais falar a seguir.
+
+A segunda é o teu corpo, que há muito pedia.
+
+A terceira — estranha mas verdadeira — é a tarefa que estavas a fazer, que, quando retomada, terá mais qualidade.
+
+[long pause]
+
+Escolhe um momento esta semana em que, normalmente, continuarias.
+
+Um momento previsível — o fim da tarde de quinta-feira, por exemplo. Ou o domingo à noite. Ou a hora antes de deitar.
+
+[pause]
+
+Nesse momento, pára.
+
+Não faças nada mais produtivo. Não mudes para outra tarefa.
+
+Senta-te. Deixa o silêncio ocupar o espaço que normalmente ocuparias com acção.
+
+[short pause]
+
+É desconfortável no início.
+
+Sente-o passar.
+
+Fica até o desconforto se tornar quietude.
+
+[pause]
+
+Esse ponto — o ponto em que o desconforto vira quietude — é a entrada para uma qualidade de vida que tu, há muito, esqueceste que era acessível.
+
+[long pause]
+
+A paz dos que sabem parar não é privilégio.
+
+É fruto de uma recusa específica: recusar a ditadura do fazer sempre mais.`,
+      },
+    ],
+  },
 ];
