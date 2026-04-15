@@ -16901,7 +16901,7 @@ Esta antecipação tornou-se hábito tão profundo que tu já nem a notas.
 
 [pause]
 
-Acontece automaticamente. Em milisegundos. Antes de qualquer pensamento consciente.
+Acontece automaticamente. Em milissegundos. Antes de qualquer pensamento consciente.
 
 [short pause]
 
@@ -16929,11 +16929,11 @@ E libertar o resto do tempo desta vigilância automática.
 
 Esta semana, durante alguns momentos do dia, repara.
 
-Quando te avalias num reflexo. Quando ajustas a roupa em frente a uma sala. Quando antecipa-lo a impressão que vais causar antes de entrares.
+Quando te avalias num reflexo. Quando ajustas a roupa em frente a uma sala. Quando antecipas a impressão que vais causar antes de entrares.
 
 [pause]
 
-Quantas vezes ao dia faz isto?
+Quantas vezes ao dia fazes isto?
 
 [short pause]
 
@@ -17472,7 +17472,7 @@ No conjunto, são coreografia constante.
 
 [short pause]
 
-Coreografia que mantém o teu corpo permanentemente ajustado a uma versão que tu antecipa-te ser mais aceitável do que a versão natural.
+Coreografia que mantém o teu corpo permanentemente ajustado a uma versão que tu antecipas ser mais aceitável do que a versão natural.
 
 [pause]
 
@@ -18176,7 +18176,7 @@ Mas pedir é, na verdade, gesto de confiança.
 
 [pause]
 
-E pessoas que amam-te, em geral, acolhem o pedido com gosto.
+E pessoas que te amam, em geral, acolhem o pedido com gosto.
 
 Porque é confiança nelas. E porque, sem o pedido, elas próprias podem estar a sentir-se em distância sem saber como aproximar-se.
 
@@ -19121,6 +19121,2045 @@ Esta é, em última análise, a única forma sustentável de te reconciliares co
 Não pelo que ele aparenta.
 
 Pelo facto de tu, pela primeira vez em muito tempo, estares finalmente nele.`,
+      },
+    ],
+  },
+  {
+    id: "curso-pele-nua-m7",
+    titulo: "Curso Pele Nua — Módulo 7 (Aulas A, B, C)",
+    descricao: "O Corpo na Idade.",
+    scripts: [
+      {
+        id: "pele-nua-m7a",
+        titulo: "M7.A — A pele depois dos quarenta",
+        curso: "pele-nua",
+        texto: `Algures depois dos quarenta, a pele muda.
+
+[pause]
+
+Não de forma dramática.
+
+De forma persistente.
+
+[long pause]
+
+Marcas que antes desapareciam ao fim de uns dias passam a ficar mais tempo.
+
+A textura altera-se em sítios específicos.
+
+A pele em torno dos olhos, do pescoço, das mãos, mostra história que antes ficava escondida.
+
+[pause]
+
+Tu reparas. E não consegues parar de reparar.
+
+[short pause]
+
+Cada manhã, pequeno inventário.
+
+[pause]
+
+Quando começou esta linha. Quanto mais marcado este sítio. Quando deixou de voltar ao normal aquela parte.
+
+[long pause]
+
+Esta atenção constante à mudança da pele é, em si mesma, um peso.
+
+[pause]
+
+Não pelo que se nota.
+
+Pelo trabalho mental constante de notar.
+
+[short pause]
+
+A maioria das mulheres adultas dedica, sem se aperceber, uma quantidade significativa de atenção diária a este inventário.
+
+[pause]
+
+Que poderia estar a ser usada para outras coisas.
+
+[long pause]
+
+A indústria que vive desta atenção alimentou-a deliberadamente.
+
+[pause]
+
+Os anúncios estão organizados para te ensinar a ver tudo o que muda como problema a corrigir.
+
+[short pause]
+
+Se aceitares esta lente, vives o resto da vida adulta numa relação adversária com a tua própria pele.
+
+[pause]
+
+Cada nova marca é inimiga.
+
+Cada produto novo é prometido como solução.
+
+[short pause]
+
+E a relação, ano após ano, fica cada vez mais cansativa.
+
+[long pause]
+
+Há outra forma possível.
+
+[pause]
+
+Aceitar que a pele depois dos quarenta tem a textura de uma pele que viveu quarenta anos.
+
+E que esta textura, em si mesma, não é problema.
+
+[short pause]
+
+É consequência natural de um corpo a continuar.
+
+[pause]
+
+Pele perfeita aos quarenta seria, biologicamente, anomalia.
+
+[long pause]
+
+Reconciliar-te com a pele depois dos quarenta exige uma decisão repetida ao longo dos anos.
+
+[pause]
+
+A decisão de não comprar, todos os meses, a história de que a tua pele está a falhar.
+
+[short pause]
+
+A pele não está a falhar.
+
+Está, simplesmente, a continuar a viver — visível.
+
+[pause]
+
+E pele que mostra história é pele real.
+
+[long pause]
+
+Esta semana, observa a tua relação com produtos de pele.
+
+Quanto compras. Com que frequência tens necessidade de algo novo. Como te sentes a aplicar produtos diariamente.
+
+[pause]
+
+Pergunta-te: o que aconteceria se eu fizesse menos durante um mês?
+
+[short pause]
+
+Não cancelar tudo. Reduzir.
+
+[pause]
+
+A pele responde, em geral, melhor do que a indústria sugere.
+
+E tu libertarias atenção, dinheiro, e relação adversária com a tua própria face.
+
+[long pause]
+
+A pele depois dos quarenta não precisa de mais intervenção.
+
+Precisa, na maioria das vezes, de menos.
+
+[pause]
+
+Menos produtos. Menos atenção crítica. Menos reparação.
+
+[short pause]
+
+Mais aceitação de que ela está a fazer exactamente o que se pode esperar de uma pele desta idade.
+
+[pause]
+
+E a partir desta aceitação, a relação relaxa.
+
+E a pele, paradoxalmente, costuma ficar melhor.`,
+      },
+      {
+        id: "pele-nua-m7b",
+        titulo: "M7.B — A vergonha residual da menopausa",
+        curso: "pele-nua",
+        texto: `Há uma vergonha residual que muitas mulheres experienciam à volta da menopausa.
+
+[pause]
+
+Não a menopausa em si. A vergonha de ter chegado a essa fase.
+
+[long pause]
+
+Esta vergonha vem da cultura que equacionou feminilidade com fertilidade, juventude e atractividade reprodutiva.
+
+[pause]
+
+Quando a menopausa chega, parte deste enquadramento cultural deixa de se aplicar.
+
+E muitas mulheres sentem, em silêncio, que perderam algo essencial da sua identidade pública.
+
+[short pause]
+
+Esta sensação não é fraqueza individual.
+
+É produto cultural.
+
+[pause]
+
+Foste socializada durante décadas para acreditar que ser mulher era estar em determinada fase do ciclo reprodutivo.
+
+E quando essa fase termina, há uma reorganização interior dolorosa que poucas pessoas conversam abertamente.
+
+[long pause]
+
+A vergonha residual aparece em sítios subtis.
+
+[pause]
+
+Não querer mencionar a menopausa em conversas profissionais.
+
+Sentir desconforto quando alguém pergunta a tua idade.
+
+Comprar produtos com promessas de "rejuvenescimento" mesmo sabendo, racionalmente, que não funcionam como prometem.
+
+[short pause]
+
+Estes comportamentos são tentativas de manter, à superfície, uma identidade que culturalmente se está a desactualizar.
+
+[pause]
+
+E custam energia.
+
+[long pause]
+
+Reconhecer esta vergonha residual é o primeiro passo para a reduzir.
+
+[pause]
+
+Não desaparece imediatamente. Mas perde poder.
+
+[short pause]
+
+Quando tu, em privado, admites: sim, há vergonha em mim sobre este momento da vida. Sim, isto é influência cultural. Sim, está em mim mas não tem de me dirigir.
+
+[pause]
+
+Esta admissão é libertação parcial.
+
+[long pause]
+
+Esta semana, faz uma reflexão privada.
+
+Em que momentos da semana sentiste, mesmo subtilmente, vergonha relacionada com a tua idade ou com a fase do corpo em que estás?
+
+[pause]
+
+Lista esses momentos.
+
+[short pause]
+
+Talvez uma fotografia em que evitaste sair. Uma conversa em que mudaste de assunto. Uma compra que fizeste com pensamento implícito de "preciso de parecer mais nova".
+
+[pause]
+
+Ao identificar estes momentos, eles deixam de operar invisivelmente.
+
+E começam a poder ser observados — e, com o tempo, alguns começam a perder força.
+
+[long pause]
+
+Não tens de te livrar da vergonha residual de uma vez.
+
+Tens, sim, de a parar de tratar como verdade pessoal — e começar a tratá-la como produto cultural que tu, em algum grau, herdas.
+
+[pause]
+
+E ao longo dos anos, à medida que mais mulheres da tua geração vivem fases pós-reprodutivas com presença e autoridade, a vergonha colectiva vai-se reduzindo.
+
+[short pause]
+
+E tu fazes parte dessa redução. Quando vives a tua idade sem desculpa.`,
+      },
+      {
+        id: "pele-nua-m7c",
+        titulo: "M7.C — O direito de envelhecer sem desculpas",
+        curso: "pele-nua",
+        texto: `Tens o direito de envelhecer sem desculpas.
+
+[pause]
+
+Esta frase é simples.
+
+E, para muitas mulheres, é difícil de acreditar.
+
+[long pause]
+
+A cultura ensinou-te a desculpar a tua idade.
+
+A pedir desculpa por uma fotografia em que pareces mais velha.
+
+A explicar que não usas certo tipo de roupa "porque já não tem idade".
+
+A justificar mudanças do corpo como se fossem falha tua.
+
+[pause]
+
+Estas pequenas desculpas, repetidas ao longo dos anos, ensinam-te a ti mesma que a tua idade é defeito a ser explicado.
+
+[short pause]
+
+E uma mulher que se sente em defeito por algo tão básico como ter idade não pode habitar a sua vida com plenitude.
+
+[long pause]
+
+Há um movimento simples — em diferentes culturas, ao longo dos séculos — em que as mulheres mais velhas começam a deixar de pedir desculpa.
+
+[pause]
+
+Não em revolta dramática.
+
+Em pequenos gestos diários.
+
+[short pause]
+
+Vestir aquilo que lhes apetece sem se preocupar com "se ainda têm idade".
+
+Falar do que sabem sem suavizar a autoridade que os anos lhes deram.
+
+Aparecer em fotografias sem exigir filtros.
+
+[pause]
+
+Estes gestos parecem pequenos.
+
+Acumulados, são revolução silenciosa.
+
+[long pause]
+
+Tu podes começar isto agora — qualquer que seja a tua idade.
+
+[pause]
+
+Esta semana, presta atenção a uma desculpa específica que tu costumas dar pela tua idade.
+
+Pode ser numa frase concreta. "Já não tenho idade para isto." "Para a minha idade, ainda...". "Nunca pensei chegar a esta fase com..."
+
+[short pause]
+
+Identifica essa desculpa.
+
+[pause]
+
+E, nas próximas semanas, pratica a sua omissão.
+
+[short pause]
+
+Quando o reflexo te puxar para a frase, não a digas.
+
+Substitui por silêncio. Ou pela frase sem a desculpa.
+
+[pause]
+
+"Vou usar este vestido."
+
+Em vez de "vou usar este vestido apesar de já não ter idade para isto."
+
+[long pause]
+
+A desculpa, repetida, instala-se. A omissão, repetida, desinstala-se.
+
+[pause]
+
+E ao longo dos meses, vais notar que a tua relação com a tua idade muda.
+
+[short pause]
+
+Não porque mudaste a idade.
+
+Porque mudaste a forma como falas dela.
+
+[pause]
+
+E a forma como falas, em adulta, determina a forma como vives.
+
+[long pause]
+
+O direito de envelhecer sem desculpas não é declaração teórica.
+
+É prática diária — pequena, silenciosa, persistente.
+
+[pause]
+
+E é uma das formas mais discretas e mais profundas de habitar a tua própria vida.
+
+[short pause]
+
+Não a vida que tu terias com vinte anos.
+
+A vida que tu tens — com a idade que efectivamente tens.
+
+[pause]
+
+E essa vida é, neste momento, a única real.
+
+E merece ser vivida sem desculpa permanente pelo simples facto de existir.`,
+      },
+    ],
+  },
+  {
+    id: "curso-pele-nua-m8",
+    titulo: "Curso Pele Nua — Módulo 8 (Aulas A, B, C)",
+    descricao: "A Pele que é Tua. Fecho do curso.",
+    scripts: [
+      {
+        id: "pele-nua-m8a",
+        titulo: "M8.A — A pele como casa",
+        curso: "pele-nua",
+        texto: `A tua pele é a primeira casa que tu já tiveste.
+
+[pause]
+
+Antes de qualquer apartamento. Antes de qualquer quarto. Antes de qualquer país.
+
+A pele é onde tu chegaste à vida.
+
+[long pause]
+
+E é, biologicamente, a única casa que vai ficar contigo do princípio ao fim.
+
+[pause]
+
+Outras casas mudam. Esta, não.
+
+[short pause]
+
+Tu vais habitá-la — em estados diferentes, em formas diferentes — durante todos os anos da tua existência.
+
+[pause]
+
+Esta continuidade radical é, em algum sentido, espantosa.
+
+[long pause]
+
+A maioria das pessoas trata a sua casa física com mais respeito do que trata a sua pele.
+
+[pause]
+
+Investe em mobília. Pinta as paredes. Repara o que se estraga. Mantém limpo. Acolhe visitas.
+
+[short pause]
+
+E à pele — a casa permanente — dá apenas atenção quando há queixa.
+
+[pause]
+
+A inversão de prioridades é estranha quando se olha de fora.
+
+[long pause]
+
+Reconhecer a pele como casa permanente muda o tom da relação.
+
+[pause]
+
+Não como problema a corrigir.
+
+Como espaço a habitar.
+
+[short pause]
+
+E habitar implica conhecer.
+
+[pause]
+
+Conhecer os cantos. As particularidades. O que precisa de mais luz. O que prefere mais sombra.
+
+[long pause]
+
+Tu, ao longo dos anos, foste habitando a tua pele.
+
+Mas raramente com atenção consciente.
+
+[pause]
+
+Esta semana, faz uma coisa simples.
+
+Pensa na tua pele como casa.
+
+[short pause]
+
+Onde, nessa casa, tu te sentes mais à vontade?
+
+Onde, nessa casa, há sítios que tu evitas?
+
+Onde, nessa casa, há lugares que precisariam de mais atenção do que tu tens dado?
+
+[pause]
+
+Estas perguntas não exigem resposta filosófica.
+
+São perguntas pragmáticas — sobre uma casa.
+
+[long pause]
+
+E, ao responderes, podes começar a planear cuidados específicos.
+
+[pause]
+
+Não rotina cosmética genérica.
+
+Atenção real às zonas que precisam.
+
+[short pause]
+
+A pele é casa.
+
+E uma casa bem habitada é uma casa com presença atenta — não com produtos a mais.
+
+[pause]
+
+Tu és, em última análise, a única pessoa qualificada para habitar esta casa específica.
+
+[long pause]
+
+E essa qualificação vai-se desenvolvendo ao longo da vida.
+
+À medida que tu prestas, conscientemente, mais atenção à casa que tu sempre tiveste.
+
+[pause]
+
+E que, com paciência, vai-se tornando cada vez mais reconhecivelmente tua.`,
+      },
+      {
+        id: "pele-nua-m8b",
+        titulo: "M8.B — A reconciliação possível",
+        curso: "pele-nua",
+        texto: `A reconciliação com o próprio corpo não é evento dramático.
+
+[pause]
+
+É processo lento, sem testemunhas.
+
+[long pause]
+
+Não há momento específico em que se passa de relação adversária para relação acolhedora.
+
+Há, antes, uma série de pequenos gestos repetidos ao longo dos anos.
+
+[pause]
+
+Olhar sem corrigir, durante alguns segundos.
+
+Tocar uma parte do corpo sem agenda.
+
+Vestir algo que te dá prazer sem se preocupar com a opinião alheia.
+
+Recusar uma comparação que ia começar.
+
+Parar de pedir desculpa por uma marca que tens há anos.
+
+[short pause]
+
+Cada um destes gestos, individualmente, não muda nada.
+
+[pause]
+
+O conjunto, ao longo do tempo, muda tudo.
+
+[long pause]
+
+A reconciliação não significa amar o teu corpo todos os dias.
+
+Há dias em que vais voltar a criticá-lo. Há semanas em que vais voltar a comparar.
+
+[pause]
+
+Estes recuos são parte do processo.
+
+Não significam que falhaste.
+
+Significam que estás, como qualquer pessoa, em movimento — com avanços e recuos.
+
+[short pause]
+
+A direcção geral, no entanto, vai sendo de aproximação.
+
+[long pause]
+
+Há um momento, em algumas vidas femininas, em que o corpo deixa de ser inimigo principal.
+
+[pause]
+
+Não que se torna favorito.
+
+Apenas que deixa de ser inimigo.
+
+[short pause]
+
+E a vida ganha leveza nova quando esta transição se completa.
+
+[pause]
+
+Porque uma quantidade imensa de energia deixa de ser gasta em batalha interna.
+
+E fica disponível para tudo o resto.
+
+[long pause]
+
+Para amar pessoas. Para fazer trabalho. Para descansar. Para ter prazer simples.
+
+[pause]
+
+A reconciliação com o corpo liberta capacidade para a vida.
+
+[short pause]
+
+E essa libertação é, em si mesma, recompensa que justifica o trabalho.
+
+[long pause]
+
+Esta semana, faz uma reflexão privada.
+
+Em relação ao teu corpo, há quanto tempo tu te encontras em batalha activa?
+
+[pause]
+
+Décadas, provavelmente.
+
+[short pause]
+
+E quanto da tua atenção, em cada dia, é gasta nessa batalha?
+
+[pause]
+
+Provavelmente mais do que tu queres admitir.
+
+[long pause]
+
+Reconciliação parcial é objectivo realista.
+
+Reconciliação total — para a maioria das pessoas — não acontece.
+
+[pause]
+
+Mas mesmo a parcial transforma.
+
+[short pause]
+
+Alguns dias em paz com o corpo. Algumas zonas finalmente aceites. Alguns reflexos automáticos finalmente questionados.
+
+[pause]
+
+Isto, se for o teu caminho nos próximos anos, é mais do que muitas mulheres conseguem na vida inteira.
+
+[long pause]
+
+E é mais do que suficiente para uma vida significativamente diferente daquela que tu tiveste até aqui.`,
+      },
+      {
+        id: "pele-nua-m8c",
+        titulo: "M8.C — A mulher que habita a sua pele",
+        curso: "pele-nua",
+        texto: `Imagina, no fim deste curso, a mulher que tu vais ser daqui a cinco anos.
+
+[pause]
+
+Uma mulher que, depois de muito trabalho silencioso, finalmente habita a sua pele.
+
+[long pause]
+
+Esta mulher tem uma qualidade específica.
+
+Não é beleza convencional. Não é juventude prolongada.
+
+É presença plena.
+
+[pause]
+
+Quando ela entra numa sala, há algo que muda no ambiente.
+
+Não pelo que ela faz. Pelo facto de ela estar inteiramente onde está.
+
+[short pause]
+
+Ela não está, mentalmente, a observar-se de fora.
+
+Está dentro do corpo, em tempo real, sem fuga.
+
+[long pause]
+
+Esta presença é rara.
+
+[pause]
+
+Porque a maioria das mulheres adultas vive em fuga parcial do próprio corpo — projectada na cabeça, no que vão fazer a seguir, no que outros vão pensar.
+
+[short pause]
+
+A mulher que habita a pele resgatou-se desta fuga.
+
+[pause]
+
+Não totalmente — ninguém o faz totalmente.
+
+Mas o suficiente para a sua vida ter qualidade nova.
+
+[long pause]
+
+Esta mulher já não passa as manhãs em batalha com o espelho.
+
+Já não compra produtos por ansiedade.
+
+Já não pede desculpa por marcas, mudanças, ou idade.
+
+[pause]
+
+Não porque ignora as mudanças.
+
+Porque as integrou.
+
+[short pause]
+
+E porque, em algum ponto, decidiu que a sua vida era mais importante do que a permanente correcção do seu corpo.
+
+[long pause]
+
+Tu podes ser esta mulher.
+
+[pause]
+
+Não amanhã. Não numa semana.
+
+Mas ao longo dos próximos anos, em pequenos gestos repetidos, podes começar a aproximar-te dela.
+
+[short pause]
+
+Cada vez que olhas para o espelho sem corrigir.
+
+Cada vez que vestes algo por prazer e não por aceitação social.
+
+Cada vez que te recusas a entrar numa comparação automática.
+
+[pause]
+
+Cada um destes gestos é um passo na direcção dela.
+
+[long pause]
+
+E ao fim de anos, sem ninguém te ter feito cerimónia, vais perceber que te tornaste essa mulher.
+
+[pause]
+
+A mulher que habita a sua pele.
+
+A mulher que parou de viver em batalha contra a casa permanente em que vive.
+
+A mulher que, finalmente, está em casa em si mesma.
+
+[short pause]
+
+Este é o objectivo deste curso.
+
+[pause]
+
+Não a cosmética. Não a aparência. Não a juventude prolongada.
+
+A habitação plena da casa permanente.
+
+[long pause]
+
+E essa habitação é, em última análise, o presente mais profundo que tu te podes dar a ti mesma.
+
+[pause]
+
+Mais profundo do que qualquer compra. Mais duradouro do que qualquer relação.
+
+[short pause]
+
+Porque é a relação contigo mesma — a única que vai durar a vida inteira.
+
+[pause]
+
+E se essa relação for finalmente acolhedora, todas as outras melhoram em consequência.
+
+[long pause]
+
+A pele é tua.
+
+A casa é tua.
+
+E tu, com tempo, podes finalmente habitá-la inteiramente.
+
+[pause]
+
+Esta é a possibilidade que este curso te oferece.
+
+Não promessa de transformação.
+
+Convite para a habitação que tu sempre tiveste o direito de fazer — mas que durante demasiado tempo te foi roubada por exigências externas.
+
+[short pause]
+
+A casa esperou por ti.
+
+E continua disponível para que tu, finalmente, regresses.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-fome-m1",
+    titulo: "Curso A Fome — Módulo 1 (Aulas A, B, C)",
+    descricao: "A Fome que Não é Fome.",
+    scripts: [
+      {
+        id: "a-fome-m1a",
+        titulo: "M1.A — A fome que chega antes das onze",
+        curso: "a-fome",
+        texto: `Há uma fome que chega quase sempre à mesma hora.
+
+[pause]
+
+Não a das três da tarde. Não a das oito.
+
+A das onze da manhã. Ou a da meia-noite. Ou a das três numa madrugada que não conseguias dormir.
+
+[long pause]
+
+Esta fome chega sem ter passado fisicamente muito tempo desde a refeição anterior.
+
+[pause]
+
+Aparece quando o trabalho aperta.
+
+Quando uma conversa termina mal.
+
+Quando alguém diz uma coisa que te abriu um buraco onde não devia haver buraco nenhum.
+
+[short pause]
+
+Vais ao frigorífico. Ao armário. À gaveta das bolachas.
+
+E comes sem fome real.
+
+[pause]
+
+Enquanto comes, o buraco fecha-se um bocado.
+
+[long pause]
+
+Esta fome tem nome.
+
+É fome emocional.
+
+[pause]
+
+E não é fraqueza tua.
+
+É inteligência.
+
+[short pause]
+
+O teu corpo encontrou uma forma de regular o que a tua mente ainda não sabe nomear.
+
+[pause]
+
+Comer é regulação rápida. Distrai. Acalma. Preenche.
+
+[short pause]
+
+Não resolve o que estava na origem — mas alivia o sintoma imediato.
+
+[long pause]
+
+Reconhecer esta fome como emocional não é diagnóstico para vergonha.
+
+É informação.
+
+[pause]
+
+Informação sobre o que o teu sistema está a tentar gerir.
+
+[short pause]
+
+Quando tu vais ao frigorífico às onze, normalmente, é porque algo aconteceu na hora anterior que precisava de processamento.
+
+E o teu sistema escolheu o atalho disponível.
+
+[pause]
+
+A maioria das mulheres modernas pratica esta regulação várias vezes por semana.
+
+Sem se aperceber.
+
+[long pause]
+
+Esta semana, durante alguns dias, faz uma observação.
+
+Cada vez que te aproximares de comida fora dos horários de refeição, para um segundo.
+
+[pause]
+
+Pergunta-te uma única coisa: o que aconteceu na hora anterior?
+
+[short pause]
+
+Não para te impedires de comer. Apenas para registar.
+
+[pause]
+
+Algumas vezes a resposta vai ser: nada de especial.
+
+Outras vezes vai aparecer: discuti com X. Recebi um email difícil. Pensei naquela coisa que me preocupa.
+
+[long pause]
+
+Esta consciência, em si mesma, muda a relação com a fome emocional.
+
+[pause]
+
+Porque deixa de ser comportamento inexplicável que tu fazes envergonhada.
+
+Passa a ser comportamento com causa identificada.
+
+[short pause]
+
+E uma causa identificada pode, com tempo, ser tratada de outras formas.
+
+[pause]
+
+Não imediatamente. Mas com prática.
+
+[long pause]
+
+A fome que chega antes das onze é mensagem.
+
+Se a souberes ler, podes começar a responder ao que ela está realmente a pedir — em vez de oferecer apenas comida que ela aceita por falta de outra opção.`,
+      },
+      {
+        id: "a-fome-m1b",
+        titulo: "M1.B — O que a tua boca pede que não é comida",
+        curso: "a-fome",
+        texto: `Há coisas que a tua boca pede que não são comida.
+
+[pause]
+
+Pede conversa quando não há ninguém.
+
+Pede toque quando estás há semanas sem ser tocada.
+
+Pede descanso quando só te dás pausas para comer.
+
+[long pause]
+
+Como a mente não te deixa parar para pedir o que realmente precisas, o corpo aprende a pedir pela boca.
+
+[pause]
+
+Porque pela boca é aceitável.
+
+[short pause]
+
+Podes sair da reunião para comer. Não podes sair para chorar.
+
+Podes abrir o frigorífico à meia-noite. Não podes ligar a alguém à meia-noite só para dizer que te sentes sozinha.
+
+[pause]
+
+A boca passou a ser canal universal de pedido.
+
+[long pause]
+
+Tem nome o que a tua boca faz.
+
+É o único pedido que aprendeste a fazer sem vergonha.
+
+[pause]
+
+Esta substituição funciona — em parte.
+
+[short pause]
+
+Comer alivia algumas das fomes que não são alimentares.
+
+Mas raramente as resolve.
+
+[pause]
+
+E ao longo dos anos, a substituição acumula.
+
+[long pause]
+
+A mulher que come muito quando se sente só tem, no fim de cinco anos, ganho de peso que não corresponde à sua relação com comida.
+
+Corresponde à sua relação com solidão.
+
+[pause]
+
+A mulher que come quando está cansada tem, no fim de uma década, problemas de saúde que se diagnosticam como alimentares.
+
+Mas a causa é exaustão crónica.
+
+[short pause]
+
+Tratar o sintoma — a comida — sem tratar a causa não funciona.
+
+[pause]
+
+E muitas mulheres passam décadas a fazer dietas sem entender que o problema não é o que está no prato.
+
+É o que falta na vida.
+
+[long pause]
+
+Esta semana, identifica três coisas que a tua boca pede mas que não são comida.
+
+Pode ser: conversa profunda, toque físico, descanso real, silêncio sem agenda, atenção genuína.
+
+[pause]
+
+Para cada uma, escreve: a quem podia pedir esta coisa explicitamente?
+
+[short pause]
+
+Algumas pessoas vão aparecer com facilidade.
+
+Outras vão exigir reflexão.
+
+[pause]
+
+E para algumas das tuas fomes não-alimentares, talvez não haja ainda pessoa disponível na tua vida — e essa percepção é, em si mesma, dado importante.
+
+[long pause]
+
+A boca está cansada de pedir tudo.
+
+E começar a fazer pedidos diferentes em sítios diferentes alivia o trabalho que ela tem feito sozinha durante anos.
+
+[pause]
+
+Não vais parar de comer emocionalmente de uma vez.
+
+Mas, ao longo do tempo, a frequência reduz.
+
+[short pause]
+
+Porque outras fomes começam a ser atendidas onde realmente pertencem.
+
+E a comida pode voltar a ser, simplesmente, comida.`,
+      },
+      {
+        id: "a-fome-m1c",
+        titulo: "M1.C — As noites em que te esqueces de ti até ao frigorífico",
+        curso: "a-fome",
+        texto: `Há noites em que só te lembras que existes quando chegas ao frigorífico.
+
+[pause]
+
+Passaste o dia a cuidar. A responder. A resolver. A estar presente para todos menos para ti.
+
+[long pause]
+
+E quando finalmente a casa se cala e tu ficas sozinha, o corpo começa a pedir.
+
+[pause]
+
+Pede sal. Pede açúcar. Pede gordura.
+
+Pede com urgência. Como se tivesse estado a segurar-se o dia inteiro.
+
+[short pause]
+
+Porque tinha.
+
+[pause]
+
+O que tu chamas gula, à meia-noite, tem outro nome.
+
+[long pause]
+
+É a primeira vez que te dás atenção desde que acordaste.
+
+[pause]
+
+Não é a comida que procuras.
+
+É a presença.
+
+[short pause]
+
+E como a única presença disponível àquela hora é a tua — e a tua só se lembra de ti na boca — vais ao frigorífico.
+
+[pause]
+
+Esta dinâmica é particularmente comum em mulheres que cuidam — de filhos, de pais, de equipas, de alunos, de qualquer pessoa que dependa delas durante o dia.
+
+[long pause]
+
+A culpa que sentes a comer à meia-noite não é proporcional ao que comeste.
+
+É proporcional ao quanto te abandonaste durante o dia.
+
+[pause]
+
+E a comida está, simplesmente, a tentar resolver o sintoma da abandono.
+
+[short pause]
+
+Não vai conseguir.
+
+[pause]
+
+Mas é a única ferramenta que tu, sozinha em cozinha silenciosa às onze da noite, tens disponível naquele momento.
+
+[long pause]
+
+A solução não é parar de comer à noite.
+
+É começar a chegar a ti mais cedo no dia.
+
+[pause]
+
+Antes do frigorífico.
+
+Antes do cansaço.
+
+Enquanto ainda era possível escolheres de outra forma.
+
+[long pause]
+
+Esta semana, identifica os momentos do dia em que tu, normalmente, te perdes.
+
+[pause]
+
+Em geral, são os momentos depois das transições — quando termina uma tarefa exigente e tu, em vez de fazeres uma pausa, partes imediatamente para a próxima.
+
+[short pause]
+
+Estes momentos são oportunidade.
+
+[pause]
+
+Cinco minutos de presença para ti.
+
+Não cinco minutos no telefone. Cinco minutos sentada, em silêncio, perto do corpo.
+
+[short pause]
+
+Estes pequenos momentos, repetidos ao longo do dia, reduzem a urgência da fome nocturna.
+
+[long pause]
+
+Porque o corpo, sentindo presença ao longo do dia, não chega à noite com sede acumulada de atenção.
+
+[pause]
+
+E a comida da noite, quando vier, vem sem tanta urgência.
+
+E pode ser, por isso, comida e não substituto.
+
+[short pause]
+
+Esta é a forma mais sustentável de mudar a relação com a fome emocional nocturna.
+
+[pause]
+
+Não restringir à noite.
+
+Mas começar a chegar a ti durante o dia.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-fome-m2",
+    titulo: "Curso A Fome — Módulo 2 (Aulas A, B, C)",
+    descricao: "Comer Escondida.",
+    scripts: [
+      {
+        id: "a-fome-m2a",
+        titulo: "M2.A — A comida que comes sem testemunhas",
+        curso: "a-fome",
+        texto: `Há comida que tu só comes quando ninguém vê.
+
+[pause]
+
+Não é a comida que pões no prato à mesa.
+
+Não é a que registas mentalmente como refeição.
+
+[long pause]
+
+É outra.
+
+[pause]
+
+É o pedaço de pão arrancado da broa quando vais buscar a água.
+
+É a colher de manteiga de amendoim directamente do frasco, em pé, com a porta do armário aberta.
+
+É o bocado de chocolate partido no escuro do frigorífico aberto às onze da noite.
+
+[long pause]
+
+São pequenas. Cada uma, sozinha, parece insignificante.
+
+[pause]
+
+Mas tu sabes que existem.
+
+E sabes que, se alguém te perguntasse o que comeste hoje, não as nomearias.
+
+[short pause]
+
+Porque elas existem precisamente fora do registo.
+
+Existem na zona da casa onde a tua relação com a comida não é vista, não é contada, não é avaliada.
+
+[long pause]
+
+Esta zona tem nome.
+
+Chama-se comer escondida.
+
+[pause]
+
+E quase todas as mulheres que vivem com vigilância sobre o corpo conhecem-na intimamente.
+
+[long pause]
+
+A comida escondida não acontece por fome.
+
+Acontece porque há um pedaço de ti que tem fome — emocional, real, antiga — e que aprendeu que esta fome não pode aparecer à mesa.
+
+[pause]
+
+À mesa, tu comes a porção razoável. A salada. A peça de fruta como sobremesa.
+
+[short pause]
+
+Em frente aos outros, a tua relação com a comida tem que demonstrar moderação.
+
+[long pause]
+
+E então a parte de ti que tem fome a sério — ou desejo a sério, ou cansaço a sério — vai buscar o pedaço escondido.
+
+[pause]
+
+Vai buscar quando ninguém está a ver.
+
+Porque foi a única forma que encontrou de comer sem ser julgada.
+
+[long pause]
+
+E aqui está a inversão importante.
+
+[pause]
+
+A maioria das pessoas pensa que comer escondida é problema de descontrolo.
+
+Não é.
+
+[short pause]
+
+Comer escondida é problema de exposição.
+
+[pause]
+
+É problema de não te sentires com licença para comer aquilo, naquela quantidade, à frente de outras pessoas.
+
+E então comes igual.
+
+Mas comes em segredo.
+
+[long pause]
+
+A comida fica a mesma. O peso, igual. Mas o teu sistema nervoso fica em estado de vigilância silenciosa permanente.
+
+[pause]
+
+Porque uma parte de ti está sempre a esconder. Sempre a calcular se alguém vai entrar na cozinha. Sempre a apagar o vestígio.
+
+[short pause]
+
+Esta vigilância cansa mais do que a comida engorda.
+
+[long pause]
+
+Esta semana, faz uma coisa muito simples.
+
+[pause]
+
+Numa folha, escreve uma lista honesta. Sem ninguém ver, podes — esta lista é só para ti.
+
+[short pause]
+
+Escreve o que comeste hoje sem ter contado a ninguém. Sem ter pousado no prato. Sem ter chamado refeição.
+
+[pause]
+
+O bocado de queijo do frigorífico. A colher de doce. O biscoito que partiste a meio para te convenceres de que era metade.
+
+[long pause]
+
+Não estás a fazer isto para te julgares.
+
+Estás a fazer isto para teres dados.
+
+[pause]
+
+Para começares a saber, com precisão, quanto da tua relação com a comida acontece em segredo.
+
+[short pause]
+
+Quase todas ficam em choque com o tamanho da lista.
+
+[pause]
+
+Não porque seja muita comida.
+
+Mas porque é muita escondida.
+
+[long pause]
+
+E quando consegues ver — em letra escrita, na tua própria mão — quanto comes em segredo, alguma coisa começa a mudar.
+
+[pause]
+
+Não a quantidade.
+
+A vergonha.
+
+[short pause]
+
+A comida deixa de ser inimigo silencioso.
+
+Passa a ser informação.`,
+      },
+      {
+        id: "a-fome-m2b",
+        titulo: "M2.B — O pedaço que deixas no prato",
+        curso: "a-fome",
+        texto: `Há um gesto que tu fazes em restaurantes que aprendeste sem ninguém te ensinar.
+
+[pause]
+
+Deixas um pedaço no prato.
+
+[long pause]
+
+Não porque estás cheia.
+
+Não porque a comida não estava boa.
+
+Não porque, fisicamente, o teu corpo já não conseguia.
+
+[pause]
+
+Deixas porque limpar o prato em frente aos outros — ou pior, em frente a outro homem, ou em frente a uma sogra, ou em frente a uma colega magra — parece falta de educação. Falta de moderação. Falta de feminilidade aprendida.
+
+[long pause]
+
+Aprendeste em algum momento que a mulher com fome a sério é mulher pouco feminina.
+
+[pause]
+
+Aprendeste que pôr o garfo a raspar o prato é coisa de homem. De pessoa de campo. De pessoa sem formação.
+
+[short pause]
+
+A mulher distinta deixa qualquer coisa.
+
+A mulher delicada come o suficiente para parecer educada, não o suficiente para ficar saciada.
+
+[long pause]
+
+E então tu ficas com fome.
+
+[pause]
+
+Sais do restaurante. Conversas mais um bocado. Vais para casa.
+
+E em casa, sozinha, abres o frigorífico.
+
+[short pause]
+
+E comes mais.
+
+[pause]
+
+Mas agora, em segredo. Como vimos no áudio anterior.
+
+[long pause]
+
+Repara na coreografia.
+
+[pause]
+
+Em público — restrição visível.
+
+Em privado — compensação invisível.
+
+[short pause]
+
+A quantidade total que comes pode até ser igual à quantidade que comerias se simplesmente acabasses o prato no restaurante.
+
+Mas a tua cabeça vive em ginástica permanente.
+
+[long pause]
+
+E a tua relação com a comida fica partida em dois pedaços.
+
+[pause]
+
+O pedaço performativo — o que mostras.
+
+O pedaço real — o que comes mesmo.
+
+[short pause]
+
+E os dois nunca coincidem.
+
+[long pause]
+
+Esta semana, quando saíres a comer fora — pode ser jantar com alguém, almoço de trabalho, café com bolo —, faz uma experiência.
+
+[pause]
+
+Se acabares o prato sem teres ficado cheia, acaba-o.
+
+[short pause]
+
+Sem deixar pedaço educado.
+
+Sem dizer "ai, já estou cheia" antes de estares.
+
+Sem rejeitar a sobremesa que querias só porque a outra mulher à mesa também rejeitou.
+
+[long pause]
+
+Não te peço que faças isto sempre.
+
+Peço que faças uma vez. Numa refeição.
+
+[pause]
+
+Para reparares no que acontece dentro de ti enquanto comes a porção real.
+
+[short pause]
+
+Vai aparecer desconforto.
+
+Vai aparecer a sensação de que estás a ser observada — mesmo que ninguém esteja a olhar.
+
+Vai aparecer a vontade de pedir desculpa por teres fome.
+
+[long pause]
+
+Repara nisto sem fugires.
+
+[pause]
+
+Porque o que estás a sentir é a vergonha aprendida há décadas a operar em tempo real.
+
+[short pause]
+
+E a única forma de a desinstalar é deixá-la aparecer e não fazer nada para a esconder.
+
+[long pause]
+
+Comer a porção real, em público, uma vez, é gesto político pequeno.
+
+[pause]
+
+Mas é dos mais subversivos que uma mulher pode fazer.
+
+[short pause]
+
+Porque é declaração silenciosa de que o teu corpo tem fome legítima.
+
+E que essa fome merece ser saciada à luz, e não em segredo.`,
+      },
+      {
+        id: "a-fome-m2c",
+        titulo: "M2.C — A vergonha de ter fome",
+        curso: "a-fome",
+        texto: `Há mulheres que pedem repetição num restaurante.
+
+[pause]
+
+Não muitas.
+
+[long pause]
+
+A maioria, mesmo com fome, não pede.
+
+[pause]
+
+Porque pedir mais comida é, em algum lugar profundo da educação que recebeste, admissão pública de coisa.
+
+[short pause]
+
+De quê, exactamente, é difícil de nomear.
+
+De gula. De falta de controlo. De ter um corpo que pede mais do que o socialmente esperado.
+
+[long pause]
+
+A fome, em mulher adulta, traz vergonha.
+
+[pause]
+
+Não a fome de quem passou fome a sério.
+
+A outra. A fome doméstica. A fome de quem comeu uma porção razoável e ainda quer mais.
+
+[short pause]
+
+Esta fome é tratada, na maioria dos contextos, como fraqueza moral.
+
+[long pause]
+
+Repara que, num grupo misto à mesa, os homens podem pedir segunda dose sem que ninguém comente.
+
+Os homens podem dizer "esta sopa estava tão boa, vou repetir" e ninguém pisca o olho.
+
+[pause]
+
+Uma mulher que diz a mesma frase — sobretudo se já tem algum peso a mais — sente, instantaneamente, o silêncio à mesa.
+
+[short pause]
+
+O silêncio das outras mulheres, que estão a calcular mentalmente quanto é que ela vai comer.
+
+O silêncio de algum homem que está a registar que ela tem apetite "para mulher".
+
+[long pause]
+
+Tu sabes deste silêncio.
+
+[pause]
+
+Conheces o calor súbito na cara quando, num jantar, te apeteceu a segunda dose e em vez disso disseste "estava óptimo" e ficaste com fome.
+
+[short pause]
+
+A vergonha de ter fome é uma das coisas mais antigas que carregas.
+
+[long pause]
+
+E é coisa que não se dissolve por argumento racional.
+
+[pause]
+
+Não se dissolve porque sabes intelectualmente que é absurdo.
+
+Dissolve-se por exposição lenta.
+
+[short pause]
+
+Por sentir a vergonha aparecer e — em vez de obedecer — fazer ainda assim o gesto.
+
+[long pause]
+
+Esta semana, escreve numa folha três momentos da tua vida em que tiveste fome a sério e não pediste mais.
+
+[pause]
+
+Pode ser um jantar de família onde repetir parecia mal.
+
+Pode ser uma refeição em casa de alguém onde tinhas medo de gostar demasiado.
+
+Pode ser um almoço de trabalho onde te limitaste à entrada porque era o que as outras mulheres estavam a pedir.
+
+[short pause]
+
+Escreve esses três momentos.
+
+[pause]
+
+Ao lado de cada um, escreve o que sentiste depois — quando, em casa, sozinha, foste compensar.
+
+[long pause]
+
+Provavelmente vais reparar num padrão.
+
+[pause]
+
+Os momentos em que comes menos do que o teu corpo pede em público são quase sempre seguidos de momentos em que comes mais do que o teu corpo pede em privado.
+
+[short pause]
+
+Não é a tua falta de controlo.
+
+É a tua tentativa de equilibrar uma conta que ficou em aberto à mesa.
+
+[long pause]
+
+E aqui está o ponto que poucos cursos de alimentação dizem.
+
+[pause]
+
+A solução para a chamada compulsão nocturna não é mais disciplina à noite.
+
+[short pause]
+
+É menos restrição à mesa.
+
+É deixar-te ter a porção real à frente dos outros.
+
+É admitir que tens fome humana, normal, viva.
+
+[long pause]
+
+A vergonha de ter fome só se dissolve quando começas, em pequenos gestos, a dar-te licença pública de a ter.
+
+[pause]
+
+Não tens que pedir repetição amanhã.
+
+Mas podes começar a notar quantas vezes não pedes só por causa do silêncio dos outros.
+
+[short pause]
+
+E essa atenção, sozinha, já começa a reduzir o tamanho da fome escondida que aparece à noite.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-fome-m3",
+    titulo: "Curso A Fome — Módulo 3 (Aulas A, B, C)",
+    descricao: "A Fome de Outras Coisas.",
+    scripts: [
+      {
+        id: "a-fome-m3a",
+        titulo: "M3.A — A fome que era na verdade cansaço",
+        curso: "a-fome",
+        texto: `Há um momento, quase todos os dias, em que a tua mão vai automaticamente buscar comida.
+
+[pause]
+
+Costuma ser ao fim da tarde.
+
+Costuma ser entre uma reunião e outra. Entre arrumar a casa e começar o jantar. Entre acabar o trabalho e ir buscar os filhos.
+
+[long pause]
+
+A mão vai. E tu nem reparas que foi.
+
+[pause]
+
+Já estás com o biscoito, com a fatia, com a barra, com o café e o pastel — antes de teres feito uma única pergunta.
+
+[short pause]
+
+A pergunta seria muito simples.
+
+Tenho fome?
+
+[long pause]
+
+Mas tu não fazes esta pergunta.
+
+[pause]
+
+Porque a comida é resposta automática a outra coisa que ainda não aprendeste a nomear.
+
+[short pause]
+
+E essa outra coisa, na maioria das mulheres adultas, é cansaço.
+
+[long pause]
+
+Cansaço acumulado de várias horas a funcionar.
+
+Cansaço que não pediu para ser cansaço, porque o teu dia ainda não acabou.
+
+Cansaço que, se fosse reconhecido, exigiria uma pausa que tu não te dás.
+
+[pause]
+
+A comida é, neste momento, substituto da pausa.
+
+[short pause]
+
+É energia rápida que te permite continuar sem teres que parar.
+
+[long pause]
+
+Repara na inversão.
+
+[pause]
+
+Tu não comes porque tens fome.
+
+Tu comes porque é a única forma socialmente aceitável de te dares uma pausa de cinco minutos.
+
+[short pause]
+
+Sentar e não fazer nada por cinco minutos sem comer chama-se preguiça.
+
+Sentar e comer um bolo nesses mesmos cinco minutos chama-se merenda.
+
+[long pause]
+
+A diferença é cultural.
+
+[pause]
+
+E é por isso que mulheres em alta exigência — mães, profissionais, cuidadoras — comem mais do que precisariam.
+
+[short pause]
+
+Não é apetite.
+
+É a única forma de pararem.
+
+[long pause]
+
+Esta semana, faz uma experiência.
+
+[pause]
+
+Quando sentires a mão a ir automaticamente buscar comida ao fim da tarde, não a impeças.
+
+[short pause]
+
+Mas, antes de comeres, senta-te.
+
+Senta-te numa cadeira. Não em pé. Não a andar.
+
+Numa cadeira.
+
+[pause]
+
+Pousa o que ias comer à tua frente, mas ainda não comas.
+
+Olha para a coisa durante um minuto.
+
+[long pause]
+
+Provavelmente, em vinte segundos, vais reparar que o que querias não era a comida.
+
+[pause]
+
+Era a cadeira.
+
+[short pause]
+
+Era o gesto de parar.
+
+Era os cinco minutos sentada sem ter que justificar.
+
+[long pause]
+
+Quando reparares nisto, podes fazer uma escolha.
+
+[pause]
+
+Podes comer e levantar-te imediatamente — como costumas fazer.
+
+Ou podes ficar sentada cinco minutos, mesmo depois de comer, mesmo sem fazer nada.
+
+[short pause]
+
+A segunda opção desinstala lentamente o automatismo.
+
+[pause]
+
+Porque ensina ao teu sistema nervoso uma coisa nova:
+
+[long pause]
+
+Que parar é permitido.
+
+Sem ter que comer para o justificar.`,
+      },
+      {
+        id: "a-fome-m3b",
+        titulo: "M3.B — A fome que era na verdade tristeza",
+        curso: "a-fome",
+        texto: `Há mulheres que sabem exactamente o que comem quando estão tristes.
+
+[pause]
+
+Tu provavelmente sabes.
+
+[long pause]
+
+Para algumas, é gelado.
+
+Para outras, pão com manteiga.
+
+Para outras ainda, batatas fritas. Chocolate. O bolo da padaria do bairro que ninguém em casa come.
+
+[pause]
+
+Cada mulher tem o seu repertório de tristeza-comida.
+
+[short pause]
+
+E este repertório foi-se construindo ao longo da vida, refeição emocional após refeição emocional.
+
+[long pause]
+
+A primeira vez que comeste a comida da tristeza, provavelmente eras nova.
+
+Provavelmente alguém te tinha magoado. Ou tinha morrido alguém. Ou tinhas chumbado num exame que querias passar.
+
+[pause]
+
+E alguém — uma mãe, uma avó, uma amiga — pegou em comida e deu-ta.
+
+Não para te alimentar.
+
+Para te consolar.
+
+[short pause]
+
+Isto não é mau.
+
+Comida é, em muitas culturas, gesto de cuidado.
+
+[long pause]
+
+O problema é que, se este foi o único cuidado que aprendeste a receber em momentos difíceis, ele tornou-se hábito.
+
+[pause]
+
+E em adulta, sozinha, quando aparece tristeza — a tua mão vai buscar a mesma coisa que te deram em criança.
+
+[short pause]
+
+Não porque tens fome.
+
+Porque tens tristeza e a tristeza, no teu corpo, foi sempre acompanhada de comida.
+
+[long pause]
+
+A comida não cura a tristeza.
+
+Tu sabes isto.
+
+[pause]
+
+Mas distrai. Ocupa as mãos. Ocupa a boca. Ocupa o estômago.
+
+[short pause]
+
+E enquanto comes, há um espaço de cinco a quinze minutos em que a tristeza fica em segundo plano.
+
+[long pause]
+
+Depois volta.
+
+[pause]
+
+E, frequentemente, volta acompanhada de uma segunda tristeza — a vergonha de teres comido aquilo, naquela quantidade, naquela hora.
+
+[short pause]
+
+Duas tristezas em vez de uma.
+
+[long pause]
+
+Esta semana, quando reparares que estás a comer com tristeza no peito, faz uma coisa.
+
+[pause]
+
+Não pares de comer.
+
+[short pause]
+
+Acaba a porção que ias comer.
+
+Mas, quando acabares, em vez de te levantares, fica.
+
+[pause]
+
+Pega numa folha. Pega num caderno. Pega num bocado de papel onde possas escrever.
+
+[long pause]
+
+E escreve uma única frase:
+
+Estou triste por causa de —
+
+[pause]
+
+E completa.
+
+[short pause]
+
+Pode ser específico — "estou triste porque a minha irmã não me ligou no aniversário".
+
+Pode ser difuso — "estou triste e não sei muito bem porquê".
+
+Pode ser antigo — "estou triste por uma coisa que aconteceu há vinte anos e ainda dói".
+
+[long pause]
+
+Quando escreves a tristeza, ela passa de difusa para nomeada.
+
+[pause]
+
+E a tristeza nomeada deixa de precisar de ser comida.
+
+[short pause]
+
+Não em todas as vezes.
+
+Não imediatamente.
+
+[long pause]
+
+Mas, com o tempo, a tua mão vai começar a ir buscar a folha em vez do biscoito.
+
+[pause]
+
+Porque vai aprender que escrever a tristeza alivia mais do que a comer.
+
+[short pause]
+
+E que, ao contrário da comida, escrever a tristeza não traz a segunda tristeza atrás.`,
+      },
+      {
+        id: "a-fome-m3c",
+        titulo: "M3.C — A fome que era na verdade solidão",
+        curso: "a-fome",
+        texto: `Há um tipo de fome que aparece muito especificamente em mulheres que vivem sozinhas.
+
+[pause]
+
+Mas não é só dessas.
+
+Aparece também em mulheres que vivem cercadas de gente — marido, filhos, netos — e que, ainda assim, sentem por dentro um silêncio que ninguém ocupa.
+
+[long pause]
+
+Esta fome chega quase sempre à mesma hora.
+
+[pause]
+
+Costuma ser depois do jantar.
+
+Quando a casa fica quieta. Quando os filhos foram dormir. Quando o homem está a ver televisão na sala e não há nada para fazer.
+
+[short pause]
+
+E, de repente, apetece.
+
+[long pause]
+
+Apetece comer qualquer coisa.
+
+Não é fome física.
+
+É outra coisa.
+
+[pause]
+
+É a sensação de que falta companhia para a noite.
+
+É a sensação de que a casa é grande demais e tu pequena demais.
+
+É a sensação, antiga e sem nome, de que se houvesse alguém ali com quem partilhar uma chávena de chá, talvez não precisasses do bolo.
+
+[short pause]
+
+Mas não há.
+
+E então comes.
+
+[long pause]
+
+A comida, neste momento, é substituto de presença.
+
+[pause]
+
+É pseudo-companhia.
+
+É o gesto de pôr alguma coisa em contacto com a tua boca quando o que querias era pôr palavras em contacto com a boca de outra pessoa.
+
+[short pause]
+
+Comer sozinha à noite, no escuro, sem fome física — é uma das formas mais discretas em que a solidão aparece em mulheres adultas.
+
+[long pause]
+
+E é especialmente discreta porque é socialmente invisível.
+
+[pause]
+
+Ninguém te vê. Tu própria, na manhã seguinte, não a chamas solidão.
+
+Chamas-lhe descontrolo. Chamas-lhe falta de força de vontade. Chamas-lhe, quando és muito honesta, ansiedade.
+
+[short pause]
+
+Mas raramente lhe chamas o que ela é.
+
+Estou só, e a comida ocupa o lugar de quem não está.
+
+[long pause]
+
+Esta semana, à hora em que costumas ter esta fome — provavelmente entre as nove e as onze da noite — faz uma coisa diferente.
+
+[pause]
+
+Pega no telemóvel.
+
+[short pause]
+
+Manda uma mensagem a uma única pessoa. Pode ser uma irmã, uma amiga antiga, uma colega que gostas mas com quem nunca falas fora do trabalho.
+
+[pause]
+
+A mensagem pode ser banal:
+
+"Estava só a pensar em ti. Como tens andado?"
+
+[long pause]
+
+Não esperes resposta imediata.
+
+Não condiciones nada à resposta.
+
+[pause]
+
+O acto de mandares já é, em si, gesto de companhia.
+
+É gesto de te lembrares que existem pessoas. Que estás em rede. Que não és só corpo sozinho na cozinha às dez da noite.
+
+[short pause]
+
+Provavelmente, depois de mandares, a fome diminui.
+
+[long pause]
+
+Não vai sempre.
+
+Não em todas as noites.
+
+[pause]
+
+Mas o suficiente para começares a perceber que muito do que tu comes à noite — não é fome.
+
+[short pause]
+
+É um pedido de companhia que aprendeste a fazer com a boca, em vez de fazer com palavras.
+
+[pause]
+
+E mudar a direcção do pedido — da boca para o telemóvel, da comida para a mensagem — é uma das coisas mais simples e mais eficazes que podes fazer pela tua relação com a fome.
+
+[long pause]
+
+Comer é alimentar o corpo.
+
+[pause]
+
+Mandar mensagem a alguém à noite é alimentar a parte de ti que tem fome de ser vista.
+
+[short pause]
+
+E, ao contrário do bolo, não traz vergonha na manhã seguinte.`,
       },
     ],
   },
