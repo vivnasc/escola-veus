@@ -5992,19 +5992,33 @@ A tua dignidade não tem cifrão.
 
 [long pause]
 
-Completa esta frase por escrito: eu valho o mesmo quando tenho muito e quando tenho pouco porque...
+Pensa numa situação recente em que te sentiste menos digna por causa do dinheiro.
 
-Lê a tua resposta.
-
-[pause]
-
-Se não acreditares nela — tudo bem. Escreve-a na mesma.
-
-Escreve-a todos os dias desta semana.
+Uma consulta em que te olharam diferente. Uma loja onde escondeste a etiqueta. Uma reunião em que te fizeste mais pequena.
 
 [pause]
 
-Não porque repetir mude tudo — mas porque começar a ouvir-te é o primeiro passo para te acreditares.
+Escreve essa situação em duas colunas.
+
+Na esquerda, o que aconteceu objectivamente. A conversa, o olhar, o gesto.
+
+Na direita, o que tu sentiste sobre o teu valor.
+
+[short pause]
+
+Olha para as duas colunas.
+
+[pause]
+
+A esquerda é o que a outra pessoa fez.
+
+A direita é o que tu fizeste com isso.
+
+[short pause]
+
+As duas coisas são diferentes.
+
+E a direita — essa — é tua. É o espaço onde há, ainda que pequeno, escolha.
 
 [long pause]
 
@@ -7677,91 +7691,69 @@ O que farias diferente amanhã se o teu norte não fosse acumulação, mas liber
 
 [long pause]
 
-Há pessoas que têm muito e não são livres.
+Há mulheres que têm muito e ainda pagam em tempo, em sono, em saúde, em paciência. O dinheiro está lá — a vida já foi.
 
-Trabalham setenta horas por semana para manter o que têm. Não dormem. Não param. Não aproveitam.
-
-[pause]
-
-O dinheiro está lá — mas a vida não.
-
-[long pause]
-
-E há pessoas que têm pouco e são livres.
-
-Não porque o pouco baste — mas porque fizeram uma escolha.
+E há mulheres que têm pouco e passam a vida inteira a mover-se a partir do que é seu. O dinheiro é menos, mas faz exactamente o que tem de fazer.
 
 [pause]
 
-Escolheram o que importa. E o dinheiro serve isso.
+A diferença entre as duas não é o quanto.
 
-Só isso.
+É para onde aponta cada euro que entra.
 
 [long pause]
 
 Tu estás algures no meio.
 
-Talvez com mais do que precisas para sobreviver e menos do que achas que precisas para viver.
+Com mais do que precisas para sobreviver e menos do que achas que precisas para viver.
 
 [pause]
 
 Mas a pergunta não é quanto.
 
-A pergunta é: para quê?
+A pergunta é: para onde aponta?
 
 [short pause]
 
-Se o teu dinheiro te permite fazer o que importa — tens o suficiente.
+Se o teu dinheiro te permite fazer o que importa, tens o que precisas.
 
-Se o teu dinheiro te prende a fazer o que não importa para ter mais do que não precisas — não tens liberdade.
+Se o teu dinheiro te obriga a fazer o que não importa para manteres o que já não queres — esse dinheiro não é liberdade.
 
-Tens gaiola dourada.
+É só outra forma de obediência.
 
 [long pause]
 
-O mundo ensinou-te que o objectivo do dinheiro é ter mais.
+Herdaste a ideia de que o objectivo do dinheiro é crescer indefinidamente.
 
-Mais poupança. Mais investimento. Mais segurança.
-
-Mais, mais, mais.
+Mais poupança, mais investimento, mais reserva.
 
 [pause]
 
-Mas mais não é um destino — é uma esteira.
+Mas uma vida inteira a acumular sem direcção é vida a servir a acumulação.
 
-E quem corre numa esteira está sempre a mexer-se e nunca sai do sítio.
-
-[long pause]
-
-A liberdade financeira não é ter tanto que nunca mais precisas de trabalhar.
-
-É ter clareza suficiente para que cada euro que gastas ou guardas esteja alinhado com a vida que queres.
-
-[pause]
-
-E quando isso acontece, algo muda no corpo.
-
-O aperto desaparece.
+E a acumulação — se não a domesticares — pede sempre mais.
 
 [short pause]
 
-Não porque os números mudaram — mas porque a relação mudou.
+A liberdade financeira não é ter tanto que nunca mais trabalhas.
+
+É ter clareza suficiente para que cada euro vá, conscientemente, para a vida que queres.
 
 [pause]
 
-O dinheiro deixa de ser um juiz e torna-se uma ferramenta.
-
-Deixa de ser uma sentença e torna-se uma escolha.
+Quando isso se instala, não é o saldo que muda primeiro. É o olhar.
 
 [short pause]
 
-E tu, finalmente, podes olhar para o extracto sem medo.
+Olhar para o extracto deixa de ser exame.
 
-Porque o que está lá dentro já não te define.
+Passa a ser mapa.
 
 [pause]
 
-Serves-te dele — ele não te serve a si mesmo.
+Deixas de te submeter ao número.
+
+Começas a servir-te dele.
 
 [long pause]
 
