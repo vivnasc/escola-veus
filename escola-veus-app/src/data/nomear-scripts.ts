@@ -10121,4 +10121,383 @@ Até caberes tu inteira.`,
       },
     ],
   },
+  {
+    id: "curso-limite-sagrado-m8",
+    titulo: "Curso Limite Sagrado — Módulo 8 (Aulas A, B, C)",
+    descricao: "O Limite como Amor. Fecho do curso.",
+    scripts: [
+      {
+        id: "limite-sagrado-m8a",
+        titulo: "M8.A — Dizer não é dizer sim a ti",
+        curso: "limite-sagrado",
+        texto: `Aprendeste, durante muito tempo, que dizer não era egoísmo.
+
+[pause]
+
+Que uma mulher generosa dá primeiro. Que uma mulher boa encontra sempre forma. Que uma mulher digna não incomoda os outros com as suas recusas.
+
+[long pause]
+
+Por isso, quando dizes não, sentes culpa.
+
+Mesmo quando o não é completamente justificado, a culpa aparece.
+
+[pause]
+
+Pequena, nos casos simples.
+
+Grande, nos casos importantes.
+
+[short pause]
+
+Esta culpa não é moral.
+
+É memória.
+
+[long pause]
+
+É a memória de ter sido ensinada — por palavras, por olhares, por dinâmicas familiares — que o teu não tinha um custo relacional.
+
+[pause]
+
+Esse custo era alguém que ficava chateado. Alguém que se afastava. Alguém que te punha num lugar diferente.
+
+E tu, que precisavas de pertença, calibraste o teu comportamento para não pagar esse custo.
+
+[short pause]
+
+Disseste sim quando querias dizer não. Muitas vezes.
+
+E cada vez que disseste sim, a pertença ficou. Mas tu perdeste um bocadinho.
+
+[long pause]
+
+Há uma reformulação que muda tudo.
+
+[pause]
+
+Dizer não não é egoísmo.
+
+É dizer sim a outra coisa.
+
+[short pause]
+
+Dizer não a um pedido é dizer sim ao teu tempo. Dizer não a uma conversa é dizer sim à tua paz. Dizer não a um compromisso é dizer sim ao que já estava combinado — contigo.
+
+[long pause]
+
+O não e o sim são, afinal, a mesma frase dita de ângulos diferentes.
+
+[pause]
+
+Quando dizes não a uma pessoa, estás a dizer sim a uma outra coisa — seja uma outra pessoa, um projecto teu, um direito ao descanso, uma conversa que não aconteceu ainda.
+
+[short pause]
+
+E essa outra coisa merece o teu sim.
+
+[long pause]
+
+Experimenta, quando a culpa aparecer depois de um não, fazer-te uma pergunta.
+
+A que é que eu, com este não, estou a dizer sim?
+
+[pause]
+
+Ao meu corpo que precisa de descanso.
+
+Ao trabalho importante que estava a adiar.
+
+À minha relação mais íntima que tem sido negligenciada.
+
+À versão de mim mesma que ainda não apareceu completamente.
+
+[short pause]
+
+Qualquer uma destas respostas é suficiente.
+
+Dizer não é, afinal, um acto de amor por alguém.
+
+Por ti.
+
+[long pause]
+
+Quando começas a perceber isto, a culpa por dizer não começa a desaparecer.
+
+Porque já não estás apenas a recusar algo.
+
+Estás a confirmar algo.
+
+[pause]
+
+E nenhuma confirmação merece culpa.
+
+[long pause]
+
+Esta semana, depois de dizeres um não — qualquer não — faz a pergunta.
+
+A que é que eu, agora, estou a dizer sim?
+
+[short pause]
+
+Encontra a resposta concreta.
+
+E guarda-a.
+
+[pause]
+
+Ao longo do tempo, vais acumular uma lista dos teus sins implícitos.
+
+E essa lista é o desenho real da vida que estás a construir.`,
+      },
+      {
+        id: "limite-sagrado-m8b",
+        titulo: "M8.B — Relações que sobrevivem à verdade",
+        curso: "limite-sagrado",
+        texto: `Há uma suspeita antiga na tua cabeça.
+
+[pause]
+
+Se eu começar a dizer não, se eu começar a pôr limites, se eu começar a ser mais eu mesma — as pessoas vão afastar-se.
+
+[short pause]
+
+Esta suspeita é meia verdade.
+
+[long pause]
+
+Algumas pessoas, de facto, vão afastar-se.
+
+Não porque tu tenhas feito algo mal.
+
+Porque a relação que elas tinham contigo dependia da tua adaptação.
+
+[pause]
+
+A relação existia no espaço entre as expectativas delas e a tua disponibilidade constante.
+
+Quando essa disponibilidade muda, a relação deixa de ter onde existir.
+
+[short pause]
+
+Para estas pessoas, tu não és uma pessoa completa com quem elas têm relação.
+
+És uma função que elas ocupam.
+
+[pause]
+
+Quando reclamas limite, elas perdem a função.
+
+E, sem a função, não sabem como se relacionar contigo.
+
+[long pause]
+
+Estas perdas são reais. E, no início, dolorosas.
+
+Mesmo quando a relação não era saudável, o afastamento cria um vazio.
+
+[pause]
+
+O corpo fica estranhar a ausência de pessoas que estavam sempre lá.
+
+Mesmo quando essas pessoas estavam lá de forma que te desgastava.
+
+[short pause]
+
+Isto é normal. O luto é necessário. A adaptação é gradual.
+
+[long pause]
+
+Mas há uma outra parte — mais esperançosa — desta dinâmica.
+
+[pause]
+
+Algumas relações sobrevivem à tua mudança.
+
+E não só sobrevivem — florescem.
+
+[short pause]
+
+Há pessoas à tua volta, agora, que estão à espera de te encontrarem inteira.
+
+[pause]
+
+Elas intuem que tu tens escondido partes tuas. Sentem a adaptação mesmo quando tu pensas que é imperceptível. E esperam, em silêncio, pela versão mais completa de ti.
+
+[short pause]
+
+Quando essa versão começa a aparecer, estas pessoas recebem-na com alívio.
+
+Não com estranheza.
+
+[long pause]
+
+São as pessoas que permanecem, mesmo quando tu mudas.
+
+E estas pessoas, apesar de menos numerosas, são incomparavelmente mais valiosas do que as que dependiam da tua adaptação.
+
+[pause]
+
+Reconhecê-las, a partir de um certo ponto da vida, torna-se claro.
+
+As que recuam quando tu avanças, perdem-se pelo caminho.
+
+As que te acompanham, mesmo quando tu mudas de direcção, são família escolhida.
+
+[long pause]
+
+Pensa em duas ou três pessoas na tua vida que já viram versões tuas diferentes ao longo dos anos.
+
+Que aceitaram mudanças tuas sem drama.
+
+Que te amam agora diferente do que te amavam há dez anos — mas amam tal como és agora.
+
+[pause]
+
+Estas pessoas merecem o teu cuidado explícito.
+
+Merecem uma mensagem a dizer-lhes que tu reconheces que elas ficaram.
+
+[short pause]
+
+Não é cerimónia. É economia relacional.
+
+[pause]
+
+Tu vais precisar destas pessoas ao longo da vida.
+
+E elas, provavelmente, vão precisar de ti de forma equivalente.
+
+[long pause]
+
+As relações que sobrevivem à tua verdade não são as que exigem menos de ti.
+
+São as que te permitem dar o que é teu — e recusar o que não é — sem pôr a relação em risco.
+
+[pause]
+
+Estas relações existem.
+
+E vão continuar, independentemente dos limites que precisares de pôr.`,
+      },
+      {
+        id: "limite-sagrado-m8c",
+        titulo: "M8.C — A mulher com limites",
+        curso: "limite-sagrado",
+        texto: `Imagina, por um momento, a mulher que vais ser daqui a cinco anos.
+
+[pause]
+
+Uma mulher que aprendeu, a pouco e pouco, a recusar.
+
+A pausar antes de responder. A ouvir o corpo antes da boca. A dar — quando dá — por escolha.
+
+[long pause]
+
+Esta mulher tem uma qualidade específica.
+
+Não é dureza. Não é frieza. Não é distância.
+
+[pause]
+
+É uma presença inteira.
+
+[short pause]
+
+Ela entra numa sala e a sala ajusta-se. Não porque seja dominante — porque é precisa.
+
+As pessoas respondem-lhe com mais cuidado. Não por ela exigir — porque ela ocupa o seu lugar sem pedir licença.
+
+[pause]
+
+E os pedidos que ela aceita, aceita inteiramente.
+
+Os nãos que ela dá, dá com clareza.
+
+[long pause]
+
+Esta mulher não é uma versão mais dura de ti.
+
+É uma versão mais completa.
+
+[pause]
+
+Porque no centro da mulher com limites há uma coisa importante que tu, agora, talvez não tenhas em proporção suficiente.
+
+[short pause]
+
+Há uma relação respeitosa consigo mesma.
+
+[long pause]
+
+Os limites não são muralhas contra os outros.
+
+São a linha que define onde a tua identidade começa e termina.
+
+[pause]
+
+Sem esta linha, a tua identidade dilui-se no que os outros esperam.
+
+Com esta linha, tu existes como pessoa distinta — capaz de relação real, precisamente porque é uma pessoa.
+
+[short pause]
+
+A mulher sem limites não consegue ter relação plena.
+
+Porque o que ela oferece não é ela — é uma adaptação dela.
+
+[pause]
+
+A mulher com limites pode oferecer-se inteira.
+
+Porque ela existe antes da oferta.
+
+[long pause]
+
+Este é o fim deste curso.
+
+Mas é o início de uma prática.
+
+[pause]
+
+Dizer não. Ouvir o corpo. Pausar antes de responder. Recusar quando é preciso. Dar quando é escolha.
+
+Uma vez. Outra vez. Ao longo dos próximos anos.
+
+[short pause]
+
+Não vai ser linear. Algumas semanas, vais recuar. Algumas, vais avançar mais do que esperavas.
+
+[pause]
+
+O que importa não é a velocidade.
+
+É a direcção.
+
+[long pause]
+
+A direcção é para onde a mulher com limites vive.
+
+Para um lugar onde o teu sim tem peso e o teu não tem paz.
+
+Para uma vida que é tua.
+
+[pause]
+
+E quando chegares lá, reconhecerás o lugar.
+
+Não pelos limites que puseste.
+
+Por ti — finalmente inteira, finalmente em casa.
+
+[long pause]
+
+O limite é sagrado porque é a forma do teu sagrado.
+
+Sem ele, tu dissolves-te.
+
+Com ele, tu és.`,
+      },
+    ],
+  },
 ];
