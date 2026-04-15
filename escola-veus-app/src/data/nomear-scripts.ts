@@ -19124,4 +19124,385 @@ Pelo facto de tu, pela primeira vez em muito tempo, estares finalmente nele.`,
       },
     ],
   },
+  {
+    id: "curso-pele-nua-m7",
+    titulo: "Curso Pele Nua — Módulo 7 (Aulas A, B, C)",
+    descricao: "O Corpo na Idade.",
+    scripts: [
+      {
+        id: "pele-nua-m7a",
+        titulo: "M7.A — A pele depois dos quarenta",
+        curso: "pele-nua",
+        texto: `Algures depois dos quarenta, a pele muda.
+
+[pause]
+
+Não de forma dramática.
+
+De forma persistente.
+
+[long pause]
+
+Marcas que antes desapareciam ao fim de uns dias passam a ficar mais tempo.
+
+A textura altera-se em sítios específicos.
+
+A pele em torno dos olhos, do pescoço, das mãos, mostra história que antes ficava escondida.
+
+[pause]
+
+Tu reparas. E não consegues parar de reparar.
+
+[short pause]
+
+Cada manhã, pequeno inventário.
+
+[pause]
+
+Quando começou esta linha. Quanto mais marcado este sítio. Quando deixou de voltar ao normal aquela parte.
+
+[long pause]
+
+Esta atenção constante à mudança da pele é, em si mesma, um peso.
+
+[pause]
+
+Não pelo que se nota.
+
+Pelo trabalho mental constante de notar.
+
+[short pause]
+
+A maioria das mulheres adultas dedica, sem se aperceber, uma quantidade significativa de atenção diária a este inventário.
+
+[pause]
+
+Que poderia estar a ser usada para outras coisas.
+
+[long pause]
+
+A indústria que vive desta atenção alimentou-a deliberadamente.
+
+[pause]
+
+Os anúncios estão organizados para te ensinar a ver tudo o que muda como problema a corrigir.
+
+[short pause]
+
+Se aceitares esta lente, vives o resto da vida adulta numa relação adversária com a tua própria pele.
+
+[pause]
+
+Cada nova marca é inimiga.
+
+Cada produto novo é prometido como solução.
+
+[short pause]
+
+E a relação, ano após ano, fica cada vez mais cansativa.
+
+[long pause]
+
+Há outra forma possível.
+
+[pause]
+
+Aceitar que a pele depois dos quarenta tem a textura de uma pele que viveu quarenta anos.
+
+E que esta textura, em si mesma, não é problema.
+
+[short pause]
+
+É consequência natural de um corpo a continuar.
+
+[pause]
+
+Pele perfeita aos quarenta seria, biologicamente, anomalia.
+
+[long pause]
+
+Reconciliar-te com a pele depois dos quarenta exige uma decisão repetida ao longo dos anos.
+
+[pause]
+
+A decisão de não comprar, todos os meses, a história de que a tua pele está a falhar.
+
+[short pause]
+
+A pele não está a falhar.
+
+Está, simplesmente, a continuar a viver — visível.
+
+[pause]
+
+E pele que mostra história é pele real.
+
+[long pause]
+
+Esta semana, observa a tua relação com produtos de pele.
+
+Quanto compras. Com que frequência tens necessidade de algo novo. Como te sentes a aplicar produtos diariamente.
+
+[pause]
+
+Pergunta-te: o que aconteceria se eu fizesse menos durante um mês?
+
+[short pause]
+
+Não cancelar tudo. Reduzir.
+
+[pause]
+
+A pele responde, em geral, melhor do que a indústria sugere.
+
+E tu libertarias atenção, dinheiro, e relação adversária com a tua própria face.
+
+[long pause]
+
+A pele depois dos quarenta não precisa de mais intervenção.
+
+Precisa, na maioria das vezes, de menos.
+
+[pause]
+
+Menos produtos. Menos atenção crítica. Menos reparação.
+
+[short pause]
+
+Mais aceitação de que ela está a fazer exactamente o que se pode esperar de uma pele desta idade.
+
+[pause]
+
+E a partir desta aceitação, a relação relaxa.
+
+E a pele, paradoxalmente, costuma ficar melhor.`,
+      },
+      {
+        id: "pele-nua-m7b",
+        titulo: "M7.B — A vergonha residual da menopausa",
+        curso: "pele-nua",
+        texto: `Há uma vergonha residual que muitas mulheres experienciam à volta da menopausa.
+
+[pause]
+
+Não a menopausa em si. A vergonha de ter chegado a essa fase.
+
+[long pause]
+
+Esta vergonha vem da cultura que equacionou feminilidade com fertilidade, juventude e atractividade reprodutiva.
+
+[pause]
+
+Quando a menopausa chega, parte deste enquadramento cultural deixa de se aplicar.
+
+E muitas mulheres sentem, em silêncio, que perderam algo essencial da sua identidade pública.
+
+[short pause]
+
+Esta sensação não é fraqueza individual.
+
+É produto cultural.
+
+[pause]
+
+Foste socializada durante décadas para acreditar que ser mulher era estar em determinada fase do ciclo reprodutivo.
+
+E quando essa fase termina, há uma reorganização interior dolorosa que poucas pessoas conversam abertamente.
+
+[long pause]
+
+A vergonha residual aparece em sítios subtis.
+
+[pause]
+
+Não querer mencionar a menopausa em conversas profissionais.
+
+Sentir desconforto quando alguém pergunta a tua idade.
+
+Comprar produtos com promessas de "rejuvenescimento" mesmo sabendo, racionalmente, que não funcionam como prometem.
+
+[short pause]
+
+Estes comportamentos são tentativas de manter, à superfície, uma identidade que culturalmente se está a desactualizar.
+
+[pause]
+
+E custam energia.
+
+[long pause]
+
+Reconhecer esta vergonha residual é o primeiro passo para a reduzir.
+
+[pause]
+
+Não desaparece imediatamente. Mas perde poder.
+
+[short pause]
+
+Quando tu, em privado, admites: sim, há vergonha em mim sobre este momento da vida. Sim, isto é influência cultural. Sim, está em mim mas não tem de me dirigir.
+
+[pause]
+
+Esta admissão é libertação parcial.
+
+[long pause]
+
+Esta semana, faz uma reflexão privada.
+
+Em que momentos da semana sentiste, mesmo subtilmente, vergonha relacionada com a tua idade ou com a fase do corpo em que estás?
+
+[pause]
+
+Lista esses momentos.
+
+[short pause]
+
+Talvez uma fotografia em que evitaste sair. Uma conversa em que mudaste de assunto. Uma compra que fizeste com pensamento implícito de "preciso de parecer mais nova".
+
+[pause]
+
+Ao identificar estes momentos, eles deixam de operar invisivelmente.
+
+E começam a poder ser observados — e, com o tempo, alguns começam a perder força.
+
+[long pause]
+
+Não tens de te livrar da vergonha residual de uma vez.
+
+Tens, sim, de a parar de tratar como verdade pessoal — e começar a tratá-la como produto cultural que tu, em algum grau, herdas.
+
+[pause]
+
+E ao longo dos anos, à medida que mais mulheres da tua geração vivem fases pós-reprodutivas com presença e autoridade, a vergonha colectiva vai-se reduzindo.
+
+[short pause]
+
+E tu fazes parte dessa redução. Quando vives a tua idade sem desculpa.`,
+      },
+      {
+        id: "pele-nua-m7c",
+        titulo: "M7.C — O direito de envelhecer sem desculpas",
+        curso: "pele-nua",
+        texto: `Tens o direito de envelhecer sem desculpas.
+
+[pause]
+
+Esta frase é simples.
+
+E, para muitas mulheres, é difícil de acreditar.
+
+[long pause]
+
+A cultura ensinou-te a desculpar a tua idade.
+
+A pedir desculpa por uma fotografia em que pareces mais velha.
+
+A explicar que não usas certo tipo de roupa "porque já não tem idade".
+
+A justificar mudanças do corpo como se fossem falha tua.
+
+[pause]
+
+Estas pequenas desculpas, repetidas ao longo dos anos, ensinam-te a ti mesma que a tua idade é defeito a ser explicado.
+
+[short pause]
+
+E uma mulher que se sente em defeito por algo tão básico como ter idade não pode habitar a sua vida com plenitude.
+
+[long pause]
+
+Há um movimento simples — em diferentes culturas, ao longo dos séculos — em que as mulheres mais velhas começam a deixar de pedir desculpa.
+
+[pause]
+
+Não em revolta dramática.
+
+Em pequenos gestos diários.
+
+[short pause]
+
+Vestir aquilo que lhes apetece sem se preocupar com "se ainda têm idade".
+
+Falar do que sabem sem suavizar a autoridade que os anos lhes deram.
+
+Aparecer em fotografias sem exigir filtros.
+
+[pause]
+
+Estes gestos parecem pequenos.
+
+Acumulados, são revolução silenciosa.
+
+[long pause]
+
+Tu podes começar isto agora — qualquer que seja a tua idade.
+
+[pause]
+
+Esta semana, presta atenção a uma desculpa específica que tu costumas dar pela tua idade.
+
+Pode ser numa frase concreta. "Já não tenho idade para isto." "Para a minha idade, ainda...". "Nunca pensei chegar a esta fase com..."
+
+[short pause]
+
+Identifica essa desculpa.
+
+[pause]
+
+E, nas próximas semanas, pratica a sua omissão.
+
+[short pause]
+
+Quando o reflexo te puxar para a frase, não a digas.
+
+Substitui por silêncio. Ou pela frase sem a desculpa.
+
+[pause]
+
+"Vou usar este vestido."
+
+Em vez de "vou usar este vestido apesar de já não ter idade para isto."
+
+[long pause]
+
+A desculpa, repetida, instala-se. A omissão, repetida, desinstala-se.
+
+[pause]
+
+E ao longo dos meses, vais notar que a tua relação com a tua idade muda.
+
+[short pause]
+
+Não porque mudaste a idade.
+
+Porque mudaste a forma como falas dela.
+
+[pause]
+
+E a forma como falas, em adulta, determina a forma como vives.
+
+[long pause]
+
+O direito de envelhecer sem desculpas não é declaração teórica.
+
+É prática diária — pequena, silenciosa, persistente.
+
+[pause]
+
+E é uma das formas mais discretas e mais profundas de habitar a tua própria vida.
+
+[short pause]
+
+Não a vida que tu terias com vinte anos.
+
+A vida que tu tens — com a idade que efectivamente tens.
+
+[pause]
+
+E essa vida é, neste momento, a única real.
+
+E merece ser vivida sem desculpa permanente pelo simples facto de existir.`,
+      },
+    ],
+  },
 ];
