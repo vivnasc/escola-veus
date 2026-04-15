@@ -10623,7 +10623,7 @@ Durante séculos, as mulheres chamaram a isto lunática — porque seguia a lua.
 
 Não era loucura.
 
-Era sabedoria corporal que uma sociedade afoita não sabe aceitar.
+Era sabedoria corporal que uma sociedade apressada não sabe aceitar.
 
 [pause]
 
@@ -11391,7 +11391,7 @@ Fazes análises. Os resultados vêm "dentro do normal".
 
 O médico diz que está tudo bem.
 
-Tu sais da consulta com a sensação estranha de teres sido inválidada — porque tu sabes que não está tudo bem, mesmo que nenhum exame o prove.
+Tu sais da consulta com a sensação estranha de teres sido invalidada — porque tu sabes que não está tudo bem, mesmo que nenhum exame o prove.
 
 [pause]
 
@@ -11563,91 +11563,115 @@ Não guarda por maldade. Não guarda por apego. Guarda porque foi treinado, ao l
 
 A questão não é fazer o corpo esquecer.
 
-É trazer para consciência o que ele ainda guarda — para que, aos poucos, ele perceba que a ameaça passou.
+É trazer para consciência o que ele ainda guarda — não em meditação, em registo simples, depois.
 
 [long pause]
 
-Uma das formas de o fazer é, curiosamente, falar com o corpo.
-
-Não através de palavras ditas em voz alta.
-
-Através de atenção corporal dirigida.
+E o registo simples é mais eficaz do que parece.
 
 [pause]
 
-Quando reparas que o teu corpo está a reagir a algo do passado, podes fazer uma pausa interna e perguntar, em silêncio, sem pressa.
+Porque o que liberta o arquivo corporal não é introspecção dirigida em tempo real.
 
-O que estás a lembrar agora?
-
-[short pause]
-
-Não é pergunta metafórica. É pergunta concreta dirigida ao sistema corporal.
-
-E, muitas vezes, o corpo responde.
-
-[pause]
-
-Com uma imagem que volta. Com uma frase antiga. Com uma sensação mais específica.
+É padrão visível ao longo do tempo.
 
 [short pause]
 
-Tu não estás a imaginar. Estás a abrir o arquivo que até aqui só se abria por reflexo.
+E padrão só aparece quando há dados a olhar.
 
 [long pause]
 
-Quando o arquivo é aberto conscientemente, não automaticamente, algo começa a mudar.
-
-O corpo começa a perceber que tu estás aqui.
-
-Que a ameaça registada é antiga.
-
-Que tu, hoje, tens recursos que não tinhas quando a ameaça aconteceu.
+Esta semana, tem ao alcance um caderno pequeno.
 
 [pause]
 
-E começa, devagar, a relaxar a vigilância.
+Pode ser uma agenda. Um bloco de notas no telemóvel. Uma folha dobrada na carteira.
+
+Não importa o suporte. Importa estar acessível.
 
 [short pause]
 
-Não de uma vez. Ao longo de meses.
+E, sempre que reparares que o teu corpo reagiu a alguma coisa sem causa presente óbvia, escreves uma única linha.
 
-Mas começa.
+[pause]
+
+Não no momento.
+
+Depois.
 
 [long pause]
 
-Escolhe uma reacção corporal tua que se repete e que não tem causa presente óbvia.
-
-Da próxima vez que ela aparecer, em vez de tentares afastá-la ou racionalizá-la, para.
-
-Pergunta em silêncio, com atenção: o que guardas aqui?
+Quando estiveres em casa, ou ao fim do dia, escreve apenas três coisas:
 
 [pause]
 
-E escuta.
+O que estavas a fazer.
 
-Não a resposta em palavras. A resposta em imagens, sensações, memórias que sobem.
+Que reacção apareceu no corpo — e onde.
+
+E uma palavra ou frase, se te ocorrer, sobre a que cheirou aquela reacção.
 
 [short pause]
 
-Escreve, depois, num caderno, o que apareceu.
+Por exemplo:
+
+"Estava a passar pelo café da minha rua. Peito apertou. Cheirou à conversa com a minha mãe há dois meses."
+
+"Estava a ouvir uma música no carro. Estômago contraiu. Cheirou ao verão antes do divórcio."
+
+"Estava numa reunião com X. Garganta fechou. Cheirou a uma chefia antiga."
+
+[long pause]
+
+Três linhas por entrada. Não mais.
 
 [pause]
 
-Ao longo dos meses, vais construir um pequeno mapa do que o corpo guarda.
+Não tens de saber porquê. Não tens de elaborar. Não tens de chorar.
 
-E cada ponto do mapa, uma vez visto, torna-se menos operativo.
+[short pause]
+
+Só registar.
+
+[long pause]
+
+Ao fim de duas ou três semanas, lê todas as entradas em sequência.
+
+[pause]
+
+Vais reparar em padrões que sozinhos eram invisíveis.
+
+[short pause]
+
+Os mesmos cheiros emocionais aparecem em sítios diferentes.
+
+A mesma reacção corporal repete-se em contextos aparentemente sem ligação.
+
+Há uma ou duas memórias-base que estão a operar em vinte situações diferentes, sem que tu o soubesses.
+
+[long pause]
+
+Este mapa, escrito em letra tua, faz uma coisa que a meditação interior não faz.
+
+[pause]
+
+Mostra-te, em factos, o que o teu corpo carrega.
+
+[short pause]
+
+E o que é visto em factos perde, devagar, o poder de operar invisivelmente.
 
 [long pause]
 
 O corpo guarda para te proteger.
 
-Quando tu mostras ao corpo que já és capaz de te proteger conscientemente, ele pode, finalmente, largar a vigilância.
+Quando tu, em letra escrita, mostras ao corpo que já viste o que ele guarda, ele pode, finalmente, largar parte da vigilância.
 
 [pause]
 
-Esta é uma das formas mais silenciosas e mais profundas de liberdade.
+Não pelo mistério da introspecção.
 
-Libertar o corpo do trabalho de guardar sozinho o que já não precisas de carregar assim.`,
+Pela clareza simples do que está, finalmente, anotado num caderno.`,
       },
     ],
   },
@@ -11752,7 +11776,7 @@ E o corpo regista esta atenção retroactiva.
 
 [pause]
 
-Não como ilusão. Como atenção real. Porque o corpo não distingue, emocionalmente, entre a atenção dada naquele momento e a atenção dada agora com intenção.
+Não como ilusão. Como atenção real. Porque o corpo não distingue, emocionalmente, entre a atenção dada naquele momento e a atenção dada agora, deliberadamente.
 
 [long pause]
 
@@ -12255,7 +12279,7 @@ E essa independência, durante muito tempo, era inconveniente.
 
 [long pause]
 
-Tu, se pertences a uma geração que cresceu num tempo mais aberto, talvez achas que isto não te afectou.
+Tu, se pertences a uma geração que cresceu num tempo mais aberto, talvez aches que isto não te afectou.
 
 Mas olha com atenção.
 
@@ -12297,9 +12321,17 @@ Não é encontro sexual contigo.
 
 [short pause]
 
-Começa pelos pés. Demora-te. Repara no que sentes.
+Sem roteiro prescrito. Sem ordem certa. Sem partes que tens de tocar primeiro.
 
-Vai subindo pelo corpo sem apressar. Sem saltar para os sítios que já conheces como "certos".
+[pause]
+
+Apenas tempo livre, sem plano, em que o corpo pode ser descoberto onde calhar.
+
+[short pause]
+
+Sem saltar para os sítios que já conheces como "certos" — porque os "certos" foram, em geral, ensinados.
+
+E sem repetir a coreografia rápida que aprendeste para acabar depressa.
 
 [pause]
 
@@ -12496,7 +12528,7 @@ Assumida como fase natural. Como próximo capítulo óbvio. Como uma coisa que i
 
 [short pause]
 
-Esta assumpção não é inocente.
+Este pressuposto não é inocente.
 
 É cultural.
 
@@ -12923,7 +12955,7 @@ Mulheres que passam a vida inteira em guerra com o próprio corpo por ele estar 
 
 [short pause]
 
-Esta guerra é inganhável.
+Esta guerra está perdida à partida.
 
 Porque o corpo vai mudar, com ou sem a tua permissão.
 
@@ -12971,7 +13003,7 @@ Mas a cultura actual tenta manter todas as fases com a aparência da juventude �
 
 [long pause]
 
-Se consegues abraçar a tua meia-idade como fase própria — não como juventude prolongada nem como antecipação da velhice — algo muda na forma como habitas este corpo.
+Se consegues habitar a tua meia-idade como fase própria — não como juventude prolongada nem como antecipação da velhice — algo muda na forma como vives este corpo.
 
 [pause]
 
@@ -13183,7 +13215,7 @@ O que acontece de facto na menopausa?
 
 [pause]
 
-Fisicamente: cessa a produção reprodutiva. Os hormonas principais descem. O corpo reorganiza-se em termos metabólicos, ósseos, cardiovasculares.
+Fisicamente: termina a fase reprodutiva. As hormonas principais descem. O corpo reorganiza-se em termos metabólicos, ósseos, cardiovasculares.
 
 Esta reorganização tem consequências reais — algumas benignas, outras que exigem atenção médica.
 
@@ -13390,7 +13422,7 @@ Uma manhã em que reparas, ao levantar-te, em como te sentes de facto.
 
 Uma tarde em que paras para notar o cansaço, sem tentar fazê-lo desaparecer.
 
-Uma noite em que, antes de dormir, agradeces ao corpo — em silêncio — pelo que ele fez durante o dia.
+Uma noite em que, ao deitares-te, registas numa frase como o corpo passou o dia.
 
 [pause]
 
@@ -13416,25 +13448,65 @@ Uma cooperação que dura — com todas as mudanças — até ao fim da vida.
 
 [long pause]
 
-Esta noite, antes de dormires, experimenta uma coisa nova.
-
-Sem pressa. Deitada, no escuro ou com luz baixa.
+Esta semana, vais começar a construir essa cooperação por uma via concreta.
 
 [pause]
 
-Percorre mentalmente o teu corpo. Dos pés à cabeça.
-
-Não para avaliar se está bem. Apenas para reconhecer que ele está ali.
+Pega numa folha — ou usa a contracapa de uma agenda, ou um caderno pequeno que fique perto da tua cama.
 
 [short pause]
 
-Em cada parte que percorres, diz em silêncio: reconheço-te.
+E em cima escreve um cabeçalho:
 
-Sem mais. Apenas reconhecimento.
+"Como o meu corpo passou hoje —"
+
+[long pause]
+
+À noite, antes de dormires, em vez de fazeres meditações ou exercícios mentais, escreves uma única linha.
 
 [pause]
 
-Este gesto, repetido algumas noites ao longo de semanas, é uma das formas mais simples de começares a habitar o teu corpo em vez de o administrares.
+Não como o teu corpo te pareceu. Como ele realmente passou o dia.
+
+[short pause]
+
+Pode ser:
+
+"Hoje aguentou seis horas em pé na consulta da minha mãe. Tem o pé esquerdo a doer."
+
+"Hoje digeriu mal o jantar de ontem. Sentiu peso na barriga até à tarde."
+
+"Hoje teve mais energia do que o habitual a meio da tarde. Não sei porquê."
+
+"Hoje passou por dentro de uma reunião difícil sem se queixar. Mas a mandíbula ficou apertada."
+
+[long pause]
+
+Uma linha por dia. Sem comentário moral. Sem auto-cuidado prescrito. Sem agradecer.
+
+[pause]
+
+Apenas relato factual de como o corpo passou o dia.
+
+[short pause]
+
+Como quem regista as condições meteorológicas de uma casa onde vive.
+
+[long pause]
+
+Ao fim de duas semanas, lê tudo de uma vez.
+
+[pause]
+
+Vais ter, em letra escrita, um retrato do teu corpo que nunca tinhas tido.
+
+[short pause]
+
+Não imaginado. Observado.
+
+[pause]
+
+E é a partir desse retrato observado — não da meditação, não da gratidão silenciosa — que a cooperação serena entre tu e o corpo começa, devagar, a instalar-se.
 
 [long pause]
 
@@ -13444,7 +13516,7 @@ Já é tua casa.
 
 [pause]
 
-A única coisa que ele espera é que tu, finalmente, entres.`,
+A única coisa que ele espera é que tu, finalmente, prestes atenção a como ele passa o dia em que vive contigo.`,
       },
       {
         id: "sangue-e-seda-m8b",
@@ -13552,7 +13624,7 @@ E começas a perguntar: o que é que elas fizeram que eu posso começar a fazer 
 
 Quase sempre, o que elas fizeram foi deixar de lutar mais cedo.
 
-Não resignaram-se.
+Não se resignaram.
 
 Apenas pararam de travar guerra contra a passagem do tempo no próprio corpo.
 
