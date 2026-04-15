@@ -6708,4 +6708,335 @@ Estás a decidir que existes.`,
       },
     ],
   },
+  {
+    id: "curso-ouro-proprio-m6",
+    titulo: "Curso Ouro Próprio — Módulo 6 (Aulas A, B, C)",
+    descricao: "Dinheiro e Relações. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m6a",
+        titulo: "M6.A — Quem paga, manda?",
+        curso: "ouro-proprio",
+        texto: `Na tua relação, quem paga mais tem mais poder?
+
+[pause]
+
+Quem ganha mais decide mais?
+
+Há uma conta invisível a correr entre vocês — e quem está a ganhar?
+
+[long pause]
+
+Ele paga o jantar. Ela escolhe o restaurante — mas dentro do orçamento dele.
+
+Ele paga a renda. Ela sente que não pode reclamar do apartamento porque não contribui com a mesma parte.
+
+Ela quer comprar algo. Ele não diz que não — mas ergue a sobrancelha.
+
+E ela guarda o cartão.
+
+[long pause]
+
+Ninguém gritou. Ninguém proibiu. Ninguém disse: tu não decides.
+
+Mas há algo que registou tudo.
+
+[pause]
+
+Há uma assimetria que não está nos números — está nos gestos.
+
+Na pausa antes de comprar. No olhar antes de pedir. Na justificação antes de gastar.
+
+[long pause]
+
+Se ganhas menos, sentes que tens menos voz.
+
+Se não ganhas nada, sentes que não tens direito a voz nenhuma.
+
+[pause]
+
+Não porque te digam isso — mas porque o dinheiro fala uma língua que o corpo entende sem tradução.
+
+[long pause]
+
+Nas relações, o dinheiro nunca é só dinheiro.
+
+É poder. É segurança. É controlo. É liberdade.
+
+[pause]
+
+Quem paga mais sente, mesmo sem querer, que decide mais.
+
+Quem recebe mais sente, mesmo sem razão, que deve mais.
+
+[short pause]
+
+E cria-se uma dinâmica invisível: um que pode e outro que pede. Um que dá e outro que agradece. Um que decide e outro que se adapta.
+
+[long pause]
+
+Isto não é necessariamente intencional.
+
+Muitas vezes, quem paga mais nem sabe que está a exercer poder.
+
+E quem recebe mais nem sabe que está a ceder espaço.
+
+[pause]
+
+Mas tu sentes.
+
+Sentes cada vez que encolhes a tua vontade porque o dinheiro não é teu.
+
+E cada vez que engoles uma opinião porque não pagas a tua parte.
+
+[long pause]
+
+Pensa na tua relação actual — ou na última.
+
+Quem paga mais? Quem decide mais?
+
+Há uma correlação?
+
+[pause]
+
+Escreve dois momentos em que sentiste que o dinheiro influenciou quem tinha voz.
+
+Não para acusar ninguém — para ver a dinâmica com clareza.
+
+[short pause]
+
+Porque só o que se vê se pode mudar.
+
+[long pause]
+
+O dinheiro numa relação nunca é só dinheiro.
+
+É a linguagem silenciosa do poder.`,
+      },
+      {
+        id: "ouro-proprio-m6b",
+        titulo: "M6.B — Dependência financeira e medo",
+        curso: "ouro-proprio",
+        texto: `Se a tua relação acabasse amanhã, conseguirias pagar as tuas contas?
+
+[pause]
+
+Se a resposta te assusta — de onde vem o medo?
+
+Do dinheiro ou da solidão?
+
+[long pause]
+
+Há mulheres que ficam em relações não por amor — mas por matemática.
+
+[pause]
+
+O apartamento está no nome dele. A poupança é partilhada mas só um tem acesso. Se sair, vai para onde? Com que dinheiro?
+
+[short pause]
+
+A conversa com as amigas é sobre sentimentos.
+
+Mas à noite, sozinha, a conta que se faz é financeira.
+
+[pause]
+
+Quanto custa a minha liberdade?
+
+[long pause]
+
+Às vezes a resposta é: mais do que tenho.
+
+Então fica. Não porque queira — mas porque não pode.
+
+[pause]
+
+E cada dia que fica por não poder, perde um bocado de si mesma.
+
+Aos poucos. Como um gotejamento.
+
+[long pause]
+
+A dependência financeira não prende o corpo — prende a vontade.
+
+[pause]
+
+Não precisas de estar trancada para não sair. Basta não ter para onde ir.
+
+[short pause]
+
+Esta é a prisão mais invisível: não tem grades.
+
+[pause]
+
+Tem contas. Tem rendas. Tem a vergonha de voltar para casa dos pais.
+
+[long pause]
+
+Quando todo o teu mundo material depende de outra pessoa, sair não é uma mudança — é um colapso.
+
+[pause]
+
+E muitas mulheres ficam exactamente aqui: com o suficiente para não sair, mas nunca com o suficiente para se sentir livres.
+
+[long pause]
+
+Faz uma conta simples, sozinha, em silêncio.
+
+Quanto precisas por mês para viver — só tu?
+
+Renda, comida, transporte, o básico.
+
+[pause]
+
+Agora olha para o que ganhas — ou para o que ganharias se voltasses a ganhar.
+
+[short pause]
+
+Não é para tomar decisões agora.
+
+É para veres o número com clareza.
+
+[pause]
+
+Porque o medo odeia números concretos.
+
+O medo alimenta-se de vago, de talvez, de não sei.
+
+[short pause]
+
+Quando sabes o número exacto, o medo perde metade da força.
+
+[long pause]
+
+A liberdade não é um sentimento.
+
+É um número que precisas de conhecer.`,
+      },
+      {
+        id: "ouro-proprio-m6c",
+        titulo: "M6.C — A conversa sobre dinheiro que evitas",
+        curso: "ouro-proprio",
+        texto: `Há uma conversa sobre dinheiro que precisas de ter com alguém que amas.
+
+[pause]
+
+Sabes qual é.
+
+Há quanto tempo a adias?
+
+[long pause]
+
+Pode ser com o teu parceiro: precisamos de falar sobre como dividimos as coisas.
+
+Pode ser com a tua mãe: não posso continuar a pagar isto sozinha.
+
+Pode ser com uma amiga: não tenho condições de ir a esse sítio.
+
+Pode ser contigo mesma: preciso de ganhar mais.
+
+[long pause]
+
+Sabes a conversa.
+
+Já a ensaiaste na cabeça dezenas de vezes.
+
+[pause]
+
+No chuveiro. No carro. À noite, antes de dormir.
+
+Tens as palavras. Tens os argumentos.
+
+[short pause]
+
+Mas nunca é o momento certo.
+
+Nunca está tudo calmo o suficiente.
+
+Nunca tens a certeza de que não vai correr mal.
+
+[pause]
+
+E então adias. Mais um dia. Mais uma semana.
+
+[long pause]
+
+E a conversa que não tens torna-se um peso que carregas sozinha.
+
+Porque o problema não é só o dinheiro — é o silêncio que o dinheiro cria quando ninguém fala dele.
+
+[long pause]
+
+A maioria das conversas sobre dinheiro que evitas não são sobre dinheiro.
+
+São sobre medo.
+
+[pause]
+
+Medo de conflito: e se a outra pessoa se zangar?
+
+Medo de vulnerabilidade: e se percebem que não tenho tanto quanto pensam?
+
+Medo de rejeição: e se me acham mesquinha por levantar o assunto?
+
+[long pause]
+
+O dinheiro é o último tabu.
+
+[pause]
+
+Podes falar de sexo, de morte, de saúde mental.
+
+Mas dinheiro?
+
+[short pause]
+
+A conversa sobre dinheiro obriga-te a ser honesta sobre o que tens, o que não tens, o que precisas e o que sentes.
+
+[pause]
+
+E essa honestidade, para muita gente, é mais assustadora do que qualquer outro tema.
+
+[long pause]
+
+Mas o custo de não falar é sempre maior do que o custo de falar.
+
+[pause]
+
+O silêncio não protege — acumula.
+
+Até ao dia em que rebenta.
+
+[long pause]
+
+Escreve a conversa que precisas de ter. Toda.
+
+Num papel, como se estivesses a falar com a pessoa.
+
+[pause]
+
+Não para enviar — para ouvir-te.
+
+Depois lê em voz alta.
+
+[short pause]
+
+E repara: o que é que custa mais — as palavras ou o silêncio?
+
+[pause]
+
+Não tens de ter a conversa esta semana.
+
+Mas tens de a tirar de dentro de ti e pô-la num sítio onde a possas ver.
+
+[long pause]
+
+O silêncio sobre dinheiro não é elegância.
+
+É peso.
+
+E podes pousá-lo.`,
+      },
+    ],
+  },
 ];
