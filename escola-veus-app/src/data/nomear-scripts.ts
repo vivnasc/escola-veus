@@ -7781,4 +7781,323 @@ E o caminho só tem valor se souberes para onde te leva.`,
       },
     ],
   },
+  {
+    id: "curso-limite-sagrado-m1",
+    titulo: "Curso Limite Sagrado — Módulo 1 (Aulas A, B, C)",
+    descricao: "O Sim Automático. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m1a",
+        titulo: "M1.A — O sim que sai antes do corpo decidir",
+        curso: "limite-sagrado",
+        texto: `Quantas vezes, esta semana, disseste sim antes de saberes o que te estavam a perguntar?
+
+[pause]
+
+Antes da frase da outra pessoa terminar, a tua boca já tinha respondido.
+
+[long pause]
+
+Alguém pede ajuda. Tu dizes sim.
+
+Alguém pergunta se tens tempo. Tu dizes sim.
+
+Alguém convida. Tu dizes sim.
+
+[pause]
+
+Só depois, quando fica em silêncio, é que o corpo começa a responder.
+
+[short pause]
+
+Com um aperto. Com um cansaço sem razão. Com aquela vontade estranha de cancelar tudo e ficar sozinha numa sala escura.
+
+[long pause]
+
+O sim saiu sozinho.
+
+Não passou pelo corpo. Não passou pela vontade. Não passou pela verdade.
+
+[pause]
+
+Saiu por um caminho mais rápido — o caminho do que aprendeste há muito tempo a fazer.
+
+[short pause]
+
+Antes de saberes ler, aprendeste a ler o ambiente.
+
+Aprendeste que a hesitação causava desconforto. Que a pergunta sobre se querias ou não era, ela própria, uma imposição.
+
+[pause]
+
+Aprendeste que era mais simples — e mais seguro — dizer sim primeiro e resolver depois.
+
+[long pause]
+
+O sim automático é uma das formas mais invisíveis de te traíres.
+
+Invisível porque parece gentileza.
+
+Invisível porque é socialmente premiado.
+
+Invisível porque a própria pessoa que o diz, muitas vezes, nem nota que disse.
+
+[pause]
+
+Mas o corpo nota.
+
+Sempre nota.
+
+[short pause]
+
+E cada sim que saiu sem passar por ti adiciona uma pequena dívida. Um pequeno recuo. Um pequeno passo para longe da vida que é realmente tua.
+
+[long pause]
+
+Durante os próximos dias, presta atenção a um momento específico.
+
+O momento exacto entre a pergunta e a tua resposta.
+
+[pause]
+
+Esse espaço — que parece não existir — é onde vive o sim automático.
+
+[short pause]
+
+Não te pedimos para mudar a resposta. Só para notar o espaço.
+
+[pause]
+
+Uma respiração entre a pergunta e o sim. Uma pausa pequena.
+
+[short pause]
+
+Nessa pausa, alguma coisa começa a mudar. Sem forçar. Sem decidir.
+
+Simplesmente porque, pela primeira vez, o espaço existe.
+
+[long pause]
+
+O corpo sabe dizer não.
+
+Só não te ensinaram a ouvi-lo a tempo.`,
+      },
+      {
+        id: "limite-sagrado-m1b",
+        titulo: "M1.B — Onde aprendeste a dizer sim sem pensar",
+        curso: "limite-sagrado",
+        texto: `Quando foi que começaste a dizer sim antes de pensares?
+
+[pause]
+
+Foi em criança, provavelmente. Cedo.
+
+Antes de teres palavras para nomear o que estava a acontecer.
+
+[long pause]
+
+Tinhas cinco, seis anos.
+
+Alguém te ofereceu comida que não querias. Alguém te pediu um beijo que não te apetecia dar. Alguém te perguntou se estavas bem quando claramente não estavas.
+
+[pause]
+
+Em cada um destes momentos, houve uma resposta pequena dentro de ti.
+
+Uma preferência real. Uma verdade que nem precisava de argumento.
+
+[short pause]
+
+E em cada um destes momentos, aprendeste algo.
+
+Aprendeste que a tua resposta real causava desconforto.
+
+Aprendeste que a tua verdade era inconveniente.
+
+Aprendeste que era mais simples ajustar.
+
+[pause]
+
+Sorriste. Aceitaste a comida. Deste o beijo. Disseste que estavas bem.
+
+[long pause]
+
+E ninguém te elogiou por ajustares.
+
+Não precisou de elogio. O alívio das pessoas à tua volta, quando cedeste, foi a prova mais clara de que ajustar era a resposta correcta.
+
+[pause]
+
+Aprendeste por confirmação.
+
+Uma confirmação que se repetiu centenas de vezes ao longo da infância.
+
+[short pause]
+
+Aos dez anos, já sabias: o meu sim protege-os. O meu não perturba-os.
+
+Aos quinze, o teu sim era automático. Sabias dá-lo sem pensar.
+
+Aos trinta, já não te lembras de como se dizia o contrário.
+
+[long pause]
+
+Isto não é culpa tua.
+
+É um mecanismo que qualquer criança num ambiente imperfeito desenvolve para sobreviver emocionalmente.
+
+[pause]
+
+Fez sentido.
+
+Protegeu-te naquele tempo.
+
+[short pause]
+
+Mas já não estás aos cinco anos.
+
+[pause]
+
+E o mecanismo que te protegeu na infância é o mesmo que agora te esvazia.
+
+[long pause]
+
+Recorda, se conseguires, um momento específico da tua infância em que aprendeste que o teu sim era o caminho mais fácil.
+
+Não precisas de resolver nada. Não precisas de confrontar ninguém.
+
+[pause]
+
+Só de reconhecer: foi ali. Foi então.
+
+A partir dali comecei a dizer sim antes de saber o que queria.
+
+[short pause]
+
+Reconhecer é o primeiro gesto de separação entre a criança que aprendeu e a adulta que agora escolhe.
+
+[long pause]
+
+O sim que te custou tanto a vida inteira nasceu de um gesto pequeno.
+
+Mas o não que está a chegar — esse também nasce assim.`,
+      },
+      {
+        id: "limite-sagrado-m1c",
+        titulo: "M1.C — O corpo que sabia que era não",
+        curso: "limite-sagrado",
+        texto: `Pensa numa vez em que disseste sim e, horas ou dias depois, te arrependeste.
+
+[pause]
+
+Antes de dizeres sim — onde é que o corpo estava?
+
+[long pause]
+
+Provavelmente houve um aperto.
+
+Um aperto pequeno, no peito ou na barriga, que durou menos de um segundo.
+
+[short pause]
+
+Talvez a respiração tenha ficado mais curta. Talvez os ombros tenham subido. Talvez tenha havido um arrepio breve.
+
+[pause]
+
+O teu corpo estava a dizer não.
+
+[short pause]
+
+A dizer não com todos os meios que tinha, mas sem palavras.
+
+[pause]
+
+E tu, por cima, disseste sim com palavras.
+
+[long pause]
+
+Durante toda a tua vida, o teu corpo tem dado estes sinais antes das tuas respostas verbais.
+
+Antes das tuas decisões conscientes.
+
+Antes até de tu saberes que estavas a ser perguntada.
+
+[pause]
+
+O corpo é mais rápido que a mente.
+
+Lê a situação em milissegundos. Detecta micro-expressões, tons de voz, pausas, tensões.
+
+[short pause]
+
+E quando algo te ameaça — ameaça a tua paz, o teu tempo, a tua integridade — ele reage antes de tu decidires.
+
+[pause]
+
+Mas tu, há muito tempo, aprendeste a não confiar nele.
+
+[long pause]
+
+Foste ensinada a que as reacções do corpo eram fraqueza, exagero, histeria.
+
+Que uma mulher séria decidia com a cabeça.
+
+Que sentir era impreciso.
+
+[pause]
+
+Então começaste a silenciá-lo.
+
+Cada vez que o corpo dizia não, tu disseste sim por cima.
+
+Cada vez que o corpo dizia para parares, tu continuaste.
+
+[short pause]
+
+Com o tempo, o corpo começou a desistir de avisar.
+
+Ou pior — começou a avisar mais alto, através de sintomas. Insónia. Dores inexplicáveis. Infecções recorrentes. Exaustão crónica.
+
+[pause]
+
+O corpo ainda diz não.
+
+Só que agora grita porque a voz normal há muito não é ouvida.
+
+[long pause]
+
+Durante os próximos dias, quando alguém te fizer uma pergunta, não respondas imediatamente.
+
+Dá-te três segundos.
+
+[pause]
+
+Nesses três segundos, presta atenção ao corpo.
+
+Há aperto? Há alívio? Há neutralidade?
+
+[short pause]
+
+Não é obrigatório usares a informação para decidir.
+
+Apenas nota o que está lá.
+
+[pause]
+
+O corpo esperou muito tempo para voltar a ser ouvido.
+
+Três segundos, por agora, são muito para ele.
+
+[long pause]
+
+O corpo não precisa de aprender a dizer não.
+
+Ele sabe dizer não desde sempre.
+
+[pause]
+
+Só precisa de voltar a ter alguém que o escute.`,
+      },
+    ],
+  },
 ];
