@@ -8100,4 +8100,359 @@ Só precisa de voltar a ter alguém que o escute.`,
       },
     ],
   },
+  {
+    id: "curso-limite-sagrado-m2",
+    titulo: "Curso Limite Sagrado — Módulo 2 (Aulas A, B, C)",
+    descricao: "A Escuta do Corpo. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m2a",
+        titulo: "M2.A — Os sinais que o teu corpo dá quando te trai",
+        curso: "limite-sagrado",
+        texto: `Já te aconteceu saberes que disseste a coisa errada antes de o teu cérebro processar o que aconteceu?
+
+[pause]
+
+O corpo sabia antes.
+
+[long pause]
+
+Estavas numa conversa.
+
+Alguém disse alguma coisa. Tu respondeste. Todos continuaram.
+
+[pause]
+
+Mas dentro de ti, algo se apertou.
+
+Uma sensação pequena no peito. Um nó breve na garganta. Uma tensão nas mãos.
+
+[short pause]
+
+Não sabias o que era. Continuaste a falar.
+
+[pause]
+
+E só mais tarde, a horas de distância da conversa, percebeste: eu devia ter dito outra coisa. Eu concordei com algo com que não concordo. Eu deixei passar.
+
+[long pause]
+
+O corpo tinha-te avisado.
+
+No momento exacto.
+
+E tu não estavas a ouvir.
+
+[long pause]
+
+Os sinais são sempre os mesmos. Cada mulher tem os seus.
+
+Para algumas é um aperto no peito. Para outras é a barriga que se contrai. Para outras ainda são os ombros que se levantam sozinhos.
+
+[pause]
+
+Estes sinais são rápidos. Duram menos de dois segundos.
+
+Passam antes de teres tempo de os perceber conscientemente.
+
+[short pause]
+
+Mas o corpo regista.
+
+E guarda.
+
+[pause]
+
+Cada vez que ignoras um sinal, acrescentas mais um ao arquivo.
+
+[long pause]
+
+Ao fim de uns anos, este arquivo torna-se tão grande que o corpo começa a ter sintomas crónicos.
+
+Dores que não têm causa médica óbvia.
+
+Cansaço que não desaparece com descanso.
+
+Insónias que chegam em fases específicas da vida.
+
+[pause]
+
+Estes sintomas não são aleatórios.
+
+São a conta que o corpo finalmente cobra pelo que tu ignoraste.
+
+[long pause]
+
+Esta semana, escolhe uma conversa em que saíste a sentir-te estranha.
+
+Fecha os olhos e volta mentalmente ao início da conversa.
+
+[pause]
+
+Em que momento é que o corpo começou a dar sinal?
+
+Não o momento em que tu notaste. O momento em que o corpo começou.
+
+[short pause]
+
+Há sempre uma diferença.
+
+O corpo sabe antes de ti.
+
+[pause]
+
+Identificar esse momento é começar a recalibrar o tempo entre o sinal e a tua consciência.
+
+Com a prática, esse tempo diminui.
+
+[short pause]
+
+Até que um dia, o sinal e a consciência chegam ao mesmo tempo.
+
+E tu, aí, podes finalmente escolher.
+
+[long pause]
+
+O corpo não é lento.
+
+Foste treinada a não o ouvir a tempo.`,
+      },
+      {
+        id: "limite-sagrado-m2b",
+        titulo: "M2.B — A tensão como informação, não sintoma",
+        curso: "limite-sagrado",
+        texto: `Aquele nó na garganta é sintoma ou é mensagem?
+
+[pause]
+
+A tensão nos ombros é patológica ou é resposta?
+
+[long pause]
+
+Cresceste num mundo que te ensinou a tratar as reacções do corpo como defeitos a resolver.
+
+Dói-te a cabeça — tomas comprimido.
+
+Tens insónia — tomas indutor de sono.
+
+Dói-te a barriga — cortas glúten.
+
+[pause]
+
+Todas estas respostas podem ser úteis.
+
+Mas partem de uma premissa: o sintoma é o problema.
+
+[short pause]
+
+E às vezes — muitas vezes — o sintoma não é o problema.
+
+É a mensagem.
+
+[long pause]
+
+O teu corpo não produz tensão aleatória.
+
+Cada tensão está ligada a alguma coisa.
+
+[pause]
+
+Os ombros que se levantam diante de certas pessoas. A mandíbula que cerra em certas conversas. O estômago que se contrai ao ver certas mensagens chegarem.
+
+[short pause]
+
+Estas reacções não são inimigas tuas.
+
+São diagnóstico.
+
+[pause]
+
+Estão a dizer-te: esta pessoa exige-te mais do que podes dar. Esta conversa está a atravessar um limite que ainda não nomeaste. Esta relação leva-te mais do que devolve.
+
+[long pause]
+
+Mas tu, em vez de escutares a mensagem, tentas eliminar o sintoma.
+
+Tomas magnésio. Vais a yoga. Meditas. Respiras fundo.
+
+[pause]
+
+Nada disto é errado.
+
+Mas se o corpo continua a reagir quando entras em certos sítios, nenhum magnésio do mundo vai resolver.
+
+[short pause]
+
+O corpo está a pedir-te que mudes de contexto, não que alivies o sintoma.
+
+[long pause]
+
+A diferença entre tratar sintoma e ouvir mensagem é esta.
+
+O sintoma é pedido para a tensão sair.
+
+A mensagem é pedido para a situação mudar.
+
+[pause]
+
+Quando tratas apenas o sintoma, continuas a expor o corpo ao mesmo estímulo.
+
+E o corpo, para sobreviver, aumenta o volume do aviso.
+
+[short pause]
+
+Sintomas crónicos são muitas vezes mensagens ignoradas durante anos.
+
+[long pause]
+
+Faz uma lista das tensões mais frequentes no teu corpo.
+
+Dor nas costas. Aperto no peito. Insónia. Enxaqueca.
+
+[pause]
+
+Ao lado de cada uma, escreve: quando aparece?
+
+Sê específica. Que dia da semana. Que conversa. Que tipo de situação.
+
+[short pause]
+
+Olha para a lista.
+
+Os teus sintomas têm um mapa.
+
+[pause]
+
+E o mapa está a apontar para algo específico da tua vida que ainda não mudou.
+
+[long pause]
+
+Os teus sintomas não são fraqueza.
+
+São cartas que o teu corpo te escreve quando tu não ouves o que ele sussurra.`,
+      },
+      {
+        id: "limite-sagrado-m2c",
+        titulo: "M2.C — Aprender a pausar",
+        curso: "limite-sagrado",
+        texto: `Quantos segundos passam entre tu seres perguntada e tu responderes?
+
+[pause]
+
+Um? Dois?
+
+Ou é quase zero — a resposta sai antes da pergunta terminar?
+
+[long pause]
+
+A maioria das pessoas responde antes de ter acabado de receber a informação.
+
+Já tinham uma resposta preparada.
+
+[pause]
+
+Ou responderam para preencher o silêncio.
+
+Ou responderam porque não conseguiriam aguentar o olhar de espera.
+
+[short pause]
+
+Qualquer que seja a razão, a resposta saiu sem passar por um lugar importante: a pausa.
+
+[long pause]
+
+A pausa é o espaço entre a pergunta e a resposta.
+
+Um espaço que, para a maioria das mulheres, quase não existe.
+
+[pause]
+
+E nesse espaço é onde vive a tua verdadeira resposta.
+
+A tua verdadeira vontade.
+
+A tua verdadeira preferência.
+
+[short pause]
+
+Se não há pausa, não há tua resposta.
+
+Há apenas o reflexo.
+
+[long pause]
+
+Aprender a pausar é o trabalho mais discreto e mais subversivo que uma mulher pode fazer.
+
+Discreto porque ninguém nota. Uma pausa de dois segundos passa quase despercebida aos outros.
+
+Subversivo porque muda completamente a dinâmica de toda a tua vida social.
+
+[pause]
+
+Quando há pausa, há tu.
+
+Quando há pausa, o teu corpo consegue entrar na conversa.
+
+Quando há pausa, a outra pessoa começa, lentamente, a acostumar-se à ideia de que tu não és automática.
+
+[long pause]
+
+No início, a pausa é desconfortável.
+
+Quem recebeu anos da tua resposta imediata vai notar. Alguns vão pressionar. Outros vão ficar ligeiramente confusos.
+
+[pause]
+
+Aguenta.
+
+A pausa é território. E território, uma vez criado, protege-se.
+
+[short pause]
+
+Ao fim de umas semanas, os que te conhecem começam a adaptar-se.
+
+Aprendem que contigo há um momento de silêncio antes da resposta.
+
+Esperam.
+
+[pause]
+
+E tu, nesses segundos ganhos, voltas a ter acesso a ti.
+
+[long pause]
+
+Esta semana, faz um exercício específico.
+
+Cada vez que alguém te faz uma pergunta — qualquer pergunta — respira uma vez antes de responder.
+
+[pause]
+
+Uma respiração. Completa. Pelo nariz.
+
+Só isso.
+
+[short pause]
+
+Não te obriga a mudar a resposta.
+
+Só cria espaço.
+
+[pause]
+
+No fim da semana, vais notar uma coisa estranha: algumas das tuas respostas começaram a ser diferentes.
+
+Não porque tenhas decidido mudar.
+
+[short pause]
+
+Porque finalmente tiveram tempo de passar por ti.
+
+[long pause]
+
+A tua resposta real vive na pausa.
+
+E a pausa é a tua casa quando ninguém te vê.`,
+      },
+    ],
+  },
 ];
