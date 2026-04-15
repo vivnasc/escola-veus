@@ -16760,4 +16760,383 @@ Em mulheres que vão crescer com mais hipóteses de fala porque tu, antes delas,
       },
     ],
   },
+  {
+    id: "curso-pele-nua-m1",
+    titulo: "Curso Pele Nua — Módulo 1 (Aulas A, B, C)",
+    descricao: "O Corpo Olhado. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "pele-nua-m1a",
+        titulo: "M1.A — O olhar antecipado",
+        curso: "pele-nua",
+        texto: `Antes de te veres a ti mesma, foste vista por outros.
+
+[pause]
+
+Em algum ponto da infância — talvez aos onze, doze, treze anos — começaste a notar que o teu corpo era olhado.
+
+[long pause]
+
+Não pediste esta atenção. Mas ela chegou.
+
+[pause]
+
+E mudou tudo.
+
+[short pause]
+
+A partir desse momento, deixaste de habitar o corpo apenas como ferramenta para correr, brincar, comer, dormir.
+
+Passaste a habitá-lo também como objecto a ser visto.
+
+[long pause]
+
+Esta transição, para muitas raparigas, é o fim da infância corporal.
+
+[pause]
+
+E o início de uma vigilância que vai durar décadas.
+
+[short pause]
+
+A vigilância de antecipar como será visto o teu corpo antes de ser efectivamente visto.
+
+[pause]
+
+Antes de saíres de casa, avalia-lo.
+
+Antes de tirares uma foto, posiciona-lo.
+
+Antes de entrares numa sala, ajusta-lo.
+
+[long pause]
+
+Esta antecipação tornou-se hábito tão profundo que tu já nem a notas.
+
+[pause]
+
+Acontece automaticamente. Em milisegundos. Antes de qualquer pensamento consciente.
+
+[short pause]
+
+E é uma das principais razões pelas quais tantas mulheres se sentem cansadas sem razão aparente.
+
+[pause]
+
+Antecipar permanentemente o olhar alheio sobre o próprio corpo é trabalho mental constante.
+
+[long pause]
+
+Reconhecer este trabalho é o primeiro passo para o reduzir.
+
+[pause]
+
+Não para o eliminar — em alguns contextos, alguma vigilância é razoável.
+
+Mas para o reduzir aos contextos onde efectivamente faz sentido.
+
+[short pause]
+
+E libertar o resto do tempo desta vigilância automática.
+
+[long pause]
+
+Esta semana, durante alguns momentos do dia, repara.
+
+Quando te avalias num reflexo. Quando ajustas a roupa em frente a uma sala. Quando antecipa-lo a impressão que vais causar antes de entrares.
+
+[pause]
+
+Quantas vezes ao dia faz isto?
+
+[short pause]
+
+A maioria das mulheres, quando começa a contar, fica em choque.
+
+Pode ser dezenas. Pode ser centenas.
+
+[pause]
+
+E cada uma destas micro-avaliações consome energia.
+
+[long pause]
+
+Não tens de mudar o comportamento imediatamente.
+
+Apenas de o tornar visível.
+
+[pause]
+
+Porque o que é visível pode, com tempo, ser modulado.
+
+E o automático invisível continua, sem fim.
+
+[short pause]
+
+A vigilância sobre o próprio corpo, instalada em criança, persiste em adulta — até que tu, conscientemente, comeces a desinstalá-la.`,
+      },
+      {
+        id: "pele-nua-m1b",
+        titulo: "M1.B — O corpo que só olhas com roupa",
+        curso: "pele-nua",
+        texto: `Há um corpo que tu só olhas quando está vestido.
+
+[pause]
+
+No espelho da entrada, antes de saíres de casa.
+
+No reflexo da montra, de passagem.
+
+Na fotografia em que escolheste o ângulo antes de a tirares.
+
+[long pause]
+
+Mas sem roupa, não olhas.
+
+[pause]
+
+Vestes-te depressa depois do banho. Apagas a luz antes de te despires à noite. Evitas o espelho do quarto como quem evita uma sala de interrogatório.
+
+[short pause]
+
+Isto não é só pudor.
+
+É mais antigo.
+
+[long pause]
+
+Aprendeste, em algum momento, que o teu corpo nu não era uma coisa boa.
+
+[pause]
+
+Talvez numa comparação. Talvez numa piada. Talvez num silêncio da tua mãe quando te mediste em frente ao espelho. Talvez num manual implícito que te ensinou que o corpo da mulher é coisa a esconder.
+
+[short pause]
+
+Tem nome o que aprendeste.
+
+Vergonha do corpo sem vestido.
+
+[pause]
+
+E o mais cruel é isto: o corpo nunca te deu motivo para essa vergonha.
+
+A vergonha foi-te ensinada antes dele ter tempo de se mostrar a ti.
+
+[long pause]
+
+Em adulta, isto tem consequências subtis.
+
+[pause]
+
+Conheces o teu corpo vestido com muita precisão.
+
+Sabes que roupa te assenta. Sabes que ângulos funcionam. Sabes que cores te favorecem.
+
+[short pause]
+
+Mas o teu corpo nu — esse, conheces mal.
+
+Não sabes ao certo a forma das tuas costas. Não te lembras como são as tuas pernas vistas de baixo. Não conheces a verdadeira textura da tua pele em diferentes zonas.
+
+[pause]
+
+Porque há décadas que evitas olhar.
+
+[long pause]
+
+Esta noite, antes de dormir, faz uma coisa nova.
+
+Estás sozinha, no teu quarto, com luz baixa.
+
+Despe-te calmamente.
+
+[pause]
+
+Vai a um espelho.
+
+Não para te avaliares — para te conheceres.
+
+[short pause]
+
+Olha para o teu corpo nu sem julgamento.
+
+Percorre-o com o olhar como se estivesses a ver pela primeira vez.
+
+[pause]
+
+A primeira reacção, provavelmente, vai ser desconforto. Talvez crítica. Talvez vontade de te vestir depressa.
+
+[short pause]
+
+Resiste. Por dois minutos.
+
+[pause]
+
+Olha para as partes que costumas evitar. Sem mudar nada. Sem corrigir nada. Apenas observar.
+
+[long pause]
+
+Este gesto, repetido algumas noites por semana, durante alguns meses, transforma a relação com o próprio corpo.
+
+[pause]
+
+Não em amor declarado. Em familiaridade.
+
+[short pause]
+
+E familiaridade é, em muitos casos, a fundação para qualquer relação saudável que se siga.
+
+[pause]
+
+O teu corpo nu não tem de ser amado.
+
+Tem, sim, de ser conhecido.
+
+[long pause]
+
+Conhecimento substitui, lentamente, a vergonha herdada.
+
+E o que era zona de evitamento começa, com o tempo, a tornar-se território familiar.`,
+      },
+      {
+        id: "pele-nua-m1c",
+        titulo: "M1.C — O espelho que evitas de manhã",
+        curso: "pele-nua",
+        texto: `Há um espelho em casa que tu evitas de manhã.
+
+[pause]
+
+Passas por ele depressa. Fazes o que tens de fazer sem o olhar de frente.
+
+E quando, por descuido, o olhas, há um pequeno vazio — como se tivesses apanhado uma estranha no espelho.
+
+[long pause]
+
+Não é que não te reconheças.
+
+É que esperavas outra coisa.
+
+[pause]
+
+A mulher do espelho parece cansada. Parece mais velha. Parece menos do que tu achavas que ias ser nesta altura da tua vida.
+
+[short pause]
+
+Tem nome o que sentes.
+
+Luto de uma versão de ti que não aconteceu.
+
+[pause]
+
+Esse luto é silencioso. Não tem ritual. Não tem data. Ninguém te pergunta se estás bem.
+
+[short pause]
+
+Tu simplesmente continuas.
+
+[pause]
+
+Mas o espelho, esse, nota tudo.
+
+[long pause]
+
+E a cada manhã em que passas por ele sem o olhar, perdes a hipótese de dizer à mulher real: eu vejo-te.
+
+[pause]
+
+Ela espera por isso há anos.
+
+[short pause]
+
+Não para seres diferente.
+
+Para seres finalmente olhada por ti.
+
+[long pause]
+
+Esta semana, faz uma experiência.
+
+Quando passares pelo espelho de manhã, em vez de evitar, para.
+
+Olha para a mulher que está lá.
+
+[pause]
+
+Não com avaliação. Não com correcção.
+
+Apenas com reconhecimento.
+
+[short pause]
+
+Tu estás aí.
+
+Esta é a mulher que sou agora.
+
+[pause]
+
+Diz isto, em silêncio, à mulher do espelho.
+
+Sem dramatizar. Sem celebrar.
+
+Apenas reconhecer.
+
+[long pause]
+
+Este gesto pequeno, repetido todas as manhãs durante algumas semanas, muda algo profundo.
+
+[pause]
+
+A mulher do espelho deixa de ser estranha.
+
+Volta a ser tua.
+
+[short pause]
+
+E tu, ao reconhecê-la, começas a tornar-te capaz de a habitar mais inteiramente.
+
+[pause]
+
+Porque o que é evitado não pode ser habitado.
+
+E o que é olhado, com paciência, pode finalmente tornar-se casa.
+
+[long pause]
+
+Não tens de amar a mulher do espelho.
+
+Tens, apenas, de a olhar.
+
+[pause]
+
+E no olhar, com tempo, ela começa a relaxar.
+
+[short pause]
+
+Como se finalmente, depois de anos a ser evitada, alguém se tivesse sentado perto dela.
+
+E essa alguém és tu.
+
+[pause]
+
+A mulher mais velha, mais cansada, mais real do que tu querias.
+
+E, ao mesmo tempo, a única que efectivamente existe.
+
+[long pause]
+
+Olhar-te de manhã, sem fugir, é dos actos mais simples e mais profundos que podes fazer pela tua paz interior.
+
+[pause]
+
+Não custa dinheiro. Não exige tempo extra.
+
+Pede, apenas, dois segundos de coragem por dia.
+
+[short pause]
+
+Multiplicados por trezentos e sessenta e cinco dias, esses dois segundos transformam uma vida inteira de relação consigo mesma.`,
+      },
+    ],
+  },
 ];
