@@ -20267,4 +20267,459 @@ Mas começar a chegar a ti durante o dia.`,
       },
     ],
   },
+  {
+    id: "curso-a-fome-m2",
+    titulo: "Curso A Fome — Módulo 2 (Aulas A, B, C)",
+    descricao: "Comer Escondida.",
+    scripts: [
+      {
+        id: "a-fome-m2a",
+        titulo: "M2.A — A comida que comes sem testemunhas",
+        curso: "a-fome",
+        texto: `Há comida que tu só comes quando ninguém vê.
+
+[pause]
+
+Não é a comida que pões no prato à mesa.
+
+Não é a que registas mentalmente como refeição.
+
+[long pause]
+
+É outra.
+
+[pause]
+
+É o pedaço de pão arrancado da broa quando vais buscar a água.
+
+É a colher de manteiga de amendoim directamente do frasco, em pé, com a porta do armário aberta.
+
+É o bocado de chocolate partido no escuro do frigorífico aberto às onze da noite.
+
+[long pause]
+
+São pequenas. Cada uma, sozinha, parece insignificante.
+
+[pause]
+
+Mas tu sabes que existem.
+
+E sabes que, se alguém te perguntasse o que comeste hoje, não as nomearias.
+
+[short pause]
+
+Porque elas existem precisamente fora do registo.
+
+Existem na zona da casa onde a tua relação com a comida não é vista, não é contada, não é avaliada.
+
+[long pause]
+
+Esta zona tem nome.
+
+Chama-se comer escondida.
+
+[pause]
+
+E quase todas as mulheres que vivem com vigilância sobre o corpo conhecem-na intimamente.
+
+[long pause]
+
+A comida escondida não acontece por fome.
+
+Acontece porque há um pedaço de ti que tem fome — emocional, real, antiga — e que aprendeu que esta fome não pode aparecer à mesa.
+
+[pause]
+
+À mesa, tu comes a porção razoável. A salada. A peça de fruta como sobremesa.
+
+[short pause]
+
+Em frente aos outros, a tua relação com a comida tem que demonstrar moderação.
+
+[long pause]
+
+E então a parte de ti que tem fome a sério — ou desejo a sério, ou cansaço a sério — vai buscar o pedaço escondido.
+
+[pause]
+
+Vai buscar quando ninguém está a ver.
+
+Porque foi a única forma que encontrou de comer sem ser julgada.
+
+[long pause]
+
+E aqui está a inversão importante.
+
+[pause]
+
+A maioria das pessoas pensa que comer escondida é problema de descontrolo.
+
+Não é.
+
+[short pause]
+
+Comer escondida é problema de exposição.
+
+[pause]
+
+É problema de não te sentires com licença para comer aquilo, naquela quantidade, à frente de outras pessoas.
+
+E então comes igual.
+
+Mas comes em segredo.
+
+[long pause]
+
+A comida fica a mesma. O peso, igual. Mas o teu sistema nervoso fica em estado de vigilância silenciosa permanente.
+
+[pause]
+
+Porque uma parte de ti está sempre a esconder. Sempre a calcular se alguém vai entrar na cozinha. Sempre a apagar o vestígio.
+
+[short pause]
+
+Esta vigilância cansa mais do que a comida engorda.
+
+[long pause]
+
+Esta semana, faz uma coisa muito simples.
+
+[pause]
+
+Numa folha, escreve uma lista honesta. Sem ninguém ver, podes — esta lista é só para ti.
+
+[short pause]
+
+Escreve o que comeste hoje sem ter contado a ninguém. Sem ter pousado no prato. Sem ter chamado refeição.
+
+[pause]
+
+O bocado de queijo do frigorífico. A colher de doce. O biscoito que partiste a meio para te convenceres de que era metade.
+
+[long pause]
+
+Não estás a fazer isto para te julgares.
+
+Estás a fazer isto para teres dados.
+
+[pause]
+
+Para começares a saber, com precisão, quanto da tua relação com a comida acontece em segredo.
+
+[short pause]
+
+Quase todas ficam em choque com o tamanho da lista.
+
+[pause]
+
+Não porque seja muita comida.
+
+Mas porque é muita escondida.
+
+[long pause]
+
+E quando consegues ver — em letra escrita, na tua própria mão — quanto comes em segredo, alguma coisa começa a mudar.
+
+[pause]
+
+Não a quantidade.
+
+A vergonha.
+
+[short pause]
+
+A comida deixa de ser inimigo silencioso.
+
+Passa a ser informação.`,
+      },
+      {
+        id: "a-fome-m2b",
+        titulo: "M2.B — O pedaço que deixas no prato",
+        curso: "a-fome",
+        texto: `Há um gesto que tu fazes em restaurantes que aprendeste sem ninguém te ensinar.
+
+[pause]
+
+Deixas um pedaço no prato.
+
+[long pause]
+
+Não porque estás cheia.
+
+Não porque a comida não estava boa.
+
+Não porque, fisicamente, o teu corpo já não conseguia.
+
+[pause]
+
+Deixas porque limpar o prato em frente aos outros — ou pior, em frente a outro homem, ou em frente a uma sogra, ou em frente a uma colega magra — parece falta de educação. Falta de moderação. Falta de feminilidade aprendida.
+
+[long pause]
+
+Aprendeste em algum momento que a mulher com fome a sério é mulher pouco feminina.
+
+[pause]
+
+Aprendeste que pôr o garfo a raspar o prato é coisa de homem. De pessoa de campo. De pessoa sem formação.
+
+[short pause]
+
+A mulher distinta deixa qualquer coisa.
+
+A mulher delicada come o suficiente para parecer educada, não o suficiente para ficar saciada.
+
+[long pause]
+
+E então tu ficas com fome.
+
+[pause]
+
+Sais do restaurante. Conversas mais um bocado. Vais para casa.
+
+E em casa, sozinha, abres o frigorífico.
+
+[short pause]
+
+E comes mais.
+
+[pause]
+
+Mas agora, em segredo. Como vimos no áudio anterior.
+
+[long pause]
+
+Repara na coreografia.
+
+[pause]
+
+Em público — restrição visível.
+
+Em privado — compensação invisível.
+
+[short pause]
+
+A quantidade total que comes pode até ser igual à quantidade que comerias se simplesmente acabasses o prato no restaurante.
+
+Mas a tua cabeça vive em ginástica permanente.
+
+[long pause]
+
+E a tua relação com a comida fica partida em dois pedaços.
+
+[pause]
+
+O pedaço performativo — o que mostras.
+
+O pedaço real — o que comes mesmo.
+
+[short pause]
+
+E os dois nunca coincidem.
+
+[long pause]
+
+Esta semana, quando saíres a comer fora — pode ser jantar com alguém, almoço de trabalho, café com bolo —, faz uma experiência.
+
+[pause]
+
+Se acabares o prato sem teres ficado cheia, acaba-o.
+
+[short pause]
+
+Sem deixar pedaço educado.
+
+Sem dizer "ai, já estou cheia" antes de estares.
+
+Sem rejeitar a sobremesa que querias só porque a outra mulher à mesa também rejeitou.
+
+[long pause]
+
+Não te peço que faças isto sempre.
+
+Peço que faças uma vez. Numa refeição.
+
+[pause]
+
+Para reparares no que acontece dentro de ti enquanto comes a porção real.
+
+[short pause]
+
+Vai aparecer desconforto.
+
+Vai aparecer a sensação de que estás a ser observada — mesmo que ninguém esteja a olhar.
+
+Vai aparecer a vontade de pedir desculpa por teres fome.
+
+[long pause]
+
+Repara nisto sem fugires.
+
+[pause]
+
+Porque o que estás a sentir é a vergonha aprendida há décadas a operar em tempo real.
+
+[short pause]
+
+E a única forma de a desinstalar é deixá-la aparecer e não fazer nada para a esconder.
+
+[long pause]
+
+Comer a porção real, em público, uma vez, é gesto político pequeno.
+
+[pause]
+
+Mas é dos mais subversivos que uma mulher pode fazer.
+
+[short pause]
+
+Porque é declaração silenciosa de que o teu corpo tem fome legítima.
+
+E que essa fome merece ser saciada à luz, e não em segredo.`,
+      },
+      {
+        id: "a-fome-m2c",
+        titulo: "M2.C — A vergonha de ter fome",
+        curso: "a-fome",
+        texto: `Há mulheres que pedem repetição num restaurante.
+
+[pause]
+
+Não muitas.
+
+[long pause]
+
+A maioria, mesmo com fome, não pede.
+
+[pause]
+
+Porque pedir mais comida é, em algum lugar profundo da educação que recebeste, admissão pública de coisa.
+
+[short pause]
+
+De quê, exactamente, é difícil de nomear.
+
+De gula. De falta de controlo. De ter um corpo que pede mais do que o socialmente esperado.
+
+[long pause]
+
+A fome, em mulher adulta, traz vergonha.
+
+[pause]
+
+Não a fome de quem passou fome a sério.
+
+A outra. A fome doméstica. A fome de quem comeu uma porção razoável e ainda quer mais.
+
+[short pause]
+
+Esta fome é tratada, na maioria dos contextos, como fraqueza moral.
+
+[long pause]
+
+Repara que, num grupo misto à mesa, os homens podem pedir segunda dose sem que ninguém comente.
+
+Os homens podem dizer "esta sopa estava tão boa, vou repetir" e ninguém pisca o olho.
+
+[pause]
+
+Uma mulher que diz a mesma frase — sobretudo se já tem algum peso a mais — sente, instantaneamente, o silêncio à mesa.
+
+[short pause]
+
+O silêncio das outras mulheres, que estão a calcular mentalmente quanto é que ela vai comer.
+
+O silêncio de algum homem que está a registar que ela tem apetite "para mulher".
+
+[long pause]
+
+Tu sabes deste silêncio.
+
+[pause]
+
+Conheces o calor súbito na cara quando, num jantar, te apeteceu a segunda dose e em vez disso disseste "estava óptimo" e ficaste com fome.
+
+[short pause]
+
+A vergonha de ter fome é uma das coisas mais antigas que carregas.
+
+[long pause]
+
+E é coisa que não se dissolve por argumento racional.
+
+[pause]
+
+Não se dissolve porque sabes intelectualmente que é absurdo.
+
+Dissolve-se por exposição lenta.
+
+[short pause]
+
+Por sentir a vergonha aparecer e — em vez de obedecer — fazer ainda assim o gesto.
+
+[long pause]
+
+Esta semana, escreve numa folha três momentos da tua vida em que tiveste fome a sério e não pediste mais.
+
+[pause]
+
+Pode ser um jantar de família onde repetir parecia mal.
+
+Pode ser uma refeição em casa de alguém onde tinhas medo de gostar demasiado.
+
+Pode ser um almoço de trabalho onde te limitaste à entrada porque era o que as outras mulheres estavam a pedir.
+
+[short pause]
+
+Escreve esses três momentos.
+
+[pause]
+
+Ao lado de cada um, escreve o que sentiste depois — quando, em casa, sozinha, foste compensar.
+
+[long pause]
+
+Provavelmente vais reparar num padrão.
+
+[pause]
+
+Os momentos em que comes menos do que o teu corpo pede em público são quase sempre seguidos de momentos em que comes mais do que o teu corpo pede em privado.
+
+[short pause]
+
+Não é a tua falta de controlo.
+
+É a tua tentativa de equilibrar uma conta que ficou em aberto à mesa.
+
+[long pause]
+
+E aqui está o ponto que poucos cursos de alimentação dizem.
+
+[pause]
+
+A solução para a chamada compulsão nocturna não é mais disciplina à noite.
+
+[short pause]
+
+É menos restrição à mesa.
+
+É deixar-te ter a porção real à frente dos outros.
+
+É admitir que tens fome humana, normal, viva.
+
+[long pause]
+
+A vergonha de ter fome só se dissolve quando começas, em pequenos gestos, a dar-te licença pública de a ter.
+
+[pause]
+
+Não tens que pedir repetição amanhã.
+
+Mas podes começar a notar quantas vezes não pedes só por causa do silêncio dos outros.
+
+[short pause]
+
+E essa atenção, sozinha, já começa a reduzir o tamanho da fome escondida que aparece à noite.`,
+      },
+    ],
+  },
 ];
