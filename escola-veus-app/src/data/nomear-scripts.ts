@@ -18757,4 +18757,371 @@ Mesmo na relação com a tua própria pele.`,
       },
     ],
   },
+  {
+    id: "curso-pele-nua-m6",
+    titulo: "Curso Pele Nua — Módulo 6 (Aulas A, B, C)",
+    descricao: "Olhar-se Outra Vez.",
+    scripts: [
+      {
+        id: "pele-nua-m6a",
+        titulo: "M6.A — O espelho em casa",
+        curso: "pele-nua",
+        texto: `O espelho em tua casa não é objecto neutro.
+
+[pause]
+
+É um dos lugares onde mais decisões se tomam sobre ti — sem que ninguém esteja a olhar.
+
+[long pause]
+
+Pensa, por um momento, em como o tens posicionado.
+
+Onde está. Que luz recebe. Quanto tempo passas em frente dele por dia.
+
+[pause]
+
+A maioria das mulheres tem espelhos em sítios funcionais — casa de banho para arranjar o cabelo, entrada para ajustar a roupa, quarto para vestir-se.
+
+[short pause]
+
+Quase nenhum espelho está colocado para ser olhado com calma.
+
+[pause]
+
+Os funcionais convidam à avaliação rápida.
+
+E tu, em cada interacção, fazes-a sem te aperceberes.
+
+[long pause]
+
+Há, porém, uma forma diferente de relacionar com o espelho.
+
+Como local de reconhecimento — não de avaliação.
+
+[pause]
+
+Esta diferença é mais do que semântica.
+
+[short pause]
+
+A avaliação compara o que vê com um padrão. Reconhecimento apenas regista o que está.
+
+[pause]
+
+Avaliação produz julgamento.
+
+Reconhecimento produz familiaridade.
+
+[long pause]
+
+Esta semana, escolhe um espelho que ainda não tem função clara em tua casa.
+
+Ou move um espelho para um sítio diferente daquele em que está agora.
+
+[pause]
+
+Coloca-o num lugar onde a luz seja suave — não fluorescente, não dura.
+
+Onde tu possas estar dois minutos sem pressa.
+
+[short pause]
+
+Este é o teu novo espelho de reconhecimento.
+
+[pause]
+
+Não para te arranjares.
+
+Para te veres.
+
+[long pause]
+
+Uma vez por semana, vai a esse espelho durante dois minutos.
+
+Sem maquilhagem nova. Sem ajustar a roupa. Sem avaliar.
+
+Apenas estar.
+
+[pause]
+
+Olha para o teu rosto. Para os teus olhos. Para a forma como respiras.
+
+[short pause]
+
+Diz, em silêncio, uma única frase: vejo-te.
+
+[pause]
+
+Não tens de sentir nada de especial.
+
+Não tens de pensar nada de profundo.
+
+Apenas estar perto, dois minutos, sem pressa.
+
+[long pause]
+
+Ao fim de algumas semanas, este ritual mínimo transforma a relação com a tua imagem reflectida.
+
+[pause]
+
+A pessoa do espelho começa a deixar de ser objecto a corrigir.
+
+E começa a ser pessoa a quem tu, finalmente, presta atenção sem propósito.
+
+[short pause]
+
+Esta atenção desinteressada — sem agenda, sem objectivo — é dos presentes mais raros que tu te podes dar.
+
+[pause]
+
+E vem por intermédio de algo tão simples como um espelho colocado de propósito num sítio diferente do habitual.`,
+      },
+      {
+        id: "pele-nua-m6b",
+        titulo: "M6.B — Deixar o corpo ser visto por ti",
+        curso: "pele-nua",
+        texto: `Há uma diferença entre olhar para o corpo e ser olhada por ele.
+
+[pause]
+
+Quase toda a tua vida, tu olhaste o teu corpo.
+
+Avaliando. Comparando. Corrigindo.
+
+[long pause]
+
+Mas em poucas ocasiões deixaste o teu corpo ser olhado por ti — sem que tu fosses a juíza.
+
+[pause]
+
+Esta diferença é subtil mas mudou tudo, em mulheres que a praticam.
+
+[short pause]
+
+Olhar avaliando coloca-te numa posição de exterioridade — como se fosses uma pessoa diferente da que está a olhar.
+
+Ser olhada por ti — sem juízo — coloca-te no mesmo lado que o corpo. Lado da habitação, não do exame.
+
+[long pause]
+
+Esta posição é difícil de assumir, no início.
+
+[pause]
+
+Porque o reflexo de avaliar é tão automático que parece a única forma possível de relação com o corpo.
+
+[short pause]
+
+Mas há outra forma.
+
+[pause]
+
+Uma forma em que tu olhas para uma parte do corpo — uma mão, um pé, o peito, uma perna — e simplesmente reparas no que está.
+
+A textura. A cor. A temperatura.
+
+Sem comparar com nada. Sem comentar nada.
+
+[long pause]
+
+Esta semana, faz uma experiência específica.
+
+Senta-te num momento tranquilo, sozinha.
+
+Escolhe uma parte do teu corpo. Pequena.
+
+Uma mão.
+
+[pause]
+
+Olha para essa mão durante um minuto inteiro.
+
+Sem pensar "está envelhecida" ou "tem manchas" ou "devia ser cuidada melhor".
+
+Apenas olha.
+
+[short pause]
+
+A forma dos dedos. As linhas da palma. As pequenas cicatrizes que ela acumulou.
+
+[pause]
+
+Esta mão fez muita coisa. Tocou pessoas. Escreveu cartas. Cozinhou refeições. Acariciou cabeças.
+
+[short pause]
+
+Está aqui.
+
+[pause]
+
+E tu estás a olhar para ela sem agenda.
+
+Talvez pela primeira vez na vida adulta.
+
+[long pause]
+
+Este olhar — desinteressado, atento, sem juízo — pode parecer pequeno.
+
+[pause]
+
+Mas é, em si mesmo, prática reparadora.
+
+[short pause]
+
+Porque o corpo, durante décadas avaliado, sente a diferença quando finalmente é olhado sem agenda.
+
+[pause]
+
+E começa, lentamente, a relaxar uma defesa antiga.
+
+[long pause]
+
+Repete a experiência com outras partes do corpo, ao longo das semanas seguintes.
+
+Um pé. Uma orelha. Uma cicatriz específica.
+
+[pause]
+
+Cada minuto destes acrescenta-se ao anterior.
+
+E tu vais, devagar, construindo uma relação nova com o teu corpo.
+
+Uma relação onde tu já não és apenas avaliadora.
+
+És habitante.
+
+[short pause]
+
+E o corpo, a sentir habitação em vez de exame, começa a tornar-se mais teu do que alguma vez foi.`,
+      },
+      {
+        id: "pele-nua-m6c",
+        titulo: "M6.C — O acto silencioso de habitar a pele",
+        curso: "pele-nua",
+        texto: `Habitar a pele é acto silencioso.
+
+[pause]
+
+Não tem ritual público. Não tem fotografia. Não tem testemunhas.
+
+[long pause]
+
+Acontece em momentos pequenos, sem narração.
+
+[pause]
+
+A primeira hora da manhã, antes do telefone. Um banho com calma, sem pressa para terminar. Uma caminhada em que tu reparas como o pé pousa no chão.
+
+[short pause]
+
+Em cada um destes momentos, tu estás a habitar a pele.
+
+[pause]
+
+Não estás fora dela, a observá-la. Estás dentro, a senti-la.
+
+[long pause]
+
+A maioria das pessoas modernas habita pouco a pele.
+
+[pause]
+
+Vive na cabeça — em pensamentos, planos, preocupações.
+
+E o corpo torna-se transporte da cabeça, não casa.
+
+[short pause]
+
+Habitar a pele requer redução do tempo passado fora dela.
+
+E aumento do tempo passado dentro.
+
+[long pause]
+
+Esta semana, identifica três momentos diários em que tu, normalmente, estás na cabeça enquanto fazes algo no corpo.
+
+[pause]
+
+A escovar os dentes — em geral, distraída.
+
+A tomar banho — em geral, planeando o resto do dia.
+
+A comer — em geral, sem prestar atenção ao sabor.
+
+[short pause]
+
+Em cada um destes três momentos, esta semana, faz uma coisa nova.
+
+Estar na actividade física que estás a fazer.
+
+[pause]
+
+A escovar — sentir os dentes a serem escovados.
+
+A tomar banho — sentir a água na pele.
+
+A comer — sentir o sabor, a temperatura, a textura.
+
+[short pause]
+
+Não é meditação. É presença simples no corpo.
+
+[pause]
+
+E é, surpreendentemente, difícil.
+
+Porque o cérebro está habituado a viajar para fora destas actividades automáticas.
+
+[long pause]
+
+Aos poucos, com prática, o corpo recupera espaço na tua atenção diária.
+
+[pause]
+
+E tu, lentamente, começas a habitar a pele em vez de a usar.
+
+[short pause]
+
+A diferença é difícil de explicar a quem nunca a sentiu.
+
+[pause]
+
+Mas quem a sente, sabe.
+
+[short pause]
+
+A vida ganha textura. Os pequenos momentos têm peso. O corpo deixa de ser zona de problema e torna-se território onde se acontece.
+
+[long pause]
+
+Habitar a pele não é objectivo a alcançar.
+
+É prática a manter.
+
+[pause]
+
+Como manter uma casa em ordem. Não se faz uma vez. Faz-se um pouco todos os dias.
+
+[short pause]
+
+Mas o resultado, ao longo dos meses, é uma diferença qualitativa profunda na tua vida.
+
+[pause]
+
+Vives com mais corpo presente.
+
+E menos cabeça desconectada.
+
+[long pause]
+
+Esta é, em última análise, a única forma sustentável de te reconciliares com o teu corpo.
+
+[pause]
+
+Não pelo que ele aparenta.
+
+Pelo facto de tu, pela primeira vez em muito tempo, estares finalmente nele.`,
+      },
+    ],
+  },
 ];
