@@ -23844,4 +23844,601 @@ E o que vier a seguir não é transformação prometida.
       },
     ],
   },
+  {
+    id: "curso-a-chama-m1",
+    titulo: "Curso A Chama — Módulo 1 (Aulas A, B, C)",
+    descricao: "A Chama que Apagou.",
+    scripts: [
+      {
+        id: "a-chama-m1a",
+        titulo: "M1.A — A noite em que percebeste que já não tinhas vontade",
+        curso: "a-chama",
+        texto: `Houve uma noite — talvez recente, talvez há anos — em que tu percebeste, sem aviso, que já não tinhas vontade.
+
+[pause]
+
+Não foi conclusão dramática.
+
+Não foi crise.
+
+[long pause]
+
+Foi mais subtil do que isso.
+
+[pause]
+
+Foi um momento em que estavas, talvez na cama, e o teu marido — ou o teu companheiro, ou alguém que te interessava — fez aquele gesto que antes te acendia.
+
+[short pause]
+
+E desta vez, nada se acendeu.
+
+[pause]
+
+Pior — apareceu, em segundo plano, uma sensação de cansaço.
+
+[long pause]
+
+Naquela noite, provavelmente, fingiste alguma coisa.
+
+[pause]
+
+Ou disseste que estavas com sono.
+
+Ou inventaste uma razão pequena.
+
+[short pause]
+
+E adormeceste com uma sensação difusa de que algo importante se tinha desligado em ti.
+
+[pause]
+
+Sem ninguém te ter pedido permissão.
+
+[long pause]
+
+Esta noite — esta noite específica — é uma noite que quase todas as mulheres adultas reconhecem.
+
+[pause]
+
+Algumas situam-na nos trinta e poucos.
+
+Algumas nos quarenta.
+
+Algumas, mais cedo do que esperariam, nos vinte e nove.
+
+[short pause]
+
+Mas todas, em algum ponto, têm essa noite.
+
+[long pause]
+
+A partir dela, alguma coisa muda silenciosamente.
+
+[pause]
+
+A iniciativa começa a vir só dele, ou de outros.
+
+A frequência diminui sem se falar.
+
+E tu, em vez de te perguntares o que se passou, começas a contornar.
+
+[short pause]
+
+Contornar o tema. Contornar a cama, em alguns dias. Contornar o teu próprio corpo nessa zona inteira.
+
+[long pause]
+
+A ausência de desejo torna-se, lentamente, hábito.
+
+[pause]
+
+E o hábito, em poucos meses, parece identidade.
+
+[short pause]
+
+Começas a explicar-te a ti mesma com frases como:
+
+"Eu já não sou pessoa muito sexual."
+
+"Já não tenho idade para isto."
+
+"Está fase de vida — é normal."
+
+[long pause]
+
+Estas frases, quando as dizes em silêncio, dão alguma paz.
+
+[pause]
+
+Porque transformam falta numa característica.
+
+Em vez de te perguntares o que perdeste, decides que era assim que deveria ser.
+
+[short pause]
+
+Mas não era.
+
+[long pause]
+
+A tua chama não se apagou por idade. Não se apagou por fase. Não se apagou por ser mulher adulta.
+
+[pause]
+
+Apagou-se por razões específicas, identificáveis, na maior parte dos casos reversíveis.
+
+[short pause]
+
+Cansaço acumulado de cuidar de toda a gente.
+
+Relação que se foi tornando logística antes de ser intimidade.
+
+Vergonha herdada que nunca foi nomeada.
+
+Corpo que, ao longo dos anos, foi sendo tratado mais como objecto de gestão e menos como casa onde se vive.
+
+[long pause]
+
+Cada uma destas razões é tema deste curso.
+
+[pause]
+
+Cada uma, vista, pode começar a ser desfeita.
+
+[short pause]
+
+Esta semana, vais fazer apenas uma coisa.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"A noite em que percebi que já não tinha vontade."
+
+[long pause]
+
+E escreve, em três ou quatro frases, o que te lembras dessa noite.
+
+[pause]
+
+Quando foi, aproximadamente. Onde estavas. Com quem. O que aconteceu — ou não aconteceu.
+
+[short pause]
+
+E o que sentiste depois.
+
+[pause]
+
+Não tens de elaborar. Não tens de psicanalisar. Não tens de chorar.
+
+[long pause]
+
+Apenas registar, em letra escrita, que essa noite existiu.
+
+[pause]
+
+Porque, na maior parte das mulheres, essa noite nunca foi nomeada para fora.
+
+[short pause]
+
+Vive como segredo silencioso, há anos, sem que ninguém saiba — incluindo, frequentemente, tu própria.
+
+[long pause]
+
+Quando a escreves, ela passa de segredo para informação.
+
+[pause]
+
+E a informação, ao contrário do segredo, pode começar a ser trabalhada.`,
+      },
+      {
+        id: "a-chama-m1b",
+        titulo: "M1.B — Quando o corpo deixou de pedir",
+        curso: "a-chama",
+        texto: `O teu corpo, em criança e adolescente, pedia.
+
+[pause]
+
+Pedia coisas. Comida. Movimento. Toque. Atenção. Descanso.
+
+E pedia em alto. Sem filtro. Sem cálculo.
+
+[long pause]
+
+Em algum momento da tua vida adulta, o teu corpo deixou de pedir.
+
+[pause]
+
+Não pediu mais comida quando tinhas fome — porque aprendeste a controlar.
+
+Não pediu mais descanso quando estavas exausta — porque havia coisas a fazer.
+
+Não pediu toque quando tinhas falta — porque ninguém te tinha ensinado que isso era um pedido legítimo.
+
+E, em algum momento subtil, deixou de pedir desejo.
+
+[short pause]
+
+Deixou de pedir porque, ao longo dos anos, aprendeu que pedir não levava a nada.
+
+[long pause]
+
+O corpo é uma criatura inteligente.
+
+[pause]
+
+Quando faz pedidos durante anos e não recebe resposta, pára de fazer.
+
+Não por desistência.
+
+Por economia de energia.
+
+[short pause]
+
+E quando o corpo pára de pedir, a tua experiência subjectiva do corpo muda.
+
+[pause]
+
+Deixas de notar que tens fome até estares com tonturas.
+
+Deixas de notar que estás cansada até cairs com gripe.
+
+Deixas de notar que tens vontade de toque até teres uma crise relacional.
+
+E deixas de notar que tens desejo — porque o desejo, sem provocação externa, deixa simplesmente de aparecer.
+
+[long pause]
+
+Isto é diferente de não ter desejo.
+
+[pause]
+
+Isto é o desejo a estar lá, em ti, mas a não ter via de saída para a tua consciência.
+
+[short pause]
+
+A diferença parece subtil. Mas é gigante.
+
+[long pause]
+
+Mulheres que fizeram trabalho terapêutico ou corporal de longa duração descobrem, com frequência, que o desejo nunca tinha desaparecido.
+
+[pause]
+
+Tinha apenas deixado de chegar à superfície.
+
+E ao reaparecer — devagar, em pequenas ondas — provoca surpresa.
+
+[short pause]
+
+"Achei que isto já não me acontecia."
+
+[long pause]
+
+A primeira parte do trabalho não é fazer aparecer desejo.
+
+[pause]
+
+É começar a notar os sinais pequenos que o teu corpo ainda dá — e que tu, há muito tempo, não estás a ouvir.
+
+[short pause]
+
+Estes sinais são subtis.
+
+[pause]
+
+Uma vontade momentânea de te tocares quando vais ao banho.
+
+Um momento de atracção pequena por uma pessoa na rua.
+
+Uma sensação de calor passageira ao ler uma cena num livro.
+
+Um sonho em que reapareceu uma sensação que já não tinhas há meses.
+
+[long pause]
+
+Em mulheres com desejo "apagado", estes sinais ainda aparecem.
+
+[pause]
+
+Mas são tão pequenos, tão breves, que tu os descartas antes de os reconheceres.
+
+Acontecem em dois segundos. Não são dramáticos. Não interrompem o teu dia.
+
+[short pause]
+
+E tu, sem reparar, não os contas.
+
+[long pause]
+
+Esta semana, vais começar a contar.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Sinais pequenos do meu desejo, esta semana."
+
+[short pause]
+
+E ao longo de sete dias, sempre que reparares num desses sinais — por mais minúsculo que seja — escreves uma linha.
+
+[pause]
+
+Não tens de ser literata.
+
+[short pause]
+
+Pode ser:
+
+"Quarta-feira de manhã, debaixo do chuveiro, senti vontade súbita de me tocar. Não fiz, tinha de sair. Mas registei."
+
+"Sexta à tarde, na padaria, reparei nos antebraços do homem que servia. Senti calor pequeno. Saí."
+
+"Sábado à noite, ao ler um livro, uma cena fez-me parar. Reli duas vezes."
+
+[long pause]
+
+Não interpretes os sinais.
+
+Não os ajas.
+
+Apenas regista.
+
+[pause]
+
+Ao fim da semana, lê a tua lista.
+
+[short pause]
+
+A maior parte das mulheres que faz isto, pela primeira vez, descobre uma coisa.
+
+[pause]
+
+Os sinais existem em maior número do que pareciam.
+
+[long pause]
+
+O desejo não está apagado.
+
+[pause]
+
+Está apenas a operar abaixo do nível em que tu o costumavas reconhecer.
+
+[short pause]
+
+E reconhecê-lo — em letra escrita, à tua frente — é o primeiro acto de o reanimar.`,
+      },
+      {
+        id: "a-chama-m1c",
+        titulo: "M1.C — O dia em que paraste de notar o teu próprio desejo",
+        curso: "a-chama",
+        texto: `Houve um dia em que tu paraste de notar o teu próprio desejo.
+
+[pause]
+
+Provavelmente não te lembras desse dia.
+
+Os dias importantes raramente vêm com aviso.
+
+[long pause]
+
+Foi, provavelmente, um dia banal.
+
+[pause]
+
+Estavas a fazer várias coisas. A trabalhar. A cuidar de alguém. A organizar uma casa. A resolver um problema que outra pessoa não te quis resolver.
+
+[short pause]
+
+E nesse dia, o teu desejo apareceu por momentos — uma onda pequena, banal, normal.
+
+E tu, sem pensar, descartaste.
+
+[pause]
+
+"Agora não."
+
+"Depois."
+
+"Não é altura."
+
+[long pause]
+
+Esse "depois" nunca chegou.
+
+[pause]
+
+E o teu desejo, sem feedback, foi aprendendo que não era prioridade.
+
+[short pause]
+
+Não que fosse mau.
+
+Apenas que vinha sempre depois das outras coisas.
+
+[pause]
+
+E como as outras coisas nunca acabavam, ele nunca chegava à frente da fila.
+
+[long pause]
+
+Esta hierarquia silenciosa instala-se em quase todas as mulheres adultas.
+
+[pause]
+
+O desejo dos outros vem primeiro.
+
+A produtividade vem primeiro.
+
+A casa vem primeiro.
+
+O cuidado dos filhos vem primeiro.
+
+O cansaço dos colegas vem primeiro.
+
+O teu desejo, em algum lugar da lista, vem por último.
+
+[short pause]
+
+Ou, mais frequentemente, não vem na lista.
+
+[long pause]
+
+Esta posição não é por culpa tua.
+
+[pause]
+
+Foi-te ensinada.
+
+[short pause]
+
+A mulher boa, na cultura em que tu cresceste, é a que cuida dos outros antes de cuidar de si.
+
+A mulher boa não interrompe o que está a fazer pelos outros para se ouvir a si.
+
+A mulher boa adia o seu prazer indefinidamente em nome de um futuro hipotético em que finalmente vai ter tempo.
+
+[pause]
+
+Mas o futuro hipotético nunca chega.
+
+[short pause]
+
+E o desejo, sem expressão, atrofia.
+
+[long pause]
+
+Atrofia da mesma forma que um músculo que não é usado.
+
+Não desaparece — está lá, biologicamente.
+
+Mas fica fraco. Lento. Difícil de activar.
+
+[pause]
+
+E quando, em algum momento, tu decides que queres voltar a desejar, o músculo não responde imediatamente.
+
+[short pause]
+
+Precisa de tempo.
+
+De treino.
+
+De atenção repetida.
+
+[long pause]
+
+Esta semana, vais começar uma prática pequena.
+
+[pause]
+
+Uma única vez por dia, durante sete dias, vais fazer uma coisa.
+
+[short pause]
+
+Pára o que estiveres a fazer.
+
+Por trinta segundos.
+
+Em qualquer ponto do dia que escolheres.
+
+[pause]
+
+E pergunta — não em voz alta, em silêncio — uma única coisa.
+
+[long pause]
+
+"Neste momento, o que o meu corpo gostaria?"
+
+[pause]
+
+Não o que devia.
+
+Não o que era razoável.
+
+Não o que tu vais fazer.
+
+Apenas o que ele gostaria.
+
+[short pause]
+
+A primeira vez, vai aparecer "nada".
+
+[pause]
+
+Não acredites no "nada" imediatamente.
+
+[short pause]
+
+Espera mais cinco segundos.
+
+[long pause]
+
+Em geral, depois desses cinco segundos, aparece alguma coisa pequena.
+
+[pause]
+
+"Gostaria de me deitar dois minutos."
+
+"Gostaria de comer aquele bocado de chocolate que está na gaveta."
+
+"Gostaria de dizer não a esta reunião."
+
+"Gostaria de te tocar a mim mesma esta noite."
+
+[short pause]
+
+Algumas destas vontades vais ignorar.
+
+Algumas vais cumprir.
+
+[pause]
+
+Mas, à noite, antes de dormir, escreve numa folha:
+
+"Hoje, ao perguntar ao corpo, ele respondeu —"
+
+E completa com a frase, ou com algumas frases.
+
+[long pause]
+
+Sete dias. Sete entradas.
+
+[pause]
+
+Ao fim da semana, lê.
+
+[short pause]
+
+E vais ver, em letra escrita, uma coisa que te vai surpreender.
+
+[pause]
+
+O teu corpo tem opinião sobre tudo.
+
+A toda a hora.
+
+Em todas as pequenas situações do dia.
+
+[long pause]
+
+E nunca tinhas perguntado.
+
+[pause]
+
+Há décadas.
+
+[short pause]
+
+A reanimação do desejo começa, na maior parte dos casos, não na cama.
+
+Começa em pequenas perguntas a ti, ao longo do dia, sobre o que o teu corpo gostaria.
+
+[pause]
+
+E na decisão, lentamente repetida, de começar a contar com a resposta — em vez de a continuar a descartar.`,
+      },
+    ],
+  },
 ];
