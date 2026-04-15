@@ -24441,4 +24441,533 @@ E na decisão, lentamente repetida, de começar a contar com a resposta — em v
       },
     ],
   },
+  {
+    id: "curso-a-chama-m2",
+    titulo: "Curso A Chama — Módulo 2 (Aulas A, B, C)",
+    descricao: "O Que te Disseram Sobre o Desejo.",
+    scripts: [
+      {
+        id: "a-chama-m2a",
+        titulo: "M2.A — A primeira frase que ouviste sobre desejo",
+        curso: "a-chama",
+        texto: `Tenta lembrar-te da primeira frase que ouviste sobre desejo, sobre sexo, sobre o teu próprio corpo nessa zona.
+
+[pause]
+
+Não a primeira aula de educação sexual.
+
+A primeira frase casual, dita em casa, num jantar de família, num pátio de escola.
+
+[long pause]
+
+Provavelmente foi cedo.
+
+[pause]
+
+Provavelmente foi entre os oito e os doze anos.
+
+[short pause]
+
+E, em quase todos os casos, foi uma frase com peso negativo.
+
+[long pause]
+
+Talvez tenha sido a tua mãe a baixar a voz quando tu entraste numa conversa entre mulheres.
+
+[pause]
+
+Talvez tenha sido um adulto a comentar uma cena de televisão com palavras como "isto não se vê" ou "isto é vergonha".
+
+Talvez tenha sido uma frase entre raparigas no recreio sobre uma colega que se desenvolveu cedo.
+
+Talvez tenha sido um padre, um professor, uma vizinha, a fazer alusão a "raparigas que se respeitam" e "raparigas que não se respeitam".
+
+[short pause]
+
+A frase específica era diferente em cada casa.
+
+A função era a mesma.
+
+[pause]
+
+Instalar em ti, antes de teres puberdade sequer, uma associação:
+
+[short pause]
+
+Desejo, em mulher, é tema que se trata em silêncio. Em vergonha. Com cuidado para não chamar a atenção.
+
+[long pause]
+
+Esta primeira frase entrou em ti como verdade incontestável.
+
+[pause]
+
+Tu não tinhas, aos dez anos, ferramentas para a contestar.
+
+[short pause]
+
+E ela ficou. A operar em silêncio.
+
+[pause]
+
+Em adulta, quando reparas que sentes desejo e imediatamente te julgas, é essa frase a operar.
+
+Quando te tocas a ti mesma e sentes culpa que não tem causa lógica, é essa frase.
+
+Quando hesitas em pedir o que te apetece à pessoa com quem estás, é essa frase.
+
+[long pause]
+
+A frase tem trinta, quarenta anos.
+
+[pause]
+
+E continua a dirigir, em ti adulta, a relação com o teu próprio prazer.
+
+[short pause]
+
+Sem nunca ter sido revista.
+
+[long pause]
+
+Esta semana, vais fazer uma escavação pessoal.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Frases que ouvi em criança e adolescente sobre sexo, desejo, e corpo de mulher."
+
+[short pause]
+
+E vai escrevendo, à medida que te lembras.
+
+[pause]
+
+Não tens de lembrar tudo.
+
+Escreve cinco a oito frases.
+
+[long pause]
+
+Pode ser:
+
+"Mulher que se dá com facilidade não vale nada."
+
+"Aquela rapariga é fresca."
+
+"Não andes assim na rua que os homens olham."
+
+"Mulheres não falam dessas coisas."
+
+"Casa-te primeiro, esse assunto resolve-se depois."
+
+"Isso é coisa que se faz, não se diz."
+
+"Olha como estás vestida, queres que pensem o quê?"
+
+[short pause]
+
+Ao lado de cada frase, escreve dois dados:
+
+[pause]
+
+Quem disse — pelo menos a quem é que aquela frase soa, na tua cabeça.
+
+E que idade tu tinhas, aproximadamente, quando a ouviste pela primeira vez.
+
+[long pause]
+
+Quando acabares, lê.
+
+[pause]
+
+E faz uma pergunta a seguir, escrita noutra folha:
+
+"Quais destas frases ainda dirigem, hoje, a minha relação com o meu próprio prazer?"
+
+[short pause]
+
+Vais reconhecer pelo menos duas ou três.
+
+[pause]
+
+São as que aparecem em ti, sem aviso, em momentos específicos.
+
+[long pause]
+
+Quando estás na cama com alguém e, em vez de te entregares, ficas em segundo plano a calcular como pareces.
+
+Quando te tocas a ti mesma e, em vez de prazer, aparece uma vergonha pequena que te faz parar antes de tempo.
+
+Quando uma vontade aparece em ti durante o dia e, sem pensar, a calas.
+
+[short pause]
+
+Em cada um desses momentos, há uma frase antiga a operar.
+
+[pause]
+
+E enquanto a frase operar invisivelmente, vai continuar a dirigir.
+
+[short pause]
+
+Quando passa a operar visivelmente — em letra escrita, atribuída a uma idade e a uma voz — começa a perder força.
+
+[long pause]
+
+Não desaparece imediatamente.
+
+[pause]
+
+Mas começas a poder dizer, em silêncio, na tua cabeça:
+
+"Esta frase não é minha. Foi-me dada. E eu, em adulta, não tenho de continuar a obedecer a uma frase que aprendi aos dez anos."
+
+[short pause]
+
+Esta única consciência, repetida, é uma das ferramentas mais profundas para começares a recuperar o desejo que essa frase te ajudou a calar.`,
+      },
+      {
+        id: "a-chama-m2b",
+        titulo: "M2.B — A diferença entre o que aprendeste e o que sentes",
+        curso: "a-chama",
+        texto: `Há uma distância entre o que tu aprendeste sobre desejo e o que tu, no teu corpo, realmente sentes.
+
+[pause]
+
+Esta distância, na maior parte das mulheres adultas, é enorme.
+
+[long pause]
+
+E a maior parte das mulheres não se apercebe dela.
+
+[pause]
+
+Porque vive, há décadas, no campo do que aprendeu — confundindo-o com o que sente.
+
+[short pause]
+
+Se tu aprendeste que mulher boa não tem fantasias, vais achar, em adulta, que as tuas fantasias raras devem ser problema teu.
+
+Se tu aprendeste que sexo serve para dar prazer ao homem, vais achar que o teu prazer é secundário — mesmo quando o teu corpo te diz que precisa de algo diferente.
+
+Se tu aprendeste que orgasmo na mulher é difícil, complicado, requer paciência do parceiro, vais aceitar passivamente situações em que ele não acontece, em vez de te perguntares o que faltou.
+
+[pause]
+
+Cada uma destas crenças aprendidas substituiu o teu sentir.
+
+[long pause]
+
+E o sentir, em ti, foi ficando enterrado.
+
+[pause]
+
+Não morto. Enterrado.
+
+[short pause]
+
+À espera do dia em que tu, finalmente, perguntes ao corpo — e não à educação que recebeste — o que ele quer mesmo.
+
+[long pause]
+
+Esta semana, vais fazer um exercício que separa estas duas coisas.
+
+[pause]
+
+Numa folha, faz duas colunas.
+
+[short pause]
+
+Em cima da primeira escreve: "O que aprendi que devia querer."
+
+Em cima da segunda escreve: "O que o meu corpo, se for honesta, pede."
+
+[pause]
+
+Na primeira coluna, escreve cinco a sete frases.
+
+[long pause]
+
+Pode ser:
+
+"Sexo deve acontecer pelo menos uma vez por semana."
+
+"Mulher boa quer fazer sexo com o seu marido."
+
+"Posições novas demonstram criatividade."
+
+"Tem de haver penetração."
+
+"Tem de haver orgasmo."
+
+"Devo querer mais do que quero."
+
+[short pause]
+
+Agora a segunda coluna.
+
+[pause]
+
+E aqui pede honestidade que pode ser desconfortável.
+
+[short pause]
+
+O que é que o teu corpo, se ninguém estivesse a julgar, pede mesmo?
+
+[long pause]
+
+Pode ser:
+
+"Quero ser tocada de uma forma específica que nunca pedi."
+
+"Quero ter uma noite por semana sem ninguém me tocar de todo, só para descansar."
+
+"Quero sexo menos vezes do que tenho — mas com mais presença."
+
+"Quero ser olhada, antes de ser tocada."
+
+"Quero ser eu a ter iniciativa, mas tenho medo de parecer ridícula."
+
+"Quero, às vezes, sexo intenso e rápido. Outras vezes, lento e quase preguiçoso."
+
+"Quero conversar primeiro. Sem pressa para chegar à cama."
+
+[short pause]
+
+Estas duas colunas, lado a lado, geralmente não coincidem.
+
+[pause]
+
+Há sobreposição, mas há mais discrepância do que sobreposição.
+
+[long pause]
+
+Quando tu vês isto desenhado em letra escrita, alguma coisa muda.
+
+[pause]
+
+A distância entre o aprendido e o sentido, que era invisível, fica visível.
+
+[short pause]
+
+E a partir do momento em que está visível, podes começar a escolher.
+
+[pause]
+
+Não tens de mudar tudo de uma vez.
+
+Não tens de comunicar tudo ao teu parceiro amanhã.
+
+[long pause]
+
+Mas podes, internamente, começar a dar mais peso à segunda coluna do que à primeira.
+
+[pause]
+
+E em pequenos momentos, podes começar a agir conforme a segunda coluna, em vez da primeira.
+
+[short pause]
+
+Recusar uma noite porque o teu corpo pede descanso, em vez de obedecer ao calendário implícito da relação.
+
+Pedir, pela primeira vez, uma forma de toque específica que nunca tinhas verbalizado.
+
+Iniciar, num dia em que te apetece, sem esperar que ele inicie primeiro.
+
+[long pause]
+
+Cada vez que escolhes a segunda coluna em detrimento da primeira, estás a fazer uma coisa específica.
+
+[pause]
+
+Estás a devolver autoridade ao teu corpo sobre o teu desejo.
+
+[short pause]
+
+E o desejo, com tempo, recupera vivacidade quando deixa de ser dirigido por crenças aprendidas e passa a ser dirigido por sinais corporais reais.`,
+      },
+      {
+        id: "a-chama-m2c",
+        titulo: "M2.C — A liberdade que nunca te disseram que tinhas",
+        curso: "a-chama",
+        texto: `Há uma liberdade que tu, provavelmente, nunca soubeste que tinhas.
+
+[pause]
+
+A liberdade de não querer.
+
+[long pause]
+
+Em quase toda a literatura, em quase todos os filmes, em quase todos os manuais sobre sexualidade feminina, o trabalho proposto é o mesmo.
+
+[pause]
+
+Como ter mais desejo.
+
+Como reanimar o desejo.
+
+Como manter o desejo na relação longa.
+
+[short pause]
+
+A pressuposição sempre é: o desejo é coisa boa, tu deves querer mais, e se queres menos do que devias, há algo a corrigir.
+
+[long pause]
+
+Esta pressuposição é, em si, prisão.
+
+[pause]
+
+Porque te coloca, mais uma vez, numa posição onde o teu corpo está sempre em défice em relação a um padrão exterior.
+
+[short pause]
+
+Antigamente, o défice era ter desejo demais — mulher boa tinha pouco.
+
+Hoje, o défice é ter desejo de menos — mulher moderna deve ser sexual, livre, activa.
+
+[pause]
+
+Os padrões inverteram-se.
+
+A posição da mulher — sempre em défice — manteve-se.
+
+[long pause]
+
+A liberdade real, neste tema, não é ter mais desejo.
+
+[pause]
+
+É ter o desejo que tens. Sem comparação.
+
+[short pause]
+
+Pode ser muito.
+
+Pode ser pouco.
+
+Pode oscilar ao longo do mês, do ano, da década.
+
+[pause]
+
+Pode estar dormente durante uma fase de criação intensa, de cuidado de criança pequena, de luto.
+
+Pode estar especialmente vivo numa fase de viagem, de novidade, de mudança.
+
+[long pause]
+
+Tudo isto é normal.
+
+[pause]
+
+Tudo isto é parte da vida real de uma mulher real.
+
+[short pause]
+
+E a tentativa de te encaixares num padrão constante de desejo — alto e disponível — é, em si, fonte de muito do mal-estar que tu sentes em relação a esta zona da tua vida.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de libertação.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Permissão escrita."
+
+[short pause]
+
+E escreve, a seguir, em letra grande:
+
+"Eu, esta semana, dou-me permissão para não querer."
+
+[pause]
+
+E continua:
+
+"Permissão para ter dias em que o meu corpo não pede.
+
+Permissão para recusar sexo sem ter de explicar.
+
+Permissão para não fingir entusiasmo.
+
+Permissão para descobrir que, em algumas semanas, o que o meu corpo pede é descanso, e não actividade."
+
+[long pause]
+
+Assina a folha.
+
+Põe a data.
+
+[pause]
+
+Pode parecer ridículo. Pode parecer infantil. Pode parecer demasiado simbólico.
+
+[short pause]
+
+Não é.
+
+[pause]
+
+A maior parte das mulheres adultas nunca, na vida inteira, deu a si mesma esta permissão por escrito.
+
+[long pause]
+
+Vivem com pressão silenciosa para querer.
+
+E essa pressão é, paradoxalmente, uma das coisas que mais mata o desejo real.
+
+[pause]
+
+Porque o desejo, em mulher, tem uma característica específica.
+
+[short pause]
+
+Não responde bem a obrigação.
+
+[pause]
+
+Floresce em ausência de pressão.
+
+E murcha, quase imediatamente, em presença dela.
+
+[long pause]
+
+Quando tu te dás permissão escrita para não querer, retiras a pressão.
+
+[pause]
+
+E o paradoxo é o seguinte.
+
+[short pause]
+
+Sem pressão, o desejo, em geral, começa a aparecer outra vez.
+
+[pause]
+
+Não imediatamente. Não dramaticamente. Não sempre.
+
+[short pause]
+
+Mas começa a aparecer.
+
+[long pause]
+
+Porque, sem ter de cumprir um padrão exterior, ele finalmente tem espaço para se manifestar conforme a tua biologia real, a tua fase de vida real, o teu cansaço real, e os teus interesses reais.
+
+[pause]
+
+E é nesse desejo — vivo porque livre — que a chama se acende.
+
+[short pause]
+
+Não no desejo prescrito.
+
+No desejo permitido.`,
+      },
+    ],
+  },
 ];
