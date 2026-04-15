@@ -15220,4 +15220,439 @@ Mas vais ficar com história suficiente para já não viveres como órfã da tua
       },
     ],
   },
+  {
+    id: "curso-o-silencio-que-grita-m5",
+    titulo: "Curso O Silêncio que Grita — Módulo 5 (Aulas A, B, C)",
+    descricao: "O Silêncio na Tua Vida Adulta. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "o-silencio-que-grita-m5a",
+        titulo: "M5.A — O que continuas a não dizer",
+        curso: "o-silencio-que-grita",
+        texto: `Há uma frase que tu, em adulta, ainda não disseste.
+
+[pause]
+
+A alguém específico. Sobre algo específico.
+
+E que continua a pesar exactamente porque continua por dizer.
+
+[long pause]
+
+Pode ser uma frase a um pai, a uma mãe, a um irmão, a um parceiro, a uma amiga antiga.
+
+Pode ser sobre uma situação concreta — algo que aconteceu há anos.
+
+Ou sobre uma sensação acumulada — algo que se foi formando ao longo do tempo.
+
+[pause]
+
+Tu sabes qual é a frase.
+
+[short pause]
+
+Mesmo agora, ao ouvires isto, ela apareceu na tua cabeça com clareza.
+
+[long pause]
+
+E há uma parte de ti que tem desculpas há anos.
+
+"Não vale a pena. Não muda nada."
+
+"Vai magoar a outra pessoa."
+
+"Vou parecer dramática."
+
+"Já passou tanto tempo."
+
+[pause]
+
+Estas desculpas têm uma parte de verdade.
+
+Talvez a frase, dita agora, não mude completamente a relação.
+
+Talvez magoe.
+
+[short pause]
+
+Mas a verdade que as desculpas escondem é outra.
+
+[pause]
+
+A frase não dita continua a operar dentro de ti.
+
+E o custo de não a dizer é, muitas vezes, maior do que o custo de a dizer.
+
+[long pause]
+
+O custo de não dizer aparece em sítios subtis.
+
+[pause]
+
+Tensão no corpo quando vês a pessoa.
+
+Sonhos repetitivos com o tema.
+
+Pensamentos involuntários sobre a frase em momentos calmos do dia.
+
+Frustração que te aparece sem razão aparente nessa relação.
+
+[short pause]
+
+Tudo isto é o silêncio a cobrar.
+
+[pause]
+
+Em silêncio. Mas continuamente.
+
+[long pause]
+
+A decisão de dizer ou não dizer é tua e só tua.
+
+[pause]
+
+Mas a decisão deve ser feita com consciência do custo de cada via.
+
+Não com consciência só do custo de dizer.
+
+[short pause]
+
+A maioria das pessoas calcula apenas o risco de falar.
+
+Quase nunca calcula o que é, todos os dias, manter o silêncio.
+
+[long pause]
+
+Esta semana, identifica uma frase tua que está há demasiado tempo por dizer.
+
+Escreve-a num caderno.
+
+Escreve, debaixo, duas listas.
+
+[pause]
+
+À esquerda: o que custa não dizer. (Com honestidade.)
+
+À direita: o que poderia custar dizer.
+
+[short pause]
+
+Olha para as duas.
+
+[pause]
+
+A decisão informada exige ver as duas em paralelo.
+
+[short pause]
+
+Não decidas agora.
+
+Apenas vê.
+
+[long pause]
+
+E nas próximas semanas, vais começar a sentir, com mais clareza, o que faz sentido.
+
+[pause]
+
+Algumas frases vão continuar legitimamente caladas.
+
+Outras vão começar a pedir, com força crescente, para sair.
+
+[short pause]
+
+E quando uma delas estiver pronta — a urgência interna vai deixar saber — vais ter capacidade nova para a dizer com cuidado, no momento certo.
+
+[pause]
+
+Não em explosão.
+
+Em conversa preparada, num lugar tranquilo, com a pessoa certa.
+
+[long pause]
+
+E a frase, dita finalmente, vai libertar dentro de ti um espaço que tu não sabias que estava ocupado.
+
+[pause]
+
+Espaço que pode, agora, ser preenchido com outra coisa.`,
+      },
+      {
+        id: "o-silencio-que-grita-m5b",
+        titulo: "M5.B — As relações com silêncios pesados",
+        curso: "o-silencio-que-grita",
+        texto: `Em algumas relações da tua vida adulta, há um silêncio pesado.
+
+[pause]
+
+Não é silêncio de paz.
+
+É silêncio de coisas por dizer que ambos os lados sabem que existem — mas que ninguém quer abrir.
+
+[long pause]
+
+Estas relações funcionam por evitamento.
+
+Há temas que se contornam. Há perguntas que não se fazem. Há respostas que se aceitam mesmo sabendo que são parciais.
+
+[pause]
+
+E tudo isto cria uma forma específica de cumplicidade.
+
+[short pause]
+
+Cumplicidade no silêncio.
+
+Onde os dois lados são, em alguma medida, guardiões de algo que prefeririam não enfrentar.
+
+[long pause]
+
+Estas relações têm vantagem clara.
+
+Não há explosões. Não há crises. A relação dura.
+
+[pause]
+
+Têm também desvantagem profunda.
+
+Não há intimidade real. Não há crescimento. A relação fica num estado intermédio que nunca aprofunda.
+
+[short pause]
+
+Ambos os lados acabam, com o tempo, a sentir uma forma específica de solidão.
+
+[pause]
+
+A solidão de estar acompanhada por alguém que, na verdade, não conhece partes essenciais de ti.
+
+E vice-versa.
+
+[long pause]
+
+Esta solidão é particularmente comum em casamentos longos, em relações com pais, em algumas amizades antigas.
+
+[pause]
+
+Pessoas que estão fisicamente próximas de ti.
+
+E emocionalmente mantidas a uma distância específica.
+
+[short pause]
+
+Por acordo silencioso de não atravessar certas zonas.
+
+[long pause]
+
+Há um momento, na vida adulta, em que muitas mulheres começam a notar este custo.
+
+[pause]
+
+E uma decisão precisa de ser feita.
+
+[short pause]
+
+Continuar como está. Aceitando a relação no seu formato actual, com plena consciência das suas limitações.
+
+Ou tentar, em algum ponto, atravessar uma das zonas evitadas.
+
+[pause]
+
+A segunda opção é arriscada.
+
+Pode aprofundar a relação. Pode também rompê-la.
+
+[short pause]
+
+Não há garantia.
+
+[long pause]
+
+Mas a primeira opção também tem custo.
+
+[pause]
+
+Continuar a aceitar uma relação parcial significa aceitar uma vida em que partes tuas não são vistas pelas pessoas próximas.
+
+E a invisibilidade prolongada, no longo prazo, custa cara.
+
+[long pause]
+
+Esta semana, identifica uma relação tua em que há silêncio pesado.
+
+Não a primeira que te ocorrer. Aquela que continua a aparecer mesmo quando tentas ignorá-la.
+
+[pause]
+
+Pergunta-te: quanto tempo mais consigo continuar nesta relação como está?
+
+[short pause]
+
+A resposta vai variar. Para algumas pessoas, mais alguns anos. Para outras, já não muito tempo.
+
+[pause]
+
+A resposta honesta determina o que tu vais fazer a seguir.
+
+[short pause]
+
+Não há urgência forçada.
+
+Mas há urgência crescente, mesmo que não admitida.
+
+[long pause]
+
+Algumas relações merecem ser tentadas com nova honestidade.
+
+Outras merecem ser aceites no formato actual, com plena consciência.
+
+[pause]
+
+Nenhuma merece a ilusão de que está tudo bem quando, dentro de ti, tu sabes que não está.`,
+      },
+      {
+        id: "o-silencio-que-grita-m5c",
+        titulo: "M5.C — O silêncio com quem mais amas",
+        curso: "o-silencio-que-grita",
+        texto: `Os silêncios mais difíceis da tua vida adulta são, muitas vezes, com as pessoas que tu mais amas.
+
+[pause]
+
+Não com inimigas. Não com colegas distantes.
+
+Com a tua mãe. Com o teu parceiro. Com os teus filhos.
+
+[long pause]
+
+Estes silêncios são particularmente difíceis porque o amor está envolvido.
+
+[pause]
+
+Falar implica risco real. A relação importa demasiado para arriscar comprometê-la.
+
+E então cala-se.
+
+Por amor — paradoxalmente.
+
+[short pause]
+
+Calar por amor é uma das formas mais nobres e, ao mesmo tempo, mais corrosivas de relação.
+
+[pause]
+
+Nobre porque preserva a relação no curto prazo.
+
+Corrosiva porque, no longo prazo, esvazia-a.
+
+[long pause]
+
+A questão complicada é que a maioria das pessoas que cala por amor não percebe que o amor próprio também precisa de espaço.
+
+[pause]
+
+Calar por amor pelo outro, mas em prejuízo do amor por si — é equação impossível ao longo dos anos.
+
+[short pause]
+
+Acumula. E uma vez instalado o silêncio em relação a uma pessoa amada, tudo o que vem depois cresce sob esse silêncio.
+
+[pause]
+
+Os anos vão passando.
+
+E a pessoa amada começa a tornar-se, paradoxalmente, mais distante quanto mais tempo se evita falar.
+
+[long pause]
+
+Reconhecer isto não te obriga a falar imediatamente.
+
+[pause]
+
+Obriga, sim, a perceber que o silêncio é escolha activa — mesmo quando se disfarça de gentileza.
+
+[short pause]
+
+E que a escolha tem consequências.
+
+[pause]
+
+Algumas consequências boas. Estabilidade. Continuidade.
+
+Outras consequências menos boas. Distância silenciosa. Solidão dentro da intimidade aparente.
+
+[long pause]
+
+Há, em algumas relações com pessoas amadas, uma altura em que se torna clara a necessidade de uma conversa.
+
+[pause]
+
+Essa altura raramente é convidativa.
+
+Aparece em momentos inesperados — depois de um pequeno desentendimento, num jantar tranquilo, durante uma viagem.
+
+[short pause]
+
+E se tu reparares, e tiveres coragem, podes seguir a abertura.
+
+[pause]
+
+A conversa difícil que se segue pode ser confusa. Pode ser dolorosa. Pode ser inconclusiva.
+
+Mas é, quase sempre, libertadora.
+
+[long pause]
+
+Porque liberta a relação do peso acumulado de tudo o que estava por dizer.
+
+[pause]
+
+Mesmo que a conversa não resolva tudo, a relação muda.
+
+Passa a ter ar.
+
+[short pause]
+
+E pessoas amadas que, durante anos, viviam em silêncio uma com a outra começam, lentamente, a falar com mais liberdade.
+
+[long pause]
+
+Esta semana, identifica uma pessoa que tu amas e com quem há silêncio pesado.
+
+[pause]
+
+Não para forçar uma conversa.
+
+Para te preparares para o momento em que a oportunidade aparecer.
+
+[short pause]
+
+Escreve, em privado, o que tu gostarias de dizer se a oportunidade chegasse.
+
+Em frases simples, sem retórica.
+
+[pause]
+
+Esta escrita prepara-te.
+
+Para que, quando o momento vier — e vem sempre, quando estás aberta —, tu tenhas as palavras prontas.
+
+[short pause]
+
+Não para as recitares.
+
+Para teres clareza interna sobre o essencial.
+
+[long pause]
+
+O silêncio com quem amas não tem de durar para sempre.
+
+[pause]
+
+Mas só termina quando alguém — quase sempre tu — decide que prefere o desconforto da verdade ao conforto da distância silenciosa.
+
+[short pause]
+
+Esta é, em muitas relações importantes, a decisão mais corajosa da vida adulta.`,
+      },
+    ],
+  },
 ];
