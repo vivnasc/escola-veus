@@ -22275,4 +22275,533 @@ Tira a restrição. E a maior parte do "descontrolo" desaparece sozinho, sem que
       },
     ],
   },
+  {
+    id: "curso-a-fome-m6",
+    titulo: "Curso A Fome — Módulo 6 (Aulas A, B, C)",
+    descricao: "As Dietas que Tentaste.",
+    scripts: [
+      {
+        id: "a-fome-m6a",
+        titulo: "M6.A — A primeira dieta de que te lembras",
+        curso: "a-fome",
+        texto: `Tenta lembrar-te da primeira dieta da tua vida.
+
+[pause]
+
+Não a primeira séria.
+
+A primeira de todas. A inicial.
+
+[long pause]
+
+Para muitas mulheres, foi por volta dos doze, treze anos.
+
+[pause]
+
+Talvez foi a tua mãe a sugerir, com cuidado, que talvez fosse altura de "começares a ter atenção".
+
+Talvez foi o pediatra a mencionar, num contexto banal, que a curva de peso estava "um pouco acima".
+
+Talvez foi tu sozinha, depois de uma comparação com uma colega, a decidir parar de comer pão ao lanche.
+
+[short pause]
+
+Foi pequena. Quase inocente.
+
+[long pause]
+
+Mas foi a porta de entrada.
+
+[pause]
+
+Porque, a partir desse momento, tu começaste a viver com uma camada nova entre ti e a comida.
+
+[short pause]
+
+Antes desse momento, comias o que te apetecia, parando quando estavas cheia, sem pensar.
+
+[pause]
+
+Depois desse momento, começou a haver cálculo.
+
+Cálculo silencioso, em segundo plano, todas as vezes que abrias um pacote, escolhias um prato, pegavas numa fatia de pão.
+
+[long pause]
+
+Esta camada de cálculo nunca mais foi embora.
+
+[pause]
+
+Pode ter mudado de forma — uma dieta diferente, um regime novo, um nutricionista actual — mas a camada permaneceu.
+
+[short pause]
+
+E é por isso que a relação com a comida, em quase todas as mulheres adultas, tem uma qualidade específica.
+
+[pause]
+
+Vigilância.
+
+[long pause]
+
+Vigilância silenciosa, contínua, instalada há tantos anos que tu já a confundes com responsabilidade.
+
+[pause]
+
+Mas não é responsabilidade.
+
+É hábito mental que se instalou em ti antes de teres tido voz para o recusar.
+
+[short pause]
+
+E que continua a operar agora, em ti adulta, sem que tu tenhas alguma vez decidido conscientemente continuar com ele.
+
+[long pause]
+
+Esta semana, faz uma coisa de arqueologia pessoal.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Linha do tempo das minhas dietas — desde a primeira."
+
+[short pause]
+
+E vai escrevendo, em ordem cronológica, todas as tentativas de controlar a alimentação que tu te lembras.
+
+[pause]
+
+A primeira: a idade. Quem sugeriu. O que era.
+
+A segunda. A terceira. E por aí fora.
+
+[long pause]
+
+Algumas vão estar muito presentes na tua memória.
+
+Outras vais ter dificuldade em distinguir umas das outras.
+
+[pause]
+
+Tudo bem. Escreve o que vier.
+
+[short pause]
+
+Quando acabares, conta quantas há.
+
+[long pause]
+
+A maior parte das mulheres, quando faz este exercício pela primeira vez, fica em choque.
+
+[pause]
+
+Não é uma. Não são duas. São quinze. Vinte. Trinta tentativas em vinte ou trinta anos.
+
+[short pause]
+
+Ao lado de cada uma, escreve uma única palavra: "resultado."
+
+E completa.
+
+[pause]
+
+Quase todas vão acabar com a mesma coisa.
+
+[long pause]
+
+Algumas semanas de perda. Alguns meses. Volta gradual ao peso anterior. Por vezes, um peso ligeiramente acima do que tinhas antes de começar.
+
+[pause]
+
+Quando tu vês isto desenhado em letra escrita, alguma coisa muda.
+
+[short pause]
+
+A tua relação com as dietas deixa de parecer caminho para a solução.
+
+[pause]
+
+Passa a parecer ciclo repetido que, em duas ou três décadas, não te deu o que prometia.
+
+[long pause]
+
+Esta informação é dura.
+
+[pause]
+
+Mas é a primeira honesta que tu olhas há muito tempo.
+
+[short pause]
+
+E a partir daqui, podes começar a desenhar uma relação com a comida que não dependa de mais uma dieta.
+
+[pause]
+
+Não porque te tornaste mais disciplinada.
+
+Porque, finalmente, viste em letra escrita que esse caminho não te leva lá.`,
+      },
+      {
+        id: "a-fome-m6b",
+        titulo: "M6.B — O que cada dieta te ensinou contra ti",
+        curso: "a-fome",
+        texto: `Cada dieta que tu fizeste deixou em ti uma frase.
+
+[pause]
+
+A frase ficou. Mesmo quando a dieta acabou.
+
+[long pause]
+
+A dieta dos hidratos ensinou-te que o pão é inimigo.
+
+A dieta detox ensinou-te que o teu corpo precisa de ser limpo, como se estivesse sujo.
+
+A dieta low-carb ensinou-te que comer fruta é problema.
+
+A dieta de jejum intermitente ensinou-te que comer ao pequeno-almoço é fraqueza.
+
+[short pause]
+
+Cada uma destas frases parece neutra. Apenas regra alimentar.
+
+[pause]
+
+Mas todas elas têm uma coisa em comum.
+
+[short pause]
+
+Estão a treinar-te, em silêncio, a desconfiar do teu corpo.
+
+[long pause]
+
+Nenhuma dieta começa por dizer:
+
+"O teu corpo sabe o que precisa. Aprende a escutá-lo."
+
+[pause]
+
+Todas começam por dizer:
+
+"O teu corpo, sozinho, vai escolher mal. Por isso, segue as minhas regras."
+
+[short pause]
+
+E todas as vezes que tu segues uma destas regras, estás a reforçar a ideia de que tu, sozinha, não consegues comer bem.
+
+[long pause]
+
+Esta ideia é a maior consequência de décadas de dietas.
+
+[pause]
+
+Não os quilos perdidos e recuperados.
+
+A perda de confiança no teu próprio corpo.
+
+[short pause]
+
+Em pessoas que nunca fizeram dieta, observas, em geral, que comem com naturalidade.
+
+[pause]
+
+Comem o que lhes apetece, na quantidade que precisam, e param quando estão cheias.
+
+Sem cálculo. Sem culpa. Sem preocupação no dia seguinte.
+
+[short pause]
+
+Tu, ao contrário, vives com a sensação permanente de que a tua relação com a comida é problema a gerir.
+
+[long pause]
+
+Não nasceste assim.
+
+[pause]
+
+Foste treinada a pensar assim por cada dieta que fizeste.
+
+[short pause]
+
+E a partida dolorosa é que mesmo quando tu paras de fazer dietas, a desconfiança no corpo permanece.
+
+[pause]
+
+Continuas a achar que comer maçã ao final do dia é demais.
+
+Continuas a achar que pão à noite é descontrolo.
+
+Continuas a achar que se não calculares, vais comer demais.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Frases que aprendi com dietas e que ainda dirigem a minha relação com a comida."
+
+[short pause]
+
+E lista cinco a dez frases.
+
+[pause]
+
+Pode ser:
+
+"Comer depois das oito engorda."
+
+"Hidratos à noite acumulam."
+
+"Fruta tem demasiado açúcar."
+
+"Não devo comer entre refeições."
+
+"Se sinto fome às onze da manhã, é porque comi mal ao pequeno-almoço."
+
+[long pause]
+
+Olha para a tua lista.
+
+[pause]
+
+Cada uma destas frases foi-te dada por uma dieta, um livro, uma revista, uma médica.
+
+[short pause]
+
+Nenhuma delas foi descoberta pelo teu corpo.
+
+[pause]
+
+E, sem que tu tenhas dado por isso, todas elas se instalaram em ti como verdades pessoais.
+
+[long pause]
+
+Ao lado de cada frase, escreve a fonte.
+
+[pause]
+
+Quem ta disse?
+
+A dieta de quê? O livro de qual?
+
+[short pause]
+
+Quando tu vês a fonte, a frase deixa de parecer saber teu.
+
+Passa a parecer ideia comprada.
+
+[pause]
+
+E o que é comprado pode, com tempo, ser devolvido.
+
+[long pause]
+
+Esta semana, escolhe uma única frase da lista — a que mais frequentemente te dirige — e fica atenta a ela.
+
+[pause]
+
+Quando ela aparecer na tua cabeça, repara.
+
+E faz uma pergunta:
+
+"Esta frase, quando aparece, está a responder ao meu corpo? Ou está a responder a uma regra antiga?"
+
+[short pause]
+
+Em quase todos os casos, vais perceber que está a responder à regra.
+
+[pause]
+
+E o teu corpo, sozinho, queria outra coisa.
+
+[long pause]
+
+Esta atenção, sozinha, não muda imediatamente como comes.
+
+[pause]
+
+Mas começa a abrir, lentamente, espaço para o teu corpo voltar a ter voz na decisão.
+
+[short pause]
+
+E quando o corpo recupera voz, a relação com a comida começa a recuperar a sanidade que tinha antes da primeira dieta.`,
+      },
+      {
+        id: "a-fome-m6c",
+        titulo: "M6.C — A indústria que vive da tua insatisfação",
+        curso: "a-fome",
+        texto: `Há uma verdade incómoda sobre a indústria das dietas.
+
+[pause]
+
+Se as dietas funcionassem, a indústria não existiria.
+
+[long pause]
+
+Pensa nisto por um momento.
+
+[pause]
+
+Se uma dieta — qualquer uma — efectivamente resolvesse a relação de uma mulher com o corpo e com a comida, ela faria essa dieta uma vez na vida e nunca mais precisaria.
+
+[short pause]
+
+A indústria perderia clientes em massa.
+
+[pause]
+
+Mas a indústria continua a crescer todos os anos.
+
+[long pause]
+
+Cresce porque depende de uma coisa específica.
+
+[pause]
+
+Da tua insatisfação contínua com o teu corpo.
+
+[short pause]
+
+Quanto mais insatisfeita tu estás, mais produtos compras.
+
+Mais regimes experimentas.
+
+Mais consultas marcas.
+
+Mais aplicações descarregas.
+
+[long pause]
+
+Esta é a estrutura económica que está por detrás da maior parte da informação que tu recebes sobre alimentação.
+
+[pause]
+
+Não é informação neutra.
+
+É informação concebida para te manter num ciclo de tentar, falhar, voltar a tentar.
+
+[short pause]
+
+Se tu encontrasses paz com o teu corpo, a indústria perdia uma cliente.
+
+[pause]
+
+E a indústria sabe disto melhor do que tu.
+
+[long pause]
+
+Por isso, cada novo método aparece com promessas ligeiramente diferentes do anterior.
+
+[pause]
+
+Para tu poderes recomeçar, com esperança nova, o ciclo que já fizeste vinte vezes.
+
+[short pause]
+
+Não estou a dizer que toda a informação sobre alimentação é falsa.
+
+[pause]
+
+Há saber médico real e útil. Há nutricionistas honestos. Há mudanças que efectivamente fazem diferença em saúde.
+
+[short pause]
+
+Mas a maior parte do que chega a uma mulher adulta sobre o seu corpo — através de revistas, redes sociais, publicidade, livros de auto-ajuda alimentar — é informação concebida para a manter dependente.
+
+[long pause]
+
+Esta semana, vais fazer um inventário.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Dinheiro que gastei em dietas, suplementos, programas, consultas, aplicações, livros sobre alimentação."
+
+[short pause]
+
+E começa a fazer estimativa, década a década.
+
+[pause]
+
+Dos vinte aos trinta. Dos trinta aos quarenta. Dos quarenta para cá.
+
+[long pause]
+
+Algumas mulheres, quando fazem este exercício pela primeira vez, ficam em silêncio diante do número.
+
+[pause]
+
+Pode chegar a milhares de euros.
+
+Em alguns casos, dezenas de milhares.
+
+[short pause]
+
+E, ao lado do número, podes escrever um segundo dado:
+
+"Resultado durável dessa despesa."
+
+[pause]
+
+Quase sempre vai ser zero.
+
+Ou negativo — porque alguns regimes deixaram danos metabólicos ou alimentares.
+
+[long pause]
+
+Esta tomada de consciência não é para te culpar.
+
+[pause]
+
+A culpa é mais um produto da indústria.
+
+Querem que sintas culpa por não conseguires manter os resultados — e que voltes a comprar.
+
+[short pause]
+
+A tomada de consciência é diferente.
+
+[pause]
+
+É veres, em letra escrita, que tu não és cliente fácil de uma indústria.
+
+És cliente capturada por uma indústria que te ensinou, durante décadas, a procurar fora o que só pode aparecer dentro.
+
+[long pause]
+
+E dentro, neste caso, não é frase espiritual.
+
+[pause]
+
+É exactamente o trabalho que estás a fazer agora.
+
+Escutar o corpo. Identificar as frases instaladas. Distinguir fome real de outras coisas. Comer sem cálculo.
+
+[short pause]
+
+Este trabalho não tem produto à venda.
+
+Não tem aplicação. Não tem livro novo todos os meses. Não tem programa de seis semanas com garantia de resultado.
+
+[pause]
+
+Tem só ti, contigo, ao longo dos anos.
+
+[long pause]
+
+E é por isso que a indústria nunca fala sobre este caminho.
+
+[pause]
+
+Porque, neste caminho, ninguém ganha dinheiro com o teu corpo.
+
+Excepto tu — em saúde, em paz, em tempo recuperado para a tua vida real.`,
+      },
+    ],
+  },
 ];
