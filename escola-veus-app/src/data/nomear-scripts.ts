@@ -20319,7 +20319,7 @@ A culpa que sentes a comer à meia-noite não é proporcional ao que comeste.
 
 [pause]
 
-E a comida está, simplesmente, a tentar resolver o sintoma da abandono.
+E a comida está, simplesmente, a tentar resolver o sintoma do abandono.
 
 [short pause]
 
@@ -20359,7 +20359,7 @@ Estes momentos são oportunidade.
 
 Cinco minutos de presença para ti.
 
-Não cinco minutos no telefone. Cinco minutos sentada, em silêncio, perto do corpo.
+Não cinco minutos no telefone. Cinco minutos sentada, em silêncio, sem fazer nada.
 
 [short pause]
 
@@ -21380,7 +21380,7 @@ E vai escrevendo, ao longo dos dias, à medida que te lembras.
 
 [pause]
 
-Não esforça a memória.
+Não esforces a memória.
 
 Quando estiveres a comer e reparares que algo te fez pousar o garfo antes de estares cheia, repara.
 
@@ -21632,7 +21632,7 @@ Cada um deles é uma forma silenciosa de continuares uma relação com alguém q
 
 Ou que está, mas com quem a relação se tornou complicada.
 
-Ou que tu, há muito tempo, deixaste de saber como abraçar — mas que ainda alimentas, em ti, através do prato.
+Ou que tu, há muito tempo, deixaste de saber como te aproximar — mas que ainda alimentas, em ti, através do prato.
 
 [short pause]
 
@@ -21672,7 +21672,7 @@ O problema só aparece quando tu, sem saberes, comes este prato com mais frequê
 
 [pause]
 
-Quando reparas que apetecesse-te o doce da avó num momento em que estás sozinha, triste, sem ninguém para conversar.
+Quando reparas que te apetece o doce da avó num momento em que estás sozinha, triste, sem ninguém para conversar.
 
 E quando, depois de o comer, ficas com a sensação difusa de que aquilo, afinal, não preencheu o que precisavas.
 
@@ -21722,7 +21722,7 @@ A primeira: continuar a comer o prato. Mas agora com consciência do que ele faz
 
 [short pause]
 
-Comer-lo lentamente. Fazer dele uma pequena cerimónia. Honrar a pessoa de onde ele vem.
+Comê-lo lentamente. Fazer dele uma pequena cerimónia. Lembrar quem o fazia.
 
 [pause]
 
@@ -22770,7 +22770,7 @@ A tomada de consciência é diferente.
 
 É veres, em letra escrita, que tu não és cliente fácil de uma indústria.
 
-És cliente capturada por uma indústria que te ensinou, durante décadas, a procurar fora o que só pode aparecer dentro.
+És cliente capturada por uma indústria que te ensinou, durante décadas, a comprar soluções para um problema que só se desfaz com trabalho de atenção, sem produto.
 
 [long pause]
 
@@ -22790,7 +22790,7 @@ Não tem aplicação. Não tem livro novo todos os meses. Não tem programa de s
 
 [pause]
 
-Tem só ti, contigo, ao longo dos anos.
+Tens só tu, contigo, ao longo dos anos.
 
 [long pause]
 
@@ -23301,7 +23301,7 @@ E poupa-te tempo, energia, e relação que ia acabar mal de qualquer forma.
 
 [long pause]
 
-Não comes para te apresentares como és para o homem de jantar.
+Não comes como tu comes para o impressionar.
 
 [pause]
 
