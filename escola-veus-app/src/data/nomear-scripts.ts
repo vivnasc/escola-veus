@@ -17893,4 +17893,385 @@ E começa a expandir-se de novo.`,
       },
     ],
   },
+  {
+    id: "curso-pele-nua-m4",
+    titulo: "Curso Pele Nua — Módulo 4 (Aulas A, B, C)",
+    descricao: "A Pele Como Fronteira.",
+    scripts: [
+      {
+        id: "pele-nua-m4a",
+        titulo: "M4.A — O toque que dispensavas e calavas",
+        curso: "pele-nua",
+        texto: `Há toques que tu, ao longo da vida, dispensavas e calavas.
+
+[pause]
+
+Beijos de cumprimento que não te apetecia receber.
+
+Abraços de tias que te apertavam mais do que era confortável.
+
+Mãos no ombro de chefes ou colegas que tu, internamente, recuavas.
+
+[long pause]
+
+Cada um destes momentos foi pequeno.
+
+E em cada um deles, tu deixaste passar.
+
+[pause]
+
+Sem dizer nada. Sem proteger o teu corpo. Sem reclamar uma fronteira que era tua.
+
+[short pause]
+
+Não por falta de instinto.
+
+Por treino antigo.
+
+[long pause]
+
+As raparigas, em geral, são treinadas a aceitar contacto físico que não desejam.
+
+[pause]
+
+Para serem educadas. Para não fazerem cena. Para não magoarem a outra pessoa.
+
+[short pause]
+
+Estas razões são apresentadas como cortesia.
+
+[pause]
+
+Mas têm efeito acumulado preocupante.
+
+[long pause]
+
+Tu chegas à idade adulta com um corpo que aprendeu a tolerar contacto que não pediu.
+
+[pause]
+
+E essa tolerância, instalada em criança, opera silenciosamente em todas as relações da tua vida adulta.
+
+[short pause]
+
+Quando alguém te toca de uma forma que tu não desejarias, há ainda hoje uma parte de ti que aceita por reflexo.
+
+[pause]
+
+E só horas depois — às vezes dias depois — é que tu reconheces o desconforto que sentiste.
+
+[long pause]
+
+Recuperar a fronteira da pele é trabalho lento e específico.
+
+[pause]
+
+Começa por reconhecer, em retrospectiva, os toques que dispensavas mas que aceitaste.
+
+Não para te castigares.
+
+Para começar a notar o padrão.
+
+[short pause]
+
+Quando o padrão fica visível, podes começar a interrompê-lo em situações futuras.
+
+[pause]
+
+Não em confronto dramático.
+
+Em pequenos ajustes.
+
+[long pause]
+
+Inclinares a cabeça antes de um beijo de cumprimento, sugerindo um aceno em vez do beijo.
+
+Encolheres ligeiramente quando alguém te vai abraçar de forma que não te serve, criando distância sem palavras.
+
+Recuares ligeiramente quando uma mão se aproxima do teu ombro.
+
+[pause]
+
+Estes pequenos gestos, repetidos com paciência, ensinam às pessoas à tua volta a respeitar a tua fronteira física.
+
+[short pause]
+
+Algumas pessoas vão notar e ajustar.
+
+Outras vão tentar continuar a invadir, e nessas a tua estratégia tem de ser mais explícita.
+
+[pause]
+
+Mas começa pelo subtil.
+
+[long pause]
+
+Esta semana, observa.
+
+Em quantos cumprimentos tu aceitas contacto que, se tivesses escolha, dispensarias?
+
+[pause]
+
+Nem precisas de mudar nada ainda.
+
+Apenas observa.
+
+[short pause]
+
+A consciência muda muito.
+
+[pause]
+
+Porque o corpo, ao saber que tu finalmente notas, começa a ganhar coragem para sinalizar com mais clareza.`,
+      },
+      {
+        id: "pele-nua-m4b",
+        titulo: "M4.B — O contacto que pedes sem pedir",
+        curso: "pele-nua",
+        texto: `Há contacto físico que tu queres mas que não pedes.
+
+[pause]
+
+Toque suave nas mãos. Um abraço prolongado. Um cabelo a ser acariciado.
+
+Carícia sem destino sexual — apenas presença na pele.
+
+[long pause]
+
+Em algumas relações da tua vida, este contacto acontece naturalmente.
+
+Em outras, falta.
+
+[pause]
+
+E tu, em vez de o pedir, esperas que aconteça espontaneamente.
+
+[short pause]
+
+Esperas durante dias. Semanas. Por vezes anos.
+
+[pause]
+
+E, quando não acontece, sentes uma tristeza vaga que não consegues nomear.
+
+[long pause]
+
+A tristeza tem nome.
+
+É a tristeza de não pedires o contacto que precisas — e, por isso, não o receberes na quantidade que precisas.
+
+[pause]
+
+As mulheres são treinadas a esperar pelo contacto.
+
+A receber se for oferecido. A não pedir se não for.
+
+[short pause]
+
+Esta passividade, instalada cedo, custa caro em adulta.
+
+[pause]
+
+Porque os parceiros, mesmo bem-intencionados, não são telepatas.
+
+E sem pedido explícito, podem oferecer contacto em momentos que não correspondem ao que tu precisas.
+
+[long pause]
+
+Pedir contacto é mais difícil do que parece.
+
+[pause]
+
+Há vergonha. Há receio de parecer carente. Há receio de ser recusada — recusa que doeria mais do que a ausência actual.
+
+[short pause]
+
+Mas pedir é, na verdade, gesto de confiança.
+
+[pause]
+
+E pessoas que amam-te, em geral, acolhem o pedido com gosto.
+
+Porque é confiança nelas. E porque, sem o pedido, elas próprias podem estar a sentir-se em distância sem saber como aproximar-se.
+
+[long pause]
+
+Esta semana, identifica uma pessoa próxima a quem podes pedir um contacto específico.
+
+Não tem de ser dramático. Pode ser pequeno.
+
+[pause]
+
+"Posso ficar um bocado deitada aqui?"
+
+"Apetecia-me que me pegasses na mão durante este filme."
+
+"Posso pedir-te um abraço?"
+
+[short pause]
+
+Estas frases pequenas, ditas com naturalidade, mudam relações.
+
+[pause]
+
+Não em transformação dramática.
+
+Em proximidade renovada.
+
+[long pause]
+
+E ao fim de algumas semanas a praticar, vais descobrir uma coisa importante.
+
+[pause]
+
+Quando começas a pedir contacto, deixas de o esperar.
+
+E a pessoa próxima começa, sem combinar nada, a oferecer com mais frequência — porque se sente convidada a aproximar-se de uma forma que antes não era explícita.
+
+[short pause]
+
+A intimidade física, em muitas relações, está a aguardar apenas que alguém abra a porta.
+
+[pause]
+
+E essa alguém, normalmente, és tu.`,
+      },
+      {
+        id: "pele-nua-m4c",
+        titulo: "M4.C — A pele que precisa de paz",
+        curso: "pele-nua",
+        texto: `Em algumas alturas da vida, a tua pele precisa de paz.
+
+[pause]
+
+Não de mais cuidado. Não de melhor creme. Não de novo tratamento.
+
+De paz.
+
+[long pause]
+
+Pele em paz é pele que não está a ser permanentemente tratada como projecto.
+
+[pause]
+
+Não está a ser examinada todas as manhãs em busca de imperfeições novas.
+
+Não está a ser submetida a rotinas de produtos sucessivos.
+
+Não está a ser comparada com a pele de outras mulheres.
+
+[short pause]
+
+Está, simplesmente, a ser pele.
+
+[long pause]
+
+Esta forma de habitar a pele é rara hoje.
+
+[pause]
+
+A indústria cosmética constrói-se na ansiedade permanente sobre a pele.
+
+E muitas mulheres, sem se aperceberem, vivem em estado de vigilância dermatológica constante.
+
+[short pause]
+
+Esta vigilância tem custo.
+
+[pause]
+
+Não só financeiro — também emocional.
+
+[short pause]
+
+Cada vez que olhas para a tua pele com olhos críticos, estás a confirmar a ela própria que ela não está bem como está.
+
+[long pause]
+
+A pele, como o resto do corpo, beneficia de ser olhada com aceitação.
+
+[pause]
+
+Não sem cuidado básico — limpeza, hidratação, protecção solar.
+
+Mas sem o excesso de intervenção que a indústria sugere ser indispensável.
+
+[short pause]
+
+Em alguns momentos, fazer menos é melhor.
+
+[pause]
+
+Reduzir produtos. Simplificar rotinas. Deixar a pele ser pele.
+
+[long pause]
+
+Esta semana, faz uma experiência específica.
+
+Durante uma semana inteira, usa apenas três produtos no rosto.
+
+Limpeza simples. Hidratação. Protecção solar.
+
+[pause]
+
+Mais nada.
+
+[short pause]
+
+Sem séruns. Sem máscaras. Sem tratamentos especiais.
+
+[pause]
+
+Vais descobrir, em geral, que a tua pele se mantém bem ou melhora.
+
+E vais descobrir também algo mais importante.
+
+[short pause]
+
+A relação com a tua pele relaxa.
+
+[pause]
+
+Deixas de a olhar todos os dias com a expectativa de ver melhoria visível.
+
+E começas a olhar para ela como olhas para o resto do corpo — com habitação tranquila.
+
+[long pause]
+
+A pele em paz não é objectivo estético.
+
+É qualidade relacional.
+
+[pause]
+
+A relação entre tu e a tua pele.
+
+[short pause]
+
+E essa relação, quando deixa de ser de gestão constante, beneficia tu — e, paradoxalmente, beneficia também a pele.
+
+[pause]
+
+Porque pele permanentemente trabalhada, como qualquer parte do corpo permanentemente trabalhada, fica reactiva.
+
+E pele que não está em estado reactivo costuma estar mais bonita do que pele tratada em excesso.
+
+[long pause]
+
+Não tens de cancelar todos os produtos.
+
+Mas vale a pena, de tempos em tempos, fazer pausa.
+
+[pause]
+
+E redescobrir a pele que existe debaixo do tratamento.
+
+[short pause]
+
+Ela está aí.
+
+E, com paciência, aceita ser deixada em paz.`,
+      },
+    ],
+  },
 ];
