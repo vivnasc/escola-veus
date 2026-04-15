@@ -62,6 +62,7 @@ Três domínios:
 | Áudio narração | ElevenLabs (via `/admin/audio-bulk`) | 🟡 em curso |
 | **Imagens contemplativas** | Flux + LoRA `veus_figure` | ❌ por gerar em batch |
 | **Música ambiente a condizer** | Suno API (instrumental) | ❌ por gerar |
+| **Clips animados (Runway)** | Runway Gen-4 — Vivianne processa externamente, app gera só os prompts | ❌ |
 | **Texto em formas aleatórias** | Highlight overlay (só em momentos-chave, não o script todo) | ❌ por definir visualmente |
 | Legendas (accessibility) | Whisper ou manual | ❌ |
 | Thumbnail | Flux + texto | ❌ |
@@ -73,11 +74,9 @@ Três domínios:
 1. Para cada hook, identificar 2-4 "momentos-destaque" do script (as frases que ficam).
 2. Gerar 4-8 imagens contemplativas (Flux + LoRA) cobrindo a duração do áudio.
 3. Gerar uma faixa Suno instrumental com tom a condizer (lento, meditativo, acústico).
-4. Gerar prompts Runway (10s cada) para animação subtil das imagens — Vivianne processa **fora do app** em runway.app.
-5. Gerar ficheiro que o **CapCut** consiga importar, com:
-   - Timeline de áudio + imagens/clips animados + música
-   - Markers nos momentos-destaque para ela colocar texto em formas aleatórias
-6. Ela abre no CapCut, ajusta, exporta, publica no YouTube.
+4. Gerar prompts Runway (10s cada) para animação subtil das imagens — Vivianne processa **fora do app** em runway.app, depois carrega os clips de volta para o editor.
+5. **Editar tudo no editor interno do app** (ver secção 4.4) — a Vivianne monta timeline com áudio + clips animados + música + texto overlay nos destaques.
+6. Renderizar o vídeo final **dentro do app** e publicar directamente no YouTube.
 
 ### 3.2. Vídeos das Aulas (curso — 168 aulas, em crescimento)
 
@@ -150,23 +149,92 @@ O app precisa de **gerar os prompts** e apresentá-los numa lista exportável (C
 
 Já existe `buildMotionPrompt()` no código — reutilizar.
 
-### 4.4. Export para CapCut
+### 4.4. Editor de vídeo interno (o "CapCut" do app)
 
-CapCut aceita:
-- `.xml` (Final Cut Pro XML) — melhor opção
-- Ou estrutura de pastas com markdown/json a guiar ela manualmente
+**Vivianne NÃO usa CapCut nem qualquer editor externo.**
+O próprio app tem de ter um editor interno com as funcionalidades que ela precisa.
 
-**Proposta:** gerar um ZIP por vídeo com:
+**Rota proposta:** `/admin/editor/[video-id]`
+
+**Funcionalidades mínimas:**
+
+1. **Timeline multi-pista** (drag & drop)
+   - Pista 1: Áudio narração (só uma, vinda do bulk-audio)
+   - Pista 2: Música ambiente (Suno — volume reduzido, loop se preciso)
+   - Pista 3: Imagens/Clips vídeo (Flux estático + clips Runway carregados pela Vivianne)
+   - Pista 4: Texto overlay (só nos momentos-destaque; formas aleatórias animadas)
+   - Pista 5: Legendas (opcional)
+
+2. **Controles por clip**
+   - Duração, trim (in/out)
+   - Transições simples (cross-fade, fade-in/out)
+   - Posição X/Y, escala, rotação (para o texto em formas)
+   - Volume por pista
+   - Key-frames básicos (zoom lento numa imagem, por exemplo)
+
+3. **Highlights de texto (ESPECIAL da escola)**
+   - A Vivianne marca 2-4 momentos no áudio onde aparece texto.
+   - O texto aparece em forma aleatória (círculo, blob orgânico, rectângulo solto, linha manuscrita).
+   - Animação: fade-in, staywag 2-3s, fade-out.
+   - Tipografia: serif Escola (Cormorant ou similar).
+   - Cor: dourado (#D4A853) ou creme sobre fundo escuro.
+   - **Esta é a assinatura visual da escola.** Desenvolver biblioteca de ~8-12 shapes aleatórios.
+
+4. **Preview em tempo real**
+   - Player HTML5 que mostra a composição actual.
+   - Scrub pela timeline.
+   - Zoom da timeline (para edição fina de timing).
+
+5. **Renderização**
+   - Backend: Shotstack API (já configurado, falta `SHOTSTACK_ENV=v1` no Vercel).
+   - Ou: FFmpeg via servidor próprio (Vercel Functions com limites, ou VPS externo).
+   - Ou: Remotion (React-based, render no browser ou Lambda).
+   - Output: MP4 1920×1080 (horizontal YouTube) ou 1080×1920 (vertical Shorts).
+
+6. **Publicação directa YouTube** (opcional futuro)
+   - YouTube Data API — upload + metadata.
+   - Se não der, download do MP4 e upload manual.
+
+**Stack técnica sugerida:**
+
+- Frontend do editor: **Remotion** (https://remotion.dev) — React-based, timeline, preview em browser, render no servidor.
+  Alternativa: **Editly**, **Motion Canvas**, ou timeline custom com Canvas API.
+- Backend render: **Shotstack** (cloud, $) ou **Remotion Lambda** (AWS, $) ou **FFmpeg self-hosted**.
+- State: Zustand ou Redux para o estado da timeline.
+- Storage: Supabase (já existe) para guardar projectos (JSON) + assets.
+
+**Modelo de dados (simplificado):**
+
+```typescript
+type VideoProject = {
+  id: string;
+  scriptId: string;              // "a-chama-m1a" ou "nomear-serie-1-hook-1"
+  format: "youtube-horizontal" | "shorts-vertical" | "aula-horizontal";
+  tracks: {
+    audio: { url: string; start: number; end: number }[];
+    music: { url: string; start: number; end: number; volume: number }[];
+    visual: { url: string; type: "image" | "video"; start: number; duration: number; effects: Effect[] }[];
+    text: { content: string; shape: "circle" | "blob" | "rect" | "line"; start: number; duration: number; pos: {x,y}; animation: string }[];
+    subtitles?: { srtUrl: string }[];
+  };
+  duration: number;
+  renderStatus: "draft" | "rendering" | "ready" | "error";
+  renderUrl?: string;
+};
 ```
-hook-01/
-  audio.mp3
-  musica.mp3
-  imagens/
-    scene-01.png, scene-02.png, ...
-  clips-runway/        (ela põe aqui depois de processar no Runway)
-  markers.json         (timestamps dos highlights com texto)
-  README.md            (instruções de montagem no CapCut)
-```
+
+**Primeiro MVP do editor (ordem):**
+
+1. Página que lista os scripts (prontos vs por editar).
+2. Clicar num script → abre o editor com timeline pré-preenchida:
+   - Áudio já do bulk-audio
+   - Música placeholder (ela clica "Gerar música Suno")
+   - Imagens placeholder (ela clica "Gerar imagens Flux" — 4-6 auto)
+   - Sem texto overlay inicial
+3. Ela arrasta, ajusta durações, marca os destaques, escreve o texto, escolhe a forma.
+4. "Pré-visualizar" → preview HTML5.
+5. "Renderizar" → Shotstack/Remotion → MP4.
+6. "Descarregar" ou "Publicar no YouTube".
 
 ### 4.5. Áudios — gerar os que faltam
 
@@ -229,20 +297,21 @@ Vivianne está a gerar manualmente via `/admin/audio-bulk`. ~112/290 gerados.
 2. Ouvir 1-2 áudios de cada curso para confirmar qualidade da voz.
 3. Se voz oscila pt-pt/pt-br em algum áudio, regenerar esse.
 
-### Sprint 2 — Primeiro vídeo YouTube completo (1 semana)
-1. Escolher 1 hook Nomear para piloto.
-2. Gerar 4-6 imagens Flux + LoRA (prompts do app).
-3. Gerar 1 faixa Suno (ou escolher da Loranne).
-4. Gerar prompts Runway, processar no runway.app (5 clips × 10s = 50 créditos).
-5. Exportar pacote para CapCut.
-6. Vivianne monta no CapCut com os highlights de texto.
-7. Publicar. Medir resposta.
+### Sprint 2 — Primeiro vídeo YouTube completo (1-2 semanas)
+1. Construir MVP do editor interno (`/admin/editor/[id]`) — ver 4.4.
+2. Escolher 1 hook Nomear para piloto.
+3. Gerar 4-6 imagens Flux + LoRA (prompts do app).
+4. Gerar 1 faixa Suno (ou escolher da Loranne).
+5. Gerar prompts Runway, Vivianne processa no runway.app (5 clips × 10s = 50 créditos), carrega os MP4s de volta para o editor.
+6. Vivianne edita no editor interno: timeline, highlights de texto em formas aleatórias, ajustes.
+7. Render (Shotstack ou Remotion) → MP4.
+8. Download + upload YouTube (manual ou API).
 
-### Sprint 3 — Pipeline escalável (2 semanas)
-1. Construir `/admin/video-pipeline` (página unificadora).
-2. Automatizar geração de imagens + música em batch.
-3. Automatizar export para CapCut.
-4. Testar em 5 hooks de uma vez.
+### Sprint 3 — Pipeline escalável (2-3 semanas)
+1. Geração em batch de imagens + música Suno para todos os hooks (backend).
+2. Pre-popular editor com assets prontos (Vivianne só monta).
+3. Biblioteca de shapes para texto overlay (8-12 variações).
+4. Templates por tipo de vídeo (YouTube horizontal / Shorts vertical / Aula horizontal).
 
 ### Sprint 4 — Aulas dos cursos (vídeos pagos) (2-3 semanas)
 1. Pipeline mais simples (só slides + áudio + música ambiente).
