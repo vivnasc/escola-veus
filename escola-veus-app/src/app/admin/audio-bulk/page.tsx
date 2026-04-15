@@ -182,7 +182,13 @@ export default function AudioBulkPage() {
       const res = await fetch("/api/admin/audio-bulk/test-voice", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: testText, voiceId, modelId, languageCode: languageCode || undefined }),
+        body: JSON.stringify({
+          text: testText,
+          voiceId,
+          modelId,
+          // v3 rejeita language_code — nao enviar
+          languageCode: modelId === "eleven_v3" ? undefined : (languageCode || undefined),
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.erro || `Erro ${res.status}`);
@@ -213,7 +219,8 @@ export default function AudioBulkPage() {
             modelId,
             title: script.titulo,
             folder,
-            languageCode: languageCode || undefined,
+            // v3 rejeita language_code — nao enviar mesmo se preenchido
+            languageCode: modelId === "eleven_v3" ? undefined : (languageCode || undefined),
           }),
         });
         const data = await res.json();
