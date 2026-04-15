@@ -27853,4 +27853,605 @@ Não é acessório.
       },
     ],
   },
+  {
+    id: "curso-a-chama-m8",
+    titulo: "Curso A Chama — Módulo 8 (Aulas A, B, C)",
+    descricao: "A Chama Acesa.",
+    scripts: [
+      {
+        id: "a-chama-m8a",
+        titulo: "M8.A — A mulher que tem desejo em adulta",
+        curso: "a-chama",
+        texto: `A mulher que tem desejo em adulta não é a que tem desejo constante.
+
+[pause]
+
+Não é a que está sempre disponível.
+
+Não é a que responde ao parceiro com entusiasmo automático em qualquer situação.
+
+[long pause]
+
+A mulher que tem desejo em adulta é outra coisa, mais real.
+
+[pause]
+
+É a mulher que conhece o próprio ritmo.
+
+[short pause]
+
+Sabe quando tem. Sabe quando não tem. Sabe quando está no meio.
+
+[pause]
+
+E, sobretudo, respeita estas três estações dentro de si.
+
+[long pause]
+
+Esta mulher tem, à sua disposição, uma qualidade que a maior parte das mulheres adultas perdeu.
+
+[pause]
+
+Escuta interior.
+
+[short pause]
+
+Ela sabe o que o seu corpo pede em cada semana porque, ao longo dos meses, treinou-se a perguntar.
+
+[long pause]
+
+Em semanas de cansaço acumulado, sabe que o que precisa é descanso e colo — não sexo.
+
+[pause]
+
+Em semanas de tensão profissional, sabe que o desejo pode simplesmente não aparecer — e que isso é biologia normal, não falha pessoal.
+
+[short pause]
+
+Em semanas em que, por algum motivo, o corpo pede mais — ela reconhece, ela comunica, ela vive.
+
+[long pause]
+
+Esta mulher não está em permanente negociação interna sobre se devia ou não devia desejar.
+
+[pause]
+
+Esse debate foi resolvido em ela.
+
+[short pause]
+
+Ela desejar ou não desejar é informação, não problema.
+
+[pause]
+
+E o parceiro, quando ela tem parceiro, aprende a ler essa informação.
+
+[long pause]
+
+Aprende que a ausência de desejo de uma semana não é rejeição pessoal.
+
+Aprende que a presença de desejo numa tarde inesperada não é pressão sua.
+
+Aprende a acompanhar, em vez de exigir.
+
+[short pause]
+
+Esta mulher, na relação, deixa de ter vida sexual avaliada por métricas quantitativas — quantas vezes por semana, quantas por mês.
+
+[pause]
+
+Passa a ter vida sexual avaliada por métricas qualitativas — presença, comunicação, satisfação real.
+
+[long pause]
+
+E as métricas qualitativas, ao contrário das quantitativas, toleram flutuação.
+
+[pause]
+
+Porque entendem que a vida adulta de uma mulher não é linear.
+
+[short pause]
+
+Tem anos intensos. Anos leves. Anos em que, por razões várias, o corpo pede pausa.
+
+[pause]
+
+Todos são vida real.
+
+[long pause]
+
+Esta é, em última análise, a mulher que este curso quer ajudar a construir em ti.
+
+[pause]
+
+Não a mulher sexualmente disponível.
+
+[short pause]
+
+A mulher sexualmente presente.
+
+[pause]
+
+Presente no que sente. Presente no que pede. Presente no que recusa. Presente em cada encontro — ou ausência de encontro — com alguma forma de consciência.
+
+[long pause]
+
+Esta semana, vais escrever o primeiro esboço desta mulher em ti.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"A mulher que eu estou a tornar-me em relação ao meu desejo."
+
+[short pause]
+
+E escreve, em termos próprios, o que reconheces que já mudou — ou que está a mudar — em ti ao longo deste curso.
+
+[long pause]
+
+Pode ser pouco.
+
+[pause]
+
+Pode ser:
+
+"Comecei a reparar nos sinais pequenos do meu desejo em vez de os descartar."
+
+"Dei-me permissão escrita para o meu prazer próprio."
+
+"Iniciei uma conversa com uma amiga sobre este tema pela primeira vez."
+
+"Tive iniciativa com o meu parceiro pela primeira vez em meses."
+
+"Identifiquei as frases antigas que ainda me dirigem."
+
+[short pause]
+
+Três a cinco linhas chegam.
+
+[pause]
+
+E no fim da folha, escreve uma última linha:
+
+"A mulher que estou a tornar-me é, em comparação com a que eu era há três meses, ligeiramente mais —"
+
+E completa.
+
+[long pause]
+
+Podes descobrir que completas com palavras pequenas.
+
+[pause]
+
+Atenta.
+
+Honesta.
+
+Presente.
+
+Livre.
+
+[short pause]
+
+Qualquer uma destas palavras, verdadeira para ti, é sinal do trabalho a operar.
+
+[pause]
+
+A mulher com desejo em adulta não chega numa semana.
+
+Não chega num curso.
+
+[short pause]
+
+Chega, devagar, em meses e anos de trabalho silencioso.
+
+[pause]
+
+E tu, agora, estás nesse caminho.
+
+[long pause]
+
+Isto, só por si, é muito.`,
+      },
+      {
+        id: "a-chama-m8b",
+        titulo: "M8.B — O que muda quando tu passas a escolher",
+        curso: "a-chama",
+        texto: `Há um momento, em algumas mulheres adultas, em que tudo começa a mudar.
+
+[pause]
+
+Não muda no corpo.
+
+Muda dentro.
+
+[long pause]
+
+Muda no facto de tu, pela primeira vez em anos, começares a escolher.
+
+[pause]
+
+A escolher o que queres comer, sem cálculo.
+
+A escolher quando queres sexo, sem obrigação.
+
+A escolher o que queres fazer num domingo, sem ter de justificar a toda a gente.
+
+A escolher, em pequenas doses, em vez de reagir a tudo o que te é pedido.
+
+[short pause]
+
+Esta mudança, vista de fora, parece pequena.
+
+[pause]
+
+Mas, vivida de dentro, muda tudo.
+
+[long pause]
+
+Porque a mulher que não escolhe, em geral, é mulher que reage.
+
+[pause]
+
+Alguém pede, ela responde.
+
+Alguém sugere, ela aceita.
+
+Alguém precisa, ela cede.
+
+[short pause]
+
+E a sua vida inteira é composta de respostas a pedidos de outros — não de decisões próprias.
+
+[long pause]
+
+A chama, em mulher que reage, tem pouco espaço.
+
+[pause]
+
+Porque o desejo próprio precisa de ter tempo para se formar.
+
+E numa vida totalmente reactiva, esse tempo não existe.
+
+[short pause]
+
+Tu, ao longo deste curso, começaste a fazer pequenas coisas diferentes.
+
+[pause]
+
+A perguntar ao teu corpo o que ele gostaria.
+
+A registar os sinais que antes descartavas.
+
+A comer uma refeição sem cálculo.
+
+A tirar a balança do lugar habitual.
+
+A dar-te permissão escrita para alguma coisa.
+
+A ter iniciativa num momento em que antes esperarias.
+
+[long pause]
+
+Cada um destes gestos é, no fundo, um acto de escolha.
+
+[pause]
+
+Tu, num pequeno momento, escolheste. Em vez de reagir.
+
+[short pause]
+
+E a escolha, mesmo em pequena escala, tem efeito acumulativo.
+
+[pause]
+
+Porque ensina ao teu sistema interior que tu, aqui, tens agência.
+
+[long pause]
+
+Ao fim de alguns meses deste trabalho, muitas mulheres descrevem a mesma coisa.
+
+[pause]
+
+"Sinto-me mais dona da minha vida."
+
+[short pause]
+
+Não é que a sua vida tenha mudado radicalmente.
+
+[pause]
+
+É que a sua relação com a própria vida mudou.
+
+[short pause]
+
+Deixaram de viver por omissão.
+
+Começaram a viver por presença.
+
+[long pause]
+
+E esta mudança, no longo prazo, repercute-se em todas as áreas.
+
+[pause]
+
+Na relação — porque se tornam parceiras mais interessantes, com opinião, com desejo próprio, com capacidade de pedir.
+
+No trabalho — porque param de aceitar tudo e começam a escolher o que realmente querem fazer.
+
+Nas amizades — porque deixam de se manter em relações por hábito e começam a investir nas que nutrem.
+
+Na saúde — porque param de se descuidar e começam a responder aos sinais que o corpo dá.
+
+[short pause]
+
+E no desejo — porque, finalmente, têm estrutura interior para o exercer.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno de reconhecimento.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Coisas que eu, nos últimos meses, comecei a escolher em vez de reagir."
+
+[short pause]
+
+E escreve o que reconheces.
+
+[pause]
+
+Pode ser:
+
+"Comecei a escolher quando digo sim e quando digo não a pedidos de família."
+
+"Comecei a escolher a hora de ir para a cama em função de mim, não dos outros."
+
+"Comecei a escolher quando tenho iniciativa sexual em vez de esperar sempre."
+
+"Comecei a escolher o que comer em função do meu corpo, não das dietas antigas."
+
+[long pause]
+
+Três a cinco linhas chegam.
+
+[pause]
+
+E depois uma última linha:
+
+"Antes de começar a escolher, a minha vida era — Agora, é — "
+
+[short pause]
+
+Completa.
+
+[pause]
+
+Podes descobrir que a diferença, embora subtil, é imensa.
+
+[long pause]
+
+A mulher que escolhe tem chama.
+
+Mesmo que, em algumas semanas, a chama esteja baixa.
+
+[pause]
+
+Porque a chama não é intensidade constante.
+
+É a qualidade geral de quem dirige a sua própria vida.
+
+[short pause]
+
+E a mulher que dirige, mesmo em pequena escala, tem sempre, algures em si, fogo a arder.`,
+      },
+      {
+        id: "a-chama-m8c",
+        titulo: "M8.C — A relação possível com a tua chama",
+        curso: "a-chama",
+        texto: `Este curso acaba.
+
+[pause]
+
+E tu continuas nele.
+
+[long pause]
+
+Não vais sair daqui com a chama constantemente acesa.
+
+[pause]
+
+Não era esse o objectivo.
+
+[short pause]
+
+Vais sair com instrumentos que não tinhas há oito módulos — e, sobretudo, com uma forma nova de olhar para ti mesma nesta zona da vida.
+
+[long pause]
+
+Antes de fechar, vamos fazer um inventário.
+
+[pause]
+
+Não de futuro imaginado.
+
+De presente real — o que tu, ao longo destes oito módulos, aprendeste a fazer.
+
+[short pause]
+
+Pega numa folha. Escreve em cima:
+
+"Antes deste curso, eu não sabia —"
+
+[long pause]
+
+E vai escrevendo, devagar, à medida que reconheces.
+
+[pause]
+
+Não sabia notar os sinais pequenos do meu desejo que apareciam ao longo do dia.
+
+Não tinha mapa das frases antigas que ainda dirigem a minha relação com prazer.
+
+Não tinha dado a mim mesma permissão escrita para o meu prazer próprio.
+
+Não tinha identificado os sítios do corpo onde aprendi, ao longo dos anos, a não sentir.
+
+Não tinha tido, com uma amiga, uma conversa a sério sobre este tema.
+
+Não tinha percebido que a minha chama se reanima por coisas que não têm nada a ver com sexo — pequenos prazeres, vontades sem nome, entusiasmos antigos.
+
+Não sabia que escolher, em pequena escala, é base da capacidade de desejar.
+
+[short pause]
+
+Vai escrevendo o que for verdadeiro para ti.
+
+Algumas linhas. Não muitas. As que importam.
+
+[long pause]
+
+Quando acabares, lê em voz baixa, para ti.
+
+[pause]
+
+E repara numa coisa.
+
+[short pause]
+
+Cada linha desta lista é um instrumento.
+
+[pause]
+
+Não é frase motivacional. Não é revelação passageira. É hábito novo, pequeno, instalado em ti ao longo de oito módulos de trabalho silencioso.
+
+[long pause]
+
+A mulher em paz com a sua chama não é versão idealizada que aparece daqui a dois anos.
+
+[pause]
+
+É a soma dos pequenos hábitos que tu, ao longo dos meses, vais continuando a praticar depois deste curso terminar.
+
+[short pause]
+
+É a mulher que continua a perguntar ao corpo, antes de reagir, o que ele quer.
+
+A mulher que continua a registar os sinais pequenos em vez de os descartar.
+
+A mulher que continua a dar-se permissão, em pequenos momentos, para exercer prazer sem pedir autorização a ninguém.
+
+[long pause]
+
+Esta mulher não chega.
+
+Constrói-se em cada gesto pequeno repetido.
+
+[pause]
+
+E tu, neste momento, és exactamente isso — uma mulher a meio dessa construção.
+
+[short pause]
+
+Não no fim.
+
+A meio.
+
+[long pause]
+
+A relação possível com a tua chama não é a de a ter sempre alta.
+
+[pause]
+
+É a de saber onde ela está — em cada semana, em cada fase — e de respeitar o que ela te diz.
+
+[short pause]
+
+Semanas em que está baixa pedem descanso, não esforço.
+
+Semanas em que está alta pedem expressão, não desperdício em obrigações.
+
+Semanas no meio pedem atenção, para que tu saibas, com precisão, em que fase estás.
+
+[long pause]
+
+A mulher que tem esta relação com a sua chama não é submetida a ela.
+
+[pause]
+
+Nem a reprime.
+
+Nem a persegue em excesso.
+
+[short pause]
+
+Vive com ela como vive com qualquer outro ritmo interior importante.
+
+[pause]
+
+Com respeito, com presença, com escuta.
+
+[long pause]
+
+E essa escuta, ao longo dos anos, é o que mantém a chama viva em mulher adulta.
+
+[pause]
+
+Não a intensidade constante.
+
+A presença fiel.
+
+[short pause]
+
+A tua chama não vai estar sempre alta.
+
+Mas vai estar sempre em ti.
+
+[pause]
+
+E tu, agora, sabes como a procurar quando ela parece estar longe, como a acolher quando ela aparece, e como respeitar as suas pausas naturais sem interpretar essas pausas como falha.
+
+[long pause]
+
+Este curso acaba. Os instrumentos ficam.
+
+[pause]
+
+Cada vez que pegas num deles, mesmo sem te lembrares deste curso, estás a continuar o trabalho.
+
+[short pause]
+
+A tua chama é tua. A tua casa é tua. Os instrumentos para a cuidar agora também.
+
+[pause]
+
+E o que vier a seguir não é transformação prometida.
+
+É o que tu, com estes instrumentos na mão, fizeres todos os dias quando ninguém estiver a ver.
+
+[long pause]
+
+Bem-vinda a ti mesma.
+
+[pause]
+
+Outra vez.
+
+[short pause]
+
+Desta vez, em pleno dia.
+
+[pause]
+
+Em adulta.
+
+Com olhos abertos.
+
+E com chama — mesmo que devagar — acesa.`,
+      },
+    ],
+  },
 ];
