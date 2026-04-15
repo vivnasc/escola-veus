@@ -13742,4 +13742,409 @@ E o caminho, por si só, já era a mulher que procuravas.`,
       },
     ],
   },
+  {
+    id: "curso-o-silencio-que-grita-m1",
+    titulo: "Curso O Silêncio que Grita — Módulo 1 (Aulas A, B, C)",
+    descricao: "Os Silêncios que Aprendeste. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "o-silencio-que-grita-m1a",
+        titulo: "M1.A — As coisas que não se falavam à mesa",
+        curso: "o-silencio-que-grita",
+        texto: `Em casa, na tua infância, havia uma mesa onde se reuniam para comer.
+
+[pause]
+
+Talvez todos os dias. Talvez aos fins-de-semana. Talvez só nos almoços de família.
+
+[long pause]
+
+Nessa mesa, havia conversa.
+
+Sobre o trabalho do pai, talvez. Sobre os vizinhos. Sobre a comida. Sobre os pequenos eventos da semana.
+
+[pause]
+
+E havia, simultaneamente, um conjunto de assuntos que nunca apareciam.
+
+[short pause]
+
+A depressão da tia que ninguém visitava. O divórcio do primo que se mudou para outra cidade. A doença do avô que morreu sem que tu soubesses ao certo do quê. O dinheiro que faltava em certos meses.
+
+[pause]
+
+Estes assuntos não foram explicitamente proibidos.
+
+Foram, simplesmente, deixados de fora.
+
+[long pause]
+
+Tu, em criança, percebeste isto sem que ninguém te explicasse.
+
+Aprendeste, por absorção, que havia conversas que se tinham e conversas que não se tinham.
+
+[pause]
+
+E aprendeste a distinguir as duas categorias com precisão de adulto.
+
+[short pause]
+
+Antes de saberes o que era importante na vida, sabias o que se podia mencionar à mesa.
+
+[long pause]
+
+Esta aprendizagem — que parece pequena — molda a tua relação com a verdade durante o resto da vida.
+
+[pause]
+
+Aprendes que a verdade tem zonas de admissão.
+
+Que algumas verdades servem para o público — e outras pertencem ao silêncio.
+
+E que tu, como pessoa decente, deves saber distinguir.
+
+[short pause]
+
+Esta lição, que herdaste sem te aperceberes, governa hoje muitas das tuas conversas adultas.
+
+[pause]
+
+Nas reuniões de família. Nos jantares com amigos. Nas conversas com o teu parceiro.
+
+[short pause]
+
+Há sempre, em ti, um filtro automático que avalia se um assunto é "para falar" ou "para deixar".
+
+[long pause]
+
+Este filtro foi útil enquanto te mantinha integrada na família de origem.
+
+Mas tornou-se, ao longo dos anos, um obstáculo a relações mais profundas.
+
+[pause]
+
+Porque a intimidade real exige falar do que normalmente se não fala.
+
+E o teu filtro, treinado durante décadas, recusa-se a deixar passar.
+
+[short pause]
+
+Mesmo quando tu, conscientemente, querias falar.
+
+[pause]
+
+Há uma resistência que vem antes da decisão racional.
+
+[long pause]
+
+Esta semana, faz uma lista privada.
+
+Quais eram os assuntos que, em criança, percebeste que não se falavam à mesa em tua casa?
+
+[pause]
+
+Escreve cada um. Sem desenvolver. Apenas o nome do assunto.
+
+[short pause]
+
+Olha para a lista.
+
+[pause]
+
+Provavelmente vais ficar surpreendida com o número.
+
+[short pause]
+
+E vais começar a ver, em retrospectiva, o quanto da tua família real ficou fora das conversas oficiais.
+
+[long pause]
+
+Esta lista é a primeira ferramenta deste curso.
+
+Vamos voltar a ela várias vezes.
+
+[pause]
+
+Porque cada assunto silenciado em criança continua, hoje, a ter peso na forma como tu falas — ou não falas — em adulta.
+
+[short pause]
+
+Reconhecê-los é o primeiro passo para deixares de obedecer ao silêncio sem o teres escolhido.`,
+      },
+      {
+        id: "o-silencio-que-grita-m1b",
+        titulo: "M1.B — O que o silêncio do pai te ensinou",
+        curso: "o-silencio-que-grita",
+        texto: `O teu pai, na tua infância, era silencioso?
+
+[pause]
+
+Não necessariamente um homem mau. Talvez fosse, até, um pai amoroso à sua maneira.
+
+Mas silencioso.
+
+[long pause]
+
+Não falava do que sentia. Não pedia o que precisava. Não respondia em palavras quando algo lhe pesava.
+
+[pause]
+
+Quando estava bem, comia em silêncio.
+
+Quando estava mal, ficava em silêncio mais grosso.
+
+[short pause]
+
+E tu, como filha, aprendeste a ler estes silêncios com precisão.
+
+[long pause]
+
+Aprendeste, sem que ninguém te ensinasse, qual silêncio era cansaço normal e qual era preocupação séria.
+
+Qual era distância afectuosa e qual era zanga contida.
+
+Qual era sinal de aprovação tácita e qual era sinal de desaprovação que talvez nunca chegasse a ser dita.
+
+[pause]
+
+Esta literacia do silêncio paterno tornou-se, no teu sistema nervoso, uma capacidade especializada.
+
+[short pause]
+
+E essa capacidade ficou contigo.
+
+[pause]
+
+Hoje, em adulta, tu lês silêncios alheios com sensibilidade que poucas pessoas têm.
+
+[long pause]
+
+Esta sensibilidade é, em parte, dádiva.
+
+Em parte, peso.
+
+[pause]
+
+É dádiva quando te permite compreender pessoas próximas mesmo quando elas não dizem em palavras o que sentem.
+
+É peso quando te obriga a estar permanentemente em estado de leitura — interpretando silêncios mesmo onde eles podem não ter o significado que tu lhes atribuis.
+
+[short pause]
+
+Este peso aparece sobretudo em relações com homens.
+
+[pause]
+
+Quando o teu parceiro fica em silêncio, alguma parte de ti automaticamente entra em modo de decifração.
+
+Está chateado? Está cansado? Está a guardar algo? Está a recuar?
+
+[short pause]
+
+Esta vigilância, embora venha de origem afectuosa, é exaustiva.
+
+[pause]
+
+E muitas vezes nem chega a ser necessária — o silêncio do teu parceiro pode ser, simplesmente, silêncio.
+
+Sem mensagem oculta.
+
+[long pause]
+
+Esta diferença — entre silêncio com mensagem e silêncio sem mensagem — é uma das aprendizagens mais difíceis da vida adulta.
+
+[pause]
+
+Porque a tua infância te treinou a presumir que todo o silêncio significa algo.
+
+E a vida adulta exige que aprendas que muitos silêncios não significam nada de particular.
+
+[short pause]
+
+São apenas pausa, descanso, ausência de necessidade de palavra.
+
+[long pause]
+
+Reconhecer esta diferença liberta uma quantidade impressionante de energia mental.
+
+[pause]
+
+Energia que tu, durante décadas, gastaste a interpretar silêncios que não precisavam de interpretação.
+
+[short pause]
+
+Esta semana, quando alguém próximo de ti ficar em silêncio, faz uma coisa diferente.
+
+[pause]
+
+Em vez de o interpretares automaticamente, espera.
+
+Não perguntes. Não decifres. Apenas espera.
+
+[short pause]
+
+Vai notar duas coisas.
+
+[pause]
+
+Primeira: a maioria dos silêncios passa sem que ninguém precise de explicar nada. Eram apenas silêncios.
+
+Segunda: quando há, de facto, algo importante por trás do silêncio, a outra pessoa, com tempo, costuma trazer.
+
+[short pause]
+
+Tu não precisas de fazer o trabalho pelos outros.
+
+[pause]
+
+Os silêncios alheios, na maior parte das vezes, podem ficar por interpretar.
+
+[long pause]
+
+Isto é libertação que o teu sistema nervoso espera há décadas.
+
+A possibilidade de existir sem estar permanentemente a decifrar.`,
+      },
+      {
+        id: "o-silencio-que-grita-m1c",
+        titulo: "M1.C — As perguntas que não podiam ser feitas",
+        curso: "o-silencio-que-grita",
+        texto: `Lembras-te de uma pergunta que, em criança, quiseste fazer e percebeste que não devias?
+
+[pause]
+
+Sobre alguém da família. Sobre algo do passado. Sobre uma situação presente que ninguém explicava.
+
+[long pause]
+
+A maioria das crianças, em famílias com silêncios, aprende cedo a inibir perguntas.
+
+[pause]
+
+Não foi necessário ninguém te dizer "não perguntes".
+
+Bastou veres a reacção que outras perguntas provocaram.
+
+[short pause]
+
+A pausa estranha. O olhar que se desviou. A resposta vaga que claramente terminava o assunto.
+
+[pause]
+
+Aprendeste que algumas perguntas geravam desconforto.
+
+E o desconforto, para uma criança que precisa do amor da família, é mais ameaçador do que a curiosidade não saciada.
+
+[long pause]
+
+Então engoliste as perguntas.
+
+Algumas, ao longo do tempo, perdeste-as por completo.
+
+Outras, ainda ressurgem em silêncio quando, em adulta, pensas na família de origem.
+
+[pause]
+
+Há perguntas que tu, hoje, ainda gostarias de fazer e nunca vais ter resposta.
+
+[short pause]
+
+Porque as pessoas que poderiam responder já partiram.
+
+Ou porque, mesmo vivas, continuariam a recuar perante a pergunta.
+
+[long pause]
+
+Esta é uma dor específica.
+
+[pause]
+
+Não é dor de algo que te tenha sido feito directamente.
+
+É dor de algo que nunca te foi explicado.
+
+[short pause]
+
+E a falta de explicação, para uma criança, transforma-se em mistério.
+
+E o mistério, em adulta, transforma-se em peso vago.
+
+[long pause]
+
+Há, no entanto, uma forma de lidar com perguntas que nunca tiveram resposta.
+
+[pause]
+
+Não é encontrar a resposta. Muitas vezes, isso já não é possível.
+
+É reconhecer que a pergunta existiu — e que a inibição dela foi imposta, não escolhida.
+
+[short pause]
+
+Quando reconheces a pergunta como tua, mesmo sem resposta, ela perde parte do peso.
+
+[pause]
+
+Porque o que pesava não era a ausência de resposta.
+
+Era a impossibilidade de sequer formular a pergunta em voz alta.
+
+[long pause]
+
+Esta semana, pega num caderno.
+
+Escreve, durante alguns dias, todas as perguntas que tu, em criança, gostarias de ter feito e não pudeste.
+
+[pause]
+
+Não escrevas só uma vez. Volta ao caderno várias vezes.
+
+Algumas perguntas só vão aparecer depois de outras já terem sido escritas.
+
+[short pause]
+
+Não te preocupes em encontrar respostas.
+
+A escrita das perguntas é, em si mesma, um acto de libertação parcial.
+
+[pause]
+
+Estás a fazer o que a criança não pôde fazer.
+
+A formular as perguntas em palavras concretas.
+
+[short pause]
+
+E essa formulação, mesmo silenciosa, recupera alguma da capacidade que te foi inibida.
+
+[long pause]
+
+Algumas das perguntas, com o tempo, podem encontrar resposta inesperada.
+
+Por uma conversa casual com uma tia. Por um documento que aparece. Por uma memória que outro familiar partilha.
+
+[pause]
+
+Outras nunca vão ter resposta.
+
+E está bem.
+
+[short pause]
+
+A pergunta, escrita, deixa de pertencer ao silêncio inquieto.
+
+Passa a pertencer à tua história consciente — e isso, por si só, é diferença significativa.
+
+[long pause]
+
+Faz a lista.
+
+Não para confrontar ninguém.
+
+Para te confrontares com o quanto te foi inibido.
+
+E a partir desse reconhecimento, decidires o que queres fazer com a inibição residual que ainda te habita.`,
+      },
+    ],
+  },
 ];
