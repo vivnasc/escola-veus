@@ -26120,4 +26120,555 @@ E essa liberdade, pequena no papel, é uma das bases sobre a qual a chama, com t
       },
     ],
   },
+  {
+    id: "curso-a-chama-m5",
+    titulo: "Curso A Chama — Módulo 5 (Aulas A, B, C)",
+    descricao: "O Desejo na Relação Longa.",
+    scripts: [
+      {
+        id: "a-chama-m5a",
+        titulo: "M5.A — A semana em que deixaste de ter iniciativa",
+        curso: "a-chama",
+        texto: `Houve, na tua relação longa, uma semana em que tu deixaste de ter iniciativa.
+
+[pause]
+
+Provavelmente nunca disseste isso a ninguém.
+
+Provavelmente nem a ti própria disseste, em letra clara.
+
+[long pause]
+
+Mas aconteceu.
+
+[pause]
+
+Em algum ponto da relação, uma mudança silenciosa instalou-se.
+
+A iniciativa passou a vir só dele.
+
+E tu, em vez de iniciares quando te apetecia, começaste a esperar.
+
+[short pause]
+
+Às vezes, apetecia-te.
+
+Mas não fazias nada.
+
+[pause]
+
+Talvez por timidez repentina em alguém com quem vives há anos.
+
+Talvez por medo de ele recusar — e teres de lidar com a rejeição que nunca tiveras de gerir enquanto era ele a pedir.
+
+Talvez, simplesmente, por cansaço aprendido — por teres aprendido que é mais fácil deixar ele organizar este pedaço da relação.
+
+[long pause]
+
+Esta assimetria, quando se instala, raramente é revista.
+
+[pause]
+
+E ao longo dos anos, torna-se realidade inquestionada.
+
+[short pause]
+
+"Ele é que costuma iniciar."
+
+"Eu não sou muito de começar."
+
+"A libido masculina é diferente — ele precisa mais."
+
+[pause]
+
+Estas frases, repetidas em silêncio, parecem descrever o que é.
+
+[short pause]
+
+Na verdade, descrevem o que foi ficando — por falta de revisão.
+
+[long pause]
+
+A questão honesta é esta.
+
+[pause]
+
+Quando foi a última vez que tu tiveste iniciativa sexual?
+
+[short pause]
+
+Não no sentido óbvio. Também num sentido mais subtil — tu a aproximares-te dele, a procurares-lhe o toque, a pedires-lhe a noite.
+
+[pause]
+
+Para muitas mulheres em relação longa, a resposta é: "não me lembro. Meses? Um ano? Mais?"
+
+[long pause]
+
+Esta perda de iniciativa tem consequência específica.
+
+[pause]
+
+Tu começas a receber o sexo.
+
+Já não o provocas.
+
+[short pause]
+
+E o sexo que tu recebes, sem nunca provocares, é diferente do que tu provocas.
+
+[pause]
+
+Porque o desejo, em mulher, precisa de vias de saída.
+
+E se a via de saída "iniciar" está bloqueada, o desejo, sem saída, atrofia.
+
+[long pause]
+
+Esta semana, vais fazer um gesto pequeno.
+
+[pause]
+
+Num dia em que te apeteça — mesmo subtilmente — ser tu a ter iniciativa.
+
+[short pause]
+
+Não tem de ser iniciativa óbvia. Não tem de ser proposta verbal explícita.
+
+[pause]
+
+Pode ser um olhar mantido mais do que o habitual durante o jantar.
+
+Pode ser a tua mão no joelho dele enquanto vêem televisão, de uma forma diferente do habitual.
+
+Pode ser uma frase curta: "Esta noite, quando for para dormir, queria estar contigo."
+
+[long pause]
+
+Este gesto, pequeno, desmonta uma estrutura antiga.
+
+[pause]
+
+Desmonta a estrutura em que ele pede e tu respondes.
+
+E reintroduz uma estrutura em que tu também desejas — e comunicas esse desejo.
+
+[short pause]
+
+Ele vai reparar.
+
+[pause]
+
+Pode ficar surpreendido. Pode estranhar. Pode até, momentaneamente, sentir-se desconfortável com a mudança de papel.
+
+[short pause]
+
+Mas, na grande maioria dos casos, o que acontece a seguir é que alguma coisa, na dinâmica erótica de vocês, muda.
+
+[long pause]
+
+Deixa de ser ritual desempenhado.
+
+Passa a ser encontro efectivo.
+
+[pause]
+
+Porque há duas pessoas a desejar, não uma a pedir e outra a ceder.
+
+[short pause]
+
+E a diferença, mesmo quando subtil, é grande.
+
+[long pause]
+
+Depois do gesto, numa folha — que não precisas de mostrar a ninguém — escreve três linhas.
+
+[pause]
+
+"Hoje tive iniciativa. Ele reagiu com —. Eu senti —."
+
+[short pause]
+
+Não tens de repetir todas as semanas.
+
+Mas mesmo uma vez, ao fim de anos sem, começa a recalibrar algo interior.
+
+[pause]
+
+A parte de ti que tinha iniciativa, há anos, e que foi aprendendo a desligar-se — fica a saber que ainda pode voltar.
+
+[long pause]
+
+E essa informação, nela, é semente.
+
+[pause]
+
+De quê, exactamente, tu descobres com o tempo.`,
+      },
+      {
+        id: "a-chama-m5b",
+        titulo: "M5.B — O sexo que já fazem há dez anos igual",
+        curso: "a-chama",
+        texto: `Em muitas relações longas, o sexo, quando acontece, acontece igual.
+
+[pause]
+
+Mesma hora aproximada.
+
+Mesmo quarto.
+
+Mesma coreografia — em linhas gerais.
+
+[long pause]
+
+Começa mais ou menos da mesma forma.
+
+Progride mais ou menos da mesma forma.
+
+Acaba mais ou menos da mesma forma.
+
+[pause]
+
+E no dia seguinte, tu e ele raramente falam sobre o que aconteceu.
+
+[short pause]
+
+Isso passou a ser normal entre vocês. Banal. Quase administrativo.
+
+[long pause]
+
+Este estado é tão comum em casais de longa duração que muitos casais nem lhe chamam problema.
+
+[pause]
+
+Chamam-lhe rotina.
+
+E aceitam-no como preço natural da vida partilhada.
+
+[short pause]
+
+Mas há uma diferença entre rotina e repetição mecânica.
+
+[pause]
+
+A rotina tem alguma presença. Tem gosto. Tem atenção do que está a acontecer.
+
+A repetição mecânica é fazer os mesmos gestos sem presença nenhuma — apenas por reflexo aprendido.
+
+[long pause]
+
+Muitos casais longos deslizaram da rotina para a repetição mecânica, sem marcarem o momento em que isso aconteceu.
+
+[pause]
+
+E o sexo, quando é repetição mecânica, tem custo.
+
+[short pause]
+
+Tu, durante o acto, estás em segundo plano. A tua cabeça pensa em coisas banais. A tua atenção não está ali.
+
+[pause]
+
+Ele, provavelmente, nota. Mas não fala.
+
+Ou fala, uma vez ou outra, de forma vaga — "ultimamente está diferente."
+
+[short pause]
+
+E vocês os dois decidem, sem palavras, que isto é o que é, e não há muito a fazer.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno.
+
+[pause]
+
+Não vais mudar tudo. Não vais propor experiências dramáticas.
+
+[short pause]
+
+Vais apenas mudar uma coisa — qualquer uma — no próximo encontro sexual que tiveres.
+
+[pause]
+
+Pode ser tão pequeno como:
+
+Fazer amor com a luz ligeiramente acesa, em vez do escuro habitual.
+
+Começar noutra divisão da casa.
+
+Pedir-lhe, explicitamente, uma coisa específica que te apetece — em vez de esperar que ele adivinhe.
+
+Parar a meio e beijá-lo de uma forma diferente, sem pressa.
+
+Dizer-lhe, em voz baixa, uma frase sobre o que estás a sentir.
+
+[long pause]
+
+Não é coreografia nova.
+
+É interrupção de coreografia antiga.
+
+[pause]
+
+E a interrupção, mesmo pequena, reintroduz presença.
+
+[short pause]
+
+Porque, de repente, vocês os dois têm de prestar atenção — em vez de deslizarem em piloto automático.
+
+[long pause]
+
+A maior parte das mulheres que faz este exercício descreve a mesma coisa.
+
+[pause]
+
+"Foi como se, pela primeira vez em muito tempo, tivéssemos estado os dois presentes no mesmo sítio."
+
+[short pause]
+
+Não foi sexo melhor, objectivamente.
+
+Foi sexo em que houve os dois.
+
+[long pause]
+
+Esta presença renovada, quando se repete algumas vezes, começa a descongelar a dinâmica erótica.
+
+[pause]
+
+E o casal que fazia sexo há dez anos igual começa, subtilmente, a fazer sexo diferente.
+
+[short pause]
+
+Não porque aprendeu técnicas novas.
+
+Porque voltou a estar presente no que estava a acontecer.
+
+[pause]
+
+E a presença, em sexo, é variável com mais peso do que a técnica.
+
+[long pause]
+
+À noite, depois do gesto, numa folha, escreve uma linha.
+
+[pause]
+
+"Esta noite, mudei esta coisa pequena. E notei que —"
+
+[short pause]
+
+Ao fim de algumas semanas, vais ter um pequeno diário de interrupções.
+
+[pause]
+
+E podes olhar para ele como quem olha para um mapa de reencontro.
+
+[long pause]
+
+Entre tu e a pessoa com quem vives há anos.
+
+[pause]
+
+Através de pequenos gestos que, no aparente, parecem banais.
+
+Mas que, no profundo, são actos de reacendimento.`,
+      },
+      {
+        id: "a-chama-m5c",
+        titulo: "M5.C — A conversa que nunca tiveste com ele sobre prazer",
+        curso: "a-chama",
+        texto: `Há uma conversa que tu, na tua relação longa, provavelmente nunca tiveste com ele.
+
+[pause]
+
+A conversa sobre o que te dá prazer.
+
+[long pause]
+
+Tiveram a conversa sobre filhos.
+
+Sobre dinheiro.
+
+Sobre famílias respectivas.
+
+Sobre planos de férias, casas, carros, reformas.
+
+[pause]
+
+Mas a conversa específica em que tu, em voz clara, explicas a ele o que te dá prazer sexual — nunca a tiveram.
+
+[short pause]
+
+Ou tiveram-na de forma rudimentar, muito cedo na relação, e nunca a actualizaram.
+
+[long pause]
+
+Esta ausência não é por falta de intimidade.
+
+[pause]
+
+É por estrutura cultural.
+
+[short pause]
+
+Tu foste treinada para não falar nestes termos.
+
+Ele foi treinado para saber sem ter de perguntar.
+
+E vocês os dois, quando entraram na relação, assumiram implicitamente que isto se descobria.
+
+[pause]
+
+Descobre-se parcialmente.
+
+[short pause]
+
+Mas raramente chega ao nível de detalhe que seria útil.
+
+[long pause]
+
+E ao fim de muitos anos, ele sabe o que te dá algum prazer.
+
+[pause]
+
+Sabe a sequência que funciona na maior parte das vezes.
+
+Sabe a zona que costuma ser eficaz.
+
+[short pause]
+
+Mas não sabe:
+
+O que te daria ainda mais prazer, se ele soubesse.
+
+Os pedidos específicos que tu tens há anos e nunca verbalizaste.
+
+As coisas que ele faz e que não são as que tu preferirias.
+
+As zonas do teu corpo que ele nunca explorou suficientemente.
+
+Os momentos do dia em que o teu desejo é maior e que ele não sabe aproveitar.
+
+[long pause]
+
+Esta informação está em ti.
+
+[pause]
+
+Vive como mapa privado que tu, há anos, não partilhas com a pessoa que mais precisaria dele.
+
+[short pause]
+
+Não partilhas por várias razões.
+
+Porque te foi ensinado que mulher que pede muito é exigente.
+
+Porque tens medo de o ferir na vaidade se sugerires que há coisas que ele podia fazer diferente.
+
+Porque, num momento inicial da relação, assumiste que ele ia perceber — e agora, vinte anos depois, parece estranho levantar o assunto.
+
+[pause]
+
+Porque, no fundo, não sabes bem como começar uma conversa destas.
+
+[long pause]
+
+Esta semana — ou este mês, se precisares de mais tempo — vais iniciar essa conversa.
+
+[pause]
+
+Não de uma vez. Não numa frase.
+
+[short pause]
+
+Em pequenas pílulas, ao longo de algumas semanas.
+
+[long pause]
+
+A primeira pílula pode ser simples.
+
+[pause]
+
+Num momento de relaxamento — não na cama, não durante sexo — podes dizer-lhe algo como:
+
+"Há uma coisa pequena que me apetece pedir. Quando me tocas aqui, gosto se for um bocadinho mais lento. Há uma diferença."
+
+[short pause]
+
+Uma coisa. Uma vez. Sem drama.
+
+[pause]
+
+Observa como ele reage.
+
+[long pause]
+
+A maioria dos homens em relações longas, quando recebe informação específica sobre o prazer da parceira, reage de uma de duas formas.
+
+[pause]
+
+Alguns ficam ligeiramente desconfortáveis na hora — com um leve sentimento de terem estado a fazer mal durante anos.
+
+[short pause]
+
+Mas, nos dias seguintes, experimentam a sugestão.
+
+E, na maior parte dos casos, tornam-se melhores parceiros.
+
+[pause]
+
+Outros, menos frequentemente, recusam.
+
+Dizem "sempre foi assim", "se gostasses a fazer diferente tinhas dito antes", "tu mudaste".
+
+[long pause]
+
+A segunda reacção é informação importante.
+
+[pause]
+
+Não significa, necessariamente, que a relação não tem solução.
+
+Mas significa que o trabalho vai ser maior do que apenas uma conversa.
+
+[short pause]
+
+Na maior parte das vezes, porém, a reacção é a primeira.
+
+[pause]
+
+E, ao longo de algumas semanas em que tu vais partilhando pequenas informações — uma aqui, outra ali, nunca todas de vez — a dinâmica entre vocês começa a mudar.
+
+[long pause]
+
+Ele começa a saber-te melhor.
+
+Tu começas a ter mais do que pedes.
+
+E o sexo entre vocês deixa de ser coreografia herdada e passa a ser encontro informado.
+
+[pause]
+
+A conversa sobre prazer, em relação longa, é das mais difíceis de iniciar.
+
+[short pause]
+
+Mas é também das mais transformadoras.
+
+[pause]
+
+Porque põe em palavras o que, há décadas, vivia em suposição.
+
+[long pause]
+
+E a suposição, em intimidade de longo prazo, é terreno onde a chama se apaga.
+
+[pause]
+
+As palavras, mesmo desajeitadas, são oxigénio.`,
+      },
+    ],
+  },
 ];
