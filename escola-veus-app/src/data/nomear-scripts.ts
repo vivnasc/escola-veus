@@ -8191,7 +8191,7 @@ São a conta que o corpo finalmente cobra pelo que tu ignoraste.
 
 Esta semana, escolhe uma conversa em que saíste a sentir-te estranha.
 
-Fecha os olhos e volta mentalmente ao início da conversa.
+Escreve num papel, passo a passo: o que foi dito, o que foi respondido, em que momento o corpo começou a apertar.
 
 [pause]
 
@@ -8516,7 +8516,7 @@ O que era rotina automática. O que era obrigação invisível. O que era verdad
 
 A arte de não fazer não é desistir.
 
-É uma pratica de discernimento.
+É uma prática de discernimento.
 
 [pause]
 
@@ -9160,7 +9160,7 @@ Algo concreto — um telefonema semanal reduzido, uma visita combinada com menos
 
 [pause]
 
-Não precisas de anúncio. Não precisas de explicar. Não precisas de ser justa em alto.
+Não precisas de anúncio. Não precisas de explicar. Não precisas de justificar em voz alta.
 
 Introduz a mudança. Uma vez. Sem dramatizar.
 
@@ -9717,7 +9717,7 @@ A recuperação começa por uma distinção.
 
 Olha para a tua semana passada.
 
-Liste as reuniões em que estiveste.
+Lista as reuniões em que estiveste.
 
 Ao lado de cada uma, escreve: era obrigatória, ou eu podia ter recusado?
 
@@ -9871,15 +9871,17 @@ O conjunto é trabalho a tempo inteiro.
 
 [pause]
 
-Esta contagem, repetida uma única vez, muda a forma como tu interpretas o teu próprio cansaço.
+Esta contagem, feita uma única vez num papel, muda a forma como tu interpretas o teu próprio cansaço.
 
 Deixa de ser preguiça. Deixa de ser queixume.
 
-Passa a ser dado.
+Passa a ter peso concreto.
 
 [long pause]
 
-E os dados, uma vez registados, começam a pedir mudança.`,
+E o que está no papel pesa diferente do que está solto na cabeça.
+
+Começa, sozinho, a pedir ar.`,
       },
       {
         id: "limite-sagrado-m7b",
@@ -9971,13 +9973,21 @@ Mas guardada.
 
 Pensa em três relações importantes na tua vida.
 
-Pergunta-te, para cada uma: há alguma coisa que eu tenha acumulado, sem dizer, ao longo dos anos?
+Escreve, para cada uma, o nome da pessoa seguido de uma linha única: a conta que está por dizer.
 
 [pause]
 
-Não precisas de resolver. Não precisas de confrontar.
+Não é para enviar. Não é para confrontar.
 
-Só de reconhecer a existência do registo interno.
+É para veres a lista.
+
+[short pause]
+
+Às vezes, o simples ver das contas acumuladas muda a sua temperatura por dentro.
+
+Algumas dissolvem-se apenas por terem sido nomeadas.
+
+Outras ficam. Mas passam a ser visíveis — e o que é visível deixa de atacar por baixo.
 
 [short pause]
 
@@ -10198,23 +10208,15 @@ E essa outra coisa merece o teu sim.
 
 [long pause]
 
-Experimenta, quando a culpa aparecer depois de um não, fazer-te uma pergunta.
+Quando a culpa aparecer depois de um não, há uma pergunta que redefine o que se está a passar.
 
 A que é que eu, com este não, estou a dizer sim?
 
 [pause]
 
-Ao meu corpo que precisa de descanso.
+A resposta não é uma lista pronta. É uma só palavra, uma só frase — tua, nesse momento.
 
-Ao trabalho importante que estava a adiar.
-
-À minha relação mais íntima que tem sido negligenciada.
-
-À versão de mim mesma que ainda não apareceu completamente.
-
-[short pause]
-
-Qualquer uma destas respostas é suficiente.
+Escreve-a, se precisares de a ver fora da cabeça. Uma palavra basta.
 
 Dizer não é, afinal, um acto de amor por alguém.
 
@@ -10298,7 +10300,7 @@ Mesmo quando a relação não era saudável, o afastamento cria um vazio.
 
 [pause]
 
-O corpo fica estranhar a ausência de pessoas que estavam sempre lá.
+O corpo estranha a ausência de pessoas que estavam sempre lá.
 
 Mesmo quando essas pessoas estavam lá de forma que te desgastava.
 
