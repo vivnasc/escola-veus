@@ -12469,4 +12469,405 @@ E só pode começar quando uma das duas pessoas — normalmente a mulher — dec
       },
     ],
   },
+  {
+    id: "curso-sangue-e-seda-m6",
+    titulo: "Curso Sangue e Seda — Módulo 6 (Aulas A, B, C)",
+    descricao: "A Maternidade. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "sangue-e-seda-m6a",
+        titulo: "M6.A — A escolha de ser ou não ser mãe",
+        curso: "sangue-e-seda",
+        texto: `Quando foi a primeira vez que pensaste seriamente sobre se querias ser mãe?
+
+[pause]
+
+Foi decisão consciente? Ou foi algo que assumiste que ias ser, porque era o que se esperava?
+
+[long pause]
+
+Para muitas mulheres, a maternidade não foi decidida.
+
+Foi assumida.
+
+[pause]
+
+Assumida como fase natural. Como próximo capítulo óbvio. Como uma coisa que iria acontecer quando chegasse o momento certo.
+
+[short pause]
+
+Esta assumpção não é inocente.
+
+É cultural.
+
+[long pause]
+
+Durante séculos, a única pergunta legítima sobre a maternidade de uma mulher era quando, nunca se.
+
+E esta estrutura antiga, apesar de legalmente desmontada, persiste emocionalmente.
+
+[pause]
+
+Mesmo em países onde a escolha é protegida por lei, a maioria das mulheres chega à idade adulta sem ter realmente escolhido ser mãe.
+
+Escolheu quando. Escolheu com quem. Escolheu quantos.
+
+Mas o se, na maioria das vezes, foi pressuposto.
+
+[short pause]
+
+Isto tem uma consequência silenciosa.
+
+[pause]
+
+Muitas mães, em algum ponto, descobrem que amam os filhos — mas não escolheram, realmente, a maternidade.
+
+E a distinção entre estas duas coisas é importante.
+
+[long pause]
+
+Amar os filhos é automático depois de os ter.
+
+Escolher a maternidade é acto anterior.
+
+[pause]
+
+Se o primeiro aconteceu sem o segundo, há uma complexidade emocional que fica em silêncio.
+
+[short pause]
+
+Amor genuíno pelos filhos. E, por baixo, algo não resolvido sobre a decisão que nunca foi propriamente feita.
+
+[long pause]
+
+Isto não tem de ser fonte de culpa.
+
+Pode ser fonte de consciência.
+
+[pause]
+
+Porque reconhecer que a maternidade foi mais absorvida do que decidida ajuda a entender certas inquietações que, de outra forma, parecem inexplicáveis.
+
+[short pause]
+
+O cansaço que é mais profundo do que deveria ser. O ressentimento vago que aparece em certos momentos. A saudade estranha de uma vida que nunca viveste.
+
+[pause]
+
+Estas sensações não significam que não ames a tua vida actual.
+
+Significam que há uma dimensão da decisão que nunca foi confrontada conscientemente.
+
+[long pause]
+
+Se hoje, como mãe, conseguires olhar para trás e reconhecer em que momento da tua vida esta escolha foi, na verdade, feita — ou não feita — muita coisa alivia.
+
+[pause]
+
+Não porque possas voltar atrás. Não podes.
+
+Mas porque o reconhecimento honesto da história real liberta-te da ficção de que tudo foi planeado perfeitamente.
+
+[short pause]
+
+E as mães que conseguem esta honestidade, muitas vezes, tornam-se mães mais presentes.
+
+Porque deixam de ter de defender uma versão arrumada da sua própria trajectória.
+
+[long pause]
+
+Se não tens filhos, e estás em idade em que a decisão ainda está aberta — o reconhecimento é diferente, mas igualmente necessário.
+
+[pause]
+
+Qual é a origem real do teu "sim" ou do teu "não"?
+
+Quanto é desejo verdadeiro? Quanto é expectativa herdada?
+
+[short pause]
+
+Não há resposta correcta. Há apenas resposta honesta.
+
+[pause]
+
+E esta honestidade, mais cedo do que tarde, é o melhor serviço que podes fazer a ti mesma.
+
+[long pause]
+
+Escreve, num caderno, a história real da tua relação com a maternidade.
+
+Quando pensaste pela primeira vez. O que sentias. O que te disseram que devias sentir. O que acabou por acontecer.
+
+[pause]
+
+Não para partilhar. Para ver.
+
+[short pause]
+
+Uma vida vista, sem ficção arrumada, é uma vida que pode finalmente ser habitada.`,
+      },
+      {
+        id: "sangue-e-seda-m6b",
+        titulo: "M6.B — O corpo depois do parto",
+        curso: "sangue-e-seda",
+        texto: `Se tiveste filhos, o teu corpo depois do parto não é o corpo de antes.
+
+[pause]
+
+Não é uma versão pior. Não é uma versão melhor.
+
+É outra.
+
+[long pause]
+
+A cultura contemporânea tem uma obsessão específica com o "recuperar o corpo de antes".
+
+Revistas, programas, influenciadores — todos focados em mostrar mulheres que "voltaram ao que eram" meses depois de parir.
+
+[pause]
+
+Esta narrativa é cruel.
+
+Porque parte de um pressuposto falso: que o corpo anterior era o corpo certo, e o corpo actual é o corpo a corrigir.
+
+[short pause]
+
+O corpo anterior não era mais certo.
+
+Era, apenas, anterior.
+
+[long pause]
+
+O corpo depois do parto é um corpo que atravessou uma coisa enorme.
+
+Uma vida cresceu dentro dele. Uma separação aconteceu. Uma reconfiguração biológica profunda ocorreu em meses.
+
+[pause]
+
+É irreal esperar que este corpo volte a ser como o anterior.
+
+Seria como esperar que um edifício voltasse a ser como era antes de lhe terem construído um andar novo.
+
+[short pause]
+
+A estrutura mudou. E mudou porque fez trabalho.
+
+[long pause]
+
+Reconciliar-te com este corpo novo exige um acto específico.
+
+[pause]
+
+Deixar de o comparar com o corpo que ele já não é.
+
+E começar a conhecê-lo como corpo novo, com as suas próprias capacidades, sensações, necessidades.
+
+[short pause]
+
+Este reconhecimento raramente é imediato.
+
+Vem por fases. Por vezes com retrocessos.
+
+[pause]
+
+Há dias em que sentes que finalmente aceitas o teu corpo actual. Há outros em que voltas a ter saudades do anterior.
+
+[short pause]
+
+Os dois estados são válidos. Nenhum define o fim da história.
+
+[long pause]
+
+Uma parte importante desta reconciliação é parar de te desculpar pelo corpo actual.
+
+[pause]
+
+Em frente ao espelho. Em conversas com amigas. Em conversas íntimas com um parceiro.
+
+As desculpas automáticas — "estou mais gorda", "não voltei a ser como era", "já não sou como antes" — não são humildade.
+
+[short pause]
+
+São a internalização de um padrão que diz que o teu corpo actual é inferior.
+
+E cada vez que pronuncias esta desculpa, reforças o padrão em ti mesma.
+
+[pause]
+
+Experimenta parar de as dizer.
+
+[short pause]
+
+Não é preciso afirmar o contrário ("estou melhor do que nunca").
+
+Basta não afirmar o deficit.
+
+[pause]
+
+Apenas: este é o meu corpo agora.
+
+[long pause]
+
+Esta frase, repetida silenciosamente quando a voz automática aparecer, começa a reorganizar o teu interior.
+
+[pause]
+
+Deixas de colaborar com a narrativa de que o corpo pós-parto é problema a corrigir.
+
+Passas a tratar o corpo pós-parto como o corpo em que habitas agora.
+
+[short pause]
+
+Não porque "deves amá-lo incondicionalmente" — isso é slogan.
+
+Porque é, simplesmente, o teu.
+
+[long pause]
+
+E vem com novas capacidades que o corpo anterior não tinha.
+
+[pause]
+
+Força de sustentar uma criança durante horas. Sensibilidade nova em alguns pontos que antes não tinhas explorado. Cansaço real que te ensinou a exigir descanso de forma que antes não sabias fazer.
+
+[short pause]
+
+Nem tudo é perda.
+
+Mas só quando paras de comparar começas a ver o que foi ganho.
+
+[long pause]
+
+O teu corpo não é o corpo que era.
+
+E, com paciência, podes descobrir que isto não é problema.
+
+É dado.
+
+E o dado, quando bem habitado, pode ser melhor do que a versão ficcional do corpo anterior que a saudade te propõe.`,
+      },
+      {
+        id: "sangue-e-seda-m6c",
+        titulo: "M6.C — A maternidade invisível",
+        curso: "sangue-e-seda",
+        texto: `Nem toda a maternidade tem filhos biológicos.
+
+[pause]
+
+Há mulheres que cuidam como mães sem nunca terem parido.
+
+Cuidam de sobrinhos com dedicação quase parental. Cuidam de alunas que lhes ficam na memória durante anos. Cuidam de afilhadas, de mulheres mais novas do trabalho, de amigas em crises que duram anos.
+
+[long pause]
+
+Esta maternidade é real.
+
+Mas é culturalmente invisível.
+
+[pause]
+
+Não há dia dedicado a ela. Não há categoria social que a reconheça. Não há rituais que a celebrem.
+
+[short pause]
+
+E as mulheres que a praticam, muitas vezes, não a reconhecem em si mesmas.
+
+Pensam que estão a ser "só amigas" ou "só tias" ou "só professoras".
+
+[pause]
+
+Na verdade, estão a praticar forma antiga e legítima de maternidade.
+
+[long pause]
+
+Durante a maior parte da história humana, cuidar de crianças não era tarefa de uma mulher só.
+
+Era tarefa de uma rede.
+
+[pause]
+
+A mãe biológica. As tias. As avós. As primas. As vizinhas.
+
+Esta rede distribuía o cuidado e, ao fazê-lo, transformava todas as mulheres do círculo em figuras maternas, em diferentes graus.
+
+[short pause]
+
+A concentração exclusiva do cuidado materno numa única mulher — a mãe biológica — é fenómeno relativamente recente.
+
+E é, biologicamente, insustentável.
+
+[long pause]
+
+Muitas mulheres hoje, sem filhos biológicos, cumprem funções maternas na vida de outras pessoas.
+
+Mas não o sabem, porque a cultura não lhes dá linguagem para isso.
+
+[pause]
+
+Se isto é o teu caso, há uma coisa importante a reconhecer.
+
+O teu cuidado por outras pessoas — crianças que não são tuas biologicamente, mulheres mais novas, pessoas em crise a quem dedicaste anos — conta.
+
+[short pause]
+
+Conta historicamente, culturalmente, e emocionalmente.
+
+[pause]
+
+Reconheceres-te como tendo praticado esta forma de maternidade não é sentimentalismo.
+
+É precisão.
+
+[long pause]
+
+E se tens filhos biológicos e, ao mesmo tempo, cuidas de outras pessoas fora do núcleo biológico — é importante reconhecer que esse segundo cuidado também é maternal.
+
+[pause]
+
+A maternidade não é campo restrito aos que partilham o teu ADN.
+
+É disposição de te importares com o bem-estar e o crescimento de alguém a um grau que envolve tempo, atenção, e sacrifício parcial.
+
+[short pause]
+
+Se estás a fazer isto, estás a praticar maternidade.
+
+Em diferentes formas, com diferentes intensidades.
+
+[pause]
+
+Mas estás.
+
+[long pause]
+
+Esta semana, identifica uma ou duas pessoas na tua vida que beneficiam de um cuidado teu que, se olhado com atenção, é maternal.
+
+Não precisas de dizer-lhes.
+
+Só de reconhecer, para ti mesma, que este trabalho existe.
+
+[pause]
+
+Porque quando é invisível mesmo para quem o faz, esgota de forma silenciosa.
+
+Quando é reconhecido, mesmo que só por ti, ganha densidade que o justifica.
+
+[short pause]
+
+Tu cuidas de vidas que não são a tua.
+
+Isso, na história humana, é uma das formas mais antigas de amor.
+
+[long pause]
+
+Não precisa de ser celebrado externamente.
+
+Precisa, apenas, de ser visto — por ti — como o que é.
+
+Maternidade real.
+
+Em forma diferente. Mas real.`,
+      },
+    ],
+  },
 ];
