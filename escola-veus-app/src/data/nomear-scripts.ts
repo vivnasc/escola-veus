@@ -14147,4 +14147,325 @@ E a partir desse reconhecimento, decidires o que queres fazer com a inibição r
       },
     ],
   },
+  {
+    id: "curso-o-silencio-que-grita-m2",
+    titulo: "Curso O Silêncio que Grita — Módulo 2 (Aulas A, B, C)",
+    descricao: "O Código Silencioso da Família. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "o-silencio-que-grita-m2a",
+        titulo: "M2.A — As regras que nunca foram ditas",
+        curso: "o-silencio-que-grita",
+        texto: `A tua família tem regras.
+
+[pause]
+
+Algumas foram ditas em voz alta — sobre horários, sobre comportamento à mesa, sobre o que se podia fazer ou não na infância.
+
+Outras nunca foram ditas. Mas tu sabes-as todas.
+
+[long pause]
+
+Sabes que, em certos dias do ano, há que estar presente.
+
+Sabes que, com certa pessoa da família, certos assuntos não se mencionam.
+
+Sabes que, em certas situações, há uma resposta esperada de ti — uma postura, um sorriso, um silêncio.
+
+[pause]
+
+Estas regras nunca foram escritas.
+
+Mas tu cumpres todas, automaticamente, há décadas.
+
+[short pause]
+
+E quando, ocasionalmente, alguém da família as quebra, tu sentes — antes da razão se pronunciar — que algo importante foi atravessado.
+
+[long pause]
+
+As regras tácitas são, em muitas famílias, mais poderosas do que as regras explícitas.
+
+[pause]
+
+Porque as explícitas podem ser questionadas.
+
+As tácitas, não. Não estão sequer disponíveis para questionamento, porque a sua existência não é admitida.
+
+[short pause]
+
+A primeira pessoa que questiona uma regra tácita é, normalmente, vista como provocadora ou desrespeitosa — mesmo quando a sua intenção é apenas curiosidade.
+
+[long pause]
+
+Se te puseres a olhar para a tua família com atenção, vais encontrar dezenas destas regras.
+
+[pause]
+
+Que filho recebe o que. Que opiniões podem ser ditas em frente a quem. Quem espera ser cuidado por quem. Quem é responsável por organizar que ocasiões. Quem nunca é chamado a contribuir.
+
+[short pause]
+
+Cada uma destas distribuições foi feita sem reunião familiar, sem voto, sem acordo explícito.
+
+[pause]
+
+Foi-se sedimentando ao longo de gerações.
+
+[long pause]
+
+Esta semana, escolhe uma regra tácita da tua família que tu, hoje em adulta, reconheces.
+
+Escreve-a numa frase: "Na minha família, sem ninguém ter dito, é regra que..."
+
+[pause]
+
+Repara como te sentes ao escrever.
+
+[short pause]
+
+Algumas pessoas, ao escreverem, sentem alívio — finalmente puseram em palavras algo que sempre estava lá.
+
+Outras sentem culpa — como se o simples acto de nomear a regra fosse já uma traição.
+
+[pause]
+
+A culpa, se vier, é informação importante.
+
+Mostra o quão activa a regra ainda é em ti.
+
+[long pause]
+
+Não precisas de quebrar a regra.
+
+Precisas, apenas, de a ver.
+
+[pause]
+
+Porque uma regra vista pode ser, eventualmente, escolhida ou recusada.
+
+Uma regra invisível só pode ser obedecida.`,
+      },
+      {
+        id: "o-silencio-que-grita-m2b",
+        titulo: "M2.B — Os rituais tácitos",
+        curso: "o-silencio-que-grita",
+        texto: `Há rituais na tua família que ninguém chamou de rituais.
+
+[pause]
+
+A forma como se organizam os almoços de domingo. A pessoa que sempre se senta à cabeceira. O acordo silencioso sobre quem traz o quê. A conversa que sempre acontece num determinado momento da refeição.
+
+[long pause]
+
+Tudo isto é coreografia.
+
+Coreografia não escrita, ensaiada ao longo de anos, repetida com fidelidade.
+
+[pause]
+
+E tu, há décadas, executas o teu papel sem o teres escolhido.
+
+[short pause]
+
+Talvez tu sejas a que ajuda a tua mãe na cozinha.
+
+A que faz perguntas educadas a um tio que não te interessa muito.
+
+A que fica até mais tarde a arrumar a louça.
+
+A que liga primeiro nos aniversários.
+
+[pause]
+
+Em alguma ocasião, isto começou.
+
+E continuou. E continuou. E continuou.
+
+[short pause]
+
+Sem ninguém ter ratificado este papel como teu.
+
+[long pause]
+
+Os rituais tácitos têm uma característica perigosa.
+
+[pause]
+
+Quando alguém, em algum momento, decide fazer diferente, há reacção.
+
+A reacção pode ser pequena — uma sobrancelha levantada, um silêncio mais pesado.
+
+Pode ser grande — um comentário ácido, uma queixa indirecta a outras pessoas.
+
+[short pause]
+
+E esta reacção tem efeito.
+
+[pause]
+
+Faz com que, na vez seguinte, a pessoa volte a executar o ritual como antes.
+
+E o ritual continua, geração após geração.
+
+[long pause]
+
+Reconhecer estes rituais não é sentimento de revolta.
+
+É curiosidade.
+
+[pause]
+
+Pergunta-te: que coisas eu faço, em ocasiões familiares, que ninguém propriamente me pediu para fazer mas que toda a gente espera que eu faça?
+
+[short pause]
+
+Lista quatro ou cinco.
+
+Olha para a lista.
+
+[pause]
+
+Cada item é um ritual tácito que sustentas.
+
+[short pause]
+
+Estes rituais, em si, não são bons nem maus.
+
+São coreografia.
+
+[pause]
+
+Mas saberes que existem dá-te a opção de, em algum momento, recusar a tua parte.
+
+[long pause]
+
+Se quiseres experimentar, escolhe um — apenas um — para deixar de fazer numa próxima reunião.
+
+[pause]
+
+Não anuncies. Apenas não faças.
+
+E observa o que acontece.
+
+[short pause]
+
+Algumas vezes, ninguém nota.
+
+Outras, alguém vai notar e vai pedir-te explicitamente — e aí terás de responder.
+
+[pause]
+
+Esta é a primeira pequena conversa real sobre algo que, durante anos, foi assumido sem nunca ser falado.
+
+[short pause]
+
+E destas conversas, ao longo do tempo, transforma-se uma família inteira.`,
+      },
+      {
+        id: "o-silencio-que-grita-m2c",
+        titulo: "M2.C — A lealdade sem palavras",
+        curso: "o-silencio-que-grita",
+        texto: `Em muitas famílias, há uma lealdade que ninguém articula em palavras.
+
+[pause]
+
+A lealdade ao silêncio sobre certos temas. A lealdade à versão oficial dos eventos do passado. A lealdade à imagem pública que a família mostra ao mundo.
+
+[long pause]
+
+Esta lealdade não é negociada.
+
+É absorvida.
+
+[pause]
+
+E os filhos, em particular, são tacitamente recrutados para ela desde muito pequenos.
+
+[short pause]
+
+Aprendem o que se diz fora de casa e o que fica dentro de casa.
+
+Aprendem a versão "oficial" das histórias de família mesmo quando intuem que a versão real é diferente.
+
+Aprendem a defender a família perante pessoas que perguntem demais.
+
+[long pause]
+
+Esta lealdade tácita, em algumas famílias, é leve e relativamente saudável.
+
+Em outras, torna-se um fardo.
+
+[pause]
+
+Quando há, na família, dor que nunca foi processada, abuso que nunca foi reconhecido, ou injustiças sistemáticas que nunca foram nomeadas — a lealdade tácita transforma-se em silêncio cúmplice.
+
+[short pause]
+
+E os membros da família, sem terem escolhido, tornam-se guardiões de algo que, se fosse falado, mudaria muita coisa.
+
+[long pause]
+
+Identificar esta forma de lealdade é, para muitas pessoas, um dos passos mais difíceis na vida adulta.
+
+[pause]
+
+Porque romper a lealdade, mesmo só na própria cabeça, sente-se como traição.
+
+E a traição, para alguém que cresceu numa família com forte lealdade tácita, é tabu emocional.
+
+[short pause]
+
+A pessoa fica numa posição complicada.
+
+Sabe que algo precisa de ser dito.
+
+Sabe que dizê-lo é trair a lealdade.
+
+E a paralisia é o resultado mais frequente.
+
+[long pause]
+
+Há uma distinção que ajuda.
+
+[pause]
+
+Romper a lealdade ao silêncio não é o mesmo que romper a lealdade às pessoas.
+
+Podes continuar a amar a tua família e, ao mesmo tempo, deixar de proteger silêncios que se mantiveram à custa do bem-estar de alguém — talvez teu, talvez de outro membro.
+
+[short pause]
+
+A verdadeira lealdade, em muitos casos, exige falar — não calar.
+
+[pause]
+
+Porque o silêncio cúmplice prolonga sofrimento.
+
+E o falar — quando feito com cuidado, no momento certo, com a pessoa certa — pode ser o gesto mais leal possível.
+
+[long pause]
+
+Esta semana, identifica uma lealdade tácita da tua família que tu, em algum nível, sustentas.
+
+[pause]
+
+Não precisas de a romper agora.
+
+Precisas, apenas, de a ver.
+
+E de te perguntar: a quem é que esta lealdade serve?
+
+[short pause]
+
+Se serve principalmente à manutenção da imagem familiar — e não ao bem-estar das pessoas — talvez precise de ser, em algum momento, revista.
+
+[pause]
+
+Não em explosão pública.
+
+Em pequenas decisões privadas, ao longo dos anos, sobre o que tu vais e não vais continuar a calar.`,
+      },
+    ],
+  },
 ];
