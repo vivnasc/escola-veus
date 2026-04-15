@@ -26671,4 +26671,583 @@ As palavras, mesmo desajeitadas, são oxigénio.`,
       },
     ],
   },
+  {
+    id: "curso-a-chama-m6",
+    titulo: "Curso A Chama — Módulo 6 (Aulas A, B, C)",
+    descricao: "A Vergonha Herdada.",
+    scripts: [
+      {
+        id: "a-chama-m6a",
+        titulo: "M6.A — O que a tua mãe nunca te disse sobre prazer",
+        curso: "a-chama",
+        texto: `A tua mãe, muito provavelmente, nunca te falou sobre prazer.
+
+[pause]
+
+Falou sobre perigos. Sobre cuidado. Sobre contracepção — talvez, se foste de uma geração com sorte.
+
+[long pause]
+
+Mas sobre prazer em si, raramente.
+
+[pause]
+
+Sobre o teu direito ao teu próprio orgasmo.
+
+Sobre a legitimidade de quereres toque que te apetece.
+
+Sobre a diferença entre sexo que te dá prazer e sexo que apenas acontece.
+
+[short pause]
+
+Estas conversas, em quase todas as casas portuguesas, nunca aconteceram.
+
+[long pause]
+
+Não é culpa dela.
+
+[pause]
+
+A tua mãe não foi ensinada por ninguém. A avó da tua mãe provavelmente sabia ainda menos.
+
+[short pause]
+
+A ignorância sobre prazer feminino atravessa gerações.
+
+E chega a ti.
+
+[pause]
+
+Não como gesto hostil. Como ausência transmitida.
+
+[long pause]
+
+Mas a ausência, em educação, é uma forma de educação.
+
+[pause]
+
+Ensina-te, implicitamente, que este tema não se discute.
+
+Que é coisa que se gere em silêncio.
+
+Que não tem lugar legítimo na conversa entre mulheres de uma mesma família.
+
+[short pause]
+
+E tu, em adulta, herdas este silêncio sem sequer reparares.
+
+[long pause]
+
+Repara numa coisa curiosa.
+
+[pause]
+
+Em conversas entre mulheres da tua geração — amigas, colegas, irmãs — é raro falar-se sobre prazer sexual com detalhe.
+
+[short pause]
+
+Fala-se sobre relações.
+
+Fala-se sobre homens.
+
+Fala-se sobre queixas genéricas — "anda tudo parado", "já não há grande entusiasmo".
+
+[pause]
+
+Mas a conversa específica — o que me dá prazer, como é o meu orgasmo, o que descobri que o meu corpo quer — essa não acontece.
+
+[long pause]
+
+Este silêncio não é timidez pessoal.
+
+[pause]
+
+É herança de gerações de mulheres que, antes de ti, aprenderam que este assunto não tinha palavras.
+
+[short pause]
+
+Esta semana, vais fazer um exercício de quebra de herança.
+
+[pause]
+
+Escolhe uma única amiga com quem tenhas proximidade real.
+
+[short pause]
+
+Pode ser irmã. Pode ser amiga de infância. Pode ser prima. Pode ser colega de trabalho chegada.
+
+[pause]
+
+Alguém em quem confias.
+
+[long pause]
+
+E vais iniciar, com ela, uma conversa sobre prazer.
+
+[pause]
+
+Não tem de ser conversa longa.
+
+Não tem de ser confessional.
+
+[short pause]
+
+Pode começar com uma frase simples:
+
+"Tenho andado a pensar numa coisa. Acho que nunca, na minha vida, tive uma conversa a sério com outra mulher sobre prazer sexual. Tu tiveste?"
+
+[long pause]
+
+Vai acontecer uma de duas coisas.
+
+[pause]
+
+Ou ela fica desconfortável — e a conversa morre.
+
+Ou ela fica aliviada — e descobres que ela também andava a precisar.
+
+[short pause]
+
+Na segunda hipótese, começa uma conversa que, em quase todos os casos, se torna uma das mais libertadoras que tu tens há muito tempo.
+
+[pause]
+
+Porque, pela primeira vez, tu descobres que as tuas dúvidas, as tuas perguntas, as tuas confusões não são tuas individualmente.
+
+[short pause]
+
+São colectivas.
+
+[long pause]
+
+Outras mulheres da tua idade têm as mesmas perguntas.
+
+[pause]
+
+Têm a mesma falta de informação básica sobre o seu próprio corpo.
+
+Têm os mesmos silêncios antigos.
+
+Têm a mesma vergonha residual que nunca foi nomeada.
+
+[short pause]
+
+E quando vocês nomeiam, juntas, alguma coisa muda.
+
+[pause]
+
+Deixa de ser problema teu.
+
+Passa a ser herança partilhada que, partilhada, começa a dissolver-se.
+
+[long pause]
+
+Este gesto pequeno — uma conversa a sério com uma amiga — é corte histórico.
+
+[pause]
+
+Estás a quebrar uma cadeia que, antes de ti, passou de mãe para filha durante gerações sem ser interrompida.
+
+[short pause]
+
+E a cadeia, quando se quebra com uma conversa honesta, deixa de transmitir o silêncio.
+
+[pause]
+
+Se tiveres filha, e ela já é grande, este corte tem ainda mais peso.
+
+[long pause]
+
+Porque a próxima geração de mulheres da tua família pode herdar, em vez do silêncio, a linguagem que tu começaste.
+
+[pause]
+
+Não precisas de ter uma conversa directa com a tua filha amanhã.
+
+Mas podes, devagar, começar a mostrar-lhe que este assunto tem palavras.
+
+[short pause]
+
+E as palavras, transmitidas, mudam tudo.`,
+      },
+      {
+        id: "a-chama-m6b",
+        titulo: "M6.B — A frase religiosa que ainda opera",
+        curso: "a-chama",
+        texto: `Mesmo que tu não sejas religiosa, a religião formou-te.
+
+[pause]
+
+Formou a tua mãe. Formou a tua avó. Formou a cultura onde cresceste.
+
+E, por essa via, formou-te a ti.
+
+[long pause]
+
+Em Portugal, a maior parte das mulheres da tua idade cresceu em ambiente católico.
+
+[pause]
+
+Podes ter sido baptizada.
+
+Podes ter feito catequese.
+
+Podes ter tido professora de moral e religião na escola.
+
+[short pause]
+
+Ou, mais subtilmente, podes nunca ter praticado — mas cresceste rodeada de pessoas que praticavam, em vilas, em famílias, em pequenas comunidades onde a moral sexual católica era o ar.
+
+[long pause]
+
+A doutrina católica tradicional sobre sexualidade feminina, durante séculos, teve quatro mensagens principais.
+
+[pause]
+
+O sexo existe para procriar.
+
+O prazer da mulher é secundário.
+
+A masturbação feminina é pecado.
+
+A mulher boa é casta; a mulher má, não.
+
+[short pause]
+
+Estas quatro mensagens, mesmo nas casas mais secularizadas, contaminaram o ar durante gerações.
+
+[pause]
+
+E tu, em adulta, provavelmente ainda tens, em algum lugar interior, traços destas mensagens — mesmo sem partilhares a fé que as gerou.
+
+[long pause]
+
+Este módulo não é sobre religião.
+
+[pause]
+
+É sobre reconhecer em ti a presença de estruturas religiosas antigas que continuam a dirigir a tua relação com o prazer, mesmo que tu já não te consideres religiosa.
+
+[short pause]
+
+Em mulheres portuguesas adultas, isto aparece em pequenos detalhes.
+
+[pause]
+
+A vergonha pequena depois do prazer solitário que falamos no módulo anterior.
+
+A sensação, vaga mas persistente, de que mulher muito sexual é, em algum grau, menos respeitável.
+
+A dificuldade em falar sobre o teu corpo em termos explícitos, mesmo com pessoas próximas.
+
+A hesitação diante de uma fantasia que te desce à cabeça e que tu achas, por algum motivo, que "não devia ter".
+
+[short pause]
+
+Cada um destes sinais pode ter origem em frase religiosa antiga que tu nunca, conscientemente, aceitaste.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de escavação específica.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Frases religiosas ou morais sobre corpo, sexo e mulher que ouvi em criança ou adolescente."
+
+[short pause]
+
+E tenta lembrar-te.
+
+[pause]
+
+Pode ser:
+
+"O corpo é templo. Tens de o respeitar."
+
+"Mulher honrada chega virgem ao casamento."
+
+"O prazer por prazer é pecado."
+
+"Mulher que anda na rua de olho desperto é fresca."
+
+"Deus vê tudo o que fazes no escuro."
+
+"Isso é coisa de mulher perdida."
+
+[long pause]
+
+Não tens de ter ouvido exactamente estas frases.
+
+[pause]
+
+Escreve as que apareceram, em alguma versão, na tua infância ou adolescência.
+
+[short pause]
+
+Quando tens a lista, faz uma segunda coisa.
+
+[pause]
+
+Ao lado de cada frase, escreve uma nota — uma única linha — em resposta.
+
+[long pause]
+
+A nota pode ser uma refutação honesta. Pode ser:
+
+"Esta frase não reflecte o que eu penso em adulta."
+
+"Esta frase deu-me medo durante anos."
+
+"Esta frase ainda, às vezes, aparece em mim sem aviso."
+
+"Esta frase fez-me sentir suja durante décadas."
+
+[pause]
+
+Escreves a tua resposta em adulta.
+
+[short pause]
+
+Este simples acto — a tua resposta em letra escrita, em oposição à frase — é trabalho subterrâneo.
+
+[long pause]
+
+Estás a fazer, em letra tua, aquilo que nunca ninguém fez por ti enquanto crescias.
+
+[pause]
+
+Estás a contrapor. A corrigir. A actualizar.
+
+[short pause]
+
+A voz que antes chegava sem resposta agora tem resposta.
+
+[pause]
+
+E a resposta, ao longo das semanas em que a relês, começa a ganhar peso próprio.
+
+[long pause]
+
+Não é que a frase religiosa antiga desapareça.
+
+[pause]
+
+É que, ao lado dela, passa a existir a tua.
+
+E a tua, com o tempo, começa a ter mais autoridade do que a herdada.
+
+[short pause]
+
+Porque é tua. Foi escrita por ti. Em adulta. Depois de pensares.
+
+[long pause]
+
+A religião pode ter formado a tua infância.
+
+[pause]
+
+Mas tu, em adulta, tens o direito — e os meios — de rever as formações que não te servem.
+
+[short pause]
+
+E a revisão, escrita em letra tua, é acto de adulta plena.
+
+[pause]
+
+Não contra a fé, se a tens. Mas a favor da tua relação real com o teu próprio corpo.`,
+      },
+      {
+        id: "a-chama-m6c",
+        titulo: "M6.C — Os filmes e livros que te ensinaram a desejar mal",
+        curso: "a-chama",
+        texto: `A cultura ensinou-te a desejar.
+
+[pause]
+
+Não conscientemente.
+
+Por acumulação.
+
+[long pause]
+
+Desde criança, tu recebeste, através de filmes, livros, revistas, música, uma ideia específica do que era o desejo feminino.
+
+[pause]
+
+Na maior parte dos casos, a ideia era errada.
+
+[short pause]
+
+Os filmes mostravam, em geral, o desejo da mulher a servir a história do homem.
+
+O prazer feminino, quando aparecia, era como resposta à competência masculina.
+
+[pause]
+
+Raramente aparecia mulher a desejar por ela, por conta própria, com a sua própria lógica.
+
+[long pause]
+
+Os livros de romance, por seu turno, ensinaram-te outra coisa igualmente problemática.
+
+[pause]
+
+Ensinaram-te que o desejo real aparecia em relações cheias de drama.
+
+Que o homem mais desejável era o mais difícil.
+
+Que o prazer verdadeiro tinha de passar por resistência, conquista, intensidade.
+
+[short pause]
+
+E a relação calma, segura, construída — a relação adulta real — era, na linguagem desses livros, chata.
+
+[long pause]
+
+Esta educação cultural contaminou a tua biologia.
+
+[pause]
+
+Em adulta, quando te encontras numa relação estável e boa, uma parte de ti sente que falta algo.
+
+Falta o drama.
+
+Falta a tensão.
+
+Falta a conquista.
+
+[short pause]
+
+E tu, sem perceber, começas a confundir falta de desejo com falta de intensidade cinematográfica.
+
+[long pause]
+
+Mas a intensidade cinematográfica nunca foi desejo real.
+
+[pause]
+
+Era ficção desenhada para vender bilhetes de cinema.
+
+[short pause]
+
+O desejo real, na vida adulta sustentável, tem outra textura.
+
+[pause]
+
+É menos espectacular.
+
+Mais lento.
+
+Mais subtil.
+
+[short pause]
+
+Aparece em pequenos momentos — olhar mantido por mais meio segundo do que o habitual, vontade de toque casual no cotovelo, sensação de alivio quando ouves a chave na porta à noite.
+
+[long pause]
+
+Estes sinais, em mulher educada por ficção dramática, passam desapercebidos.
+
+[pause]
+
+Porque tu estás à espera de algo maior.
+
+Algo que nunca vai aparecer — porque nunca existiu na vida real.
+
+[short pause]
+
+Apenas em filmes.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de contra-educação.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"O que a ficção me ensinou que era desejo, e que provavelmente não é."
+
+[short pause]
+
+E enumera o que te ocorre.
+
+[pause]
+
+Pode ser:
+
+"Aprendi que o desejo tinha de ser intenso. Dramático. Urgente."
+
+"Aprendi que o homem tinha de ser difícil para ser desejável."
+
+"Aprendi que o sexo verdadeiro tinha de ter alguma dose de perigo ou proibido."
+
+"Aprendi que o toque calmo e conhecido era menos desejável do que o toque novo e incerto."
+
+"Aprendi que mulher apaixonada é mulher perturbada."
+
+[long pause]
+
+Olha para a tua lista.
+
+[pause]
+
+E faz uma pergunta a seguir:
+
+"Quantas destas ideias ainda dirigem, hoje, a minha expectativa sobre o meu próprio desejo?"
+
+[short pause]
+
+Em geral, quase todas.
+
+[long pause]
+
+A reanimação do desejo em mulher adulta passa, em grande parte, por desmontar esta educação ficcional.
+
+[pause]
+
+E por aprender a reconhecer como desejo real o que a educação ficcional te ensinou a descartar.
+
+[short pause]
+
+O olhar mantido meio segundo a mais é desejo.
+
+A vontade de toque casual é desejo.
+
+A sensação boa quando ele entra na sala é desejo.
+
+O pequeno enervamento quando ele se afasta numa festa é desejo.
+
+[pause]
+
+Nada disto parece intenso o suficiente para ser desejo — segundo a ficção.
+
+Mas é exactamente disto que o desejo adulto se faz.
+
+[long pause]
+
+Quando tu passas a reconhecer estes sinais pequenos como legítimos — em vez de os descartar por não serem dramáticos — a tua percepção do teu próprio desejo aumenta drasticamente.
+
+[pause]
+
+Não porque o desejo aumentou.
+
+Porque deixaste de o descartar.
+
+[short pause]
+
+E com o desejo visto, vem vontade de o exercer.
+
+[pause]
+
+Em pequenos momentos, à escala real, sem tensão cinematográfica.
+
+[short pause]
+
+Apenas na escala humana em que, ao longo dos anos, ele é sustentável.`,
+      },
+    ],
+  },
 ];
