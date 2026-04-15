@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { NOMEAR_PRESETS, type NomearScript } from "@/data/nomear-scripts";
 
 type ScriptRow = {
@@ -30,9 +30,53 @@ export default function AudioBulkPage() {
   const [testLoading, setTestLoading] = useState(false);
   const [testAudioUrl, setTestAudioUrl] = useState<string | null>(null);
 
-  // Bulk scripts
+  // Bulk scripts (persistidos em localStorage)
   const [scripts, setScripts] = useState<ScriptRow[]>([]);
   const [generating, setGenerating] = useState(false);
+
+  // Restaurar estado do localStorage ao carregar a pagina
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("audio-bulk-scripts");
+      if (saved) {
+        const parsed = JSON.parse(saved) as ScriptRow[];
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Reset status "generating" -> "pending" (caso pagina tenha fechado durante geracao)
+          setScripts(parsed.map((s) => (s.status === "generating" ? { ...s, status: "pending" } : s)));
+        }
+      }
+      const savedFolder = localStorage.getItem("audio-bulk-folder");
+      if (savedFolder) setFolder(savedFolder);
+      const savedLang = localStorage.getItem("audio-bulk-lang");
+      if (savedLang !== null) setLanguageCode(savedLang);
+      const savedVoice = localStorage.getItem("audio-bulk-voice");
+      if (savedVoice) setVoiceId(savedVoice);
+      const savedModel = localStorage.getItem("audio-bulk-model");
+      if (savedModel) setModelId(savedModel);
+    } catch {
+      // ignora erros de parse
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Guardar scripts no localStorage sempre que mudam
+  useEffect(() => {
+    try {
+      if (scripts.length === 0) {
+        localStorage.removeItem("audio-bulk-scripts");
+      } else {
+        localStorage.setItem("audio-bulk-scripts", JSON.stringify(scripts));
+      }
+    } catch {
+      // ignora erros de quota
+    }
+  }, [scripts]);
+
+  // Guardar config
+  useEffect(() => { localStorage.setItem("audio-bulk-folder", folder); }, [folder]);
+  useEffect(() => { localStorage.setItem("audio-bulk-lang", languageCode); }, [languageCode]);
+  useEffect(() => { localStorage.setItem("audio-bulk-voice", voiceId); }, [voiceId]);
+  useEffect(() => { localStorage.setItem("audio-bulk-model", modelId); }, [modelId]);
 
   // Manual add form
   const [newTitle, setNewTitle] = useState("");
