@@ -15655,4 +15655,395 @@ Esta é, em muitas relações importantes, a decisão mais corajosa da vida adul
       },
     ],
   },
+  {
+    id: "curso-o-silencio-que-grita-m6",
+    titulo: "Curso O Silêncio que Grita — Módulo 6 (Aulas A, B, C)",
+    descricao: "Quebrar o Ciclo. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "o-silencio-que-grita-m6a",
+        titulo: "M6.A — A primeira pergunta que podes fazer",
+        curso: "o-silencio-que-grita",
+        texto: `Para quebrar um ciclo de silêncio familiar, raramente se começa por uma declaração.
+
+[pause]
+
+Começa-se por uma pergunta.
+
+[long pause]
+
+Uma pergunta pequena, feita num momento tranquilo, sobre um tema que sempre foi evitado.
+
+Sem dramatizar. Sem agenda visível. Apenas curiosidade serena.
+
+[pause]
+
+A primeira pergunta tem efeito desproporcional ao seu tamanho.
+
+[short pause]
+
+Porque mesmo a pergunta mais simples, sobre um tema que durante décadas foi cercado de silêncio, abre uma porta.
+
+[pause]
+
+A outra pessoa pode passar pela porta.
+
+Pode também recuar.
+
+Mas a porta foi aberta — e isso, sozinho, muda algo.
+
+[long pause]
+
+A escolha da primeira pergunta é importante.
+
+[pause]
+
+Não deve ser pergunta-armadilha. Não deve ser pergunta carregada. Não deve forçar uma resposta específica.
+
+Deve ser pergunta genuína, que admite múltiplas respostas — incluindo "não me lembro" ou "não quero falar disso".
+
+[short pause]
+
+A função da primeira pergunta não é obter informação completa.
+
+É demonstrar que tu, como adulta, tens interesse em conhecer.
+
+[pause]
+
+E que estás disponível para ouvir o que vier — sem julgamento.
+
+[long pause]
+
+Esta postura, quando é genuína, costuma desbloquear coisas.
+
+[pause]
+
+Pessoas mais velhas, em particular, têm muitas vezes vontade não-expressa de partilhar histórias da família que ninguém lhes pediu para contar.
+
+A primeira pergunta abre essa possibilidade.
+
+[short pause]
+
+E, com paciência, vão começando a contar.
+
+[long pause]
+
+Esta semana, identifica uma pessoa mais velha da tua família com quem possas tentar uma primeira pergunta.
+
+Pode ser a tua mãe, uma tia, uma prima mais velha, mesmo uma amiga antiga da família.
+
+[pause]
+
+Escolhe um momento sem pressa.
+
+Um café tranquilo. Uma visita sem agenda definida.
+
+[short pause]
+
+E faz uma única pergunta — sobre algo da família que sempre te intrigou.
+
+[pause]
+
+Não pergunta acusatória. Pergunta curiosa.
+
+"Lembras-te de como era a vida no tempo da tua avó?"
+
+"Sabes por que é que aqueles dois tios não se falavam?"
+
+"Como é que a família atravessou aquela altura difícil?"
+
+[long pause]
+
+E depois cala-te.
+
+Escuta.
+
+Sem interromper.
+
+[pause]
+
+Vais ficar surpreendida com o que aparece.
+
+E mais surpreendida com o quanto tu, depois, vais sentir-te diferente em relação à tua família.
+
+[short pause]
+
+Porque uma pergunta feita honestamente, e uma resposta recebida sem julgamento, podem mudar a temperatura emocional de uma relação inteira — em uma única conversa.
+
+[pause]
+
+E essa mudança de temperatura, repetida ao longo dos meses com outras perguntas, é o início real da quebra do ciclo de silêncio.`,
+      },
+      {
+        id: "o-silencio-que-grita-m6b",
+        titulo: "M6.B — A conversa que ninguém quis ter",
+        curso: "o-silencio-que-grita",
+        texto: `Há uma conversa, na tua família, que ninguém quis ter.
+
+[pause]
+
+Talvez a conversa sobre a doença mental de alguém. Sobre a verdade do divórcio dos pais. Sobre uma morte que ficou mal contada. Sobre uma escolha que dividiu a família.
+
+[long pause]
+
+Esta conversa, quando finalmente é tida, costuma ser feita por uma pessoa.
+
+Uma pessoa que, em algum momento, decide que prefere o desconforto da verdade ao conforto continuado do silêncio.
+
+[pause]
+
+Essa pessoa raramente é a mais velha. Raramente é a mais autoritária.
+
+É, muitas vezes, uma mulher de meia-idade que, por razões que nem sempre consegue articular, não suporta mais o silêncio.
+
+[short pause]
+
+Talvez sejas tu.
+
+[pause]
+
+Ou talvez vás ser, em algum ponto.
+
+[long pause]
+
+Ter esta conversa exige preparação.
+
+Não preparação para confrontar. Preparação para conduzir um processo difícil com cuidado.
+
+[pause]
+
+Primeiro, escolhe a pessoa certa.
+
+Não toda a família ao mesmo tempo. Uma pessoa.
+
+Aquela com quem a conversa pode efectivamente acontecer com alguma profundidade.
+
+[short pause]
+
+Segundo, escolhe o momento certo.
+
+Não numa ocasião familiar formal. Não em momento de crise.
+
+Num encontro privado, num lugar tranquilo, com tempo suficiente.
+
+[pause]
+
+Terceiro, escolhe a forma certa.
+
+Não acusação. Não interrogatório.
+
+Convite.
+
+[long pause]
+
+Frase tipo: "Há uma coisa de que nunca falámos e que tem estado em mim. Podemos falar?"
+
+[pause]
+
+Esta abertura é poderosa precisamente porque é simples.
+
+Não dramatiza. Não acusa. Apenas reconhece que há algo por dizer.
+
+[short pause]
+
+E dá à outra pessoa a possibilidade de aceitar ou recusar.
+
+[pause]
+
+Algumas pessoas aceitam imediatamente, com alívio.
+
+Outras precisam de tempo.
+
+Algumas recusam — e isso também é resposta válida.
+
+[long pause]
+
+Se a pessoa aceita, a conversa pode tomar muitas direcções.
+
+[pause]
+
+Tu não controlas o que vai aparecer. Só controlas a tua presença, a tua escuta, e a tua honestidade no que tu mesma trouxeres.
+
+[short pause]
+
+Esta conversa, mesmo quando é difícil, costuma deixar ambos os lados com sensação específica.
+
+Cansaço pelo esforço.
+
+E, ao mesmo tempo, alívio profundo.
+
+[pause]
+
+Alívio de que algo finalmente foi posto em palavras, depois de anos a operar em silêncio.
+
+[long pause]
+
+Identifica, esta semana, a conversa que ninguém quis ter na tua família.
+
+Identifica também a pessoa com quem podia ser tida.
+
+[pause]
+
+Não marca a conversa ainda.
+
+Apenas escreve no caderno: a conversa, a pessoa, e o que tu gostarias de poder dizer.
+
+[short pause]
+
+Guarda o caderno.
+
+[pause]
+
+Quando o momento certo aparecer — e ele aparece, quando estás aberta — vais ter clareza interna sobre o essencial.
+
+[short pause]
+
+E a conversa que ninguém quis ter pode, finalmente, começar a acontecer.
+
+[long pause]
+
+Não para resolver tudo de uma vez.
+
+Para iniciar um processo de honestidade que, lentamente, vai libertar a família inteira de pesos que durante décadas foram suportados por todos sem nunca serem nomeados.`,
+      },
+      {
+        id: "o-silencio-que-grita-m6c",
+        titulo: "M6.C — Falar sem ter respostas todas",
+        curso: "o-silencio-que-grita",
+        texto: `Há uma razão pela qual muitas pessoas nunca abrem conversas difíceis.
+
+[pause]
+
+Sentem que precisam de ter respostas todas antes de começar.
+
+[long pause]
+
+Esta crença é falsa — e muito limitante.
+
+[pause]
+
+Porque conversas difíceis raramente requerem que tu chegues com tudo claro.
+
+Requerem, sim, que tu chegues com disponibilidade para descobrir, em conjunto com a outra pessoa, o que vocês não conseguiam descobrir sozinhos.
+
+[short pause]
+
+Esta diferença é fundamental.
+
+[pause]
+
+A pessoa que espera ter todas as respostas para começar a conversa nunca começa.
+
+Porque, em temas difíceis, as respostas todas raramente existem.
+
+[long pause]
+
+A pessoa que aceita começar com perguntas em vez de respostas, com hesitação em vez de certezas, descobre algo importante.
+
+[pause]
+
+A conversa em si gera entendimento que nenhum dos dois lados tinha sozinho.
+
+[short pause]
+
+Isto é particularmente verdadeiro em conversas familiares.
+
+[pause]
+
+Porque cada pessoa carrega uma versão parcial dos eventos. E cada versão parcial, quando partilhada com honestidade, ilumina as outras.
+
+[long pause]
+
+Tu podes começar uma conversa difícil com uma frase como: "Estou a tentar perceber uma coisa e não tenho ainda clareza. Posso pensar em voz alta contigo?"
+
+[pause]
+
+Esta frase muda completamente a dinâmica.
+
+[short pause]
+
+A outra pessoa não se sente atacada — porque tu não chegaste com acusação.
+
+A outra pessoa não se sente forçada a ter respostas — porque tu também não tens.
+
+[pause]
+
+E o que se cria é um espaço de exploração partilhada — em vez de confrontação.
+
+[long pause]
+
+Nem todas as conversas difíceis precisam de chegar a conclusão.
+
+[pause]
+
+Muitas valem a pena pelo simples facto de terem acontecido.
+
+Por mostrarem a ambos os lados que o tema pode ser falado, mesmo que não seja resolvido.
+
+[short pause]
+
+E esta demonstração — de que se pode falar — abre a possibilidade de outras conversas no futuro.
+
+[pause]
+
+Conversas que vão sendo cada vez mais aprofundadas, à medida que a confiança no formato se instala.
+
+[long pause]
+
+Esta semana, se tens uma conversa difícil pendente, experimenta uma coisa nova.
+
+Não esperes ter clareza completa antes de começar.
+
+[pause]
+
+Começa com a clareza parcial que tens.
+
+Convida a outra pessoa a explorar contigo.
+
+E aceita, à partida, que a conversa pode terminar sem conclusão definitiva.
+
+[short pause]
+
+Não é ineficiência.
+
+É honestidade sobre como funcionam, na realidade, as conversas verdadeiramente difíceis.
+
+[pause]
+
+E é a única forma de muitas dessas conversas começarem alguma vez a acontecer.
+
+[long pause]
+
+A clareza completa raramente vem antes da conversa.
+
+Vem durante. E continua a chegar nas semanas e meses seguintes — à medida que tu e a outra pessoa processam o que foi dito.
+
+[pause]
+
+Mas para esse processo todo começar, alguém precisa de aceitar começar sem a clareza completa.
+
+[short pause]
+
+E, nas tuas relações importantes, essa pessoa, muitas vezes, és tu.
+
+[long pause]
+
+Aceita ir com perguntas.
+
+Aceita ir com hesitação.
+
+Aceita ir com clareza parcial.
+
+[pause]
+
+E começa.
+
+[short pause]
+
+A clareza vem.
+
+Mas só depois — não antes — da conversa começar.`,
+      },
+    ],
+  },
 ];
