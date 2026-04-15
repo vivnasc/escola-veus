@@ -9061,4 +9061,365 @@ A arte de deixar sair sem ter de expulsar.`,
       },
     ],
   },
+  {
+    id: "curso-limite-sagrado-m5",
+    titulo: "Curso Limite Sagrado — Módulo 5 (Aulas A, B, C)",
+    descricao: "Limites com Família. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m5a",
+        titulo: "M5.A — Dizer não a uma mãe",
+        curso: "limite-sagrado",
+        texto: `O limite mais difícil que uma mulher enfrenta na sua vida adulta raramente é no trabalho.
+
+[pause]
+
+É com a mãe.
+
+[long pause]
+
+Há uma razão biológica e emocional para isto.
+
+A tua mãe foi a primeira pessoa a quem disseste sim — antes de teres linguagem, antes de teres consciência, antes de teres escolha.
+
+[pause]
+
+O corpo teve de se adaptar ao corpo dela para sobreviver.
+
+E durante muitos anos, isto foi a única forma de existir.
+
+[short pause]
+
+Esta memória é mais antiga do que qualquer decisão que tomas hoje.
+
+Está no sistema nervoso, não no raciocínio.
+
+[long pause]
+
+Por isso, quando tu tentas dizer não a uma mãe, acontecem coisas estranhas.
+
+A garganta fecha-se. A respiração muda. As palavras saem hesitantes. Ou nem saem — dizes sim, outra vez, quase sem saber porquê.
+
+[pause]
+
+Não és fraca.
+
+Estás a tentar mudar um padrão que foi instalado antes de teres palavras para o questionar.
+
+[short pause]
+
+Isso exige tempo, repetição, e compaixão por ti.
+
+[long pause]
+
+As mães não são iguais.
+
+Algumas aceitam o não dos filhos com relativa facilidade. Outras interpretam qualquer recusa como traição, ingratidão, ou ataque.
+
+[pause]
+
+Se a tua mãe é do segundo tipo, há uma coisa que precisas de saber.
+
+[short pause]
+
+A reacção dela ao teu não não é proporcional ao tamanho do teu não.
+
+Podes dizer não a uma coisa pequena — um almoço, um favor — e receberes a reacção como se a tivesses abandonado.
+
+[pause]
+
+Esta desproporção entre o pedido e a reacção é informação.
+
+Diz-te que, para esta mãe, o teu não não é sobre o assunto específico.
+
+É sobre o facto de tu estares a ter autonomia.
+
+[long pause]
+
+Autonomia, para algumas mães, é perda.
+
+Cada passo teu para te definires fora da relação com ela é, para ela, um pequeno abandono.
+
+[pause]
+
+Isto não te torna responsável pela tristeza dela.
+
+Mas ajuda-te a não internalizares a culpa como se ela fosse prova de que fizeste algo mal.
+
+[short pause]
+
+A tua mãe pode estar triste e tu podes continuar a ter limites.
+
+As duas coisas ao mesmo tempo.
+
+[long pause]
+
+Escolhe um limite pequeno que tens vindo a adiar com a tua mãe.
+
+Algo concreto — um telefonema semanal reduzido, uma visita combinada com menos frequência, uma pergunta que ela faz repetidamente e a que queres deixar de responder.
+
+[pause]
+
+Não precisas de anúncio. Não precisas de explicar. Não precisas de ser justa em alto.
+
+Introduz a mudança. Uma vez. Sem dramatizar.
+
+[short pause]
+
+Ela vai reagir. Talvez mal.
+
+Não respondas à reacção com argumento ou culpa. Responde com presença calma.
+
+[pause]
+
+Mantém a mudança.
+
+A tua mãe — mesmo uma mãe difícil — vai-se habituar mais depressa do que imaginas.
+
+Porque a maioria das pessoas, quando encontra resistência firme e gentil ao longo do tempo, adapta-se.
+
+[long pause]
+
+Dizer não a uma mãe não é destruir a relação.
+
+É pedir-lhe para adaptar-se a uma versão mais adulta de ti.
+
+E algumas mães, ao serem pedidas, até descobrem que preferem esta versão.`,
+      },
+      {
+        id: "limite-sagrado-m5b",
+        titulo: "M5.B — O filho que espera demais",
+        curso: "limite-sagrado",
+        texto: `Tens filhos, e há uma coisa que tu não consegues dizer em voz alta.
+
+[pause]
+
+Que eles esperam demais de ti.
+
+[long pause]
+
+Não no sentido de serem crianças com necessidades normais.
+
+No sentido de se terem acostumado a uma disponibilidade tua que já não te serve — e talvez nunca tenha realmente servido.
+
+[pause]
+
+Estão à espera de respostas imediatas às mensagens. De conselhos permanentes. De logística que resolves enquanto resolves tudo o resto.
+
+Esperam de ti o que, em geração anterior, era dividido entre várias mulheres — a mãe, a avó, as tias, as vizinhas.
+
+[short pause]
+
+Tu és, sozinha, a rede inteira.
+
+[long pause]
+
+Muitas mães modernas encontram-se neste lugar sem nome.
+
+Filhos com vinte e cinco, trinta anos, que tecnicamente são adultos, mas que ainda chamam a mãe para decisões pequenas. Para validação. Para organização emocional.
+
+[pause]
+
+E tu, por amor, respondes sempre.
+
+Não percebes que cada resposta tua confirma a dependência. Ensina-lhes que a tua presença infinita é a única opção.
+
+[short pause]
+
+Eles, por seu lado, nunca pediram. Não aprenderam a não pedir.
+
+[long pause]
+
+Este padrão tem um custo silencioso.
+
+Não para eles — eles, pelo menos no curto prazo, beneficiam.
+
+Para ti.
+
+Tu estás a viver uma fase da vida que devia ser de maior autonomia e estás a viver, ainda, como mãe de crianças de idades passadas.
+
+[pause]
+
+Os teus sonhos, os teus projectos, a tua recuperação — tudo isto está continuamente adiado porque há sempre uma chamada, uma mensagem, uma logística.
+
+[short pause]
+
+E tu dizes a ti própria: eles precisam de mim.
+
+Mas a verdade é mais complicada.
+
+[pause]
+
+Eles habituaram-se à tua disponibilidade.
+
+Habituar-se não é o mesmo que precisar.
+
+[long pause]
+
+Uma das tarefas mais difíceis e mais necessárias da maternidade tardia é ensinar filhos adultos a precisarem menos.
+
+Não porque os deixas. Porque os libertas.
+
+[pause]
+
+Libertar um filho é confiar que ele tem capacidade de resolver sem a tua resposta imediata.
+
+É não responder à primeira mensagem.
+
+É, quando te pedem conselho sobre algo pequeno, devolver a pergunta: e tu, o que é que achas?
+
+É estar disponível em crises reais, não em dilemas de dia-a-dia.
+
+[short pause]
+
+Isto não é abandono.
+
+É o último acto pedagógico.
+
+[long pause]
+
+Esta semana, escolhe um pedido recorrente do teu filho ou filha adulta a que costumas responder imediatamente.
+
+Não respondas imediatamente.
+
+Espera.
+
+[pause]
+
+Na maioria das vezes, a situação resolve-se sozinha antes de tu precisares responder.
+
+E ele, sem se aperceber, começa a aprender que é capaz.
+
+[short pause]
+
+Este pequeno gesto, repetido ao longo de meses, transforma a relação.
+
+[pause]
+
+A maternidade tem fases.
+
+A fase em que tu recuas para que eles avancem é tão importante como a fase em que tu avançavas para os proteger.
+
+[long pause]
+
+Recuar não é desamar.
+
+É amar de forma adequada à idade que eles, agora, têm.`,
+      },
+      {
+        id: "limite-sagrado-m5c",
+        titulo: "M5.C — Irmãos e dívidas antigas",
+        curso: "limite-sagrado",
+        texto: `Entre irmãos, as dívidas não aparecem em contas.
+
+Aparecem em expectativas.
+
+[long pause]
+
+O irmão que sempre esteve em dificuldade e esperou que tu ajudasses.
+
+A irmã que foi a preferida e nunca soube.
+
+A irmã mais velha que assumiu responsabilidade cedo e continua a assumir, décadas depois.
+
+O irmão mais novo que foi protegido pelos outros e continua a precisar de ser.
+
+[pause]
+
+Cada família distribui papéis sem anúncio.
+
+E cada irmão, sem escolha, absorve o seu.
+
+[short pause]
+
+Depois a vida adulta começa.
+
+E os papéis persistem — mesmo quando a realidade já não os justifica.
+
+[long pause]
+
+Se tu foste a que resolvia, continuas a resolver.
+
+Se tu foste a que cuidava, continuas a cuidar.
+
+Se tu foste a que foi protegida, continuas, em certa forma, a ser.
+
+[pause]
+
+E entre estas dinâmicas há, muitas vezes, ressentimentos que nunca são nomeados.
+
+O irmão que recebeu mais ajuda financeira não agradece. A irmã que sempre foi elogiada não reconhece o privilégio. O mais velho que sustentou carrega em silêncio.
+
+[short pause]
+
+Estas dívidas não ditas acumulam-se.
+
+E nos funerais, nas heranças, nas crises — explodem.
+
+[long pause]
+
+Reajustar limites entre irmãos adultos é, para muitas pessoas, o trabalho relacional mais difícil da vida.
+
+Porque os irmãos não podem ser substituídos. Não podes mudar de irmãos como mudas de amigos.
+
+E a relação foi formada em condições que já não existem.
+
+[pause]
+
+Mas podes, no presente, mudar a forma como funciona.
+
+[short pause]
+
+Começa por um reconhecimento silencioso: que papel me foi dado na família? Que papel continuo a desempenhar mesmo sem razão actual?
+
+[pause]
+
+Algumas mulheres continuam a ser a resolutora da família aos quarenta, cinquenta anos — quando os pais já não estão, e a função já não é necessária.
+
+Continuam por hábito.
+
+[long pause]
+
+Reajustar o limite com um irmão exige, muitas vezes, parar de fazer uma coisa específica.
+
+Não mandar a mensagem habitual. Não lembrar do aniversário dele pelo terceiro ano. Não organizar o jantar de família sozinha.
+
+[pause]
+
+A ausência desta acção é mais eloquente do que qualquer conversa.
+
+[short pause]
+
+A família vai notar. Alguém vai ter de preencher o espaço.
+
+[pause]
+
+E só aí, com a tua ausência temporária, os outros vão começar a reconhecer o peso real do que tu fazias sem ser pedida.
+
+[long pause]
+
+Esta semana, escolhe uma responsabilidade que tenhas assumido em relação a um irmão ou irmã sem ninguém te ter pedido explicitamente.
+
+Não faças.
+
+[pause]
+
+Uma única vez. Uma semana.
+
+Vê o que acontece.
+
+[short pause]
+
+Se ninguém nota e tudo continua na mesma, tens a tua resposta: a responsabilidade era invisível.
+
+Se alguém reage, tens a tua resposta: estavas a fazer algo que importava — e agora podes ter uma conversa sobre como redistribuir.
+
+[long pause]
+
+A família adulta só funciona quando cada pessoa reconhece o que traz.
+
+E isso, muitas vezes, só fica visível quando tu, pela primeira vez, não trazes.`,
+      },
+    ],
+  },
 ];
