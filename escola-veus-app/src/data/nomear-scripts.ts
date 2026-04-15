@@ -20319,7 +20319,7 @@ A culpa que sentes a comer à meia-noite não é proporcional ao que comeste.
 
 [pause]
 
-E a comida está, simplesmente, a tentar resolver o sintoma da abandono.
+E a comida está, simplesmente, a tentar resolver o sintoma do abandono.
 
 [short pause]
 
@@ -20359,7 +20359,7 @@ Estes momentos são oportunidade.
 
 Cinco minutos de presença para ti.
 
-Não cinco minutos no telefone. Cinco minutos sentada, em silêncio, perto do corpo.
+Não cinco minutos no telefone. Cinco minutos sentada, em silêncio, sem fazer nada.
 
 [short pause]
 
@@ -21380,7 +21380,7 @@ E vai escrevendo, ao longo dos dias, à medida que te lembras.
 
 [pause]
 
-Não esforça a memória.
+Não esforces a memória.
 
 Quando estiveres a comer e reparares que algo te fez pousar o garfo antes de estares cheia, repara.
 
@@ -21632,7 +21632,7 @@ Cada um deles é uma forma silenciosa de continuares uma relação com alguém q
 
 Ou que está, mas com quem a relação se tornou complicada.
 
-Ou que tu, há muito tempo, deixaste de saber como abraçar — mas que ainda alimentas, em ti, através do prato.
+Ou que tu, há muito tempo, deixaste de saber como te aproximar — mas que ainda alimentas, em ti, através do prato.
 
 [short pause]
 
@@ -21672,7 +21672,7 @@ O problema só aparece quando tu, sem saberes, comes este prato com mais frequê
 
 [pause]
 
-Quando reparas que apetecesse-te o doce da avó num momento em que estás sozinha, triste, sem ninguém para conversar.
+Quando reparas que te apetece o doce da avó num momento em que estás sozinha, triste, sem ninguém para conversar.
 
 E quando, depois de o comer, ficas com a sensação difusa de que aquilo, afinal, não preencheu o que precisavas.
 
@@ -21722,7 +21722,7 @@ A primeira: continuar a comer o prato. Mas agora com consciência do que ele faz
 
 [short pause]
 
-Comer-lo lentamente. Fazer dele uma pequena cerimónia. Honrar a pessoa de onde ele vem.
+Comê-lo lentamente. Fazer dele uma pequena cerimónia. Lembrar quem o fazia.
 
 [pause]
 
@@ -22770,7 +22770,7 @@ A tomada de consciência é diferente.
 
 É veres, em letra escrita, que tu não és cliente fácil de uma indústria.
 
-És cliente capturada por uma indústria que te ensinou, durante décadas, a procurar fora o que só pode aparecer dentro.
+És cliente capturada por uma indústria que te ensinou, durante décadas, a comprar soluções para um problema que só se desfaz com trabalho de atenção, sem produto.
 
 [long pause]
 
@@ -22790,7 +22790,7 @@ Não tem aplicação. Não tem livro novo todos os meses. Não tem programa de s
 
 [pause]
 
-Tem só ti, contigo, ao longo dos anos.
+Tens só tu, contigo, ao longo dos anos.
 
 [long pause]
 
@@ -22801,6 +22801,5674 @@ E é por isso que a indústria nunca fala sobre este caminho.
 Porque, neste caminho, ninguém ganha dinheiro com o teu corpo.
 
 Excepto tu — em saúde, em paz, em tempo recuperado para a tua vida real.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-fome-m7",
+    titulo: "Curso A Fome — Módulo 7 (Aulas A, B, C)",
+    descricao: "Comer com Outros.",
+    scripts: [
+      {
+        id: "a-fome-m7a",
+        titulo: "M7.A — A mesa de família onde aprendeste",
+        curso: "a-fome",
+        texto: `Antes de teres opinião própria sobre comida, viste como se comia em tua casa.
+
+[pause]
+
+E o que viste ficou.
+
+[long pause]
+
+Quem servia primeiro.
+
+Quem comia mais.
+
+Quem deixava sempre alguma coisa no prato e quem limpava como se fosse a última refeição.
+
+Quem fazia comentários sobre o que os outros estavam a comer.
+
+Quem se levantava com pressa antes de acabar.
+
+[short pause]
+
+Tu não decoraste estas regras.
+
+[pause]
+
+Absorveste.
+
+[short pause]
+
+Da mesma forma que aprendeste a língua materna sem aulas formais.
+
+[long pause]
+
+A mesa de família é a primeira escola alimentar que existe na tua vida.
+
+[pause]
+
+E é a mais influente — porque acontece todos os dias, durante anos, antes de qualquer outra ideia entrar em ti.
+
+[short pause]
+
+Por isso, em adulta, há gestos que tu fazes à mesa sem perceber porquê.
+
+[pause]
+
+Comer depressa, mesmo quando tens tempo.
+
+Servir os outros antes de te servires.
+
+Pôr menos no prato do que comerias se ninguém estivesse a olhar.
+
+Recusar a sobremesa em sociedade e comê-la depois, sozinha, no frigorífico.
+
+[long pause]
+
+Estes gestos não são teus.
+
+[pause]
+
+São da tua mesa de origem.
+
+[short pause]
+
+E continuam a operar em ti, em adulta, em mesas completamente diferentes — em jantares de trabalho, em encontros, em casa de pessoas que nem conheces.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de memória.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"A mesa onde aprendi a comer."
+
+[short pause]
+
+E desenha, em palavras, essa mesa.
+
+[pause]
+
+Quem se sentava onde.
+
+Quem servia.
+
+Quem mandava em silêncio na refeição.
+
+Quem comentava o prato dos outros.
+
+Quem comia com prazer e quem comia com vergonha.
+
+[long pause]
+
+Não tens de ser exaustiva. Escreve o que vier — sete a dez observações chegam.
+
+[pause]
+
+Quando acabares, lê.
+
+[short pause]
+
+E faz uma única pergunta a seguir, e escreve a resposta noutra folha:
+
+"Quais destas coisas eu ainda faço hoje, mesmo sem reparar?"
+
+[long pause]
+
+Provavelmente vais reparar em três ou quatro coisas.
+
+[pause]
+
+Coisas pequenas. Mas que se repetem em todas as mesas em que te sentas há trinta anos.
+
+[short pause]
+
+Comes sempre depressa, mesmo quando ninguém te vai cobrar a tigela.
+
+Pões-te sempre a servir os outros, mesmo quando não és anfitriã.
+
+Reduzes sempre a porção quando há uma mulher mais magra à mesa.
+
+Calas a fome real para evitar comentário antigo que já ninguém faria.
+
+[long pause]
+
+Este reconhecimento, sozinho, não muda o gesto imediatamente.
+
+[pause]
+
+Mas começa, devagar, a tirar-lhe a invisibilidade.
+
+[short pause]
+
+E o que é visível pode, com tempo, ser escolhido em vez de obedecido.
+
+[long pause]
+
+Não tens de mudar tudo da tua mesa de origem.
+
+[pause]
+
+Há coisas que aprendeste lá que são boas — partilhar, conversar a comer, cuidar de quem se senta contigo.
+
+Essas, mantém.
+
+[short pause]
+
+Mas as outras — as que te tiraram a fome legítima sem te perguntar — essas, com o tempo, podes começar a deixar para trás.
+
+[pause]
+
+E a tua mesa, em adulta, pode finalmente passar a parecer mais tua e menos da mesa onde aprendeste.`,
+      },
+      {
+        id: "a-fome-m7b",
+        titulo: "M7.B — O jantar com amigas onde escolhes em função delas",
+        curso: "a-fome",
+        texto: `Quando jantas com amigas, raramente escolhes o que te apetece.
+
+[pause]
+
+Escolhes em função do que elas estão a escolher.
+
+[long pause]
+
+Repara na coreografia.
+
+[pause]
+
+A primeira amiga abre o menu e diz "vou pedir só uma salada, não tenho muita fome."
+
+A segunda olha para ti e para a terceira: "também vou só pelo leve."
+
+E tu, que entraste no restaurante com vontade de pedir massa com queijo, fechas o menu e dizes "também acho que vou pela salada."
+
+[short pause]
+
+Não foi escolha.
+
+Foi adaptação.
+
+[long pause]
+
+Esta adaptação acontece em quase todas as mulheres adultas, em quase todos os contextos sociais.
+
+[pause]
+
+E acontece tão automaticamente que tu nem reparas que a fizeste.
+
+[short pause]
+
+Só dás conta, mais tarde, quando chegas a casa e abres o frigorífico.
+
+[pause]
+
+Comes a sério aquilo que querias ter pedido no restaurante.
+
+Sozinha. Em pé. Sem o copo de vinho. Sem a conversa.
+
+[long pause]
+
+A pergunta é honesta.
+
+[pause]
+
+Porque é que, num jantar com amigas, tu não consegues pedir o que te apetece?
+
+[short pause]
+
+A resposta tem várias camadas.
+
+[long pause]
+
+Primeira camada: medo do julgamento silencioso das outras mulheres.
+
+[pause]
+
+Se tu pedes o prato pesado e elas pedem salada, tu, mesmo sem ninguém comentar, sentes que ficaste exposta.
+
+[short pause]
+
+Ficaste como a "que não tem auto-controlo".
+
+A "que come sem cuidado".
+
+A "que provavelmente é por isso que está com peso a mais".
+
+[long pause]
+
+Estes julgamentos podem nem existir nas cabeças delas.
+
+Mas existem na tua cabeça, projectados nelas.
+
+[pause]
+
+E isso chega para te fazer mudar a escolha.
+
+[long pause]
+
+Segunda camada: solidariedade reflexa.
+
+[pause]
+
+Se elas estão a "ter cuidado", tu, ao pedires um prato pesado, sentes que estás a quebrar a aliança feminina implícita.
+
+[short pause]
+
+A aliança implícita é: "todas nós somos mulheres em vigilância sobre o nosso corpo, todas estamos juntas neste esforço."
+
+[pause]
+
+Pedir o prato pesado é traição silenciosa a esta aliança.
+
+[long pause]
+
+Esta aliança é, em si, uma das coisas mais danosas entre mulheres adultas.
+
+[pause]
+
+Porque transforma um momento que devia ser de prazer partilhado em momento de vigilância partilhada.
+
+[short pause]
+
+E a vigilância partilhada não alimenta amizades. Esgota-as.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno mas corajoso.
+
+[pause]
+
+Da próxima vez que jantares com amigas, antes de chegares ao restaurante, decide o que te apetece comer.
+
+[short pause]
+
+Decide na rua, no carro, antes de ver o menu.
+
+[pause]
+
+E quando chegares e abrires o menu, pede o que decidiste.
+
+Independentemente do que as outras estão a pedir.
+
+[long pause]
+
+Vai ser desconfortável.
+
+[pause]
+
+Vais sentir, durante alguns minutos, que ficaste exposta.
+
+[short pause]
+
+Mas há uma coisa que vai acontecer que não esperas.
+
+[pause]
+
+Frequentemente, uma das outras mulheres à mesa, ao ver-te pedir o que querias, vai mudar a escolha dela e pedir o que ela queria mesmo.
+
+[long pause]
+
+Porque tu deste, sem palavras, permissão.
+
+[pause]
+
+A aliança da vigilância só se mantém enquanto todas concordarem.
+
+[short pause]
+
+Basta uma quebrar para as outras poderem, devagar, começar a quebrar também.
+
+[long pause]
+
+Este gesto pequeno — pedir o que te apetece num jantar com amigas — é gesto político maior do que parece.
+
+[pause]
+
+Porque liberta tu e, em consequência, liberta as outras.
+
+[short pause]
+
+E à noite, em casa, não vais precisar de abrir o frigorífico para comeres em segredo o que devias ter pedido à mesa.`,
+      },
+      {
+        id: "a-fome-m7c",
+        titulo: "M7.C — O encontro romântico onde finges não ter fome",
+        curso: "a-fome",
+        texto: `Há uma situação muito específica em que quase todas as mulheres adultas comem mal.
+
+[pause]
+
+O encontro romântico inicial.
+
+[long pause]
+
+Sobretudo se for jantar.
+
+Sobretudo se for com homem que te interessa.
+
+Sobretudo se for nas primeiras três ou quatro saídas.
+
+[pause]
+
+Repara no padrão.
+
+[short pause]
+
+Pedes algo leve.
+
+Não acabas o prato.
+
+Recusas a sobremesa, mesmo quando ele a pede e te oferece.
+
+Bebes com moderação para "controlar" a forma como te apresentas.
+
+[long pause]
+
+Tudo isto, em conjunto, é uma performance.
+
+[pause]
+
+A performance de mulher pequena.
+
+[short pause]
+
+Mulher que come pouco. Mulher que ocupa pouco espaço. Mulher que não tem necessidades incómodas.
+
+[long pause]
+
+Esta performance não é tua decisão consciente.
+
+[pause]
+
+É roteiro cultural antigo, instalado em ti em adolescente, que te diz que para seres desejável tens de parecer pouco exigente.
+
+[short pause]
+
+E pouco exigente, na cabeça do roteiro, começa pela mesa.
+
+[long pause]
+
+Porque uma mulher que tem fome real, que pede uma segunda dose, que limpa o prato, que pede sobremesa e a come com prazer — é mulher que mostra apetite.
+
+[pause]
+
+E o roteiro antigo diz: mulher com apetite é mulher difícil.
+
+[short pause]
+
+Mulher difícil afasta o homem.
+
+[pause]
+
+Por isso, sem te perguntar se concordas, o teu corpo aprende a esconder o apetite na presença masculina inicial.
+
+[long pause]
+
+A consequência desta performance é dupla.
+
+[pause]
+
+A primeira: chegas a casa com fome real e comes sozinha, no escuro, o que devias ter comido à mesa.
+
+[short pause]
+
+A segunda, mais grave: estás a estabelecer, desde o início da relação, um precedente.
+
+[pause]
+
+O precedente de mulher que esconde necessidades.
+
+[long pause]
+
+Se a relação avançar, esse precedente vai pesar.
+
+[pause]
+
+A mulher que escondeu fome no encontro inicial vai esconder cansaço no terceiro mês.
+
+Vai esconder vontade de não fazer sexo na sexta-feira em que está esgotada.
+
+Vai esconder o que pensa sobre a família dele que não gosta dela.
+
+[short pause]
+
+A mulher pequena, instalada à mesa do primeiro encontro, instala-se também em todas as áreas da relação.
+
+[long pause]
+
+Esta semana — ou no próximo encontro romântico que tiveres, mesmo que demore semanas — vais fazer uma coisa diferente.
+
+[pause]
+
+Vais comer o que te apetece comer.
+
+[short pause]
+
+Sem performance. Sem cálculo. Sem roteiro.
+
+[pause]
+
+Vais pedir o prato que te apetece. Vais comer a porção que precisas para ficar saciada. Vais aceitar a sobremesa, se te apetecer. Vais beber o copo de vinho extra, se for o caso.
+
+[long pause]
+
+E vais ver o que acontece.
+
+[pause]
+
+Há duas hipóteses.
+
+[short pause]
+
+Primeira hipótese: ele acolhe. Acha graça. Aprecia mulher que come com prazer. Sente-se mais à vontade na presença de pessoa real do que na presença de pessoa em performance.
+
+[pause]
+
+Segunda hipótese: ele recua subtilmente. Faz comentário sobre quanto comeste. Volta a sair com mulher mais "discreta" na próxima vez.
+
+[long pause]
+
+A segunda hipótese não é falha tua.
+
+[pause]
+
+É informação preciosa sobre o tipo de homem com quem estavas a sair.
+
+[short pause]
+
+Se ele recua porque tu comeste o que querias num jantar, ele ia recuar mais tarde por motivos piores.
+
+[pause]
+
+Por teres opinião. Por teres limites. Por teres dia mau.
+
+[long pause]
+
+A performance de mulher pequena à mesa filtra para fora os homens que não te queriam de qualquer forma — mas só percebes isso ao quinto mês.
+
+[pause]
+
+Comer como tu comes desde o primeiro encontro filtra-os logo. Em uma noite.
+
+[short pause]
+
+E poupa-te tempo, energia, e relação que ia acabar mal de qualquer forma.
+
+[long pause]
+
+Não comes como tu comes para o impressionar.
+
+[pause]
+
+Comes para descobrires, com o mínimo de tempo perdido, se ele consegue jantar com a mulher que tu és.
+
+[short pause]
+
+Esta é, na verdade, uma das ferramentas mais simples e mais eficazes que tens para escolheres bem com quem ficar.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-fome-m8",
+    titulo: "Curso A Fome — Módulo 8 (Aulas A, B, C)",
+    descricao: "A Fome em Paz.",
+    scripts: [
+      {
+        id: "a-fome-m8a",
+        titulo: "M8.A — A primeira refeição em que comeste sem calcular",
+        curso: "a-fome",
+        texto: `Houve, em algum momento, uma primeira refeição em que tu comeste sem calcular.
+
+[pause]
+
+Talvez tenhas sido pequena.
+
+Talvez tenhas sido tão pequena que não te lembras.
+
+[long pause]
+
+Mas houve.
+
+[pause]
+
+Houve uma fase, na tua infância, em que tu comias o que te apetecia, parando quando estavas cheia, sem conta nenhuma a fazer.
+
+[short pause]
+
+Comias bolacha ao lanche sem te perguntares se podias.
+
+Comias massa ao jantar sem hesitar entre primeiro ou segundo prato.
+
+Pedias mais sumo sem te sentires culpada.
+
+[pause]
+
+E nem sequer te lembravas, no dia seguinte, do que tinhas comido na véspera.
+
+Porque comer não era tema. Era apenas coisa que se fazia.
+
+[long pause]
+
+Esta fase, em ti, existiu mesmo.
+
+[pause]
+
+Não é fantasia.
+
+Não é idealização.
+
+[short pause]
+
+Existiu até alguém — uma mãe, uma avó, um médico, uma colega de escola — entrar na tua relação com a comida e instalar a primeira camada de cálculo.
+
+[long pause]
+
+A partir daí, comer deixou de ser apenas comer.
+
+[pause]
+
+Passou a ser acto carregado de regras, expectativas, julgamentos.
+
+[short pause]
+
+E essa camada nunca mais foi totalmente embora.
+
+[long pause]
+
+A maioria das mulheres adultas tem, sobre a comida, um trabalho mental contínuo.
+
+[pause]
+
+Pensam no que comeram. Pensam no que vão comer. Pensam no que outros estão a comer. Pensam na balança. Pensam no espelho. Pensam na próxima dieta.
+
+[short pause]
+
+Este trabalho mental, somado, é equivalente a um segundo emprego não pago que ocupa horas por dia, todos os dias, durante décadas.
+
+[long pause]
+
+E é por isso que muitas mulheres, ao final do dia, estão exaustas sem razão aparente.
+
+[pause]
+
+A razão está aparente. É só silenciosa.
+
+[short pause]
+
+Tu passaste o dia a fazer cálculo alimentar de fundo, mesmo enquanto fazias todas as outras coisas.
+
+[long pause]
+
+A reconciliação com a fome não significa esquecer todo este aprendizado.
+
+[pause]
+
+Significa, com o tempo, devolver-lhe o lugar que a comida tinha quando tu eras criança.
+
+[short pause]
+
+Necessidade humana básica. Coisa que se faz quando se tem fome. Coisa que se pára quando se está cheia. Coisa que se esquece logo a seguir.
+
+[long pause]
+
+Esta semana, vais experimentar uma única refeição como criança.
+
+[pause]
+
+Escolhe um almoço ou um jantar. Quando puderes estar sozinha, sem pressa.
+
+[short pause]
+
+E faz uma única regra: vais comer sem qualquer cálculo.
+
+[pause]
+
+Não vais pensar em calorias. Não vais pensar em proteínas. Não vais pensar no jantar. Não vais pensar no peso.
+
+[long pause]
+
+Vais escolher o que te apetece.
+
+Vais comer a porção que te apetece.
+
+Vais parar quando estiveres cheia.
+
+E vais levantar-te da mesa sem registo mental do que comeste.
+
+[short pause]
+
+Vai ser estranho.
+
+[pause]
+
+Provavelmente, vais conseguir manter o silêncio mental durante apenas dez minutos da refeição.
+
+Depois disso, a cabeça vai voltar a tentar calcular alguma coisa.
+
+[short pause]
+
+Tudo bem. Não te exijas perfeição.
+
+[pause]
+
+Volta ao silêncio. Continua a comer. Pára quando estiveres cheia.
+
+[long pause]
+
+Numa folha, à noite, escreve apenas uma frase:
+
+"Hoje tive uma refeição sem cálculo. Senti —"
+
+[pause]
+
+E completa com a sensação que ficou.
+
+[short pause]
+
+A maioria das mulheres, da primeira vez que faz isto, escreve uma palavra.
+
+[pause]
+
+Liberdade.
+
+[long pause]
+
+Não liberdade abstracta.
+
+[pause]
+
+Liberdade pequena, concreta, quase esquecida — a de comer um almoço como qualquer pessoa que não foi treinada a calcular.
+
+[short pause]
+
+Repete uma vez por semana, durante alguns meses.
+
+[pause]
+
+E lentamente, sem te aperceberes, esta forma de comer começa a contaminar outras refeições da tua semana.
+
+[long pause]
+
+Não todas. Não imediatamente.
+
+[pause]
+
+Mas o suficiente para tu, ao fim de meses, perceberes que estás a comer com mais paz do que comias há anos.
+
+[short pause]
+
+Não porque encontraste a dieta certa.
+
+Porque, finalmente, lembraste-te do que era comer sem dieta nenhuma.`,
+      },
+      {
+        id: "a-fome-m8b",
+        titulo: "M8.B — O dia em que não te pesaste",
+        curso: "a-fome",
+        texto: `Há um pequeno ritual matinal que organiza, em silêncio, o resto do teu dia.
+
+[pause]
+
+Tu pesas-te.
+
+[long pause]
+
+Talvez todos os dias.
+
+Talvez algumas vezes por semana.
+
+Talvez só ao fim-de-semana.
+
+[pause]
+
+Mas pesas-te com regularidade.
+
+E o número que aparece na balança organiza, sem tu reparares, o tom interior das próximas horas.
+
+[short pause]
+
+Se o número desceu, sentes ligeireza. Estás de bom humor. Permites-te a chávena de café com leite. Falas com o teu marido com mais paciência.
+
+[pause]
+
+Se o número subiu, sentes peso emocional muito superior aos cem gramas físicos.
+
+Ficas em silêncio. Decides reduzir o pequeno-almoço. Estás mais irritável durante a manhã.
+
+[long pause]
+
+A balança, em ti, não é instrumento neutro de medida.
+
+[pause]
+
+É juíza.
+
+[short pause]
+
+E juíza com poder desproporcional sobre como tu vais habitar o teu próprio dia.
+
+[long pause]
+
+Repara que tu, neste momento, estás a entregar o teu humor matinal a um pedaço de plástico no chão da casa de banho.
+
+[pause]
+
+Um pedaço de plástico que não sabe como é que tu dormiste.
+
+Que não sabe se a tua filha esteve doente toda a noite.
+
+Que não sabe se estás na fase do ciclo em que reténs líquidos.
+
+Que não sabe se ontem comeste sal a mais.
+
+Que não sabe nada, na verdade, sobre a tua vida.
+
+[short pause]
+
+E, ainda assim, é a primeira coisa que tu consultas de manhã.
+
+[long pause]
+
+Esta semana, vais fazer uma experiência.
+
+[pause]
+
+Vais tirar a balança da casa de banho.
+
+[short pause]
+
+Não tens de a deitar fora. Não tens de a partir.
+
+[pause]
+
+Pega na balança e leva-a para outro lado. Pode ser um arrumo, um sótão, a despensa, a garagem, a casa de uma amiga.
+
+[short pause]
+
+Algum lugar onde não a vejas todas as manhãs.
+
+[long pause]
+
+E durante sete dias, não te peses.
+
+[pause]
+
+A primeira manhã vai ser estranha.
+
+[short pause]
+
+A tua mão vai procurar instintivamente a balança. Vais sentir um vazio pequeno. Vais sentir que falta uma informação.
+
+[pause]
+
+Vai aparecer ansiedade — "como é que sei se estou bem se não me peso?"
+
+[long pause]
+
+Continua. Não desistas no segundo dia.
+
+[pause]
+
+Ao fim de quatro ou cinco dias, vai acontecer uma coisa que não esperas.
+
+[short pause]
+
+Vais começar a perceber, sem o número, como o teu corpo se sente.
+
+[pause]
+
+Vais reparar se estás com energia ou sem energia.
+
+Vais reparar se a barriga está confortável ou apertada.
+
+Vais reparar se as roupas estão como costumam ou diferentes.
+
+[long pause]
+
+Toda esta informação estava sempre lá.
+
+[pause]
+
+Mas estava abafada por uma única medida que a substituía.
+
+[short pause]
+
+Quando tiras o número, o corpo recupera voz.
+
+[long pause]
+
+Ao fim da semana, antes de pores a balança de volta — se decidires que queres pô-la de volta — escreve numa folha:
+
+"Sem balança, esta semana, o meu corpo —"
+
+[pause]
+
+E completa.
+
+[short pause]
+
+A maior parte das mulheres descobre, ao fim de uma semana, que a balança não estava a dar-lhes informação.
+
+Estava a dar-lhes ansiedade.
+
+[pause]
+
+E que sem ela, conseguem perceber muito melhor como o seu corpo está realmente.
+
+[long pause]
+
+Algumas mulheres, depois deste exercício, decidem voltar a pesar-se mas com menos frequência.
+
+Outras decidem deixar a balança fora da casa de banho permanentemente.
+
+[pause]
+
+Não há resposta certa. Há a resposta tua, depois de finalmente teres tido uma semana para ver o que sentes sem ela.
+
+[short pause]
+
+A balança não é o teu corpo.
+
+É um instrumento.
+
+[long pause]
+
+E quando tu deixas de tratar o instrumento como autoridade sobre como te sentes, recuperas autoridade tu — sobre a tua relação com a tua própria carne.`,
+      },
+      {
+        id: "a-fome-m8c",
+        titulo: "M8.C — A relação possível com a fome",
+        curso: "a-fome",
+        texto: `Este curso acaba.
+
+[pause]
+
+E tu continuas nele.
+
+[long pause]
+
+Não vais sair daqui curada da relação com a comida.
+
+[pause]
+
+Vais sair com instrumentos que não tinhas há oito módulos.
+
+[short pause]
+
+E os instrumentos, ao contrário das curas prometidas, ficam.
+
+[long pause]
+
+Antes de fechar, vamos fazer um inventário do que tu, agora, sabes fazer.
+
+[pause]
+
+Pega numa folha. Escreve em cima:
+
+"Antes deste curso, eu não sabia —"
+
+[long pause]
+
+E vai escrevendo, devagar, à medida que reconheces.
+
+[pause]
+
+Não sabia que comer escondida, em segredo no frigorífico, era forma de gerir vergonha pública à mesa.
+
+Não sabia que a fome que aparece ao fim da tarde podia não ser fome — mas cansaço, tristeza, ou pedido de companhia.
+
+Não tinha mapa das frases sobre comida que herdei da minha mãe e da minha avó.
+
+Não tinha visto, em letra escrita, quantas dietas fiz na vida e qual foi o resultado real.
+
+Não tinha percebido que a "perda de controlo" de fim-de-semana era resposta inevitável à restrição da semana.
+
+Não tinha reparado que, em jantares com amigas e em encontros românticos, comia em função delas e dele, quase nunca em função de mim.
+
+Não tinha experimentado, em adulta, uma única refeição sem cálculo.
+
+[short pause]
+
+Vai escrevendo o que for verdadeiro para ti.
+
+Algumas linhas. Não muitas. As que importam.
+
+[long pause]
+
+Quando acabares, lê em voz baixa, para ti.
+
+[pause]
+
+E repara numa coisa.
+
+[short pause]
+
+Cada linha desta lista é um instrumento.
+
+[pause]
+
+Não é frase motivacional. Não é resolução de Ano Novo. É hábito novo, pequeno, instalado em ti depois de oito módulos de trabalho silencioso.
+
+[long pause]
+
+A mulher em paz com a fome não é versão idealizada que aparece daqui a dois anos.
+
+[pause]
+
+É a soma dos pequenos hábitos que tu, ao longo dos meses, vais continuando a praticar depois deste curso terminar.
+
+[short pause]
+
+É a mulher que continua a perguntar-se, antes de comer, se é fome ou outra coisa.
+
+A mulher que continua a notar quem está à mesa antes de escolher a porção.
+
+A mulher que continua a olhar para a balança como instrumento, e não como juíza.
+
+[long pause]
+
+Esta mulher não chega.
+
+Constrói-se em cada gesto pequeno repetido.
+
+[pause]
+
+E tu, neste momento, és exactamente isso — uma mulher a meio dessa construção.
+
+[short pause]
+
+Não no fim.
+
+A meio.
+
+[long pause]
+
+A relação possível com a fome não é a ausência de fome.
+
+[pause]
+
+Não é a ausência de prazer pela comida.
+
+Não é a perda de peso permanente.
+
+Não é a indiferença ao corpo.
+
+[short pause]
+
+É outra coisa.
+
+[long pause]
+
+É chegar a um ponto em que a comida volta a ser comida.
+
+[pause]
+
+Coisa que se prepara, se come com gosto, se partilha quando há gente boa por perto.
+
+E que se esquece a seguir, porque há outras coisas mais interessantes para fazer com a vida.
+
+[short pause]
+
+Este é o objectivo.
+
+[pause]
+
+Não a magreza. Não a perfeição alimentar. Não a iluminação corporal.
+
+A devolução da comida ao seu lugar — necessidade humana entre muitas outras, deixada de ser tema central da tua existência diária.
+
+[long pause]
+
+E a partir daí, o resto da tua vida — o trabalho, as relações, a criação, o descanso, o prazer — recupera o espaço que a comida lhe estava a roubar.
+
+[pause]
+
+Este espaço é, em última análise, o que este curso te dá.
+
+[short pause]
+
+Não menos quilos.
+
+Mais vida.
+
+[pause]
+
+E o que vier a seguir não é transformação prometida.
+
+É o que tu, com estes instrumentos na mão, fizeres todos os dias quando ninguém estiver a ver.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-chama-m1",
+    titulo: "Curso A Chama — Módulo 1 (Aulas A, B, C)",
+    descricao: "A Chama que Apagou.",
+    scripts: [
+      {
+        id: "a-chama-m1a",
+        titulo: "M1.A — A noite em que percebeste que já não tinhas vontade",
+        curso: "a-chama",
+        texto: `Houve uma noite — talvez recente, talvez há anos — em que tu percebeste, sem aviso, que já não tinhas vontade.
+
+[pause]
+
+Não foi conclusão dramática.
+
+Não foi crise.
+
+[long pause]
+
+Foi mais subtil do que isso.
+
+[pause]
+
+Foi um momento em que estavas, talvez na cama, e o teu marido — ou o teu companheiro, ou alguém que te interessava — fez aquele gesto que antes te acendia.
+
+[short pause]
+
+E desta vez, nada se acendeu.
+
+[pause]
+
+Pior — apareceu, em segundo plano, uma sensação de cansaço.
+
+[long pause]
+
+Naquela noite, provavelmente, fingiste alguma coisa.
+
+[pause]
+
+Ou disseste que estavas com sono.
+
+Ou inventaste uma razão pequena.
+
+[short pause]
+
+E adormeceste com uma sensação difusa de que algo importante se tinha desligado em ti.
+
+[pause]
+
+Sem ninguém te ter pedido permissão.
+
+[long pause]
+
+Esta noite — esta noite específica — é uma noite que quase todas as mulheres adultas reconhecem.
+
+[pause]
+
+Algumas situam-na nos trinta e poucos.
+
+Algumas nos quarenta.
+
+Algumas, mais cedo do que esperariam, nos vinte e nove.
+
+[short pause]
+
+Mas todas, em algum ponto, têm essa noite.
+
+[long pause]
+
+A partir dela, alguma coisa muda silenciosamente.
+
+[pause]
+
+A iniciativa começa a vir só dele, ou de outros.
+
+A frequência diminui sem se falar.
+
+E tu, em vez de te perguntares o que se passou, começas a contornar.
+
+[short pause]
+
+Contornar o tema. Contornar a cama, em alguns dias. Contornar o teu próprio corpo nessa zona inteira.
+
+[long pause]
+
+A ausência de desejo torna-se, lentamente, hábito.
+
+[pause]
+
+E o hábito, em poucos meses, parece identidade.
+
+[short pause]
+
+Começas a explicar-te a ti mesma com frases como:
+
+"Eu já não sou pessoa muito sexual."
+
+"Já não tenho idade para isto."
+
+"Está fase de vida — é normal."
+
+[long pause]
+
+Estas frases, quando as dizes em silêncio, dão alguma paz.
+
+[pause]
+
+Porque transformam falta numa característica.
+
+Em vez de te perguntares o que perdeste, decides que era assim que deveria ser.
+
+[short pause]
+
+Mas não era.
+
+[long pause]
+
+A tua chama não se apagou por idade. Não se apagou por fase. Não se apagou por ser mulher adulta.
+
+[pause]
+
+Apagou-se por razões específicas, identificáveis, na maior parte dos casos reversíveis.
+
+[short pause]
+
+Cansaço acumulado de cuidar de toda a gente.
+
+Relação que se foi tornando logística antes de ser intimidade.
+
+Vergonha herdada que nunca foi nomeada.
+
+Corpo que, ao longo dos anos, foi sendo tratado mais como objecto de gestão e menos como casa onde se vive.
+
+[long pause]
+
+Cada uma destas razões é tema deste curso.
+
+[pause]
+
+Cada uma, vista, pode começar a ser desfeita.
+
+[short pause]
+
+Esta semana, vais fazer apenas uma coisa.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"A noite em que percebi que já não tinha vontade."
+
+[long pause]
+
+E escreve, em três ou quatro frases, o que te lembras dessa noite.
+
+[pause]
+
+Quando foi, aproximadamente. Onde estavas. Com quem. O que aconteceu — ou não aconteceu.
+
+[short pause]
+
+E o que sentiste depois.
+
+[pause]
+
+Não tens de elaborar. Não tens de psicanalisar. Não tens de chorar.
+
+[long pause]
+
+Apenas registar, em letra escrita, que essa noite existiu.
+
+[pause]
+
+Porque, na maior parte das mulheres, essa noite nunca foi nomeada para fora.
+
+[short pause]
+
+Vive como segredo silencioso, há anos, sem que ninguém saiba — incluindo, frequentemente, tu própria.
+
+[long pause]
+
+Quando a escreves, ela passa de segredo para informação.
+
+[pause]
+
+E a informação, ao contrário do segredo, pode começar a ser trabalhada.`,
+      },
+      {
+        id: "a-chama-m1b",
+        titulo: "M1.B — Quando o corpo deixou de pedir",
+        curso: "a-chama",
+        texto: `O teu corpo, em criança e adolescente, pedia.
+
+[pause]
+
+Pedia coisas. Comida. Movimento. Toque. Atenção. Descanso.
+
+E pedia em alto. Sem filtro. Sem cálculo.
+
+[long pause]
+
+Em algum momento da tua vida adulta, o teu corpo deixou de pedir.
+
+[pause]
+
+Não pediu mais comida quando tinhas fome — porque aprendeste a controlar.
+
+Não pediu mais descanso quando estavas exausta — porque havia coisas a fazer.
+
+Não pediu toque quando tinhas falta — porque ninguém te tinha ensinado que isso era um pedido legítimo.
+
+E, em algum momento subtil, deixou de pedir desejo.
+
+[short pause]
+
+Deixou de pedir porque, ao longo dos anos, aprendeu que pedir não levava a nada.
+
+[long pause]
+
+O corpo é uma criatura inteligente.
+
+[pause]
+
+Quando faz pedidos durante anos e não recebe resposta, pára de fazer.
+
+Não por desistência.
+
+Por economia de energia.
+
+[short pause]
+
+E quando o corpo pára de pedir, a tua experiência subjectiva do corpo muda.
+
+[pause]
+
+Deixas de notar que tens fome até estares com tonturas.
+
+Deixas de notar que estás cansada até caíres com gripe.
+
+Deixas de notar que tens vontade de toque até teres uma crise relacional.
+
+E deixas de notar que tens desejo — porque o desejo, sem provocação externa, deixa simplesmente de aparecer.
+
+[long pause]
+
+Isto é diferente de não ter desejo.
+
+[pause]
+
+Isto é o desejo a estar lá, em ti, mas a não ter via de saída para a tua consciência.
+
+[short pause]
+
+A diferença parece subtil. Mas é gigante.
+
+[long pause]
+
+Mulheres que fizeram trabalho terapêutico ou corporal de longa duração descobrem, com frequência, que o desejo nunca tinha desaparecido.
+
+[pause]
+
+Tinha apenas deixado de chegar à superfície.
+
+E ao reaparecer — devagar, em pequenas ondas — provoca surpresa.
+
+[short pause]
+
+"Achei que isto já não me acontecia."
+
+[long pause]
+
+A primeira parte do trabalho não é fazer aparecer desejo.
+
+[pause]
+
+É começar a notar os sinais pequenos que o teu corpo ainda dá — e que tu, há muito tempo, não estás a ouvir.
+
+[short pause]
+
+Estes sinais são subtis.
+
+[pause]
+
+Uma vontade momentânea de te tocares quando vais ao banho.
+
+Um momento de atracção pequena por uma pessoa na rua.
+
+Uma sensação de calor passageira ao ler uma cena num livro.
+
+Um sonho em que reapareceu uma sensação que já não tinhas há meses.
+
+[long pause]
+
+Em mulheres com desejo "apagado", estes sinais ainda aparecem.
+
+[pause]
+
+Mas são tão pequenos, tão breves, que tu os descartas antes de os reconheceres.
+
+Acontecem em dois segundos. Não são dramáticos. Não interrompem o teu dia.
+
+[short pause]
+
+E tu, sem reparar, não os contas.
+
+[long pause]
+
+Esta semana, vais começar a contar.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Sinais pequenos do meu desejo, esta semana."
+
+[short pause]
+
+E ao longo de sete dias, sempre que reparares num desses sinais — por mais minúsculo que seja — escreves uma linha.
+
+[pause]
+
+Não tens de ser literata.
+
+[short pause]
+
+Pode ser:
+
+"Quarta-feira de manhã, debaixo do chuveiro, senti vontade súbita de me tocar. Não fiz, tinha de sair. Mas registei."
+
+"Sexta à tarde, na padaria, reparei nos antebraços do homem que servia. Senti calor pequeno. Saí."
+
+"Sábado à noite, ao ler um livro, uma cena fez-me parar. Reli duas vezes."
+
+[long pause]
+
+Não interpretes os sinais.
+
+Não ajas sobre eles.
+
+Apenas regista.
+
+[pause]
+
+Ao fim da semana, lê a tua lista.
+
+[short pause]
+
+A maior parte das mulheres que faz isto, pela primeira vez, descobre uma coisa.
+
+[pause]
+
+Os sinais existem em maior número do que pareciam.
+
+[long pause]
+
+O desejo não está apagado.
+
+[pause]
+
+Está apenas a operar abaixo do nível em que tu o costumavas reconhecer.
+
+[short pause]
+
+E reconhecê-lo — em letra escrita, à tua frente — é o primeiro acto de o reanimar.`,
+      },
+      {
+        id: "a-chama-m1c",
+        titulo: "M1.C — O dia em que paraste de notar o teu próprio desejo",
+        curso: "a-chama",
+        texto: `Houve um dia em que tu paraste de notar o teu próprio desejo.
+
+[pause]
+
+Provavelmente não te lembras desse dia.
+
+Os dias importantes raramente vêm com aviso.
+
+[long pause]
+
+Foi, provavelmente, um dia banal.
+
+[pause]
+
+Estavas a fazer várias coisas. A trabalhar. A cuidar de alguém. A organizar uma casa. A resolver um problema que outra pessoa não te quis resolver.
+
+[short pause]
+
+E nesse dia, o teu desejo apareceu por momentos — uma onda pequena, banal, normal.
+
+E tu, sem pensar, descartaste.
+
+[pause]
+
+"Agora não."
+
+"Depois."
+
+"Não é altura."
+
+[long pause]
+
+Esse "depois" nunca chegou.
+
+[pause]
+
+E o teu desejo, sem feedback, foi aprendendo que não era prioridade.
+
+[short pause]
+
+Não que fosse mau.
+
+Apenas que vinha sempre depois das outras coisas.
+
+[pause]
+
+E como as outras coisas nunca acabavam, ele nunca chegava à frente da fila.
+
+[long pause]
+
+Esta hierarquia silenciosa instala-se em quase todas as mulheres adultas.
+
+[pause]
+
+O desejo dos outros vem primeiro.
+
+A produtividade vem primeiro.
+
+A casa vem primeiro.
+
+O cuidado dos filhos vem primeiro.
+
+O cansaço dos colegas vem primeiro.
+
+O teu desejo, em algum lugar da lista, vem por último.
+
+[short pause]
+
+Ou, mais frequentemente, não vem na lista.
+
+[long pause]
+
+Esta posição não é por culpa tua.
+
+[pause]
+
+Foi-te ensinada.
+
+[short pause]
+
+A mulher boa, na cultura em que tu cresceste, é a que cuida dos outros antes de cuidar de si.
+
+A mulher boa não interrompe o que está a fazer pelos outros para se ouvir a si.
+
+A mulher boa adia o seu prazer indefinidamente em nome de um futuro hipotético em que finalmente vai ter tempo.
+
+[pause]
+
+Mas o futuro hipotético nunca chega.
+
+[short pause]
+
+E o desejo, sem expressão, atrofia.
+
+[long pause]
+
+Atrofia da mesma forma que um músculo que não é usado.
+
+Não desaparece — está lá, biologicamente.
+
+Mas fica fraco. Lento. Difícil de activar.
+
+[pause]
+
+E quando, em algum momento, tu decides que queres voltar a desejar, o músculo não responde imediatamente.
+
+[short pause]
+
+Precisa de tempo.
+
+De treino.
+
+De atenção repetida.
+
+[long pause]
+
+Esta semana, vais começar uma prática pequena.
+
+[pause]
+
+Uma única vez por dia, durante sete dias, vais fazer uma coisa.
+
+[short pause]
+
+Pára o que estiveres a fazer.
+
+Por trinta segundos.
+
+Em qualquer ponto do dia que escolheres.
+
+[pause]
+
+E pergunta — não em voz alta, em silêncio — uma única coisa.
+
+[long pause]
+
+"Neste momento, o que o meu corpo gostaria?"
+
+[pause]
+
+Não o que devia.
+
+Não o que era razoável.
+
+Não o que tu vais fazer.
+
+Apenas o que ele gostaria.
+
+[short pause]
+
+A primeira vez, vai aparecer "nada".
+
+[pause]
+
+Não acredites no "nada" imediatamente.
+
+[short pause]
+
+Espera mais cinco segundos.
+
+[long pause]
+
+Em geral, depois desses cinco segundos, aparece alguma coisa pequena.
+
+[pause]
+
+"Gostaria de me deitar dois minutos."
+
+"Gostaria de comer aquele bocado de chocolate que está na gaveta."
+
+"Gostaria de dizer não a esta reunião."
+
+"Gostaria de te tocar a mim mesma esta noite."
+
+[short pause]
+
+Algumas destas vontades vais ignorar.
+
+Algumas vais cumprir.
+
+[pause]
+
+Mas, à noite, antes de dormir, escreve numa folha:
+
+"Hoje, ao perguntar ao corpo, ele respondeu —"
+
+E completa com a frase, ou com algumas frases.
+
+[long pause]
+
+Sete dias. Sete entradas.
+
+[pause]
+
+Ao fim da semana, lê.
+
+[short pause]
+
+E vais ver, em letra escrita, uma coisa que te vai surpreender.
+
+[pause]
+
+O teu corpo tem opinião sobre tudo.
+
+A toda a hora.
+
+Em todas as pequenas situações do dia.
+
+[long pause]
+
+E nunca tinhas perguntado.
+
+[pause]
+
+Há décadas.
+
+[short pause]
+
+A reanimação do desejo começa, na maior parte dos casos, não na cama.
+
+Começa em pequenas perguntas a ti, ao longo do dia, sobre o que o teu corpo gostaria.
+
+[pause]
+
+E na decisão, lentamente repetida, de começar a contar com a resposta — em vez de a continuar a descartar.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-chama-m2",
+    titulo: "Curso A Chama — Módulo 2 (Aulas A, B, C)",
+    descricao: "O Que te Disseram Sobre o Desejo.",
+    scripts: [
+      {
+        id: "a-chama-m2a",
+        titulo: "M2.A — A primeira frase que ouviste sobre desejo",
+        curso: "a-chama",
+        texto: `Tenta lembrar-te da primeira frase que ouviste sobre desejo, sobre sexo, sobre o teu próprio corpo nessa zona.
+
+[pause]
+
+Não a primeira aula de educação sexual.
+
+A primeira frase casual, dita em casa, num jantar de família, num pátio de escola.
+
+[long pause]
+
+Provavelmente foi cedo.
+
+[pause]
+
+Provavelmente foi entre os oito e os doze anos.
+
+[short pause]
+
+E, em quase todos os casos, foi uma frase com peso negativo.
+
+[long pause]
+
+Talvez tenha sido a tua mãe a baixar a voz quando tu entraste numa conversa entre mulheres.
+
+[pause]
+
+Talvez tenha sido um adulto a comentar uma cena de televisão com palavras como "isto não se vê" ou "isto é vergonha".
+
+Talvez tenha sido uma frase entre raparigas no recreio sobre uma colega que se desenvolveu cedo.
+
+Talvez tenha sido um padre, um professor, uma vizinha, a fazer alusão a "raparigas que se respeitam" e "raparigas que não se respeitam".
+
+[short pause]
+
+A frase específica era diferente em cada casa.
+
+A função era a mesma.
+
+[pause]
+
+Instalar em ti, antes de teres puberdade sequer, uma associação:
+
+[short pause]
+
+Desejo, em mulher, é tema que se trata em silêncio. Em vergonha. Com cuidado para não chamar a atenção.
+
+[long pause]
+
+Esta primeira frase entrou em ti como verdade incontestável.
+
+[pause]
+
+Tu não tinhas, aos dez anos, ferramentas para a contestar.
+
+[short pause]
+
+E ela ficou. A operar em silêncio.
+
+[pause]
+
+Em adulta, quando reparas que sentes desejo e imediatamente te julgas, é essa frase a operar.
+
+Quando te tocas a ti mesma e sentes culpa que não tem causa lógica, é essa frase.
+
+Quando hesitas em pedir o que te apetece à pessoa com quem estás, é essa frase.
+
+[long pause]
+
+A frase tem trinta, quarenta anos.
+
+[pause]
+
+E continua a dirigir, em ti adulta, a relação com o teu próprio prazer.
+
+[short pause]
+
+Sem nunca ter sido revista.
+
+[long pause]
+
+Esta semana, vais fazer uma escavação pessoal.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Frases que ouvi em criança e adolescente sobre sexo, desejo, e corpo de mulher."
+
+[short pause]
+
+E vai escrevendo, à medida que te lembras.
+
+[pause]
+
+Não tens de lembrar tudo.
+
+Escreve cinco a oito frases.
+
+[long pause]
+
+Pode ser:
+
+"Mulher que se dá com facilidade não vale nada."
+
+"Aquela rapariga é fresca."
+
+"Não andes assim na rua que os homens olham."
+
+"Mulheres não falam dessas coisas."
+
+"Casa-te primeiro, esse assunto resolve-se depois."
+
+"Isso é coisa que se faz, não se diz."
+
+"Olha como estás vestida, queres que pensem o quê?"
+
+[short pause]
+
+Ao lado de cada frase, escreve dois dados:
+
+[pause]
+
+Quem disse — pelo menos a quem é que aquela frase soa, na tua cabeça.
+
+E que idade tu tinhas, aproximadamente, quando a ouviste pela primeira vez.
+
+[long pause]
+
+Quando acabares, lê.
+
+[pause]
+
+E faz uma pergunta a seguir, escrita noutra folha:
+
+"Quais destas frases ainda dirigem, hoje, a minha relação com o meu próprio prazer?"
+
+[short pause]
+
+Vais reconhecer pelo menos duas ou três.
+
+[pause]
+
+São as que aparecem em ti, sem aviso, em momentos específicos.
+
+[long pause]
+
+Quando estás na cama com alguém e, em vez de te entregares, ficas em segundo plano a calcular como pareces.
+
+Quando te tocas a ti mesma e, em vez de prazer, aparece uma vergonha pequena que te faz parar antes de tempo.
+
+Quando uma vontade aparece em ti durante o dia e, sem pensar, a calas.
+
+[short pause]
+
+Em cada um desses momentos, há uma frase antiga a operar.
+
+[pause]
+
+E enquanto a frase operar invisivelmente, vai continuar a dirigir.
+
+[short pause]
+
+Quando passa a operar visivelmente — em letra escrita, atribuída a uma idade e a uma voz — começa a perder força.
+
+[long pause]
+
+Não desaparece imediatamente.
+
+[pause]
+
+Mas começas a poder dizer, em silêncio, na tua cabeça:
+
+"Esta frase não é minha. Foi-me dada. E eu, em adulta, não tenho de continuar a obedecer a uma frase que aprendi aos dez anos."
+
+[short pause]
+
+Esta única consciência, repetida, é uma das ferramentas mais profundas para começares a recuperar o desejo que essa frase te ajudou a calar.`,
+      },
+      {
+        id: "a-chama-m2b",
+        titulo: "M2.B — A diferença entre o que aprendeste e o que sentes",
+        curso: "a-chama",
+        texto: `Há uma distância entre o que tu aprendeste sobre desejo e o que tu, no teu corpo, realmente sentes.
+
+[pause]
+
+Esta distância, na maior parte das mulheres adultas, é enorme.
+
+[long pause]
+
+E a maior parte das mulheres não se apercebe dela.
+
+[pause]
+
+Porque vive, há décadas, no campo do que aprendeu — confundindo-o com o que sente.
+
+[short pause]
+
+Se tu aprendeste que mulher boa não tem fantasias, vais achar, em adulta, que as tuas fantasias raras devem ser problema teu.
+
+Se tu aprendeste que sexo serve para dar prazer ao homem, vais achar que o teu prazer é secundário — mesmo quando o teu corpo te diz que precisa de algo diferente.
+
+Se tu aprendeste que orgasmo na mulher é difícil, complicado, requer paciência do parceiro, vais aceitar passivamente situações em que ele não acontece, em vez de te perguntares o que faltou.
+
+[pause]
+
+Cada uma destas crenças aprendidas substituiu o teu sentir.
+
+[long pause]
+
+E o sentir, em ti, foi ficando enterrado.
+
+[pause]
+
+Não morto. Enterrado.
+
+[short pause]
+
+À espera do dia em que tu, finalmente, perguntes ao corpo — e não à educação que recebeste — o que ele quer mesmo.
+
+[long pause]
+
+Esta semana, vais fazer um exercício que separa estas duas coisas.
+
+[pause]
+
+Numa folha, faz duas colunas.
+
+[short pause]
+
+Em cima da primeira escreve: "O que aprendi que devia querer."
+
+Em cima da segunda escreve: "O que o meu corpo, se for honesta, pede."
+
+[pause]
+
+Na primeira coluna, escreve cinco a sete frases.
+
+[long pause]
+
+Pode ser:
+
+"Sexo deve acontecer pelo menos uma vez por semana."
+
+"Mulher boa quer fazer sexo com o seu marido."
+
+"Posições novas demonstram criatividade."
+
+"Tem de haver penetração."
+
+"Tem de haver orgasmo."
+
+"Devo querer mais do que quero."
+
+[short pause]
+
+Agora a segunda coluna.
+
+[pause]
+
+E aqui pede honestidade que pode ser desconfortável.
+
+[short pause]
+
+O que é que o teu corpo, se ninguém estivesse a julgar, pede mesmo?
+
+[long pause]
+
+Pode ser:
+
+"Quero ser tocada de uma forma específica que nunca pedi."
+
+"Quero ter uma noite por semana sem ninguém me tocar de todo, só para descansar."
+
+"Quero sexo menos vezes do que tenho — mas com mais presença."
+
+"Quero ser olhada, antes de ser tocada."
+
+"Quero ser eu a ter iniciativa, mas tenho medo de parecer ridícula."
+
+"Quero, às vezes, sexo intenso e rápido. Outras vezes, lento e quase preguiçoso."
+
+"Quero conversar primeiro. Sem pressa para chegar à cama."
+
+[short pause]
+
+Estas duas colunas, lado a lado, geralmente não coincidem.
+
+[pause]
+
+Há sobreposição, mas há mais discrepância do que sobreposição.
+
+[long pause]
+
+Quando tu vês isto desenhado em letra escrita, alguma coisa muda.
+
+[pause]
+
+A distância entre o aprendido e o sentido, que era invisível, fica visível.
+
+[short pause]
+
+E a partir do momento em que está visível, podes começar a escolher.
+
+[pause]
+
+Não tens de mudar tudo de uma vez.
+
+Não tens de comunicar tudo ao teu parceiro amanhã.
+
+[long pause]
+
+Mas podes, internamente, começar a dar mais peso à segunda coluna do que à primeira.
+
+[pause]
+
+E em pequenos momentos, podes começar a agir conforme a segunda coluna, em vez da primeira.
+
+[short pause]
+
+Recusar uma noite porque o teu corpo pede descanso, em vez de obedecer ao calendário implícito da relação.
+
+Pedir, pela primeira vez, uma forma de toque específica que nunca tinhas verbalizado.
+
+Iniciar, num dia em que te apetece, sem esperar que ele inicie primeiro.
+
+[long pause]
+
+Cada vez que escolhes a segunda coluna em detrimento da primeira, estás a fazer uma coisa específica.
+
+[pause]
+
+Estás a devolver autoridade ao teu corpo sobre o teu desejo.
+
+[short pause]
+
+E o desejo, com tempo, recupera vivacidade quando deixa de ser dirigido por crenças aprendidas e passa a ser dirigido por sinais corporais reais.`,
+      },
+      {
+        id: "a-chama-m2c",
+        titulo: "M2.C — A liberdade que nunca te disseram que tinhas",
+        curso: "a-chama",
+        texto: `Há uma liberdade que tu, provavelmente, nunca soubeste que tinhas.
+
+[pause]
+
+A liberdade de não querer.
+
+[long pause]
+
+Em quase toda a literatura, em quase todos os filmes, em quase todos os manuais sobre sexualidade feminina, o trabalho proposto é o mesmo.
+
+[pause]
+
+Como ter mais desejo.
+
+Como reanimar o desejo.
+
+Como manter o desejo na relação longa.
+
+[short pause]
+
+A pressuposição sempre é: o desejo é coisa boa, tu deves querer mais, e se queres menos do que devias, há algo a corrigir.
+
+[long pause]
+
+Esta pressuposição é, em si, prisão.
+
+[pause]
+
+Porque te coloca, mais uma vez, numa posição onde o teu corpo está sempre em défice em relação a um padrão exterior.
+
+[short pause]
+
+Antigamente, o défice era ter desejo demais — mulher boa tinha pouco.
+
+Hoje, o défice é ter desejo de menos — mulher moderna deve ser sexual, livre, activa.
+
+[pause]
+
+Os padrões inverteram-se.
+
+A posição da mulher — sempre em défice — manteve-se.
+
+[long pause]
+
+A liberdade real, neste tema, não é ter mais desejo.
+
+[pause]
+
+É ter o desejo que tens. Sem comparação.
+
+[short pause]
+
+Pode ser muito.
+
+Pode ser pouco.
+
+Pode oscilar ao longo do mês, do ano, da década.
+
+[pause]
+
+Pode estar dormente durante uma fase de criação intensa, de cuidado de criança pequena, de luto.
+
+Pode estar especialmente vivo numa fase de viagem, de novidade, de mudança.
+
+[long pause]
+
+Tudo isto é normal.
+
+[pause]
+
+Tudo isto é parte da vida real de uma mulher real.
+
+[short pause]
+
+E a tentativa de te encaixares num padrão constante de desejo — alto e disponível — é, em si, fonte de muito do mal-estar que tu sentes em relação a esta zona da tua vida.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de libertação.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Permissão escrita."
+
+[short pause]
+
+E escreve, a seguir, em letra grande:
+
+"Eu, esta semana, dou-me permissão para não querer."
+
+[pause]
+
+E continua:
+
+"Permissão para ter dias em que o meu corpo não pede.
+
+Permissão para recusar sexo sem ter de explicar.
+
+Permissão para não fingir entusiasmo.
+
+Permissão para descobrir que, em algumas semanas, o que o meu corpo pede é descanso, e não actividade."
+
+[long pause]
+
+Assina a folha.
+
+Põe a data.
+
+[pause]
+
+Pode parecer ridículo. Pode parecer infantil. Pode parecer demasiado simbólico.
+
+[short pause]
+
+Não é.
+
+[pause]
+
+A maior parte das mulheres adultas nunca, na vida inteira, deu a si mesma esta permissão por escrito.
+
+[long pause]
+
+Vivem com pressão silenciosa para querer.
+
+E essa pressão é, paradoxalmente, uma das coisas que mais mata o desejo real.
+
+[pause]
+
+Porque o desejo, em mulher, tem uma característica específica.
+
+[short pause]
+
+Não responde bem a obrigação.
+
+[pause]
+
+Floresce em ausência de pressão.
+
+E murcha, quase imediatamente, em presença dela.
+
+[long pause]
+
+Quando tu te dás permissão escrita para não querer, retiras a pressão.
+
+[pause]
+
+E o paradoxo é o seguinte.
+
+[short pause]
+
+Sem pressão, o desejo, em geral, começa a aparecer outra vez.
+
+[pause]
+
+Não imediatamente. Não dramaticamente. Não sempre.
+
+[short pause]
+
+Mas começa a aparecer.
+
+[long pause]
+
+Porque, sem ter de cumprir um padrão exterior, ele finalmente tem espaço para se manifestar conforme a tua biologia real, a tua fase de vida real, o teu cansaço real, e os teus interesses reais.
+
+[pause]
+
+E é nesse desejo — vivo porque livre — que a chama se acende.
+
+[short pause]
+
+Não no desejo prescrito.
+
+No desejo permitido.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-chama-m3",
+    titulo: "Curso A Chama — Módulo 3 (Aulas A, B, C)",
+    descricao: "O Corpo que Esqueceu.",
+    scripts: [
+      {
+        id: "a-chama-m3a",
+        titulo: "M3.A — As partes do teu corpo que tu não tocas há anos",
+        curso: "a-chama",
+        texto: `Faz uma conta honesta.
+
+[pause]
+
+Há quanto tempo tu não tocas, com prazer e sem pressa, na pele atrás dos joelhos?
+
+[long pause]
+
+Há quanto tempo não passas devagar a mão pelo lado interior do braço?
+
+[pause]
+
+Há quanto tempo não te olhas, demoradamente, no espelho do quarto, sem objectivo de avaliar?
+
+[short pause]
+
+Há quanto tempo não pões a mão no centro do peito e a deixas lá ficar, simplesmente?
+
+[long pause]
+
+Para muitas mulheres adultas, a resposta a estas perguntas é "não sei. Anos."
+
+[pause]
+
+E não é por falta de tempo.
+
+É por hábito.
+
+[short pause]
+
+O teu corpo, em adulta, é território onde tu praticamente só tocas com função.
+
+[pause]
+
+Tocas para te lavares.
+
+Tocas para te vestires.
+
+Tocas para verificar uma dor.
+
+[short pause]
+
+Tocas para te depilares, para te avaliares, para corrigires.
+
+[pause]
+
+Mas não tocas só para tocar.
+
+[long pause]
+
+E tocar só para tocar é coisa que tu, antes dos doze ou treze anos, fazias com naturalidade.
+
+[pause]
+
+Crianças tocam-se a si próprias o tempo todo. Pés. Cabelo. Pescoço. Nariz. Em silêncio. Sem objectivo.
+
+[short pause]
+
+Em algum momento, tu paraste.
+
+[pause]
+
+Aprendeste que tocar-se em público era inadequado.
+
+E, ao longo dos anos, generalizaste para tocar-se em privado também.
+
+[long pause]
+
+Sem te aperceberes, deixaste de ter relação táctil com larga parte do teu próprio corpo.
+
+[pause]
+
+Há regiões inteiras de pele que tu, em adulta, só tocas para verificar problemas.
+
+[short pause]
+
+A barriga só quando dói. A face só para passar creme. As coxas só para depilar. A nuca só para arranjar o cabelo.
+
+[long pause]
+
+Esta perda táctil tem uma consequência subtil mas profunda.
+
+[pause]
+
+A tua pele, sem toque sem função, deixa de comunicar com a tua consciência.
+
+[short pause]
+
+Há receptores nervosos por todo o teu corpo que estão lá, biologicamente activos, mas que há anos não recebem estímulo de exploração não-utilitária.
+
+[pause]
+
+E sem estímulo, a tua sensibilidade nessas zonas reduz.
+
+Não fisicamente — biologicamente continuam a funcionar.
+
+[short pause]
+
+Mas a tua consciência aprende a não as registar.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de cartografia tua.
+
+[pause]
+
+Numa folha, desenha um corpo simples. Pode ser figurinho de palitos. Não importa.
+
+[short pause]
+
+E pinta, ou marca, as zonas em que tu, na última semana, tocaste.
+
+[pause]
+
+Mas não basta marcar. Distingue:
+
+Vermelho — zonas que tocaste só com função.
+
+Verde — zonas que tocaste com algum prazer ou atenção sem função.
+
+[long pause]
+
+Faz isto à noite, ao fim de cada dia, durante uma semana.
+
+[pause]
+
+A maioria das mulheres, quando vê o desenho ao fim da semana, fica em silêncio.
+
+[short pause]
+
+A figura está quase toda vermelha.
+
+E o verde, quando aparece, está concentrado em duas ou três zonas — em geral, mãos e cara.
+
+[long pause]
+
+Há zonas inteiras do corpo que tu não tocaste de forma não-utilitária durante uma semana inteira.
+
+[pause]
+
+Provavelmente, durante muitas semanas inteiras.
+
+[short pause]
+
+Provavelmente, durante anos.
+
+[long pause]
+
+A partir desta semana, vais começar a expandir a área verde do teu desenho.
+
+[pause]
+
+Não em prática complicada.
+
+[short pause]
+
+Quando estiveres a ver televisão à noite, passa a mão casualmente pelo braço enquanto vês.
+
+Quando estiveres a tomar banho, em vez de te lavares com pressa, não saltes zonas — passa a mão por toda a pele, em vez de só nas zonas utilitárias.
+
+Quando vestires uma camisola, repara na textura do tecido em contacto com o abdómen, em vez de a pores em automático.
+
+[pause]
+
+Sem objectivo sexual.
+
+Sem prescrição de tempo.
+
+[short pause]
+
+Apenas reabertura de contacto casual com a tua própria pele.
+
+[long pause]
+
+Repete a cartografia ao fim de duas semanas.
+
+[pause]
+
+Vais ver a área verde a aumentar.
+
+[short pause]
+
+E à medida que aumenta, vais reparar numa coisa que não esperas.
+
+[pause]
+
+A tua relação geral com o teu corpo começa a mudar.
+
+[long pause]
+
+Sentes-te ligeiramente mais habitada.
+
+Ligeiramente mais presente.
+
+Ligeiramente menos em fuga da pele que carregas.
+
+[pause]
+
+Esta mudança é pequena.
+
+Mas é base.
+
+[short pause]
+
+Sem toque sem função, o desejo não tem onde acordar.
+
+Com toque sem função, há terreno para ele voltar a aparecer.`,
+      },
+      {
+        id: "a-chama-m3b",
+        titulo: "M3.B — Os sítios onde aprendeste a não sentir",
+        curso: "a-chama",
+        texto: `Há sítios no teu corpo onde tu aprendeste, ao longo dos anos, a não sentir.
+
+[pause]
+
+Não por dano físico.
+
+Por treino emocional.
+
+[long pause]
+
+A maior parte das mulheres tem, no corpo, um ou dois ou três sítios assim.
+
+[pause]
+
+Sítios onde, em algum momento da vida, alguma coisa aconteceu que ficou difícil de processar.
+
+[short pause]
+
+E o teu sistema nervoso, sem te perguntar, decidiu reduzir a sensação naquele lugar.
+
+[pause]
+
+Para te proteger.
+
+[long pause]
+
+Pode ser uma zona da nuca onde alguém, há muitos anos, te magoou e tu nunca conseguiste ficar à vontade com toque ali.
+
+Pode ser a parte interior das coxas, em mulheres que tiveram experiências sexuais difíceis.
+
+Pode ser a barriga, em mulheres que cresceram com vergonha do volume.
+
+Pode ser o peito, em mulheres que foram comentadas demais cedo demais.
+
+Pode ser o pescoço inteiro, em mulheres que aprenderam que esse era o sítio onde se ficava em desvantagem.
+
+[short pause]
+
+Cada zona tem uma história específica.
+
+[pause]
+
+E em cada uma dessas zonas, a tua consciência aprendeu, por defesa, a não estar.
+
+[long pause]
+
+Esta ausência, no longo prazo, tem custo.
+
+[pause]
+
+Porque essas zonas, quando alguém te toca nelas — mesmo um parceiro com quem te sentes segura — não respondem.
+
+[short pause]
+
+Ou respondem com tensão.
+
+Ou respondem com dissociação subtil — de repente estás a pensar noutra coisa qualquer, sem perceberes que saíste mentalmente.
+
+[pause]
+
+E o desejo, nessas zonas, fica enrolado em medo antigo que ninguém sabe que está lá.
+
+[long pause]
+
+Esta semana, vais fazer um trabalho lento. Sem pressa. Sem dramatismo.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Sítios do meu corpo onde sinto menos do que devia."
+
+[short pause]
+
+E lista, com calma, o que reconheces.
+
+[pause]
+
+Não tens de saber porquê.
+
+Não tens de explicar.
+
+[short pause]
+
+Apenas: "Nuca." "Lado direito da barriga." "Coxas, parte de cima." "Peito, sobretudo o esquerdo."
+
+[long pause]
+
+Quando tens a lista, lê.
+
+[pause]
+
+E ao lado de cada zona, escreve uma única coisa:
+
+"O que me lembro que aconteceu nesta zona, ou a esta zona, em algum momento da vida."
+
+[short pause]
+
+Pode ser muito vago.
+
+Pode ser específico.
+
+[pause]
+
+Pode ser: "Não me lembro de nada concreto, mas sei que esta zona está sempre tensa."
+
+Pode ser: "Lembro-me de uma situação aos quinze anos."
+
+Pode ser: "Esta zona ficou diferente depois do nascimento da minha filha."
+
+[long pause]
+
+Não estás a fazer terapia.
+
+Não estás a tentar resolver nada hoje.
+
+[pause]
+
+Estás apenas a registar que essas zonas existem, têm história, e merecem ser, em algum momento, reconhecidas.
+
+[short pause]
+
+A partir deste reconhecimento escrito, abrem-se duas vias concretas.
+
+[pause]
+
+A primeira — para zonas com história mais simples, sem ligação a trauma agudo.
+
+A segunda — para zonas onde a história é mais pesada.
+
+[long pause]
+
+Para as primeiras, o trabalho pode acontecer ao longo das semanas através de comunicação escrita.
+
+[pause]
+
+Numa folha separada, escreve uma carta curta à zona identificada.
+
+[short pause]
+
+Não em linguagem mística.
+
+[pause]
+
+Em linguagem directa:
+
+"Zona da nuca, reconheço que te ignorei durante anos por causa do que aconteceu em x. Sei que estás aí. Vou passar a reparar em ti."
+
+[long pause]
+
+Três, cinco frases. Não mais.
+
+[pause]
+
+Ao longo das semanas, quando essa zona aparecer em situação concreta — alguém te toca ali, tu reparas na tensão, uma roupa fica mal em cima dela — regista numa linha o que aconteceu.
+
+[short pause]
+
+Vais construir, em letra escrita, um histórico da relação com essa zona.
+
+[pause]
+
+E o histórico, acumulado, faz o que a prática silenciosa não consegue fazer sozinha: traz a zona para dentro do campo da linguagem.
+
+[long pause]
+
+Para as zonas de história mais pesada — sobretudo se estão ligadas a experiências sexuais difíceis, violência, ou trauma corporal específico — este curso não substitui acompanhamento profissional.
+
+[pause]
+
+Se uma das zonas que escreveste está nesta categoria, o gesto desta semana é outro.
+
+[short pause]
+
+Numa folha, escreve o nome de um profissional em quem tens confiança — terapeuta, psicóloga, médica de família — a quem podes, em algum ponto, falar sobre isto.
+
+[pause]
+
+Se não tens, escreve como primeiro passo "procurar recomendações com amigas em quem confio".
+
+[long pause]
+
+O corpo que guarda trauma específico precisa de ser acompanhado, não apenas observado.
+
+[pause]
+
+E reconhecer isto — em letra escrita, com nome — é, em si, acto de cuidado com a própria história.
+
+[short pause]
+
+Algumas zonas do teu corpo vão reabrir devagar, por registo escrito e comunicação com pessoas próximas.
+
+[pause]
+
+Outras vão reabrir em outro contexto, mais protegido, com ajuda qualificada.
+
+[long pause]
+
+A tarefa desta semana não é reabrir tudo.
+
+[pause]
+
+É mapear, em letra tua, onde estão as zonas — e escolher, para cada uma, a via adequada à história que ela carrega.`,
+      },
+      {
+        id: "a-chama-m3c",
+        titulo: "M3.C — A pele que precisava de toque sem função",
+        curso: "a-chama",
+        texto: `A tua pele tem uma necessidade que raramente é nomeada em adulta.
+
+[pause]
+
+Toque sem função.
+
+[long pause]
+
+Toque que não serve para nada.
+
+[pause]
+
+Que não está a lavar. Que não está a curar. Que não está a preparar para algo.
+
+Que não está, sequer, a iniciar sexo.
+
+[short pause]
+
+Apenas toque que existe pelo prazer de tocar.
+
+[long pause]
+
+Em criança, recebias muito deste toque.
+
+[pause]
+
+Adultos pegavam-te ao colo. Davam-te beijos sem motivo. Despenteavam-te o cabelo enquanto te falavam de outra coisa. Faziam-te festas no braço enquanto viam televisão.
+
+[short pause]
+
+Este toque ocupava uma parte significativa do teu dia.
+
+[pause]
+
+E o teu sistema nervoso, em desenvolvimento, organizava-se em torno desta presença táctil constante.
+
+[long pause]
+
+Em adulta, o toque sem função reduziu-se drasticamente.
+
+[pause]
+
+Os adultos não se tocam casualmente como as crianças.
+
+E mesmo nas relações próximas — casais, amizades, família — o toque sem função tornou-se raro.
+
+[short pause]
+
+Há toque com função sexual. Há toque com função de saudação. Há toque com função de consolo num momento difícil.
+
+[pause]
+
+Mas o toque casual, prolongado, sem destino — que era a base da tua infância — quase não existe.
+
+[long pause]
+
+Esta privação táctil tem nome.
+
+[pause]
+
+Em estudos sobre adultos isolados, o termo é skin hunger — fome de pele.
+
+[short pause]
+
+E muitas mulheres que vivem em relações longas têm, paradoxalmente, fome de pele.
+
+[pause]
+
+Porque o toque que recebem dos seus parceiros é predominantemente sexualizado — caminha sempre, em poucos minutos, para um pedido mais.
+
+[short pause]
+
+E o toque casual, prolongado, não-direccionado, simplesmente não acontece.
+
+[long pause]
+
+A consequência é específica.
+
+[pause]
+
+A tua pele aprendeu, ao longo dos anos, que toque é prelúdio.
+
+E qualquer toque, em ti, activa imediatamente o cálculo: o que vai ele querer a seguir?
+
+[short pause]
+
+Este cálculo, repetido durante anos, mata a possibilidade de prazer puramente táctil.
+
+[pause]
+
+Porque tu não estás presente no toque. Estás em segundo plano, a antecipar o pedido.
+
+[long pause]
+
+Esta semana, vais fazer um pedido específico ao teu parceiro — se tens parceiro.
+
+[pause]
+
+Se não tens, podes adaptar com uma amiga próxima.
+
+[short pause]
+
+O pedido é o seguinte:
+
+"Quero que me toques durante quinze minutos sem que isto leve a nada. Sem sexo. Sem início de sexo. Sem expectativa de qualquer outra coisa a seguir."
+
+[pause]
+
+Vai ser estranho para ele. Provavelmente.
+
+[long pause]
+
+Porque o toque sem destino sexual, em casais de longa data, pode parecer artificial.
+
+[pause]
+
+Mas pede.
+
+[short pause]
+
+E sê específica sobre o tipo de toque.
+
+[pause]
+
+"Quero que me passes a mão pelo braço, devagar."
+
+"Quero que me massajes os pés sem pressa."
+
+"Quero que me deites a cabeça ao colo enquanto vês televisão."
+
+[long pause]
+
+Ao fim destes quinze minutos, repara como te sentes.
+
+[pause]
+
+A maioria das mulheres, quando recebe toque puramente casual prolongado, sente uma coisa específica.
+
+[short pause]
+
+Saciedade.
+
+[pause]
+
+A pele, finalmente, recebeu o que andava a pedir.
+
+[long pause]
+
+E aqui há uma reviravolta interessante.
+
+[pause]
+
+Mulheres que conseguem instalar este tipo de toque sem-função na rotina da relação, ao fim de algumas semanas, descobrem que o desejo sexual aumenta.
+
+[short pause]
+
+Não diminui, como elas temiam.
+
+Aumenta.
+
+[pause]
+
+Porque a pele, finalmente saciada na sua necessidade básica de toque, fica disponível para também receber toque sexual.
+
+[long pause]
+
+Sem fome de pele acumulada, o sexo deixa de ser a única forma que tu tens de receber proximidade física.
+
+[pause]
+
+E quando deixa de ser a única forma, pode voltar a ser o que devia ter sido sempre.
+
+[short pause]
+
+Coisa que escolhes quando te apetece.
+
+Não única via possível para um pedido mais antigo, mais simples, e raramente nomeado: o de seres tocada sem que ninguém te peça nada em troca.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-chama-m4",
+    titulo: "Curso A Chama — Módulo 4 (Aulas A, B, C)",
+    descricao: "O Prazer Solitário.",
+    scripts: [
+      {
+        id: "a-chama-m4a",
+        titulo: "M4.A — A primeira vez que tocaste em ti mesma",
+        curso: "a-chama",
+        texto: `Houve, em algum ponto da tua vida, uma primeira vez em que tu te tocaste a ti mesma com alguma forma de prazer.
+
+[pause]
+
+Não estou a falar de sexo. Estou a falar de toque com alguma carga de curiosidade.
+
+[long pause]
+
+Provavelmente foi cedo.
+
+[pause]
+
+Entre os sete e os onze, para a maior parte das mulheres.
+
+[short pause]
+
+Aconteceu, em geral, por acidente.
+
+[pause]
+
+Estavas deitada na cama, ou a brincar no chão, ou a tomar banho — e sentiste algo.
+
+Uma sensação nova. Interessante. Confusa.
+
+[short pause]
+
+E tu, sem pensar, exploraste um pouco mais.
+
+[long pause]
+
+Nesse momento, pela primeira vez na vida, tu tinhas uma relação directa, privada, com o teu próprio prazer.
+
+[pause]
+
+Sem palavras. Sem autoridade externa. Sem modelo aprendido.
+
+[short pause]
+
+Apenas tu e uma sensação tua.
+
+[long pause]
+
+Na maior parte das mulheres adultas, esta memória existe.
+
+[pause]
+
+Mas está enterrada debaixo de camadas.
+
+[short pause]
+
+Camadas de vergonha. Camadas de aviso. Camadas de uma frase que alguém disse em algum momento que transformou aquela primeira experiência em algo sobre o qual não se fala.
+
+[long pause]
+
+Talvez foi a mãe a entrar inesperadamente no quarto e a fazer uma cara.
+
+Talvez foi uma catequista a explicar que certos toques eram pecado.
+
+Talvez foi uma colega mais velha a rir de uma conversa sobre isto no recreio.
+
+[pause]
+
+Ou, mais subtil, talvez não foi ninguém especificamente.
+
+Foi apenas a ausência total de qualquer conversa adulta sobre o facto de que o teu corpo era fonte de prazer legítimo.
+
+[short pause]
+
+E essa ausência, em si, foi mensagem.
+
+[long pause]
+
+A mensagem era: isto não se nomeia. Isto não se partilha. Isto é zona privada onde tu, sozinha, terás de descobrir o que está bem e o que não está.
+
+[pause]
+
+E a maior parte das mulheres, aos onze, doze anos, não tinha ferramentas para fazer essa descoberta sozinha.
+
+[short pause]
+
+Por isso, simplificou.
+
+[pause]
+
+Decidiu que era melhor não tocar.
+
+Ou, se tocasse, fazer depressa, no escuro, sem pensar.
+
+[long pause]
+
+Esta decisão infantil manteve-se.
+
+[pause]
+
+E é por isso que, em adulta, o teu prazer solitário — se o tens — tem ainda, muitas vezes, qualidade apressada.
+
+[short pause]
+
+É feito em poucos minutos. Por vezes no banho. Com ansiedade difusa. Com culpa residual.
+
+[pause]
+
+Raramente com a vagareza, a curiosidade e o prazer táctil que poderia ter.
+
+[long pause]
+
+Esta semana, vais fazer uma coisa simples mas subversiva.
+
+[pause]
+
+Reservar uma noite.
+
+[short pause]
+
+Trinta, quarenta minutos, sem ninguém em casa ou todos a dormir.
+
+[pause]
+
+Não é encontro com orgasmo como objectivo.
+
+É reencontro com a curiosidade que tinhas aos oito anos.
+
+[long pause]
+
+Sem roteiro. Sem ordem certa. Sem partes que "tens de tocar primeiro".
+
+[pause]
+
+Apenas tempo em que o teu corpo pode ser descoberto devagar, sem pressa, sem performance.
+
+[short pause]
+
+Podes descobrir que há sítios em que ainda não tinhas reparado há décadas.
+
+Podes descobrir que o que te dava prazer aos vinte já não é exactamente o mesmo.
+
+Podes descobrir que algumas zonas, quando tocadas sem pressa, acordam sensibilidades que tinhas esquecido.
+
+[pause]
+
+Ou podes descobrir, simplesmente, que está difícil.
+
+[short pause]
+
+Que não apareceu sensação nenhuma.
+
+Que a tua cabeça não parava de planear o dia de amanhã.
+
+Que o teu corpo, sem estímulo de outro, não respondeu.
+
+[long pause]
+
+Tudo isto é informação.
+
+[pause]
+
+Se correu bem, tomaste contacto com uma zona de ti que estava adormecida.
+
+Se correu difícil, tomaste contacto com a dimensão da distância entre tu e o teu prazer próprio.
+
+[short pause]
+
+Ambas as descobertas são ponto de partida.
+
+[pause]
+
+Numa folha, à noite, escreve três linhas:
+
+"Esta noite, ao tocar em mim mesma sem pressa —
+
+Reparei —
+
+E senti —"
+
+[long pause]
+
+Pode ser dez palavras. Pode ser meia página.
+
+[pause]
+
+O importante é deixar em letra escrita que aconteceu.
+
+[short pause]
+
+Porque, na maior parte das mulheres adultas, este tipo de encontro privado com o próprio corpo nunca foi registado por escrito.
+
+[pause]
+
+Vive como secreto, mesmo dentro de ti.
+
+[long pause]
+
+Quando passa a ser registado, mesmo que só para ti, muda de estatuto.
+
+[pause]
+
+Deixa de ser coisa sobre a qual não se fala.
+
+Passa a ser coisa que existe na tua vida, que tem lugar, que faz parte do que tu és.
+
+[short pause]
+
+E esse passo — o de reconhecer, em letra própria, o que costumavas ter apenas no escuro — é maior do que parece.`,
+      },
+      {
+        id: "a-chama-m4b",
+        titulo: "M4.B — A culpa que não tinhas mas ficou",
+        curso: "a-chama",
+        texto: `Depois de te tocares, aparece, muitas vezes, uma coisa pequena.
+
+[pause]
+
+Culpa.
+
+[long pause]
+
+Não violenta. Não dramática.
+
+[pause]
+
+Culpa difusa. Sensação de ter feito algo que devia ser guardado em silêncio.
+
+Vontade de não olhar ninguém nos olhos nos minutos seguintes.
+
+Uma tristeza pequena e difícil de explicar.
+
+[short pause]
+
+Esta reacção é tão comum em mulheres adultas que muitas nem lhe ligam.
+
+[pause]
+
+Assumem que é normal.
+
+[short pause]
+
+Não é.
+
+[long pause]
+
+Em mulheres que tiveram educação sexual saudável, que cresceram em ambientes onde o corpo feminino não era tabu, esta reacção simplesmente não aparece.
+
+[pause]
+
+Elas tocam-se. Sentem prazer. Dormem.
+
+E no dia seguinte não sentem nada de especial relacionado com o acto.
+
+[short pause]
+
+A culpa pós-prazer não é característica do prazer feminino.
+
+[pause]
+
+É característica da educação que tu recebeste.
+
+[long pause]
+
+Pensa, por um momento, onde é que a culpa te chega.
+
+[pause]
+
+Chega sob a forma de uma voz?
+
+Chega sob a forma de uma imagem — a tua mãe, uma catequista, alguém a olhar-te com cara de reprovação?
+
+Chega sob a forma de pensamento racional — "isto foi ridículo"?
+
+Chega sob a forma de sensação corporal — peso no peito, vazio no estômago?
+
+[short pause]
+
+Cada mulher tem a sua forma.
+
+[pause]
+
+Mas se te observares atentamente, consegues identificar a tua.
+
+[long pause]
+
+Esta semana, depois de qualquer momento de prazer próprio — sozinha ou em casal — vais fazer uma coisa pequena.
+
+[pause]
+
+Em vez de abrir o telemóvel imediatamente ou de te levantares logo, fica ali um momento.
+
+Sem fugir da sensação.
+
+[short pause]
+
+E depois, com o caderno ou o telemóvel ao lado, regista em uma linha o que reparaste.
+
+[pause]
+
+Se apareceu culpa: em que forma. De onde te parece vir. Em que parte do corpo a notaste.
+
+[long pause]
+
+Não lutes contra ela.
+
+Não tentes convencer-te de que não devia estar ali.
+
+[pause]
+
+Apenas observa.
+
+[short pause]
+
+Depois, nesse dia ou no dia seguinte, numa folha, escreve:
+
+"Quando sinto culpa depois de prazer, ela aparece em —
+
+E faz-me sentir —
+
+E soa à voz de —"
+
+[long pause]
+
+Esta terceira pergunta — à voz de — é a mais importante.
+
+[pause]
+
+A culpa pós-prazer, em mulheres adultas, raramente é tua.
+
+É voz de outra pessoa, incorporada em ti há décadas.
+
+[short pause]
+
+Pode ser a tua mãe. Pode ser a tua avó. Pode ser uma catequista que te marcou aos nove anos. Pode ser um professor de religião. Pode ser uma frase específica de um livro antigo que leste.
+
+[long pause]
+
+Quando consegues atribuir a culpa a alguém específico, ela muda.
+
+[pause]
+
+Deixa de parecer verdade sobre ti.
+
+Passa a parecer eco de uma voz exterior que se alojou em ti sem o teu consentimento.
+
+[short pause]
+
+E os ecos, ao contrário das verdades, podem ser reduzidos com o tempo.
+
+[long pause]
+
+Não por força de vontade.
+
+Por repetição.
+
+[pause]
+
+Todas as vezes que tu sentes prazer e, imediatamente, observas a culpa como eco em vez de a obedecer como verdade — a culpa perde, ligeiramente, poder.
+
+[short pause]
+
+Não desaparece numa semana.
+
+Não desaparece num mês.
+
+[pause]
+
+Mas ao fim de alguns meses de atenção regular, muitas mulheres descobrem que a culpa pós-prazer simplesmente aparece menos frequentemente.
+
+[short pause]
+
+E quando aparece, já não dirige o resto do dia.
+
+[long pause]
+
+O teu prazer, em ti adulta, não precisa de pagar imposto emocional a uma voz que te foi imposta aos oito, nove, dez anos.
+
+[pause]
+
+Mas não basta saberes isto intelectualmente.
+
+[short pause]
+
+A desinstalação acontece por observação repetida em tempo real — no momento em que a culpa aparece — até que o sistema nervoso percebe que não está em perigo e deixa de activar a reacção.
+
+[pause]
+
+Esta observação é trabalho paciente.
+
+E é dos mais libertadores que podes fazer contigo mesma.`,
+      },
+      {
+        id: "a-chama-m4c",
+        titulo: "M4.C — O que não tens de pedir permissão a ninguém",
+        curso: "a-chama",
+        texto: `Há uma lista de coisas que tu fazes, em adulta, e que tu, sem perceber, continuas a pedir permissão silenciosa para fazer.
+
+[pause]
+
+Permissão que ninguém te pede.
+
+Permissão que tu, em algum momento, foste treinada a pedir.
+
+[long pause]
+
+Pedes permissão silenciosa para comer uma sobremesa num jantar.
+
+Pedes permissão silenciosa para descansar um fim-de-semana.
+
+Pedes permissão silenciosa para sair sozinha ao cinema.
+
+Pedes permissão silenciosa para ter uma tarde em que ninguém te chateia.
+
+Pedes permissão silenciosa para te tocares.
+
+[short pause]
+
+Estas permissões silenciosas são pedidas a ninguém específico.
+
+[pause]
+
+São pedidas a uma autoridade difusa — a soma de todas as vozes que, ao longo da tua vida, te ensinaram que precisavas de autorização para prazer próprio.
+
+[long pause]
+
+O teu prazer solitário pertence a esta lista.
+
+[pause]
+
+Em adulta, tu tens legalmente, fisicamente, moralmente, todo o direito de te tocares quando quiseres, como quiseres, e quantas vezes quiseres.
+
+[short pause]
+
+Ninguém — nenhum marido, nenhuma religião, nenhuma mãe, nenhuma cultura — tem autoridade real sobre esta zona da tua vida.
+
+[pause]
+
+Esta é, talvez, uma das únicas zonas em que a tua autoridade é absoluta.
+
+[long pause]
+
+E, no entanto, muitas mulheres adultas continuam a pedir permissão silenciosa para exercer este direito.
+
+[pause]
+
+Permissão que nunca lhes foi concedida explicitamente.
+
+E que, por isso, elas continuam a adiar.
+
+[short pause]
+
+"Quando o meu marido estiver fora."
+
+"Quando os miúdos estiverem a dormir profundamente."
+
+"Quando eu tiver mais tempo."
+
+"Quando me sentir mais confortável."
+
+[pause]
+
+O quando chega raramente.
+
+[long pause]
+
+Este módulo termina com um gesto escrito, privado, que pode parecer estranho, mas que tem efeito específico.
+
+[pause]
+
+Numa folha que só tu vais ver, vais escrever uma autorização.
+
+[short pause]
+
+Escrita por ti. Assinada por ti. Dirigida a ti.
+
+[long pause]
+
+Podes escrever qualquer coisa como:
+
+"Eu, pela minha própria autoridade, dou-me permissão a partir de hoje para tocar em mim mesma quando me apetecer. Não preciso de autorização de ninguém. Não tenho de justificar a ninguém. Este é o meu corpo e o meu prazer. Não devo nada a ninguém nesta zona da minha vida."
+
+[pause]
+
+Assina. Põe a data.
+
+[short pause]
+
+E guarda esta folha num sítio onde a voltes a ver daqui a alguns meses.
+
+[long pause]
+
+O gesto parece infantil.
+
+[pause]
+
+Mas é, na verdade, um dos actos mais adultos que podes fazer contigo mesma.
+
+[short pause]
+
+Porque pôr em letra escrita aquilo que está implícito — a tua autoridade sobre o teu próprio prazer — dá a essa autoridade uma presença tangível.
+
+[pause]
+
+Ela deixa de ser ideia abstracta.
+
+Passa a ser documento que existe em papel, com a tua letra, com a tua assinatura.
+
+[long pause]
+
+E na próxima vez que a culpa silenciosa, ou a permissão silenciosa, voltar a aparecer, tu tens algo a que recorrer.
+
+[pause]
+
+Não em pensamento.
+
+Em objecto real.
+
+[short pause]
+
+Podes ir buscar a folha. Ler.
+
+E lembrar-te, em letra concreta, que a autorização já foi dada.
+
+[long pause]
+
+Por ti. A ti. Há quanto tempo for necessário.
+
+[pause]
+
+E ao longo dos meses, vais deixar de precisar de ir buscar a folha.
+
+[short pause]
+
+Porque a autorização, à medida que vai sendo exercida, vai deixando de precisar de ser reactivada.
+
+[pause]
+
+Torna-se, finalmente, estado interior.
+
+[long pause]
+
+A mulher que não pede permissão silenciosa para o seu próprio prazer é mulher em outro estado de liberdade.
+
+[pause]
+
+Não é mulher mais sexual, necessariamente.
+
+É mulher mais livre na relação com este pedaço da sua vida.
+
+[short pause]
+
+E essa liberdade, pequena no papel, é uma das bases sobre a qual a chama, com tempo, volta a acender.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-chama-m5",
+    titulo: "Curso A Chama — Módulo 5 (Aulas A, B, C)",
+    descricao: "O Desejo na Relação Longa.",
+    scripts: [
+      {
+        id: "a-chama-m5a",
+        titulo: "M5.A — A semana em que deixaste de ter iniciativa",
+        curso: "a-chama",
+        texto: `Houve, na tua relação longa, uma semana em que tu deixaste de ter iniciativa.
+
+[pause]
+
+Provavelmente nunca disseste isso a ninguém.
+
+Provavelmente nem a ti própria disseste, em letra clara.
+
+[long pause]
+
+Mas aconteceu.
+
+[pause]
+
+Em algum ponto da relação, uma mudança silenciosa instalou-se.
+
+A iniciativa passou a vir só dele.
+
+E tu, em vez de iniciares quando te apetecia, começaste a esperar.
+
+[short pause]
+
+Às vezes, apetecia-te.
+
+Mas não fazias nada.
+
+[pause]
+
+Talvez por timidez repentina em alguém com quem vives há anos.
+
+Talvez por medo de ele recusar — e teres de lidar com a rejeição que nunca tiveras de gerir enquanto era ele a pedir.
+
+Talvez, simplesmente, por cansaço aprendido — por teres aprendido que é mais fácil deixar ele organizar este pedaço da relação.
+
+[long pause]
+
+Esta assimetria, quando se instala, raramente é revista.
+
+[pause]
+
+E ao longo dos anos, torna-se realidade inquestionada.
+
+[short pause]
+
+"Ele é que costuma iniciar."
+
+"Eu não sou muito de começar."
+
+"A libido masculina é diferente — ele precisa mais."
+
+[pause]
+
+Estas frases, repetidas em silêncio, parecem descrever o que é.
+
+[short pause]
+
+Na verdade, descrevem o que foi ficando — por falta de revisão.
+
+[long pause]
+
+A questão honesta é esta.
+
+[pause]
+
+Quando foi a última vez que tu tiveste iniciativa sexual?
+
+[short pause]
+
+Não no sentido óbvio. Também num sentido mais subtil — tu a aproximares-te dele, a procurares-lhe o toque, a pedires-lhe a noite.
+
+[pause]
+
+Para muitas mulheres em relação longa, a resposta é: "não me lembro. Meses? Um ano? Mais?"
+
+[long pause]
+
+Esta perda de iniciativa tem consequência específica.
+
+[pause]
+
+Tu começas a receber o sexo.
+
+Já não o provocas.
+
+[short pause]
+
+E o sexo que tu recebes, sem nunca provocares, é diferente do que tu provocas.
+
+[pause]
+
+Porque o desejo, em mulher, precisa de vias de saída.
+
+E se a via de saída "iniciar" está bloqueada, o desejo, sem saída, atrofia.
+
+[long pause]
+
+Esta semana, vais fazer um gesto pequeno.
+
+[pause]
+
+Num dia em que te apeteça — mesmo subtilmente — ser tu a ter iniciativa.
+
+[short pause]
+
+Não tem de ser iniciativa óbvia. Não tem de ser proposta verbal explícita.
+
+[pause]
+
+Pode ser um olhar mantido mais do que o habitual durante o jantar.
+
+Pode ser a tua mão no joelho dele enquanto vêem televisão, de uma forma diferente do habitual.
+
+Pode ser uma frase curta: "Esta noite, quando for para dormir, queria estar contigo."
+
+[long pause]
+
+Este gesto, pequeno, desmonta uma estrutura antiga.
+
+[pause]
+
+Desmonta a estrutura em que ele pede e tu respondes.
+
+E reintroduz uma estrutura em que tu também desejas — e comunicas esse desejo.
+
+[short pause]
+
+Ele vai reparar.
+
+[pause]
+
+Pode ficar surpreendido. Pode estranhar. Pode até, momentaneamente, sentir-se desconfortável com a mudança de papel.
+
+[short pause]
+
+Mas, na grande maioria dos casos, o que acontece a seguir é que alguma coisa, na dinâmica erótica de vocês, muda.
+
+[long pause]
+
+Deixa de ser ritual desempenhado.
+
+Passa a ser encontro efectivo.
+
+[pause]
+
+Porque há duas pessoas a desejar, não uma a pedir e outra a ceder.
+
+[short pause]
+
+E a diferença, mesmo quando subtil, é grande.
+
+[long pause]
+
+Depois do gesto, numa folha — que não precisas de mostrar a ninguém — escreve três linhas.
+
+[pause]
+
+"Hoje tive iniciativa. Ele reagiu com —. Eu senti —."
+
+[short pause]
+
+Não tens de repetir todas as semanas.
+
+Mas mesmo uma vez, ao fim de anos sem, começa a recalibrar algo interior.
+
+[pause]
+
+A parte de ti que tinha iniciativa, há anos, e que foi aprendendo a desligar-se — fica a saber que ainda pode voltar.
+
+[long pause]
+
+E essa informação, nela, é semente.
+
+[pause]
+
+De quê, exactamente, tu descobres com o tempo.`,
+      },
+      {
+        id: "a-chama-m5b",
+        titulo: "M5.B — O sexo que já fazem há dez anos igual",
+        curso: "a-chama",
+        texto: `Em muitas relações longas, o sexo, quando acontece, acontece igual.
+
+[pause]
+
+Mesma hora aproximada.
+
+Mesmo quarto.
+
+Mesma coreografia — em linhas gerais.
+
+[long pause]
+
+Começa mais ou menos da mesma forma.
+
+Progride mais ou menos da mesma forma.
+
+Acaba mais ou menos da mesma forma.
+
+[pause]
+
+E no dia seguinte, tu e ele raramente falam sobre o que aconteceu.
+
+[short pause]
+
+Isso passou a ser normal entre vocês. Banal. Quase administrativo.
+
+[long pause]
+
+Este estado é tão comum em casais de longa duração que muitos casais nem lhe chamam problema.
+
+[pause]
+
+Chamam-lhe rotina.
+
+E aceitam-no como preço natural da vida partilhada.
+
+[short pause]
+
+Mas há uma diferença entre rotina e repetição mecânica.
+
+[pause]
+
+A rotina tem alguma presença. Tem gosto. Tem atenção do que está a acontecer.
+
+A repetição mecânica é fazer os mesmos gestos sem presença nenhuma — apenas por reflexo aprendido.
+
+[long pause]
+
+Muitos casais longos deslizaram da rotina para a repetição mecânica, sem marcarem o momento em que isso aconteceu.
+
+[pause]
+
+E o sexo, quando é repetição mecânica, tem custo.
+
+[short pause]
+
+Tu, durante o acto, estás em segundo plano. A tua cabeça pensa em coisas banais. A tua atenção não está ali.
+
+[pause]
+
+Ele, provavelmente, nota. Mas não fala.
+
+Ou fala, uma vez ou outra, de forma vaga — "ultimamente está diferente."
+
+[short pause]
+
+E vocês os dois decidem, sem palavras, que isto é o que é, e não há muito a fazer.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno.
+
+[pause]
+
+Não vais mudar tudo. Não vais propor experiências dramáticas.
+
+[short pause]
+
+Vais apenas mudar uma coisa — qualquer uma — no próximo encontro sexual que tiveres.
+
+[pause]
+
+Pode ser tão pequeno como:
+
+Fazer amor com a luz ligeiramente acesa, em vez do escuro habitual.
+
+Começar noutra divisão da casa.
+
+Pedir-lhe, explicitamente, uma coisa específica que te apetece — em vez de esperar que ele adivinhe.
+
+Parar a meio e beijá-lo de uma forma diferente, sem pressa.
+
+Dizer-lhe, em voz baixa, uma frase sobre o que estás a sentir.
+
+[long pause]
+
+Não é coreografia nova.
+
+É interrupção de coreografia antiga.
+
+[pause]
+
+E a interrupção, mesmo pequena, reintroduz presença.
+
+[short pause]
+
+Porque, de repente, vocês os dois têm de prestar atenção — em vez de deslizarem em piloto automático.
+
+[long pause]
+
+A maior parte das mulheres que faz este exercício descreve a mesma coisa.
+
+[pause]
+
+"Foi como se, pela primeira vez em muito tempo, tivéssemos estado os dois presentes no mesmo sítio."
+
+[short pause]
+
+Não foi sexo melhor, objectivamente.
+
+Foi sexo em que houve os dois.
+
+[long pause]
+
+Esta presença renovada, quando se repete algumas vezes, começa a descongelar a dinâmica erótica.
+
+[pause]
+
+E o casal que fazia sexo há dez anos igual começa, subtilmente, a fazer sexo diferente.
+
+[short pause]
+
+Não porque aprendeu técnicas novas.
+
+Porque voltou a estar presente no que estava a acontecer.
+
+[pause]
+
+E a presença, em sexo, é variável com mais peso do que a técnica.
+
+[long pause]
+
+À noite, depois do gesto, numa folha, escreve uma linha.
+
+[pause]
+
+"Esta noite, mudei esta coisa pequena. E notei que —"
+
+[short pause]
+
+Ao fim de algumas semanas, vais ter um pequeno diário de interrupções.
+
+[pause]
+
+E podes olhar para ele como quem olha para um mapa de reencontro.
+
+[long pause]
+
+Entre tu e a pessoa com quem vives há anos.
+
+[pause]
+
+Através de pequenos gestos que, no aparente, parecem banais.
+
+Mas que, no profundo, são actos de reacendimento.`,
+      },
+      {
+        id: "a-chama-m5c",
+        titulo: "M5.C — A conversa que nunca tiveste com ele sobre prazer",
+        curso: "a-chama",
+        texto: `Há uma conversa que tu, na tua relação longa, provavelmente nunca tiveste com ele.
+
+[pause]
+
+A conversa sobre o que te dá prazer.
+
+[long pause]
+
+Tiveram a conversa sobre filhos.
+
+Sobre dinheiro.
+
+Sobre famílias respectivas.
+
+Sobre planos de férias, casas, carros, reformas.
+
+[pause]
+
+Mas a conversa específica em que tu, em voz clara, explicas a ele o que te dá prazer sexual — nunca a tiveram.
+
+[short pause]
+
+Ou tiveram-na de forma rudimentar, muito cedo na relação, e nunca a actualizaram.
+
+[long pause]
+
+Esta ausência não é por falta de intimidade.
+
+[pause]
+
+É por estrutura cultural.
+
+[short pause]
+
+Tu foste treinada para não falar nestes termos.
+
+Ele foi treinado para saber sem ter de perguntar.
+
+E vocês os dois, quando entraram na relação, assumiram implicitamente que isto se descobria.
+
+[pause]
+
+Descobre-se parcialmente.
+
+[short pause]
+
+Mas raramente chega ao nível de detalhe que seria útil.
+
+[long pause]
+
+E ao fim de muitos anos, ele sabe o que te dá algum prazer.
+
+[pause]
+
+Sabe a sequência que funciona na maior parte das vezes.
+
+Sabe a zona que costuma ser eficaz.
+
+[short pause]
+
+Mas não sabe:
+
+O que te daria ainda mais prazer, se ele soubesse.
+
+Os pedidos específicos que tu tens há anos e nunca verbalizaste.
+
+As coisas que ele faz e que não são as que tu preferirias.
+
+As zonas do teu corpo que ele nunca explorou suficientemente.
+
+Os momentos do dia em que o teu desejo é maior e que ele não sabe aproveitar.
+
+[long pause]
+
+Esta informação está em ti.
+
+[pause]
+
+Vive como mapa privado que tu, há anos, não partilhas com a pessoa que mais precisaria dele.
+
+[short pause]
+
+Não partilhas por várias razões.
+
+Porque te foi ensinado que mulher que pede muito é exigente.
+
+Porque tens medo de o ferir na vaidade se sugerires que há coisas que ele podia fazer diferente.
+
+Porque, num momento inicial da relação, assumiste que ele ia perceber — e agora, vinte anos depois, parece estranho levantar o assunto.
+
+[pause]
+
+Porque, no fundo, não sabes bem como começar uma conversa destas.
+
+[long pause]
+
+Esta semana — ou este mês, se precisares de mais tempo — vais iniciar essa conversa.
+
+[pause]
+
+Não de uma vez. Não numa frase.
+
+[short pause]
+
+Em pequenas pílulas, ao longo de algumas semanas.
+
+[long pause]
+
+A primeira pílula pode ser simples.
+
+[pause]
+
+Num momento de relaxamento — não na cama, não durante sexo — podes dizer-lhe algo como:
+
+"Há uma coisa pequena que me apetece pedir. Quando me tocas aqui, gosto se for um bocadinho mais lento. Há uma diferença."
+
+[short pause]
+
+Uma coisa. Uma vez. Sem drama.
+
+[pause]
+
+Observa como ele reage.
+
+[long pause]
+
+A maioria dos homens em relações longas, quando recebe informação específica sobre o prazer da parceira, reage de uma de duas formas.
+
+[pause]
+
+Alguns ficam ligeiramente desconfortáveis na hora — com um leve sentimento de terem estado a fazer mal durante anos.
+
+[short pause]
+
+Mas, nos dias seguintes, experimentam a sugestão.
+
+E, na maior parte dos casos, tornam-se melhores parceiros.
+
+[pause]
+
+Outros, menos frequentemente, recusam.
+
+Dizem "sempre foi assim", "se gostasses a fazer diferente tinhas dito antes", "tu mudaste".
+
+[long pause]
+
+A segunda reacção é informação importante.
+
+[pause]
+
+Não significa, necessariamente, que a relação não tem solução.
+
+Mas significa que o trabalho vai ser maior do que apenas uma conversa.
+
+[short pause]
+
+Na maior parte das vezes, porém, a reacção é a primeira.
+
+[pause]
+
+E, ao longo de algumas semanas em que tu vais partilhando pequenas informações — uma aqui, outra ali, nunca todas de vez — a dinâmica entre vocês começa a mudar.
+
+[long pause]
+
+Ele começa a saber-te melhor.
+
+Tu começas a ter mais do que pedes.
+
+E o sexo entre vocês deixa de ser coreografia herdada e passa a ser encontro informado.
+
+[pause]
+
+A conversa sobre prazer, em relação longa, é das mais difíceis de iniciar.
+
+[short pause]
+
+Mas é também das mais transformadoras.
+
+[pause]
+
+Porque põe em palavras o que, há décadas, vivia em suposição.
+
+[long pause]
+
+E a suposição, em intimidade de longo prazo, é terreno onde a chama se apaga.
+
+[pause]
+
+As palavras, mesmo desajeitadas, são oxigénio.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-chama-m6",
+    titulo: "Curso A Chama — Módulo 6 (Aulas A, B, C)",
+    descricao: "A Vergonha Herdada.",
+    scripts: [
+      {
+        id: "a-chama-m6a",
+        titulo: "M6.A — O que a tua mãe nunca te disse sobre prazer",
+        curso: "a-chama",
+        texto: `A tua mãe, muito provavelmente, nunca te falou sobre prazer.
+
+[pause]
+
+Falou sobre perigos. Sobre cuidado. Sobre contracepção — talvez, se foste de uma geração com sorte.
+
+[long pause]
+
+Mas sobre prazer em si, raramente.
+
+[pause]
+
+Sobre o teu direito ao teu próprio orgasmo.
+
+Sobre a legitimidade de quereres toque que te apetece.
+
+Sobre a diferença entre sexo que te dá prazer e sexo que apenas acontece.
+
+[short pause]
+
+Estas conversas, em quase todas as casas portuguesas, nunca aconteceram.
+
+[long pause]
+
+Não é culpa dela.
+
+[pause]
+
+A tua mãe não foi ensinada por ninguém. A avó da tua mãe provavelmente sabia ainda menos.
+
+[short pause]
+
+A ignorância sobre prazer feminino atravessa gerações.
+
+E chega a ti.
+
+[pause]
+
+Não como gesto hostil. Como ausência transmitida.
+
+[long pause]
+
+Mas a ausência, em educação, é uma forma de educação.
+
+[pause]
+
+Ensina-te, implicitamente, que este tema não se discute.
+
+Que é coisa que se gere em silêncio.
+
+Que não tem lugar legítimo na conversa entre mulheres de uma mesma família.
+
+[short pause]
+
+E tu, em adulta, herdas este silêncio sem sequer reparares.
+
+[long pause]
+
+Repara numa coisa curiosa.
+
+[pause]
+
+Em conversas entre mulheres da tua geração — amigas, colegas, irmãs — é raro falar-se sobre prazer sexual com detalhe.
+
+[short pause]
+
+Fala-se sobre relações.
+
+Fala-se sobre homens.
+
+Fala-se sobre queixas genéricas — "anda tudo parado", "já não há grande entusiasmo".
+
+[pause]
+
+Mas a conversa específica — o que me dá prazer, como é o meu orgasmo, o que descobri que o meu corpo quer — essa não acontece.
+
+[long pause]
+
+Este silêncio não é timidez pessoal.
+
+[pause]
+
+É herança de gerações de mulheres que, antes de ti, aprenderam que este assunto não tinha palavras.
+
+[short pause]
+
+Esta semana, vais fazer um exercício de quebra de herança.
+
+[pause]
+
+Escolhe uma única amiga com quem tenhas proximidade real.
+
+[short pause]
+
+Pode ser irmã. Pode ser amiga de infância. Pode ser prima. Pode ser colega de trabalho chegada.
+
+[pause]
+
+Alguém em quem confias.
+
+[long pause]
+
+E vais iniciar, com ela, uma conversa sobre prazer.
+
+[pause]
+
+Não tem de ser conversa longa.
+
+Não tem de ser confessional.
+
+[short pause]
+
+Pode começar com uma frase simples:
+
+"Tenho andado a pensar numa coisa. Acho que nunca, na minha vida, tive uma conversa a sério com outra mulher sobre prazer sexual. Tu tiveste?"
+
+[long pause]
+
+Vai acontecer uma de duas coisas.
+
+[pause]
+
+Ou ela fica desconfortável — e a conversa morre.
+
+Ou ela fica aliviada — e descobres que ela também andava a precisar.
+
+[short pause]
+
+Na segunda hipótese, começa uma conversa que, em quase todos os casos, se torna uma das mais libertadoras que tu tens há muito tempo.
+
+[pause]
+
+Porque, pela primeira vez, tu descobres que as tuas dúvidas, as tuas perguntas, as tuas confusões não são tuas individualmente.
+
+[short pause]
+
+São colectivas.
+
+[long pause]
+
+Outras mulheres da tua idade têm as mesmas perguntas.
+
+[pause]
+
+Têm a mesma falta de informação básica sobre o seu próprio corpo.
+
+Têm os mesmos silêncios antigos.
+
+Têm a mesma vergonha residual que nunca foi nomeada.
+
+[short pause]
+
+E quando vocês nomeiam, juntas, alguma coisa muda.
+
+[pause]
+
+Deixa de ser problema teu.
+
+Passa a ser herança partilhada que, partilhada, começa a dissolver-se.
+
+[long pause]
+
+Este gesto pequeno — uma conversa a sério com uma amiga — é corte histórico.
+
+[pause]
+
+Estás a quebrar uma cadeia que, antes de ti, passou de mãe para filha durante gerações sem ser interrompida.
+
+[short pause]
+
+E a cadeia, quando se quebra com uma conversa honesta, deixa de transmitir o silêncio.
+
+[pause]
+
+Se tiveres filha, e ela já é grande, este corte tem ainda mais peso.
+
+[long pause]
+
+Porque a próxima geração de mulheres da tua família pode herdar, em vez do silêncio, a linguagem que tu começaste.
+
+[pause]
+
+Não precisas de ter uma conversa directa com a tua filha amanhã.
+
+Mas podes, devagar, começar a mostrar-lhe que este assunto tem palavras.
+
+[short pause]
+
+E as palavras, transmitidas, mudam tudo.`,
+      },
+      {
+        id: "a-chama-m6b",
+        titulo: "M6.B — A frase religiosa que ainda opera",
+        curso: "a-chama",
+        texto: `Mesmo que tu não sejas religiosa, a religião formou-te.
+
+[pause]
+
+Formou a tua mãe. Formou a tua avó. Formou a cultura onde cresceste.
+
+E, por essa via, formou-te a ti.
+
+[long pause]
+
+Em Portugal, a maior parte das mulheres da tua idade cresceu em ambiente católico.
+
+[pause]
+
+Podes ter sido baptizada.
+
+Podes ter feito catequese.
+
+Podes ter tido professora de moral e religião na escola.
+
+[short pause]
+
+Ou, mais subtilmente, podes nunca ter praticado — mas cresceste rodeada de pessoas que praticavam, em vilas, em famílias, em pequenas comunidades onde a moral sexual católica era o ar.
+
+[long pause]
+
+A doutrina católica tradicional sobre sexualidade feminina, durante séculos, teve quatro mensagens principais.
+
+[pause]
+
+O sexo existe para procriar.
+
+O prazer da mulher é secundário.
+
+A masturbação feminina é pecado.
+
+A mulher boa é casta; a mulher má, não.
+
+[short pause]
+
+Estas quatro mensagens, mesmo nas casas mais secularizadas, contaminaram o ar durante gerações.
+
+[pause]
+
+E tu, em adulta, provavelmente ainda tens, em algum lugar interior, traços destas mensagens — mesmo sem partilhares a fé que as gerou.
+
+[long pause]
+
+Este módulo não é sobre religião.
+
+[pause]
+
+É sobre reconhecer em ti a presença de estruturas religiosas antigas que continuam a dirigir a tua relação com o prazer, mesmo que tu já não te consideres religiosa.
+
+[short pause]
+
+Em mulheres portuguesas adultas, isto aparece em pequenos detalhes.
+
+[pause]
+
+A vergonha pequena depois do prazer solitário que falamos no módulo anterior.
+
+A sensação, vaga mas persistente, de que mulher muito sexual é, em algum grau, menos respeitável.
+
+A dificuldade em falar sobre o teu corpo em termos explícitos, mesmo com pessoas próximas.
+
+A hesitação diante de uma fantasia que te desce à cabeça e que tu achas, por algum motivo, que "não devia ter".
+
+[short pause]
+
+Cada um destes sinais pode ter origem em frase religiosa antiga que tu nunca, conscientemente, aceitaste.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de escavação específica.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Frases religiosas ou morais sobre corpo, sexo e mulher que ouvi em criança ou adolescente."
+
+[short pause]
+
+E tenta lembrar-te.
+
+[pause]
+
+Pode ser:
+
+"O corpo é templo. Tens de o respeitar."
+
+"Mulher honrada chega virgem ao casamento."
+
+"O prazer por prazer é pecado."
+
+"Mulher que anda na rua de olho desperto é fresca."
+
+"Deus vê tudo o que fazes no escuro."
+
+"Isso é coisa de mulher perdida."
+
+[long pause]
+
+Não tens de ter ouvido exactamente estas frases.
+
+[pause]
+
+Escreve as que apareceram, em alguma versão, na tua infância ou adolescência.
+
+[short pause]
+
+Quando tens a lista, faz uma segunda coisa.
+
+[pause]
+
+Ao lado de cada frase, escreve uma nota — uma única linha — em resposta.
+
+[long pause]
+
+A nota pode ser uma refutação honesta. Pode ser:
+
+"Esta frase não reflecte o que eu penso em adulta."
+
+"Esta frase deu-me medo durante anos."
+
+"Esta frase ainda, às vezes, aparece em mim sem aviso."
+
+"Esta frase fez-me sentir suja durante décadas."
+
+[pause]
+
+Escreves a tua resposta em adulta.
+
+[short pause]
+
+Este simples acto — a tua resposta em letra escrita, em oposição à frase — é trabalho subterrâneo.
+
+[long pause]
+
+Estás a fazer, em letra tua, aquilo que nunca ninguém fez por ti enquanto crescias.
+
+[pause]
+
+Estás a contrapor. A corrigir. A actualizar.
+
+[short pause]
+
+A voz que antes chegava sem resposta agora tem resposta.
+
+[pause]
+
+E a resposta, ao longo das semanas em que a relês, começa a ganhar peso próprio.
+
+[long pause]
+
+Não é que a frase religiosa antiga desapareça.
+
+[pause]
+
+É que, ao lado dela, passa a existir a tua.
+
+E a tua, com o tempo, começa a ter mais autoridade do que a herdada.
+
+[short pause]
+
+Porque é tua. Foi escrita por ti. Em adulta. Depois de pensares.
+
+[long pause]
+
+A religião pode ter formado a tua infância.
+
+[pause]
+
+Mas tu, em adulta, tens o direito — e os meios — de rever as formações que não te servem.
+
+[short pause]
+
+E a revisão, escrita em letra tua, é acto de adulta plena.
+
+[pause]
+
+Não contra a fé, se a tens. Mas a favor da tua relação real com o teu próprio corpo.`,
+      },
+      {
+        id: "a-chama-m6c",
+        titulo: "M6.C — Os filmes e livros que te ensinaram a desejar mal",
+        curso: "a-chama",
+        texto: `A cultura ensinou-te a desejar.
+
+[pause]
+
+Não conscientemente.
+
+Por acumulação.
+
+[long pause]
+
+Desde criança, tu recebeste, através de filmes, livros, revistas, música, uma ideia específica do que era o desejo feminino.
+
+[pause]
+
+Na maior parte dos casos, a ideia era errada.
+
+[short pause]
+
+Os filmes mostravam, em geral, o desejo da mulher a servir a história do homem.
+
+O prazer feminino, quando aparecia, era como resposta à competência masculina.
+
+[pause]
+
+Raramente aparecia mulher a desejar por ela, por conta própria, com a sua própria lógica.
+
+[long pause]
+
+Os livros de romance, por seu turno, ensinaram-te outra coisa igualmente problemática.
+
+[pause]
+
+Ensinaram-te que o desejo real aparecia em relações cheias de drama.
+
+Que o homem mais desejável era o mais difícil.
+
+Que o prazer verdadeiro tinha de passar por resistência, conquista, intensidade.
+
+[short pause]
+
+E a relação calma, segura, construída — a relação adulta real — era, na linguagem desses livros, chata.
+
+[long pause]
+
+Esta educação cultural contaminou a tua biologia.
+
+[pause]
+
+Em adulta, quando te encontras numa relação estável e boa, uma parte de ti sente que falta algo.
+
+Falta o drama.
+
+Falta a tensão.
+
+Falta a conquista.
+
+[short pause]
+
+E tu, sem perceber, começas a confundir falta de desejo com falta de intensidade cinematográfica.
+
+[long pause]
+
+Mas a intensidade cinematográfica nunca foi desejo real.
+
+[pause]
+
+Era ficção desenhada para vender bilhetes de cinema.
+
+[short pause]
+
+O desejo real, na vida adulta sustentável, tem outra textura.
+
+[pause]
+
+É menos espectacular.
+
+Mais lento.
+
+Mais subtil.
+
+[short pause]
+
+Aparece em pequenos momentos — olhar mantido por mais meio segundo do que o habitual, vontade de toque casual no cotovelo, sensação de alívio quando ouves a chave na porta à noite.
+
+[long pause]
+
+Estes sinais, em mulher educada por ficção dramática, passam desapercebidos.
+
+[pause]
+
+Porque tu estás à espera de algo maior.
+
+Algo que nunca vai aparecer — porque nunca existiu na vida real.
+
+[short pause]
+
+Apenas em filmes.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de contra-educação.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"O que a ficção me ensinou que era desejo, e que provavelmente não é."
+
+[short pause]
+
+E enumera o que te ocorre.
+
+[pause]
+
+Pode ser:
+
+"Aprendi que o desejo tinha de ser intenso. Dramático. Urgente."
+
+"Aprendi que o homem tinha de ser difícil para ser desejável."
+
+"Aprendi que o sexo verdadeiro tinha de ter alguma dose de perigo ou proibido."
+
+"Aprendi que o toque calmo e conhecido era menos desejável do que o toque novo e incerto."
+
+"Aprendi que mulher apaixonada é mulher perturbada."
+
+[long pause]
+
+Olha para a tua lista.
+
+[pause]
+
+E faz uma pergunta a seguir:
+
+"Quantas destas ideias ainda dirigem, hoje, a minha expectativa sobre o meu próprio desejo?"
+
+[short pause]
+
+Em geral, quase todas.
+
+[long pause]
+
+A reanimação do desejo em mulher adulta passa, em grande parte, por desmontar esta educação ficcional.
+
+[pause]
+
+E por aprender a reconhecer como desejo real o que a educação ficcional te ensinou a descartar.
+
+[short pause]
+
+O olhar mantido meio segundo a mais é desejo.
+
+A vontade de toque casual é desejo.
+
+A sensação boa quando ele entra na sala é desejo.
+
+O pequeno enervamento quando ele se afasta numa festa é desejo.
+
+[pause]
+
+Nada disto parece intenso o suficiente para ser desejo — segundo a ficção.
+
+Mas é exactamente disto que o desejo adulto se faz.
+
+[long pause]
+
+Quando tu passas a reconhecer estes sinais pequenos como legítimos — em vez de os descartar por não serem dramáticos — a tua percepção do teu próprio desejo aumenta drasticamente.
+
+[pause]
+
+Não porque o desejo aumentou.
+
+Porque deixaste de o descartar.
+
+[short pause]
+
+E com o desejo visto, vem vontade de o exercer.
+
+[pause]
+
+Em pequenos momentos, à escala real, sem tensão cinematográfica.
+
+[short pause]
+
+Apenas na escala humana em que, ao longo dos anos, ele é sustentável.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-chama-m7",
+    titulo: "Curso A Chama — Módulo 7 (Aulas A, B, C)",
+    descricao: "A Chama Fora da Cama.",
+    scripts: [
+      {
+        id: "a-chama-m7a",
+        titulo: "M7.A — O que te dava entusiasmo aos vinte e que já não sentes",
+        curso: "a-chama",
+        texto: `A chama, nesta altura do curso, já percebeste que não é só sobre sexo.
+
+[pause]
+
+É sobre capacidade geral de desejar.
+
+[long pause]
+
+E esta capacidade, em mulheres adultas, afecta todas as áreas da vida — não só a cama.
+
+[pause]
+
+Se tu não desejas nada durante o dia, é pouco provável que desejes muito à noite.
+
+[short pause]
+
+A chama é, no fundo, uma qualidade de relação com a vida.
+
+[pause]
+
+E quando ela se apaga em ti, apaga-se em várias frentes ao mesmo tempo.
+
+[long pause]
+
+Pensa em ti aos vinte, vinte e dois anos.
+
+[pause]
+
+O que te dava entusiasmo na altura?
+
+[short pause]
+
+Coisas específicas. Concretas.
+
+[pause]
+
+Pode ter sido um projecto que começaste. Um grupo de amigas com quem fazias planos constantemente. Uma disciplina na universidade que te fascinava. Um estilo de música, um hobby, um sonho concreto que te animava todas as manhãs.
+
+[short pause]
+
+Pode ter sido a ideia de viver sozinha. Ou de viajar. Ou de aprender uma língua. Ou de começar uma carreira.
+
+[long pause]
+
+Agora pensa em ti hoje.
+
+[pause]
+
+Qual destes entusiasmos ainda está em ti, com a mesma intensidade?
+
+[short pause]
+
+Em quase todas as mulheres adultas, a resposta honesta é: "quase nenhum."
+
+[long pause]
+
+Isto não é necessariamente sinal de depressão.
+
+[pause]
+
+É sinal de outra coisa, mais subtil.
+
+[short pause]
+
+Ao longo dos anos, tu foste substituindo os entusiasmos próprios pelos entusiasmos dos outros.
+
+[pause]
+
+Os sonhos do teu marido.
+
+Os projectos dos teus filhos.
+
+As necessidades da tua família alargada.
+
+O trabalho que pagava as contas, independentemente de te interessar ou não.
+
+[long pause]
+
+Cada uma destas substituições foi, no seu momento, legítima.
+
+[pause]
+
+Não se pode viver em vida adulta partilhada sem atender aos entusiasmos dos outros em algum grau.
+
+[short pause]
+
+O problema não foi atender aos outros.
+
+Foi parar de atender aos teus.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de arqueologia do entusiasmo.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Coisas que me davam entusiasmo aos vinte, antes de ter responsabilidades grandes."
+
+[short pause]
+
+E escreve tudo o que te lembras.
+
+[pause]
+
+Não filtres.
+
+Não julgues.
+
+Não digas "aquilo era infantil".
+
+[short pause]
+
+Escreve: leituras específicas, projectos que tinhas em mente, pessoas com quem te via com frequência, estilos de vida que te atraíam, conversas que podias ter durante horas, sonhos pequenos e grandes.
+
+[long pause]
+
+Pode ter quinze entradas. Pode ter trinta.
+
+Quanto mais, melhor.
+
+[pause]
+
+Quando acabares, lê.
+
+[short pause]
+
+E faz uma pergunta seca, em folha separada:
+
+"De todas estas coisas, quais ainda existem na minha vida, em alguma forma?"
+
+[long pause]
+
+A maioria das mulheres, ao fazer este exercício, fica em silêncio diante da folha.
+
+[pause]
+
+Porque percebe que cinco ou seis dos entusiasmos que a definiam aos vinte simplesmente desapareceram sem ela ter tomado consciência disso.
+
+[short pause]
+
+Não foram abandonados por decisão.
+
+Foram abandonados por acumulação.
+
+[long pause]
+
+A pergunta a seguir, então, é:
+
+"Qual destes entusiasmos, se eu o recuperasse em pequena dose, mudaria a qualidade do meu ar diário?"
+
+[pause]
+
+Não tens de recuperar tudo.
+
+Não tens de voltar a ser a pessoa de vinte anos.
+
+[short pause]
+
+Escolhe um.
+
+[pause]
+
+Um único entusiasmo pequeno — uma leitura, um grupo, uma prática, um tema.
+
+[long pause]
+
+E introduz, esta semana, uma mini-versão dele na tua vida actual.
+
+[pause]
+
+Pode ser uma hora por semana. Pode ser menos.
+
+[short pause]
+
+Mas de forma regular, durante algumas semanas.
+
+[pause]
+
+E repara no que acontece.
+
+[long pause]
+
+A maioria das mulheres, quando reintroduz um único entusiasmo antigo, descreve uma sensação curiosa.
+
+[pause]
+
+"Pareço eu outra vez."
+
+[short pause]
+
+E esta sensação — pareceres tu outra vez — é, em si, reabertura da chama.
+
+[pause]
+
+Porque a chama, antes de ser desejo sexual, é capacidade de quereres coisas.
+
+[short pause]
+
+E a mulher que quer coisas — mesmo coisas pequenas, mesmo hobbies, mesmo temas aparentemente banais — é mulher com chama.
+
+[pause]
+
+O resto segue-se.`,
+      },
+      {
+        id: "a-chama-m7b",
+        titulo: "M7.B — A vontade de coisas que não tem nome",
+        curso: "a-chama",
+        texto: `Há uma vontade, em algumas mulheres adultas, que não tem nome.
+
+[pause]
+
+Não é vontade de sexo.
+
+Não é vontade de mudar de vida.
+
+Não é vontade de nada específico.
+
+[long pause]
+
+É uma vontade difusa, silenciosa, que aparece em momentos estranhos.
+
+[pause]
+
+No carro, a caminho do trabalho.
+
+A fazer o jantar numa terça-feira.
+
+A olhar pela janela numa tarde em que devias estar a fazer outra coisa.
+
+[short pause]
+
+Aparece, fica alguns segundos, e vai-se embora.
+
+[pause]
+
+E tu, sem perceber bem o que era, continuas com o que estavas a fazer.
+
+[long pause]
+
+Esta vontade sem nome é sinal de vitalidade.
+
+[pause]
+
+É a tua chama a tentar comunicar — ainda não sabes sobre o quê.
+
+[short pause]
+
+A maioria das mulheres, quando sente esta vontade difusa, descarta.
+
+Porque não tem alvo. Porque não serve para nada prático. Porque parece perda de tempo considerá-la.
+
+[pause]
+
+E a chama, descartada vezes suficientes, deixa de enviar o sinal.
+
+[long pause]
+
+Esta semana, em vez de descartares, vais registar.
+
+[pause]
+
+Arranja um caderno pequeno. Ou um bloco de notas no telemóvel.
+
+[short pause]
+
+E todas as vezes que, durante a semana, sentires aparecer em ti uma vontade difusa e sem nome, escreves uma linha.
+
+[pause]
+
+Não tens de saber o que ela era.
+
+Escreves:
+
+"Hoje, na cozinha, apareceu uma vontade sem nome. Veio devagar. Durou poucos minutos. Foi."
+
+[short pause]
+
+Ou:
+
+"Terça de tarde, a caminho do supermercado, apareceu uma vontade que eu não sei nomear. Tinha algo a ver com movimento. Foi."
+
+[long pause]
+
+Não tens de interpretar. Não tens de elaborar. Apenas registar que aconteceu.
+
+[pause]
+
+Ao fim da semana, lê as entradas em sequência.
+
+[short pause]
+
+Vai aparecer um padrão.
+
+[pause]
+
+As vontades sem nome aparecem, em geral, em momentos específicos.
+
+Em transições. Em instantes em que tu não estás a fazer nada demasiado exigente. Em pequenas pausas entre actividades.
+
+[long pause]
+
+E elas têm, frequentemente, um tom consistente.
+
+[pause]
+
+Algumas mulheres descobrem que as suas vontades sem nome apontam todas para movimento físico — caminhar, nadar, dançar.
+
+Outras descobrem que apontam para criação — escrever, pintar, tocar.
+
+Outras, para intimidade de outro tipo — conversas profundas, amizades novas, tempo sozinha.
+
+Outras, para experiências sensoriais — luz, música, texturas, cheiros.
+
+[short pause]
+
+A tua tem tom específico.
+
+E quando começas a registar, o tom torna-se visível.
+
+[long pause]
+
+A partir daí, podes começar a responder a estas vontades em pequenas doses.
+
+[pause]
+
+Não mudar a vida toda.
+
+Apenas, quando reparares na vontade, responder uma vez, em pequena escala.
+
+[short pause]
+
+Se aponta para movimento, sai para caminhar cinco minutos.
+
+Se aponta para criação, escreve duas linhas num caderno.
+
+Se aponta para intimidade, manda mensagem a uma amiga.
+
+Se aponta para experiência sensorial, põe música que gostas durante cinco minutos.
+
+[long pause]
+
+Estas pequenas respostas são treino.
+
+[pause]
+
+Estás a ensinar ao teu sistema interior que as suas vontades difusas são ouvidas.
+
+[short pause]
+
+E o teu sistema interior, quando percebe que é ouvido, começa a enviar mais sinais.
+
+[pause]
+
+E mais claros.
+
+[long pause]
+
+Ao fim de alguns meses deste treino, muitas mulheres descobrem que a sua capacidade de querer aumentou.
+
+[pause]
+
+Não só em vontades sem nome. Também em vontades nomeáveis.
+
+[short pause]
+
+Querem mais. Sentem mais. Decidem mais.
+
+[pause]
+
+A chama difusa, ao ser registada e respondida em pequenas doses, torna-se, devagar, chama mais clara e mais exigente.
+
+[long pause]
+
+E essa chama, em adulta, dirige muito mais do que a cama.
+
+[pause]
+
+Dirige o tom da tua vida.
+
+[short pause]
+
+Dirige as escolhas pequenas que, somadas, compõem a qualidade do teu tempo.
+
+[pause]
+
+E quando a tua vida inteira está alinhada com a tua chama — mesmo que em pequena escala — a tua chama sexual acende-se como consequência.
+
+[short pause]
+
+Não como objectivo.
+
+Como resultado natural de estares finalmente a viver uma vida em que tu, também, queres alguma coisa.`,
+      },
+      {
+        id: "a-chama-m7c",
+        titulo: "M7.C — O prazer das pequenas coisas recuperado",
+        curso: "a-chama",
+        texto: `Há uma forma de prazer, em adulta, que não tem nada de sexual e que, ainda assim, é base da chama.
+
+[pause]
+
+O prazer das pequenas coisas.
+
+[long pause]
+
+O prazer da primeira chávena de café da manhã.
+
+O prazer de uma conversa rápida com uma pessoa simpática na padaria.
+
+O prazer de abrir uma janela e sentir o ar fresco no rosto.
+
+O prazer de caminhar em passo próprio, sem pressa, por um caminho familiar.
+
+O prazer de ler, deitada, uma página de um livro que gostas.
+
+[pause]
+
+Este prazer existia em ti, em grande quantidade, em algum momento da vida.
+
+[short pause]
+
+Provavelmente em criança.
+
+[pause]
+
+Tu, em criança, tinhas um acesso directo ao prazer das pequenas coisas que, em adulta, foste perdendo.
+
+[long pause]
+
+Em adulta, o teu cérebro aprendeu a não registar estas pequenas satisfações como prazer.
+
+[pause]
+
+Porque aprendeu, ao longo dos anos, a reservar o rótulo "prazer" para coisas grandes.
+
+[short pause]
+
+Férias. Festas. Compras especiais. Sexo. Refeições elaboradas.
+
+[pause]
+
+E o prazer quotidiano de uma chávena quente, de uma luz bonita, de um som bem colocado — foi ficando abaixo do limiar da tua atenção.
+
+[long pause]
+
+Esta perda é silenciosa mas tem custo grande.
+
+[pause]
+
+Porque o prazer quotidiano é a fundação sobre a qual os prazeres maiores se apoiam.
+
+[short pause]
+
+Mulheres que perderam contacto com os prazeres das pequenas coisas, em geral, também têm dificuldade com os grandes.
+
+[pause]
+
+Vão de férias e não conseguem estar completamente presentes.
+
+Recebem uma prenda e sentem satisfação breve.
+
+Têm sexo e registam como momento banal.
+
+[short pause]
+
+Porque o aparelho de registo de prazer, em ti, foi ficando desafinado por anos de não treino.
+
+[long pause]
+
+Esta semana, vais fazer um exercício de recalibração.
+
+[pause]
+
+Numa folha pequena que possas trazer contigo, escreve em cima:
+
+"Pequenos prazeres de hoje."
+
+[short pause]
+
+E ao longo do dia, sempre que reparares num pequeno prazer, anotas.
+
+[pause]
+
+Não tens de fotografar. Não tens de elaborar. Uma linha chega.
+
+[long pause]
+
+Pode ser:
+
+"A luz da manhã no chão da cozinha às sete e meia."
+
+"O primeiro cheiro a café de hoje."
+
+"O momento em que encontrei estacionamento em frente a casa."
+
+"A sensação do lençol frio nos pés antes de adormecer ontem."
+
+[short pause]
+
+Cinco a dez entradas por dia.
+
+[pause]
+
+Durante sete dias.
+
+[long pause]
+
+Ao fim da semana, lê tudo em sequência.
+
+[pause]
+
+E repara numa coisa curiosa.
+
+[short pause]
+
+A quantidade de pequenos prazeres no teu dia — que antes passavam despercebidos — é muito maior do que tu pensavas.
+
+[long pause]
+
+Eles estavam sempre lá.
+
+[pause]
+
+Mas o teu aparelho de registo estava desligado.
+
+[short pause]
+
+Quando tu começas a registar, o aparelho reactiva.
+
+[pause]
+
+E os pequenos prazeres, registados, começam a contar.
+
+[short pause]
+
+Começam a dar densidade ao teu dia.
+
+[long pause]
+
+E a densidade de prazer quotidiano, acumulada ao longo das semanas, tem efeito específico.
+
+[pause]
+
+Mudas de qualidade interior.
+
+[short pause]
+
+A sensação difusa de que a tua vida "anda em baixo" — que muitas mulheres adultas têm — começa a diluir-se.
+
+[pause]
+
+Não porque a tua vida mudou.
+
+Porque tu, pela primeira vez em anos, estás a registar o que de bom, em pequena dose, ela sempre teve.
+
+[long pause]
+
+E quando esta densidade de prazer pequeno se instala, o teu sistema inteiro fica mais receptivo aos prazeres maiores.
+
+[pause]
+
+Incluindo os prazeres sexuais, que antes pareciam distantes.
+
+[short pause]
+
+Porque a chama, afinal, não se reacende por força de vontade sexual.
+
+[pause]
+
+Reacende-se por recuperação da capacidade de sentires prazer — em todas as escalas, a começar pela mais pequena.
+
+[long pause]
+
+E essa recuperação começa em coisas aparentemente banais.
+
+[pause]
+
+Uma chávena quente. Uma janela aberta. Uma conversa sem pressa na padaria.
+
+[short pause]
+
+Tudo isto, junto, é base da chama.
+
+[pause]
+
+Não é acessório.
+
+É a terra em que ela volta a crescer.`,
+      },
+    ],
+  },
+  {
+    id: "curso-a-chama-m8",
+    titulo: "Curso A Chama — Módulo 8 (Aulas A, B, C)",
+    descricao: "A Chama Acesa.",
+    scripts: [
+      {
+        id: "a-chama-m8a",
+        titulo: "M8.A — A mulher que tem desejo em adulta",
+        curso: "a-chama",
+        texto: `A mulher que tem desejo em adulta não é a que tem desejo constante.
+
+[pause]
+
+Não é a que está sempre disponível.
+
+Não é a que responde ao parceiro com entusiasmo automático em qualquer situação.
+
+[long pause]
+
+A mulher que tem desejo em adulta é outra coisa, mais real.
+
+[pause]
+
+É a mulher que conhece o próprio ritmo.
+
+[short pause]
+
+Sabe quando tem. Sabe quando não tem. Sabe quando está no meio.
+
+[pause]
+
+E, sobretudo, respeita estas três estações dentro de si.
+
+[long pause]
+
+Esta mulher tem, à sua disposição, uma qualidade que a maior parte das mulheres adultas perdeu.
+
+[pause]
+
+Escuta interior.
+
+[short pause]
+
+Ela sabe o que o seu corpo pede em cada semana porque, ao longo dos meses, treinou-se a perguntar.
+
+[long pause]
+
+Em semanas de cansaço acumulado, sabe que o que precisa é descanso e colo — não sexo.
+
+[pause]
+
+Em semanas de tensão profissional, sabe que o desejo pode simplesmente não aparecer — e que isso é biologia normal, não falha pessoal.
+
+[short pause]
+
+Em semanas em que, por algum motivo, o corpo pede mais — ela reconhece, ela comunica, ela vive.
+
+[long pause]
+
+Esta mulher não está em permanente negociação interna sobre se devia ou não devia desejar.
+
+[pause]
+
+Esse debate foi resolvido nela.
+
+[short pause]
+
+Ela desejar ou não desejar é informação, não problema.
+
+[pause]
+
+E o parceiro, quando ela tem parceiro, aprende a ler essa informação.
+
+[long pause]
+
+Aprende que a ausência de desejo de uma semana não é rejeição pessoal.
+
+Aprende que a presença de desejo numa tarde inesperada não é pressão sua.
+
+Aprende a acompanhar, em vez de exigir.
+
+[short pause]
+
+Esta mulher, na relação, deixa de ter vida sexual avaliada por métricas quantitativas — quantas vezes por semana, quantas por mês.
+
+[pause]
+
+Passa a ter vida sexual avaliada por métricas qualitativas — presença, comunicação, satisfação real.
+
+[long pause]
+
+E as métricas qualitativas, ao contrário das quantitativas, toleram flutuação.
+
+[pause]
+
+Porque entendem que a vida adulta de uma mulher não é linear.
+
+[short pause]
+
+Tem anos intensos. Anos leves. Anos em que, por razões várias, o corpo pede pausa.
+
+[pause]
+
+Todos são vida real.
+
+[long pause]
+
+Esta é, em última análise, a mulher que este curso quer ajudar a construir em ti.
+
+[pause]
+
+Não a mulher sexualmente disponível.
+
+[short pause]
+
+A mulher sexualmente presente.
+
+[pause]
+
+Presente no que sente. Presente no que pede. Presente no que recusa. Presente em cada encontro — ou ausência de encontro — com alguma forma de consciência.
+
+[long pause]
+
+Esta semana, vais escrever o primeiro esboço desta mulher em ti.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"A mulher que eu estou a tornar-me em relação ao meu desejo."
+
+[short pause]
+
+E escreve, em termos próprios, o que reconheces que já mudou — ou que está a mudar — em ti ao longo deste curso.
+
+[long pause]
+
+Pode ser pouco.
+
+[pause]
+
+Pode ser:
+
+"Comecei a reparar nos sinais pequenos do meu desejo em vez de os descartar."
+
+"Dei-me permissão escrita para o meu prazer próprio."
+
+"Iniciei uma conversa com uma amiga sobre este tema pela primeira vez."
+
+"Tive iniciativa com o meu parceiro pela primeira vez em meses."
+
+"Identifiquei as frases antigas que ainda me dirigem."
+
+[short pause]
+
+Três a cinco linhas chegam.
+
+[pause]
+
+E no fim da folha, escreve uma última linha:
+
+"A mulher que estou a tornar-me é, em comparação com a que eu era há três meses, ligeiramente mais —"
+
+E completa.
+
+[long pause]
+
+Podes descobrir que completas com palavras pequenas.
+
+[pause]
+
+Atenta.
+
+Honesta.
+
+Presente.
+
+Livre.
+
+[short pause]
+
+Qualquer uma destas palavras, verdadeira para ti, é sinal do trabalho a operar.
+
+[pause]
+
+A mulher com desejo em adulta não chega numa semana.
+
+Não chega num curso.
+
+[short pause]
+
+Chega, devagar, em meses e anos de trabalho silencioso.
+
+[pause]
+
+E tu, agora, estás nesse caminho.
+
+[long pause]
+
+Isto, só por si, é muito.`,
+      },
+      {
+        id: "a-chama-m8b",
+        titulo: "M8.B — O que muda quando tu passas a escolher",
+        curso: "a-chama",
+        texto: `Há um momento, em algumas mulheres adultas, em que tudo começa a mudar.
+
+[pause]
+
+Não muda no corpo.
+
+Muda dentro.
+
+[long pause]
+
+Muda no facto de tu, pela primeira vez em anos, começares a escolher.
+
+[pause]
+
+A escolher o que queres comer, sem cálculo.
+
+A escolher quando queres sexo, sem obrigação.
+
+A escolher o que queres fazer num domingo, sem ter de justificar a toda a gente.
+
+A escolher, em pequenas doses, em vez de reagir a tudo o que te é pedido.
+
+[short pause]
+
+Esta mudança, vista de fora, parece pequena.
+
+[pause]
+
+Mas, vivida de dentro, muda tudo.
+
+[long pause]
+
+Porque a mulher que não escolhe, em geral, é mulher que reage.
+
+[pause]
+
+Alguém pede, ela responde.
+
+Alguém sugere, ela aceita.
+
+Alguém precisa, ela cede.
+
+[short pause]
+
+E a sua vida inteira é composta de respostas a pedidos de outros — não de decisões próprias.
+
+[long pause]
+
+A chama, em mulher que reage, tem pouco espaço.
+
+[pause]
+
+Porque o desejo próprio precisa de ter tempo para se formar.
+
+E numa vida totalmente reactiva, esse tempo não existe.
+
+[short pause]
+
+Tu, ao longo deste curso, começaste a fazer pequenas coisas diferentes.
+
+[pause]
+
+A perguntar ao teu corpo o que ele gostaria.
+
+A registar os sinais que antes descartavas.
+
+A comer uma refeição sem cálculo.
+
+A tirar a balança do lugar habitual.
+
+A dar-te permissão escrita para alguma coisa.
+
+A ter iniciativa num momento em que antes esperarias.
+
+[long pause]
+
+Cada um destes gestos é, no fundo, um acto de escolha.
+
+[pause]
+
+Tu, num pequeno momento, escolheste. Em vez de reagir.
+
+[short pause]
+
+E a escolha, mesmo em pequena escala, tem efeito acumulativo.
+
+[pause]
+
+Porque ensina ao teu sistema interior que tu, aqui, tens agência.
+
+[long pause]
+
+Ao fim de alguns meses deste trabalho, muitas mulheres descrevem a mesma coisa.
+
+[pause]
+
+"Sinto-me mais dona da minha vida."
+
+[short pause]
+
+Não é que a sua vida tenha mudado radicalmente.
+
+[pause]
+
+É que a sua relação com a própria vida mudou.
+
+[short pause]
+
+Deixaram de viver por omissão.
+
+Começaram a viver por presença.
+
+[long pause]
+
+E esta mudança, no longo prazo, repercute-se em todas as áreas.
+
+[pause]
+
+Na relação — porque se tornam parceiras mais interessantes, com opinião, com desejo próprio, com capacidade de pedir.
+
+No trabalho — porque param de aceitar tudo e começam a escolher o que realmente querem fazer.
+
+Nas amizades — porque deixam de se manter em relações por hábito e começam a investir nas que nutrem.
+
+Na saúde — porque param de se descuidar e começam a responder aos sinais que o corpo dá.
+
+[short pause]
+
+E no desejo — porque, finalmente, têm estrutura interior para o exercer.
+
+[long pause]
+
+Esta semana, vais fazer um exercício pequeno de reconhecimento.
+
+[pause]
+
+Numa folha, escreve em cima:
+
+"Coisas que eu, nos últimos meses, comecei a escolher em vez de reagir."
+
+[short pause]
+
+E escreve o que reconheces.
+
+[pause]
+
+Pode ser:
+
+"Comecei a escolher quando digo sim e quando digo não a pedidos de família."
+
+"Comecei a escolher a hora de ir para a cama em função de mim, não dos outros."
+
+"Comecei a escolher quando tenho iniciativa sexual em vez de esperar sempre."
+
+"Comecei a escolher o que comer em função do meu corpo, não das dietas antigas."
+
+[long pause]
+
+Três a cinco linhas chegam.
+
+[pause]
+
+E depois uma última linha:
+
+"Antes de começar a escolher, a minha vida era — Agora, é — "
+
+[short pause]
+
+Completa.
+
+[pause]
+
+Podes descobrir que a diferença, embora subtil, é imensa.
+
+[long pause]
+
+A mulher que escolhe tem chama.
+
+Mesmo que, em algumas semanas, a chama esteja baixa.
+
+[pause]
+
+Porque a chama não é intensidade constante.
+
+É a qualidade geral de quem dirige a sua própria vida.
+
+[short pause]
+
+E a mulher que dirige, mesmo em pequena escala, tem sempre, algures em si, fogo a arder.`,
+      },
+      {
+        id: "a-chama-m8c",
+        titulo: "M8.C — A relação possível com a tua chama",
+        curso: "a-chama",
+        texto: `Este curso acaba.
+
+[pause]
+
+E tu continuas nele.
+
+[long pause]
+
+Não vais sair daqui com a chama constantemente acesa.
+
+[pause]
+
+Não era esse o objectivo.
+
+[short pause]
+
+Vais sair com instrumentos que não tinhas há oito módulos — e, sobretudo, com uma forma nova de olhar para ti mesma nesta zona da vida.
+
+[long pause]
+
+Antes de fechar, vamos fazer um inventário.
+
+[pause]
+
+Não de futuro imaginado.
+
+De presente real — o que tu, ao longo destes oito módulos, aprendeste a fazer.
+
+[short pause]
+
+Pega numa folha. Escreve em cima:
+
+"Antes deste curso, eu não sabia —"
+
+[long pause]
+
+E vai escrevendo, devagar, à medida que reconheces.
+
+[pause]
+
+Não sabia notar os sinais pequenos do meu desejo que apareciam ao longo do dia.
+
+Não tinha mapa das frases antigas que ainda dirigem a minha relação com prazer.
+
+Não tinha dado a mim mesma permissão escrita para o meu prazer próprio.
+
+Não tinha identificado os sítios do corpo onde aprendi, ao longo dos anos, a não sentir.
+
+Não tinha tido, com uma amiga, uma conversa a sério sobre este tema.
+
+Não tinha percebido que a minha chama se reanima por coisas que não têm nada a ver com sexo — pequenos prazeres, vontades sem nome, entusiasmos antigos.
+
+Não sabia que escolher, em pequena escala, é base da capacidade de desejar.
+
+[short pause]
+
+Vai escrevendo o que for verdadeiro para ti.
+
+Algumas linhas. Não muitas. As que importam.
+
+[long pause]
+
+Quando acabares, lê em voz baixa, para ti.
+
+[pause]
+
+E repara numa coisa.
+
+[short pause]
+
+Cada linha desta lista é um instrumento.
+
+[pause]
+
+Não é frase motivacional. Não é revelação passageira. É hábito novo, pequeno, instalado em ti ao longo de oito módulos de trabalho silencioso.
+
+[long pause]
+
+A mulher em paz com a sua chama não é versão idealizada que aparece daqui a dois anos.
+
+[pause]
+
+É a soma dos pequenos hábitos que tu, ao longo dos meses, vais continuando a praticar depois deste curso terminar.
+
+[short pause]
+
+É a mulher que continua a perguntar ao corpo, antes de reagir, o que ele quer.
+
+A mulher que continua a registar os sinais pequenos em vez de os descartar.
+
+A mulher que continua a dar-se permissão, em pequenos momentos, para exercer prazer sem pedir autorização a ninguém.
+
+[long pause]
+
+Esta mulher não chega.
+
+Constrói-se em cada gesto pequeno repetido.
+
+[pause]
+
+E tu, neste momento, és exactamente isso — uma mulher a meio dessa construção.
+
+[short pause]
+
+Não no fim.
+
+A meio.
+
+[long pause]
+
+A relação possível com a tua chama não é a de a ter sempre alta.
+
+[pause]
+
+É a de saber onde ela está — em cada semana, em cada fase — e de respeitar o que ela te diz.
+
+[short pause]
+
+Semanas em que está baixa pedem descanso, não esforço.
+
+Semanas em que está alta pedem expressão, não desperdício em obrigações.
+
+Semanas no meio pedem atenção, para que tu saibas, com precisão, em que fase estás.
+
+[long pause]
+
+A mulher que tem esta relação com a sua chama não é submetida a ela.
+
+[pause]
+
+Nem a reprime.
+
+Nem a persegue em excesso.
+
+[short pause]
+
+Vive com ela como vive com qualquer outro ritmo interior importante.
+
+[pause]
+
+Com respeito, com presença, com escuta.
+
+[long pause]
+
+E essa escuta, ao longo dos anos, é o que mantém a chama viva em mulher adulta.
+
+[pause]
+
+Não a intensidade constante.
+
+A presença fiel.
+
+[short pause]
+
+A tua chama não vai estar sempre alta.
+
+Mas vai estar sempre em ti.
+
+[pause]
+
+E tu, agora, sabes como a procurar quando ela parece estar longe, como a acolher quando ela aparece, e como respeitar as suas pausas naturais sem interpretar essas pausas como falha.
+
+[long pause]
+
+Este curso acaba. Os instrumentos ficam.
+
+[pause]
+
+Cada vez que pegas num deles, mesmo sem te lembrares deste curso, estás a continuar o trabalho.
+
+[short pause]
+
+A tua chama é tua. A tua casa é tua. Os instrumentos para a cuidar agora também.
+
+[pause]
+
+E o que vier a seguir não é transformação prometida.
+
+É o que tu, com estes instrumentos na mão, fizeres todos os dias quando ninguém estiver a ver.
+
+[long pause]
+
+Bem-vinda a ti mesma.
+
+[pause]
+
+Outra vez.
+
+[short pause]
+
+Desta vez, em pleno dia.
+
+[pause]
+
+Em adulta.
+
+Com olhos abertos.
+
+E com chama — mesmo que devagar — acesa.`,
       },
     ],
   },
