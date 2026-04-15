@@ -5388,7 +5388,7 @@ Fica com o que sentires sem tentar mudá-lo.
 
 [pause]
 
-Faz isto três vezes esta semana. Ao terceiro dia, vais começar a reconhecer algo que sempre esteve lá — mas que nunca teve nome.
+Faz isto algumas vezes ao longo da semana. Ao fim de alguns dias, talvez comeces a reconhecer algo que sempre esteve lá — mas que nunca teve nome.
 
 [long pause]
 
@@ -5882,9 +5882,7 @@ Permissão é dizer: eu também posso.
 
 [long pause]
 
-Fecha os olhos. Respira fundo.
-
-E diz, em voz alta, devagar: eu quero mais.
+Diz, em voz alta, devagar: eu quero mais.
 
 Só isso. Eu quero mais.
 
@@ -5992,19 +5990,33 @@ A tua dignidade não tem cifrão.
 
 [long pause]
 
-Completa esta frase por escrito: eu valho o mesmo quando tenho muito e quando tenho pouco porque...
+Pensa numa situação recente em que te sentiste menos digna por causa do dinheiro.
 
-Lê a tua resposta.
-
-[pause]
-
-Se não acreditares nela — tudo bem. Escreve-a na mesma.
-
-Escreve-a todos os dias desta semana.
+Uma consulta em que te olharam diferente. Uma loja onde escondeste a etiqueta. Uma reunião em que te fizeste mais pequena.
 
 [pause]
 
-Não porque repetir mude tudo — mas porque começar a ouvir-te é o primeiro passo para te acreditares.
+Escreve essa situação em duas colunas.
+
+Na esquerda, o que aconteceu objectivamente. A conversa, o olhar, o gesto.
+
+Na direita, o que tu sentiste sobre o teu valor.
+
+[short pause]
+
+Olha para as duas colunas.
+
+[pause]
+
+A esquerda é o que a outra pessoa fez.
+
+A direita é o que tu fizeste com isso.
+
+[short pause]
+
+As duas coisas são diferentes.
+
+E a direita — essa — é tua. É o espaço onde há, ainda que pequeno, escolha.
 
 [long pause]
 
@@ -6151,7 +6163,7 @@ O desconto que ninguém te pediu é a medida exacta do quanto ainda não te perm
         id: "ouro-proprio-m4b",
         titulo: "M4.B — A ligação cobrar-merecer",
         curso: "ouro-proprio",
-        texto: `Já repararam que cobrar e merecer, para ti, são a mesma coisa?
+        texto: `Já reparaste que cobrar e merecer, para ti, são a mesma coisa?
 
 [pause]
 
@@ -6594,7 +6606,7 @@ Quando a culpa vier — e vai vir — não a combatas.
 
 [short pause]
 
-Diz-lhe: eu sei que estás aí. Mas hoje estou a praticar prazer.
+Diz-lhe: eu sei que estás aí. Mas hoje fico com isto.
 
 E depois fica com o que compraste. Sem devolver. Sem compensar.
 
@@ -7132,31 +7144,33 @@ Uma fome de algo que o dinheiro não compra: presença, pertença, permissão de
 
 [long pause]
 
-Senta-te num sítio calmo. Fecha os olhos.
-
-Imagina que a tua conta bancária tem exactamente o dobro do que tem agora.
+Escreve no topo de uma folha este número: o dobro do teu rendimento mensal actual.
 
 [pause]
 
-Sente isso no corpo.
+Agora, por baixo, responde em três linhas: o que eu faria com esse dobro que não posso fazer agora?
 
-Onde está o alívio?
+Não escrevas o que comprarias. Escreve o que te permitirias: sentir, ser, fazer.
 
 [short pause]
 
-Agora pergunta: o que é que farias com esse alívio?
-
-Não com o dinheiro — com o alívio.
+Olha para as três linhas.
 
 [pause]
 
-O que te permitirias sentir? Ser? Fazer?
+O que aparece ali não são coisas que o dinheiro vai trazer.
+
+São permissões que o dinheiro, na tua cabeça, está a substituir.
+
+[pause]
+
+Permissão para descansar. Permissão para escolher. Permissão para parar.
 
 [short pause]
 
-A resposta a essa pergunta é o que realmente procuras.
+Estas permissões, a maioria delas, não têm preço.
 
-E talvez não tenha preço.
+E muitas delas são-te acessíveis agora — sem o dobro do rendimento.
 
 [long pause]
 
@@ -7250,21 +7264,35 @@ No que sentias antes.
 
 [pause]
 
-Fecha os olhos e volta lá.
-
-Estavas ansiosa? Inquieta? Havia algo que não querias sentir?
+Escreve num papel, em três linhas: que dia da semana era, que conversa tinha acontecido antes, e que sensação no corpo estava já a crescer dentro de ti antes de abrires a carteira.
 
 [short pause]
 
-Põe a mão onde essa sensação vivia.
-
-Respira para esse sítio.
+Olha para o que escreveste.
 
 [pause]
 
-A sabotagem começa sempre antes da compra.
+A compra não começou na loja.
 
-Começa na sensação que não quiseste ficar a sentir.
+Começou horas ou dias antes, numa sensação que tu não quiseste ficar a sentir.
+
+[long pause]
+
+A sabotagem financeira não é falta de disciplina.
+
+É a estratégia mais rápida que o corpo encontrou para não habitar uma sensação difícil.
+
+[pause]
+
+Quando não sabes o que precedeu, a compra parece aleatória.
+
+Quando sabes o que precedeu, a compra tem nome.
+
+[short pause]
+
+Não precisas de te impedir.
+
+Precisas de voltar a reconhecer o ponto em que a sensação começou.
 
 [long pause]
 
@@ -7501,27 +7529,29 @@ E muitas mulheres pararam de se permitir futuro há tanto tempo que já nem sabe
 
 [long pause]
 
-Amanhã de manhã, antes de começares o dia, fica parada dois minutos.
+Esta semana, no momento exacto em que normalmente abres a app do banco — e sentes o aperto — não abras.
 
-De pé. Em silêncio.
+Antes de abrir, escreve numa frase só: o que quero ver aqui daqui a um ano?
 
 [pause]
 
-E em vez de pensares no que tens de pagar, pergunta: para onde quero ir?
+Não "o que tenho medo de ver". O que quero ver.
 
-Não precisas de resposta. Só de fazer a pergunta.
+Depois abre.
 
 [short pause]
 
-Repete isto durante três manhãs.
+Nem precisas de resposta final.
 
-Ao terceiro dia, repara se algo mudou — na forma como entras no dia, na forma como olhas para o dinheiro, na forma como sentes o peso das contas.
+A pergunta, feita uma vez, começa a mudar a direcção do olhar.
 
 [pause]
 
-A pergunta não resolve.
+Porque até agora, cada vez que abrias a app, vinhas com a pergunta errada.
 
-Mas muda a direcção do olhar.
+A pergunta do medo é sempre a mesma: quanto sobra?
+
+A pergunta da direcção é outra: para onde isto vai?
 
 [long pause]
 
@@ -7541,17 +7571,15 @@ Que vida construirias se pudesses usar o dinheiro com intenção em vez de deses
 
 [long pause]
 
-Imagina que estás sentada à mesa.
+Pega num papel em branco e senta-te onde ninguém te interrompe.
 
-Não à mesa da cozinha cheia de contas — outra mesa.
-
-Uma mesa limpa, com uma folha em branco.
+Não à mesa da cozinha cheia de contas — noutra mesa.
 
 [pause]
 
-E alguém te diz: desenha a vida que queres.
+Escreve, sem pensar muito: um dia normal na vida que quero ter daqui a três anos.
 
-Não a perfeita — a tua.
+Não a vida perfeita. A tua.
 
 [short pause]
 
@@ -7661,91 +7689,69 @@ O que farias diferente amanhã se o teu norte não fosse acumulação, mas liber
 
 [long pause]
 
-Há pessoas que têm muito e não são livres.
+Há mulheres que têm muito e ainda pagam em tempo, em sono, em saúde, em paciência. O dinheiro está lá — a vida já foi.
 
-Trabalham setenta horas por semana para manter o que têm. Não dormem. Não param. Não aproveitam.
-
-[pause]
-
-O dinheiro está lá — mas a vida não.
-
-[long pause]
-
-E há pessoas que têm pouco e são livres.
-
-Não porque o pouco baste — mas porque fizeram uma escolha.
+E há mulheres que têm pouco e passam a vida inteira a mover-se a partir do que é seu. O dinheiro é menos, mas faz exactamente o que tem de fazer.
 
 [pause]
 
-Escolheram o que importa. E o dinheiro serve isso.
+A diferença entre as duas não é o quanto.
 
-Só isso.
+É para onde aponta cada euro que entra.
 
 [long pause]
 
 Tu estás algures no meio.
 
-Talvez com mais do que precisas para sobreviver e menos do que achas que precisas para viver.
+Com mais do que precisas para sobreviver e menos do que achas que precisas para viver.
 
 [pause]
 
 Mas a pergunta não é quanto.
 
-A pergunta é: para quê?
+A pergunta é: para onde aponta?
 
 [short pause]
 
-Se o teu dinheiro te permite fazer o que importa — tens o suficiente.
+Se o teu dinheiro te permite fazer o que importa, tens o que precisas.
 
-Se o teu dinheiro te prende a fazer o que não importa para ter mais do que não precisas — não tens liberdade.
+Se o teu dinheiro te obriga a fazer o que não importa para manteres o que já não queres — esse dinheiro não é liberdade.
 
-Tens gaiola dourada.
+É só outra forma de obediência.
 
 [long pause]
 
-O mundo ensinou-te que o objectivo do dinheiro é ter mais.
+Herdaste a ideia de que o objectivo do dinheiro é crescer indefinidamente.
 
-Mais poupança. Mais investimento. Mais segurança.
-
-Mais, mais, mais.
+Mais poupança, mais investimento, mais reserva.
 
 [pause]
 
-Mas mais não é um destino — é uma esteira.
+Mas uma vida inteira a acumular sem direcção é vida a servir a acumulação.
 
-E quem corre numa esteira está sempre a mexer-se e nunca sai do sítio.
-
-[long pause]
-
-A liberdade financeira não é ter tanto que nunca mais precisas de trabalhar.
-
-É ter clareza suficiente para que cada euro que gastas ou guardas esteja alinhado com a vida que queres.
-
-[pause]
-
-E quando isso acontece, algo muda no corpo.
-
-O aperto desaparece.
+E a acumulação — se não a domesticares — pede sempre mais.
 
 [short pause]
 
-Não porque os números mudaram — mas porque a relação mudou.
+A liberdade financeira não é ter tanto que nunca mais trabalhas.
+
+É ter clareza suficiente para que cada euro vá, conscientemente, para a vida que queres.
 
 [pause]
 
-O dinheiro deixa de ser um juiz e torna-se uma ferramenta.
-
-Deixa de ser uma sentença e torna-se uma escolha.
+Quando isso se instala, não é o saldo que muda primeiro. É o olhar.
 
 [short pause]
 
-E tu, finalmente, podes olhar para o extracto sem medo.
+Olhar para o extracto deixa de ser exame.
 
-Porque o que está lá dentro já não te define.
+Passa a ser mapa.
 
 [pause]
 
-Serves-te dele — ele não te serve a si mesmo.
+Deixas de te submeter ao número.
+
+Começas a servir-te dele.
 
 [long pause]
 
@@ -7778,6 +7784,680 @@ O dinheiro nunca foi o destino.
 É o caminho.
 
 E o caminho só tem valor se souberes para onde te leva.`,
+      },
+    ],
+  },
+  {
+    id: "curso-limite-sagrado-m1",
+    titulo: "Curso Limite Sagrado — Módulo 1 (Aulas A, B, C)",
+    descricao: "O Sim Automático. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m1a",
+        titulo: "M1.A — O sim que sai antes do corpo decidir",
+        curso: "limite-sagrado",
+        texto: `Quantas vezes, esta semana, disseste sim antes de saberes o que te estavam a perguntar?
+
+[pause]
+
+Antes da frase da outra pessoa terminar, a tua boca já tinha respondido.
+
+[long pause]
+
+Alguém pede ajuda. Tu dizes sim.
+
+Alguém pergunta se tens tempo. Tu dizes sim.
+
+Alguém convida. Tu dizes sim.
+
+[pause]
+
+Só depois, quando fica em silêncio, é que o corpo começa a responder.
+
+[short pause]
+
+Com um aperto. Com um cansaço sem razão. Com aquela vontade estranha de cancelar tudo e ficar sozinha numa sala escura.
+
+[long pause]
+
+O sim saiu sozinho.
+
+Não passou pelo corpo. Não passou pela vontade. Não passou pela verdade.
+
+[pause]
+
+Saiu por um caminho mais rápido — o caminho do que aprendeste há muito tempo a fazer.
+
+[short pause]
+
+Antes de saberes ler, aprendeste a ler o ambiente.
+
+Aprendeste que a hesitação causava desconforto. Que a pergunta sobre se querias ou não era, ela própria, uma imposição.
+
+[pause]
+
+Aprendeste que era mais simples — e mais seguro — dizer sim primeiro e resolver depois.
+
+[long pause]
+
+O sim automático é uma das formas mais invisíveis de te traíres.
+
+Invisível porque parece gentileza.
+
+Invisível porque é socialmente premiado.
+
+Invisível porque a própria pessoa que o diz, muitas vezes, nem nota que disse.
+
+[pause]
+
+Mas o corpo nota.
+
+Sempre nota.
+
+[short pause]
+
+E cada sim que saiu sem passar por ti adiciona uma pequena dívida. Um pequeno recuo. Um pequeno passo para longe da vida que é realmente tua.
+
+[long pause]
+
+Durante os próximos dias, presta atenção a um momento específico.
+
+O momento exacto entre a pergunta e a tua resposta.
+
+[pause]
+
+Esse espaço — que parece não existir — é onde vive o sim automático.
+
+[short pause]
+
+Não te pedimos para mudar a resposta. Só para notar o espaço.
+
+[pause]
+
+Uma respiração entre a pergunta e o sim. Uma pausa pequena.
+
+[short pause]
+
+Nessa pausa, alguma coisa começa a mudar. Sem forçar. Sem decidir.
+
+Simplesmente porque, pela primeira vez, o espaço existe.
+
+[long pause]
+
+O corpo sabe dizer não.
+
+Só não te ensinaram a ouvi-lo a tempo.`,
+      },
+      {
+        id: "limite-sagrado-m1b",
+        titulo: "M1.B — Onde aprendeste a dizer sim sem pensar",
+        curso: "limite-sagrado",
+        texto: `Quando foi que começaste a dizer sim antes de pensares?
+
+[pause]
+
+Foi em criança, provavelmente. Cedo.
+
+Antes de teres palavras para nomear o que estava a acontecer.
+
+[long pause]
+
+Tinhas cinco, seis anos.
+
+Alguém te ofereceu comida que não querias. Alguém te pediu um beijo que não te apetecia dar. Alguém te perguntou se estavas bem quando claramente não estavas.
+
+[pause]
+
+Em cada um destes momentos, houve uma resposta pequena dentro de ti.
+
+Uma preferência real. Uma verdade que nem precisava de argumento.
+
+[short pause]
+
+E em cada um destes momentos, aprendeste algo.
+
+Aprendeste que a tua resposta real causava desconforto.
+
+Aprendeste que a tua verdade era inconveniente.
+
+Aprendeste que era mais simples ajustar.
+
+[pause]
+
+Sorriste. Aceitaste a comida. Deste o beijo. Disseste que estavas bem.
+
+[long pause]
+
+E ninguém te elogiou por ajustares.
+
+Não precisou de elogio. O alívio das pessoas à tua volta, quando cedeste, foi a prova mais clara de que ajustar era a resposta correcta.
+
+[pause]
+
+Aprendeste por confirmação.
+
+Uma confirmação que se repetiu centenas de vezes ao longo da infância.
+
+[short pause]
+
+Aos dez anos, já sabias: o meu sim protege-os. O meu não perturba-os.
+
+Aos quinze, o teu sim era automático. Sabias dá-lo sem pensar.
+
+Aos trinta, já não te lembras de como se dizia o contrário.
+
+[long pause]
+
+Isto não é culpa tua.
+
+É um mecanismo que qualquer criança num ambiente imperfeito desenvolve para sobreviver emocionalmente.
+
+[pause]
+
+Fez sentido.
+
+Protegeu-te naquele tempo.
+
+[short pause]
+
+Mas já não estás aos cinco anos.
+
+[pause]
+
+E o mecanismo que te protegeu na infância é o mesmo que agora te esvazia.
+
+[long pause]
+
+Recorda, se conseguires, um momento específico da tua infância em que aprendeste que o teu sim era o caminho mais fácil.
+
+Não precisas de resolver nada. Não precisas de confrontar ninguém.
+
+[pause]
+
+Só de reconhecer: foi ali. Foi então.
+
+A partir dali comecei a dizer sim antes de saber o que queria.
+
+[short pause]
+
+Reconhecer é o primeiro gesto de separação entre a criança que aprendeu e a adulta que agora escolhe.
+
+[long pause]
+
+O sim que te custou tanto a vida inteira nasceu de um gesto pequeno.
+
+Mas o não que está a chegar — esse também nasce assim.`,
+      },
+      {
+        id: "limite-sagrado-m1c",
+        titulo: "M1.C — O corpo que sabia que era não",
+        curso: "limite-sagrado",
+        texto: `Pensa numa vez em que disseste sim e, horas ou dias depois, te arrependeste.
+
+[pause]
+
+Antes de dizeres sim — onde é que o corpo estava?
+
+[long pause]
+
+Provavelmente houve um aperto.
+
+Um aperto pequeno, no peito ou na barriga, que durou menos de um segundo.
+
+[short pause]
+
+Talvez a respiração tenha ficado mais curta. Talvez os ombros tenham subido. Talvez tenha havido um arrepio breve.
+
+[pause]
+
+O teu corpo estava a dizer não.
+
+[short pause]
+
+A dizer não com todos os meios que tinha, mas sem palavras.
+
+[pause]
+
+E tu, por cima, disseste sim com palavras.
+
+[long pause]
+
+Durante toda a tua vida, o teu corpo tem dado estes sinais antes das tuas respostas verbais.
+
+Antes das tuas decisões conscientes.
+
+Antes até de tu saberes que estavas a ser perguntada.
+
+[pause]
+
+O corpo é mais rápido que a mente.
+
+Lê a situação em milissegundos. Detecta micro-expressões, tons de voz, pausas, tensões.
+
+[short pause]
+
+E quando algo te ameaça — ameaça a tua paz, o teu tempo, a tua integridade — ele reage antes de tu decidires.
+
+[pause]
+
+Mas tu, há muito tempo, aprendeste a não confiar nele.
+
+[long pause]
+
+Foste ensinada a que as reacções do corpo eram fraqueza, exagero, histeria.
+
+Que uma mulher séria decidia com a cabeça.
+
+Que sentir era impreciso.
+
+[pause]
+
+Então começaste a silenciá-lo.
+
+Cada vez que o corpo dizia não, tu disseste sim por cima.
+
+Cada vez que o corpo dizia para parares, tu continuaste.
+
+[short pause]
+
+Com o tempo, o corpo começou a desistir de avisar.
+
+Ou pior — começou a avisar mais alto, através de sintomas. Insónia. Dores inexplicáveis. Infecções recorrentes. Exaustão crónica.
+
+[pause]
+
+O corpo ainda diz não.
+
+Só que agora grita porque a voz normal há muito não é ouvida.
+
+[long pause]
+
+Durante os próximos dias, quando alguém te fizer uma pergunta, não respondas imediatamente.
+
+Dá-te três segundos.
+
+[pause]
+
+Nesses três segundos, presta atenção ao corpo.
+
+Há aperto? Há alívio? Há neutralidade?
+
+[short pause]
+
+Não é obrigatório usares a informação para decidir.
+
+Apenas nota o que está lá.
+
+[pause]
+
+O corpo esperou muito tempo para voltar a ser ouvido.
+
+Três segundos, por agora, são muito para ele.
+
+[long pause]
+
+O corpo não precisa de aprender a dizer não.
+
+Ele sabe dizer não desde sempre.
+
+[pause]
+
+Só precisa de voltar a ter alguém que o escute.`,
+      },
+    ],
+  },
+  {
+    id: "curso-limite-sagrado-m2",
+    titulo: "Curso Limite Sagrado — Módulo 2 (Aulas A, B, C)",
+    descricao: "A Escuta do Corpo. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m2a",
+        titulo: "M2.A — Os sinais que o teu corpo dá quando te trai",
+        curso: "limite-sagrado",
+        texto: `Já te aconteceu saberes que disseste a coisa errada antes de o teu cérebro processar o que aconteceu?
+
+[pause]
+
+O corpo sabia antes.
+
+[long pause]
+
+Estavas numa conversa.
+
+Alguém disse alguma coisa. Tu respondeste. Todos continuaram.
+
+[pause]
+
+Mas dentro de ti, algo se apertou.
+
+Uma sensação pequena no peito. Um nó breve na garganta. Uma tensão nas mãos.
+
+[short pause]
+
+Não sabias o que era. Continuaste a falar.
+
+[pause]
+
+E só mais tarde, a horas de distância da conversa, percebeste: eu devia ter dito outra coisa. Eu concordei com algo com que não concordo. Eu deixei passar.
+
+[long pause]
+
+O corpo tinha-te avisado.
+
+No momento exacto.
+
+E tu não estavas a ouvir.
+
+[long pause]
+
+Os sinais são sempre os mesmos. Cada mulher tem os seus.
+
+Para algumas é um aperto no peito. Para outras é a barriga que se contrai. Para outras ainda são os ombros que se levantam sozinhos.
+
+[pause]
+
+Estes sinais são rápidos. Duram menos de dois segundos.
+
+Passam antes de teres tempo de os perceber conscientemente.
+
+[short pause]
+
+Mas o corpo regista.
+
+E guarda.
+
+[pause]
+
+Cada vez que ignoras um sinal, acrescentas mais um ao arquivo.
+
+[long pause]
+
+Ao fim de uns anos, este arquivo torna-se tão grande que o corpo começa a ter sintomas crónicos.
+
+Dores que não têm causa médica óbvia.
+
+Cansaço que não desaparece com descanso.
+
+Insónias que chegam em fases específicas da vida.
+
+[pause]
+
+Estes sintomas não são aleatórios.
+
+São a conta que o corpo finalmente cobra pelo que tu ignoraste.
+
+[long pause]
+
+Esta semana, escolhe uma conversa em que saíste a sentir-te estranha.
+
+Fecha os olhos e volta mentalmente ao início da conversa.
+
+[pause]
+
+Em que momento é que o corpo começou a dar sinal?
+
+Não o momento em que tu notaste. O momento em que o corpo começou.
+
+[short pause]
+
+Há sempre uma diferença.
+
+O corpo sabe antes de ti.
+
+[pause]
+
+Identificar esse momento é começar a recalibrar o tempo entre o sinal e a tua consciência.
+
+Com a prática, esse tempo diminui.
+
+[short pause]
+
+Até que um dia, o sinal e a consciência chegam ao mesmo tempo.
+
+E tu, aí, podes finalmente escolher.
+
+[long pause]
+
+O corpo não é lento.
+
+Foste treinada a não o ouvir a tempo.`,
+      },
+      {
+        id: "limite-sagrado-m2b",
+        titulo: "M2.B — A tensão como informação, não sintoma",
+        curso: "limite-sagrado",
+        texto: `Aquele nó na garganta é sintoma ou é mensagem?
+
+[pause]
+
+A tensão nos ombros é patológica ou é resposta?
+
+[long pause]
+
+Cresceste num mundo que te ensinou a tratar as reacções do corpo como defeitos a resolver.
+
+Dói-te a cabeça — tomas comprimido.
+
+Tens insónia — tomas indutor de sono.
+
+Dói-te a barriga — cortas glúten.
+
+[pause]
+
+Todas estas respostas podem ser úteis.
+
+Mas partem de uma premissa: o sintoma é o problema.
+
+[short pause]
+
+E às vezes — muitas vezes — o sintoma não é o problema.
+
+É a mensagem.
+
+[long pause]
+
+O teu corpo não produz tensão aleatória.
+
+Cada tensão está ligada a alguma coisa.
+
+[pause]
+
+Os ombros que se levantam diante de certas pessoas. A mandíbula que cerra em certas conversas. O estômago que se contrai ao ver certas mensagens chegarem.
+
+[short pause]
+
+Estas reacções não são inimigas tuas.
+
+São diagnóstico.
+
+[pause]
+
+Estão a dizer-te: esta pessoa exige-te mais do que podes dar. Esta conversa está a atravessar um limite que ainda não nomeaste. Esta relação leva-te mais do que devolve.
+
+[long pause]
+
+Mas tu, em vez de escutares a mensagem, tentas eliminar o sintoma.
+
+Tomas magnésio. Vais a yoga. Meditas. Respiras fundo.
+
+[pause]
+
+Nada disto é errado.
+
+Mas se o corpo continua a reagir quando entras em certos sítios, nenhum magnésio do mundo vai resolver.
+
+[short pause]
+
+O corpo está a pedir-te que mudes de contexto, não que alivies o sintoma.
+
+[long pause]
+
+A diferença entre tratar sintoma e ouvir mensagem é esta.
+
+O sintoma é pedido para a tensão sair.
+
+A mensagem é pedido para a situação mudar.
+
+[pause]
+
+Quando tratas apenas o sintoma, continuas a expor o corpo ao mesmo estímulo.
+
+E o corpo, para sobreviver, aumenta o volume do aviso.
+
+[short pause]
+
+Sintomas crónicos são muitas vezes mensagens ignoradas durante anos.
+
+[long pause]
+
+Faz uma lista das tensões mais frequentes no teu corpo.
+
+Dor nas costas. Aperto no peito. Insónia. Enxaqueca.
+
+[pause]
+
+Ao lado de cada uma, escreve: quando aparece?
+
+Sê específica. Que dia da semana. Que conversa. Que tipo de situação.
+
+[short pause]
+
+Olha para a lista.
+
+Os teus sintomas têm um mapa.
+
+[pause]
+
+E o mapa está a apontar para algo específico da tua vida que ainda não mudou.
+
+[long pause]
+
+Os teus sintomas não são fraqueza.
+
+São cartas que o teu corpo te escreve quando tu não ouves o que ele sussurra.`,
+      },
+      {
+        id: "limite-sagrado-m2c",
+        titulo: "M2.C — Aprender a pausar",
+        curso: "limite-sagrado",
+        texto: `Quantos segundos passam entre tu seres perguntada e tu responderes?
+
+[pause]
+
+Um? Dois?
+
+Ou é quase zero — a resposta sai antes da pergunta terminar?
+
+[long pause]
+
+A maioria das pessoas responde antes de ter acabado de receber a informação.
+
+Já tinham uma resposta preparada.
+
+[pause]
+
+Ou responderam para preencher o silêncio.
+
+Ou responderam porque não conseguiriam aguentar o olhar de espera.
+
+[short pause]
+
+Qualquer que seja a razão, a resposta saiu sem passar por um lugar importante: a pausa.
+
+[long pause]
+
+A pausa é o espaço entre a pergunta e a resposta.
+
+Um espaço que, para a maioria das mulheres, quase não existe.
+
+[pause]
+
+E nesse espaço é onde vive a tua verdadeira resposta.
+
+A tua verdadeira vontade.
+
+A tua verdadeira preferência.
+
+[short pause]
+
+Se não há pausa, não há tua resposta.
+
+Há apenas o reflexo.
+
+[long pause]
+
+Aprender a pausar é o trabalho mais discreto e mais subversivo que uma mulher pode fazer.
+
+Discreto porque ninguém nota. Uma pausa de dois segundos passa quase despercebida aos outros.
+
+Subversivo porque muda completamente a dinâmica de toda a tua vida social.
+
+[pause]
+
+Quando há pausa, há tu.
+
+Quando há pausa, o teu corpo consegue entrar na conversa.
+
+Quando há pausa, a outra pessoa começa, lentamente, a acostumar-se à ideia de que tu não és automática.
+
+[long pause]
+
+No início, a pausa é desconfortável.
+
+Quem recebeu anos da tua resposta imediata vai notar. Alguns vão pressionar. Outros vão ficar ligeiramente confusos.
+
+[pause]
+
+Aguenta.
+
+A pausa é território. E território, uma vez criado, protege-se.
+
+[short pause]
+
+Ao fim de umas semanas, os que te conhecem começam a adaptar-se.
+
+Aprendem que contigo há um momento de silêncio antes da resposta.
+
+Esperam.
+
+[pause]
+
+E tu, nesses segundos ganhos, voltas a ter acesso a ti.
+
+[long pause]
+
+Esta semana, faz um exercício específico.
+
+Cada vez que alguém te faz uma pergunta — qualquer pergunta — respira uma vez antes de responder.
+
+[pause]
+
+Uma respiração. Completa. Pelo nariz.
+
+Só isso.
+
+[short pause]
+
+Não te obriga a mudar a resposta.
+
+Só cria espaço.
+
+[pause]
+
+No fim da semana, vais notar uma coisa estranha: algumas das tuas respostas começaram a ser diferentes.
+
+Não porque tenhas decidido mudar.
+
+[short pause]
+
+Porque finalmente tiveram tempo de passar por ti.
+
+[long pause]
+
+A tua resposta real vive na pausa.
+
+E a pausa é a tua casa quando ninguém te vê.`,
       },
     ],
   },

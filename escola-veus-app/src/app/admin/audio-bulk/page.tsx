@@ -22,6 +22,8 @@ export default function AudioBulkPage() {
   const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
   const [modelId, setModelId] = useState("eleven_multilingual_v2");
   const [folder, setFolder] = useState("youtube");
+  // language code opcional — vazio = voice decide sotaque original (evita pt-BR forcado)
+  const [languageCode, setLanguageCode] = useState("");
 
   // Voice test
   const [testText, setTestText] = useState(SAMPLE_TEXT);
@@ -88,7 +90,7 @@ export default function AudioBulkPage() {
       const res = await fetch("/api/admin/audio-bulk/test-voice", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: testText, voiceId, modelId }),
+        body: JSON.stringify({ text: testText, voiceId, modelId, languageCode: languageCode || undefined }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.erro || `Erro ${res.status}`);
@@ -119,6 +121,7 @@ export default function AudioBulkPage() {
             modelId,
             title: script.titulo,
             folder,
+            languageCode: languageCode || undefined,
           }),
         });
         const data = await res.json();
@@ -233,6 +236,23 @@ export default function AudioBulkPage() {
             />
             <p className="text-[10px] text-escola-creme-50 mt-0.5">Ex: youtube, curso-ouro-proprio</p>
           </div>
+        </div>
+
+        {/* Language code opcional — evita pt-BR forcado */}
+        <div className="mt-3">
+          <label className="text-xs text-escola-creme-50 block mb-1">
+            Language code (opcional — deixar VAZIO para voice decidir sotaque)
+          </label>
+          <input
+            type="text"
+            value={languageCode}
+            onChange={(e) => setLanguageCode(e.target.value)}
+            placeholder="(vazio) | pt | pt-PT | en | es"
+            className="w-full max-w-xs rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none font-mono"
+          />
+          <p className="text-[10px] text-escola-creme-50 mt-0.5">
+            Vazio (recomendado): o voice ID mantem o sotaque original. &quot;pt&quot; pode forçar sotaque brasileiro em multilingual v2.
+          </p>
         </div>
 
         <div className="mt-4 pt-4 border-t border-escola-border">

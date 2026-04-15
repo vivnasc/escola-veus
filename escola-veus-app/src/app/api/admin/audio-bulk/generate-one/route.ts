@@ -6,11 +6,38 @@ export const maxDuration = 60;
  * POST /api/admin/audio-bulk/generate-one
  *
  * Generates ONE audio via ElevenLabs and uploads to Supabase.
- * Frontend loops over scripts calling this endpoint sequentially or in parallel batches.
  *
  * Body: { text, voiceId, modelId?, title, folder? }
  * Returns: { audioUrl, durationSec, sizeBytes, charsUsed }
  */
+
+/**
+ * Converte [pause] tags consoante o modelo.
+ * - v3: mantem tags nativamente (suporta [pause], [calm], etc.)
+ * - v2/turbo: converte para quebras de linha naturais e remove tags de emocao
+ */
+function processTextForModel(rawText: string, modelId: string): string {
+  const isV3 = modelId === "eleven_v3";
+
+  if (isV3) {
+    // v3: tags sao nativas. So normalizar espaços excessivos.
+    return rawText.replace(/\n{4,}/g, "\n\n\n").trim();
+  }
+
+  // v2 / turbo / outros: [pause] e lido literalmente se ficar como "[pause]".
+  // Converter para quebras de linha, que v2 respeita como pausas.
+  let t = rawText
+    .replace(/\[long pause\]/gi, "\n\n\n")
+    .replace(/\[pause\]/gi, "\n\n")
+    .replace(/\[short pause\]/gi, ". ")
+    // Tags de emocao (v3-only) — remover para v2/turbo
+    .replace(/\[(calm|thoughtful|whispers|sighs|laughs|excited|sad)\]/gi, "");
+
+  // Normalizar quebras de linha excessivas
+  t = t.replace(/\n{4,}/g, "\n\n\n").trim();
+  return t;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const {
@@ -19,6 +46,7 @@ export async function POST(req: NextRequest) {
       modelId = "eleven_multilingual_v2",
       title,
       folder = "youtube",
+      languageCode, // opcional — se omitido, voice decide sotaque
     } = await req.json();
 
     if (!text || !voiceId) {
@@ -30,12 +58,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "ELEVENLABS_API_KEY nao configurada" }, { status: 400 });
     }
 
-    // Normalize: \n\n becomes [pause], collapse extra whitespace
-    const processedText: string = text
-      .replace(/\n{3,}/g, "\n\n")
-      .replace(/\n\n/g, " [pause] ")
-      .replace(/\s+/g, " ")
-      .trim();
+    const processedText = processTextForModel(text, modelId);
 
     const body: Record<string, unknown> = {
       text: processedText,
@@ -43,11 +66,14 @@ export async function POST(req: NextRequest) {
       output_format: "mp3_44100_128",
     };
 
-    if (modelId.includes("multilingual")) {
-      body.language_code = "pt";
+    // Language code SO se for explicitamente enviado (ex: "pt-PT", "pt").
+    // Sem ele, o voiceId determina o sotaque original do cloning/design.
+    // Default = nao enviar (evita que "pt" force pt-BR em multilingual v2).
+    if (languageCode) {
+      body.language_code = languageCode;
     }
 
-    // v3 supports with-timestamps (returns alignment data for accurate duration)
+    // v3 suporta with-timestamps (duracao exacta via alignment)
     const useTimestamps = modelId === "eleven_v3";
     const endpoint = useTimestamps
       ? `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps`
@@ -84,11 +110,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (durationSec === null) {
-      // 128kbps mp3 ≈ 16KB/s; rough estimate
       durationSec = audioBuffer.byteLength / 16000;
     }
 
-    // Upload to Supabase
+    // Upload Supabase
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
@@ -99,7 +124,6 @@ export async function POST(req: NextRequest) {
     const { createClient } = await import("@supabase/supabase-js");
     const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
-    // Slug from title (NFD normalize, ASCII safe, kebab-case, max 60 chars)
     const slug = (title || "audio")
       .toLowerCase()
       .normalize("NFD")
