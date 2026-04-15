@@ -17139,4 +17139,363 @@ Multiplicados por trezentos e sessenta e cinco dias, esses dois segundos transfo
       },
     ],
   },
+  {
+    id: "curso-pele-nua-m2",
+    titulo: "Curso Pele Nua — Módulo 2 (Aulas A, B, C)",
+    descricao: "Vergonhas Pequenas Que Fazem História.",
+    scripts: [
+      {
+        id: "pele-nua-m2a",
+        titulo: "M2.A — A primeira vez que comparaste",
+        curso: "pele-nua",
+        texto: `Lembras-te da primeira vez que comparaste o teu corpo com o de outra rapariga?
+
+[pause]
+
+Talvez no balneário da escola. Talvez numa praia. Talvez no quarto de uma amiga, a experimentarem roupa.
+
+[long pause]
+
+Antes desse momento, o teu corpo era apenas o teu corpo.
+
+Não tinhas com que comparar — e por isso, em certo sentido, ele estava em paz.
+
+[pause]
+
+A partir desse momento, deixou de estar.
+
+[short pause]
+
+A comparação inaugurou em ti uma forma de olhar que te ia acompanhar décadas.
+
+[pause]
+
+A medição constante.
+
+A pergunta silenciosa: como é que o meu corpo se compara ao das outras?
+
+[long pause]
+
+Esta pergunta, que pode parecer trivial, opera como filtro permanente.
+
+[pause]
+
+Cada corpo que vês nas redes sociais. Cada amiga que se desfaz da camisola num dia de calor. Cada anúncio com modelo. Cada actriz, cantora, influenciadora.
+
+[short pause]
+
+O teu cérebro compara automaticamente.
+
+E, na maioria das vezes, conclui que tu sais a perder.
+
+[pause]
+
+Não porque saias mesmo a perder.
+
+Porque a comparação é desigual.
+
+[long pause]
+
+Estás a comparar o teu corpo real, em estado normal, com corpos que foram preparados para ser olhados.
+
+[pause]
+
+Iluminação. Pose. Edição. Filtros. Anos de treino específico para certo tipo de aparência.
+
+[short pause]
+
+Mesmo as amigas que tu vês ao vivo, em momentos em que mostram o corpo, estão em situação de ser vistas — e isso, naturalmente, leva a algum ajuste.
+
+[pause]
+
+Tu, em casa, no espelho da casa de banho, estás em estado natural.
+
+A comparação é entre realidades diferentes.
+
+[long pause]
+
+Reconhecer isto não acaba com a comparação. Mas reduz o seu impacto.
+
+[pause]
+
+Quando o cérebro automaticamente comparar, podes lembrar-te: estou a comparar o que vejo de fora com o que vejo de dentro.
+
+[short pause]
+
+E isto é desigual à partida.
+
+[pause]
+
+A consciência da desigualdade não elimina a comparação. Mas tira-lhe a autoridade.
+
+[long pause]
+
+Esta semana, sempre que te apanhares a comparar — em frente a uma rede social, num espaço público — pratica uma frase silenciosa.
+
+"Estou a comparar realidades diferentes."
+
+[pause]
+
+Não te combates. Não te julgas.
+
+Apenas reconheces.
+
+[short pause]
+
+E, lentamente, o automatismo perde força.
+
+[pause]
+
+Não desaparece. Mas deixa de mandar tanto.`,
+      },
+      {
+        id: "pele-nua-m2b",
+        titulo: "M2.B — Comentários que ficaram",
+        curso: "pele-nua",
+        texto: `Há comentários sobre o teu corpo, feitos há décadas, que tu ainda lembras com precisão.
+
+[pause]
+
+Quem disse. Em que altura. Que palavras exactas.
+
+[long pause]
+
+Talvez tenha sido um adulto na infância.
+
+Talvez uma colega de escola.
+
+Talvez um namorado de adolescência.
+
+Talvez alguém de quem nem te lembras o nome — mas a frase ficou.
+
+[pause]
+
+Estes comentários, dependendo da idade em que te chegaram, têm peso desproporcional na forma como tu, hoje em adulta, te vês.
+
+[short pause]
+
+Particularmente os que vieram entre os dez e os dezassete anos.
+
+[pause]
+
+Nessa idade, o cérebro está em fase de formação intensa da auto-imagem.
+
+E qualquer comentário sobre o corpo, recebido nessa fase, fica gravado de forma muito mais funda do que receberia hoje.
+
+[long pause]
+
+Tu, em adulta, podes ter consciência de que aquele comentário antigo foi cruel, injusto, ou simplesmente errado.
+
+[pause]
+
+Mas a parte de ti que o recebeu em criança não tem essa consciência.
+
+Continua a operar como se o comentário fosse verdade.
+
+[short pause]
+
+E quando te olhas ao espelho, a parte adulta de ti vê o que vê — mas a parte criança ainda ouve a frase antiga.
+
+[pause]
+
+A frase antiga, repetida silenciosamente sempre que tu olhas para o ponto específico que ela visou.
+
+[long pause]
+
+Isto não é fraqueza. É como o cérebro funciona.
+
+[pause]
+
+Memórias emocionais formadas em fases-chave de desenvolvimento têm persistência específica que memórias formadas em adulta não têm.
+
+[short pause]
+
+Mas há trabalho que se pode fazer.
+
+[pause]
+
+Identificar a frase. Nomear quem a disse. Reconhecer a idade em que chegou.
+
+[long pause]
+
+E depois, em diálogo interno, oferecer outra resposta — não à parte adulta de ti, mas à parte criança que ainda ouve.
+
+[pause]
+
+Não afirmações motivacionais. Algo mais simples e mais verdadeiro.
+
+[short pause]
+
+"Aquela frase não era verdade. Era a opinião de uma pessoa que falou sem cuidado."
+
+"Tinhas onze anos. Não merecias ouvir aquilo."
+
+"Aquilo não te define."
+
+[pause]
+
+Estas frases, dirigidas em silêncio à criança que tu foste, têm efeito mensurável ao longo do tempo.
+
+[long pause]
+
+Esta semana, identifica um comentário antigo sobre o teu corpo que ainda ressoa em ti.
+
+Escreve-o num papel.
+
+Escreve por baixo: tinha eu X anos. A pessoa era Y.
+
+[pause]
+
+E depois escreve uma frase de resposta que tu, em adulta, gostarias que alguém tivesse dito naquela altura.
+
+[short pause]
+
+Não precisas de a recitar.
+
+A escrita, em si mesma, oferece à criança que tu foste algo que ela não recebeu na altura.
+
+[pause]
+
+E esta oferta, mesmo retroactiva, faz trabalho dentro de ti.`,
+      },
+      {
+        id: "pele-nua-m2c",
+        titulo: "M2.C — As correcções silenciosas",
+        curso: "pele-nua",
+        texto: `Há correcções que tu fazes ao teu corpo várias vezes por dia, sem te aperceberes.
+
+[pause]
+
+Encolher a barriga quando alguém entra na sala.
+
+Endireitar os ombros quando alguém te vai tirar uma fotografia.
+
+Ajustar o cabelo antes de uma chamada de vídeo.
+
+Cobrir o decote com a mão quando notas alguém olhar.
+
+Cruzar as pernas para esconder uma parte que normalmente esconderias.
+
+[long pause]
+
+Cada uma destas correcções, individualmente, parece insignificante.
+
+[pause]
+
+No conjunto, são coreografia constante.
+
+[short pause]
+
+Coreografia que mantém o teu corpo permanentemente ajustado a uma versão que tu antecipa-te ser mais aceitável do que a versão natural.
+
+[pause]
+
+Esta coreografia consome energia.
+
+E consome também relação com o próprio corpo.
+
+[long pause]
+
+Porque cada correcção é, no fundo, uma pequena rejeição.
+
+[pause]
+
+A barriga que encolhes está a dizer ao teu corpo: tu não és aceitável como estás.
+
+Os ombros que endireitas estão a dizer: a tua postura natural não serve.
+
+A mão que cobre o decote está a dizer: o que aconteceria sem a mão é problema.
+
+[short pause]
+
+Estas mensagens, repetidas milhares de vezes, ensinam ao teu corpo que ele tem de estar permanentemente em modo de espera de correcção.
+
+[pause]
+
+E o teu corpo, treinado durante décadas, obedece.
+
+[long pause]
+
+A mudança não vem por força de vontade.
+
+Vem por consciência.
+
+[pause]
+
+Esta semana, observa-te.
+
+Quantas vezes ao dia fazes uma correcção corporal automática?
+
+[short pause]
+
+Conta. Numa folha. Durante um dia.
+
+[pause]
+
+Vais ficar surpreendida.
+
+[short pause]
+
+Trinta? Cinquenta? Cem?
+
+[long pause]
+
+Depois desta consciência, podes começar a interromper algumas das correcções automáticas.
+
+[pause]
+
+Não todas — algumas são razoáveis em certos contextos.
+
+Mas muitas são reflexos automáticos sem função real.
+
+[short pause]
+
+Quando notares uma correcção automática a acontecer, podes pausar.
+
+E perguntar: esta correcção é necessária neste momento?
+
+[pause]
+
+Em metade dos casos, vais perceber que não é.
+
+[short pause]
+
+E podes, conscientemente, deixar o teu corpo na posição natural — sem corrigir.
+
+[long pause]
+
+Isto vai gerar desconforto, no início.
+
+A parte de ti que está habituada à correcção vai sentir vulnerabilidade.
+
+[pause]
+
+Aceita o desconforto. Ele passa.
+
+E a relação com o teu corpo começa a relaxar.
+
+[short pause]
+
+Porque, pela primeira vez em muito tempo, tu estás a confiar nele para existir sem permanente intervenção tua.
+
+[pause]
+
+E o corpo, sentindo essa confiança, vai-se assentando em si mesmo.
+
+[long pause]
+
+A coreografia constante das correcções silenciosas é um dos maiores consumidores de energia mental nas mulheres modernas.
+
+[pause]
+
+Reduzi-la — não eliminá-la, reduzi-la — liberta uma quantidade impressionante de capacidade para outras coisas.
+
+[short pause]
+
+E, com o tempo, transforma a relação com o corpo numa relação mais parecida com habitação tranquila.
+
+E menos com administração permanente.`,
+      },
+    ],
+  },
 ];
