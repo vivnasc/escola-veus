@@ -6151,7 +6151,7 @@ O desconto que ninguém te pediu é a medida exacta do quanto ainda não te perm
         id: "ouro-proprio-m4b",
         titulo: "M4.B — A ligação cobrar-merecer",
         curso: "ouro-proprio",
-        texto: `Já repararam que cobrar e merecer, para ti, são a mesma coisa?
+        texto: `Já reparaste que cobrar e merecer, para ti, são a mesma coisa?
 
 [pause]
 
@@ -7132,31 +7132,33 @@ Uma fome de algo que o dinheiro não compra: presença, pertença, permissão de
 
 [long pause]
 
-Senta-te num sítio calmo. Fecha os olhos.
-
-Imagina que a tua conta bancária tem exactamente o dobro do que tem agora.
+Escreve no topo de uma folha este número: o dobro do teu rendimento mensal actual.
 
 [pause]
 
-Sente isso no corpo.
+Agora, por baixo, responde em três linhas: o que eu faria com esse dobro que não posso fazer agora?
 
-Onde está o alívio?
+Não escrevas o que comprarias. Escreve o que te permitirias: sentir, ser, fazer.
 
 [short pause]
 
-Agora pergunta: o que é que farias com esse alívio?
-
-Não com o dinheiro — com o alívio.
+Olha para as três linhas.
 
 [pause]
 
-O que te permitirias sentir? Ser? Fazer?
+O que aparece ali não são coisas que o dinheiro vai trazer.
+
+São permissões que o dinheiro, na tua cabeça, está a substituir.
+
+[pause]
+
+Permissão para descansar. Permissão para escolher. Permissão para parar.
 
 [short pause]
 
-A resposta a essa pergunta é o que realmente procuras.
+Estas permissões, a maioria delas, não têm preço.
 
-E talvez não tenha preço.
+E muitas delas são-te acessíveis agora — sem o dobro do rendimento.
 
 [long pause]
 
@@ -7250,21 +7252,35 @@ No que sentias antes.
 
 [pause]
 
-Fecha os olhos e volta lá.
-
-Estavas ansiosa? Inquieta? Havia algo que não querias sentir?
+Escreve num papel, em três linhas: que dia da semana era, que conversa tinha acontecido antes, e que sensação no corpo estava já a crescer dentro de ti antes de abrires a carteira.
 
 [short pause]
 
-Põe a mão onde essa sensação vivia.
-
-Respira para esse sítio.
+Olha para o que escreveste.
 
 [pause]
 
-A sabotagem começa sempre antes da compra.
+A compra não começou na loja.
 
-Começa na sensação que não quiseste ficar a sentir.
+Começou horas ou dias antes, numa sensação que tu não quiseste ficar a sentir.
+
+[long pause]
+
+A sabotagem financeira não é falta de disciplina.
+
+É a estratégia mais rápida que o corpo encontrou para não habitar uma sensação difícil.
+
+[pause]
+
+Quando não sabes o que precedeu, a compra parece aleatória.
+
+Quando sabes o que precedeu, a compra tem nome.
+
+[short pause]
+
+Não precisas de te impedir.
+
+Precisas de voltar a reconhecer o ponto em que a sensação começou.
 
 [long pause]
 
