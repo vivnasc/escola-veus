@@ -19505,4 +19505,403 @@ E merece ser vivida sem desculpa permanente pelo simples facto de existir.`,
       },
     ],
   },
+  {
+    id: "curso-pele-nua-m8",
+    titulo: "Curso Pele Nua — Módulo 8 (Aulas A, B, C)",
+    descricao: "A Pele que é Tua. Fecho do curso.",
+    scripts: [
+      {
+        id: "pele-nua-m8a",
+        titulo: "M8.A — A pele como casa",
+        curso: "pele-nua",
+        texto: `A tua pele é a primeira casa que tu já tiveste.
+
+[pause]
+
+Antes de qualquer apartamento. Antes de qualquer quarto. Antes de qualquer país.
+
+A pele é onde tu chegaste à vida.
+
+[long pause]
+
+E é, biologicamente, a única casa que vai ficar contigo do princípio ao fim.
+
+[pause]
+
+Outras casas mudam. Esta, não.
+
+[short pause]
+
+Tu vais habitá-la — em estados diferentes, em formas diferentes — durante todos os anos da tua existência.
+
+[pause]
+
+Esta continuidade radical é, em algum sentido, espantosa.
+
+[long pause]
+
+A maioria das pessoas trata a sua casa física com mais respeito do que trata a sua pele.
+
+[pause]
+
+Investe em mobília. Pinta as paredes. Repara o que se estraga. Mantém limpo. Acolhe visitas.
+
+[short pause]
+
+E à pele — a casa permanente — dá apenas atenção quando há queixa.
+
+[pause]
+
+A inversão de prioridades é estranha quando se olha de fora.
+
+[long pause]
+
+Reconhecer a pele como casa permanente muda o tom da relação.
+
+[pause]
+
+Não como problema a corrigir.
+
+Como espaço a habitar.
+
+[short pause]
+
+E habitar implica conhecer.
+
+[pause]
+
+Conhecer os cantos. As particularidades. O que precisa de mais luz. O que prefere mais sombra.
+
+[long pause]
+
+Tu, ao longo dos anos, foste habitando a tua pele.
+
+Mas raramente com atenção consciente.
+
+[pause]
+
+Esta semana, faz uma coisa simples.
+
+Pensa na tua pele como casa.
+
+[short pause]
+
+Onde, nessa casa, tu te sentes mais à vontade?
+
+Onde, nessa casa, há sítios que tu evitas?
+
+Onde, nessa casa, há lugares que precisariam de mais atenção do que tu tens dado?
+
+[pause]
+
+Estas perguntas não exigem resposta filosófica.
+
+São perguntas pragmáticas — sobre uma casa.
+
+[long pause]
+
+E, ao responderes, podes começar a planear cuidados específicos.
+
+[pause]
+
+Não rotina cosmética genérica.
+
+Atenção real às zonas que precisam.
+
+[short pause]
+
+A pele é casa.
+
+E uma casa bem habitada é uma casa com presença atenta — não com produtos a mais.
+
+[pause]
+
+Tu és, em última análise, a única pessoa qualificada para habitar esta casa específica.
+
+[long pause]
+
+E essa qualificação vai-se desenvolvendo ao longo da vida.
+
+À medida que tu prestas, conscientemente, mais atenção à casa que tu sempre tiveste.
+
+[pause]
+
+E que, com paciência, vai-se tornando cada vez mais reconhecivelmente tua.`,
+      },
+      {
+        id: "pele-nua-m8b",
+        titulo: "M8.B — A reconciliação possível",
+        curso: "pele-nua",
+        texto: `A reconciliação com o próprio corpo não é evento dramático.
+
+[pause]
+
+É processo lento, sem testemunhas.
+
+[long pause]
+
+Não há momento específico em que se passa de relação adversária para relação acolhedora.
+
+Há, antes, uma série de pequenos gestos repetidos ao longo dos anos.
+
+[pause]
+
+Olhar sem corrigir, durante alguns segundos.
+
+Tocar uma parte do corpo sem agenda.
+
+Vestir algo que te dá prazer sem se preocupar com a opinião alheia.
+
+Recusar uma comparação que ia começar.
+
+Parar de pedir desculpa por uma marca que tens há anos.
+
+[short pause]
+
+Cada um destes gestos, individualmente, não muda nada.
+
+[pause]
+
+O conjunto, ao longo do tempo, muda tudo.
+
+[long pause]
+
+A reconciliação não significa amar o teu corpo todos os dias.
+
+Há dias em que vais voltar a criticá-lo. Há semanas em que vais voltar a comparar.
+
+[pause]
+
+Estes recuos são parte do processo.
+
+Não significam que falhaste.
+
+Significam que estás, como qualquer pessoa, em movimento — com avanços e recuos.
+
+[short pause]
+
+A direcção geral, no entanto, vai sendo de aproximação.
+
+[long pause]
+
+Há um momento, em algumas vidas femininas, em que o corpo deixa de ser inimigo principal.
+
+[pause]
+
+Não que se torna favorito.
+
+Apenas que deixa de ser inimigo.
+
+[short pause]
+
+E a vida ganha leveza nova quando esta transição se completa.
+
+[pause]
+
+Porque uma quantidade imensa de energia deixa de ser gasta em batalha interna.
+
+E fica disponível para tudo o resto.
+
+[long pause]
+
+Para amar pessoas. Para fazer trabalho. Para descansar. Para ter prazer simples.
+
+[pause]
+
+A reconciliação com o corpo liberta capacidade para a vida.
+
+[short pause]
+
+E essa libertação é, em si mesma, recompensa que justifica o trabalho.
+
+[long pause]
+
+Esta semana, faz uma reflexão privada.
+
+Em relação ao teu corpo, há quanto tempo tu te encontras em batalha activa?
+
+[pause]
+
+Décadas, provavelmente.
+
+[short pause]
+
+E quanto da tua atenção, em cada dia, é gasta nessa batalha?
+
+[pause]
+
+Provavelmente mais do que tu queres admitir.
+
+[long pause]
+
+Reconciliação parcial é objectivo realista.
+
+Reconciliação total — para a maioria das pessoas — não acontece.
+
+[pause]
+
+Mas mesmo a parcial transforma.
+
+[short pause]
+
+Alguns dias em paz com o corpo. Algumas zonas finalmente aceites. Alguns reflexos automáticos finalmente questionados.
+
+[pause]
+
+Isto, se for o teu caminho nos próximos anos, é mais do que muitas mulheres conseguem na vida inteira.
+
+[long pause]
+
+E é mais do que suficiente para uma vida significativamente diferente daquela que tu teve até aqui.`,
+      },
+      {
+        id: "pele-nua-m8c",
+        titulo: "M8.C — A mulher que habita a sua pele",
+        curso: "pele-nua",
+        texto: `Imagina, no fim deste curso, a mulher que tu vais ser daqui a cinco anos.
+
+[pause]
+
+Uma mulher que, depois de muito trabalho silencioso, finalmente habita a sua pele.
+
+[long pause]
+
+Esta mulher tem uma qualidade específica.
+
+Não é beleza convencional. Não é juventude prolongada.
+
+É presença plena.
+
+[pause]
+
+Quando ela entra numa sala, há algo que muda no ambiente.
+
+Não pelo que ela faz. Pelo facto de ela estar inteiramente onde está.
+
+[short pause]
+
+Ela não está, mentalmente, a observar-se de fora.
+
+Está dentro do corpo, em tempo real, sem fuga.
+
+[long pause]
+
+Esta presença é rara.
+
+[pause]
+
+Porque a maioria das mulheres adultas vive em fuga parcial do próprio corpo — projectada na cabeça, no que vão fazer a seguir, no que outros vão pensar.
+
+[short pause]
+
+A mulher que habita a pele resgatou-se desta fuga.
+
+[pause]
+
+Não totalmente — ninguém o faz totalmente.
+
+Mas o suficiente para a sua vida ter qualidade nova.
+
+[long pause]
+
+Esta mulher já não passa as manhãs em batalha com o espelho.
+
+Já não compra produtos por ansiedade.
+
+Já não pede desculpa por marcas, mudanças, ou idade.
+
+[pause]
+
+Não porque ignora as mudanças.
+
+Porque as integrou.
+
+[short pause]
+
+E porque, em algum ponto, decidiu que a sua vida era mais importante do que a permanente correcção do seu corpo.
+
+[long pause]
+
+Tu podes ser esta mulher.
+
+[pause]
+
+Não amanhã. Não numa semana.
+
+Mas ao longo dos próximos anos, em pequenos gestos repetidos, podes começar a aproximar-te dela.
+
+[short pause]
+
+Cada vez que olhas para o espelho sem corrigir.
+
+Cada vez que vestes algo por prazer e não por aceitação social.
+
+Cada vez que te recusas a entrar numa comparação automática.
+
+[pause]
+
+Cada um destes gestos é um passo na direcção dela.
+
+[long pause]
+
+E ao fim de anos, sem ninguém te ter feito cerimónia, vais perceber que te tornaste essa mulher.
+
+[pause]
+
+A mulher que habita a sua pele.
+
+A mulher que parou de viver em batalha contra a casa permanente em que vive.
+
+A mulher que, finalmente, está em casa em si mesma.
+
+[short pause]
+
+Este é o objectivo deste curso.
+
+[pause]
+
+Não a cosmética. Não a aparência. Não a juventude prolongada.
+
+A habitação plena da casa permanente.
+
+[long pause]
+
+E essa habitação é, em última análise, o presente mais profundo que tu te podes dar a ti mesma.
+
+[pause]
+
+Mais profundo do que qualquer compra. Mais duradouro do que qualquer relação.
+
+[short pause]
+
+Porque é a relação contigo mesma — a única que vai durar a vida inteira.
+
+[pause]
+
+E se essa relação for finalmente acolhedora, todas as outras melhoram em consequência.
+
+[long pause]
+
+A pele é tua.
+
+A casa é tua.
+
+E tu, com tempo, podes finalmente habitá-la inteiramente.
+
+[pause]
+
+Esta é a possibilidade que este curso te oferece.
+
+Não promessa de transformação.
+
+Convite para a habitação que tu sempre tiveste o direito de fazer — mas que durante demasiado tempo te foi roubada por exigências externas.
+
+[short pause]
+
+A casa esperou por ti.
+
+E continua disponível para que tu, finalmente, regresses.`,
+      },
+    ],
+  },
 ];
