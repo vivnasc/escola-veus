@@ -66,6 +66,55 @@ export default function AudioBulkPage() {
     // Auto-muda pasta Supabase conforme o tipo de preset (youtube vs curso)
     setFolder(folderFromPresetId(presetId));
     setError(null);
+    // Auto-scroll para a lista (para utilizadora ver o que foi carregado)
+    setTimeout(() => {
+      document.getElementById("scripts-list-anchor")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }, []);
+
+  // Carrega TODOS os presets de uma vez (acumula em vez de substituir).
+  // Usa o folder do primeiro preset (normalmente "youtube" = Nomear Ep 1-10).
+  // Utilizadora pode depois mudar a pasta se quiser separar.
+  const loadAllPresets = useCallback(() => {
+    const allRows: ScriptRow[] = [];
+    for (const preset of NOMEAR_PRESETS) {
+      for (const s of preset.scripts) {
+        allRows.push({
+          id: s.id,
+          titulo: s.titulo,
+          texto: s.texto,
+          status: "pending",
+        });
+      }
+    }
+    setScripts(allRows);
+    setError(null);
+    setTimeout(() => {
+      document.getElementById("scripts-list-anchor")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }, []);
+
+  // Carrega apenas presets cujo id bate com um filtro (ex: "nomear-serie-" ou "curso-ouro-proprio")
+  const loadPresetsByPrefix = useCallback((prefix: string, targetFolder: string) => {
+    const allRows: ScriptRow[] = [];
+    for (const preset of NOMEAR_PRESETS) {
+      if (preset.id.startsWith(prefix)) {
+        for (const s of preset.scripts) {
+          allRows.push({
+            id: s.id,
+            titulo: s.titulo,
+            texto: s.texto,
+            status: "pending",
+          });
+        }
+      }
+    }
+    setScripts(allRows);
+    setFolder(targetFolder);
+    setError(null);
+    setTimeout(() => {
+      document.getElementById("scripts-list-anchor")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   }, []);
 
   const addManual = useCallback(() => {
@@ -291,9 +340,50 @@ export default function AudioBulkPage() {
 
       {/* 2. Scripts */}
       <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-4">
-        <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-          <h2 className="font-serif text-lg font-medium text-escola-creme">2. Scripts</h2>
-          <div className="flex gap-2 flex-wrap">
+        <h2 className="font-serif text-lg font-medium text-escola-creme mb-4">2. Scripts</h2>
+
+        {/* Mega botões (acesso rápido) */}
+        <div className="mb-4 p-4 bg-escola-dourado/10 border-2 border-escola-dourado/40 rounded-lg space-y-2">
+          <p className="text-sm font-medium text-escola-dourado mb-2">
+            🚀 Acesso rápido — escolhe o que queres gerar agora:
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => loadPresetsByPrefix("nomear-serie-", "youtube")}
+              className="rounded-lg bg-escola-dourado px-5 py-3 text-sm font-semibold text-escola-bg hover:opacity-90"
+            >
+              Carregar TODOS os Nomear YouTube (122 scripts)
+            </button>
+            <button
+              onClick={() => loadPresetsByPrefix("curso-ouro-proprio-", "curso-ouro-proprio")}
+              className="rounded-lg bg-escola-dourado px-5 py-3 text-sm font-semibold text-escola-bg hover:opacity-90"
+            >
+              Carregar TODO Curso Ouro Próprio (24 aulas)
+            </button>
+            <button
+              onClick={() => loadPresetsByPrefix("curso-limite-sagrado-", "curso-limite-sagrado")}
+              className="rounded-lg bg-escola-dourado px-5 py-3 text-sm font-semibold text-escola-bg hover:opacity-90"
+            >
+              Carregar TODO Curso Limite Sagrado
+            </button>
+            <button
+              onClick={loadAllPresets}
+              className="rounded-lg border-2 border-escola-dourado px-5 py-3 text-sm font-semibold text-escola-dourado hover:bg-escola-dourado/10"
+            >
+              Carregar TUDO (YouTube + todos os cursos)
+            </button>
+          </div>
+          <p className="text-[11px] text-escola-creme-50 mt-2">
+            Depois de carregar, a lista aparece abaixo. Scroll down e clica &quot;Gerar todos&quot; no botão dourado grande.
+          </p>
+        </div>
+
+        {/* Presets individuais (expansível) */}
+        <details className="mb-4">
+          <summary className="text-sm text-escola-creme-50 cursor-pointer hover:text-escola-dourado">
+            Carregar série individual (avançado) ▸
+          </summary>
+          <div className="mt-3 flex flex-wrap gap-2">
             {NOMEAR_PRESETS.map((p) => (
               <button
                 key={p.id}
@@ -312,7 +402,10 @@ export default function AudioBulkPage() {
               </button>
             )}
           </div>
-        </div>
+        </details>
+
+        {/* Anchor para auto-scroll depois de carregar */}
+        <div id="scripts-list-anchor"></div>
 
         {/* Manual add */}
         <details className="mb-4">
