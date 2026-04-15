@@ -14857,4 +14857,367 @@ Mesmo quando ela continua, à superfície, exactamente como sempre foi.`,
       },
     ],
   },
+  {
+    id: "curso-o-silencio-que-grita-m4",
+    titulo: "Curso O Silêncio que Grita — Módulo 4 (Aulas A, B, C)",
+    descricao: "A Criança que Ouviu Sem Entender. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "o-silencio-que-grita-m4a",
+        titulo: "M4.A — Conversas que absorveste sem perceber",
+        curso: "o-silencio-que-grita",
+        texto: `Quando és pequena, estás a ouvir o tempo todo.
+
+[pause]
+
+Mesmo quando estás a brincar. Mesmo quando pareces distraída. Mesmo quando os adultos pensam que tu não estás a prestar atenção.
+
+[long pause]
+
+A capacidade auditiva de uma criança é muito mais activa do que os adultos imaginam.
+
+[pause]
+
+Tu estavas, sem saber, a guardar.
+
+A entoação das vozes. As pausas estranhas. As palavras que não compreendias mas que ficavam.
+
+[short pause]
+
+Anos depois, em adulta, certas frases voltam-te à cabeça vindas do nada.
+
+E tu não sabes onde as ouviste.
+
+[pause]
+
+Não sabes — mas elas existem. Estão lá, registadas, à espera.
+
+[long pause]
+
+Esta absorção infantil é particularmente activa em conversas de adultos sobre temas que envolvem emoção forte.
+
+[pause]
+
+Discussões em voz baixa que tu não eras suposta ouvir.
+
+Conversas telefónicas em que a tua mãe falava de algo importante e tu, do outro lado da porta, captavas fragmentos.
+
+Frases ditas a um adulto sobre outro adulto, com tom diferente do habitual.
+
+[short pause]
+
+Estes momentos ficaram registados em ti.
+
+Mesmo sem contexto. Mesmo sem compreensão.
+
+[long pause]
+
+Em adulta, isto pode aparecer de formas estranhas.
+
+[pause]
+
+Reagir intensamente a uma situação que, racionalmente, não deveria provocar tanto.
+
+Sentir aversão a uma pessoa que mal conheces porque algo nela te recorda alguém de quem ouviste falar em criança.
+
+Ter intuições sobre dinâmicas familiares que não tens explicação racional para sustentar.
+
+[short pause]
+
+Estas reacções não são imaginação.
+
+São o resultado de informação que absorveste antes de ter linguagem para a processar.
+
+[pause]
+
+E que continua a operar dentro de ti, em silêncio.
+
+[long pause]
+
+Reconhecer esta absorção é parte do trabalho de auto-conhecimento adulto.
+
+[pause]
+
+Não para acusar quem falou na tua presença sem te respeitar.
+
+Para perceberes que parte do que tu sentes hoje vem de informação que entrou em ti antes da tua capacidade de filtrar.
+
+[short pause]
+
+Esta perspectiva muda a forma como tu olhas para certas das tuas reacções.
+
+[pause]
+
+Deixam de ser irracionais.
+
+Tornam-se ecos de algo que entrou e ficou.
+
+[long pause]
+
+Esta semana, pensa em três reacções tuas — em adulta — que sempre te pareceram desproporcionais.
+
+Pessoas com quem tens dificuldade sem razão clara. Lugares que evitas sem saber porquê. Conversas que te activam mais do que parece justificado.
+
+[pause]
+
+Para cada uma, pergunta: terei eu, em criança, ouvido alguma coisa relacionada?
+
+[short pause]
+
+A resposta nem sempre vai aparecer imediatamente.
+
+Mas a pergunta, deixada em aberto, começa a trabalhar dentro de ti.
+
+E memórias antigas, com paciência, podem surgir — fragmentos que finalmente dão contexto.`,
+      },
+      {
+        id: "o-silencio-que-grita-m4b",
+        titulo: "M4.B — Cenas que ficaram sem tradução",
+        curso: "o-silencio-que-grita",
+        texto: `Há cenas, na tua infância, que tu te lembras com clareza visual mas sem perceber o que aconteceu.
+
+[pause]
+
+Uma discussão entre os teus pais, da qual te lembras das caras mas não das palavras exactas.
+
+Uma vez em que choraste e ninguém te perguntou porquê.
+
+Um momento em que sentiste que algo grave estava a acontecer mas ninguém te explicou.
+
+[long pause]
+
+Estas cenas ficaram em ti como imagens sem legenda.
+
+Estão lá. Mas não tens narrativa que as integre.
+
+[pause]
+
+E o cérebro humano, quando não tem narrativa, faz uma de duas coisas.
+
+Inventa. Ou enterra.
+
+[short pause]
+
+Se inventou, tu cresceste com uma versão da cena que pode não corresponder ao que realmente se passou.
+
+Se enterrou, a cena ficou armazenada num sítio onde quase não tens acesso — mas que continua a influenciar o teu sistema nervoso.
+
+[long pause]
+
+Em adulta, podes recuperar parte da tradução destas cenas.
+
+[pause]
+
+Não a tradução exacta — essa muitas vezes já não é possível.
+
+Mas tradução suficiente para a cena fazer sentido como evento, em vez de ficar como imagem suspensa sem significado.
+
+[short pause]
+
+Para isto, há um trabalho lento que vale a pena.
+
+[pause]
+
+Conversas com pessoas que estavam por perto na altura. Tias. Primas. Vizinhos antigos. Pessoas que talvez se lembrem do contexto que tu não tens.
+
+[long pause]
+
+Quando perguntas com calma, sem dramatizar, muitas vezes recebes pedaços que dão sentido.
+
+[pause]
+
+"Aquela discussão? Foi quando descobriram a doença do teu avô."
+
+"Aquela tarde em que choraste? A tua mãe estava a atravessar a depressão dela."
+
+"Aquele momento? Acho que foi quando o teu pai recebeu a notícia do despedimento."
+
+[short pause]
+
+Pequenas frases que, juntas, transformam imagens em narrativas.
+
+[pause]
+
+E narrativas, mesmo as difíceis, dão alívio que imagens suspensas não dão.
+
+[long pause]
+
+Porque as narrativas têm princípio, meio e — sobretudo — fim.
+
+As imagens suspensas continuam a flutuar dentro de ti como se ainda estivessem em curso.
+
+[pause]
+
+Mesmo décadas depois.
+
+[short pause]
+
+Traduzir uma cena antiga é, em certa medida, fechá-la.
+
+Não significa esquecê-la. Significa pô-la num lugar onde já não opera no presente como se estivesse a acontecer agora.
+
+[long pause]
+
+Esta semana, escolhe uma cena da tua infância que te lembras visualmente mas que nunca teve tradução clara.
+
+Escreve-a num caderno. Em detalhe. Tudo o que te lembras visualmente.
+
+[pause]
+
+Depois, faz uma lista de quem ainda está vivo e estava por perto na altura.
+
+Identifica uma pessoa para conversar.
+
+[short pause]
+
+Sem agenda dramática. Apenas: lembras-te daquele dia em que aconteceu X?
+
+[pause]
+
+A resposta, mesmo parcial, vai começar a dar legenda à imagem que durante anos ficou em silêncio.
+
+[short pause]
+
+E, com a legenda, vem alívio que tu nem sabias que estava à espera.`,
+      },
+      {
+        id: "o-silencio-que-grita-m4c",
+        titulo: "M4.C — As tuas memórias partidas",
+        curso: "o-silencio-que-grita",
+        texto: `Algumas das tuas memórias de infância estão partidas.
+
+[pause]
+
+Não no sentido de estarem traumáticas — embora algumas possam estar.
+
+No sentido de estarem fragmentadas. Incompletas. Com pedaços em falta.
+
+[long pause]
+
+Lembras-te do princípio de uma cena mas não do fim. Lembras-te do fim mas não do princípio. Lembras-te de uma sensação intensa mas não do contexto que a gerou.
+
+[pause]
+
+Estas memórias partidas são particularmente comuns em famílias com muito silêncio.
+
+[short pause]
+
+Porque o silêncio impediu que os eventos importantes fossem comentados, contados, processados.
+
+[pause]
+
+E sem processamento partilhado, o cérebro não consegue construir memórias coerentes.
+
+[long pause]
+
+Imagina uma cena difícil em que a família, depois, conversa entre si sobre o que aconteceu.
+
+Cada membro acrescenta detalhes. Discutem. Lembram-se em conjunto.
+
+[pause]
+
+A criança presente, mesmo sem participar na conversa, beneficia.
+
+A cena ganha contorno através das vozes dos adultos.
+
+E a memória forma-se, ao longo dos anos, com clareza.
+
+[short pause]
+
+Agora imagina a mesma cena, mas com silêncio depois.
+
+Ninguém comenta. Ninguém processa em conjunto. Tudo continua como se nada tivesse acontecido.
+
+[pause]
+
+A criança fica com uma memória sem ancoragem partilhada.
+
+E a memória, isolada, fragmenta.
+
+[long pause]
+
+Tu, hoje em adulta, podes ter dezenas destas memórias fragmentadas.
+
+[pause]
+
+E a sensação difusa de que partes da tua infância são mistério mesmo para ti.
+
+[short pause]
+
+Não tens ainda forma de as completar inteiramente — porque o tempo passou e os adultos que poderiam ajudar nem sempre estão disponíveis.
+
+Mas há algo que podes fazer.
+
+[long pause]
+
+Escrever as memórias partidas, exactamente como elas estão.
+
+[pause]
+
+Sem tentar completá-las. Sem inventar o que falta. Sem forçar coerência.
+
+Apenas: este pedaço lembro, este pedaço não.
+
+[short pause]
+
+Esta escrita honesta, em si mesma, tem efeito.
+
+[pause]
+
+Porque a memória partida, quando reconhecida como partida, deixa de funcionar como verdade absoluta sobre a tua infância.
+
+Passa a ser fragmento — entre outros — de uma história mais vasta que tu nunca tiveste em mãos.
+
+[long pause]
+
+E muitas mulheres descobrem, ao escrever, que algumas memórias começam a recompor.
+
+[pause]
+
+Não imediatamente. Ao longo dos meses.
+
+Pedaços que estavam separados começam a juntar-se.
+
+Memórias semelhantes ajudam-se mutuamente.
+
+E o mosaico, lentamente, mostra mais imagem do que tinhas.
+
+[short pause]
+
+Não vais reconstruir tudo.
+
+Mas vais reconstruir o suficiente para sentires que conheces a tua história — em vez de a temeres como bloco escuro.
+
+[long pause]
+
+Esta semana, escolhe três memórias de infância que sentes incompletas.
+
+Escreve cada uma honestamente. Com os buracos preservados como buracos.
+
+[pause]
+
+Guarda o caderno num sítio onde possas voltar.
+
+[short pause]
+
+E, quando uma nova lembrança surgir nas próximas semanas — em sonho, em conversa, em momento inesperado — adiciona-a ao caderno.
+
+[pause]
+
+A reconstrução de uma infância silenciada é trabalho de anos.
+
+Mas começa com uma decisão simples: deixar de aceitar o silêncio como verdade final.
+
+[short pause]
+
+E começar, em privado, a juntar o que ainda é possível juntar.
+
+[long pause]
+
+Não vais ficar com a história inteira.
+
+Mas vais ficar com história suficiente para já não viveres como órfã da tua própria infância.`,
+      },
+    ],
+  },
 ];
