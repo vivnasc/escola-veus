@@ -12070,4 +12070,403 @@ Começa pela mais pequena.
       },
     ],
   },
+  {
+    id: "curso-sangue-e-seda-m5",
+    titulo: "Curso Sangue e Seda — Módulo 5 (Aulas A, B, C)",
+    descricao: "O Desejo Feminino. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "sangue-e-seda-m5a",
+        titulo: "M5.A — O que te disseram que era pecado",
+        curso: "sangue-e-seda",
+        texto: `Há palavras que, em criança, tu aprendeste a temer.
+
+[pause]
+
+Palavras que adultos diziam em voz baixa. Palavras que tu sentias que era melhor nem perguntar. Palavras cuja força precisa tu só viste quando alguém reagiu mal ao ouvi-las.
+
+[long pause]
+
+Muitas destas palavras eram sobre o corpo feminino.
+
+Sobre aquilo que as mulheres sentem. Sobre aquilo que as mulheres desejam. Sobre aquilo que as mulheres fazem em privado.
+
+[pause]
+
+O léxico inteiro do desejo feminino foi construído, durante séculos, num campo semântico carregado.
+
+Pecado. Culpa. Impureza. Tentação. Perigo.
+
+[short pause]
+
+Isto não foi casual.
+
+[long pause]
+
+Durante gerações, houve um interesse institucional em manter o desejo feminino dentro de certas fronteiras.
+
+Fronteiras matrimoniais. Fronteiras reprodutivas. Fronteiras hierárquicas.
+
+[pause]
+
+O desejo livre de uma mulher ameaçava essas fronteiras.
+
+Por isso foi patologizado, moralizado, criminalizado, consoante a época.
+
+[short pause]
+
+Tu herdaste este campo semântico.
+
+[pause]
+
+Mesmo que nunca tenhas crescido num ambiente religioso rigoroso, absorveste-o.
+
+Porque está na língua. Está nas piadas. Está nas histórias. Está nos ditos populares.
+
+[long pause]
+
+E agora, adulta, tu carregas dentro de ti um léxico contaminado.
+
+[pause]
+
+Quando pensas em desejar, surge culpa.
+
+Quando pensas em prazer, surge a palavra egoísmo.
+
+Quando pensas em tomar iniciativa sexual, surge a ideia vaga de que não é apropriado.
+
+[short pause]
+
+Estas associações não são tuas.
+
+São herança linguística de uma cultura que teve, durante muito tempo, interesse em mantê-las activas.
+
+[long pause]
+
+Reconhecer isto é um acto intelectual — mas tem efeito corporal.
+
+[pause]
+
+Quando uma mulher começa a ver que as suas próprias reacções de culpa face ao desejo são produto de herança cultural — não de consciência individual — a culpa começa a perder força.
+
+[short pause]
+
+Não desaparece de um dia para o outro.
+
+Mas perde legitimidade.
+
+[pause]
+
+Passa a ser vista como voz externa que precisa de ser reconhecida e gentilmente ignorada.
+
+[long pause]
+
+Esta semana, escreve numa folha três coisas que tu sentes serem "erradas" em relação ao teu desejo ou ao teu prazer.
+
+[pause]
+
+Não para as justificares. Não para te defenderes.
+
+Só para as nomeares.
+
+[short pause]
+
+Ao lado de cada uma, pergunta: quem foi que me ensinou isto?
+
+De onde veio esta ideia?
+
+[pause]
+
+Raramente vais encontrar origem pessoal clara.
+
+Quase sempre, a origem é cultural difusa.
+
+[long pause]
+
+O desejo feminino não é pecado.
+
+Foi chamado pecado durante séculos por razões que não se aplicavam realmente ao desejo — aplicavam-se ao controlo.
+
+[pause]
+
+E tu, neste século, tens o direito de desmontar o léxico herdado.
+
+[short pause]
+
+Não em protesto. Em silêncio.
+
+[pause]
+
+Uma frase de cada vez. Uma associação de cada vez.
+
+Até o teu interior deixar de tratar como pecado o que é, simplesmente, parte do que és.`,
+      },
+      {
+        id: "sangue-e-seda-m5b",
+        titulo: "M5.B — A descoberta do prazer próprio",
+        curso: "sangue-e-seda",
+        texto: `Há uma parte do teu corpo que tu, provavelmente, conheces muito menos do que conheces o corpo de outros.
+
+[pause]
+
+O teu próprio corpo, no que toca a prazer.
+
+[long pause]
+
+A maior parte das mulheres, durante grande parte da vida, descobre o prazer através de outra pessoa.
+
+Alguém toca-te de certa forma e tu sentes.
+
+E a partir daí, o mapa do teu próprio prazer vai-se construindo em função de como outros te tocam.
+
+[pause]
+
+Mas este mapa é incompleto.
+
+Porque depende de outra pessoa.
+
+[short pause]
+
+Há outro mapa — mais íntimo, mais específico — que só tu podes desenhar.
+
+O mapa do prazer que tu descobres sozinha, sem ninguém a observar, sem ninguém a tocar, sem ninguém a avaliar o que tu fazes com o teu próprio corpo.
+
+[long pause]
+
+Durante séculos, este mapa foi proibido.
+
+As mulheres não deviam explorar o próprio corpo. Não deviam saber o que lhes dava prazer. Não deviam ter acesso directo àquilo que, em teoria, era prazer a ser administrado por outro.
+
+[pause]
+
+Esta proibição não tinha base fisiológica.
+
+Tinha base política.
+
+[short pause]
+
+Uma mulher que conhece o seu próprio prazer é uma mulher menos dependente.
+
+Menos dependente da aprovação. Menos dependente do parceiro. Menos dependente da performance alheia.
+
+[pause]
+
+E essa independência, durante muito tempo, era inconveniente.
+
+[long pause]
+
+Tu, se pertences a uma geração que cresceu num tempo mais aberto, talvez achas que isto não te afectou.
+
+Mas olha com atenção.
+
+[pause]
+
+Muitas mulheres adultas, mesmo modernas, mesmo informadas, ainda têm, em relação ao seu próprio prazer solitário, uma sombra.
+
+Uma sombra pequena — de culpa, de vergonha, de sensação de que é algo a fazer depressa, sem atenção consciente.
+
+[short pause]
+
+Esta sombra é herdada.
+
+[long pause]
+
+O que muitas mulheres descobrem, quando dedicam atenção consciente ao próprio prazer — sem performance, sem pressa, sem comparação — é que conhecem o próprio corpo muito menos do que pensavam.
+
+[pause]
+
+Há sensibilidades que nunca foram activadas. Há ritmos que nunca foram respeitados. Há partes do corpo que não são especificamente zonas erógenas mas que, com atenção lenta, revelam prazer inesperado.
+
+[short pause]
+
+O mapa do prazer próprio é específico de cada mulher.
+
+E só se desenha com tempo, paciência, e ausência de observador.
+
+[long pause]
+
+Esta semana — ou este mês, se precisares de mais tempo — reserva uma noite em que estejas completamente sozinha.
+
+Sem pressa. Sem objectivo. Sem plano.
+
+[pause]
+
+Não é encontro sexual contigo.
+
+É exploração corporal.
+
+[short pause]
+
+Começa pelos pés. Demora-te. Repara no que sentes.
+
+Vai subindo pelo corpo sem apressar. Sem saltar para os sítios que já conheces como "certos".
+
+[pause]
+
+Fica com o inesperado.
+
+[short pause]
+
+Uma mulher que conhece o seu próprio mapa corporal tem, depois, uma qualidade diferente em qualquer relação.
+
+Não porque se torne melhor amante.
+
+Porque se torna mais difícil de acomodar a algo que não lhe serve.
+
+[long pause]
+
+O prazer próprio não é substituto da intimidade com outros.
+
+É fundação da intimidade com outros.
+
+[pause]
+
+Sem o primeiro, o segundo depende sempre de sorte.
+
+Com o primeiro, o segundo depende de escolha informada.`,
+      },
+      {
+        id: "sangue-e-seda-m5c",
+        titulo: "M5.C — Intimidade sem performance",
+        curso: "sangue-e-seda",
+        texto: `Há uma pergunta honesta que muitas mulheres não se fazem.
+
+[pause]
+
+Quanto do que eu faço na intimidade é por prazer real, e quanto é performance?
+
+[long pause]
+
+A performance, aqui, não significa fingir.
+
+Significa responder a uma ideia do que é "apropriado" para aquela cena.
+
+[pause]
+
+Gemer no momento certo. Fazer o som certo. Mostrar o rosto certo. Mover-se de forma que pareça suficientemente entusiasmada para o outro não sentir que precisa de se esforçar mais.
+
+[short pause]
+
+Tudo isto é trabalho.
+
+Trabalho que muitas mulheres fazem sem se aperceberem.
+
+[long pause]
+
+Este trabalho tem origem em duas fontes.
+
+Uma é a pornografia, que durante décadas ditou uma gramática específica do que uma mulher "deve" fazer em intimidade — gramática que quase nunca corresponde ao que uma mulher real faria livremente.
+
+A outra é a ansiedade relacional — medo de que, se não performar bem, o parceiro perca interesse.
+
+[pause]
+
+As duas fontes, juntas, criam um contexto em que a intimidade deixa de ser troca autêntica e torna-se teatro consensual.
+
+[short pause]
+
+As duas pessoas sabem que há performance. As duas pessoas participam. E as duas perdem algo importante.
+
+[long pause]
+
+O que se perde é a possibilidade de presença real.
+
+[pause]
+
+Presença real significa estar no teu próprio corpo, a sentir o que estás realmente a sentir, a responder de forma honesta ao que te acontece.
+
+Por vezes isso significa silêncio. Por vezes significa som espontâneo. Por vezes significa lentidão. Por vezes significa parar.
+
+[short pause]
+
+A performance não permite nada disto.
+
+A performance exige resposta imediata, gestão contínua, atenção ao efeito.
+
+[pause]
+
+Enquanto performas, não estás presente.
+
+E enquanto não estás presente, o prazer que experimentas é parcial.
+
+[long pause]
+
+Muitas mulheres descobrem, a certa altura da vida, que tiveram décadas de intimidade performada sem quase nenhum prazer real profundo.
+
+[pause]
+
+Isto é mais comum do que se admite.
+
+E não é culpa de ninguém em particular — é produto de uma cultura que treinou duas pessoas a encenar algo que nenhuma delas está realmente a viver.
+
+[short pause]
+
+A saída não é confronto.
+
+É uma desaceleração.
+
+[long pause]
+
+Experimenta, num momento de intimidade futuro, fazer uma coisa pequena.
+
+Quando o corpo te pedir para fazer a resposta habitual — o som, o movimento, a expressão — pára.
+
+[pause]
+
+Respira.
+
+E não faças.
+
+[short pause]
+
+Fica em silêncio, em quietude, se for o que o corpo real pediu.
+
+[pause]
+
+O teu parceiro vai notar. Pode ficar desconcertado. Pode perguntar.
+
+[short pause]
+
+A tua resposta pode ser simples: estou a sentir devagar.
+
+[pause]
+
+Esta resposta, dita sem drama, muda o tom da cena.
+
+Passa de performance mútua para atenção mútua.
+
+[long pause]
+
+Nem toda a gente consegue acompanhar este tipo de intimidade.
+
+Algumas pessoas estão tão habituadas à performance que a ausência dela parece ausência de interesse.
+
+[pause]
+
+Se o teu parceiro for uma dessas pessoas, isto vai criar desconforto.
+
+E o desconforto vai obrigar a conversa.
+
+[short pause]
+
+A conversa pode ser difícil.
+
+Pode também ser a conversa mais importante que já tiveram.
+
+[pause]
+
+Porque dela pode nascer uma intimidade diferente — mais lenta, mais honesta, mais próxima do que cada corpo realmente é, em vez do que cada corpo aprendeu a fingir ser.
+
+[long pause]
+
+A intimidade sem performance é mais rara do que parece.
+
+Mas é mais nutritiva do que a intimidade performada em doze anos seguidos.
+
+[pause]
+
+E só pode começar quando uma das duas pessoas — normalmente a mulher — decide que já não quer continuar no teatro.`,
+      },
+    ],
+  },
 ];
