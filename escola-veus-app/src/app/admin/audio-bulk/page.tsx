@@ -342,41 +342,51 @@ export default function AudioBulkPage() {
       <div className="rounded-xl border border-escola-border bg-escola-card p-6 mb-4">
         <h2 className="font-serif text-lg font-medium text-escola-creme mb-4">2. Scripts</h2>
 
-        {/* Mega botões (acesso rápido) */}
-        <div className="mb-4 p-4 bg-escola-dourado/10 border-2 border-escola-dourado/40 rounded-lg space-y-2">
-          <p className="text-sm font-medium text-escola-dourado mb-2">
-            🚀 Acesso rápido — escolhe o que queres gerar agora:
-          </p>
-          <div className="flex flex-wrap gap-2">
+        {/* Mega botões separados por TIPO — YouTube vs Cursos */}
+        <div className="mb-4 space-y-3">
+          {/* YouTube (Nomear) */}
+          <div className="p-4 bg-escola-dourado/10 border-2 border-escola-dourado/40 rounded-lg">
+            <p className="text-sm font-semibold text-escola-dourado mb-2">
+              📺 YOUTUBE — Série Nomear (pasta: youtube)
+            </p>
             <button
               onClick={() => loadPresetsByPrefix("nomear-serie-", "youtube")}
-              className="rounded-lg bg-escola-dourado px-5 py-3 text-sm font-semibold text-escola-bg hover:opacity-90"
+              className="rounded-lg bg-escola-dourado px-6 py-3 text-sm font-semibold text-escola-bg hover:opacity-90"
             >
-              Carregar TODOS os Nomear YouTube (122 scripts)
-            </button>
-            <button
-              onClick={() => loadPresetsByPrefix("curso-ouro-proprio-", "curso-ouro-proprio")}
-              className="rounded-lg bg-escola-dourado px-5 py-3 text-sm font-semibold text-escola-bg hover:opacity-90"
-            >
-              Carregar TODO Curso Ouro Próprio (24 aulas)
-            </button>
-            <button
-              onClick={() => loadPresetsByPrefix("curso-limite-sagrado-", "curso-limite-sagrado")}
-              className="rounded-lg bg-escola-dourado px-5 py-3 text-sm font-semibold text-escola-bg hover:opacity-90"
-            >
-              Carregar TODO Curso Limite Sagrado
-            </button>
-            <button
-              onClick={loadAllPresets}
-              className="rounded-lg border-2 border-escola-dourado px-5 py-3 text-sm font-semibold text-escola-dourado hover:bg-escola-dourado/10"
-            >
-              Carregar TUDO (YouTube + todos os cursos)
+              Carregar TODOS os 122 scripts YouTube
             </button>
           </div>
-          <p className="text-[11px] text-escola-creme-50 mt-2">
-            Depois de carregar, a lista aparece abaixo. Scroll down e clica &quot;Gerar todos&quot; no botão dourado grande.
-          </p>
+
+          {/* Cursos — todos juntos ou por curso */}
+          <div className="p-4 bg-escola-terracota/10 border-2 border-escola-terracota/40 rounded-lg">
+            <p className="text-sm font-semibold text-escola-terracota mb-2">
+              📚 CURSOS — Aulas dos alunos (pasta: curso-*)
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => loadPresetsByPrefix("curso-", "cursos")}
+                className="rounded-lg bg-escola-terracota px-6 py-3 text-sm font-semibold text-escola-bg hover:opacity-90"
+              >
+                Carregar TODOS os cursos (Ouro Próprio + Limite Sagrado + ...)
+              </button>
+              <button
+                onClick={() => loadPresetsByPrefix("curso-ouro-proprio-", "curso-ouro-proprio")}
+                className="rounded-lg border-2 border-escola-terracota px-4 py-3 text-sm font-medium text-escola-terracota hover:bg-escola-terracota/10"
+              >
+                Só Ouro Próprio (24 aulas)
+              </button>
+              <button
+                onClick={() => loadPresetsByPrefix("curso-limite-sagrado-", "curso-limite-sagrado")}
+                className="rounded-lg border-2 border-escola-terracota px-4 py-3 text-sm font-medium text-escola-terracota hover:bg-escola-terracota/10"
+              >
+                Só Limite Sagrado
+              </button>
+            </div>
+          </div>
         </div>
+        <p className="text-[11px] text-escola-creme-50 mb-3">
+          💡 Fluxo recomendado: (1) carrega o YouTube, gera, descarrega. (2) depois carrega os cursos, gera, descarrega. Não misturar, pastas Supabase são diferentes.
+        </p>
 
         {/* Presets individuais (expansível) */}
         <details className="mb-4">
