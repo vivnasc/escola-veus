@@ -11651,4 +11651,423 @@ Libertar o corpo do trabalho de guardar sozinho o que já não precisas de carre
       },
     ],
   },
+  {
+    id: "curso-sangue-e-seda-m4",
+    titulo: "Curso Sangue e Seda — Módulo 4 (Aulas A, B, C)",
+    descricao: "A Primeira Vez. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "sangue-e-seda-m4a",
+        titulo: "M4.A — A menarca sem testemunho",
+        curso: "sangue-e-seda",
+        texto: `Lembras-te do dia em que sangraste pela primeira vez?
+
+[pause]
+
+Da hora. Do sítio. De quem estava por perto. Do que te disseram — ou do que não te foi dito.
+
+[long pause]
+
+A maioria das mulheres não se lembra com clareza cerimonial.
+
+Lembra-se do susto. Da roupa. Do encontro com aquela cor que o corpo nunca tinha mostrado.
+
+E depois, lembra-se — quase sempre — de estar sozinha.
+
+[pause]
+
+Talvez a mãe tenha aparecido com um penso e uma frase curta.
+
+Talvez não tenha havido frase nenhuma.
+
+Talvez tenhas tido de perguntar e o silêncio da resposta foi mais pesado do que qualquer explicação.
+
+[short pause]
+
+A menarca — a primeira menstruação — é, em muitas culturas, um rito de passagem.
+
+Na tua cultura, para a maioria, não é.
+
+[pause]
+
+Foi um incómodo a gerir em privado.
+
+Uma transição sem testemunhas.
+
+[long pause]
+
+O corpo regista isto.
+
+Regista que o seu primeiro sangue não foi celebrado. Que foi escondido. Que foi coisa a resolver depressa.
+
+E a partir dali, toda a relação futura com o ciclo carrega este tom.
+
+[pause]
+
+Não é coincidência que muitas mulheres, ao longo da vida, tratem a menstruação como inconveniência privada.
+
+Foi assim que começou.
+
+[short pause]
+
+Sem testemunho. Sem ritual. Sem palavra.
+
+[long pause]
+
+Algumas mulheres conseguem, anos depois, fazer uma reparação simbólica da menarca.
+
+Não é drama. Não é teatro.
+
+É uma atenção consciente, retroactiva, a um momento que foi deixado sem atenção.
+
+[pause]
+
+Podes escrever uma carta, em privado, à rapariga que eras no dia em que sangraste pela primeira vez.
+
+Dizer-lhe o que ela precisaria de ouvir na altura e ninguém lhe disse.
+
+[short pause]
+
+Que o que está a acontecer é normal. Que ela não está a fazer nada de mal. Que isto é o corpo a entrar numa fase antiga e respeitada. Que há milhões de mulheres antes dela que passaram por aqui.
+
+[pause]
+
+Que ela pode ficar em paz.
+
+[long pause]
+
+Esta carta não é para ser lida em voz alta a ninguém.
+
+É para ser escrita e guardada.
+
+[pause]
+
+O que acontece quando escreves é surpreendente.
+
+A menarca que não foi testemunhada começa a ser testemunhada agora, décadas depois, por ti mesma.
+
+[short pause]
+
+E o corpo regista esta atenção retroactiva.
+
+[pause]
+
+Não como ilusão. Como atenção real. Porque o corpo não distingue, emocionalmente, entre a atenção dada naquele momento e a atenção dada agora com intenção.
+
+[long pause]
+
+As mulheres que fazem este gesto descrevem uma mudança subtil na sua relação com o ciclo.
+
+Um respeito novo pelos próprios dias de sangue. Uma vontade menor de os esconder. Uma atenção mais gentil aos sinais que o corpo dá nestas fases.
+
+[pause]
+
+Nada disto é dramático.
+
+Mas é real.
+
+[short pause]
+
+Porque o corpo, quando se sente finalmente visto, começa a relaxar uma vigilância antiga.
+
+[long pause]
+
+Escreve a carta.
+
+Não tem de ser perfeita.
+
+Tem, apenas, de chegar à rapariga que tu eras no dia em que o corpo começou a fazer aquilo que o corpo faz — e que ninguém, nesse dia, soube ou quis testemunhar.`,
+      },
+      {
+        id: "sangue-e-seda-m4b",
+        titulo: "M4.B — A primeira vergonha do corpo",
+        curso: "sangue-e-seda",
+        texto: `Qual foi a primeira vez que sentiste vergonha do teu corpo?
+
+[pause]
+
+Nem sempre é uma memória nítida. Às vezes, é uma sensação antiga, cuja origem se perdeu.
+
+[long pause]
+
+Talvez tivesses oito anos e alguém comentou que estavas a engordar.
+
+Talvez tivesses onze e a primeira visita da menstruação coincidiu com zombaria na escola.
+
+Talvez tivesses catorze e percebeste, pela primeira vez, que o teu corpo era olhado de uma forma que tu não tinhas pedido.
+
+[pause]
+
+O momento preciso pode já não estar claro.
+
+Mas a sensação ficou.
+
+[short pause]
+
+A partir dali, o teu corpo deixou de ser apenas o corpo onde tu vivias.
+
+Tornou-se, também, objecto de olhar alheio.
+
+[long pause]
+
+Esta transição é, para muitas raparigas, o fim da infância corporal.
+
+Até ali, o corpo era território onde se corria, se caía, se brincava.
+
+A partir dali, passa a ser território onde se é vista.
+
+[pause]
+
+E ser vista, numa cultura que julga corpos femininos com particular rigidez, é ser avaliada.
+
+[short pause]
+
+Nesse momento, instalou-se em ti uma vigilância.
+
+Uma vigilância que avalia, antes dos outros avaliarem. Que ajusta, antes dos outros comentarem. Que corrige, para não ser corrigida.
+
+[pause]
+
+Esta vigilância nunca desligou.
+
+[long pause]
+
+Hoje, aos teus trinta, quarenta, cinquenta anos, ela continua activa em sítios subtis.
+
+Quando passas por uma montra e te avalias no reflexo. Quando evitas roupa que te mostraria mais. Quando te fotografas a ti mesma para ver se estás como gostarias de estar.
+
+[pause]
+
+Mesmo quando pensas que já passaste da fase em que isto te afectava, a vigilância continua. Só ficou mais silenciosa.
+
+[short pause]
+
+A vergonha do corpo não desaparece sozinha com os anos.
+
+[pause]
+
+Transforma-se — torna-se mais sofisticada, mais disfarçada, mais integrada na personalidade — mas não sai.
+
+[short pause]
+
+Apenas um trabalho específico, ao longo do tempo, a desmonta.
+
+[long pause]
+
+Este trabalho não é motivacional.
+
+Não é dizeres a ti própria "amo o meu corpo" todas as manhãs.
+
+Isso não funciona. A parte de ti que foi programada para vergonha não acredita nessas afirmações — reconhece-as como tentativa de sobrepor algo mais superficial a uma memória mais antiga.
+
+[pause]
+
+O que funciona, com paciência, é outra coisa.
+
+É começar a distinguir entre ti e a voz que avalia o teu corpo.
+
+[short pause]
+
+A voz é antiga. Não é tua, propriamente.
+
+Foi instalada em ti por cultura, por família, por comentários, por imagens.
+
+[pause]
+
+Quando começas a ouvi-la como voz externa que te habita — e não como tua voz interior — algo muda.
+
+[long pause]
+
+Podes responder-lhe.
+
+Não em confronto dramático. Em pequenas frases silenciosas.
+
+[pause]
+
+"Reconheço-te. És a vergonha. Não vens de mim."
+
+[short pause]
+
+Isto parece pequeno. Parece inócuo.
+
+Mas é, ao longo de meses, o gesto mais eficaz para enfraquecer uma voz interna.
+
+[pause]
+
+Porque cada vez que a nomeias como externa, ela perde peso de legitimidade.
+
+Deixa de ser verdade absoluta.
+
+Passa a ser intrusão histórica.
+
+[long pause]
+
+Esta semana, quando te avaliares corporalmente — num espelho, numa fotografia, num comentário a ti mesma — pára.
+
+Nomeia a voz.
+
+"Isto é vergonha antiga."
+
+[pause]
+
+Não tens de a expulsar. Não tens de a combater.
+
+Só de a nomear.
+
+[short pause]
+
+E vê o que acontece.
+
+[pause]
+
+Ao fim de algumas semanas, a voz começa a aparecer com menos frequência.
+
+Porque uma voz nomeada perde poder.`,
+      },
+      {
+        id: "sangue-e-seda-m4c",
+        titulo: "M4.C — O que aprendeste sem palavras",
+        curso: "sangue-e-seda",
+        texto: `Muito do que tu sabes sobre o corpo feminino, aprendeste sem palavras.
+
+[pause]
+
+Aprendeste observando a tua mãe a vestir-se.
+
+Aprendeste a ouvir conversas entre tias.
+
+Aprendeste a ler silêncios quando certos assuntos surgiam à mesa.
+
+[long pause]
+
+Estas lições sem palavras são as que mais firmemente persistem.
+
+[pause]
+
+Porque não foram questionadas — não foram, sequer, conscientes.
+
+Entraram em ti como atmosfera, não como informação.
+
+[short pause]
+
+E a atmosfera, uma vez respirada, torna-se parte do ar interno.
+
+[long pause]
+
+Há regras corporais que tu cumpres sem saber que estás a cumprir.
+
+Não mostrar certo tipo de pele. Não falar de certos temas em público. Não rir demasiado alto. Não olhar de frente para alguns homens. Não ocupar espaço demais com o corpo.
+
+[pause]
+
+Não foi ninguém que te ensinou explicitamente.
+
+Aprendeste por absorção.
+
+[short pause]
+
+E agora, décadas depois, estas regras operam automaticamente, sem que tu penses nelas.
+
+[long pause]
+
+Tornam-se visíveis apenas quando alguém, próxima de ti, as quebra com naturalidade.
+
+[pause]
+
+Uma amiga que, de repente, fala abertamente sobre algo que tu não fazias ideia que se podia falar. Uma mulher que se senta de uma forma que tu nunca te sentaste. Uma colega que ri a gargalhar numa reunião onde tu terias sorrido contidamente.
+
+[short pause]
+
+Nesse momento, tu notas a regra — pela primeira vez — porque vês alguém a não cumpri-la.
+
+[pause]
+
+E fica a pergunta dentro de ti: porque é que eu, sem ninguém me obrigar, ainda cumpro isto?
+
+[long pause]
+
+A resposta honesta é: porque absorveste.
+
+Não foi decisão. Foi osmose.
+
+[pause]
+
+E a osmose, uma vez detectada, pode ser revertida.
+
+Não de repente. Não por decreto.
+
+Com pequenos gestos conscientes de quebra.
+
+[long pause]
+
+Observa-te ao longo de uma semana.
+
+Quantas vezes, por dia, ajustas o teu corpo a uma regra que nunca ninguém te ditou explicitamente?
+
+[pause]
+
+Cruzar as pernas quando não estás confortável assim. Baixar a voz em espaços públicos. Encolher o corpo em transportes. Cobrir o decote com a mão quando alguém olha.
+
+[short pause]
+
+Estas regras parecem triviais individualmente.
+
+No conjunto, são treino permanente de ocupar menos.
+
+[long pause]
+
+Escolhe uma. Uma só.
+
+Durante um mês, pratica a sua quebra consciente.
+
+[pause]
+
+Não dramaticamente. Apenas deixando de a seguir, quando ela aparecer.
+
+[short pause]
+
+Descruza as pernas se estavam cruzadas por hábito. Fala com a voz normal em público. Deixa de cobrir o decote quando sentires o reflexo.
+
+[pause]
+
+Vais notar, no início, desconforto. A voz da regra vai aparecer — "não é apropriado", "estão a olhar", "é desrespeitoso".
+
+[short pause]
+
+Esta voz não vem de ti. Vem de séculos de ensinamento sem palavras.
+
+[pause]
+
+Pára e diz-lhe, em silêncio: reconheço-te. Continua.
+
+E, sem dramatizar, continua com o corpo a ocupar o espaço que ocuparia se a regra não existisse.
+
+[long pause]
+
+Ao longo do mês, a regra começa a perder força.
+
+Porque ela precisava da tua colaboração para existir.
+
+[pause]
+
+E quando tu deixas, silenciosamente, de colaborar, ela enfraquece.
+
+[short pause]
+
+Outras mulheres à tua volta podem começar a imitar-te, sem saberem porquê.
+
+Porque a quebra de uma regra silenciosa, quando feita por uma mulher, dá permissão invisível a todas as outras.
+
+[pause]
+
+Assim se desmontam, geração a geração, ensinamentos que foram instalados por atmosfera.
+
+[long pause]
+
+Começa pela mais pequena.
+
+É suficiente.`,
+      },
+    ],
+  },
 ];
