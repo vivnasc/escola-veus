@@ -9779,4 +9779,346 @@ E para a mulher que faz esse trabalho.`,
       },
     ],
   },
+  {
+    id: "curso-limite-sagrado-m7",
+    titulo: "Curso Limite Sagrado — Módulo 7 (Aulas A, B, C)",
+    descricao: "O Custo dos Não-Limites. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "limite-sagrado-m7a",
+        titulo: "M7.A — O cansaço que ninguém vê",
+        curso: "limite-sagrado",
+        texto: `Há um cansaço dentro de ti que ninguém à tua volta reconhece.
+
+[pause]
+
+Funcionas. Respondes. Apareces.
+
+As pessoas dizem que és incansável, dedicada, uma mulher forte.
+
+[short pause]
+
+E tu, por dentro, estás exausta de forma que nenhuma soneca resolve.
+
+[long pause]
+
+Este é o cansaço específico de quem não tem limites.
+
+Não é cansaço de trabalho excessivo apenas.
+
+É cansaço de gestão emocional permanente.
+
+[pause]
+
+Tu geres os humores dos outros. Antecipas as necessidades alheias. Absorves tensões que não são tuas. Corriges silenciosamente pequenos problemas antes deles se tornarem grandes.
+
+[short pause]
+
+Tudo isto acontece sem que os outros percebam.
+
+E acontece sem que tu mesma notes o tempo real que dedicas a este trabalho emocional.
+
+[long pause]
+
+Numa sociedade que mede trabalho pelo que é visível, este trabalho não existe.
+
+Não aparece em relatórios. Não tem salário. Não é reconhecido como competência.
+
+[pause]
+
+Mas é, na verdade, o trabalho mais exigente que fazes.
+
+[short pause]
+
+E é o que te deixa exausta ao fim do dia, sem que consigas explicar porquê.
+
+[long pause]
+
+Porque se tentas explicar, a descrição soa pequena.
+
+"Estou cansada."
+
+"De quê? Tu não fizeste assim tanto hoje."
+
+[pause]
+
+Não fizeste "assim tanto" — porque "assim tanto" é medido em tarefas concretas, visíveis.
+
+O que fizeste, na realidade, foi invisível. E por isso incontável.
+
+[long pause]
+
+Esta semana, durante um dia qualquer, faz uma coisa específica.
+
+Anota, ao longo do dia, cada vez que:
+
+- Te preocupas com alguém à tua volta
+- Resolves silenciosamente um problema alheio
+- Sentes tensão no corpo por causa de uma situação que não é tua
+- Antecipas algo que outra pessoa podia fazer sozinha mas não faz
+
+[pause]
+
+Ao fim do dia, conta.
+
+Provavelmente vais encontrar entre vinte e cinquenta ocorrências.
+
+[short pause]
+
+Cada uma, individualmente, parece pequena.
+
+O conjunto é trabalho a tempo inteiro.
+
+[pause]
+
+Esta contagem, repetida uma única vez, muda a forma como tu interpretas o teu próprio cansaço.
+
+Deixa de ser preguiça. Deixa de ser queixume.
+
+Passa a ser dado.
+
+[long pause]
+
+E os dados, uma vez registados, começam a pedir mudança.`,
+      },
+      {
+        id: "limite-sagrado-m7b",
+        titulo: "M7.B — O ressentimento que chamas paciência",
+        curso: "limite-sagrado",
+        texto: `Há um sentimento que tu ainda não aprendeste a nomear.
+
+[pause]
+
+Chama-se-lhe paciência.
+
+Ou dedicação. Ou generosidade.
+
+[short pause]
+
+Mas, se olhares com cuidado, não é nenhuma destas coisas.
+
+É ressentimento.
+
+[long pause]
+
+O ressentimento é um sentimento específico.
+
+Não é raiva. A raiva é aguda, sobe e desce.
+
+O ressentimento é lento. Instala-se. Cresce em silêncio.
+
+[pause]
+
+E é sempre o resultado de uma relação em que deste mais do que estava bem para ti dares.
+
+[short pause]
+
+Deste por amor. Deste por hábito. Deste por medo de não ser amada se não desses.
+
+[pause]
+
+Mas deste demais.
+
+[short pause]
+
+E cada vez que deste demais e não disseste nada, uma pequena conta ficou aberta dentro de ti.
+
+Sem ninguém saber.
+
+[long pause]
+
+Ao longo dos anos, estas contas somam-se.
+
+E tu acordas um dia, numa manhã de domingo qualquer, sentindo uma coisa estranha em relação à tua mãe, ou ao teu parceiro, ou à tua irmã, ou à tua amiga mais antiga.
+
+[pause]
+
+Um desgosto que não tem causa imediata.
+
+Uma frieza que tu não pediste.
+
+Uma vontade estranha de te afastares.
+
+[short pause]
+
+E não percebes porquê.
+
+[long pause]
+
+Percebes, quando olhas para trás, que há anos que estás a carregar estas pequenas contas que nunca foram ditas.
+
+[pause]
+
+O ressentimento não vem de uma coisa grande que te fizeram.
+
+Vem de centenas de coisas pequenas que tu não tiveste linguagem para nomear.
+
+[short pause]
+
+Era mais fácil, no momento, ceder.
+
+Era mais socialmente aceitável dizer que estavas bem, que não precisavas, que podias fazer.
+
+[pause]
+
+E cada uma destas pequenas cedências foi guardada.
+
+Sem nome. Sem data. Sem endereço.
+
+Mas guardada.
+
+[long pause]
+
+Pensa em três relações importantes na tua vida.
+
+Pergunta-te, para cada uma: há alguma coisa que eu tenha acumulado, sem dizer, ao longo dos anos?
+
+[pause]
+
+Não precisas de resolver. Não precisas de confrontar.
+
+Só de reconhecer a existência do registo interno.
+
+[short pause]
+
+O ressentimento não se dissolve por atenção, mas a atenção é o primeiro passo.
+
+Porque enquanto tu chamas paciência ao que é ressentimento, não podes trabalhar com ele.
+
+[pause]
+
+Quando lhe chamas o nome certo, passa a poder ser atendido.
+
+[long pause]
+
+E muitas vezes, o simples acto de nomear um ressentimento antigo, em privado, alivia-o mais do que imaginas.
+
+Como se ele precisasse de ser reconhecido — não necessariamente comunicado, não necessariamente resolvido.
+
+Apenas visto.
+
+[pause]
+
+Tu, finalmente, a ver o que tu mesma guardaste em silêncio.`,
+      },
+      {
+        id: "limite-sagrado-m7c",
+        titulo: "M7.C — A vida menor do que podia ser",
+        curso: "limite-sagrado",
+        texto: `Tu estás a viver uma vida menor do que podia ser.
+
+[pause]
+
+Não porque te falte talento. Não porque te falte sorte. Não porque te falte esforço.
+
+Porque te falta espaço.
+
+[long pause]
+
+Cada não que não disseste transformou-se num pequeno compromisso.
+
+Cada cedência tornou-se uma rotina.
+
+Cada cedência na rotina reduziu o teu espaço para outras coisas.
+
+[pause]
+
+E, ao longo dos anos, o espaço que estava reservado para ti — para o que tu quererias, para quem tu poderias tornar-te — foi ficando cada vez mais pequeno.
+
+[short pause]
+
+Até que um dia, olhas para a tua vida e sentes uma coisa difícil de nomear.
+
+Não é infelicidade, necessariamente.
+
+É estreiteza.
+
+[long pause]
+
+A tua vida cabe bem dentro das expectativas dos outros.
+
+Mas não cabe tu inteira.
+
+[pause]
+
+Há partes tuas que nunca apareceram porque nunca houve espaço.
+
+Há escolhas que nunca fizeste porque estavas ocupada a acomodar outras.
+
+Há versões tuas que não existem ainda, mas existiriam se tivesses tido, ao longo dos anos, um bocadinho mais de recusa e um bocadinho menos de aceitação.
+
+[short pause]
+
+Isto é o custo real dos não-limites.
+
+Não são os dias isolados em que ficaste mais cansada.
+
+É a vida alternativa que não aconteceu.
+
+[long pause]
+
+Esta é a parte mais dolorosa de se olhar com honestidade.
+
+Porque a vida que não aconteceu não pode ser recuperada.
+
+[pause]
+
+Mas há uma boa notícia dentro desta má notícia.
+
+[short pause]
+
+A vida que ainda não aconteceu — os próximos anos, a próxima fase, as próximas escolhas — essa pode ser diferente.
+
+E depende quase exclusivamente de uma coisa.
+
+[pause]
+
+De quanto espaço estás disposta, agora, a reclamar de volta.
+
+[long pause]
+
+Cada não que disseres nos próximos meses é um pedaço de espaço que volta.
+
+Cada recusa silenciosa é um canto da tua vida que reabre.
+
+Cada conversa adiada que finalmente fizeres é tempo que te é devolvido.
+
+[pause]
+
+Não vai acontecer tudo de uma vez.
+
+Mas vai começar a acontecer, a partir do momento em que tu começares a reclamar.
+
+[short pause]
+
+A vida menor é o lugar onde estás. Não é o lugar onde tens de ficar.
+
+[long pause]
+
+Esta semana, escolhe um único sítio onde a tua vida foi ficando mais pequena do que tu quererias.
+
+Pode ser pequeno — um hábito, uma relação, uma tarefa assumida por ti que não é tua.
+
+[pause]
+
+E reclama esse sítio.
+
+Silenciosa. Gradualmente. Sem anúncio.
+
+Mas reclama.
+
+[short pause]
+
+Uma semana, um sítio. Mais nada.
+
+Ao fim de um ano, serão cinquenta e dois sítios reclamados.
+
+[pause]
+
+E a tua vida, sem anúncio público, vai-se expandir.
+
+Até caberes tu inteira.`,
+      },
+    ],
+  },
 ];
