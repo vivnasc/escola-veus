@@ -7039,4 +7039,365 @@ E podes pousá-lo.`,
       },
     ],
   },
+  {
+    id: "curso-ouro-proprio-m7",
+    titulo: "Curso Ouro Próprio — Módulo 7 (Aulas A, B, C)",
+    descricao: "Ganhar Mais Não Resolve. Material de áudio para alunos.",
+    scripts: [
+      {
+        id: "ouro-proprio-m7a",
+        titulo: "M7.A — O buraco que o dinheiro não enche",
+        curso: "ouro-proprio",
+        texto: `Já tiveste mais dinheiro do que o costume — e mesmo assim a inquietação não passou?
+
+[pause]
+
+Já recebeste aquilo que querias e, em vez de alívio, sentiste: e agora?
+
+[long pause]
+
+Recebes o aumento. Ou o bónus. Ou o pagamento daquele projecto grande.
+
+O dinheiro entra na conta e, por um instante, respiras.
+
+Finalmente.
+
+[pause]
+
+Mas o instante dura pouco. Horas, talvez. Um dia.
+
+Depois o corpo volta ao mesmo sítio.
+
+[short pause]
+
+A mesma ansiedade. A mesma sensação de que não chega. A mesma conta mental que nunca fecha.
+
+[long pause]
+
+Pensavas que quando chegasses aqui — a este valor, a este salário, a esta estabilidade — a paz viria.
+
+Mas não veio.
+
+Veio outra lista. Veio outro objectivo. Veio a mesma inquietação com um número diferente.
+
+[pause]
+
+E começas a desconfiar: se isto não resolveu, o que resolve?
+
+Porque a promessa era essa: ganha mais e vais estar bem.
+
+E ganhaste mais.
+
+[short pause]
+
+E não estás bem.
+
+[long pause]
+
+Há um buraco que o dinheiro não enche.
+
+Não porque o dinheiro seja insuficiente — mas porque o buraco não é financeiro.
+
+É emocional.
+
+[long pause]
+
+Muitas pessoas usam o dinheiro como substituto: de segurança, de valor próprio, de controlo, de amor.
+
+[pause]
+
+Se não me sinto segura, preciso de mais dinheiro.
+
+Se não me sinto valorizada, preciso de ganhar mais.
+
+Se não tenho controlo sobre a minha vida, preciso de ter controlo sobre a minha conta.
+
+[short pause]
+
+O dinheiro torna-se a resposta para perguntas que não são financeiras.
+
+[pause]
+
+E como a resposta nunca encaixa na pergunta, a insatisfação permanece.
+
+[long pause]
+
+Mais dinheiro tapa o sintoma — mas não toca na causa.
+
+E a causa, quase sempre, é outra fome.
+
+[pause]
+
+Uma fome de algo que o dinheiro não compra: presença, pertença, permissão de ser quem és.
+
+[long pause]
+
+Senta-te num sítio calmo. Fecha os olhos.
+
+Imagina que a tua conta bancária tem exactamente o dobro do que tem agora.
+
+[pause]
+
+Sente isso no corpo.
+
+Onde está o alívio?
+
+[short pause]
+
+Agora pergunta: o que é que farias com esse alívio?
+
+Não com o dinheiro — com o alívio.
+
+[pause]
+
+O que te permitirias sentir? Ser? Fazer?
+
+[short pause]
+
+A resposta a essa pergunta é o que realmente procuras.
+
+E talvez não tenha preço.
+
+[long pause]
+
+Há fomes que o dinheiro não mata.
+
+Reconhecê-las é o primeiro passo para parar de comer a coisa errada.`,
+      },
+      {
+        id: "ouro-proprio-m7b",
+        titulo: "M7.B — Sabotagem financeira",
+        curso: "ouro-proprio",
+        texto: `Já conseguiste juntar dinheiro e depois gastaste tudo de uma vez — quase sem perceber como?
+
+[pause]
+
+Já estiveste perto de uma estabilidade financeira e algo aconteceu que te levou de volta ao zero?
+
+[long pause]
+
+Estiveste meses a poupar. A conta crescia.
+
+E começaste a sentir-te estranha.
+
+[pause]
+
+Não confortável — estranha.
+
+Como se aquele dinheiro não fosse teu. Como se houvesse uma data de validade invisível.
+
+[short pause]
+
+Depois, sem razão clara, gastaste.
+
+[pause]
+
+Uma compra grande. Pequenas fugas de madrugada. Coisas que já nem te lembras.
+
+[short pause]
+
+Quando viste a conta de novo, estava quase onde começou.
+
+[pause]
+
+E sentiste duas coisas ao mesmo tempo: frustração e alívio.
+
+[short pause]
+
+Frustração porque perdeste o que juntaste.
+
+Alívio porque estar sem dinheiro é mais familiar do que ter.
+
+[long pause]
+
+A sabotagem financeira não é falta de disciplina.
+
+É um regresso ao que conheces.
+
+[pause]
+
+Se cresceste com pouco, ter pode ser desconfortável.
+
+Se associas dinheiro a conflito, ter pode sentir-se como estar em perigo.
+
+[short pause]
+
+Se acreditas, lá no fundo, que não mereces — encontras formas de garantir que não tens.
+
+[long pause]
+
+Decisões que parecem razoáveis no momento mas que, vistas de longe, formam um padrão claro.
+
+[pause]
+
+Ganhas e perdes. Constróis e destróis.
+
+A sabotagem não é o problema.
+
+É o sintoma.
+
+[short pause]
+
+O que está por baixo é uma crença sobre o teu lugar no mundo.
+
+[long pause]
+
+Pensa no último momento em que gastaste dinheiro que tinhas poupado — sem planear, sem precisar.
+
+Não no que compraste.
+
+No que sentias antes.
+
+[pause]
+
+Fecha os olhos e volta lá.
+
+Estavas ansiosa? Inquieta? Havia algo que não querias sentir?
+
+[short pause]
+
+Põe a mão onde essa sensação vivia.
+
+Respira para esse sítio.
+
+[pause]
+
+A sabotagem começa sempre antes da compra.
+
+Começa na sensação que não quiseste ficar a sentir.
+
+[long pause]
+
+Não estás a falhar com o dinheiro.
+
+Estás a regressar ao único lugar que o teu corpo conhece como casa.`,
+      },
+      {
+        id: "ouro-proprio-m7c",
+        titulo: "M7.C — Suficiente: quando é suficiente?",
+        curso: "ouro-proprio",
+        texto: `Tens um número na cabeça — um valor a partir do qual tudo ficaria bem?
+
+[pause]
+
+E se atingisses esse número, acreditas mesmo que parariaspor?
+
+Ou o número subiria?
+
+[long pause]
+
+Quando ganhavas mil, pensavas: se ganhasse dois mil.
+
+Quando ganhaste dois mil, pensaste: se ganhasse três mil.
+
+[pause]
+
+O número muda.
+
+A sensação não.
+
+[long pause]
+
+Há sempre um próximo patamar, uma próxima meta, uma próxima prova de que ainda não chega.
+
+Não é ambição — ambição tem direcção.
+
+Isto é outra coisa.
+
+[pause]
+
+É uma incapacidade de dizer: chega. É suficiente. Estou bem.
+
+[short pause]
+
+Porque no momento em que paras, aparece o medo.
+
+[pause]
+
+Se paro de querer mais, o que acontece?
+
+Se me contento, não estou a desistir?
+
+Se não corro, não fico para trás?
+
+[short pause]
+
+E então continuas.
+
+Não porque queiras mais — mas porque tens medo de parar.
+
+[long pause]
+
+A corrida financeira não é sobre dinheiro.
+
+É sobre o silêncio que ficaria se parasses.
+
+[long pause]
+
+Se nunca é suficiente, o problema não está no quanto.
+
+Está no que o dinheiro está a substituir.
+
+[pause]
+
+Para algumas pessoas, acumular é segurança contra o caos.
+
+Para outras, é prova de valor.
+
+Para outras ainda, é a única linguagem de sucesso que aprenderam.
+
+[short pause]
+
+Quando o suficiente não existe, estás a pedir ao dinheiro que te dê algo que ele não pode dar: paz.
+
+[long pause]
+
+Porque a paz não vem de um número — vem de uma decisão.
+
+[pause]
+
+A decisão de dizer: o que tenho, neste momento, permite-me viver com dignidade.
+
+E o que me falta não é mais dinheiro — é mais presença no que já tenho.
+
+[short pause]
+
+Isto não é conformismo.
+
+É lucidez.
+
+[pause]
+
+E há uma diferença enorme entre estar conforme e estar presente.
+
+[long pause]
+
+Escreve o teu número.
+
+Aquele valor mensal a partir do qual acreditas que ficarias bem.
+
+[pause]
+
+Agora olha para ele. E pergunta: o que é que esse número me daria que eu não tenho agora?
+
+Segurança? Liberdade? Reconhecimento? Paz?
+
+[short pause]
+
+Depois pergunta: há alguma parte disso que já posso ter — sem esperar pelo número?
+
+[pause]
+
+Não para desistires do número.
+
+Mas para não adiares a vida até lá chegares.
+
+[long pause]
+
+Suficiente não é um número.
+
+É uma decisão de estar presente no que já existe.`,
+      },
+    ],
+  },
 ];
