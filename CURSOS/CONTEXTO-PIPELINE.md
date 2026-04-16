@@ -49,95 +49,44 @@ Três domínios:
 
 ---
 
-## 3. O que falta — Pipeline completo por tipo de output
+## 3. Pipelines de Vídeo — REFERÊNCIA DEFINITIVA
 
-### 3.1. Vídeos YouTube (série Nomear — 122 hooks)
+**O documento definitivo dos pipelines está em:**
+`/ESCOLA-VEUS-VIDEO-PIPELINE REVISTO.md` (raiz do repo, branch main)
 
-**Formato:** Vídeo contemplativo curto (60-90s), publicação ~2× semana. Horizontal 16:9 + versão Shorts 9:16.
+**LER ESSE FICHEIRO ANTES DE TOCAR EM QUALQUER COISA DE VÍDEO.**
 
-**Estética:** **NATUREZA** (não figuras humanas). Text-to-video funciona bem para natureza — Vivianne já validou com Shorts TikTok.
+Resumo ultra-curto (ler o doc completo para detalhes):
 
-| Componente | Fonte | Estado |
-|---|---|---|
-| Áudio narração | ElevenLabs (via `/admin/audio-bulk`) | 🟡 em curso |
-| **Clips de natureza** | Runway Gen-4 **text-to-video** (plano ilimitado) — Vivianne processa no runway.app | ❌ |
-| **Música ambiente** | Suno API (instrumental) | ❌ por gerar |
-| **Texto em formas aleatórias** | Highlight overlay (só nos 2-4 momentos-destaque) | ❌ |
-| Legendas | Whisper ou manual | ❌ |
-| **Thumbnail** | Frame de Runway (nature) + texto sobreposto | ❌ |
-| Título/descrição SEO | Manual ou GPT | ❌ |
-| Tags YouTube | Manual | ❌ |
-| **Intro/outro bumper** | 2-3s com logo da escola + signature sound | ❌ |
+### Pipeline 1 — Cursos (Slides + Suno)
 
-**NÃO se usa LoRA. NÃO se gera figura humana. Só natureza.**
+- Input: scripts Markdown → parser → slides.json → review → render
+- Visual: **editorial escuro** (`#0d0d0d`, creme `#f0ece6`, coral `#E94560`, roxo `#533483`)
+- Tipografia: **DM Serif Display** (títulos) + **Nunito** (corpo)
+- **SEM voz** no vídeo — só slides animados + música Suno contemplativa
+- **SEM silhuetas, SEM territórios, SEM LoRA, SEM Flux**
+- Transições: fade to black (0.5s)
+- Stack: Node.js + Puppeteer + FFmpeg (CLI local, sem APIs externas)
+- CLI: `escola-veus curso parse/preview/render`
 
-**Pipeline técnico:**
+### Pipeline 2 — YouTube / Funil (Runway + Texto + Suno)
 
-1. Para cada hook, o app gera uma **lista de prompts Runway text-to-video de natureza**, mapeados ao tema do hook.
-   - Ex: hook sobre perda → vento em ramos secos, folhas a cair, luz crepuscular
-   - Ex: hook sobre raiva → fogo lento, brasas, água a ferver em câmara lenta
-   - Ex: hook sobre descanso → água parada, nevoeiro em floresta, nuvens em movimento lento
-2. Vivianne cola cada prompt em runway.app, processa, descarrega MP4s, carrega-os no editor interno.
-3. App gera faixa Suno a condizer com o mood (ambient, lento, sem bateria).
-4. Vivianne marca 2-4 momentos-destaque, escreve texto em formas aleatórias.
-5. Render no editor interno → MP4.
-6. Publica no YouTube (horizontal) + versão Shorts (vertical, 9:16, corte dos melhores 15-45s).
+- Input: clips Runway (gerados manualmente no app) + script markdown com `@cena` + timings
+- Texto overlay: **contemplativo flutuante** (fade/rise/typewriter) — DM Serif Display + Nunito
+- Música: Suno (cinematográfico, emocional)
+- **SEM voz** — clips + texto + música
+- Stack: FFmpeg drawtext (ou HTML+Puppeteer para animações melhores)
+- CLI: `escola-veus yt parse/preview/render`
 
-**Biblioteca de prompts de natureza (a construir):**
+### O que NÃO se usa
 
-Banco de ~30 motivos organizados por mood:
-- **Água:** rio lento, gotas em pedra, chuva em janela, mar calmo ao crepúsculo, nevoeiro sobre lago
-- **Fogo:** vela a tremer, brasas, fogo lento em madeira, cinzas a voar
-- **Vento:** campo de trigo, folhas a girar, bandeira em poste, véus ao vento
-- **Luz:** raios entre árvores, amanhecer, luz dourada em parede, reflexos em água
-- **Terra:** areia a escorrer, musgo em pedra, raízes, folhas húmidas
-- **Céu:** nuvens lentas, chuva a começar, pôr-do-sol, estrelas em time-lapse
-- **Flora:** flor a abrir em time-lapse, ramo seco, campo de ervas altas, rosas murchas
-
-Cada hook mapeia para 6-9 destes motivos (um por clip de 10s).
-
-### 3.2. Vídeos das Aulas (curso — 168 aulas)
-
-**Formato:** **Slideshow visual** seguindo o sistema de territórios definido em `course-guidelines.ts`.
-
-**NÃO são fotos stock. NÃO são imagens genéricas.** Cada curso tem um **território visual** (`TERRITORY_GUIDES`) com cor, progressão, silhueta e céu próprios.
-
-**Secções de cada aula** (definidas em `SCRIPT_STRUCTURE`):
-1. Abertura (10-15s): céu desce ao território, título creme, sem voz
-2. Pergunta inicial (15-30s): gancho emocional
-3. Situação humana (120-180s): cenário real reconhecível
-4. Revelação do padrão (120-180s): o que está por baixo
-5. Gesto de consciência (60-120s): algo concreto e praticável
-6. Frase final (15-30s): a frase que fica
-7. Fecho (10-15s): território dissolve, logo Sete Véus, silêncio
-
-**Visual:**
-- Céu azul-marinho profundo (#1A1A2E) — nunca dia pleno, nunca noite total
-- Silhueta terracota (#C4745A) com brilho dourado (#C9A96E) — sem rosto, sem raça, sem idade
-- Progressão por módulo: M1-M2 mais escuro → M7-M8 quase amanhecer
-- Tipografia: Playfair Display ou Cormorant Garamond, creme (#F5F0E6), fade in/out
-- Transições: dissolve lento SEMPRE. Nunca corte seco, nunca wipe, nunca zoom brusco
-- Música: ambiente subtil, quase inaudível — textura, não melodia. Silêncio intencional entre secções
-
-| Componente | Fonte | Estado |
-|---|---|---|
-| Áudio narração | ElevenLabs | 🟡 em curso |
-| **Slides do território** | Gerados conforme `TERRITORY_GUIDES` + `VISUAL_GUIDELINES` | ❌ |
-| **Música ambiente** | Suno Pro API (instrumental, quase inaudível) | ❌ código API avariado |
-| Transições dissolve | Render no editor interno | ❌ |
-| Tipografia creme | Overlay animado (fade) | ❌ |
-
-**Hosting:** Na **Escola dos Véus App** — produto pago, auth + monetização já configurados.
-
-### 3.2.1. Suno API — estado actual
-
-- **Plano:** Suno Pro (licença comercial ✅)
-- **Uso:** gerar músicas instrumentais + músicas da Loranne
-- **Problema:** código de integração API avariado (retornava 404). **Precisa de fix.**
-- **Endpoint existente:** `/api/admin/courses/generate-music/route.ts`
-- **Acção próxima sessão:** debuggar API Suno, verificar endpoints actuais, restabelecer integração
-
-### 3.3. Shorts (YouTube/Instagram/TikTok)
+- ❌ Silhuetas terracota / territórios visuais / Mundo dos Véus — **abolido**
+- ❌ LoRA `veus_figure` — **abolido**
+- ❌ Loranne — não nas imagens/vídeos
+- ❌ Shotstack / Remotion — substituído por FFmpeg + Puppeteer
+- ❌ Editor web interno tipo CapCut — é **CLI**
+- ❌ Paleta navy/terracota/dourado — substituída por negro/creme/coral/roxo
+- ❌ `VISUAL_GUIDELINES` e `TERRITORY_GUIDES` em `course-guidelines.ts` — **desactualizados, não seguir**
 
 Extraídos dos vídeos grandes ou escritos à parte.
 
@@ -153,154 +102,46 @@ Extraídos dos vídeos grandes ou escritos à parte.
 
 ## 4. O que falta tecnicamente
 
-### 4.1. Pipeline unificador (a construir)
+### 4.1. CLI `escola-veus` (a construir)
 
-Uma página nova, ex: `/admin/video-pipeline`, que:
+Ferramenta CLI conforme definido em `ESCOLA-VEUS-VIDEO-PIPELINE REVISTO.md`.
 
-1. Lista todos os scripts (YouTube + aulas).
-2. Para cada um, mostra estado de:
-   - Áudio (já existe, via bulk-audio)
-   - Imagens (gerar em batch)
-   - Música Suno (gerar em batch)
-   - Prompts Runway (exportar lista para ela usar externamente)
-   - Highlights (ela marca manualmente 2-4 frases por script)
-3. Gera ficheiro exportável para CapCut (ver 4.4).
+**Stack:** Node.js + Puppeteer + FFmpeg (local, sem APIs externas para render).
 
-### 4.2. Suno API — geração de música
-
-Já está configurado no projecto (`SUNO_API_KEY`, `SUNO_API_URL`), mas status: "API retorna 404".
-
-**Acção:** verificar endpoint actual Suno. Se continua partido, alternativas:
-- Suno externo (copy/paste URL gerado no site da Suno)
-- AIVA, Mubert, Soundraw — APIs alternativas
-- Biblioteca da Loranne (1200+ faixas em `music.seteveus.space`)
-
-**Prompts Suno por tipo:**
-- YouTube contemplativo: "ambient pt-pt feminine, slow piano, acoustic guitar, 60bpm, warm, contemplative, no drums, no vocals"
-- Aulas ambiente: "very minimal ambient pad, drone, 40bpm, meditative, imperceptible"
-
-### 4.3. Runway — prompts para processamento externo
-
-Ela processa no runway.app directamente (fora do app).
-
-O app precisa de **gerar os prompts** e apresentá-los numa lista exportável (CSV ou UI para copy/paste), não submeter automaticamente.
-
-**Estrutura do prompt Runway:**
-- Imagem base (upload URL)
-- Motion prompt: movimento subtil, contemplativo (zoom lento, sopro, luz a mudar)
-- Duração: 10s
-
-Já existe `buildMotionPrompt()` no código — reutilizar.
-
-### 4.4. Editor de vídeo interno (o "CapCut" do app)
-
-**Vivianne NÃO usa CapCut nem qualquer editor externo.**
-O próprio app tem de ter um editor interno com as funcionalidades que ela precisa.
-
-**Rota proposta:** `/admin/editor/[video-id]`
-
-**Funcionalidades mínimas:**
-
-1. **Timeline multi-pista** (drag & drop)
-   - Pista 1: Áudio narração (só uma, vinda do bulk-audio)
-   - Pista 2: Música ambiente (Suno — volume reduzido, loop se preciso)
-   - Pista 3: Imagens/Clips vídeo (Flux estático + clips Runway carregados pela Vivianne)
-   - Pista 4: Texto overlay (só nos momentos-destaque; formas aleatórias animadas)
-   - Pista 5: Legendas (opcional)
-
-2. **Controles por clip**
-   - Duração, trim (in/out)
-   - Transições simples (cross-fade, fade-in/out)
-   - Posição X/Y, escala, rotação (para o texto em formas)
-   - Volume por pista
-   - Key-frames básicos (zoom lento numa imagem, por exemplo)
-
-3. **Highlights de texto (ESPECIAL da escola)**
-   - A Vivianne marca 2-4 momentos no áudio onde aparece texto.
-   - O texto aparece em forma aleatória (círculo, blob orgânico, rectângulo solto, linha manuscrita).
-   - Animação: fade-in, staywag 2-3s, fade-out.
-   - Tipografia: serif Escola (Cormorant ou similar).
-   - Cor: dourado (#D4A853) ou creme sobre fundo escuro.
-   - **Esta é a assinatura visual da escola.** Desenvolver biblioteca de ~8-12 shapes aleatórios.
-
-4. **Preview em tempo real**
-   - Player HTML5 que mostra a composição actual.
-   - Scrub pela timeline.
-   - Zoom da timeline (para edição fina de timing).
-
-5. **Renderização**
-   - Backend: Shotstack API (já configurado, falta `SHOTSTACK_ENV=v1` no Vercel).
-   - Ou: FFmpeg via servidor próprio (Vercel Functions com limites, ou VPS externo).
-   - Ou: Remotion (React-based, render no browser ou Lambda).
-   - Output: MP4 1920×1080 (horizontal YouTube) ou 1080×1920 (vertical Shorts).
-
-6. **Publicação directa YouTube** (opcional futuro)
-   - YouTube Data API — upload + metadata.
-   - Se não der, download do MP4 e upload manual.
-
-**Stack técnica sugerida:**
-
-- Frontend do editor: **Remotion** (https://remotion.dev) — React-based, timeline, preview em browser, render no servidor.
-  Alternativa: **Editly**, **Motion Canvas**, ou timeline custom com Canvas API.
-- Backend render: **Shotstack** (cloud, $) ou **Remotion Lambda** (AWS, $) ou **FFmpeg self-hosted**.
-- State: Zustand ou Redux para o estado da timeline.
-- Storage: Supabase (já existe) para guardar projectos (JSON) + assets.
-
-**Modelo de dados (simplificado):**
-
-```typescript
-type VideoProject = {
-  id: string;
-  scriptId: string;              // "a-chama-m1a" ou "nomear-serie-1-hook-1"
-  format: "youtube-horizontal" | "shorts-vertical" | "aula-horizontal";
-  tracks: {
-    audio: { url: string; start: number; end: number }[];
-    music: { url: string; start: number; end: number; volume: number }[];
-    visual: { url: string; type: "image" | "video"; start: number; duration: number; effects: Effect[] }[];
-    text: { content: string; shape: "circle" | "blob" | "rect" | "line"; start: number; duration: number; pos: {x,y}; animation: string }[];
-    subtitles?: { srtUrl: string }[];
-  };
-  duration: number;
-  renderStatus: "draft" | "rendering" | "ready" | "error";
-  renderUrl?: string;
-};
+**Comandos:**
+```bash
+escola-veus curso parse aula.md       # Script → slides.json
+escola-veus curso preview             # Preview HTML
+escola-veus curso render slides.json  # Render → MP4
+escola-veus yt parse script.md        # Script → timeline.json  
+escola-veus yt preview                # Preview HTML
+escola-veus yt render timeline.json   # Render → MP4
+escola-veus batch curso sangue-e-seda/ # Batch
 ```
 
-**Primeiro MVP do editor (ordem):**
+### 4.2. Suno API — fix urgente
 
-1. Página que lista os scripts (prontos vs por editar).
-2. Clicar num script → abre o editor com timeline pré-preenchida:
-   - Áudio já do bulk-audio
-   - Música placeholder (ela clica "Gerar música Suno")
-   - Imagens placeholder (ela clica "Gerar imagens Flux" — 4-6 auto)
-   - Sem texto overlay inicial
-3. Ela arrasta, ajusta durações, marca os destaques, escreve o texto, escolhe a forma.
-4. "Pré-visualizar" → preview HTML5.
-5. "Renderizar" → Shotstack/Remotion → MP4.
-6. "Descarregar" ou "Publicar no YouTube".
+- ✅ Suno Pro activo (licença comercial)
+- ❌ **Código de integração avariado** (`generate-music/route.ts` retorna 404) — FIX PRIORITÁRIO
+- Vivianne já usa a API para gerar músicas da Loranne — o código é que está partido
+- Precisa de debuggar endpoints actuais e restabelecer integração
 
-### 4.5. Áudios — gerar os que faltam
+### 4.3. Áudios — gerar os que faltam
 
-Vivianne está a gerar manualmente via `/admin/audio-bulk`. ~112/290 gerados.
-
-**Alertas detectados nos screenshots:**
-- Um áudio deu erro `quota_exceeded` (créditos ElevenLabs a esgotar).
-
-**Acções:**
-- Terminar geração dos pendentes enquanto há créditos.
-- Depois dos créditos expirarem: recarregar conta quando fizer sentido, ou contratar plano maior.
+~112/290 gerados via `/admin/audio-bulk`. Créditos ElevenLabs a esgotar (um áudio deu `quota_exceeded`).
 
 ---
 
 ## 5. O que provavelmente esqueceste (lista para decidir)
 
-### Assinatura visual consistente (SEM LoRA)
+### Paleta visual actualizada
 
-Sem LoRA e sem Flux, a identidade visual tem de vir de:
-- ❌ **Paleta de cor fixa** em TODOS os overlays/thumbnails (navy `#1A1A2E`, dourado `#D4A853`, terracota `#C4745A`, creme)
-- ❌ **Tipografia única** (serif Cormorant ou similar — já definida em `IDENTIDADE-VISUAL-VIDEOS.md`)
-- ❌ **Intro/outro bumper** de 2-3s com logo "Escola dos Véus" + signature sound (repetido em todos os vídeos)
-- ❌ **Biblioteca de 8-12 shapes aleatórios** para texto overlay (círculo, blob, linha manuscrita, rectângulo solto) — assinatura única da escola
+Paleta do pipeline de vídeo (definida no doc revisto):
+- Fundo: `#0d0d0d` (negro quase puro)
+- Texto: `#f0ece6` (creme claro)
+- Accent 1: `#E94560` (coral)
+- Accent 2: `#533483` (roxo)
+- Texto secundário: `#6a6460` (cinza quente)
 - ❌ **Filtro/LUT** em pós-produção para unificar clips Runway (ligeiro warm tone dourado)
 
 ### Hosting das aulas pagas
