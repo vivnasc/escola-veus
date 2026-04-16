@@ -1,0 +1,15 @@
+{
+  "name": "escola-veus-cli",
+  "version": "0.1.0",
+  "description": "CLI para produzir videos da Escola dos Veus (slides + Runway)",
+  "bin": {
+    "escola-veus": "./cli.js"
+  },
+  "scripts": {
+    "test": "node cli.js curso parse --help"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=18"
+  }
+}

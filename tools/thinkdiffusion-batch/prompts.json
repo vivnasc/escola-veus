@@ -1,0 +1,146 @@
+{
+  "config": {
+    "checkpoint": "RealVisXL v4",
+    "width": 1920,
+    "height": 1080,
+    "cfg_scale": 6,
+    "steps": 35,
+    "sampler_name": "DPM++ 2M Karras",
+    "batch_size": 4,
+    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly"
+  },
+  "prompts": [
+    {
+      "id": "mar-01-golden-hour",
+      "category": "mar",
+      "mood": ["calma", "contemplativo"],
+      "prompt": "cinematic photograph of the Indian Ocean at golden hour, Mozambique coastline, warm turquoise water meeting white sand, gentle waves, sun low on horizon casting long golden reflections on water surface, tropical clouds lit from below in orange and pink, shot from water level perspective as if standing in shallow water, photorealistic, 8k, ultra detailed, National Geographic quality, warm color grading"
+    },
+    {
+      "id": "mar-02-aerial-bazaruto",
+      "category": "mar",
+      "mood": ["calma", "vasto"],
+      "prompt": "aerial drone photograph of crystal clear turquoise ocean water over white sand, Bazaruto Archipelago Mozambique, shallow coral reef visible through transparent water, gentle ripples creating light patterns on sandy bottom, deep blue ocean in background, scattered white clouds, cinematic lighting, hyperrealistic, 8k detail"
+    },
+    {
+      "id": "mar-03-wave-rocks",
+      "category": "mar",
+      "mood": ["raiva", "libertacao"],
+      "prompt": "dramatic ocean wave crashing on rocky Mozambican shore at sunset, spray catching golden light, dark volcanic rocks in foreground, Indian Ocean deep blue-green, sky ablaze in coral and amber, long exposure effect on water, immersive wide angle as if standing on the rocks, cinematic photography"
+    },
+    {
+      "id": "mar-04-moonlit",
+      "category": "mar",
+      "mood": ["solidao", "contemplativo"],
+      "prompt": "calm moonlit ocean at night, Mozambique beach, full moon reflected in still water creating silver path, bioluminescent plankton glowing blue along shoreline, palm tree silhouettes on left, stars visible in dark sky, long exposure photography, serene and meditative atmosphere, 8k"
+    },
+    {
+      "id": "praia-01-tofo-sunrise",
+      "category": "praia",
+      "mood": ["recomeco", "esperanca"],
+      "prompt": "pristine tropical beach at sunrise, Praia do Tofo Mozambique, golden sand stretching into distance, coconut palm trees leaning over water, first light painting everything in warm amber, fishing dhow boats silhouetted on horizon, footprints in wet sand, immersive perspective looking down the beach, photorealistic, warm cinematic color grading"
+    },
+    {
+      "id": "praia-02-deserted-dawn",
+      "category": "praia",
+      "mood": ["solidao", "calma"],
+      "prompt": "deserted African beach at dawn, morning mist hovering over calm water, traditional wooden fishing boats pulled onto sand, fishing nets drying on stakes, soft diffused golden light, barefoot tracks in sand leading to water, peaceful solitude, Inhambane coast Mozambique, documentary photography style"
+    },
+    {
+      "id": "rio-01-forest",
+      "category": "rio",
+      "mood": ["conexao", "misterio"],
+      "prompt": "wide river flowing through lush African forest, Mozambique interior, morning mist rising from water surface, sunbeams piercing through canopy creating god rays, still reflections of trees in calm water, green and gold color palette, immersive low angle from river bank, cinematic photography 8k"
+    },
+    {
+      "id": "rio-02-waterfall",
+      "category": "rio",
+      "mood": ["libertacao", "vital"],
+      "prompt": "majestic waterfall in tropical African forest, water cascading over mossy rocks into turquoise pool below, mist and spray catching rainbow light, lush green vegetation surrounding, ferns and tropical flowers in foreground, long exposure silky water effect, Gorongosa National Park atmosphere, hyperrealistic"
+    },
+    {
+      "id": "rio-03-lake-golden",
+      "category": "rio",
+      "mood": ["calma", "vasto"],
+      "prompt": "serene lake at golden hour in African savanna, mirror-like water reflecting dramatic cumulus clouds, acacia tree silhouette on far shore, warm amber and purple sky, birds in formation flying low over water, vast open landscape, feeling of infinite space, Mozambique wetlands, cinematic wide angle"
+    },
+    {
+      "id": "ceu-01-sunset",
+      "category": "ceu",
+      "mood": ["libertacao", "expansivo"],
+      "prompt": "dramatic African sunset sky, massive cumulus clouds lit from below in deep orange coral and violet, sun just below horizon, silhouette of baobab tree in lower third, vast open savanna landscape, Mozambique sky, feeling of infinite space and spiritual presence, cinematic photography, 8k ultra wide"
+    },
+    {
+      "id": "ceu-02-full-moon",
+      "category": "ceu",
+      "mood": ["solidao", "misterio"],
+      "prompt": "full moon rising over African landscape, enormous moon low on horizon appearing twice its normal size, warm golden moonlight illuminating savanna grassland, scattered acacia trees as dark silhouettes, stars beginning to appear in deep blue sky, magical twilight hour, Mozambique, hyperrealistic"
+    },
+    {
+      "id": "ceu-03-milky-way",
+      "category": "ceu",
+      "mood": ["solidao", "vasto"],
+      "prompt": "time-lapse style photograph of Milky Way over African savanna, millions of stars visible in dark sky, faint purple and blue nebula glow, single baobab tree silhouetted against starscape, flat horizon line, feeling of cosmic insignificance and beauty, Mozambique night sky, astrophotography style, 8k"
+    },
+    {
+      "id": "ceu-04-thunderstorm",
+      "category": "ceu",
+      "mood": ["raiva", "poderoso"],
+      "prompt": "dramatic thunderstorm approaching over African ocean, dark towering cumulonimbus clouds, lightning bolt illuminating cloud interior with purple-white light, calm sea in foreground creating contrast, last golden sunlight on horizon edge, powerful and awe-inspiring, Mozambique coast, cinematic photography"
+    },
+    {
+      "id": "chuva-01-ocean-rain",
+      "category": "chuva",
+      "mood": ["calma", "contemplativo"],
+      "prompt": "tropical rain falling on calm ocean surface, each raindrop creating perfect circular ripples, warm grey overcast sky, Mozambique coast, close-up perspective at water level, rain catching soft diffused light, meditative and peaceful, sound of rain almost visible, hyperrealistic macro photography, 8k"
+    },
+    {
+      "id": "chuva-02-monsoon-forest",
+      "category": "chuva",
+      "mood": ["medo", "misterio"],
+      "prompt": "heavy monsoon rain on lush tropical forest canopy, water streaming down broad green leaves, mist rising from warm ground, dramatic lighting filtering through rain clouds, everything glistening wet, Mozambique rainy season, immersive feeling of being under the rain, cinematic photography"
+    },
+    {
+      "id": "chuva-03-person-beach",
+      "category": "chuva",
+      "mood": ["libertacao", "catartico"],
+      "prompt": "single person standing in warm tropical rain on empty beach, seen from behind, arms slightly open, rain visible as silver streaks against dark sky, wet sand reflecting figure, ocean calm in background, cathartic and liberating mood, African coast, cinematic wide angle, golden hour breaking through rain clouds"
+    },
+    {
+      "id": "savana-01-sunrise",
+      "category": "savana",
+      "mood": ["recomeco", "vasto"],
+      "prompt": "vast African savanna at sunrise, golden grassland stretching to distant mountains, scattered baobab trees with massive trunks, warm morning light casting long shadows, herd of impala grazing in middle distance, Gorongosa Mozambique atmosphere, epic landscape photography, 8k ultra wide, National Geographic quality"
+    },
+    {
+      "id": "savana-02-baobab",
+      "category": "savana",
+      "mood": ["heranca", "ancestral"],
+      "prompt": "ancient baobab tree at golden hour, massive trunk with textured bark, branches reaching outward like arms, warm amber light filtering through sparse leaves, red African soil at base, small figure of woman standing near trunk for scale showing enormous size, Mozambique interior, cinematic portrait orientation"
+    },
+    {
+      "id": "savana-03-mangrove",
+      "category": "savana",
+      "mood": ["conexao", "misterio"],
+      "prompt": "dense tropical mangrove forest at low tide, roots creating intricate patterns above mud, dappled green light filtering through canopy, small crabs visible on roots, still water reflecting green, Mozambique coastline ecosystem, immersive perspective as if walking through, nature documentary photography"
+    },
+    {
+      "id": "flora-01-flower-rain",
+      "category": "flora",
+      "mood": ["desejo", "sensual"],
+      "prompt": "extreme close-up of tropical flower after rain, water droplets on crimson petals, morning light creating tiny prisms in each drop, soft blurred green background, Mozambican wildflower, macro photography, shallow depth of field, hyperrealistic detail, feeling of discovering beauty in the small"
+    },
+    {
+      "id": "flora-02-grass-wind",
+      "category": "flora",
+      "mood": ["libertacao", "expansivo"],
+      "prompt": "wild grass field swaying in wind, African savanna, golden seed heads catching afternoon sunlight, gentle motion blur suggesting movement, vast sky above, feeling of freedom and openness, Mozambique interior landscape, cinematic photography, warm color grading"
+    },
+    {
+      "id": "flora-03-coral-reef",
+      "category": "flora",
+      "mood": ["conexao", "misterio"],
+      "prompt": "underwater photograph of coral reef, Mozambique Indian Ocean, colorful tropical fish swimming through brain coral and sea fans, sunbeams penetrating clear blue water from surface above, feeling of floating in another world, vibrant colors, hyperrealistic marine photography, 8k"
+    }
+  ]
+}
