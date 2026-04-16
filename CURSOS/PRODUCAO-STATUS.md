@@ -1,6 +1,6 @@
 # Escola dos Veus — Estado da Producao
 
-**Ultima actualizacao:** 2026-04-16
+**Ultima actualizacao:** 2026-04-16 (sessao 2)
 **Actualizado por:** Claude Code
 
 > Este ficheiro e a referencia unica de continuidade entre sessoes.
@@ -19,9 +19,9 @@
 | **Bulk audio page** | **COMPLETO** | `/admin/audio-bulk` — ElevenLabs em massa, Supabase, sync |
 | **Audios ElevenLabs** | **EM CURSO** | **~112/290 gerados. Creditos a esgotar (quota_exceeded em alguns)** |
 | **Pipeline video (doc)** | **DEFINIDO** | **`ESCOLA-VEUS-VIDEO-PIPELINE REVISTO.md` — 2 pipelines (cursos slides + YouTube Runway)** |
-| **CLI escola-veus** | **POR CONSTRUIR** | **Node+Puppeteer+FFmpeg — parse/preview/render** |
-| **Suno API** | **AVARIADA** | **Suno Pro activo, codigo `generate-music/route.ts` retorna 404 — fix urgente** |
-| **Imagens ThinkDiffusion** | **POR GERAR** | **$34 saldo, prompts prontos em `CURSOS/PROMPTS-THINKDIFFUSION.md`** |
+| **CLI escola-veus** | **MVP PRONTO** | **`tools/escola-veus-cli/` — curso parse + preview funcionais. Render TODO** |
+| **Suno API** | **CORRIGIDO** | **Model V5_5→V4_5ALL (API.box). Testar no Vercel** |
+| **Imagens ThinkDiffusion** | **SCRIPT PRONTO** | **`tools/thinkdiffusion-batch/` — batch A1111 API, 22 prompts, mood selector** |
 | Admin de producao (UI) | COMPLETO | `/admin/producao/` — wizard 6 passos (video pipeline antigo) |
 | APIs de producao | COMPLETO | Todos os endpoints prontos (audio, imagem, animacao, legendas, musica, render) |
 | Manuais (PDF) | EM CURSO | 1/20 manuais escritos (Ouro Proprio — DRAFT) |
@@ -319,17 +319,34 @@ Report in Portuguese. Under 1500 words.
 
 ## Proximas Accoes (por ordem de prioridade)
 
-### PROXIMA SESSAO — Script batch ThinkDiffusion + fix Suno
+### FEITO nesta sessao (2026-04-16 sessao 2)
 
-1. **Construir script batch** que usa API Automatic1111 para gerar imagens em massa a partir de lista de prompts JSON
-2. **Fix Suno API** — debuggar `generate-music/route.ts`, restabelecer integracao
-3. **Terminar audios ElevenLabs** pendentes (~178 por gerar, se creditos permitirem)
+1. ✅ **Script batch ThinkDiffusion** — `tools/thinkdiffusion-batch/generate.js`
+   - 22 prompts natureza realista Mocambique/Africa em `prompts.json`
+   - Batch via API Automatic1111 (txt2img), 1920x1080, resume, dry-run
+   - Mood selector (`select-by-mood.js`) para ligar prompts a temas de scripts
+   - Uso: `node generate.js --url <ThinkDiffusion-URL> --dry-run`
+2. ✅ **Fix Suno API** — model `V5_5` → `V4_5ALL` em `generate-music/route.ts`
+   - V5_5 causava 404 na API.box. V4_5ALL e o mais capaz (8 min, 5000 chars)
+   - Adicionado error logging HTTP para debug futuro
+   - **TESTAR NO VERCEL** — confirmar que funciona com o deploy
+3. ✅ **CLI escola-veus MVP** — `tools/escola-veus-cli/`
+   - `escola-veus curso parse aula.md` → slides.json (frontmatter + split + duracao)
+   - `escola-veus curso preview slides.json` → HTML preview com navegacao + play
+   - Design editorial escuro (#0d0d0d, creme, coral, roxo) conforme pipeline
+
+### PROXIMA SESSAO
+
+1. **Vivianne: testar ThinkDiffusion batch** — lancar A1111 no ThinkDiffusion, correr `generate.js`
+2. **Vivianne: testar Suno no Vercel** — confirmar que generate-music funciona apos deploy
+3. **CLI render** — adicionar `escola-veus curso render` (Puppeteer + FFmpeg)
+4. **Terminar audios ElevenLabs** pendentes (~178 por gerar, se creditos permitirem)
 
 ### Curto prazo — Primeiro video YouTube completo
 
-1. Gerar imagens no ThinkDiffusion (prompts prontos em `CURSOS/PROMPTS-THINKDIFFUSION.md`)
+1. Gerar imagens no ThinkDiffusion com `generate.js` (22 prompts prontos)
 2. Alimentar Runway image-to-video com as imagens → clips 10s
-3. Construir CLI `escola-veus` (parse + preview + render) conforme `ESCOLA-VEUS-VIDEO-PIPELINE REVISTO.md`
+3. Adicionar render ao CLI (Puppeteer + FFmpeg)
 4. Montar 1 video piloto completo: clips + texto overlay + musica Suno → MP4
 5. Publicar no YouTube + versao Shorts
 
@@ -377,7 +394,7 @@ Report in Portuguese. Under 1500 words.
 - Motion prompts gerados a partir da visualNote de cada cena (buildMotionPrompt), MOTION fixo e fallback
 - Botao "Nova imagem" disponivel no passo 4 (animacoes) para re-gerar imagem de cena individual
 - Musica: 3 faixas (abertura + instrumental + fecho). So "Comecar no seg:" — duracao calculada da cena
-- Suno API retorna 404 — usar URLs directos de Loranne ou Suno externo
+- Suno API: model corrigido de V5_5 para V4_5ALL. Testar no Vercel
 - Prompts de imagem e animacao sao editaveis na UI (sem precisar deploy)
 
 ---
@@ -418,4 +435,17 @@ escola-veus-app/src/
     test-voice/route.ts             ← sample curto ElevenLabs (sem upload)
     generate-one/route.ts           ← audio completo + upload Supabase
     check-existing/route.ts         ← lista ficheiros ja existentes numa pasta
+
+tools/
+  thinkdiffusion-batch/
+    generate.js                     ← batch A1111 API (ThinkDiffusion) → imagens 1920x1080
+    prompts.json                    ← 22 prompts natureza Mocambique + config SDXL
+    select-by-mood.js               ← seleccionar imagens por mood/tema
+    output/                         ← imagens geradas (por categoria)
+
+  escola-veus-cli/
+    cli.js                          ← CLI principal: escola-veus curso parse/preview/render
+    lib/curso-parse.js              ← parser Markdown → slides.json
+    lib/curso-preview.js            ← gerador HTML preview
+    lib/args.js                     ← utils CLI
 ```

@@ -32,6 +32,8 @@ export async function POST(req: NextRequest) {
 
     const baseUrl = apiUrl.replace(/\/+$/, "");
 
+    // API.box supported models: V3_5, V4, V4_5, V4_5ALL, V4_5PLUS
+    // V5_5 was causing 404 — V4_5ALL is the most capable (up to 8 min, 5000 chars)
     const res = await fetch(`${baseUrl}/api/v1/generate`, {
       method: "POST",
       headers: {
@@ -41,11 +43,19 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         customMode: false,
         instrumental: true,
-        model: "V5_5",
+        model: "V4_5ALL",
         prompt: prompt || DEFAULT_PROMPT,
         callBackUrl: "https://escola.seteveus.space/api/webhook/suno",
       }),
     });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      return NextResponse.json(
+        { erro: `API.box HTTP ${res.status}: ${text.slice(0, 300)}` },
+        { status: 502 },
+      );
+    }
 
     const data = await res.json();
     const taskId = data?.data?.taskId || data?.taskId || data?.data?.data?.taskId || null;
