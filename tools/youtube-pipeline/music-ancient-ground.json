@@ -7,7 +7,7 @@
   "total_tracks": 100,
   "naming_pattern": "faixa-NN.mp3 (NN = 01-100)",
   "cover_pattern": "faixa-NN-cover.jpg ou .jpeg",
-  "uso_pipeline": "musica de fundo para videos YouTube de 1 min — 1 faixa por video",
+  "uso_pipeline": "musica de fundo para videos YouTube de 5 min — 1 faixa por video, 20 clips de 15s por video",
   "tracks": [
     "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-01.mp3",
     "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-02.mp3",
