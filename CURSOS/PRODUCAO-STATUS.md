@@ -1,6 +1,6 @@
 # Escola dos Veus — Estado da Producao
 
-**Ultima actualizacao:** 2026-04-15
+**Ultima actualizacao:** 2026-04-16
 **Actualizado por:** Claude Code
 
 > Este ficheiro e a referencia unica de continuidade entre sessoes.
@@ -14,19 +14,29 @@
 | Componente | Estado | Detalhe |
 |-----------|--------|---------|
 | Estrutura dos 20 cursos | COMPLETO | `src/data/courses.ts` — 20 cursos, 160 modulos, 480 sub-aulas |
-| Guidelines de producao | COMPLETO | `src/data/course-guidelines.ts` — 706 linhas |
-| Territorios visuais | COMPLETO | `src/data/territorios.ts` — 10 territorios mapeados |
-| Identidade visual videos | COMPLETO | `CURSOS/IDENTIDADE-VISUAL-VIDEOS.md` — Conceito A: O Veu e o Corpo |
-| Admin de producao (UI) | COMPLETO | `/admin/producao/` — wizard 6 passos |
-| Admin LoRA (UI) | COMPLETO | `/admin/lora/` — gerar + treinar automaticamente |
+| Scripts YouTube | COMPLETO | 122 scripts Nomear (24 series) — `src/data/nomear-scripts.ts` |
+| **Scripts das aulas** | **7/20 COMPLETOS + REVISTOS** | **168/480 scripts — 7 cursos revistos com fixes** |
+| **Bulk audio page** | **COMPLETO** | `/admin/audio-bulk` — ElevenLabs em massa, Supabase, sync |
+| **Audios ElevenLabs** | **EM CURSO** | **~112/290 gerados. Creditos a esgotar (quota_exceeded em alguns)** |
+| **Pipeline video (doc)** | **DEFINIDO** | **`ESCOLA-VEUS-VIDEO-PIPELINE REVISTO.md` — 2 pipelines (cursos slides + YouTube Runway)** |
+| **CLI escola-veus** | **POR CONSTRUIR** | **Node+Puppeteer+FFmpeg — parse/preview/render** |
+| **Suno API** | **AVARIADA** | **Suno Pro activo, codigo `generate-music/route.ts` retorna 404 — fix urgente** |
+| **Imagens ThinkDiffusion** | **POR GERAR** | **$34 saldo, prompts prontos em `CURSOS/PROMPTS-THINKDIFFUSION.md`** |
+| Admin de producao (UI) | COMPLETO | `/admin/producao/` — wizard 6 passos (video pipeline antigo) |
 | APIs de producao | COMPLETO | Todos os endpoints prontos (audio, imagem, animacao, legendas, musica, render) |
-| Scripts YouTube | COMPLETO | 122 scripts Nomear (24 series) — todos em `src/data/nomear-scripts.ts` |
-| LoRA treinado | COMPLETO | Treinado com 11 imagens via fal.ai, trigger: `veus_figure` |
-| **Trailer do canal** | **EM CURSO** | **5/8 animacoes geradas. Faltam 3 re-submeter + legendas + render** |
-| **Scripts das aulas** | **7/20 cursos COMPLETOS + REVISTOS** | **168/480 scripts escritos e revistos por subagente + fixes aplicados** |
-| **Bulk audio page** | **COMPLETO** | `/admin/audio-bulk` — gera audios em massa via ElevenLabs, upload Supabase, sync |
-| Manuais (PDF) | EM CURSO | 1/20 manuais escritos (Ouro Proprio — DRAFT) + pipeline PDF |
+| Manuais (PDF) | EM CURSO | 1/20 manuais escritos (Ouro Proprio — DRAFT) |
 | Cadernos exercicios | EM CURSO | 8/160 cadernos escritos (Ouro Proprio — DRAFT) |
+
+### ABOLIDO (nao usar, desactualizado)
+
+| Componente | Razao |
+|-----------|-------|
+| LoRA `veus_figure` | Abolido — nao se geram silhuetas/figuras |
+| Territorios visuais (`TERRITORY_GUIDES`) | Abolido — visual agora e natureza realista |
+| `IDENTIDADE-VISUAL-VIDEOS.md` (Conceito A) | Abolido — silhuetas/veus visuais descontinuados |
+| `VISUAL_GUIDELINES` em `course-guidelines.ts` | Abolido — paleta agora e `#0d0d0d`/creme/coral/roxo (ver pipeline revisto) |
+| Shotstack / Remotion | Substituido por FFmpeg + Puppeteer (CLI local) |
+| Trailer do canal (pipeline antigo) | Parado — reavaliar com novo pipeline |
 
 ---
 
@@ -294,49 +304,42 @@ Report in Portuguese. Under 1500 words.
 
 | Decisao | Escolha | Razao |
 |---------|---------|-------|
-| Conceito visual | Conceito A: O Veu e o Corpo | Unico que traduz o nome da escola em imagem |
-| Montagem cloud | Shotstack API | Sem AWS, sem CLI, 100% web |
-| Animacao principal | Runway Gen-4 Turbo API | Melhor qualidade (Hailuo/fal.ai como fallback) |
-| Imagens | Flux via fal.ai + LoRA treinado | Rapido, barato, estilo consistente |
-| Musica (3 faixas) | Abertura (80% vol) + Instrumental continuo (12% vol) + Fecho (80% vol) | Loranne ou Suno. Duracao auto da cena |
-| Voz | ElevenLabs v3, ID `JGnWZj684pcXmK2SxYIv` | NAO e clone — voz pre-existente, rapida e conversacional |
-| voice_settings | NENHUM | Usar defaults naturais da voz |
-| language_code | `"pt"` | "pt-pt" nao funciona com v3 |
-| Frequencia | 2 videos/semana | Ritmo de crescimento |
-| Linguagem | Genero neutro / inclusivo | Publico feminino mas acessivel a todos |
-| LoRA trigger | `veus_figure` | Treinado com 11 imagens, Conceito A |
+| Videos YouTube | Natureza realista (Africa/Mocambique) | ThinkDiffusion → Runway image-to-video → CLI → MP4 |
+| Videos aulas (cursos) | Slides editorial escuro (#0d0d0d) | HTML+Puppeteer+FFmpeg, SEM voz no video |
+| Imagens YouTube | ThinkDiffusion (SDXL RealVisXL) | $34 saldo, ~60-80 videos de imagens |
+| Montagem | CLI local (Node+Puppeteer+FFmpeg) | Sem Shotstack, sem Remotion, sem cloud |
+| Musica | Suno Pro API | Codigo avariado — fix urgente |
+| Voz aulas (audio) | ElevenLabs, `UnchUh06d8TYP17TuqgU` | Voz criada pela Vivianne (pt-pt + africano) |
+| Texto overlay YouTube | DM Serif Display + Nunito | Fade/rise/typewriter sobre clips Runway |
+| Slides cursos | DM Serif Display + Nunito | Negro, creme, coral #E94560, roxo #533483 |
+| Linguagem | pt-PT, registo nomeador | Publico feminino, contemplativo |
+| ~~Conceito visual~~ | ~~Abolido~~ | ~~Silhuetas/territorios/LoRA descontinuados~~ |
 
 ---
 
 ## Proximas Accoes (por ordem de prioridade)
 
-### Imediato — Audios das aulas dos 7 cursos
+### PROXIMA SESSAO — Script batch ThinkDiffusion + fix Suno
 
-Creditos ElevenLabs expiram em breve. Prioridade:
+1. **Construir script batch** que usa API Automatic1111 para gerar imagens em massa a partir de lista de prompts JSON
+2. **Fix Suno API** — debuggar `generate-music/route.ts`, restabelecer integracao
+3. **Terminar audios ElevenLabs** pendentes (~178 por gerar, se creditos permitirem)
 
-1. Ir a `/admin/audio-bulk`
-2. Carregar "Todos os cursos" — 168 aulas
-3. Sincronizar com Supabase (evitar regenerar)
-4. Gerar os pendentes — deixar a correr
-5. Ouvir uma amostra de cada curso para confirmar qualidade
+### Curto prazo — Primeiro video YouTube completo
 
-### Curto prazo
+1. Gerar imagens no ThinkDiffusion (prompts prontos em `CURSOS/PROMPTS-THINKDIFFUSION.md`)
+2. Alimentar Runway image-to-video com as imagens → clips 10s
+3. Construir CLI `escola-veus` (parse + preview + render) conforme `ESCOLA-VEUS-VIDEO-PIPELINE REVISTO.md`
+4. Montar 1 video piloto completo: clips + texto overlay + musica Suno → MP4
+5. Publicar no YouTube + versao Shorts
 
-1. Escrever mais 13 cursos (quando houver necessidade de lancar):
-   - Voz de Dentro, A Mulher Antes de Mae, O Peso e o Chao, Depois do Fogo, A Teia, A Coroa Escondida, O Fio Invisivel, A Arte da Inteireza, O Espelho do Outro, Olhos Abertos, Flores no Escuro, O Relogio Partido, O Oficio de Ser
-2. Escrever manuais (PDF) dos cursos ja completos
-3. Escrever cadernos de exercicios
+### Medio prazo
 
-### Medio prazo — Trailer/videos
-
-1. Re-submeter as 3 animacoes em falta (~150 credits Runway) — polling auto-resume
-2. Configurar musica (colar URLs Loranne nas 3 faixas)
-3. Gerar legendas do trailer
-4. Render final do trailer (Shotstack)
-5. Aprovar e publicar trailer no YouTube
-6. Produzir primeiro video completo (Limite Sagrado hook 1)
-7. Produzir Ouro Proprio hook 1 (v2 reescrito)
-8. Criar Shorts a partir dos videos produzidos
+1. Batch gerar imagens para todos os 122 hooks YouTube (~$15-20 ThinkDiffusion)
+2. Batch gerar musicas Suno para cursos + YouTube
+3. Construir Pipeline 1 cursos (slides editorial escuro + Suno → MP4)
+4. Escrever mais cursos (13 restantes) quando necessario
+5. Manuais PDF + cadernos exercicios
 
 ---
 
