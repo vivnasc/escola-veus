@@ -265,7 +265,7 @@ Report in Portuguese. Under 1500 words.
 | Runway Gen-4 | `RUNWAY_API_KEY` | Configurado — FALTA comprar API credits |
 | Suno (musica instrumental) | `SUNO_API_KEY` + `SUNO_API_URL` | Configurado no Vercel |
 | Shotstack (montagem cloud) | `SHOTSTACK_API_KEY` | Configurado no Vercel |
-| Shotstack ambiente | `SHOTSTACK_ENV` | **FALTA: adicionar `v1` no Vercel** |
+| Shotstack ambiente | `SHOTSTACK_ENV` | Configurado no Vercel (Apr 6) |
 | Supabase | Ja configurado | Pronto |
 
 ---
@@ -304,11 +304,12 @@ Report in Portuguese. Under 1500 words.
 
 | Decisao | Escolha | Razao |
 |---------|---------|-------|
-| Videos YouTube | Natureza realista (Africa/Mocambique) | ThinkDiffusion → Runway image-to-video → CLI → MP4 |
+| Videos YouTube | **5 min, 20 clips de 15s** | Natureza realista Africa/Mocambique. Runway ilimitado |
+| Imagens YouTube | ThinkDiffusion (SDXL RealVisXL) | 83 prompts, 12 categorias, $34 saldo |
+| Clips YouTube | Runway Gen-4 (15s cada, ilimitado) | 20 imagens → 20 clips → 1 video de 5 min |
+| Musica YouTube | **Loranne — ancient-ground** (100 faixas) | Supabase bucket `audios`, publico, 1 faixa/video |
 | Videos aulas (cursos) | Slides editorial escuro (#0d0d0d) | HTML+Puppeteer+FFmpeg, SEM voz no video |
-| Imagens YouTube | ThinkDiffusion (SDXL RealVisXL) | $34 saldo, ~60-80 videos de imagens |
-| Montagem | CLI local (Node+Puppeteer+FFmpeg) | Sem Shotstack, sem Remotion, sem cloud |
-| Musica | Suno Pro API | Codigo avariado — fix urgente |
+| Montagem | Por definir (admin page ou CLI) | Sem Shotstack, sem Remotion |
 | Voz aulas (audio) | ElevenLabs, `UnchUh06d8TYP17TuqgU` | Voz criada pela Vivianne (pt-pt + africano) |
 | Texto overlay YouTube | DM Serif Display + Nunito | Fade/rise/typewriter sobre clips Runway |
 | Slides cursos | DM Serif Display + Nunito | Negro, creme, coral #E94560, roxo #533483 |
@@ -322,7 +323,7 @@ Report in Portuguese. Under 1500 words.
 ### FEITO nesta sessao (2026-04-16 sessao 2)
 
 1. ✅ **Script batch ThinkDiffusion** — `tools/thinkdiffusion-batch/generate.js`
-   - 22 prompts natureza realista Mocambique/Africa em `prompts.json`
+   - **83 prompts** natureza realista Mocambique/Africa em `prompts.json` (12 categorias)
    - Batch via API Automatic1111 (txt2img), 1920x1080, resume, dry-run
    - Mood selector (`select-by-mood.js`) para ligar prompts a temas de scripts
    - Uso: `node generate.js --url <ThinkDiffusion-URL> --dry-run`
@@ -330,6 +331,10 @@ Report in Portuguese. Under 1500 words.
    - V5_5 causava 404 na API.box. V4_5ALL e o mais capaz (8 min, 5000 chars)
    - Adicionado error logging HTTP para debug futuro
    - **TESTAR NO VERCEL** — confirmar que funciona com o deploy
+3. ✅ **Musica integrada** — album `ancient-ground` (100 faixas Loranne, Supabase publico)
+   - Manifesto em `tools/youtube-pipeline/music-ancient-ground.json`
+   - Endpoint `/api/admin/music/list-album?album=ancient-ground`
+4. ✅ **Specs YouTube definidas** — 5 min, 20 clips de 15s, Runway ilimitado, 1 faixa/video
 3. ✅ **CLI escola-veus MVP** — `tools/escola-veus-cli/`
    - `escola-veus curso parse aula.md` → slides.json (frontmatter + split + duracao)
    - `escola-veus curso preview slides.json` → HTML preview com navegacao + play
