@@ -134,14 +134,19 @@ escola-veus batch curso sangue-e-seda/ # Batch
 
 ## 5. O que provavelmente esqueceste (lista para decidir)
 
-### Paleta visual actualizada
+### Geração de imagens para Runway (ThinkDiffusion)
 
-Paleta do pipeline de vídeo (definida no doc revisto):
-- Fundo: `#0d0d0d` (negro quase puro)
-- Texto: `#f0ece6` (creme claro)
-- Accent 1: `#E94560` (coral)
-- Accent 2: `#533483` (roxo)
-- Texto secundário: `#6a6460` (cinza quente)
+**Workflow YouTube:**
+ThinkDiffusion (SD) → imagens realistas natureza → Runway image-to-video → clips 10s → CLI → MP4
+
+**Estética:** Natureza realista, alta resolução, como se a pessoa estivesse DENTRO da paisagem. Foco em **África/Moçambique**: oceano Índico, praias de Tofo/Bazaruto, savana, baobás, rios, cascatas, céu africano, lua sobre o mar, chuva tropical, nevoeiro na serra.
+
+**ThinkDiffusion:**
+- Saldo actual: $34.22
+- Tier QUICK ($0.79/hr) = ~43 horas
+- Usar **SDXL** com checkpoint realista (RealVisXL v4, Juggernaut XL)
+- Resolução: 1920×1080 (16:9 landscape para YouTube)
+- ~43 horas = centenas de imagens base para Runway
 - ❌ **Filtro/LUT** em pós-produção para unificar clips Runway (ligeiro warm tone dourado)
 
 ### Hosting das aulas pagas
