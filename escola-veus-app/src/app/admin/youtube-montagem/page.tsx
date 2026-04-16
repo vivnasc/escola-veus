@@ -45,6 +45,13 @@ export default function YouTubeMontagem() {
   );
   const [musicTrack, setMusicTrack] = useState(1);
 
+  // Render
+  const [rendering, setRendering] = useState(false);
+  const [renderProgress, setRenderProgress] = useState(0);
+  const [renderLabel, setRenderLabel] = useState("");
+  const [renderResult, setRenderResult] = useState<string | null>(null);
+  const [renderError, setRenderError] = useState<string | null>(null);
+
   // Preview
   const [previewing, setPreviewing] = useState(false);
   const [previewClipIndex, setPreviewClipIndex] = useState(0);
@@ -146,6 +153,76 @@ export default function YouTubeMontagem() {
   };
 
   const filledClips = clips.filter((c: ClipSlot) => c.url.trim().length > 0).length;
+
+  // Render MP4 via Shotstack
+  const startRender = async () => {
+    const validClips = clips.filter((c: ClipSlot) => c.url.trim().length > 0).map((c: ClipSlot) => c.url.trim());
+    if (validClips.length === 0) return;
+
+    setRendering(true);
+    setRenderProgress(0);
+    setRenderLabel("A iniciar...");
+    setRenderResult(null);
+    setRenderError(null);
+
+    try {
+      const res = await fetch("/api/admin/youtube/render", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          clips: validClips,
+          musicUrl: getMusicUrl(musicTrack),
+          musicVolume: 0.8,
+          clipDuration: CLIP_DURATION,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
+        throw new Error(err.erro || `HTTP ${res.status}`);
+      }
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("Sem stream");
+
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          try {
+            const event = JSON.parse(line.slice(6));
+            if (event.type === "progress") {
+              setRenderProgress(event.percent);
+              setRenderLabel(event.label);
+            } else if (event.type === "result") {
+              setRenderResult(event.videoUrl);
+              setRenderLabel("Video pronto!");
+              setRenderProgress(100);
+            } else if (event.type === "error") {
+              throw new Error(event.message);
+            }
+          } catch (e) {
+            if (e instanceof SyntaxError) continue;
+            throw e;
+          }
+        }
+      }
+    } catch (err) {
+      setRenderError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setRendering(false);
+    }
+  };
 
   // Download project JSON
   const downloadProject = () => {
@@ -365,6 +442,68 @@ export default function YouTubeMontagem() {
             Guardar projecto (.json)
           </button>
         </div>
+      </section>
+
+      {/* ── 5. RENDER MP4 ── */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          5. Gerar MP4
+        </h3>
+
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Junta os {filledClips} clips + música num vídeo MP4 via Shotstack (cloud).
+          Demora 1-3 min. O vídeo fica guardado no Supabase.
+        </p>
+
+        {rendering && (
+          <div className="mb-3">
+            <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
+              <span>{renderLabel}</span>
+              <span>{renderProgress}%</span>
+            </div>
+            <div className="h-2 w-full rounded-full bg-escola-border">
+              <div
+                className="h-full rounded-full bg-escola-coral transition-all"
+                style={{ width: `${renderProgress}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {renderError && (
+          <div className="mb-3 rounded bg-red-950/50 p-2 text-xs text-red-300">
+            Erro: {renderError}
+          </div>
+        )}
+
+        {renderResult && (
+          <div className="mb-3 space-y-2">
+            <div className="rounded bg-green-950/50 p-2 text-xs text-green-300">
+              Video pronto!
+            </div>
+            <video
+              src={renderResult}
+              controls
+              className="w-full rounded"
+            />
+            <a
+              href={renderResult}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white"
+            >
+              Abrir / Descarregar MP4
+            </a>
+          </div>
+        )}
+
+        <button
+          onClick={startRender}
+          disabled={filledClips === 0 || rendering}
+          className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
+        >
+          {rendering ? "A renderizar..." : `Gerar MP4 (${filledClips} clips + música)`}
+        </button>
       </section>
     </div>
   );
