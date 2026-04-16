@@ -98,36 +98,44 @@ Cada hook mapeia para 6-9 destes motivos (um por clip de 10s).
 
 ### 3.2. Vídeos das Aulas (curso — 168 aulas)
 
-**Formato:** **Slideshow**. Imagens estáticas + áudio narração + música ambiente suave. Produto pago para alunas.
+**Formato:** **Slideshow visual** seguindo o sistema de territórios definido em `course-guidelines.ts`.
+
+**NÃO são fotos stock. NÃO são imagens genéricas.** Cada curso tem um **território visual** (`TERRITORY_GUIDES`) com cor, progressão, silhueta e céu próprios.
+
+**Secções de cada aula** (definidas em `SCRIPT_STRUCTURE`):
+1. Abertura (10-15s): céu desce ao território, título creme, sem voz
+2. Pergunta inicial (15-30s): gancho emocional
+3. Situação humana (120-180s): cenário real reconhecível
+4. Revelação do padrão (120-180s): o que está por baixo
+5. Gesto de consciência (60-120s): algo concreto e praticável
+6. Frase final (15-30s): a frase que fica
+7. Fecho (10-15s): território dissolve, logo Sete Véus, silêncio
+
+**Visual:**
+- Céu azul-marinho profundo (#1A1A2E) — nunca dia pleno, nunca noite total
+- Silhueta terracota (#C4745A) com brilho dourado (#C9A96E) — sem rosto, sem raça, sem idade
+- Progressão por módulo: M1-M2 mais escuro → M7-M8 quase amanhecer
+- Tipografia: Playfair Display ou Cormorant Garamond, creme (#F5F0E6), fade in/out
+- Transições: dissolve lento SEMPRE. Nunca corte seco, nunca wipe, nunca zoom brusco
+- Música: ambiente subtil, quase inaudível — textura, não melodia. Silêncio intencional entre secções
 
 | Componente | Fonte | Estado |
 |---|---|---|
 | Áudio narração | ElevenLabs | 🟡 em curso |
-| **Slides (imagens estáticas)** | Stock de natureza (Unsplash/Pexels API) OU Flux sem LoRA | ❌ |
-| **Música ambiente** | Suno instrumental (volume 10-15%) | ❌ |
-| Transições | Cross-fade lento entre slides | ❌ |
-| Legendas | Opcionais, off por defeito | ❌ |
+| **Slides do território** | Gerados conforme `TERRITORY_GUIDES` + `VISUAL_GUIDELINES` | ❌ |
+| **Música ambiente** | Suno Pro API (instrumental, quase inaudível) | ❌ código API avariado |
+| Transições dissolve | Render no editor interno | ❌ |
+| Tipografia creme | Overlay animado (fade) | ❌ |
 
-**NÃO se usa LoRA. NÃO se usa Runway. Só slides estáticos.**
+**Hosting:** Na **Escola dos Véus App** — produto pago, auth + monetização já configurados.
 
-**Estrutura de uma aula em vídeo:**
-- Aula típica: 3-5 min de áudio
-- 6-10 slides por aula (1 slide a cada ~30s)
-- Cross-fade de 2s entre slides
-- Música de fundo contínua (10-15% volume, não compete com narração)
-- Sem texto overlay
-- Sem cortes bruscos
+### 3.2.1. Suno API — estado actual
 
-**Fonte de imagens para slides (a decidir):**
-
-| Opção | Prós | Contras |
-|---|---|---|
-| **Unsplash API** (grátis, licença comercial) | Rápido, qualidade, gratuito | Estética menos controlada, alguém já viu as fotos |
-| **Pexels API** (grátis, licença comercial) | Mesmo que Unsplash, alternativa | Mesmo que Unsplash |
-| **Flux sem LoRA** (~$0.03/imagem) | Único, estética consistente se usar mesmo prompt-base | Custo (168 aulas × 8 = 1344 imagens × $0.03 = $40) |
-| **Unsplash curado à mão** | Baratíssimo, pessoal | Muitas horas a escolher |
-
-**Sugestão:** Unsplash API com prompts temáticos por aula. Baratíssimo, rápido, licença limpa para uso comercial.
+- **Plano:** Suno Pro (licença comercial ✅)
+- **Uso:** gerar músicas instrumentais + músicas da Loranne
+- **Problema:** código de integração API avariado (retornava 404). **Precisa de fix.**
+- **Endpoint existente:** `/api/admin/courses/generate-music/route.ts`
+- **Acção próxima sessão:** debuggar API Suno, verificar endpoints actuais, restabelecer integração
 
 ### 3.3. Shorts (YouTube/Instagram/TikTok)
 
@@ -297,16 +305,7 @@ Sem LoRA e sem Flux, a identidade visual tem de vir de:
 
 ### Hosting das aulas pagas
 
-❌ **Decisão crítica:** onde ficam os vídeos das aulas (que são PAGOS)?
-
-| Opção | Prós | Contras |
-|---|---|---|
-| YouTube não-listado | Grátis, fácil | Link pode ser partilhado, sem controlo |
-| Vimeo Plus ($12/mês) | Privacidade, domain restriction | Custo mensal |
-| Supabase Storage (self-hosted player) | Controlo total, sem custo extra | Streaming pode ser pesado, player a construir |
-| Wistia / SproutVideo | Profissional, analytics | Caro ($30-100/mês) |
-
-**Sugestão:** Supabase Storage + player HTML5 custom com autenticação Supabase. Já tens a infra.
+✅ **Resolvido.** As aulas pagas ficam na Escola dos Véus App (Supabase + auth + monetização já configurados).
 
 ### YouTube algorithm essentials
 
@@ -320,10 +319,10 @@ Sem LoRA e sem Flux, a identidade visual tem de vir de:
 
 ### Música / Suno
 
-- ❌ **Licença comercial Suno confirmada** — Suno Pro ($10/mês) permite uso comercial. Suno Free NÃO.
-- ❌ **API Suno está a dar 404** — verificar endpoint actual antes de construir. Se não funcionar, alternativas: Mubert, Soundraw, AIVA.
-- ❌ **Volume mix** — música a 10-15% em aulas, 15-25% em hooks YouTube (para não competir com voz)
-- ❌ **Ducking automático** — música baixa ligeiramente quando voz fala (opcional mas polido)
+- ✅ **Suno Pro activo** (licença comercial confirmada)
+- ❌ **API Suno avariada no código** (`generate-music/route.ts` retorna 404) — fix prioritário
+- ❌ **Volume mix** — música a 10-15% em aulas, 15-25% em hooks YouTube
+- ❌ **Ducking automático** — música baixa quando voz fala (opcional mas polido)
 
 ### Subtítulos / Legendas
 
@@ -341,11 +340,8 @@ Sem LoRA e sem Flux, a identidade visual tem de vir de:
 
 ### Monetização
 
-- ❌ **Stripe ou Paddle** (Paddle lida com IVA europeu automaticamente — melhor para PT)
-- ❌ **Preços** definidos por curso e plano (mensal/anual, trial grátis?)
-- ❌ **Subscription vs compra única** — decisão estratégica
-- ❌ **YouTube AdSense** — activar quando atingires 1000 subs + 4000h watchtime
-- ❌ **Afiliados** — programa para alunas que trouxerem outras
+✅ **Já configurado na Escola dos Véus App.** YouTube AdSense NÃO é objectivo.
+- ❌ **Afiliados** — programa para alunas que trouxerem outras (futuro)
 
 ### Conteúdo auxiliar
 
