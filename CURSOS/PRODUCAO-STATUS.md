@@ -265,7 +265,7 @@ Report in Portuguese. Under 1500 words.
 | Runway Gen-4 | `RUNWAY_API_KEY` | Configurado — FALTA comprar API credits |
 | Suno (musica instrumental) | `SUNO_API_KEY` + `SUNO_API_URL` | Configurado no Vercel |
 | Shotstack (montagem cloud) | `SHOTSTACK_API_KEY` | Configurado no Vercel |
-| Shotstack ambiente | `SHOTSTACK_ENV` | **FALTA: adicionar `v1` no Vercel** |
+| Shotstack ambiente | `SHOTSTACK_ENV` | Configurado no Vercel (Apr 6) |
 | Supabase | Ja configurado | Pronto |
 
 ---
