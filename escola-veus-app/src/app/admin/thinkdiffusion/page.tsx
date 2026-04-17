@@ -18,8 +18,7 @@ type VideoEntry = {
   titulo: string;
   categorias: string[];
   prompts: number;
-  "variações": number;
-};
+  variacoes: number;
 };
 
 type GeneratedImage = {
@@ -232,7 +231,7 @@ export default function ThinkDiffusionPage() {
             setSelectedVideo(e.target.value);
             if (e.target.value) {
               const v = (videoPlan as VideoEntry[]).find((x) => x.id === e.target.value);
-              if (v) setVariationsPerPrompt(v["variações"]);
+              if (v) setVariationsPerPrompt(v.variacoes);
             }
           }}
           className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
