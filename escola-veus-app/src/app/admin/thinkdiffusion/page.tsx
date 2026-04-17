@@ -315,26 +315,46 @@ export default function ThinkDiffusionPage() {
           })}
         </div>
 
-        {/* Prompts list */}
-        <div className="max-h-60 space-y-1 overflow-y-auto">
+        {/* Prompts list with COPY buttons */}
+        <div className="space-y-2">
           {filteredPrompts.map((p: PromptItem) => {
             const count = variationCounts[p.id] || 0;
             const complete = count >= variationsPerPrompt;
             return (
               <div
                 key={p.id}
-                className={`flex items-center gap-2 rounded border px-2 py-1 text-xs ${
+                className={`rounded border p-3 ${
                   complete
-                    ? "border-green-800/50 bg-green-950/20 text-green-300"
+                    ? "border-green-800/50 bg-green-950/20"
                     : count > 0
-                    ? "border-yellow-800/50 bg-yellow-950/20 text-yellow-300"
-                    : "border-escola-border text-escola-creme-50"
+                    ? "border-yellow-800/50 bg-yellow-950/20"
+                    : "border-escola-border bg-escola-bg"
                 }`}
               >
-                <span className="font-mono font-bold">{complete ? "✓" : count > 0 ? `${count}` : "○"}</span>
-                <span className="flex-1">{p.id}</span>
-                <span className="text-escola-creme-50/50">{p.mood.join(", ")}</span>
-                <span className="tabular-nums">{count}/{variationsPerPrompt}</span>
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-sm font-semibold text-escola-creme">{p.id}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-escola-creme-50">{p.mood.join(", ")}</span>
+                    <span className="tabular-nums text-xs text-escola-creme-50">{count}/{variationsPerPrompt}</span>
+                  </div>
+                </div>
+                <p className="mb-2 text-xs leading-relaxed text-escola-creme-50/70">
+                  {p.prompt.slice(0, 150)}...
+                </p>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(p.prompt);
+                    setCurrentPrompt(p.id);
+                    setTimeout(() => setCurrentPrompt(""), 2000);
+                  }}
+                  className={`w-full rounded py-2 text-sm font-bold ${
+                    currentPrompt === p.id
+                      ? "bg-green-700 text-white"
+                      : "bg-escola-coral text-white hover:bg-escola-coral/90"
+                  }`}
+                >
+                  {currentPrompt === p.id ? "✓ COPIADO!" : "COPIAR PROMPT"}
+                </button>
               </div>
             );
           })}
