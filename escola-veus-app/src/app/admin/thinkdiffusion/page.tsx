@@ -179,7 +179,7 @@ export default function ThinkDiffusionPage() {
 
   const savedCount = images.filter((i) => i.saved).length;
 
-  // Upload files per prompt — auto-detect orientation
+  // Upload files per prompt — DIRECT to Supabase, no compression, full quality
   const handleFileUpload = async (files: File[]) => {
     if (!uploadPromptId) {
       setError("Selecciona o prompt primeiro!");
@@ -192,11 +192,23 @@ export default function ThinkDiffusionPage() {
     let hCount = existing.filter((i) => i.name.includes("-h-")).length;
     let vCount = existing.filter((i) => i.name.includes("-v-")).length;
 
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      setError("Supabase nao configurado.");
+      return;
+    }
+
+    const { createClient } = await import("@supabase/supabase-js");
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       setUploadProgress({ done: i, total: files.length, current: `${uploadPromptId} ${i + 1}/${files.length}` });
 
       try {
+        // Detect orientation
         const orientation = await new Promise<"h" | "v">((resolve) => {
           const img = new Image();
           img.onload = () => resolve(img.width >= img.height ? "h" : "v");
@@ -207,29 +219,30 @@ export default function ThinkDiffusionPage() {
         const count = orientation === "h" ? ++hCount : ++vCount;
         const padded = String(count).padStart(2, "0");
         const orient = orientation === "h" ? "horizontal" : "vertical";
-        const newName = `${uploadPromptId}-${orientation}-${padded}.png`;
+        const ext = file.name.endsWith(".jpg") || file.name.endsWith(".jpeg") ? "jpg" : "png";
+        const newName = `${uploadPromptId}-${orientation}-${padded}.${ext}`;
+        const category = uploadPromptId.split("-").slice(0, -1).join("-") || "misc";
+        const filePath = `youtube/images/${category}/${orient}/${newName}`;
 
-        const reader = new FileReader();
-        const base64 = await new Promise<string>((resolve) => {
-          reader.onload = () => resolve((reader.result as string).split(",")[1]);
-          reader.readAsDataURL(file);
-        });
+        // Upload directly to Supabase — no size limit, no compression
+        const buffer = await file.arrayBuffer();
+        const { error } = await supabase.storage
+          .from("course-assets")
+          .upload(filePath, buffer, {
+            contentType: file.type || "image/png",
+            upsert: true,
+          });
 
-        const res = await fetch("/api/admin/thinkdiffusion/save-image", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            image: base64,
-            filename: newName,
-            category: `${uploadPromptId.split("-").slice(0, -1).join("-") || "misc"}/${orient}`,
-          }),
-        });
-
-        const data = await res.json();
-        if (data.url) {
-          setUploadedImages((prev) => [...prev, { name: newName, url: data.url, promptId: uploadPromptId }]);
+        if (error) {
+          setError(`${newName}: ${error.message}`);
+          continue;
         }
-      } catch { /* skip */ }
+
+        const url = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
+        setUploadedImages((prev) => [...prev, { name: newName, url, promptId: uploadPromptId }]);
+      } catch (err) {
+        setError(`Erro: ${err instanceof Error ? err.message : String(err)}`);
+      }
     }
 
     setUploadProgress((p) => ({ ...p, done: p.total, current: "Completo!" }));
