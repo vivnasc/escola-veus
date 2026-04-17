@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 // Load prompts from the JSON file via import
 import promptsData from "@/data/thinkdiffusion-prompts.json";
 import videoPlan from "@/data/video-plan.json";
+import motionPrompts from "@/data/runway-motion-prompts.json";
 
 type PromptItem = {
   id: string;
@@ -28,9 +29,89 @@ type GeneratedImage = {
   url?: string;
 };
 
+type ClipState = {
+  imageUrl: string;
+  imageName: string;
+  taskId?: string;
+  status: "idle" | "submitting" | "processing" | "done" | "failed";
+  clipUrl?: string;
+  error?: string;
+};
+
 const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.category))].sort();
 
 export default function ThinkDiffusionPage() {
+  // Runway clips
+  const [clips, setClips] = useState<Record<string, ClipState>>({});
+
+  const generateClip = async (imageUrl: string, imageName: string) => {
+    setClips((prev) => ({ ...prev, [imageName]: { imageUrl, imageName, status: "submitting" } }));
+
+    try {
+      const res = await fetch("/api/admin/courses/submit-animation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageUrl,
+          motionPrompt: (motionPrompts as Record<string, string>)[imageName.replace(/-[hv]-\d+\.\w+$/, "")] || (motionPrompts as Record<string, string>)["_default"],
+          provider: "runway",
+          ratio: imageName.includes("-v-") ? "720:1280" : "1280:720",
+        }),
+      });
+
+      const data = await res.json();
+      if (data.erro) throw new Error(data.erro);
+      if (!data.taskId) throw new Error("Sem taskId");
+
+      setClips((prev) => ({ ...prev, [imageName]: { ...prev[imageName], taskId: data.taskId, status: "processing" } }));
+
+      // Poll for completion + save to Supabase
+      const pollClip = async (taskId: string) => {
+        for (let i = 0; i < 60; i++) {
+          await new Promise((r) => setTimeout(r, 10000));
+
+          const statusRes = await fetch("/api/admin/courses/animation-status", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tasks: [{ type: "clip", taskId }], provider: "runway" }),
+          });
+
+          const statusData = await statusRes.json();
+          const task = statusData.tasks?.[0];
+
+          if (task?.status === "done" && task?.videoUrl) {
+            // Save clip to Supabase
+            let finalUrl = task.videoUrl;
+            try {
+              const saveRes = await fetch("/api/admin/thinkdiffusion/save-clip", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ videoUrl: task.videoUrl, filename: imageName.replace(/\.\w+$/, ".mp4") }),
+              });
+              const saveData = await saveRes.json();
+              if (saveData.url) finalUrl = saveData.url;
+            } catch { /* keep Runway URL */ }
+
+            setClips((prev) => ({ ...prev, [imageName]: { ...prev[imageName], status: "done", clipUrl: finalUrl } }));
+            return;
+          }
+          if (task?.status === "failed") {
+            setClips((prev) => ({ ...prev, [imageName]: { ...prev[imageName], status: "failed", error: task.failureReason || "Falhou" } }));
+            return;
+          }
+        }
+        setClips((prev) => ({ ...prev, [imageName]: { ...prev[imageName], status: "failed", error: "Timeout" } }));
+      };
+
+      pollClip(data.taskId);
+    } catch (err) {
+      setClips((prev) => ({
+        ...prev,
+        [imageName]: { ...prev[imageName], status: "failed", error: err instanceof Error ? err.message : String(err) },
+      }));
+    }
+  };
+
   // Upload state
   const [uploadPromptId, setUploadPromptId] = useState("");
   const [uploadProgress, setUploadProgress] = useState({ done: 0, total: 0, current: "" });
@@ -617,12 +698,43 @@ export default function ThinkDiffusionPage() {
                     </div>
                   </div>
                 {uploaded.length > 0 && (
-                  <div className="mt-2 grid grid-cols-4 gap-1 sm:grid-cols-8">
-                    {uploaded.map((img) => (
-                      <div key={img.name} className={`overflow-hidden rounded border border-green-800/50 ${img.name.includes("-v-") ? "aspect-[9/16]" : "aspect-video"}`}>
-                        <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
-                      </div>
-                    ))}
+                  <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                    {uploaded.map((img) => {
+                      const clip = clips[img.name];
+                      return (
+                        <div key={img.name} className="space-y-1">
+                          <div className={`relative overflow-hidden rounded border border-green-800/50 ${img.name.includes("-v-") ? "aspect-[9/16]" : "aspect-video"}`}>
+                            {clip?.status === "done" && clip.clipUrl ? (
+                              <video src={clip.clipUrl} controls className="h-full w-full object-cover" />
+                            ) : (
+                              <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
+                            )}
+                            {clip?.status === "processing" && (
+                              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                                <span className="text-xs text-white animate-pulse">Runway...</span>
+                              </div>
+                            )}
+                          </div>
+                          <p className="text-xs text-green-300 truncate">{img.name}</p>
+                          {!clip || clip.status === "idle" ? (
+                            <button
+                              onClick={() => generateClip(img.url, img.name)}
+                              className="w-full rounded bg-escola-coral py-1 text-xs font-bold text-white hover:bg-escola-coral/90"
+                            >
+                              {img.name.includes("-v-") ? "Gerar Short (50 cr)" : "Gerar clip (50 cr)"}
+                            </button>
+                          ) : clip.status === "submitting" ? (
+                            <span className="block text-center text-xs text-yellow-400">A enviar...</span>
+                          ) : clip.status === "processing" ? (
+                            <span className="block text-center text-xs text-yellow-400 animate-pulse">A processar...</span>
+                          ) : clip.status === "done" ? (
+                            <span className="block text-center text-xs text-green-400">✓ Clip pronto</span>
+                          ) : (
+                            <span className="block text-center text-xs text-red-400">{clip.error || "Erro"}</span>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
