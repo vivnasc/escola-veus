@@ -4,12 +4,22 @@ import { useState, useEffect } from "react";
 
 // Load prompts from the JSON file via import
 import promptsData from "@/data/thinkdiffusion-prompts.json";
+import videoPlan from "@/data/video-plan.json";
 
 type PromptItem = {
   id: string;
   category: string;
   mood: string[];
   prompt: string;
+};
+
+type VideoEntry = {
+  id: string;
+  titulo: string;
+  categorias: string[];
+  prompts: number;
+  "variações": number;
+};
 };
 
 type GeneratedImage = {
@@ -23,6 +33,7 @@ const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.cate
 
 export default function ThinkDiffusionPage() {
   const [serverUrl, setServerUrl] = useState("");
+  const [selectedVideo, setSelectedVideo] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [variationsPerPrompt, setVariationsPerPrompt] = useState(10);
   const [generating, setGenerating] = useState(false);
@@ -55,7 +66,12 @@ export default function ThinkDiffusionPage() {
     }
   }, [images]);
 
-  const filteredPrompts = selectedCategory === "all"
+  // Filter by video or category
+  const activeVideo = (videoPlan as VideoEntry[]).find((v) => v.id === selectedVideo);
+
+  const filteredPrompts = activeVideo
+    ? promptsData.prompts.filter((p: PromptItem) => activeVideo.categorias.includes(p.category))
+    : selectedCategory === "all"
     ? promptsData.prompts
     : promptsData.prompts.filter((p: PromptItem) => p.category === selectedCategory);
 
@@ -205,10 +221,44 @@ export default function ThinkDiffusionPage() {
         />
       </section>
 
+      {/* ── VIDEO SELECTOR ── */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          2. Escolher Vídeo
+        </h3>
+        <select
+          value={selectedVideo}
+          onChange={(e) => {
+            setSelectedVideo(e.target.value);
+            if (e.target.value) {
+              const v = (videoPlan as VideoEntry[]).find((x) => x.id === e.target.value);
+              if (v) setVariationsPerPrompt(v["variações"]);
+            }
+          }}
+          className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+        >
+          <option value="">Todos (sem filtro de vídeo)</option>
+          {(videoPlan as VideoEntry[]).map((v) => (
+            <option key={v.id} value={v.id}>
+              {v.id.replace("video-", "#")} — {v.titulo} ({v.categorias.join(" + ")})
+            </option>
+          ))}
+        </select>
+        {activeVideo && (
+          <div className="mt-2 rounded bg-escola-bg p-2 text-xs text-escola-creme-50">
+            <strong className="text-escola-creme">{activeVideo.titulo}</strong> —
+            categorias: {activeVideo.categorias.join(", ")} ·
+            {filteredPrompts.length} prompts × {variationsPerPrompt} variações =
+            <strong className="text-escola-coral"> ~{filteredPrompts.length * variationsPerPrompt} imagens</strong>
+            <br />Imagens guardadas em: <code className="text-escola-coral">youtube/images/{activeVideo.id}/</code>
+          </div>
+        )}
+      </section>
+
       {/* ── CATEGORY FILTER ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          2. Prompts ({filteredPrompts.length} total · {pendingPrompts.length} por gerar)
+          3. Prompts ({filteredPrompts.length} total · {pendingPrompts.length} por gerar)
         </h3>
         <div className="mb-3 flex flex-wrap gap-1">
           <button
