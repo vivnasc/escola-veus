@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import videoPlan from "@/data/video-plan.json";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -347,15 +348,20 @@ export default function YouTubeMontagem() {
       {/* ── 1. TITULO ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          1. Título do vídeo
+          1. Vídeo
         </h3>
-        <input
-          type="text"
-          placeholder="Ex: Natureza Moçambique #01 — Oceano Índico"
+        <select
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme placeholder:text-escola-creme-50/40"
-        />
+          className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+        >
+          <option value="">Selecciona o vídeo...</option>
+          {(videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).map((v) => (
+            <option key={v.id} value={v.titulo}>
+              {v.id.replace("video-", "#")} — {v.titulo} ({v.categorias.join(" + ")})
+            </option>
+          ))}
+        </select>
       </section>
 
       {/* ── 2. MUSICA ── */}
@@ -409,46 +415,26 @@ export default function YouTubeMontagem() {
 
       {/* ── 3. CLIPS ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
-        <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
-            3. Clips Runway ({filledClips}/{MAX_UNIQUE_CLIPS})
-          </h3>
-          <button
-            onClick={() => {
-              const text = prompt("Cola os URLs dos 20 clips (um por linha):");
-              if (text) handleBulkPaste(text);
-            }}
-            className="rounded bg-escola-coral/20 px-3 py-1 text-xs text-escola-coral hover:bg-escola-coral/30"
-          >
-            Colar todos
-          </button>
-        </div>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          3. Clips ({filledClips} carregados · {filledClips * 10}s = {Math.floor(filledClips * 10 / 60)}:{String((filledClips * 10) % 60).padStart(2, "0")} de vídeo)
+        </h3>
 
-        <div className="grid gap-2">
-          {clips.map((clip: ClipSlot, i: number) => (
-            <div
-              key={i}
-              className={`flex items-center gap-2 rounded border p-2 ${
-                clip.url
-                  ? "border-green-800/50 bg-green-950/20"
-                  : "border-escola-border bg-escola-bg"
-              }`}
-            >
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-escola-coral/20 text-xs font-bold text-escola-coral">
-                {i + 1}
-              </span>
-              <input
-                type="text"
-                placeholder={`URL do clip ${i + 1} (Runway MP4)...`}
-                value={clip.url}
-                onChange={(e) => updateClipUrl(i, e.target.value)}
-                className="flex-1 rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme placeholder:text-escola-creme-50/40"
-              />
-              <span className="text-xs text-escola-creme-50 tabular-nums">
-                {i * CLIP_DURATION}–{(i + 1) * CLIP_DURATION}s
-              </span>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {clips.filter((c: ClipSlot) => c.url).map((clip: ClipSlot, i: number) => {
+            const fileName = clip.url.split("/").pop() || `clip-${i + 1}`;
+            return (
+              <div key={i} className="space-y-1">
+                <div className="relative aspect-video overflow-hidden rounded border border-green-800/50">
+                  <video src={clip.url} className="h-full w-full object-cover" muted playsInline
+                    onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
+                    onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
+                  />
+                  <span className="absolute top-1 left-1 rounded bg-black/60 px-1 text-xs text-white">{i + 1}</span>
+                </div>
+                <p className="text-xs text-green-300 truncate">{fileName.replace(".mp4", "")}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
