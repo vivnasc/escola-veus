@@ -32,8 +32,9 @@ const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.cate
 
 export default function ThinkDiffusionPage() {
   // Upload state
+  const [uploadPromptId, setUploadPromptId] = useState("");
   const [uploadProgress, setUploadProgress] = useState({ done: 0, total: 0, current: "" });
-  const [uploadedImages, setUploadedImages] = useState<Array<{ name: string; url: string }>>([]);
+  const [uploadedImages, setUploadedImages] = useState<Array<{ name: string; url: string; promptId: string }>>([]);
   const [selectedVideo, setSelectedVideo] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [variationsPerPrompt, setVariationsPerPrompt] = useState(10);
@@ -181,25 +182,26 @@ export default function ThinkDiffusionPage() {
 
   const savedCount = images.filter((i) => i.saved).length;
 
-  // Upload files from ThinkDiffusion with auto-rename + orientation detect
+  // Upload files from ThinkDiffusion with auto-rename by prompt + orientation
   const handleFileUpload = async (files: File[]) => {
-    const category = activeVideo
-      ? activeVideo.categorias[0]
-      : selectedCategory !== "all"
-      ? selectedCategory
-      : "mar";
+    if (!uploadPromptId) {
+      setError("Selecciona o prompt primeiro!");
+      return;
+    }
 
     setUploadProgress({ done: 0, total: files.length, current: "" });
 
-    let hCount = uploadedImages.filter((i) => i.name.includes("-h-")).length;
-    let vCount = uploadedImages.filter((i) => i.name.includes("-v-")).length;
+    const existingForPrompt = uploadedImages.filter((i) => i.promptId === uploadPromptId);
+    let hCount = existingForPrompt.filter((i) => i.name.includes("-h-")).length;
+    let vCount = existingForPrompt.filter((i) => i.name.includes("-v-")).length;
+
+    const category = uploadPromptId.split("-").slice(0, -1).join("-") || "misc";
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       setUploadProgress({ done: i, total: files.length, current: file.name });
 
       try {
-        // Detect orientation from image dimensions
         const orientation = await new Promise<"h" | "v">((resolve) => {
           const img = new Image();
           img.onload = () => resolve(img.width >= img.height ? "h" : "v");
@@ -208,9 +210,9 @@ export default function ThinkDiffusionPage() {
         });
 
         const count = orientation === "h" ? ++hCount : ++vCount;
-        const padded = String(count).padStart(3, "0");
-        const newName = `${category}-${orientation}-${padded}.png`;
-        const folder = orientation === "h" ? "horizontal" : "vertical";
+        const padded = String(count).padStart(2, "0");
+        const orient = orientation === "h" ? "horizontal" : "vertical";
+        const newName = `${uploadPromptId}-${orientation}-${padded}.png`;
 
         const reader = new FileReader();
         const base64 = await new Promise<string>((resolve) => {
@@ -224,13 +226,13 @@ export default function ThinkDiffusionPage() {
           body: JSON.stringify({
             image: base64,
             filename: newName,
-            category: `${category}/${folder}`,
+            category: `${category}/${orient}`,
           }),
         });
 
         const data = await res.json();
         if (data.url) {
-          setUploadedImages((prev) => [...prev, { name: newName, url: data.url }]);
+          setUploadedImages((prev) => [...prev, { name: newName, url: data.url, promptId: uploadPromptId }]);
         }
       } catch { /* skip failed uploads */ }
     }
@@ -414,9 +416,24 @@ export default function ThinkDiffusionPage() {
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
           4. Upload de Imagens (ThinkDiffusion → Supabase)
         </h3>
-        <p className="mb-3 text-xs text-escola-creme-50">
-          Arrasta ou selecciona imagens do ThinkDiffusion. São renomeadas automaticamente por tema e guardadas no Supabase.
-        </p>
+        <div className="mb-3">
+          <label className="mb-1 block text-xs text-escola-creme-50">Estas imagens são do prompt:</label>
+          <select
+            value={uploadPromptId}
+            onChange={(e) => setUploadPromptId(e.target.value)}
+            className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+          >
+            <option value="">Selecciona o prompt...</option>
+            {filteredPrompts.map((p: PromptItem) => {
+              const uploaded = uploadedImages.filter((i) => i.promptId === p.id).length;
+              return (
+                <option key={p.id} value={p.id}>
+                  {p.id} ({p.mood.join(", ")}) {uploaded > 0 ? `— ${uploaded} uploaded` : ""}
+                </option>
+              );
+            })}
+          </select>
+        </div>
 
         <div
           className="mb-3 flex min-h-32 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-escola-coral/40 bg-escola-bg p-6 hover:border-escola-coral/80 hover:bg-escola-coral/5 transition-colors"
@@ -459,18 +476,32 @@ export default function ThinkDiffusionPage() {
           </div>
         )}
 
-        {uploadedImages.length > 0 && (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {uploadedImages.map((img) => (
-              <div key={img.name} className="space-y-1">
-                <div className="relative aspect-video overflow-hidden rounded border border-green-800/50">
-                  <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
+        {uploadedImages.length > 0 && (() => {
+          const byPrompt: Record<string, typeof uploadedImages> = {};
+          for (const img of uploadedImages) {
+            if (!byPrompt[img.promptId]) byPrompt[img.promptId] = [];
+            byPrompt[img.promptId].push(img);
+          }
+          return (
+            <div className="space-y-4">
+              {Object.entries(byPrompt).map(([promptId, imgs]) => (
+                <div key={promptId}>
+                  <p className="mb-2 text-xs font-semibold text-escola-creme">{promptId} ({imgs.length})</p>
+                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                    {imgs.map((img) => (
+                      <div key={img.name} className="space-y-1">
+                        <div className={`relative overflow-hidden rounded border border-green-800/50 ${img.name.includes("-v-") ? "aspect-[9/16]" : "aspect-video"}`}>
+                          <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
+                        </div>
+                        <p className="text-xs text-green-300 truncate">{img.name}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <p className="text-xs text-green-300">{img.name}</p>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          );
+        })()}
       </section>
     </div>
   );
