@@ -289,36 +289,65 @@ export default function ThinkDiffusionPage() {
           })}
         </div>
 
-        {/* Prompts list */}
-        <div className="max-h-60 space-y-1 overflow-y-auto">
-          {filteredPrompts.map((p: PromptItem) => {
-            const count = variationCounts[p.id] || 0;
-            const complete = count >= variationsPerPrompt;
-            return (
-              <div
-                key={p.id}
-                className={`flex items-center gap-2 rounded border px-2 py-1 text-xs ${
-                  complete
-                    ? "border-green-800/50 bg-green-950/20 text-green-300"
-                    : count > 0
-                    ? "border-yellow-800/50 bg-yellow-950/20 text-yellow-300"
-                    : "border-escola-border text-escola-creme-50"
+        {/* Settings to copy once */}
+        <div className="mb-3 rounded bg-escola-bg p-3">
+          <p className="mb-2 text-xs font-semibold text-escola-coral">Configura UMA VEZ no ThinkDiffusion:</p>
+          <div className="grid grid-cols-3 gap-2 text-xs text-escola-creme-50">
+            <span>Width: <strong className="text-escola-creme">1920</strong></span>
+            <span>Height: <strong className="text-escola-creme">1080</strong></span>
+            <span>CFG: <strong className="text-escola-creme">6</strong></span>
+            <span>Steps: <strong className="text-escola-creme">35</strong></span>
+            <span>Sampler: <strong className="text-escola-creme">DPM++ 2M Karras</strong></span>
+            <span>Batch: <strong className="text-escola-creme">4</strong></span>
+          </div>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(promptsData.config.negative_prompt);
+              alert("Negative prompt copiado! Cola no campo Negative Prompt do ThinkDiffusion.");
+            }}
+            className="mt-2 rounded bg-escola-border px-3 py-1 text-xs text-escola-creme hover:bg-escola-border/80"
+          >
+            Copiar Negative Prompt
+          </button>
+        </div>
+
+        {/* Prompts list with COPY buttons */}
+        <div className="space-y-2">
+          {filteredPrompts.map((p: PromptItem) => (
+            <div
+              key={p.id}
+              className="rounded border border-escola-border bg-escola-bg p-3"
+            >
+              <div className="mb-1 flex items-center justify-between">
+                <span className="text-sm font-semibold text-escola-creme">{p.id}</span>
+                <span className="text-xs text-escola-creme-50">{p.mood.join(", ")}</span>
+              </div>
+              <p className="mb-2 text-xs leading-relaxed text-escola-creme-50">
+                {p.prompt.slice(0, 120)}...
+              </p>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(p.prompt);
+                  setCurrentPrompt(p.id);
+                  setTimeout(() => setCurrentPrompt(""), 2000);
+                }}
+                className={`w-full rounded py-2 text-sm font-bold ${
+                  currentPrompt === p.id
+                    ? "bg-green-700 text-white"
+                    : "bg-escola-coral text-white hover:bg-escola-coral/90"
                 }`}
               >
-                <span className="font-mono font-bold">{complete ? "✓" : count > 0 ? `${count}` : "○"}</span>
-                <span className="flex-1">{p.id}</span>
-                <span className="text-escola-creme-50/50">{p.mood.join(", ")}</span>
-                <span className="tabular-nums">{count}/{variationsPerPrompt}</span>
-              </div>
-            );
-          })}
+                {currentPrompt === p.id ? "✓ COPIADO!" : `COPIAR PROMPT`}
+              </button>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── GENERATE ── */}
+      {/* ── GENERATE VIA SCRIPT ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          3. Gerar
+          3. Gerar via API (automático)
         </h3>
 
         <div className="mb-3 flex flex-wrap items-center gap-4">
@@ -329,65 +358,54 @@ export default function ThinkDiffusionPage() {
               onChange={(e) => setVariationsPerPrompt(Number(e.target.value))}
               className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
             >
-              {[4, 10, 20, 30, 50].map((n) => (
+              {[4, 7, 10, 20, 30].map((n) => (
                 <option key={n} value={n}>{n}</option>
               ))}
             </select>
           </label>
-          <label className="flex items-center gap-2 text-xs text-escola-creme-50">
-            <input
-              type="checkbox"
-              checked={autoSave}
-              onChange={(e) => setAutoSave(e.target.checked)}
-            />
-            Guardar no Supabase
-          </label>
         </div>
+
         <div className="mb-3 text-xs text-escola-creme-50">
           {filteredPrompts.length} prompts × {variationsPerPrompt} variações = <strong className="text-escola-creme">{totalImages} imagens</strong> ·
-          Pendentes: <strong className="text-escola-coral">{pendingPrompts.length}</strong> ·
           ~{estimatedMinutes} min · ~${estimatedCost}
         </div>
 
-        {generating && (
-          <div className="mb-3">
-            <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
-              <span>A gerar: {currentPrompt}</span>
-              <span>{progress.done}/{progress.total}</span>
-            </div>
-            <div className="h-2 w-full rounded-full bg-escola-border">
-              <div
-                className="h-full rounded-full bg-escola-coral transition-all"
-                style={{ width: `${progress.total ? (progress.done / progress.total) * 100 : 0}%` }}
-              />
-            </div>
-          </div>
-        )}
-
-        {error && (
-          <div className="mb-3 rounded bg-red-950/50 p-2 text-xs text-red-300">
-            {error}
-          </div>
-        )}
-
-        <div className="flex gap-2">
-          {!generating ? (
-            <button
-              onClick={generateAll}
-              disabled={!serverUrl.trim() || pendingPrompts.length === 0}
-              className="w-full rounded-lg bg-escola-coral px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-escola-coral/90 disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              🎨 GERAR {pendingPrompts.length} IMAGENS (~{estimatedMinutes} min, ~${estimatedCost})
-            </button>
-          ) : (
-            <button
-              onClick={stopGenerating}
-              className="w-full rounded-lg bg-red-700 px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-red-600"
-            >
-              Parar
-            </button>
-          )}
+        <div className="mb-4 rounded bg-escola-bg p-3">
+          <p className="mb-2 text-sm text-escola-creme">
+            <strong>Como funciona:</strong>
+          </p>
+          <ol className="list-decimal pl-5 space-y-1 text-xs text-escola-creme-50">
+            <li>Clica no botão abaixo para <strong className="text-escola-creme">copiar o script</strong></li>
+            <li>Vai ao tab do <strong className="text-escola-creme">ThinkDiffusion</strong></li>
+            <li>Abre a consola: <strong className="text-escola-creme">F12</strong> → tab <strong className="text-escola-creme">Console</strong></li>
+            <li>Cola o script (<strong className="text-escola-creme">Ctrl+V</strong>) e carrega <strong className="text-escola-creme">Enter</strong></li>
+            <li>As imagens geram automaticamente e vão para o Supabase</li>
+          </ol>
         </div>
+
+        <button
+          onClick={async () => {
+            const params = new URLSearchParams();
+            if (selectedVideo) params.set("video", selectedVideo);
+            else if (selectedCategory !== "all") params.set("category", selectedCategory);
+            params.set("variations", String(variationsPerPrompt));
+
+            const res = await fetch(`/api/admin/thinkdiffusion/gen-script?${params}`);
+            const script = await res.text();
+            await navigator.clipboard.writeText(script);
+            setCurrentPrompt("SCRIPT_COPIED");
+            setTimeout(() => setCurrentPrompt(""), 3000);
+          }}
+          className={`w-full rounded-lg px-6 py-4 text-lg font-bold shadow-lg ${
+            currentPrompt === "SCRIPT_COPIED"
+              ? "bg-green-700 text-white"
+              : "bg-escola-coral text-white hover:bg-escola-coral/90"
+          }`}
+        >
+          {currentPrompt === "SCRIPT_COPIED"
+            ? "✓ SCRIPT COPIADO! Agora cola na consola do ThinkDiffusion (F12)"
+            : `COPIAR SCRIPT (${totalImages} imagens)`}
+        </button>
       </section>
 
       {/* ── GALLERY ── */}
