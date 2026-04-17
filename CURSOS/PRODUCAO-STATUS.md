@@ -1,6 +1,6 @@
 # Escola dos Veus — Estado da Producao
 
-**Ultima actualizacao:** 2026-04-16 (sessao 2)
+**Ultima actualizacao:** 2026-04-17 (sessao 3)
 **Actualizado por:** Claude Code
 
 > Este ficheiro e a referencia unica de continuidade entre sessoes.
