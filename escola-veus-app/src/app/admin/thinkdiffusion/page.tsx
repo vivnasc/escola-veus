@@ -181,7 +181,7 @@ export default function ThinkDiffusionPage() {
 
   const savedCount = images.filter((i) => i.saved).length;
 
-  // Upload files from ThinkDiffusion with auto-rename
+  // Upload files from ThinkDiffusion with auto-rename + orientation detect
   const handleFileUpload = async (files: File[]) => {
     const category = activeVideo
       ? activeVideo.categorias[0]
@@ -191,12 +191,27 @@ export default function ThinkDiffusionPage() {
 
     setUploadProgress({ done: 0, total: files.length, current: "" });
 
+    let hCount = uploadedImages.filter((i) => i.name.includes("-h-")).length;
+    let vCount = uploadedImages.filter((i) => i.name.includes("-v-")).length;
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const newName = `${category}-upload-${Date.now()}-${i + 1}.png`;
-      setUploadProgress({ done: i, total: files.length, current: newName });
+      setUploadProgress({ done: i, total: files.length, current: file.name });
 
       try {
+        // Detect orientation from image dimensions
+        const orientation = await new Promise<"h" | "v">((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(img.width >= img.height ? "h" : "v");
+          img.onerror = () => resolve("h");
+          img.src = URL.createObjectURL(file);
+        });
+
+        const count = orientation === "h" ? ++hCount : ++vCount;
+        const padded = String(count).padStart(3, "0");
+        const newName = `${category}-${orientation}-${padded}.png`;
+        const folder = orientation === "h" ? "horizontal" : "vertical";
+
         const reader = new FileReader();
         const base64 = await new Promise<string>((resolve) => {
           reader.onload = () => resolve((reader.result as string).split(",")[1]);
@@ -209,7 +224,7 @@ export default function ThinkDiffusionPage() {
           body: JSON.stringify({
             image: base64,
             filename: newName,
-            category,
+            category: `${category}/${folder}`,
           }),
         });
 
