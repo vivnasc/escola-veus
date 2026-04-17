@@ -678,6 +678,55 @@ export default function ThinkDiffusionPage() {
           </div>
         )}
 
+        {/* Recover timeout clips */}
+        {(() => {
+          const timeoutClips = Object.values(clips).filter((c) => c.status === "failed" && c.taskId);
+          if (timeoutClips.length === 0) return null;
+          return (
+            <div className="mb-4">
+              <button
+                onClick={async () => {
+                  for (const clip of timeoutClips) {
+                    if (!clip.taskId) continue;
+                    setClips((prev) => ({ ...prev, [clip.imageName]: { ...prev[clip.imageName], status: "processing" } }));
+
+                    try {
+                      const statusRes = await fetch("/api/admin/courses/animation-status", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ tasks: [{ type: "clip", taskId: clip.taskId }], provider: "runway" }),
+                      });
+                      const statusData = await statusRes.json();
+                      const task = statusData.tasks?.[0];
+
+                      if (task?.status === "done" && task?.videoUrl) {
+                        let finalUrl = task.videoUrl;
+                        try {
+                          const saveRes = await fetch("/api/admin/thinkdiffusion/save-clip", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ videoUrl: task.videoUrl, filename: clip.imageName.replace(/\.\w+$/, ".mp4") }),
+                          });
+                          const saveData = await saveRes.json();
+                          if (saveData.url) finalUrl = saveData.url;
+                        } catch { /* keep Runway URL */ }
+                        setClips((prev) => ({ ...prev, [clip.imageName]: { ...prev[clip.imageName], status: "done", clipUrl: finalUrl } }));
+                      } else {
+                        setClips((prev) => ({ ...prev, [clip.imageName]: { ...prev[clip.imageName], status: "failed", error: task?.status || "Ainda a processar" } }));
+                      }
+                    } catch (err) {
+                      setClips((prev) => ({ ...prev, [clip.imageName]: { ...prev[clip.imageName], status: "failed", error: String(err) } }));
+                    }
+                  }
+                }}
+                className="w-full rounded-lg bg-green-700 px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-green-600"
+              >
+                RECUPERAR {timeoutClips.length} CLIPS TIMEOUT
+              </button>
+            </div>
+          );
+        })()}
+
         {/* Generate ALL clips button */}
         {uploadedImages.length > 0 && (() => {
           const hImages = uploadedImages.filter((i) => i.name.includes("-h-"));
