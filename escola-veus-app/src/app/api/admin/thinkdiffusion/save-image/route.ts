@@ -40,9 +40,11 @@ export async function POST(req: NextRequest) {
     const folder = category ? `youtube/images/${category}` : "youtube/images";
     const filePath = `${folder}/${filename}`;
 
+    const contentType = filename.endsWith(".jpg") || filename.endsWith(".jpeg") ? "image/jpeg" : "image/png";
+
     const { error } = await supabase.storage
       .from("course-assets")
-      .upload(filePath, buffer, { contentType: "image/png", upsert: true });
+      .upload(filePath, buffer, { contentType, upsert: true });
 
     if (error) {
       return NextResponse.json({ erro: `Upload falhou: ${error.message}` }, { status: 500 });

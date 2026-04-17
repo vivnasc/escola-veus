@@ -179,7 +179,42 @@ export default function ThinkDiffusionPage() {
 
   const savedCount = images.filter((i) => i.saved).length;
 
-  // Upload files per prompt — auto-detect orientation
+  // Compress image using Canvas (keeps quality, reduces size)
+  const compressImage = (file: File, maxWidth = 1920, quality = 0.85): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let w = img.width;
+        let h = img.height;
+        if (w > maxWidth) {
+          h = Math.round(h * (maxWidth / w));
+          w = maxWidth;
+        }
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) { reject(new Error("No canvas")); return; }
+        ctx.drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+        resolve(dataUrl.split(",")[1]);
+      };
+      img.onerror = () => reject(new Error("Image load failed"));
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  // Detect image orientation
+  const detectOrientation = (file: File): Promise<"h" | "v"> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(img.width >= img.height ? "h" : "v");
+      img.onerror = () => resolve("h");
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  // Upload files per prompt — compress + auto-detect orientation
   const handleFileUpload = async (files: File[]) => {
     if (!uploadPromptId) {
       setError("Selecciona o prompt primeiro!");
@@ -197,29 +232,19 @@ export default function ThinkDiffusionPage() {
       setUploadProgress({ done: i, total: files.length, current: `${uploadPromptId} ${i + 1}/${files.length}` });
 
       try {
-        const orientation = await new Promise<"h" | "v">((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve(img.width >= img.height ? "h" : "v");
-          img.onerror = () => resolve("h");
-          img.src = URL.createObjectURL(file);
-        });
-
+        const orientation = await detectOrientation(file);
         const count = orientation === "h" ? ++hCount : ++vCount;
         const padded = String(count).padStart(2, "0");
         const orient = orientation === "h" ? "horizontal" : "vertical";
-        const newName = `${uploadPromptId}-${orientation}-${padded}.png`;
+        const newName = `${uploadPromptId}-${orientation}-${padded}.jpg`;
 
-        const reader = new FileReader();
-        const base64 = await new Promise<string>((resolve) => {
-          reader.onload = () => resolve((reader.result as string).split(",")[1]);
-          reader.readAsDataURL(file);
-        });
+        const compressed = await compressImage(file);
 
         const res = await fetch("/api/admin/thinkdiffusion/save-image", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            image: base64,
+            image: compressed,
             filename: newName,
             category: `${uploadPromptId.split("-").slice(0, -1).join("-") || "misc"}/${orient}`,
           }),
@@ -228,8 +253,12 @@ export default function ThinkDiffusionPage() {
         const data = await res.json();
         if (data.url) {
           setUploadedImages((prev) => [...prev, { name: newName, url: data.url, promptId: uploadPromptId }]);
+        } else if (data.erro) {
+          setError(`${newName}: ${data.erro}`);
         }
-      } catch { /* skip */ }
+      } catch (err) {
+        setError(`Erro: ${err instanceof Error ? err.message : String(err)}`);
+      }
     }
 
     setUploadProgress((p) => ({ ...p, done: p.total, current: "Completo!" }));
