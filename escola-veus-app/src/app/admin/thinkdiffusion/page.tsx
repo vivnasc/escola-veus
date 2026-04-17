@@ -116,6 +116,8 @@ export default function ThinkDiffusionPage() {
   const [uploadPromptId, setUploadPromptId] = useState("");
   const [uploadProgress, setUploadProgress] = useState({ done: 0, total: 0, current: "" });
   const [uploadedImages, setUploadedImages] = useState<Array<{ name: string; url: string; promptId: string }>>([]);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showPrompts, setShowPrompts] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [variationsPerPrompt, setVariationsPerPrompt] = useState(10);
@@ -139,23 +141,35 @@ export default function ThinkDiffusionPage() {
 
       const found: Array<{ name: string; url: string; promptId: string }> = [];
 
-      for (const p of promptsData.prompts) {
-        const promptFolder = p.id.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        for (const orient of ["horizontal", "vertical"]) {
-          const { data } = await supabase.storage
-            .from("course-assets")
-            .list(`youtube/images/${promptFolder}/${orient}`, { limit: 100 });
+      // List ALL folders under youtube/images/
+      const { data: folders } = await supabase.storage
+        .from("course-assets")
+        .list("youtube/images", { limit: 500 });
 
-          if (data) {
-            for (const f of data) {
-              if (f.name.match(/\.(png|jpg|jpeg)$/i)) {
-                found.push({
-                  name: f.name,
-                  url: `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/images/${promptFolder}/${orient}/${f.name}`,
-                  promptId: p.id,
-                });
-              }
-            }
+      if (!folders) return;
+
+      for (const folder of folders) {
+        if (!folder.name || folder.name.includes(".")) continue;
+
+        for (const orient of ["horizontal", "vertical"]) {
+          const path = `youtube/images/${folder.name}/${orient}`;
+          const { data: files } = await supabase.storage
+            .from("course-assets")
+            .list(path, { limit: 500 });
+
+          if (!files) continue;
+
+          for (const f of files) {
+            if (!f.name.match(/\.(png|jpg|jpeg)$/i)) continue;
+
+            // Match to prompt by filename prefix
+            const promptId = f.name.replace(/-[hv]-\d+\.\w+$/, "");
+
+            found.push({
+              name: f.name,
+              url: `${supabaseUrl}/storage/v1/object/public/course-assets/${path}/${f.name}`,
+              promptId,
+            });
           }
         }
       }
@@ -412,11 +426,11 @@ export default function ThinkDiffusionPage() {
         </span>
       </div>
 
-      {/* ── THINKDIFFUSION SETTINGS ── */}
+      {/* ── THINKDIFFUSION SETTINGS (collapsible) ── */}
       <section className="rounded-lg border border-escola-coral/40 bg-escola-bg-card p-4">
-        <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center justify-between cursor-pointer" onClick={() => setShowSettings(!showSettings)}>
           <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
-            Settings ThinkDiffusion (Automatic1111)
+            {showSettings ? "▼" : "▶"} Settings ThinkDiffusion
           </h3>
           <a
             href="https://www.thinkdiffusion.com/sd"
@@ -428,6 +442,7 @@ export default function ThinkDiffusionPage() {
           </a>
         </div>
 
+        {showSettings && (<>
         <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-3 rounded bg-escola-bg p-3 text-xs">
           <div><span className="text-escola-creme-50">Checkpoint:</span> <strong className="text-escola-creme">RealVisXL v4</strong></div>
           <div><span className="text-escola-creme-50">Width:</span> <strong className="text-escola-creme">1920</strong></div>
@@ -464,6 +479,7 @@ export default function ThinkDiffusionPage() {
             </button>
           </div>
         </div>
+        </>)}
       </section>
 
       {/* ── VIDEO SELECTOR ── */}
@@ -500,12 +516,16 @@ export default function ThinkDiffusionPage() {
         )}
       </section>
 
-      {/* ── CATEGORY FILTER ── */}
+      {/* ── PROMPTS (collapsible) ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
-        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          3. Prompts ({filteredPrompts.length} total · {pendingPrompts.length} por gerar)
+        <h3
+          className="text-sm font-semibold uppercase tracking-wider text-escola-coral cursor-pointer"
+          onClick={() => setShowPrompts(!showPrompts)}
+        >
+          {showPrompts ? "▼" : "▶"} Prompts ({filteredPrompts.length} total) — clica para {showPrompts ? "ocultar" : "ver"}
         </h3>
-        <div className="mb-3 flex flex-wrap gap-1">
+        {showPrompts && (<>
+        <div className="mt-3 mb-3 flex flex-wrap gap-1">
           <button
             onClick={() => setSelectedCategory("all")}
             className={`rounded px-2 py-1 text-xs ${selectedCategory === "all" ? "bg-escola-coral text-white" : "bg-escola-border text-escola-creme-50"}`}
@@ -570,6 +590,7 @@ export default function ThinkDiffusionPage() {
             );
           })}
         </div>
+        </>)}
       </section>
 
       {/* ── GENERATE VIA SCRIPT ── */}
