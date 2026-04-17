@@ -41,6 +41,15 @@ type ClipState = {
 const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.category))].sort();
 
 export default function ThinkDiffusionPage() {
+  // Editable motion prompts per image
+  const [editedMotion, setEditedMotion] = useState<Record<string, string>>({});
+
+  const getMotionPrompt = (imageName: string) => {
+    if (editedMotion[imageName]) return editedMotion[imageName];
+    const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
+    return (motionPrompts as Record<string, string>)[promptId] || (motionPrompts as Record<string, string>)["_default"];
+  };
+
   // Runway clips
   const [clips, setClips] = useState<Record<string, ClipState>>({});
 
@@ -53,7 +62,7 @@ export default function ThinkDiffusionPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imageUrl,
-          motionPrompt: (motionPrompts as Record<string, string>)[imageName.replace(/-[hv]-\d+\.\w+$/, "")] || (motionPrompts as Record<string, string>)["_default"],
+          motionPrompt: getMotionPrompt(imageName),
           provider: "runway",
           ratio: imageName.includes("-v-") ? "720:1280" : "1280:720",
         }),
@@ -728,13 +737,21 @@ export default function ThinkDiffusionPage() {
                             )}
                           </div>
                           <p className="text-xs text-green-300 truncate">{img.name}</p>
-                          {!clip || clip.status === "idle" ? (
+                          {!clip || clip.status === "idle" ? (<>
+                            <textarea
+                              value={getMotionPrompt(img.name)}
+                              onChange={(e) => setEditedMotion((prev) => ({ ...prev, [img.name]: e.target.value }))}
+                              rows={2}
+                              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme mb-1"
+                              placeholder="Motion prompt..."
+                            />
                             <button
                               onClick={() => generateClip(img.url, img.name)}
                               className="w-full rounded bg-escola-coral py-1 text-xs font-bold text-white hover:bg-escola-coral/90"
                             >
                               {img.name.includes("-v-") ? "Gerar Short (50 cr)" : "Gerar clip (50 cr)"}
                             </button>
+                          </>
                           ) : clip.status === "submitting" ? (
                             <span className="block text-center text-xs text-yellow-400">A enviar...</span>
                           ) : clip.status === "processing" ? (
