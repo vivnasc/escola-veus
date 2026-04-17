@@ -6,10 +6,11 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
-const TOTAL_MUSIC_TRACKS = 100;
-const CLIPS_PER_VIDEO = 20;
+const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
+const MAX_UNIQUE_CLIPS = 80; // clips unicos que carregas
 const CLIP_DURATION = 15; // seconds
-const VIDEO_DURATION = CLIPS_PER_VIDEO * CLIP_DURATION; // 300s = 5 min
+const VIDEO_DURATION = 3600; // 1 hour
+const TOTAL_CLIPS_NEEDED = VIDEO_DURATION / CLIP_DURATION; // 240 clips (repetidos do set)
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -22,14 +23,20 @@ type ClipSlot = {
 type ProjectState = {
   title: string;
   clips: ClipSlot[];
-  musicTrack: number;
+  musicPair: number;
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function getMusicUrl(trackNum: number): string {
-  const padded = String(trackNum).padStart(2, "0");
-  return `${MUSIC_BASE}/faixa-${padded}.mp3`;
+function getMusicPairUrls(pairNum: number): [string, string] {
+  const a = (pairNum - 1) * 2 + 1;
+  const b = a + 1;
+  const padA = String(a).padStart(2, "0");
+  const padB = String(b).padStart(2, "0");
+  return [
+    `${MUSIC_BASE}/faixa-${padA}.mp3`,
+    `${MUSIC_BASE}/faixa-${padB}.mp3`,
+  ];
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
@@ -37,13 +44,14 @@ function getMusicUrl(trackNum: number): string {
 export default function YouTubeMontagem() {
   const [title, setTitle] = useState("");
   const [clips, setClips] = useState<ClipSlot[]>(
-    Array.from({ length: CLIPS_PER_VIDEO }, (_, i) => ({
+    Array.from({ length: MAX_UNIQUE_CLIPS }, (_, i) => ({
       index: i,
       url: "",
       loaded: false,
     }))
   );
-  const [musicTrack, setMusicTrack] = useState(1);
+  const [musicPair, setMusicPair] = useState(1); // pair 1 = faixas 01+02
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0); // 0 = track A, 1 = track B
 
   // Render
   const [rendering, setRendering] = useState(false);
@@ -68,19 +76,19 @@ export default function YouTubeMontagem() {
         const state: ProjectState = JSON.parse(saved);
         if (state.title) setTitle(state.title);
         if (state.clips) setClips(state.clips);
-        if (state.musicTrack) setMusicTrack(state.musicTrack);
+        if (state.musicPair) setMusicPair(state.musicPair);
       }
     } catch { /* ignore */ }
   }, []);
 
   const saveState = useCallback(() => {
-    const state: ProjectState = { title, clips, musicTrack };
+    const state: ProjectState = { title, clips, musicPair };
     localStorage.setItem("yt-montagem-state", JSON.stringify(state));
-  }, [title, clips, musicTrack]);
+  }, [title, clips, musicPair]);
 
   useEffect(() => {
     saveState();
-  }, [title, clips, musicTrack, saveState]);
+  }, [title, clips, musicPair, saveState]);
 
   // Clip URL update
   const updateClipUrl = (index: number, url: string) => {
@@ -102,6 +110,29 @@ export default function YouTubeMontagem() {
         loaded: false,
       }))
     );
+  };
+
+  // Music pair URLs
+  const [musicUrlA, musicUrlB] = getMusicPairUrls(musicPair);
+  const audioRefB = useRef<HTMLAudioElement>(null);
+
+  // When track A ends, play track B, and vice-versa (loop)
+  const handleTrackEnd = () => {
+    if (currentTrackIndex === 0) {
+      setCurrentTrackIndex(1);
+      if (audioRefB.current) {
+        audioRefB.current.currentTime = 0;
+        audioRefB.current.volume = 0.3;
+        audioRefB.current.play().catch(() => {});
+      }
+    } else {
+      setCurrentTrackIndex(0);
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.volume = 0.3;
+        audioRef.current.play().catch(() => {});
+      }
+    }
   };
 
   // Preview controls
@@ -127,7 +158,7 @@ export default function YouTubeMontagem() {
   };
 
   const playClip = (index: number) => {
-    if (index >= CLIPS_PER_VIDEO) {
+    if (index >= MAX_UNIQUE_CLIPS) {
       stopPreview();
       return;
     }
@@ -171,8 +202,9 @@ export default function YouTubeMontagem() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          clips: validClips,
-          musicUrl: getMusicUrl(musicTrack),
+          uniqueClips: validClips,
+          targetDuration: VIDEO_DURATION,
+          musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
         }),
@@ -230,13 +262,16 @@ export default function YouTubeMontagem() {
       title,
       specs: {
         duration: VIDEO_DURATION,
-        clips: CLIPS_PER_VIDEO,
+        uniqueClips: filledClips,
+        totalClips: TOTAL_CLIPS_NEEDED,
         clipDuration: CLIP_DURATION,
       },
       music: {
-        track: musicTrack,
-        url: getMusicUrl(musicTrack),
+        pair: musicPair,
+        urlA: musicUrlA,
+        urlB: musicUrlB,
         album: "ancient-ground",
+        loop: "A → B → A → B...",
       },
       clips: clips.map((c: ClipSlot) => ({
         index: c.index,
@@ -260,13 +295,13 @@ export default function YouTubeMontagem() {
     if (!confirm("Limpar tudo e começar de novo?")) return;
     setTitle("");
     setClips(
-      Array.from({ length: CLIPS_PER_VIDEO }, (_, i) => ({
+      Array.from({ length: MAX_UNIQUE_CLIPS }, (_, i) => ({
         index: i,
         url: "",
         loaded: false,
       }))
     );
-    setMusicTrack(1);
+    setMusicPair(1);
     localStorage.removeItem("yt-montagem-state");
   };
 
@@ -278,7 +313,7 @@ export default function YouTubeMontagem() {
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-xs text-escola-creme-50">
-            {CLIPS_PER_VIDEO} clips × {CLIP_DURATION}s = {VIDEO_DURATION / 60} min
+            até {MAX_UNIQUE_CLIPS} clips únicos → {VIDEO_DURATION / 60} min (1h)
           </span>
           <button
             onClick={resetProject}
@@ -308,24 +343,47 @@ export default function YouTubeMontagem() {
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
           2. Música — Ancient Ground (Loranne)
         </h3>
+        <p className="mb-2 text-xs text-escola-creme-50">
+          Cada par = 2 faixas do mesmo prompt que fazem loop contínuo.
+        </p>
         <div className="flex items-center gap-3">
           <select
-            value={musicTrack}
-            onChange={(e) => setMusicTrack(Number(e.target.value))}
+            value={musicPair}
+            onChange={(e) => { setMusicPair(Number(e.target.value)); setCurrentTrackIndex(0); }}
             className="rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
           >
-            {Array.from({ length: TOTAL_MUSIC_TRACKS }, (_, i) => (
-              <option key={i + 1} value={i + 1}>
-                Faixa {String(i + 1).padStart(2, "0")}
-              </option>
-            ))}
+            {Array.from({ length: TOTAL_MUSIC_PAIRS }, (_, i) => {
+              const a = (i * 2 + 1).toString().padStart(2, "0");
+              const b = (i * 2 + 2).toString().padStart(2, "0");
+              return (
+                <option key={i + 1} value={i + 1}>
+                  Par {i + 1} — Faixas {a} + {b}
+                </option>
+              );
+            })}
           </select>
-          <audio
-            ref={audioRef}
-            src={getMusicUrl(musicTrack)}
-            controls
-            className="h-8 flex-1"
-          />
+        </div>
+        <div className="mt-2 space-y-1">
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-bold ${currentTrackIndex === 0 ? "text-escola-coral" : "text-escola-creme-50"}`}>A</span>
+            <audio
+              ref={audioRef}
+              src={musicUrlA}
+              controls
+              onEnded={handleTrackEnd}
+              className="h-8 flex-1"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-bold ${currentTrackIndex === 1 ? "text-escola-coral" : "text-escola-creme-50"}`}>B</span>
+            <audio
+              ref={audioRefB}
+              src={musicUrlB}
+              controls
+              onEnded={handleTrackEnd}
+              className="h-8 flex-1"
+            />
+          </div>
         </div>
       </section>
 
@@ -333,7 +391,7 @@ export default function YouTubeMontagem() {
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
-            3. Clips Runway ({filledClips}/{CLIPS_PER_VIDEO})
+            3. Clips Runway ({filledClips}/{MAX_UNIQUE_CLIPS})
           </h3>
           <button
             onClick={() => {
@@ -390,7 +448,7 @@ export default function YouTubeMontagem() {
 
           {previewing && (
             <div className="absolute bottom-3 left-3 rounded bg-black/60 px-2 py-1 text-xs text-white">
-              Clip {previewClipIndex + 1}/{CLIPS_PER_VIDEO} —{" "}
+              Clip {previewClipIndex + 1}/{MAX_UNIQUE_CLIPS} —{" "}
               {Math.floor(previewTime / 60)}:
               {String(Math.floor(previewTime % 60)).padStart(2, "0")}
             </div>
@@ -451,8 +509,8 @@ export default function YouTubeMontagem() {
         </h3>
 
         <p className="mb-3 text-xs text-escola-creme-50">
-          Junta os {filledClips} clips + música num vídeo MP4 via Shotstack (cloud).
-          Demora 1-3 min. O vídeo fica guardado no Supabase.
+          Os {filledClips} clips únicos serão baralhados e repetidos para preencher 1 hora ({TOTAL_CLIPS_NEEDED} clips × {CLIP_DURATION}s).
+          Render via Shotstack (cloud). O vídeo fica no Supabase.
         </p>
 
         {rendering && (
@@ -502,7 +560,7 @@ export default function YouTubeMontagem() {
           disabled={filledClips === 0 || rendering}
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
-          {rendering ? "A renderizar..." : `Gerar MP4 (${filledClips} clips + música)`}
+          {rendering ? "A renderizar..." : `Gerar MP4 de 1h (${filledClips} clips únicos → ${TOTAL_CLIPS_NEEDED} total)`}
         </button>
       </section>
     </div>
