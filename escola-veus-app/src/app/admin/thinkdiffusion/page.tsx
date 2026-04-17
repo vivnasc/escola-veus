@@ -622,11 +622,43 @@ export default function ThinkDiffusionPage() {
       {/* ── UPLOAD ALL AT ONCE ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          4. Upload de Imagens (ThinkDiffusion → Supabase)
+          4. Upload de Imagens + Gerar Clips
         </h3>
         <p className="mb-3 text-xs text-escola-creme-50">
           Arrasta imagens para cada prompt. Horizontais e verticais são separadas automaticamente.
         </p>
+
+        {/* Generate ALL clips button */}
+        {uploadedImages.length > 0 && (() => {
+          const hImages = uploadedImages.filter((i) => i.name.includes("-h-"));
+          const withoutClip = hImages.filter((i) => !clips[i.name] || clips[i.name].status === "idle");
+          const processing = Object.values(clips).filter((c) => c.status === "processing" || c.status === "submitting").length;
+          const done = Object.values(clips).filter((c) => c.status === "done").length;
+          const cost = withoutClip.length * 50;
+
+          return (
+            <div className="mb-4 rounded-lg border border-escola-coral/40 bg-escola-bg p-4">
+              <div className="mb-2 text-xs text-escola-creme-50">
+                {hImages.length} horizontais · {done} clips prontos · {processing > 0 ? `${processing} a processar · ` : ""}{withoutClip.length} por gerar · {cost} créditos
+              </div>
+              <button
+                onClick={() => {
+                  for (const img of withoutClip) {
+                    generateClip(img.url, img.name);
+                  }
+                }}
+                disabled={withoutClip.length === 0 || processing > 0}
+                className="w-full rounded-lg bg-escola-coral px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-escola-coral/90 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                {processing > 0
+                  ? `A processar ${processing} clips...`
+                  : withoutClip.length === 0
+                  ? `✓ Todos os ${done} clips horizontais gerados`
+                  : `GERAR ${withoutClip.length} CLIPS HORIZONTAIS (${cost} cr)`}
+              </button>
+            </div>
+          );
+        })()}
 
         {uploadProgress.total > 0 && (
           <div className="mb-3">
