@@ -117,31 +117,40 @@ export default function ThinkDiffusionPage() {
     return null;
   };
 
-  // Generate ONE image (with variation number)
+  // Generate ONE image — calls ThinkDiffusion A1111 DIRECTLY from browser
   const generateOne = async (prompt: PromptItem, variationNum: number): Promise<GeneratedImage | null> => {
     const fullId = `${prompt.id}-v${variationNum}`;
     setCurrentPrompt(fullId);
     setError(null);
 
     try {
-      const res = await fetch("/api/admin/thinkdiffusion/generate", {
+      const baseUrl = serverUrl.trim().replace(/\/+$/, "");
+
+      // Call A1111 API directly from browser (has ThinkDiffusion session cookies)
+      const res = await fetch(`${baseUrl}/sdapi/v1/txt2img`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          serverUrl: serverUrl.trim(),
           prompt: prompt.prompt,
-          negativePrompt: promptsData.config.negative_prompt,
+          negative_prompt: promptsData.config.negative_prompt,
           width: promptsData.config.width,
           height: promptsData.config.height,
-          cfgScale: promptsData.config.cfg_scale,
+          cfg_scale: promptsData.config.cfg_scale,
           steps: promptsData.config.steps,
-          samplerName: promptsData.config.sampler_name,
-          batchSize: 1,
+          sampler_name: promptsData.config.sampler_name,
+          batch_size: 1,
+          seed: -1,
+          send_images: true,
+          save_images: false,
         }),
       });
 
+      if (!res.ok) {
+        const errText = await res.text().catch(() => "");
+        throw new Error(`A1111 HTTP ${res.status}: ${errText.slice(0, 200)}`);
+      }
+
       const data = await res.json();
-      if (data.erro) throw new Error(data.erro);
       if (!data.images || data.images.length === 0) throw new Error("Sem imagens");
 
       const img: GeneratedImage = {
@@ -366,14 +375,14 @@ export default function ThinkDiffusionPage() {
             <button
               onClick={generateAll}
               disabled={!serverUrl.trim() || pendingPrompts.length === 0}
-              className="rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white disabled:opacity-30"
+              className="w-full rounded-lg bg-escola-coral px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-escola-coral/90 disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              Gerar tudo ({pendingPrompts.length} imagens, ~{estimatedMinutes} min, ~${estimatedCost})
+              🎨 GERAR {pendingPrompts.length} IMAGENS (~{estimatedMinutes} min, ~${estimatedCost})
             </button>
           ) : (
             <button
               onClick={stopGenerating}
-              className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white"
+              className="w-full rounded-lg bg-red-700 px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-red-600"
             >
               Parar
             </button>
