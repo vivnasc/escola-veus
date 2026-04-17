@@ -358,9 +358,6 @@ export default function ThinkDiffusionPage() {
               </div>
             );
           })}
-              </div>
-            );
-          })}
         </div>
       </section>
 
