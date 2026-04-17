@@ -147,10 +147,36 @@ export default function ThinkDiffusionPage() {
 
   // On mount: check Supabase for existing uploaded images via server API
   useEffect(() => {
+    // Sync images
     fetch("/api/admin/thinkdiffusion/list-images")
       .then((r) => r.json())
       .then((data) => {
         if (data.images && data.images.length > 0) setUploadedImages(data.images);
+      })
+      .catch(() => {});
+
+    // Sync existing clips
+    fetch("/api/admin/thinkdiffusion/list-clips")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.clips) {
+          const clipState: Record<string, ClipState> = {};
+          for (const clip of data.clips) {
+            // Match by base name: mar-01-golden-hour-h-01 (without extension)
+            // Try matching with .png and .jpg extensions
+            const baseName = clip.name;
+            const possibleImageNames = [`${baseName}.png`, `${baseName}.jpg`, `${baseName}.jpeg`];
+            for (const imgName of possibleImageNames) {
+              clipState[imgName] = {
+                imageUrl: "",
+                imageName: imgName,
+                status: "done",
+                clipUrl: clip.url,
+              };
+            }
+          }
+          setClips(clipState);
+        }
       })
       .catch(() => {});
   }, []);
