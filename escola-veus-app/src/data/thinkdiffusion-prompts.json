@@ -7,14 +7,14 @@
     "steps": 35,
     "sampler_name": "DPM++ 2M Karras",
     "batch_size": 4,
-    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly"
+    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns"
   },
   "prompts": [
     {
       "id": "mar-01-golden-hour",
       "category": "mar",
       "mood": ["calma", "contemplativo"],
-      "prompt": "cinematic photograph of the Indian Ocean at golden hour, Mozambique coastline, warm turquoise water meeting white sand, gentle waves, sun low on horizon casting long golden reflections on water surface, tropical clouds lit from below in orange and pink, shot from water level perspective as if standing in shallow water, photorealistic, 8k, ultra detailed, National Geographic quality, warm color grading"
+      "prompt": "cinematic photograph of the Indian Ocean at golden hour, Mozambique coastline, warm turquoise water meeting white sand, gentle waves, single sun low on horizon casting long golden reflections on water surface, tropical clouds lit from below in orange and pink, shot from water level perspective as if standing in shallow water, photorealistic, 8k, ultra detailed, National Geographic quality, warm color grading"
     },
     {
       "id": "mar-02-aerial-bazaruto",
@@ -32,7 +32,7 @@
       "id": "mar-04-moonlit",
       "category": "mar",
       "mood": ["solidao", "contemplativo"],
-      "prompt": "calm moonlit ocean at night, Mozambique beach, full moon reflected in still water creating silver path, bioluminescent plankton glowing blue along shoreline, palm tree silhouettes on left, stars visible in dark sky, long exposure photography, serene and meditative atmosphere, 8k"
+      "prompt": "calm moonlit ocean at night, Mozambique beach, single full moon reflected in still water creating silver path, bioluminescent plankton glowing blue along shoreline, palm tree silhouettes on left, stars visible in dark sky, long exposure photography, serene and meditative atmosphere, 8k"
     },
     {"id": "mar-05-onda-suave", "category": "mar", "mood": ["calma", "contemplativo"],
       "prompt": "extreme close-up of gentle ocean wave rolling onto shore, crystal clear turquoise water over white sand, bubbles and foam creating delicate patterns, warm golden light filtering through the wave, Mozambique Indian Ocean, feeling of rhythmic breathing, macro photography, 8k"},
@@ -89,7 +89,7 @@
     {"id": "praia-12-mangal-praia", "category": "praia", "mood": ["conexao", "misterio"],
       "prompt": "where mangrove forest meets white sand beach, twisted roots reaching into turquoise water, dappled light filtering through canopy onto sand, two ecosystems merging, Mozambique coastline, nature documentary photography, 8k"},
     {"id": "praia-13-lua-praia", "category": "praia", "mood": ["solidao", "contemplativo"],
-      "prompt": "full moon rising over calm tropical beach at twilight, silver moonlight path across still water, dark sand with subtle blue tones, palm silhouettes, magical and serene atmosphere, Mozambique Indian Ocean, long exposure photography, 8k"},
+      "prompt": "single full moon rising over calm tropical beach at twilight, silver moonlight path across still water, dark sand with subtle blue tones, palm silhouettes, magical and serene atmosphere, only one moon in sky, Mozambique Indian Ocean, long exposure photography, 8k"},
     {"id": "praia-14-crepusculo-violeta", "category": "praia", "mood": ["melancolia", "desejo"],
       "prompt": "deep violet and magenta twilight sky over African beach, last light creating dramatic color gradient, calm dark water reflecting purple sky, empty beach, deeply romantic and contemplative mood, Mozambique, cinematic photography, 8k"},
     {"id": "praia-15-amanhecer-pescadores", "category": "praia", "mood": ["heranca", "recomeco"],
@@ -141,7 +141,7 @@
     {"id": "rio-12-cachoeira-pequena", "category": "rio", "mood": ["vital", "contemplativo"],
       "prompt": "small intimate waterfall in African forest, water cascading over mossy stepped rocks into clear pool, ferns and tropical plants surrounding, sunlight creating rainbow in spray, hidden paradise feeling, Gorongosa Mozambique, nature photography, 8k"},
     {"id": "rio-13-rio-noite", "category": "rio", "mood": ["misterio", "solidao"],
-      "prompt": "African river at night under full moon, moonlight creating silver ribbon on dark water surface, fireflies glowing along riverbank, dense dark forest silhouettes on both sides, mysterious and magical, Mozambique, long exposure photography, 8k"},
+      "prompt": "African river at night under single full moon, moonlight creating silver ribbon on dark water surface, fireflies glowing along riverbank, dense dark forest silhouettes on both sides, mysterious and magical, only one moon, Mozambique, long exposure photography, 8k"},
     {"id": "rio-14-pedras-rio", "category": "rio", "mood": ["contemplativo", "calma"],
       "prompt": "smooth river stones visible through crystal clear African river water, pebbles in warm earth tones, gentle current creating ripple patterns over stones, sunlight filtering through water creating dancing light on riverbed, meditative, Mozambique, macro photography, 8k"},
     {"id": "rio-15-confluencia", "category": "rio", "mood": ["conexao", "vasto"],
@@ -150,13 +150,13 @@
       "id": "ceu-01-sunset",
       "category": "ceu",
       "mood": ["libertacao", "expansivo"],
-      "prompt": "dramatic African sunset sky, massive cumulus clouds lit from below in deep orange coral and violet, sun just below horizon, silhouette of baobab tree in lower third, vast open savanna landscape, Mozambique sky, feeling of infinite space and spiritual presence, cinematic photography, 8k ultra wide"
+      "prompt": "dramatic African sunset sky, massive cumulus clouds lit from below in deep orange coral and violet, single sun just below horizon, silhouette of baobab tree in lower third, vast open savanna landscape, Mozambique sky, feeling of infinite space and spiritual presence, cinematic photography, 8k ultra wide"
     },
     {
       "id": "ceu-02-full-moon",
       "category": "ceu",
       "mood": ["solidao", "misterio"],
-      "prompt": "full moon rising over African landscape, enormous moon low on horizon appearing twice its normal size, warm golden moonlight illuminating savanna grassland, scattered acacia trees as dark silhouettes, stars beginning to appear in deep blue sky, magical twilight hour, Mozambique, hyperrealistic"
+      "prompt": "single enormous full moon rising over African landscape, moon low on horizon appearing twice its normal size, warm golden moonlight illuminating savanna grassland, scattered acacia trees as dark silhouettes, stars beginning to appear in deep blue sky, magical twilight hour, only one moon in frame, Mozambique, hyperrealistic"
     },
     {
       "id": "ceu-03-milky-way",
@@ -168,7 +168,7 @@
       "id": "ceu-04-thunderstorm",
       "category": "ceu",
       "mood": ["raiva", "poderoso"],
-      "prompt": "dramatic thunderstorm approaching over African ocean, dark towering cumulonimbus clouds, lightning bolt illuminating cloud interior with purple-white light, calm sea in foreground creating contrast, last golden sunlight on horizon edge, powerful and awe-inspiring, Mozambique coast, cinematic photography"
+      "prompt": "dramatic thunderstorm approaching over African ocean, dark towering cumulonimbus clouds, single lightning bolt illuminating cloud interior with purple-white light, calm sea in foreground creating contrast, last golden sunlight on horizon edge, powerful and awe-inspiring, Mozambique coast, cinematic photography"
     },
     {"id": "ceu-05-nuvens-douradas", "category": "ceu", "mood": ["esperanca", "contemplativo"],
       "prompt": "golden hour clouds over African landscape, massive cumulus clouds lit entirely in warm gold and amber, dark blue sky above, feeling of light breaking through after darkness, vast open savanna below, Mozambique, cinematic photography, 8k ultra wide"},
@@ -305,7 +305,7 @@
     {"id": "noite-01-estrelas-baoba", "category": "noite", "mood": ["solidao", "vasto"],
       "prompt": "vast African night sky filled with thousands of stars, Milky Way clearly visible as bright band, ancient baobab tree silhouetted against starscape, flat savanna horizon, deep blue and purple tones, feeling of infinite solitude and wonder, Mozambique, astrophotography, 8k"},
     {"id": "noite-02-lua-oceano", "category": "noite", "mood": ["contemplativo", "calma"],
-      "prompt": "full moon casting silver path across calm Indian Ocean, Mozambique beach at night, gentle waves reflecting moonlight, dark palm tree silhouettes framing the scene, stars visible in clear sky, peaceful and meditative atmosphere, long exposure photography, 8k"},
+      "prompt": "single full moon casting silver path across calm Indian Ocean, Mozambique beach at night, gentle waves reflecting moonlight, dark palm tree silhouettes framing the scene, stars visible in clear sky, only one moon, peaceful and meditative atmosphere, long exposure photography, 8k"},
     {"id": "noite-03-bioluminescencia", "category": "noite", "mood": ["misterio", "desejo"],
       "prompt": "bioluminescent plankton glowing electric blue in ocean waves at night, Mozambique coastline, each wave breaking reveals stunning blue glow, dark beach and sky contrasting with luminous water, magical and otherworldly, long exposure photography, 8k"},
     {"id": "noite-04-fogueira-aldeia", "category": "noite", "mood": ["conexao", "ancestral"],
