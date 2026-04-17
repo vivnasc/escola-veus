@@ -637,6 +637,47 @@ export default function ThinkDiffusionPage() {
           Arrasta imagens para cada prompt. Horizontais e verticais são separadas automaticamente.
         </p>
 
+        {/* Motion prompts: download template + upload filled */}
+        {uploadedImages.length > 0 && (
+          <div className="mb-4 flex gap-2">
+            <a
+              href="/api/admin/thinkdiffusion/export-template"
+              download
+              className="rounded bg-escola-border px-4 py-2 text-sm font-semibold text-escola-creme hover:bg-escola-border/80"
+            >
+              Download template motion prompts (.md)
+            </a>
+            <button
+              onClick={() => {
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = ".md,.txt";
+                input.onchange = async () => {
+                  if (!input.files?.[0]) return;
+                  const text = await input.files[0].text();
+                  const res = await fetch("/api/admin/thinkdiffusion/import-prompts", {
+                    method: "POST",
+                    body: text,
+                  });
+                  const data = await res.json();
+                  if (data.prompts) {
+                    setEditedMotion(data.prompts);
+                    setError(null);
+                    setCurrentPrompt(`${data.count} motion prompts carregados!`);
+                    setTimeout(() => setCurrentPrompt(""), 3000);
+                  } else {
+                    setError(data.erro || "Erro ao importar.");
+                  }
+                };
+                input.click();
+              }}
+              className="rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white hover:bg-escola-coral/90"
+            >
+              Upload motion prompts (.md)
+            </button>
+          </div>
+        )}
+
         {/* Generate ALL clips button */}
         {uploadedImages.length > 0 && (() => {
           const hImages = uploadedImages.filter((i) => i.name.includes("-h-"));
