@@ -202,7 +202,7 @@ export default function ThinkDiffusionPage() {
         const orient = orientation === "h" ? "horizontal" : "vertical";
         const ext = file.name.endsWith(".jpg") || file.name.endsWith(".jpeg") ? "jpg" : "png";
         const newName = `${promptId}-${orientation}-${padded}.${ext}`;
-        const category = `${promptId.split("-").slice(0, -1).join("-") || "misc"}/${orient}`;
+        const category = `${promptId.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}/${orient}`;
 
         const formData = new FormData();
         formData.append("file", file);
