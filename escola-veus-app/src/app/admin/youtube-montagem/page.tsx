@@ -7,9 +7,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
 const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
-const CLIPS_PER_VIDEO = 20;
+const MAX_UNIQUE_CLIPS = 80; // clips unicos que carregas
 const CLIP_DURATION = 15; // seconds
-const VIDEO_DURATION = CLIPS_PER_VIDEO * CLIP_DURATION; // 300s = 5 min
+const VIDEO_DURATION = 3600; // 1 hour
+const TOTAL_CLIPS_NEEDED = VIDEO_DURATION / CLIP_DURATION; // 240 clips (repetidos do set)
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -43,7 +44,7 @@ function getMusicPairUrls(pairNum: number): [string, string] {
 export default function YouTubeMontagem() {
   const [title, setTitle] = useState("");
   const [clips, setClips] = useState<ClipSlot[]>(
-    Array.from({ length: CLIPS_PER_VIDEO }, (_, i) => ({
+    Array.from({ length: MAX_UNIQUE_CLIPS }, (_, i) => ({
       index: i,
       url: "",
       loaded: false,
@@ -157,7 +158,7 @@ export default function YouTubeMontagem() {
   };
 
   const playClip = (index: number) => {
-    if (index >= CLIPS_PER_VIDEO) {
+    if (index >= MAX_UNIQUE_CLIPS) {
       stopPreview();
       return;
     }
@@ -201,7 +202,8 @@ export default function YouTubeMontagem() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          clips: validClips,
+          uniqueClips: validClips,
+          targetDuration: VIDEO_DURATION,
           musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
@@ -260,7 +262,8 @@ export default function YouTubeMontagem() {
       title,
       specs: {
         duration: VIDEO_DURATION,
-        clips: CLIPS_PER_VIDEO,
+        uniqueClips: filledClips,
+        totalClips: TOTAL_CLIPS_NEEDED,
         clipDuration: CLIP_DURATION,
       },
       music: {
@@ -292,7 +295,7 @@ export default function YouTubeMontagem() {
     if (!confirm("Limpar tudo e começar de novo?")) return;
     setTitle("");
     setClips(
-      Array.from({ length: CLIPS_PER_VIDEO }, (_, i) => ({
+      Array.from({ length: MAX_UNIQUE_CLIPS }, (_, i) => ({
         index: i,
         url: "",
         loaded: false,
@@ -310,7 +313,7 @@ export default function YouTubeMontagem() {
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-xs text-escola-creme-50">
-            {CLIPS_PER_VIDEO} clips × {CLIP_DURATION}s = {VIDEO_DURATION / 60} min
+            até {MAX_UNIQUE_CLIPS} clips únicos → {VIDEO_DURATION / 60} min (1h)
           </span>
           <button
             onClick={resetProject}
@@ -388,7 +391,7 @@ export default function YouTubeMontagem() {
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
-            3. Clips Runway ({filledClips}/{CLIPS_PER_VIDEO})
+            3. Clips Runway ({filledClips}/{MAX_UNIQUE_CLIPS})
           </h3>
           <button
             onClick={() => {
@@ -445,7 +448,7 @@ export default function YouTubeMontagem() {
 
           {previewing && (
             <div className="absolute bottom-3 left-3 rounded bg-black/60 px-2 py-1 text-xs text-white">
-              Clip {previewClipIndex + 1}/{CLIPS_PER_VIDEO} —{" "}
+              Clip {previewClipIndex + 1}/{MAX_UNIQUE_CLIPS} —{" "}
               {Math.floor(previewTime / 60)}:
               {String(Math.floor(previewTime % 60)).padStart(2, "0")}
             </div>
@@ -506,8 +509,8 @@ export default function YouTubeMontagem() {
         </h3>
 
         <p className="mb-3 text-xs text-escola-creme-50">
-          Junta os {filledClips} clips + música num vídeo MP4 via Shotstack (cloud).
-          Demora 1-3 min. O vídeo fica guardado no Supabase.
+          Os {filledClips} clips únicos serão baralhados e repetidos para preencher 1 hora ({TOTAL_CLIPS_NEEDED} clips × {CLIP_DURATION}s).
+          Render via Shotstack (cloud). O vídeo fica no Supabase.
         </p>
 
         {rendering && (
@@ -557,7 +560,7 @@ export default function YouTubeMontagem() {
           disabled={filledClips === 0 || rendering}
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
-          {rendering ? "A renderizar..." : `Gerar MP4 (${filledClips} clips + música)`}
+          {rendering ? "A renderizar..." : `Gerar MP4 de 1h (${filledClips} clips únicos → ${TOTAL_CLIPS_NEEDED} total)`}
         </button>
       </section>
     </div>

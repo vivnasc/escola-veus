@@ -95,10 +95,37 @@ function buildYouTubeEdit(
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { title, clips, musicUrls, musicUrl, musicVolume = 0.8, clipDuration = 15 } = body;
+  const {
+    title,
+    clips: rawClips,
+    uniqueClips,
+    targetDuration = 3600,
+    musicUrls,
+    musicUrl,
+    musicVolume = 0.8,
+    clipDuration = 15,
+  } = body;
 
-  if (!clips || !Array.isArray(clips) || clips.length === 0) {
-    return NextResponse.json({ erro: "clips[] obrigatorio." }, { status: 400 });
+  // Support both: uniqueClips (shuffled to fill targetDuration) or clips (direct list)
+  let clips: string[];
+  if (uniqueClips && Array.isArray(uniqueClips) && uniqueClips.length > 0) {
+    const valid = uniqueClips.filter((u: string) => u && u.trim().length > 0);
+    const totalNeeded = Math.ceil(targetDuration / clipDuration);
+    clips = [];
+    // Shuffle and repeat to fill duration
+    for (let i = 0; clips.length < totalNeeded; i++) {
+      const shuffled = [...valid].sort(() => Math.random() - 0.5);
+      clips.push(...shuffled);
+    }
+    clips = clips.slice(0, totalNeeded);
+  } else if (rawClips && Array.isArray(rawClips)) {
+    clips = rawClips;
+  } else {
+    return NextResponse.json({ erro: "uniqueClips[] ou clips[] obrigatorio." }, { status: 400 });
+  }
+
+  if (clips.length === 0) {
+    return NextResponse.json({ erro: "Nenhum clip valido." }, { status: 400 });
   }
 
   // Support both musicUrls (pair) and legacy musicUrl (single)
