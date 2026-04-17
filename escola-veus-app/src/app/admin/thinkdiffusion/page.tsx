@@ -289,29 +289,58 @@ export default function ThinkDiffusionPage() {
           })}
         </div>
 
-        {/* Prompts list */}
-        <div className="max-h-60 space-y-1 overflow-y-auto">
-          {filteredPrompts.map((p: PromptItem) => {
-            const count = variationCounts[p.id] || 0;
-            const complete = count >= variationsPerPrompt;
-            return (
-              <div
-                key={p.id}
-                className={`flex items-center gap-2 rounded border px-2 py-1 text-xs ${
-                  complete
-                    ? "border-green-800/50 bg-green-950/20 text-green-300"
-                    : count > 0
-                    ? "border-yellow-800/50 bg-yellow-950/20 text-yellow-300"
-                    : "border-escola-border text-escola-creme-50"
+        {/* Settings to copy once */}
+        <div className="mb-3 rounded bg-escola-bg p-3">
+          <p className="mb-2 text-xs font-semibold text-escola-coral">Configura UMA VEZ no ThinkDiffusion:</p>
+          <div className="grid grid-cols-3 gap-2 text-xs text-escola-creme-50">
+            <span>Width: <strong className="text-escola-creme">1920</strong></span>
+            <span>Height: <strong className="text-escola-creme">1080</strong></span>
+            <span>CFG: <strong className="text-escola-creme">6</strong></span>
+            <span>Steps: <strong className="text-escola-creme">35</strong></span>
+            <span>Sampler: <strong className="text-escola-creme">DPM++ 2M Karras</strong></span>
+            <span>Batch: <strong className="text-escola-creme">4</strong></span>
+          </div>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(promptsData.config.negative_prompt);
+              alert("Negative prompt copiado! Cola no campo Negative Prompt do ThinkDiffusion.");
+            }}
+            className="mt-2 rounded bg-escola-border px-3 py-1 text-xs text-escola-creme hover:bg-escola-border/80"
+          >
+            Copiar Negative Prompt
+          </button>
+        </div>
+
+        {/* Prompts list with COPY buttons */}
+        <div className="space-y-2">
+          {filteredPrompts.map((p: PromptItem) => (
+            <div
+              key={p.id}
+              className="rounded border border-escola-border bg-escola-bg p-3"
+            >
+              <div className="mb-1 flex items-center justify-between">
+                <span className="text-sm font-semibold text-escola-creme">{p.id}</span>
+                <span className="text-xs text-escola-creme-50">{p.mood.join(", ")}</span>
+              </div>
+              <p className="mb-2 text-xs leading-relaxed text-escola-creme-50">
+                {p.prompt.slice(0, 120)}...
+              </p>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(p.prompt);
+                  setCurrentPrompt(p.id);
+                  setTimeout(() => setCurrentPrompt(""), 2000);
+                }}
+                className={`w-full rounded py-2 text-sm font-bold ${
+                  currentPrompt === p.id
+                    ? "bg-green-700 text-white"
+                    : "bg-escola-coral text-white hover:bg-escola-coral/90"
                 }`}
               >
-                <span className="font-mono font-bold">{complete ? "✓" : count > 0 ? `${count}` : "○"}</span>
-                <span className="flex-1">{p.id}</span>
-                <span className="text-escola-creme-50/50">{p.mood.join(", ")}</span>
-                <span className="tabular-nums">{count}/{variationsPerPrompt}</span>
-              </div>
-            );
-          })}
+                {currentPrompt === p.id ? "✓ COPIADO!" : `COPIAR PROMPT`}
+              </button>
+            </div>
+          ))}
         </div>
       </section>
 
