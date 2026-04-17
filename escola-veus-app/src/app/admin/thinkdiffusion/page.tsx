@@ -31,7 +31,7 @@ type GeneratedImage = {
 const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.category))].sort();
 
 export default function ThinkDiffusionPage() {
-  const [serverUrl, setServerUrl] = useState("");
+  // serverUrl removed — using fal.ai instead of ThinkDiffusion API
   const [selectedVideo, setSelectedVideo] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [variationsPerPrompt, setVariationsPerPrompt] = useState(10);
@@ -54,8 +54,7 @@ export default function ThinkDiffusionPage() {
   }, []);
 
   useEffect(() => {
-    if (serverUrl) localStorage.setItem("thinkdiffusion-url", serverUrl);
-  }, [serverUrl]);
+  }, []);
 
   useEffect(() => {
     if (images.length > 0) {
@@ -117,53 +116,37 @@ export default function ThinkDiffusionPage() {
     return null;
   };
 
-  // Generate ONE image — calls ThinkDiffusion A1111 DIRECTLY from browser
+  // Generate ONE image via fal.ai (server-side, no CORS issues)
   const generateOne = async (prompt: PromptItem, variationNum: number): Promise<GeneratedImage | null> => {
     const fullId = `${prompt.id}-v${variationNum}`;
     setCurrentPrompt(fullId);
     setError(null);
 
     try {
-      const baseUrl = serverUrl.trim().replace(/\/+$/, "");
-
-      // Call A1111 API directly from browser (has ThinkDiffusion session cookies)
-      const res = await fetch(`${baseUrl}/sdapi/v1/txt2img`, {
+      const res = await fetch("/api/admin/thinkdiffusion/generate-falai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: prompt.prompt,
-          negative_prompt: promptsData.config.negative_prompt,
           width: promptsData.config.width,
           height: promptsData.config.height,
-          cfg_scale: promptsData.config.cfg_scale,
-          steps: promptsData.config.steps,
-          sampler_name: promptsData.config.sampler_name,
-          batch_size: 1,
-          seed: -1,
-          send_images: true,
-          save_images: false,
+          category: prompt.category,
+          filename: `${fullId}.png`,
         }),
       });
 
-      if (!res.ok) {
-        const errText = await res.text().catch(() => "");
-        throw new Error(`A1111 HTTP ${res.status}: ${errText.slice(0, 200)}`);
-      }
-
       const data = await res.json();
-      if (!data.images || data.images.length === 0) throw new Error("Sem imagens");
+      if (data.erro) throw new Error(data.erro);
+      if (!data.url) throw new Error("Sem URL da imagem");
 
       const img: GeneratedImage = {
         promptId: fullId,
-        base64: data.images[0],
-        saved: false,
+        base64: "",
+        saved: true,
+        url: data.url,
       };
 
       setImages((prev) => [...prev, img]);
-
-      if (autoSave) {
-        await saveImage(img);
-      }
 
       return img;
     } catch (err) {
@@ -174,11 +157,6 @@ export default function ThinkDiffusionPage() {
 
   // Generate ALL pending
   const generateAll = async () => {
-    if (!serverUrl.trim()) {
-      setError("Introduz o URL do ThinkDiffusion primeiro.");
-      return;
-    }
-
     setGenerating(true);
     setStopped(false);
     setProgress({ done: 0, total: pendingPrompts.length });
@@ -212,21 +190,11 @@ export default function ThinkDiffusionPage() {
         </span>
       </div>
 
-      {/* ── SERVER URL ── */}
-      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
-        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          1. URL do ThinkDiffusion
-        </h3>
-        <p className="mb-2 text-xs text-escola-creme-50">
-          Abre ThinkDiffusion → lança Automatic1111 → copia o URL da barra do browser.
+      {/* ── INFO ── */}
+      <section className="rounded-lg border border-green-800/50 bg-green-950/20 p-4">
+        <p className="text-sm text-green-300">
+          Geração via <strong>fal.ai</strong> (Flux Pro) — automático, sem configuração. Imagens guardadas no Supabase.
         </p>
-        <input
-          type="text"
-          placeholder="https://xxxxx.thinkdiffusion.xyz:7860"
-          value={serverUrl}
-          onChange={(e) => setServerUrl(e.target.value)}
-          className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme placeholder:text-escola-creme-50/40"
-        />
       </section>
 
       {/* ── VIDEO SELECTOR ── */}
@@ -289,58 +257,29 @@ export default function ThinkDiffusionPage() {
           })}
         </div>
 
-        {/* Settings to copy once */}
-        <div className="mb-3 rounded bg-escola-bg p-3">
-          <p className="mb-2 text-xs font-semibold text-escola-coral">Configura UMA VEZ no ThinkDiffusion:</p>
-          <div className="grid grid-cols-3 gap-2 text-xs text-escola-creme-50">
-            <span>Width: <strong className="text-escola-creme">1920</strong></span>
-            <span>Height: <strong className="text-escola-creme">1080</strong></span>
-            <span>CFG: <strong className="text-escola-creme">6</strong></span>
-            <span>Steps: <strong className="text-escola-creme">35</strong></span>
-            <span>Sampler: <strong className="text-escola-creme">DPM++ 2M Karras</strong></span>
-            <span>Batch: <strong className="text-escola-creme">4</strong></span>
-          </div>
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(promptsData.config.negative_prompt);
-              alert("Negative prompt copiado! Cola no campo Negative Prompt do ThinkDiffusion.");
-            }}
-            className="mt-2 rounded bg-escola-border px-3 py-1 text-xs text-escola-creme hover:bg-escola-border/80"
-          >
-            Copiar Negative Prompt
-          </button>
-        </div>
-
-        {/* Prompts list with COPY buttons */}
-        <div className="space-y-2">
-          {filteredPrompts.map((p: PromptItem) => (
-            <div
-              key={p.id}
-              className="rounded border border-escola-border bg-escola-bg p-3"
-            >
-              <div className="mb-1 flex items-center justify-between">
-                <span className="text-sm font-semibold text-escola-creme">{p.id}</span>
-                <span className="text-xs text-escola-creme-50">{p.mood.join(", ")}</span>
-              </div>
-              <p className="mb-2 text-xs leading-relaxed text-escola-creme-50">
-                {p.prompt.slice(0, 120)}...
-              </p>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(p.prompt);
-                  setCurrentPrompt(p.id);
-                  setTimeout(() => setCurrentPrompt(""), 2000);
-                }}
-                className={`w-full rounded py-2 text-sm font-bold ${
-                  currentPrompt === p.id
-                    ? "bg-green-700 text-white"
-                    : "bg-escola-coral text-white hover:bg-escola-coral/90"
+        {/* Prompts list */}
+        <div className="max-h-60 space-y-1 overflow-y-auto">
+          {filteredPrompts.map((p: PromptItem) => {
+            const count = variationCounts[p.id] || 0;
+            const complete = count >= variationsPerPrompt;
+            return (
+              <div
+                key={p.id}
+                className={`flex items-center gap-2 rounded border px-2 py-1 text-xs ${
+                  complete
+                    ? "border-green-800/50 bg-green-950/20 text-green-300"
+                    : count > 0
+                    ? "border-yellow-800/50 bg-yellow-950/20 text-yellow-300"
+                    : "border-escola-border text-escola-creme-50"
                 }`}
               >
-                {currentPrompt === p.id ? "✓ COPIADO!" : `COPIAR PROMPT`}
-              </button>
-            </div>
-          ))}
+                <span className="font-mono font-bold">{complete ? "✓" : count > 0 ? `${count}` : "○"}</span>
+                <span className="flex-1">{p.id}</span>
+                <span className="text-escola-creme-50/50">{p.mood.join(", ")}</span>
+                <span className="tabular-nums">{count}/{variationsPerPrompt}</span>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -370,41 +309,42 @@ export default function ThinkDiffusionPage() {
           ~{estimatedMinutes} min · ~${estimatedCost}
         </div>
 
-        <div className="mb-4 rounded bg-escola-bg p-3">
-          <p className="mb-2 text-sm text-escola-creme">
-            <strong>Como funciona:</strong>
-          </p>
-          <ol className="list-decimal pl-5 space-y-1 text-xs text-escola-creme-50">
-            <li>Clica no botão abaixo para <strong className="text-escola-creme">copiar o script</strong></li>
-            <li>Vai ao tab do <strong className="text-escola-creme">ThinkDiffusion</strong></li>
-            <li>Abre a consola: <strong className="text-escola-creme">F12</strong> → tab <strong className="text-escola-creme">Console</strong></li>
-            <li>Cola o script (<strong className="text-escola-creme">Ctrl+V</strong>) e carrega <strong className="text-escola-creme">Enter</strong></li>
-            <li>As imagens geram automaticamente e vão para o Supabase</li>
-          </ol>
-        </div>
+        {generating && (
+          <div className="mb-3">
+            <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
+              <span>A gerar: {currentPrompt}</span>
+              <span>{progress.done}/{progress.total}</span>
+            </div>
+            <div className="h-2 w-full rounded-full bg-escola-border">
+              <div
+                className="h-full rounded-full bg-escola-coral transition-all"
+                style={{ width: `${progress.total ? (progress.done / progress.total) * 100 : 0}%` }}
+              />
+            </div>
+          </div>
+        )}
 
-        <button
-          onClick={async () => {
-            const params = new URLSearchParams();
-            if (selectedVideo) params.set("video", selectedVideo);
-            else if (selectedCategory !== "all") params.set("category", selectedCategory);
-            params.set("variations", String(variationsPerPrompt));
+        {error && (
+          <div className="mb-3 rounded bg-red-950/50 p-2 text-xs text-red-300">
+            {error}
+          </div>
+        )}
 
-            const res = await fetch(`/api/admin/thinkdiffusion/gen-script?${params}`);
-            const script = await res.text();
-            await navigator.clipboard.writeText(script);
-            setCurrentPrompt("SCRIPT_COPIED");
-            setTimeout(() => setCurrentPrompt(""), 3000);
-          }}
-          className={`w-full rounded-lg px-6 py-4 text-lg font-bold shadow-lg ${
-            currentPrompt === "SCRIPT_COPIED"
-              ? "bg-green-700 text-white"
-              : "bg-escola-coral text-white hover:bg-escola-coral/90"
-          }`}
-        >
-          {currentPrompt === "SCRIPT_COPIED"
-            ? "✓ SCRIPT COPIADO! Agora cola na consola do ThinkDiffusion (F12)"
-            : `COPIAR SCRIPT (${totalImages} imagens)`}
+        <div className="flex gap-2">
+          {!generating ? (
+            <button
+              onClick={generateAll}
+              disabled={pendingPrompts.length === 0}
+              className="w-full rounded-lg bg-escola-coral px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-escola-coral/90 disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              GERAR {pendingPrompts.length} IMAGENS (~{estimatedMinutes} min)
+            </button>
+          ) : (
+            <button
+              onClick={stopGenerating}
+              className="w-full rounded-lg bg-red-700 px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-red-600"
+            >
+              PARAR
         </button>
       </section>
 
