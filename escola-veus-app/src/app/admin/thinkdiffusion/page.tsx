@@ -46,10 +46,7 @@ export default function ThinkDiffusionPage() {
   const [error, setError] = useState<string | null>(null);
   const [autoSave, setAutoSave] = useState(true);
 
-  // Restore server URL from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem("thinkdiffusion-url");
-    if (saved) setServerUrl(saved);
     const savedImages = localStorage.getItem("thinkdiffusion-images");
     if (savedImages) {
       try { setImages(JSON.parse(savedImages)); } catch { /* ignore */ }
