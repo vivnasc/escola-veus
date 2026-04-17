@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+export const maxDuration = 60;
+
+// Allow large image uploads (up to 10MB base64)
+export const config = {
+  api: { bodyParser: { sizeLimit: "12mb" } },
+};
+
 /**
  * POST /api/admin/thinkdiffusion/save-image
  *

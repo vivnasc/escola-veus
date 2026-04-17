@@ -179,24 +179,22 @@ export default function ThinkDiffusionPage() {
 
   const savedCount = images.filter((i) => i.saved).length;
 
-  // Upload files from ThinkDiffusion with auto-rename by prompt + orientation
+  // Upload ALL files at once — auto-detect orientation, sequential naming
   const handleFileUpload = async (files: File[]) => {
-    if (!uploadPromptId) {
-      setError("Selecciona o prompt primeiro!");
-      return;
-    }
+    const category = activeVideo
+      ? activeVideo.categorias[0]
+      : selectedCategory !== "all"
+      ? selectedCategory
+      : "mar";
 
-    setUploadProgress({ done: 0, total: files.length, current: "" });
+    setUploadProgress({ done: 0, total: files.length, current: "A preparar..." });
 
-    const existingForPrompt = uploadedImages.filter((i) => i.promptId === uploadPromptId);
-    let hCount = existingForPrompt.filter((i) => i.name.includes("-h-")).length;
-    let vCount = existingForPrompt.filter((i) => i.name.includes("-v-")).length;
-
-    const category = uploadPromptId.split("-").slice(0, -1).join("-") || "misc";
+    let hCount = uploadedImages.filter((i) => i.name.includes("-h-")).length;
+    let vCount = uploadedImages.filter((i) => i.name.includes("-v-")).length;
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      setUploadProgress({ done: i, total: files.length, current: file.name });
+      setUploadProgress({ done: i, total: files.length, current: `${i + 1}/${files.length}` });
 
       try {
         const orientation = await new Promise<"h" | "v">((resolve) => {
@@ -207,9 +205,9 @@ export default function ThinkDiffusionPage() {
         });
 
         const count = orientation === "h" ? ++hCount : ++vCount;
-        const padded = String(count).padStart(2, "0");
+        const padded = String(count).padStart(3, "0");
         const orient = orientation === "h" ? "horizontal" : "vertical";
-        const newName = `${uploadPromptId}-${orientation}-${padded}.png`;
+        const newName = `${category}-${orientation}-${padded}.png`;
 
         const reader = new FileReader();
         const base64 = await new Promise<string>((resolve) => {
@@ -229,9 +227,9 @@ export default function ThinkDiffusionPage() {
 
         const data = await res.json();
         if (data.url) {
-          setUploadedImages((prev) => [...prev, { name: newName, url: data.url, promptId: uploadPromptId }]);
+          setUploadedImages((prev) => [...prev, { name: newName, url: data.url, promptId: category }]);
         }
-      } catch { /* skip failed uploads */ }
+      } catch { /* skip */ }
     }
 
     setUploadProgress((p) => ({ ...p, done: p.total, current: "Completo!" }));
@@ -428,32 +426,17 @@ export default function ThinkDiffusionPage() {
         </div>
       </section>
 
-      {/* ── UPLOAD ZONE ── */}
+      {/* ── UPLOAD ALL AT ONCE ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
           4. Upload de Imagens (ThinkDiffusion → Supabase)
         </h3>
-        <div className="mb-3">
-          <label className="mb-1 block text-xs text-escola-creme-50">Estas imagens são do prompt:</label>
-          <select
-            value={uploadPromptId}
-            onChange={(e) => setUploadPromptId(e.target.value)}
-            className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
-          >
-            <option value="">Selecciona o prompt...</option>
-            {filteredPrompts.map((p: PromptItem) => {
-              const uploaded = uploadedImages.filter((i) => i.promptId === p.id).length;
-              return (
-                <option key={p.id} value={p.id}>
-                  {p.id} ({p.mood.join(", ")}) {uploaded > 0 ? `— ${uploaded} uploaded` : ""}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Arrasta TODAS as imagens de uma vez. Horizontais e verticais são separadas automaticamente.
+        </p>
 
         <div
-          className="mb-3 flex min-h-32 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-escola-coral/40 bg-escola-bg p-6 hover:border-escola-coral/80 hover:bg-escola-coral/5 transition-colors"
+          className="mb-3 flex min-h-40 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-escola-coral/40 bg-escola-bg p-8 hover:border-escola-coral/80 hover:bg-escola-coral/5 transition-colors"
           onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
           onDrop={(e) => {
             e.preventDefault();
@@ -473,15 +456,15 @@ export default function ThinkDiffusionPage() {
           }}
         >
           <div className="text-center">
-            <p className="text-lg font-bold text-escola-coral">Arrasta imagens aqui</p>
-            <p className="text-xs text-escola-creme-50">ou clica para seleccionar</p>
+            <p className="text-2xl font-bold text-escola-coral">Arrasta TODAS as imagens aqui</p>
+            <p className="mt-1 text-sm text-escola-creme-50">Horizontais + verticais, tudo junto</p>
           </div>
         </div>
 
         {uploadProgress.total > 0 && (
           <div className="mb-3">
             <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
-              <span>A fazer upload: {uploadProgress.current}</span>
+              <span>{uploadProgress.current}</span>
               <span>{uploadProgress.done}/{uploadProgress.total}</span>
             </div>
             <div className="h-2 w-full rounded-full bg-escola-border">
@@ -494,20 +477,17 @@ export default function ThinkDiffusionPage() {
         )}
 
         {uploadedImages.length > 0 && (() => {
-          const byPrompt: Record<string, typeof uploadedImages> = {};
-          for (const img of uploadedImages) {
-            if (!byPrompt[img.promptId]) byPrompt[img.promptId] = [];
-            byPrompt[img.promptId].push(img);
-          }
+          const hImages = uploadedImages.filter((i) => i.name.includes("-h-"));
+          const vImages = uploadedImages.filter((i) => i.name.includes("-v-"));
           return (
             <div className="space-y-4">
-              {Object.entries(byPrompt).map(([promptId, imgs]) => (
-                <div key={promptId}>
-                  <p className="mb-2 text-xs font-semibold text-escola-creme">{promptId} ({imgs.length})</p>
+              {hImages.length > 0 && (
+                <div>
+                  <p className="mb-2 text-xs font-semibold text-escola-creme">Horizontal ({hImages.length})</p>
                   <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                    {imgs.map((img) => (
+                    {hImages.map((img) => (
                       <div key={img.name} className="space-y-1">
-                        <div className={`relative overflow-hidden rounded border border-green-800/50 ${img.name.includes("-v-") ? "aspect-[9/16]" : "aspect-video"}`}>
+                        <div className="aspect-video overflow-hidden rounded border border-green-800/50">
                           <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
                         </div>
                         <p className="text-xs text-green-300 truncate">{img.name}</p>
@@ -515,7 +495,22 @@ export default function ThinkDiffusionPage() {
                     ))}
                   </div>
                 </div>
-              ))}
+              )}
+              {vImages.length > 0 && (
+                <div>
+                  <p className="mb-2 text-xs font-semibold text-escola-creme">Vertical ({vImages.length})</p>
+                  <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
+                    {vImages.map((img) => (
+                      <div key={img.name} className="space-y-1">
+                        <div className="aspect-[9/16] overflow-hidden rounded border border-green-800/50">
+                          <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
+                        </div>
+                        <p className="text-xs text-green-300 truncate">{img.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           );
         })()}
