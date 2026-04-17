@@ -74,6 +74,13 @@ export default function ThinkDiffusionPage() {
 
       setClips((prev) => ({ ...prev, [imageName]: { ...prev[imageName], taskId: data.taskId, status: "processing" } }));
 
+      // Save taskId to Supabase IMMEDIATELY — never lose it
+      fetch("/api/admin/thinkdiffusion/save-task", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ taskId: data.taskId, imageName, imageUrl }),
+      }).catch(() => {});
+
       // Poll for completion + save to Supabase
       const pollClip = async (taskId: string) => {
         for (let i = 0; i < 60; i++) {
@@ -793,9 +800,10 @@ export default function ThinkDiffusionPage() {
                 {hImages.length} horizontais · {done} clips prontos · {processing > 0 ? `${processing} a processar · ` : ""}{withoutClip.length} por gerar · {cost} créditos
               </div>
               <button
-                onClick={() => {
-                  for (const img of withoutClip) {
-                    generateClip(img.url, img.name);
+                onClick={async () => {
+                  for (let i = 0; i < withoutClip.length; i++) {
+                    generateClip(withoutClip[i].url, withoutClip[i].name);
+                    if (i < withoutClip.length - 1) await new Promise((r) => setTimeout(r, 5000));
                   }
                 }}
                 disabled={withoutClip.length === 0 || processing > 0}
