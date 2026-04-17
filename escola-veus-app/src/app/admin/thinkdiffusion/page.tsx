@@ -202,7 +202,7 @@ export default function ThinkDiffusionPage() {
         const orient = orientation === "h" ? "horizontal" : "vertical";
         const ext = file.name.endsWith(".jpg") || file.name.endsWith(".jpeg") ? "jpg" : "png";
         const newName = `${promptId}-${orientation}-${padded}.${ext}`;
-        const category = `${promptId.split("-").slice(0, -1).join("-") || "misc"}/${orient}`;
+        const category = `${promptId.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}/${orient}`;
 
         const formData = new FormData();
         formData.append("file", file);
@@ -507,10 +507,14 @@ export default function ThinkDiffusionPage() {
             const vImgs = uploaded.filter((i) => i.name.includes("-v-"));
             return (
               <div key={p.id} className="rounded border border-escola-border bg-escola-bg p-3">
-                <div className="flex items-start gap-3">
-                  <div
-                    className="flex min-h-16 w-48 shrink-0 cursor-pointer items-center justify-center rounded border-2 border-dashed border-escola-coral/30 bg-escola-bg-card p-2 hover:border-escola-coral/60 transition-colors"
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-sm font-semibold text-escola-creme">{p.id}</span>
+                  <span className="text-xs text-escola-creme-50">{uploaded.length > 0 ? `${hImgs.length}H + ${vImgs.length}V` : ""}</span>
+                </div>
+                <div
+                    className="flex min-h-24 w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-escola-coral/40 bg-escola-bg-card p-4 hover:border-escola-coral/80 hover:bg-escola-coral/5 transition-colors"
                     onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    onDragEnter={(e) => { e.preventDefault(); e.stopPropagation(); }}
                     onDrop={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -523,29 +527,25 @@ export default function ThinkDiffusionPage() {
                       input.multiple = true;
                       input.accept = "image/*";
                       input.onchange = () => {
-                        if (input.files) handleFileUploadForPrompt(Array.from(input.files), p.id);
+                        if (input.files && input.files.length > 0) handleFileUploadForPrompt(Array.from(input.files), p.id);
                       };
                       input.click();
                     }}
                   >
-                    <p className="text-center text-xs text-escola-coral">Arrasta aqui</p>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-escola-creme">{p.id}</span>
-                      <span className="text-xs text-escola-creme-50">{uploaded.length > 0 ? `${hImgs.length}H + ${vImgs.length}V` : ""}</span>
+                    <div className="text-center">
+                      <p className="text-sm font-bold text-escola-coral">Arrasta ou clica</p>
+                      <p className="text-xs text-escola-creme-50">{p.id}</p>
                     </div>
-                    {uploaded.length > 0 && (
-                      <div className="mt-2 grid grid-cols-4 gap-1">
-                        {uploaded.map((img) => (
-                          <div key={img.name} className={`overflow-hidden rounded border border-green-800/50 ${img.name.includes("-v-") ? "aspect-[9/16]" : "aspect-video"}`}>
-                            <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
-                </div>
+                {uploaded.length > 0 && (
+                  <div className="mt-2 grid grid-cols-4 gap-1 sm:grid-cols-8">
+                    {uploaded.map((img) => (
+                      <div key={img.name} className={`overflow-hidden rounded border border-green-800/50 ${img.name.includes("-v-") ? "aspect-[9/16]" : "aspect-video"}`}>
+                        <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}
