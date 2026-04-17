@@ -51,7 +51,27 @@ export default function YouTubeMontagem() {
     }))
   );
   const [musicPair, setMusicPair] = useState(1); // pair 1 = faixas 01+02
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0); // 0 = track A, 1 = track B
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+
+  // Auto-load clips from Supabase on mount
+  useEffect(() => {
+    fetch("/api/admin/thinkdiffusion/list-clips")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.clips && data.clips.length > 0) {
+          const sorted = data.clips
+            .filter((c: { name: string }) => c.name.includes("-h-"))
+            .sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
+          setClips((prev: ClipSlot[]) =>
+            prev.map((slot: ClipSlot, i: number) => ({
+              ...slot,
+              url: sorted[i]?.url || slot.url,
+            }))
+          );
+        }
+      })
+      .catch(() => {});
+  }, []); // 0 = track A, 1 = track B
 
   // Render
   const [rendering, setRendering] = useState(false);
