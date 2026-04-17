@@ -7,14 +7,14 @@
     "steps": 35,
     "sampler_name": "DPM++ 2M Karras",
     "batch_size": 4,
-    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly"
+    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns"
   },
   "prompts": [
     {
       "id": "mar-01-golden-hour",
       "category": "mar",
       "mood": ["calma", "contemplativo"],
-      "prompt": "cinematic photograph of the Indian Ocean at golden hour, Mozambique coastline, warm turquoise water meeting white sand, gentle waves, sun low on horizon casting long golden reflections on water surface, tropical clouds lit from below in orange and pink, shot from water level perspective as if standing in shallow water, photorealistic, 8k, ultra detailed, National Geographic quality, warm color grading"
+      "prompt": "cinematic photograph of the Indian Ocean at golden hour, Mozambique coastline, warm turquoise water meeting white sand, gentle waves, single sun low on horizon casting long golden reflections on water surface, tropical clouds lit from below in orange and pink, shot from water level perspective as if standing in shallow water, photorealistic, 8k, ultra detailed, National Geographic quality, warm color grading"
     },
     {
       "id": "mar-02-aerial-bazaruto",
@@ -150,7 +150,7 @@
       "id": "ceu-01-sunset",
       "category": "ceu",
       "mood": ["libertacao", "expansivo"],
-      "prompt": "dramatic African sunset sky, massive cumulus clouds lit from below in deep orange coral and violet, sun just below horizon, silhouette of baobab tree in lower third, vast open savanna landscape, Mozambique sky, feeling of infinite space and spiritual presence, cinematic photography, 8k ultra wide"
+      "prompt": "dramatic African sunset sky, massive cumulus clouds lit from below in deep orange coral and violet, single sun just below horizon, silhouette of baobab tree in lower third, vast open savanna landscape, Mozambique sky, feeling of infinite space and spiritual presence, cinematic photography, 8k ultra wide"
     },
     {
       "id": "ceu-02-full-moon",
@@ -168,7 +168,7 @@
       "id": "ceu-04-thunderstorm",
       "category": "ceu",
       "mood": ["raiva", "poderoso"],
-      "prompt": "dramatic thunderstorm approaching over African ocean, dark towering cumulonimbus clouds, lightning bolt illuminating cloud interior with purple-white light, calm sea in foreground creating contrast, last golden sunlight on horizon edge, powerful and awe-inspiring, Mozambique coast, cinematic photography"
+      "prompt": "dramatic thunderstorm approaching over African ocean, dark towering cumulonimbus clouds, single lightning bolt illuminating cloud interior with purple-white light, calm sea in foreground creating contrast, last golden sunlight on horizon edge, powerful and awe-inspiring, Mozambique coast, cinematic photography"
     },
     {"id": "ceu-05-nuvens-douradas", "category": "ceu", "mood": ["esperanca", "contemplativo"],
       "prompt": "golden hour clouds over African landscape, massive cumulus clouds lit entirely in warm gold and amber, dark blue sky above, feeling of light breaking through after darkness, vast open savanna below, Mozambique, cinematic photography, 8k ultra wide"},
