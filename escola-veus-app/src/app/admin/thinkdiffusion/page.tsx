@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 // Load prompts from the JSON file via import
 import promptsData from "@/data/thinkdiffusion-prompts.json";
 import videoPlan from "@/data/video-plan.json";
+import motionPrompts from "@/data/runway-motion-prompts.json";
 
 type PromptItem = {
   id: string;
@@ -52,7 +53,7 @@ export default function ThinkDiffusionPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imageUrl,
-          motionPrompt: "slow cinematic camera movement, gentle natural motion, soft light changes, 4k film quality",
+          motionPrompt: (motionPrompts as Record<string, string>)[imageName.replace(/-[hv]-\d+\.\w+$/, "")] || (motionPrompts as Record<string, string>)["_default"],
           provider: "runway",
         }),
       });
