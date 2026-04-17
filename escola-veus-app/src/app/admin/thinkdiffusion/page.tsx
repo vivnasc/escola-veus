@@ -179,22 +179,22 @@ export default function ThinkDiffusionPage() {
 
   const savedCount = images.filter((i) => i.saved).length;
 
-  // Upload ALL files at once — auto-detect orientation, sequential naming
+  // Upload files per prompt — auto-detect orientation
   const handleFileUpload = async (files: File[]) => {
-    const category = activeVideo
-      ? activeVideo.categorias[0]
-      : selectedCategory !== "all"
-      ? selectedCategory
-      : "mar";
+    if (!uploadPromptId) {
+      setError("Selecciona o prompt primeiro!");
+      return;
+    }
 
     setUploadProgress({ done: 0, total: files.length, current: "A preparar..." });
 
-    let hCount = uploadedImages.filter((i) => i.name.includes("-h-")).length;
-    let vCount = uploadedImages.filter((i) => i.name.includes("-v-")).length;
+    const existing = uploadedImages.filter((i) => i.promptId === uploadPromptId);
+    let hCount = existing.filter((i) => i.name.includes("-h-")).length;
+    let vCount = existing.filter((i) => i.name.includes("-v-")).length;
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      setUploadProgress({ done: i, total: files.length, current: `${i + 1}/${files.length}` });
+      setUploadProgress({ done: i, total: files.length, current: `${uploadPromptId} ${i + 1}/${files.length}` });
 
       try {
         const orientation = await new Promise<"h" | "v">((resolve) => {
@@ -205,9 +205,9 @@ export default function ThinkDiffusionPage() {
         });
 
         const count = orientation === "h" ? ++hCount : ++vCount;
-        const padded = String(count).padStart(3, "0");
+        const padded = String(count).padStart(2, "0");
         const orient = orientation === "h" ? "horizontal" : "vertical";
-        const newName = `${category}-${orientation}-${padded}.png`;
+        const newName = `${uploadPromptId}-${orientation}-${padded}.png`;
 
         const reader = new FileReader();
         const base64 = await new Promise<string>((resolve) => {
@@ -221,13 +221,13 @@ export default function ThinkDiffusionPage() {
           body: JSON.stringify({
             image: base64,
             filename: newName,
-            category: `${category}/${orient}`,
+            category: `${uploadPromptId.split("-").slice(0, -1).join("-") || "misc"}/${orient}`,
           }),
         });
 
         const data = await res.json();
         if (data.url) {
-          setUploadedImages((prev) => [...prev, { name: newName, url: data.url, promptId: category }]);
+          setUploadedImages((prev) => [...prev, { name: newName, url: data.url, promptId: uploadPromptId }]);
         }
       } catch { /* skip */ }
     }
@@ -432,8 +432,26 @@ export default function ThinkDiffusionPage() {
           4. Upload de Imagens (ThinkDiffusion → Supabase)
         </h3>
         <p className="mb-3 text-xs text-escola-creme-50">
-          Arrasta TODAS as imagens de uma vez. Horizontais e verticais são separadas automaticamente.
+          Selecciona o prompt, arrasta as imagens desse prompt. Depois muda para o próximo.
         </p>
+
+        <div className="mb-3">
+          <select
+            value={uploadPromptId}
+            onChange={(e) => setUploadPromptId(e.target.value)}
+            className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+          >
+            <option value="">Selecciona o prompt...</option>
+            {filteredPrompts.map((p: PromptItem) => {
+              const uploaded = uploadedImages.filter((i) => i.promptId === p.id).length;
+              return (
+                <option key={p.id} value={p.id}>
+                  {p.id} ({p.mood.join(", ")}) {uploaded > 0 ? `— ${uploaded} uploaded` : ""}
+                </option>
+              );
+            })}
+          </select>
+        </div>
 
         <div
           className="mb-3 flex min-h-40 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-escola-coral/40 bg-escola-bg p-8 hover:border-escola-coral/80 hover:bg-escola-coral/5 transition-colors"
@@ -456,7 +474,9 @@ export default function ThinkDiffusionPage() {
           }}
         >
           <div className="text-center">
-            <p className="text-2xl font-bold text-escola-coral">Arrasta TODAS as imagens aqui</p>
+            <p className="text-2xl font-bold text-escola-coral">
+              {uploadPromptId ? `Arrasta imagens de ${uploadPromptId}` : "Selecciona o prompt primeiro ↑"}
+            </p>
             <p className="mt-1 text-sm text-escola-creme-50">Horizontais + verticais, tudo junto</p>
           </div>
         </div>
