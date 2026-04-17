@@ -345,7 +345,9 @@ export default function ThinkDiffusionPage() {
               className="w-full rounded-lg bg-red-700 px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-red-600"
             >
               PARAR
-        </button>
+            </button>
+          )}
+        </div>
       </section>
 
       {/* ── GALLERY ── */}
