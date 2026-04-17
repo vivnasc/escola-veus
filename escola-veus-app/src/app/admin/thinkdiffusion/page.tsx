@@ -46,11 +46,43 @@ export default function ThinkDiffusionPage() {
   const [error, setError] = useState<string | null>(null);
   const [autoSave, setAutoSave] = useState(true);
 
+  // On mount: check Supabase for existing uploaded images
   useEffect(() => {
-    const savedImages = localStorage.getItem("thinkdiffusion-images");
-    if (savedImages) {
-      try { setImages(JSON.parse(savedImages)); } catch { /* ignore */ }
-    }
+    const syncWithSupabase = async () => {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      if (!supabaseUrl || !supabaseKey) return;
+
+      const { createClient } = await import("@supabase/supabase-js");
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      const found: Array<{ name: string; url: string; promptId: string }> = [];
+
+      for (const p of promptsData.prompts) {
+        const promptFolder = p.id.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        for (const orient of ["horizontal", "vertical"]) {
+          const { data } = await supabase.storage
+            .from("course-assets")
+            .list(`youtube/images/${promptFolder}/${orient}`, { limit: 100 });
+
+          if (data) {
+            for (const f of data) {
+              if (f.name.match(/\.(png|jpg|jpeg)$/i)) {
+                found.push({
+                  name: f.name,
+                  url: `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/images/${promptFolder}/${orient}/${f.name}`,
+                  promptId: p.id,
+                });
+              }
+            }
+          }
+        }
+      }
+
+      if (found.length > 0) setUploadedImages(found);
+    };
+
+    syncWithSupabase();
   }, []);
 
   useEffect(() => {
