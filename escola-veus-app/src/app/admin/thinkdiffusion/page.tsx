@@ -24,7 +24,9 @@ const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.cate
 export default function ThinkDiffusionPage() {
   const [serverUrl, setServerUrl] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [variationsPerPrompt, setVariationsPerPrompt] = useState(10);
   const [generating, setGenerating] = useState(false);
+  const [stopped, setStopped] = useState(false);
   const [currentPrompt, setCurrentPrompt] = useState("");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [images, setImages] = useState<GeneratedImage[]>([]);
@@ -57,11 +59,25 @@ export default function ThinkDiffusionPage() {
     ? promptsData.prompts
     : promptsData.prompts.filter((p: PromptItem) => p.category === selectedCategory);
 
-  const alreadyGenerated = new Set(images.map((img) => img.promptId));
+  // Count how many variations exist per prompt
+  const variationCounts: Record<string, number> = {};
+  for (const img of images) {
+    const baseId = img.promptId.replace(/-v\d+$/, "");
+    variationCounts[baseId] = (variationCounts[baseId] || 0) + 1;
+  }
 
-  const pendingPrompts = filteredPrompts.filter(
-    (p: PromptItem) => !alreadyGenerated.has(p.id)
-  );
+  // Prompts that still need more variations
+  const pendingPrompts: { prompt: PromptItem; variationNum: number }[] = [];
+  for (const p of filteredPrompts) {
+    const existing = variationCounts[p.id] || 0;
+    for (let v = existing + 1; v <= variationsPerPrompt; v++) {
+      pendingPrompts.push({ prompt: p, variationNum: v });
+    }
+  }
+
+  const totalImages = filteredPrompts.length * variationsPerPrompt;
+  const estimatedMinutes = Math.ceil((pendingPrompts.length * 25) / 60);
+  const estimatedCost = ((pendingPrompts.length * 25) / 3600 * 0.79).toFixed(2);
 
   // Save image to Supabase
   const saveImage = async (img: GeneratedImage) => {
@@ -86,9 +102,10 @@ export default function ThinkDiffusionPage() {
     return null;
   };
 
-  // Generate ONE image
-  const generateOne = async (prompt: PromptItem): Promise<GeneratedImage | null> => {
-    setCurrentPrompt(prompt.id);
+  // Generate ONE image (with variation number)
+  const generateOne = async (prompt: PromptItem, variationNum: number): Promise<GeneratedImage | null> => {
+    const fullId = `${prompt.id}-v${variationNum}`;
+    setCurrentPrompt(fullId);
     setError(null);
 
     try {
@@ -113,21 +130,20 @@ export default function ThinkDiffusionPage() {
       if (!data.images || data.images.length === 0) throw new Error("Sem imagens");
 
       const img: GeneratedImage = {
-        promptId: prompt.id,
+        promptId: fullId,
         base64: data.images[0],
         saved: false,
       };
 
       setImages((prev) => [...prev, img]);
 
-      // Auto-save to Supabase
       if (autoSave) {
         await saveImage(img);
       }
 
       return img;
     } catch (err) {
-      setError(`${prompt.id}: ${err instanceof Error ? err.message : String(err)}`);
+      setError(`${fullId}: ${err instanceof Error ? err.message : String(err)}`);
       return null;
     }
   };
@@ -140,12 +156,13 @@ export default function ThinkDiffusionPage() {
     }
 
     setGenerating(true);
+    setStopped(false);
     setProgress({ done: 0, total: pendingPrompts.length });
 
     for (let i = 0; i < pendingPrompts.length; i++) {
-      if (!generating && i > 0) break; // cancelled
+      if (stopped) break;
       setProgress({ done: i, total: pendingPrompts.length });
-      await generateOne(pendingPrompts[i]);
+      await generateOne(pendingPrompts[i].prompt, pendingPrompts[i].variationNum);
     }
 
     setProgress((p) => ({ ...p, done: p.total }));
@@ -154,6 +171,7 @@ export default function ThinkDiffusionPage() {
   };
 
   const stopGenerating = () => {
+    setStopped(true);
     setGenerating(false);
   };
 
@@ -216,29 +234,23 @@ export default function ThinkDiffusionPage() {
         {/* Prompts list */}
         <div className="max-h-60 space-y-1 overflow-y-auto">
           {filteredPrompts.map((p: PromptItem) => {
-            const done = alreadyGenerated.has(p.id);
-            const img = images.find((i) => i.promptId === p.id);
+            const count = variationCounts[p.id] || 0;
+            const complete = count >= variationsPerPrompt;
             return (
               <div
                 key={p.id}
                 className={`flex items-center gap-2 rounded border px-2 py-1 text-xs ${
-                  done
+                  complete
                     ? "border-green-800/50 bg-green-950/20 text-green-300"
+                    : count > 0
+                    ? "border-yellow-800/50 bg-yellow-950/20 text-yellow-300"
                     : "border-escola-border text-escola-creme-50"
                 }`}
               >
-                <span className="font-mono font-bold">{done ? "✓" : "○"}</span>
+                <span className="font-mono font-bold">{complete ? "✓" : count > 0 ? `${count}` : "○"}</span>
                 <span className="flex-1">{p.id}</span>
                 <span className="text-escola-creme-50/50">{p.mood.join(", ")}</span>
-                {img?.saved && <span className="text-green-400">☁</span>}
-                {!done && !generating && (
-                  <button
-                    onClick={() => generateOne(p)}
-                    className="rounded bg-escola-coral/20 px-2 py-0.5 text-escola-coral hover:bg-escola-coral/30"
-                  >
-                    Gerar
-                  </button>
-                )}
+                <span className="tabular-nums">{count}/{variationsPerPrompt}</span>
               </div>
             );
           })}
@@ -251,15 +263,32 @@ export default function ThinkDiffusionPage() {
           3. Gerar
         </h3>
 
-        <div className="mb-3 flex items-center gap-3">
+        <div className="mb-3 flex flex-wrap items-center gap-4">
+          <label className="flex items-center gap-2 text-xs text-escola-creme-50">
+            Variações por prompt:
+            <select
+              value={variationsPerPrompt}
+              onChange={(e) => setVariationsPerPrompt(Number(e.target.value))}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+            >
+              {[4, 10, 20, 30, 50].map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </select>
+          </label>
           <label className="flex items-center gap-2 text-xs text-escola-creme-50">
             <input
               type="checkbox"
               checked={autoSave}
               onChange={(e) => setAutoSave(e.target.checked)}
             />
-            Guardar automaticamente no Supabase
+            Guardar no Supabase
           </label>
+        </div>
+        <div className="mb-3 text-xs text-escola-creme-50">
+          {filteredPrompts.length} prompts × {variationsPerPrompt} variações = <strong className="text-escola-creme">{totalImages} imagens</strong> ·
+          Pendentes: <strong className="text-escola-coral">{pendingPrompts.length}</strong> ·
+          ~{estimatedMinutes} min · ~${estimatedCost}
         </div>
 
         {generating && (
@@ -290,7 +319,7 @@ export default function ThinkDiffusionPage() {
               disabled={!serverUrl.trim() || pendingPrompts.length === 0}
               className="rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white disabled:opacity-30"
             >
-              Gerar {pendingPrompts.length} imagens pendentes
+              Gerar tudo ({pendingPrompts.length} imagens, ~{estimatedMinutes} min, ~${estimatedCost})
             </button>
           ) : (
             <button
