@@ -129,55 +129,14 @@ export default function ThinkDiffusionPage() {
   const [error, setError] = useState<string | null>(null);
   const [autoSave, setAutoSave] = useState(true);
 
-  // On mount: check Supabase for existing uploaded images
+  // On mount: check Supabase for existing uploaded images via server API
   useEffect(() => {
-    const syncWithSupabase = async () => {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-      if (!supabaseUrl || !supabaseKey) return;
-
-      const { createClient } = await import("@supabase/supabase-js");
-      const supabase = createClient(supabaseUrl, supabaseKey);
-
-      const found: Array<{ name: string; url: string; promptId: string }> = [];
-
-      // List ALL folders under youtube/images/
-      const { data: folders } = await supabase.storage
-        .from("course-assets")
-        .list("youtube/images", { limit: 500 });
-
-      if (!folders) return;
-
-      for (const folder of folders) {
-        if (!folder.name || folder.name.includes(".")) continue;
-
-        for (const orient of ["horizontal", "vertical"]) {
-          const path = `youtube/images/${folder.name}/${orient}`;
-          const { data: files } = await supabase.storage
-            .from("course-assets")
-            .list(path, { limit: 500 });
-
-          if (!files) continue;
-
-          for (const f of files) {
-            if (!f.name.match(/\.(png|jpg|jpeg)$/i)) continue;
-
-            // Match to prompt by filename prefix
-            const promptId = f.name.replace(/-[hv]-\d+\.\w+$/, "");
-
-            found.push({
-              name: f.name,
-              url: `${supabaseUrl}/storage/v1/object/public/course-assets/${path}/${f.name}`,
-              promptId,
-            });
-          }
-        }
-      }
-
-      if (found.length > 0) setUploadedImages(found);
-    };
-
-    syncWithSupabase();
+    fetch("/api/admin/thinkdiffusion/list-images")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.images && data.images.length > 0) setUploadedImages(data.images);
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
