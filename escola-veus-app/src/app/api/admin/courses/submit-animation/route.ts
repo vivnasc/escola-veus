@@ -13,7 +13,7 @@ export const maxDuration = 60;
  */
 export async function POST(req: NextRequest) {
   try {
-    const { imageUrl, motionPrompt, provider = "runway" } = await req.json();
+    const { imageUrl, motionPrompt, provider = "runway", ratio = "1280:720" } = await req.json();
 
     if (!imageUrl || !motionPrompt) {
       return NextResponse.json(
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
           promptImage: imageUrl,
           promptText: motionPrompt,
           duration: 10,
-          ratio: "1280:720",
+          ratio,
         }),
       });
 
