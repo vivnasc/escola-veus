@@ -678,7 +678,59 @@ export default function ThinkDiffusionPage() {
           </div>
         )}
 
-        {/* Recover timeout clips */}
+        {/* Recover clips by taskId */}
+        <div className="mb-4 rounded-lg border border-yellow-800/50 bg-yellow-950/10 p-4">
+          <h4 className="mb-2 text-sm font-semibold text-yellow-400">Recuperar clips perdidos</h4>
+          <p className="mb-2 text-xs text-escola-creme-50">
+            Vai a dev.runwayml.com → Request History → copia os taskIds dos URLs (ex: /v1/tasks/<strong>abc123-def456</strong>). Cola aqui, um por linha.
+          </p>
+          <textarea
+            id="recovery-taskids"
+            rows={4}
+            placeholder="Cole taskIds aqui, um por linha..."
+            className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme mb-2"
+          />
+          <button
+            onClick={async () => {
+              const textarea = document.getElementById("recovery-taskids") as HTMLTextAreaElement;
+              const taskIds = textarea.value.split("\n").map((l) => l.trim()).filter((l) => l.length > 10);
+              if (taskIds.length === 0) { setError("Cola taskIds primeiro."); return; }
+
+              setCurrentPrompt(`A recuperar ${taskIds.length} clips...`);
+              let recovered = 0;
+
+              for (const taskId of taskIds) {
+                try {
+                  const statusRes = await fetch("/api/admin/courses/animation-status", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ tasks: [{ type: "clip", taskId }], provider: "runway" }),
+                  });
+                  const statusData = await statusRes.json();
+                  const task = statusData.tasks?.[0];
+
+                  if (task?.status === "done" && task?.videoUrl) {
+                    const saveRes = await fetch("/api/admin/thinkdiffusion/save-clip", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ videoUrl: task.videoUrl, filename: `recovered-${taskId.slice(0, 8)}.mp4` }),
+                    });
+                    const saveData = await saveRes.json();
+                    if (saveData.url) recovered++;
+                  }
+                } catch { /* skip */ }
+              }
+
+              setCurrentPrompt(`✓ ${recovered}/${taskIds.length} clips recuperados!`);
+              setTimeout(() => setCurrentPrompt(""), 5000);
+            }}
+            className="w-full rounded bg-yellow-600 px-4 py-2 text-sm font-bold text-white hover:bg-yellow-500"
+          >
+            RECUPERAR CLIPS
+          </button>
+        </div>
+
+        {/* Recover timeout clips (in-memory) */}
         {(() => {
           const timeoutClips = Object.values(clips).filter((c) => c.status === "failed" && c.taskId);
           if (timeoutClips.length === 0) return null;
