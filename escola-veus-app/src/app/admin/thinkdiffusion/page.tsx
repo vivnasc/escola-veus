@@ -41,6 +41,15 @@ type ClipState = {
 const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.category))].sort();
 
 export default function ThinkDiffusionPage() {
+  // Editable motion prompts per image
+  const [editedMotion, setEditedMotion] = useState<Record<string, string>>({});
+
+  const getMotionPrompt = (imageName: string) => {
+    if (editedMotion[imageName]) return editedMotion[imageName];
+    const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
+    return (motionPrompts as Record<string, string>)[promptId] || (motionPrompts as Record<string, string>)["_default"];
+  };
+
   // Runway clips
   const [clips, setClips] = useState<Record<string, ClipState>>({});
 
@@ -53,7 +62,7 @@ export default function ThinkDiffusionPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imageUrl,
-          motionPrompt: (motionPrompts as Record<string, string>)[imageName.replace(/-[hv]-\d+\.\w+$/, "")] || (motionPrompts as Record<string, string>)["_default"],
+          motionPrompt: getMotionPrompt(imageName),
           provider: "runway",
           ratio: imageName.includes("-v-") ? "720:1280" : "1280:720",
         }),
@@ -622,11 +631,185 @@ export default function ThinkDiffusionPage() {
       {/* ── UPLOAD ALL AT ONCE ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          4. Upload de Imagens (ThinkDiffusion → Supabase)
+          4. Upload de Imagens + Gerar Clips
         </h3>
         <p className="mb-3 text-xs text-escola-creme-50">
           Arrasta imagens para cada prompt. Horizontais e verticais são separadas automaticamente.
         </p>
+
+        {/* Motion prompts: download template + upload filled */}
+        {uploadedImages.length > 0 && (
+          <div className="mb-4 flex gap-2">
+            <a
+              href="/api/admin/thinkdiffusion/export-template"
+              download
+              className="rounded bg-escola-border px-4 py-2 text-sm font-semibold text-escola-creme hover:bg-escola-border/80"
+            >
+              Download template motion prompts (.md)
+            </a>
+            <button
+              onClick={() => {
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = ".md,.txt";
+                input.onchange = async () => {
+                  if (!input.files?.[0]) return;
+                  const text = await input.files[0].text();
+                  const res = await fetch("/api/admin/thinkdiffusion/import-prompts", {
+                    method: "POST",
+                    body: text,
+                  });
+                  const data = await res.json();
+                  if (data.prompts) {
+                    setEditedMotion(data.prompts);
+                    setError(null);
+                    setCurrentPrompt(`${data.count} motion prompts carregados!`);
+                    setTimeout(() => setCurrentPrompt(""), 3000);
+                  } else {
+                    setError(data.erro || "Erro ao importar.");
+                  }
+                };
+                input.click();
+              }}
+              className="rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white hover:bg-escola-coral/90"
+            >
+              Upload motion prompts (.md)
+            </button>
+          </div>
+        )}
+
+        {/* Recover clips by taskId */}
+        <div className="mb-4 rounded-lg border border-yellow-800/50 bg-yellow-950/10 p-4">
+          <h4 className="mb-2 text-sm font-semibold text-yellow-400">Recuperar clips perdidos</h4>
+          <p className="mb-2 text-xs text-escola-creme-50">
+            Vai a dev.runwayml.com → Request History → copia os taskIds dos URLs (ex: /v1/tasks/<strong>abc123-def456</strong>). Cola aqui, um por linha.
+          </p>
+          <textarea
+            id="recovery-taskids"
+            rows={4}
+            placeholder="Cole taskIds aqui, um por linha..."
+            className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme mb-2"
+          />
+          <button
+            onClick={async () => {
+              const textarea = document.getElementById("recovery-taskids") as HTMLTextAreaElement;
+              const taskIds = textarea.value.split("\n").map((l) => l.trim()).filter((l) => l.length > 10);
+              if (taskIds.length === 0) { setError("Cola taskIds primeiro."); return; }
+
+              setCurrentPrompt(`A recuperar ${taskIds.length} clips...`);
+              let recovered = 0;
+
+              for (const taskId of taskIds) {
+                try {
+                  const statusRes = await fetch("/api/admin/courses/animation-status", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ tasks: [{ type: "clip", taskId }], provider: "runway" }),
+                  });
+                  const statusData = await statusRes.json();
+                  const task = statusData.tasks?.[0];
+
+                  if (task?.status === "done" && task?.videoUrl) {
+                    const saveRes = await fetch("/api/admin/thinkdiffusion/save-clip", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ videoUrl: task.videoUrl, filename: `recovered-${taskId.slice(0, 8)}.mp4` }),
+                    });
+                    const saveData = await saveRes.json();
+                    if (saveData.url) recovered++;
+                  }
+                } catch { /* skip */ }
+              }
+
+              setCurrentPrompt(`✓ ${recovered}/${taskIds.length} clips recuperados!`);
+              setTimeout(() => setCurrentPrompt(""), 5000);
+            }}
+            className="w-full rounded bg-yellow-600 px-4 py-2 text-sm font-bold text-white hover:bg-yellow-500"
+          >
+            RECUPERAR CLIPS
+          </button>
+        </div>
+
+        {/* Recover timeout clips (in-memory) */}
+        {(() => {
+          const timeoutClips = Object.values(clips).filter((c) => c.status === "failed" && c.taskId);
+          if (timeoutClips.length === 0) return null;
+          return (
+            <div className="mb-4">
+              <button
+                onClick={async () => {
+                  for (const clip of timeoutClips) {
+                    if (!clip.taskId) continue;
+                    setClips((prev) => ({ ...prev, [clip.imageName]: { ...prev[clip.imageName], status: "processing" } }));
+
+                    try {
+                      const statusRes = await fetch("/api/admin/courses/animation-status", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ tasks: [{ type: "clip", taskId: clip.taskId }], provider: "runway" }),
+                      });
+                      const statusData = await statusRes.json();
+                      const task = statusData.tasks?.[0];
+
+                      if (task?.status === "done" && task?.videoUrl) {
+                        let finalUrl = task.videoUrl;
+                        try {
+                          const saveRes = await fetch("/api/admin/thinkdiffusion/save-clip", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ videoUrl: task.videoUrl, filename: clip.imageName.replace(/\.\w+$/, ".mp4") }),
+                          });
+                          const saveData = await saveRes.json();
+                          if (saveData.url) finalUrl = saveData.url;
+                        } catch { /* keep Runway URL */ }
+                        setClips((prev) => ({ ...prev, [clip.imageName]: { ...prev[clip.imageName], status: "done", clipUrl: finalUrl } }));
+                      } else {
+                        setClips((prev) => ({ ...prev, [clip.imageName]: { ...prev[clip.imageName], status: "failed", error: task?.status || "Ainda a processar" } }));
+                      }
+                    } catch (err) {
+                      setClips((prev) => ({ ...prev, [clip.imageName]: { ...prev[clip.imageName], status: "failed", error: String(err) } }));
+                    }
+                  }
+                }}
+                className="w-full rounded-lg bg-green-700 px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-green-600"
+              >
+                RECUPERAR {timeoutClips.length} CLIPS TIMEOUT
+              </button>
+            </div>
+          );
+        })()}
+
+        {/* Generate ALL clips button */}
+        {uploadedImages.length > 0 && (() => {
+          const hImages = uploadedImages.filter((i) => i.name.includes("-h-"));
+          const withoutClip = hImages.filter((i) => !clips[i.name] || clips[i.name].status === "idle");
+          const processing = Object.values(clips).filter((c) => c.status === "processing" || c.status === "submitting").length;
+          const done = Object.values(clips).filter((c) => c.status === "done").length;
+          const cost = withoutClip.length * 50;
+
+          return (
+            <div className="mb-4 rounded-lg border border-escola-coral/40 bg-escola-bg p-4">
+              <div className="mb-2 text-xs text-escola-creme-50">
+                {hImages.length} horizontais · {done} clips prontos · {processing > 0 ? `${processing} a processar · ` : ""}{withoutClip.length} por gerar · {cost} créditos
+              </div>
+              <button
+                onClick={() => {
+                  for (const img of withoutClip) {
+                    generateClip(img.url, img.name);
+                  }
+                }}
+                disabled={withoutClip.length === 0 || processing > 0}
+                className="w-full rounded-lg bg-escola-coral px-6 py-4 text-lg font-bold text-white shadow-lg hover:bg-escola-coral/90 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                {processing > 0
+                  ? `A processar ${processing} clips...`
+                  : withoutClip.length === 0
+                  ? `✓ Todos os ${done} clips horizontais gerados`
+                  : `GERAR ${withoutClip.length} CLIPS HORIZONTAIS (${cost} cr)`}
+              </button>
+            </div>
+          );
+        })()}
 
         {uploadProgress.total > 0 && (
           <div className="mb-3">
@@ -696,13 +879,21 @@ export default function ThinkDiffusionPage() {
                             )}
                           </div>
                           <p className="text-xs text-green-300 truncate">{img.name}</p>
-                          {!clip || clip.status === "idle" ? (
+                          {!clip || clip.status === "idle" ? (<>
+                            <textarea
+                              value={getMotionPrompt(img.name)}
+                              onChange={(e) => setEditedMotion((prev) => ({ ...prev, [img.name]: e.target.value }))}
+                              rows={2}
+                              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme mb-1"
+                              placeholder="Motion prompt..."
+                            />
                             <button
                               onClick={() => generateClip(img.url, img.name)}
                               className="w-full rounded bg-escola-coral py-1 text-xs font-bold text-white hover:bg-escola-coral/90"
                             >
                               {img.name.includes("-v-") ? "Gerar Short (50 cr)" : "Gerar clip (50 cr)"}
                             </button>
+                          </>
                           ) : clip.status === "submitting" ? (
                             <span className="block text-center text-xs text-yellow-400">A enviar...</span>
                           ) : clip.status === "processing" ? (
