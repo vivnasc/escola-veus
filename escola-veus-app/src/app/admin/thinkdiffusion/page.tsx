@@ -179,7 +179,7 @@ export default function ThinkDiffusionPage() {
 
   const savedCount = images.filter((i) => i.saved).length;
 
-  // Upload files per prompt — DIRECT to Supabase, no compression, full quality
+  // Upload files per prompt — FormData binary, no compression
   const handleFileUpload = async (files: File[]) => {
     if (!uploadPromptId) {
       setError("Selecciona o prompt primeiro!");
@@ -191,17 +191,6 @@ export default function ThinkDiffusionPage() {
     const existing = uploadedImages.filter((i) => i.promptId === uploadPromptId);
     let hCount = existing.filter((i) => i.name.includes("-h-")).length;
     let vCount = existing.filter((i) => i.name.includes("-v-")).length;
-
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
-      setError("Supabase nao configurado.");
-      return;
-    }
-
-    const { createClient } = await import("@supabase/supabase-js");
-    const supabase = createClient(supabaseUrl, supabaseKey);
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -221,25 +210,25 @@ export default function ThinkDiffusionPage() {
         const orient = orientation === "h" ? "horizontal" : "vertical";
         const ext = file.name.endsWith(".jpg") || file.name.endsWith(".jpeg") ? "jpg" : "png";
         const newName = `${uploadPromptId}-${orientation}-${padded}.${ext}`;
-        const category = uploadPromptId.split("-").slice(0, -1).join("-") || "misc";
-        const filePath = `youtube/images/${category}/${orient}/${newName}`;
+        const category = `${uploadPromptId.split("-").slice(0, -1).join("-") || "misc"}/${orient}`;
 
-        // Upload directly to Supabase — no size limit, no compression
-        const buffer = await file.arrayBuffer();
-        const { error } = await supabase.storage
-          .from("course-assets")
-          .upload(filePath, buffer, {
-            contentType: file.type || "image/png",
-            upsert: true,
-          });
+        // Send as FormData (binary, not base64 — stays under 4.5MB limit)
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("filename", newName);
+        formData.append("category", category);
 
-        if (error) {
-          setError(`${newName}: ${error.message}`);
-          continue;
+        const res = await fetch("/api/admin/thinkdiffusion/save-image", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (data.url) {
+          setUploadedImages((prev) => [...prev, { name: newName, url: data.url, promptId: uploadPromptId }]);
+        } else if (data.erro) {
+          setError(`${newName}: ${data.erro}`);
         }
-
-        const url = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
-        setUploadedImages((prev) => [...prev, { name: newName, url, promptId: uploadPromptId }]);
       } catch (err) {
         setError(`Erro: ${err instanceof Error ? err.message : String(err)}`);
       }
