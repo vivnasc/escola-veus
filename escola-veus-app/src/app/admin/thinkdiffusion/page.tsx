@@ -31,7 +31,9 @@ type GeneratedImage = {
 const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.category))].sort();
 
 export default function ThinkDiffusionPage() {
-  // serverUrl removed — using fal.ai instead of ThinkDiffusion API
+  // Upload state
+  const [uploadProgress, setUploadProgress] = useState({ done: 0, total: 0, current: "" });
+  const [uploadedImages, setUploadedImages] = useState<Array<{ name: string; url: string }>>([]);
   const [selectedVideo, setSelectedVideo] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [variationsPerPrompt, setVariationsPerPrompt] = useState(10);
@@ -178,6 +180,48 @@ export default function ThinkDiffusionPage() {
   };
 
   const savedCount = images.filter((i) => i.saved).length;
+
+  // Upload files from ThinkDiffusion with auto-rename
+  const handleFileUpload = async (files: File[]) => {
+    const category = activeVideo
+      ? activeVideo.categorias[0]
+      : selectedCategory !== "all"
+      ? selectedCategory
+      : "mar";
+
+    setUploadProgress({ done: 0, total: files.length, current: "" });
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const newName = `${category}-upload-${Date.now()}-${i + 1}.png`;
+      setUploadProgress({ done: i, total: files.length, current: newName });
+
+      try {
+        const reader = new FileReader();
+        const base64 = await new Promise<string>((resolve) => {
+          reader.onload = () => resolve((reader.result as string).split(",")[1]);
+          reader.readAsDataURL(file);
+        });
+
+        const res = await fetch("/api/admin/thinkdiffusion/save-image", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            image: base64,
+            filename: newName,
+            category,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.url) {
+          setUploadedImages((prev) => [...prev, { name: newName, url: data.url }]);
+        }
+      } catch { /* skip failed uploads */ }
+    }
+
+    setUploadProgress((p) => ({ ...p, done: p.total, current: "Completo!" }));
+  };
 
   return (
     <div className="space-y-6">
@@ -350,41 +394,69 @@ export default function ThinkDiffusionPage() {
         </div>
       </section>
 
-      {/* ── GALLERY ── */}
-      {images.length > 0 && (
-        <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
-          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-            Galeria ({images.length} imagens)
-          </h3>
+      {/* ── UPLOAD ZONE ── */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          4. Upload de Imagens (ThinkDiffusion → Supabase)
+        </h3>
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Arrasta ou selecciona imagens do ThinkDiffusion. São renomeadas automaticamente por tema e guardadas no Supabase.
+        </p>
+
+        <div
+          className="mb-3 flex min-h-32 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-escola-coral/40 bg-escola-bg p-6 hover:border-escola-coral/80 hover:bg-escola-coral/5 transition-colors"
+          onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const files = Array.from(e.dataTransfer.files).filter((f) => f.type.startsWith("image/"));
+            if (files.length > 0) handleFileUpload(files);
+          }}
+          onClick={() => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.multiple = true;
+            input.accept = "image/*";
+            input.onchange = () => {
+              if (input.files) handleFileUpload(Array.from(input.files));
+            };
+            input.click();
+          }}
+        >
+          <div className="text-center">
+            <p className="text-lg font-bold text-escola-coral">Arrasta imagens aqui</p>
+            <p className="text-xs text-escola-creme-50">ou clica para seleccionar</p>
+          </div>
+        </div>
+
+        {uploadProgress.total > 0 && (
+          <div className="mb-3">
+            <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
+              <span>A fazer upload: {uploadProgress.current}</span>
+              <span>{uploadProgress.done}/{uploadProgress.total}</span>
+            </div>
+            <div className="h-2 w-full rounded-full bg-escola-border">
+              <div
+                className="h-full rounded-full bg-green-600 transition-all"
+                style={{ width: `${(uploadProgress.done / uploadProgress.total) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {uploadedImages.length > 0 && (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {images.map((img) => (
-              <div key={img.promptId} className="space-y-1">
-                <div className="relative aspect-video overflow-hidden rounded border border-escola-border">
-                  {img.url ? (
-                    <img src={img.url} alt={img.promptId} className="h-full w-full object-cover" />
-                  ) : img.base64.length > 200 ? (
-                    <img
-                      src={`data:image/png;base64,${img.base64}`}
-                      alt={img.promptId}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center bg-escola-bg text-xs text-escola-creme-50">
-                      (preview indisponivel)
-                    </div>
-                  )}
-                  {img.saved && (
-                    <span className="absolute top-1 right-1 rounded bg-green-800/80 px-1 text-xs text-white">
-                      ☁ Supabase
-                    </span>
-                  )}
+            {uploadedImages.map((img) => (
+              <div key={img.name} className="space-y-1">
+                <div className="relative aspect-video overflow-hidden rounded border border-green-800/50">
+                  <img src={img.url} alt={img.name} className="h-full w-full object-cover" />
                 </div>
-                <p className="text-xs text-escola-creme-50">{img.promptId}</p>
+                <p className="text-xs text-green-300">{img.name}</p>
               </div>
             ))}
           </div>
-        </section>
-      )}
+        )}
+      </section>
     </div>
   );
 }
