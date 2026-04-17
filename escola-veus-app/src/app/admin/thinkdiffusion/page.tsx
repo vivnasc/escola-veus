@@ -506,10 +506,10 @@ export default function ThinkDiffusionPage() {
             const hImgs = uploaded.filter((i) => i.name.includes("-h-"));
             const vImgs = uploaded.filter((i) => i.name.includes("-v-"));
             return (
-              <div key={p.id} className="rounded border border-escola-border bg-escola-bg p-3">
+              <div key={p.id} className={`rounded border p-3 ${uploaded.length > 0 ? "border-green-800/50 bg-green-950/10" : "border-escola-border bg-escola-bg"}`}>
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-escola-creme">{p.id}</span>
-                  <span className="text-xs text-escola-creme-50">{uploaded.length > 0 ? `${hImgs.length}H + ${vImgs.length}V` : ""}</span>
+                  <span className="text-sm font-semibold text-escola-creme">{uploaded.length > 0 ? "✓ " : ""}{p.id}</span>
+                  <span className={`text-xs font-bold ${uploaded.length > 0 ? "text-green-400" : "text-escola-creme-50"}`}>{uploaded.length > 0 ? `${hImgs.length}H + ${vImgs.length}V` : "sem imagens"}</span>
                 </div>
                 <div
                     className="flex min-h-24 w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-escola-coral/40 bg-escola-bg-card p-4 hover:border-escola-coral/80 hover:bg-escola-coral/5 transition-colors"
