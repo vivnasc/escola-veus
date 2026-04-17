@@ -331,11 +331,58 @@ export default function ThinkDiffusionPage() {
         </span>
       </div>
 
-      {/* ── INFO ── */}
-      <section className="rounded-lg border border-green-800/50 bg-green-950/20 p-4">
-        <p className="text-sm text-green-300">
-          Geração via <strong>fal.ai</strong> (Flux Pro) — automático, sem configuração. Imagens guardadas no Supabase.
-        </p>
+      {/* ── THINKDIFFUSION SETTINGS ── */}
+      <section className="rounded-lg border border-escola-coral/40 bg-escola-bg-card p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
+            Settings ThinkDiffusion (Automatic1111)
+          </h3>
+          <a
+            href="https://www.thinkdiffusion.com/sd"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded bg-escola-coral px-3 py-1 text-xs font-bold text-white hover:bg-escola-coral/90"
+          >
+            Abrir ThinkDiffusion →
+          </a>
+        </div>
+
+        <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-3 rounded bg-escola-bg p-3 text-xs">
+          <div><span className="text-escola-creme-50">Checkpoint:</span> <strong className="text-escola-creme">RealVisXL v4</strong></div>
+          <div><span className="text-escola-creme-50">Width:</span> <strong className="text-escola-creme">1920</strong></div>
+          <div><span className="text-escola-creme-50">Height:</span> <strong className="text-escola-creme">1080</strong></div>
+          <div><span className="text-escola-creme-50">CFG Scale:</span> <strong className="text-escola-creme">6</strong></div>
+          <div><span className="text-escola-creme-50">Steps:</span> <strong className="text-escola-creme">35</strong></div>
+          <div><span className="text-escola-creme-50">Sampler:</span> <strong className="text-escola-creme">DPM++ 2M Karras</strong></div>
+          <div><span className="text-escola-creme-50">Batch size:</span> <strong className="text-escola-creme">4</strong></div>
+          <div><span className="text-escola-creme-50">Vertical:</span> <strong className="text-escola-creme">1080 × 1920</strong></div>
+          <div><span className="text-escola-creme-50">Horizontal:</span> <strong className="text-escola-creme">1920 × 1080</strong></div>
+        </div>
+
+        <div>
+          <p className="mb-1 text-xs text-escola-creme-50">Negative prompt (cola no ThinkDiffusion uma vez):</p>
+          <div className="flex items-start gap-2">
+            <textarea
+              readOnly
+              value={promptsData.config.negative_prompt}
+              className="flex-1 rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme-50"
+              rows={2}
+              onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+            />
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(promptsData.config.negative_prompt);
+                setCurrentPrompt("NEG_COPIED");
+                setTimeout(() => setCurrentPrompt(""), 2000);
+              }}
+              className={`rounded px-3 py-2 text-xs font-bold ${
+                currentPrompt === "NEG_COPIED" ? "bg-green-700 text-white" : "bg-escola-coral text-white"
+              }`}
+            >
+              {currentPrompt === "NEG_COPIED" ? "✓ Copiado" : "Copiar"}
+            </button>
+          </div>
+        </div>
       </section>
 
       {/* ── VIDEO SELECTOR ── */}
