@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
-const TOTAL_MUSIC_TRACKS = 100;
+const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
 const CLIPS_PER_VIDEO = 20;
 const CLIP_DURATION = 15; // seconds
 const VIDEO_DURATION = CLIPS_PER_VIDEO * CLIP_DURATION; // 300s = 5 min
@@ -22,14 +22,20 @@ type ClipSlot = {
 type ProjectState = {
   title: string;
   clips: ClipSlot[];
-  musicTrack: number;
+  musicPair: number;
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function getMusicUrl(trackNum: number): string {
-  const padded = String(trackNum).padStart(2, "0");
-  return `${MUSIC_BASE}/faixa-${padded}.mp3`;
+function getMusicPairUrls(pairNum: number): [string, string] {
+  const a = (pairNum - 1) * 2 + 1;
+  const b = a + 1;
+  const padA = String(a).padStart(2, "0");
+  const padB = String(b).padStart(2, "0");
+  return [
+    `${MUSIC_BASE}/faixa-${padA}.mp3`,
+    `${MUSIC_BASE}/faixa-${padB}.mp3`,
+  ];
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
@@ -43,7 +49,8 @@ export default function YouTubeMontagem() {
       loaded: false,
     }))
   );
-  const [musicTrack, setMusicTrack] = useState(1);
+  const [musicPair, setMusicPair] = useState(1); // pair 1 = faixas 01+02
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0); // 0 = track A, 1 = track B
 
   // Render
   const [rendering, setRendering] = useState(false);
@@ -68,19 +75,19 @@ export default function YouTubeMontagem() {
         const state: ProjectState = JSON.parse(saved);
         if (state.title) setTitle(state.title);
         if (state.clips) setClips(state.clips);
-        if (state.musicTrack) setMusicTrack(state.musicTrack);
+        if (state.musicPair) setMusicPair(state.musicPair);
       }
     } catch { /* ignore */ }
   }, []);
 
   const saveState = useCallback(() => {
-    const state: ProjectState = { title, clips, musicTrack };
+    const state: ProjectState = { title, clips, musicPair };
     localStorage.setItem("yt-montagem-state", JSON.stringify(state));
-  }, [title, clips, musicTrack]);
+  }, [title, clips, musicPair]);
 
   useEffect(() => {
     saveState();
-  }, [title, clips, musicTrack, saveState]);
+  }, [title, clips, musicPair, saveState]);
 
   // Clip URL update
   const updateClipUrl = (index: number, url: string) => {
@@ -102,6 +109,29 @@ export default function YouTubeMontagem() {
         loaded: false,
       }))
     );
+  };
+
+  // Music pair URLs
+  const [musicUrlA, musicUrlB] = getMusicPairUrls(musicPair);
+  const audioRefB = useRef<HTMLAudioElement>(null);
+
+  // When track A ends, play track B, and vice-versa (loop)
+  const handleTrackEnd = () => {
+    if (currentTrackIndex === 0) {
+      setCurrentTrackIndex(1);
+      if (audioRefB.current) {
+        audioRefB.current.currentTime = 0;
+        audioRefB.current.volume = 0.3;
+        audioRefB.current.play().catch(() => {});
+      }
+    } else {
+      setCurrentTrackIndex(0);
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.volume = 0.3;
+        audioRef.current.play().catch(() => {});
+      }
+    }
   };
 
   // Preview controls
@@ -172,7 +202,7 @@ export default function YouTubeMontagem() {
         body: JSON.stringify({
           title,
           clips: validClips,
-          musicUrl: getMusicUrl(musicTrack),
+          musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
         }),
@@ -234,9 +264,11 @@ export default function YouTubeMontagem() {
         clipDuration: CLIP_DURATION,
       },
       music: {
-        track: musicTrack,
-        url: getMusicUrl(musicTrack),
+        pair: musicPair,
+        urlA: musicUrlA,
+        urlB: musicUrlB,
         album: "ancient-ground",
+        loop: "A → B → A → B...",
       },
       clips: clips.map((c: ClipSlot) => ({
         index: c.index,
@@ -308,24 +340,47 @@ export default function YouTubeMontagem() {
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
           2. Música — Ancient Ground (Loranne)
         </h3>
+        <p className="mb-2 text-xs text-escola-creme-50">
+          Cada par = 2 faixas do mesmo prompt que fazem loop contínuo.
+        </p>
         <div className="flex items-center gap-3">
           <select
-            value={musicTrack}
-            onChange={(e) => setMusicTrack(Number(e.target.value))}
+            value={musicPair}
+            onChange={(e) => { setMusicPair(Number(e.target.value)); setCurrentTrackIndex(0); }}
             className="rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
           >
-            {Array.from({ length: TOTAL_MUSIC_TRACKS }, (_, i) => (
-              <option key={i + 1} value={i + 1}>
-                Faixa {String(i + 1).padStart(2, "0")}
-              </option>
-            ))}
+            {Array.from({ length: TOTAL_MUSIC_PAIRS }, (_, i) => {
+              const a = (i * 2 + 1).toString().padStart(2, "0");
+              const b = (i * 2 + 2).toString().padStart(2, "0");
+              return (
+                <option key={i + 1} value={i + 1}>
+                  Par {i + 1} — Faixas {a} + {b}
+                </option>
+              );
+            })}
           </select>
-          <audio
-            ref={audioRef}
-            src={getMusicUrl(musicTrack)}
-            controls
-            className="h-8 flex-1"
-          />
+        </div>
+        <div className="mt-2 space-y-1">
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-bold ${currentTrackIndex === 0 ? "text-escola-coral" : "text-escola-creme-50"}`}>A</span>
+            <audio
+              ref={audioRef}
+              src={musicUrlA}
+              controls
+              onEnded={handleTrackEnd}
+              className="h-8 flex-1"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-bold ${currentTrackIndex === 1 ? "text-escola-coral" : "text-escola-creme-50"}`}>B</span>
+            <audio
+              ref={audioRefB}
+              src={musicUrlB}
+              controls
+              onEnded={handleTrackEnd}
+              className="h-8 flex-1"
+            />
+          </div>
         </div>
       </section>
 

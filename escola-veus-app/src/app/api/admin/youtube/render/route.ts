@@ -35,7 +35,12 @@ function createSSEStream() {
   return { stream, send, close };
 }
 
-function buildYouTubeEdit(clips: string[], musicUrl: string, musicVolume: number, clipDuration: number) {
+function buildYouTubeEdit(
+  clips: string[],
+  musicUrls: string[],
+  musicVolume: number,
+  clipDuration: number,
+) {
   const videoClips = clips.map((url, i) => ({
     asset: { type: "video" as const, src: url, volume: 0 },
     start: i * clipDuration,
@@ -46,19 +51,38 @@ function buildYouTubeEdit(clips: string[], musicUrl: string, musicVolume: number
 
   const totalDuration = clips.length * clipDuration;
 
-  const musicClip = {
-    asset: { type: "audio" as const, src: musicUrl, volume: musicVolume },
-    start: 0,
-    length: totalDuration,
-    transition: { in: "fade" as const, out: "fade" as const },
-  };
+  // Loop music pair: A → B → A → B... until video ends
+  // Estimate ~3-4 min per Suno track. Place them alternating.
+  const ESTIMATED_TRACK_DURATION = 210; // ~3.5 min safe estimate
+  const musicClips = [];
+  let musicTime = 0;
+  let trackIndex = 0;
+
+  while (musicTime < totalDuration) {
+    const url = musicUrls[trackIndex % musicUrls.length];
+    const remaining = totalDuration - musicTime;
+    const length = Math.min(ESTIMATED_TRACK_DURATION, remaining);
+
+    musicClips.push({
+      asset: { type: "audio" as const, src: url, volume: musicVolume },
+      start: musicTime,
+      length,
+      transition: {
+        in: musicTime === 0 ? ("fade" as const) : undefined,
+        out: remaining <= ESTIMATED_TRACK_DURATION ? ("fade" as const) : undefined,
+      },
+    });
+
+    musicTime += length;
+    trackIndex++;
+  }
 
   return {
     timeline: {
       background: "#000000",
       tracks: [
         { clips: videoClips },
-        { clips: [musicClip] },
+        { clips: musicClips },
       ],
     },
     output: {
@@ -71,13 +95,19 @@ function buildYouTubeEdit(clips: string[], musicUrl: string, musicVolume: number
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { title, clips, musicUrl, musicVolume = 0.8, clipDuration = 15 } = body;
+  const { title, clips, musicUrls, musicUrl, musicVolume = 0.8, clipDuration = 15 } = body;
 
   if (!clips || !Array.isArray(clips) || clips.length === 0) {
     return NextResponse.json({ erro: "clips[] obrigatorio." }, { status: 400 });
   }
-  if (!musicUrl) {
-    return NextResponse.json({ erro: "musicUrl obrigatorio." }, { status: 400 });
+
+  // Support both musicUrls (pair) and legacy musicUrl (single)
+  const resolvedMusicUrls: string[] = musicUrls && Array.isArray(musicUrls)
+    ? musicUrls.filter((u: string) => u && u.trim().length > 0)
+    : musicUrl ? [musicUrl] : [];
+
+  if (resolvedMusicUrls.length === 0) {
+    return NextResponse.json({ erro: "musicUrls[] ou musicUrl obrigatorio." }, { status: 400 });
   }
 
   const validClips = clips.filter((u: string) => u && u.trim().length > 0);
@@ -99,7 +129,7 @@ export async function POST(req: NextRequest) {
     try {
       send({ type: "progress", percent: 0, label: `A montar ${validClips.length} clips...` });
 
-      const edit = buildYouTubeEdit(validClips, musicUrl, musicVolume, clipDuration);
+      const edit = buildYouTubeEdit(validClips, resolvedMusicUrls, musicVolume, clipDuration);
 
       send({ type: "progress", percent: 5, label: "A enviar para Shotstack..." });
 
