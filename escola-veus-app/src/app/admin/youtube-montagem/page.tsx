@@ -301,7 +301,7 @@ export default function YouTubeMontagem() {
         loaded: false,
       }))
     );
-    setMusicTrack(1);
+    setMusicPair(1);
     localStorage.removeItem("yt-montagem-state");
   };
 
