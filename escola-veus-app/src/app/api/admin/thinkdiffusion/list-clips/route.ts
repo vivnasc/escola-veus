@@ -26,12 +26,10 @@ export async function GET() {
   const clips = files
     .filter((f) => f.name.match(/\.(mp4)$/i))
     .map((f) => {
-      // Clip name: mar-01-golden-hour-h-01.mp4
-      // Image name match: mar-01-golden-hour-h-01.png or .jpg
       const baseName = f.name.replace(/\.mp4$/, "");
       return {
         name: baseName,
-        url: `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/clips/${f.name}`,
+        url: `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/clips/${f.name}?t=${Date.now()}`,
       };
     });
 
