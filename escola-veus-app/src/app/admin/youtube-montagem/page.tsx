@@ -421,7 +421,7 @@ export default function YouTubeMontagem() {
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {clips.filter((c: ClipSlot) => c.url).map((clip: ClipSlot, i: number) => {
-            const fileName = clip.url.split("/").pop() || `clip-${i + 1}`;
+            const fileName = (clip.url.split("/").pop() || `clip-${i + 1}`).split("?")[0];
             return (
               <div key={i} className="space-y-1">
                 <div className="relative aspect-video overflow-hidden rounded border border-green-800/50">
@@ -429,7 +429,31 @@ export default function YouTubeMontagem() {
                     onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
                     onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
                   />
-                  <span className="absolute top-1 left-1 rounded bg-black/60 px-1 text-xs text-white">{i + 1}</span>
+                  <select
+                    value={clip.index}
+                    onChange={(e) => {
+                      const newIndex = Number(e.target.value);
+                      const oldIndex = clip.index;
+                      setClips((prev: ClipSlot[]) => {
+                        const updated = [...prev];
+                        const other = updated.find((c) => c.index === newIndex && c.url);
+                        if (other) {
+                          const otherUrl = other.url;
+                          updated[newIndex] = { ...updated[newIndex], url: clip.url };
+                          updated[oldIndex] = { ...updated[oldIndex], url: otherUrl };
+                        } else {
+                          updated[newIndex] = { ...updated[newIndex], url: clip.url };
+                          updated[oldIndex] = { ...updated[oldIndex], url: "" };
+                        }
+                        return updated;
+                      });
+                    }}
+                    className="absolute top-1 left-1 rounded bg-black/80 px-1 text-xs text-white border-none cursor-pointer"
+                  >
+                    {Array.from({ length: filledClips }, (_, n) => (
+                      <option key={n} value={n}>{n + 1}</option>
+                    ))}
+                  </select>
                 </div>
                 <p className="text-xs text-green-300 truncate">{fileName.replace(".mp4", "")}</p>
               </div>
