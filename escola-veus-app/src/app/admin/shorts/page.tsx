@@ -45,6 +45,9 @@ type ShortsState = {
   tiktokCaption: string;
   youtubeTitle: string;
   youtubeDescription: string;
+  thumbSlotIndex: number;
+  thumbText: string;
+  thumbnailUrl: string;
 };
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -77,6 +80,9 @@ const EMPTY_STATE: ShortsState = {
   tiktokCaption: "",
   youtubeTitle: "",
   youtubeDescription: "",
+  thumbSlotIndex: 0,
+  thumbText: "",
+  thumbnailUrl: "",
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -110,6 +116,9 @@ export default function ShortsPage() {
   const [loadingTracks, setLoadingTracks] = useState(false);
 
   const [suggesting, setSuggesting] = useState(false);
+
+  const [thumbnailing, setThumbnailing] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState<string | null>(null);
 
   const [rendering, setRendering] = useState(false);
   const [renderProgress, setRenderProgress] = useState(0);
@@ -301,6 +310,37 @@ export default function ShortsPage() {
       alert(`Erro: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setSuggesting(false);
+    }
+  };
+
+  // ── Generate thumbnail (Shotstack JPG) ──────────────────────────────────────
+
+  const generateThumbnail = async () => {
+    const slot = state.slots[state.thumbSlotIndex];
+    if (!slot?.imageUrl) {
+      alert("Escolhe um slot com imagem primeiro.");
+      return;
+    }
+    setThumbnailing(true);
+    setThumbnailError(null);
+    try {
+      const text = state.thumbText.trim() || state.verses[0] || "";
+      const res = await fetch("/api/admin/shorts/render-thumbnail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageUrl: slot.imageUrl,
+          text,
+          title: state.title || state.trackName.replace(/\.[^.]+$/, "") || slot.promptId,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.erro) throw new Error(data.erro || `HTTP ${res.status}`);
+      updateState({ thumbnailUrl: data.url });
+    } catch (err) {
+      setThumbnailError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setThumbnailing(false);
     }
   };
 
@@ -800,6 +840,110 @@ export default function ShortsPage() {
             Precisas dos 3 clips Runway gerados + 1 faixa escolhida.
           </p>
         )}
+      </section>
+
+      {/* ── 7. THUMBNAIL ── */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          7. Thumbnail · capa 9:16 (TikTok cover · YouTube Shorts)
+        </h3>
+
+        <div className="mb-3">
+          <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Imagem base
+          </label>
+          <div className="flex gap-2">
+            {state.slots.map((slot, i) => {
+              const selected = state.thumbSlotIndex === i;
+              return (
+                <button
+                  key={i}
+                  onClick={() => updateState({ thumbSlotIndex: i, thumbnailUrl: "" })}
+                  disabled={!slot.imageUrl}
+                  className={`relative aspect-[9/16] w-20 overflow-hidden rounded border transition-colors disabled:opacity-30 ${
+                    selected
+                      ? "border-escola-coral ring-2 ring-escola-coral"
+                      : "border-escola-border hover:border-escola-coral"
+                  }`}
+                >
+                  {slot.imageUrl ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={slot.imageUrl} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-xs text-escola-creme-50">
+                      #{i + 1}
+                    </div>
+                  )}
+                  <span className="absolute left-1 top-1 rounded bg-black/70 px-1.5 text-xs font-bold text-white">
+                    {i + 1}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mb-3">
+          <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Texto (opcional · default = verso 1)
+          </label>
+          <textarea
+            value={state.thumbText}
+            onChange={(e) => updateState({ thumbText: e.target.value })}
+            rows={2}
+            placeholder={state.verses[0] || "Sem verso 1 — gera as legendas em #4 ou escreve aqui"}
+            className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+          />
+        </div>
+
+        {thumbnailError && (
+          <div className="mb-3 rounded bg-red-950/50 p-2 text-xs text-red-300">
+            Erro: {thumbnailError}
+          </div>
+        )}
+
+        {state.thumbnailUrl && (
+          <div className="mb-3 space-y-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={state.thumbnailUrl}
+              alt="thumbnail"
+              className="mx-auto aspect-[9/16] max-w-[200px] rounded border border-escola-border"
+            />
+            <div className="flex gap-2">
+              <a
+                href={state.thumbnailUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white"
+              >
+                Descarregar JPG
+              </a>
+              <button
+                onClick={() => copyToClipboard(state.thumbnailUrl)}
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-border/30"
+              >
+                Copiar URL
+              </button>
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={generateThumbnail}
+          disabled={thumbnailing || !state.slots[state.thumbSlotIndex]?.imageUrl}
+          className="rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white disabled:opacity-30"
+        >
+          {thumbnailing
+            ? "A gerar thumbnail..."
+            : state.thumbnailUrl
+              ? "Regenerar thumbnail"
+              : "Gerar thumbnail"}
+        </button>
+        <p className="mt-2 text-xs text-escola-creme-50">
+          Render via Shotstack (~10–20s). 1080×1920 JPG guardado em <code>shorts/thumbs/</code>.
+        </p>
       </section>
     </div>
   );
