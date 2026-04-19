@@ -913,29 +913,56 @@ export default function ThinkDiffusionPage() {
                             )}
                           </div>
                           <p className="text-xs text-green-300 truncate">{img.name}</p>
-                          {!clip || clip.status === "idle" ? (<>
-                            <textarea
-                              value={getMotionPrompt(img.name)}
-                              onChange={(e) => setEditedMotion((prev) => ({ ...prev, [img.name]: e.target.value }))}
-                              rows={2}
-                              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme mb-1"
-                              placeholder="Motion prompt..."
-                            />
+                          <textarea
+                            value={getMotionPrompt(img.name)}
+                            onChange={(e) => setEditedMotion((prev) => ({ ...prev, [img.name]: e.target.value }))}
+                            rows={2}
+                            className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme mb-1"
+                            placeholder="Motion prompt..."
+                          />
+                          {clip?.status === "submitting" ? (
+                            <span className="block text-center text-xs text-yellow-400">A enviar...</span>
+                          ) : clip?.status === "processing" ? (
+                            <span className="block text-center text-xs text-yellow-400 animate-pulse">A processar...</span>
+                          ) : clip?.status === "done" ? (<>
+                            <div className="flex gap-1">
+                              <button
+                                onClick={() => generateClip(img.url, img.name)}
+                                className="flex-1 rounded bg-yellow-700 py-1 text-xs font-bold text-white hover:bg-yellow-600"
+                              >
+                                Regenerar (50 cr)
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  if (!confirm("Apagar este clip?")) return;
+                                  const clipName = img.name.replace(/\.\w+$/, ".mp4");
+                                  await fetch("/api/admin/thinkdiffusion/save-clip", {
+                                    method: "DELETE",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ filename: clipName }),
+                                  });
+                                  setClips((prev) => { const n = { ...prev }; delete n[img.name]; return n; });
+                                }}
+                                className="rounded bg-red-800 px-2 py-1 text-xs text-white hover:bg-red-700"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          </>) : clip?.status === "failed" ? (<>
+                            <span className="block text-center text-xs text-red-400 mb-1">{clip.error || "Erro"}</span>
+                            <button
+                              onClick={() => generateClip(img.url, img.name)}
+                              className="w-full rounded bg-escola-coral py-1 text-xs font-bold text-white hover:bg-escola-coral/90"
+                            >
+                              Tentar de novo (50 cr)
+                            </button>
+                          </>) : (
                             <button
                               onClick={() => generateClip(img.url, img.name)}
                               className="w-full rounded bg-escola-coral py-1 text-xs font-bold text-white hover:bg-escola-coral/90"
                             >
                               {img.name.includes("-v-") ? "Gerar Short (50 cr)" : "Gerar clip (50 cr)"}
                             </button>
-                          </>
-                          ) : clip.status === "submitting" ? (
-                            <span className="block text-center text-xs text-yellow-400">A enviar...</span>
-                          ) : clip.status === "processing" ? (
-                            <span className="block text-center text-xs text-yellow-400 animate-pulse">A processar...</span>
-                          ) : clip.status === "done" ? (
-                            <span className="block text-center text-xs text-green-400">✓ Clip pronto</span>
-                          ) : (
-                            <span className="block text-center text-xs text-red-400">{clip.error || "Erro"}</span>
                           )}
                         </div>
                       );
