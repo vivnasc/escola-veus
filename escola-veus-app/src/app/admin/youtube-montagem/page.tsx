@@ -8,7 +8,6 @@ import videoPlan from "@/data/video-plan.json";
 const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
 const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
-const MAX_UNIQUE_CLIPS = 80; // clips unicos que carregas
 const CLIP_DURATION = 15; // seconds
 const VIDEO_DURATION = 3600; // 1 hour
 const TOTAL_CLIPS_NEEDED = VIDEO_DURATION / CLIP_DURATION; // 240 clips (repetidos do set)
@@ -21,10 +20,18 @@ type ClipSlot = {
   loaded: boolean;
 };
 
+type ClipGroup = {
+  promptId: string;
+  clips: string[]; // ordered list of URLs (4 variations)
+};
+
 type ProjectState = {
   title: string;
   clips: ClipSlot[];
   musicPair: number;
+  groupOrder?: string[]; // ordered promptIds
+  groupClips?: Record<string, string[]>; // promptId → ordered clip URLs
+  thumbnailUrl?: string;
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -40,39 +47,74 @@ function getMusicPairUrls(pairNum: number): [string, string] {
   ];
 }
 
+// Extract promptId from clip filename.
+// "mar-01-golden-hour-h-01.mp4" → "mar-01-golden-hour"
+// "mar-01-golden-hour-h-01.mp4.mp4" → "mar-01-golden-hour"
+// URL with ?t=timestamp handled upstream.
+function promptIdFromClipName(name: string): string {
+  return name.replace(/\.mp4(\.mp4)?$/i, "").replace(/-[hv]-\d+$/, "");
+}
+
+// Natural sort for promptIds: "mar-01" < "mar-02" < ... < "mar-15"
+function comparePromptIds(a: string, b: string): number {
+  return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+}
+
+function fileNameFromUrl(url: string): string {
+  const last = url.split("/").pop() || "";
+  return last.split("?")[0];
+}
+
+function buildGroups(clipUrls: string[]): ClipGroup[] {
+  const map = new Map<string, string[]>();
+  for (const url of clipUrls) {
+    if (!url) continue;
+    const name = fileNameFromUrl(url);
+    const pid = promptIdFromClipName(name);
+    if (!pid) continue;
+    if (!map.has(pid)) map.set(pid, []);
+    map.get(pid)!.push(url);
+  }
+  const groups: ClipGroup[] = [];
+  for (const [promptId, urls] of map) {
+    urls.sort((a, b) => fileNameFromUrl(a).localeCompare(fileNameFromUrl(b)));
+    groups.push({ promptId, clips: urls });
+  }
+  groups.sort((a, b) => comparePromptIds(a.promptId, b.promptId));
+  return groups;
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 export default function YouTubeMontagem() {
   const [title, setTitle] = useState("");
-  const [clips, setClips] = useState<ClipSlot[]>(
-    Array.from({ length: MAX_UNIQUE_CLIPS }, (_, i) => ({
-      index: i,
-      url: "",
-      loaded: false,
-    }))
-  );
+  // Group state: ordered promptIds + per-group ordered clip URLs.
+  const [groupOrder, setGroupOrder] = useState<string[]>([]);
+  const [groupClips, setGroupClips] = useState<Record<string, string[]>>({});
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [musicPair, setMusicPair] = useState(1); // pair 1 = faixas 01+02
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
-  // Auto-load clips from Supabase on mount
+  // Derived: flat ordered clip URLs respecting groupOrder + per-group order.
+  const orderedClipUrls: string[] = groupOrder.flatMap((pid) => groupClips[pid] || []);
+
+  // Auto-load clips from Supabase on mount (only if no saved state yet).
   useEffect(() => {
+    const saved = localStorage.getItem("yt-montagem-state");
+    if (saved) return; // hydrated below
     fetch("/api/admin/thinkdiffusion/list-clips")
       .then((r) => r.json())
       .then((data) => {
-        if (data.clips && data.clips.length > 0) {
-          const sorted = data.clips
-            .filter((c: { name: string }) => c.name.includes("-h-"))
-            .sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
-          setClips((prev: ClipSlot[]) =>
-            prev.map((slot: ClipSlot, i: number) => ({
-              ...slot,
-              url: sorted[i]?.url || slot.url,
-            }))
-          );
-        }
+        if (!data.clips || data.clips.length === 0) return;
+        const horizontal = data.clips
+          .filter((c: { name: string }) => c.name.includes("-h-"))
+          .map((c: { url: string }) => c.url);
+        const groups = buildGroups(horizontal);
+        setGroupOrder(groups.map((g) => g.promptId));
+        setGroupClips(Object.fromEntries(groups.map((g) => [g.promptId, g.clips])));
       })
       .catch(() => {});
-  }, []); // 0 = track A, 1 = track B
+  }, []);
 
   // Render
   const [rendering, setRendering] = useState(false);
@@ -96,42 +138,61 @@ export default function YouTubeMontagem() {
       if (saved) {
         const state: ProjectState = JSON.parse(saved);
         if (state.title) setTitle(state.title);
-        if (state.clips) setClips(state.clips);
         if (state.musicPair) setMusicPair(state.musicPair);
+        if (state.thumbnailUrl) setThumbnailUrl(state.thumbnailUrl);
+        if (state.groupOrder && state.groupClips) {
+          setGroupOrder(state.groupOrder);
+          setGroupClips(state.groupClips);
+        } else if (state.clips) {
+          // Legacy: migrate old flat clips to groups.
+          const urls = state.clips.map((c) => c.url).filter((u) => u);
+          const groups = buildGroups(urls);
+          setGroupOrder(groups.map((g) => g.promptId));
+          setGroupClips(Object.fromEntries(groups.map((g) => [g.promptId, g.clips])));
+        }
       }
     } catch { /* ignore */ }
   }, []);
 
   const saveState = useCallback(() => {
-    const state: ProjectState = { title, clips, musicPair };
+    const state: ProjectState = { title, clips: [], musicPair, groupOrder, groupClips, thumbnailUrl };
     localStorage.setItem("yt-montagem-state", JSON.stringify(state));
-  }, [title, clips, musicPair]);
+  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl]);
 
   useEffect(() => {
     saveState();
-  }, [title, clips, musicPair, saveState]);
+  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, saveState]);
 
-  // Clip URL update
-  const updateClipUrl = (index: number, url: string) => {
-    setClips((prev: ClipSlot[]) =>
-      prev.map((c: ClipSlot) => (c.index === index ? { ...c, url, loaded: false } : c))
-    );
-  };
-
-  // Bulk paste clips (one URL per line)
-  const handleBulkPaste = (text: string) => {
-    const urls = text
-      .split("\n")
-      .map((u: string) => u.trim())
-      .filter((u: string) => u.length > 0);
-    setClips((prev: ClipSlot[]) =>
-      prev.map((c: ClipSlot, i: number) => ({
-        ...c,
-        url: urls[i] || c.url,
-        loaded: false,
-      }))
-    );
-  };
+  // Sync with Supabase — re-fetch and merge (keeps user ordering, adds new clips).
+  const syncClipsFromSupabase = useCallback(async () => {
+    try {
+      const r = await fetch("/api/admin/thinkdiffusion/list-clips");
+      const data = await r.json();
+      if (!data.clips) return;
+      const horizontal = data.clips
+        .filter((c: { name: string }) => c.name.includes("-h-"))
+        .map((c: { url: string }) => c.url);
+      const fresh = buildGroups(horizontal);
+      const freshIds = fresh.map((g) => g.promptId);
+      // Preserve existing group order, append new groups at end.
+      const mergedOrder = [
+        ...groupOrder.filter((id) => freshIds.includes(id)),
+        ...freshIds.filter((id) => !groupOrder.includes(id)),
+      ];
+      // For each group, preserve user order but add new clips and drop deleted.
+      const mergedClips: Record<string, string[]> = {};
+      for (const g of fresh) {
+        const existing = groupClips[g.promptId] || [];
+        const freshSet = new Set(g.clips.map(fileNameFromUrl));
+        const existingSet = new Set(existing.map(fileNameFromUrl));
+        const kept = existing.filter((u) => freshSet.has(fileNameFromUrl(u)));
+        const added = g.clips.filter((u) => !existingSet.has(fileNameFromUrl(u)));
+        mergedClips[g.promptId] = [...kept, ...added];
+      }
+      setGroupOrder(mergedOrder);
+      setGroupClips(mergedClips);
+    } catch { /* ignore */ }
+  }, [groupOrder, groupClips]);
 
   // Music pair URLs
   const [musicUrlA, musicUrlB] = getMusicPairUrls(musicPair);
@@ -179,16 +240,16 @@ export default function YouTubeMontagem() {
   };
 
   const playClip = (index: number) => {
-    if (index >= MAX_UNIQUE_CLIPS) {
+    if (index >= orderedClipUrls.length) {
       stopPreview();
       return;
     }
 
     setPreviewClipIndex(index);
 
-    const clip = clips[index];
-    if (videoRef.current && clip.url) {
-      videoRef.current.src = clip.url;
+    const url = orderedClipUrls[index];
+    if (videoRef.current && url) {
+      videoRef.current.src = url;
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
     }
@@ -204,11 +265,11 @@ export default function YouTubeMontagem() {
     }, 100);
   };
 
-  const filledClips = clips.filter((c: ClipSlot) => c.url.trim().length > 0).length;
+  const filledClips = orderedClipUrls.length;
 
   // Render MP4 via Shotstack
   const startRender = async () => {
-    const validClips = clips.filter((c: ClipSlot) => c.url.trim().length > 0).map((c: ClipSlot) => c.url.trim());
+    const validClips = orderedClipUrls.filter((u) => u && u.trim().length > 0);
     if (validClips.length === 0) return;
 
     setRendering(true);
@@ -294,10 +355,12 @@ export default function YouTubeMontagem() {
         album: "ancient-ground",
         loop: "A → B → A → B...",
       },
-      clips: clips.map((c: ClipSlot) => ({
-        index: c.index,
-        url: c.url,
+      thumbnail: thumbnailUrl || null,
+      groups: groupOrder.map((pid) => ({
+        promptId: pid,
+        clips: groupClips[pid] || [],
       })),
+      clips: orderedClipUrls,
     };
 
     const blob = new Blob([JSON.stringify(project, null, 2)], {
@@ -315,15 +378,36 @@ export default function YouTubeMontagem() {
   const resetProject = () => {
     if (!confirm("Limpar tudo e começar de novo?")) return;
     setTitle("");
-    setClips(
-      Array.from({ length: MAX_UNIQUE_CLIPS }, (_, i) => ({
-        index: i,
-        url: "",
-        loaded: false,
-      }))
-    );
+    setGroupOrder([]);
+    setGroupClips({});
+    setThumbnailUrl("");
     setMusicPair(1);
     localStorage.removeItem("yt-montagem-state");
+  };
+
+  // Group reorder: move group at index from→to
+  const moveGroup = (promptId: string, newPosition: number) => {
+    setGroupOrder((prev) => {
+      const idx = prev.indexOf(promptId);
+      if (idx < 0 || newPosition < 0 || newPosition >= prev.length) return prev;
+      const next = [...prev];
+      next.splice(idx, 1);
+      next.splice(newPosition, 0, promptId);
+      return next;
+    });
+  };
+
+  // Intra-group swap: move clip at URL to a new position within its group
+  const moveClipInGroup = (promptId: string, clipUrl: string, newPosition: number) => {
+    setGroupClips((prev) => {
+      const current = prev[promptId] || [];
+      const idx = current.indexOf(clipUrl);
+      if (idx < 0 || newPosition < 0 || newPosition >= current.length) return prev;
+      const next = [...current];
+      next.splice(idx, 1);
+      next.splice(newPosition, 0, clipUrl);
+      return { ...prev, [promptId]: next };
+    });
   };
 
   return (
@@ -334,7 +418,7 @@ export default function YouTubeMontagem() {
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-xs text-escola-creme-50">
-            até {MAX_UNIQUE_CLIPS} clips únicos → {VIDEO_DURATION / 60} min (1h)
+            {filledClips} clips únicos → {VIDEO_DURATION / 60} min (1h)
           </span>
           <button
             onClick={resetProject}
@@ -413,54 +497,83 @@ export default function YouTubeMontagem() {
         </div>
       </section>
 
-      {/* ── 3. CLIPS ── */}
+      {/* ── 3. CLIPS POR GRUPO ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          3. Clips ({filledClips} carregados · {filledClips * 10}s = {Math.floor(filledClips * 10 / 60)}:{String((filledClips * 10) % 60).padStart(2, "0")} de vídeo)
-        </h3>
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
+            3. Clips por grupo ({groupOrder.length} grupos · {filledClips} clips · {Math.floor(filledClips * CLIP_DURATION / 60)}:{String((filledClips * CLIP_DURATION) % 60).padStart(2, "0")})
+          </h3>
+          <button
+            onClick={syncClipsFromSupabase}
+            className="text-xs text-escola-creme-50 hover:text-escola-creme"
+          >
+            Sincronizar Supabase
+          </button>
+        </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {clips.filter((c: ClipSlot) => c.url).map((clip: ClipSlot, i: number) => {
-            const fileName = (clip.url.split("/").pop() || `clip-${i + 1}`).split("?")[0];
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Dropdown <b>esquerdo (grupo)</b> = posição do grupo na sequência dos 15 grupos.
+          Dropdown <b>direito (variação)</b> = ordem dos 4 clips dentro do grupo.
+        </p>
+
+        <div className="space-y-4">
+          {groupOrder.map((promptId, gIdx) => {
+            const clipsInGroup = groupClips[promptId] || [];
             return (
-              <div key={i} className="space-y-1">
-                <div className="relative aspect-video overflow-hidden rounded border border-green-800/50">
-                  <video src={clip.url} className="h-full w-full object-cover" muted playsInline
-                    onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
-                    onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
-                  />
+              <div key={promptId} className="rounded border border-escola-border bg-escola-bg p-3">
+                <div className="mb-2 flex items-center gap-2">
                   <select
-                    value={clip.index}
-                    onChange={(e) => {
-                      const newIndex = Number(e.target.value);
-                      const oldIndex = clip.index;
-                      setClips((prev: ClipSlot[]) => {
-                        const updated = [...prev];
-                        const other = updated.find((c) => c.index === newIndex && c.url);
-                        if (other) {
-                          const otherUrl = other.url;
-                          updated[newIndex] = { ...updated[newIndex], url: clip.url };
-                          updated[oldIndex] = { ...updated[oldIndex], url: otherUrl };
-                        } else {
-                          updated[newIndex] = { ...updated[newIndex], url: clip.url };
-                          updated[oldIndex] = { ...updated[oldIndex], url: "" };
-                        }
-                        return updated;
-                      });
-                    }}
-                    className="absolute top-1 left-1 rounded bg-black/80 px-1 text-xs text-white border-none cursor-pointer"
+                    value={gIdx}
+                    onChange={(e) => moveGroup(promptId, Number(e.target.value))}
+                    className="rounded bg-escola-coral px-2 py-0.5 text-xs font-bold text-white border-none cursor-pointer"
                   >
-                    {Array.from({ length: filledClips }, (_, n) => (
-                      <option key={n} value={n}>{n + 1}</option>
+                    {groupOrder.map((_, n) => (
+                      <option key={n} value={n}>Grupo {n + 1}</option>
                     ))}
                   </select>
+                  <span className="text-xs font-semibold text-escola-creme">{promptId}</span>
+                  <span className="text-xs text-escola-creme-50">({clipsInGroup.length} clips)</span>
                 </div>
-                <p className="text-xs text-green-300 truncate">{fileName.replace(".mp4", "")}</p>
+
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {clipsInGroup.map((url, cIdx) => {
+                    const fileName = fileNameFromUrl(url).replace(/\.mp4(\.mp4)?$/i, "");
+                    return (
+                      <div key={url} className="space-y-1">
+                        <div className="relative aspect-video overflow-hidden rounded border border-green-800/50">
+                          <video src={url} className="h-full w-full object-cover" muted playsInline
+                            onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
+                            onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
+                          />
+                          <select
+                            value={cIdx}
+                            onChange={(e) => moveClipInGroup(promptId, url, Number(e.target.value))}
+                            className="absolute top-1 left-1 rounded bg-black/80 px-1 text-xs text-white border-none cursor-pointer"
+                          >
+                            {clipsInGroup.map((_, n) => (
+                              <option key={n} value={n}>{n + 1}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <p className="text-xs text-green-300 truncate">{fileName}</p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             );
           })}
+          {groupOrder.length === 0 && (
+            <p className="text-sm text-escola-creme-50">
+              Sem clips carregados. Clica em &quot;Sincronizar Supabase&quot; acima.
+            </p>
+          )}
         </div>
       </section>
+
+      {/* ── 3B. THUMBNAIL ── */}
+      <ThumbnailSection thumbnailUrl={thumbnailUrl} onSelect={setThumbnailUrl} />
+
 
       {/* ── 4. PREVIEW ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
@@ -478,7 +591,7 @@ export default function YouTubeMontagem() {
 
           {previewing && (
             <div className="absolute bottom-3 left-3 rounded bg-black/60 px-2 py-1 text-xs text-white">
-              Clip {previewClipIndex + 1}/{MAX_UNIQUE_CLIPS} —{" "}
+              Clip {previewClipIndex + 1}/{orderedClipUrls.length} —{" "}
               {Math.floor(previewTime / 60)}:
               {String(Math.floor(previewTime % 60)).padStart(2, "0")}
             </div>
@@ -594,5 +707,119 @@ export default function YouTubeMontagem() {
         </button>
       </section>
     </div>
+  );
+}
+
+// ── Thumbnail picker ─────────────────────────────────────────────────────────
+
+type ImageItem = { name: string; url: string; promptId: string };
+
+function ThumbnailSection({
+  thumbnailUrl,
+  onSelect,
+}: {
+  thumbnailUrl: string;
+  onSelect: (url: string) => void;
+}) {
+  const [images, setImages] = useState<ImageItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState<string>("");
+  const [expanded, setExpanded] = useState(false);
+
+  const loadImages = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/thinkdiffusion/list-images");
+      const data = await r.json();
+      const onlyH = (data.images || []).filter((i: ImageItem) =>
+        i.name.match(/-h-\d+\.\w+$/i)
+      );
+      onlyH.sort((a: ImageItem, b: ImageItem) => a.name.localeCompare(b.name));
+      setImages(onlyH);
+    } catch { /* ignore */ }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (expanded && images.length === 0) loadImages();
+  }, [expanded, images.length, loadImages]);
+
+  const uniquePromptIds = Array.from(new Set(images.map((i) => i.promptId))).sort();
+  const filtered = filter ? images.filter((i) => i.promptId === filter) : images;
+
+  return (
+    <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          3B. Thumbnail YouTube
+        </h3>
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="text-xs text-escola-creme-50 hover:text-escola-creme"
+        >
+          {expanded ? "Fechar" : "Escolher imagem"}
+        </button>
+      </div>
+
+      {thumbnailUrl && (
+        <div className="mt-3 flex items-start gap-3">
+          <div className="relative aspect-video w-40 overflow-hidden rounded border border-escola-coral">
+            <img src={thumbnailUrl} alt="Thumbnail" className="h-full w-full object-cover" />
+          </div>
+          <div className="flex-1 space-y-1">
+            <p className="text-xs text-escola-creme">Thumbnail selecionada</p>
+            <p className="text-xs text-escola-creme-50 break-all">{fileNameFromUrl(thumbnailUrl)}</p>
+            <button
+              onClick={() => onSelect("")}
+              className="text-xs text-red-400 hover:text-red-300"
+            >
+              Remover
+            </button>
+          </div>
+        </div>
+      )}
+
+      {expanded && (
+        <div className="mt-3 space-y-3">
+          <div className="flex items-center gap-2">
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+            >
+              <option value="">Todos ({images.length})</option>
+              {uniquePromptIds.map((pid) => (
+                <option key={pid} value={pid}>{pid}</option>
+              ))}
+            </select>
+            <button
+              onClick={loadImages}
+              className="text-xs text-escola-creme-50 hover:text-escola-creme"
+            >
+              {loading ? "A carregar..." : "Recarregar"}
+            </button>
+          </div>
+
+          <div className="grid max-h-96 grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-4 md:grid-cols-6">
+            {filtered.map((img) => (
+              <button
+                key={img.url}
+                onClick={() => { onSelect(img.url); setExpanded(false); }}
+                className={`relative aspect-video overflow-hidden rounded border transition ${
+                  thumbnailUrl === img.url
+                    ? "border-escola-coral ring-2 ring-escola-coral"
+                    : "border-escola-border hover:border-escola-coral/60"
+                }`}
+              >
+                <img src={img.url} alt={img.name} className="h-full w-full object-cover" loading="lazy" />
+              </button>
+            ))}
+          </div>
+          {filtered.length === 0 && !loading && (
+            <p className="text-xs text-escola-creme-50">Sem imagens.</p>
+          )}
+        </div>
+      )}
+    </section>
   );
 }
