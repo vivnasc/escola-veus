@@ -289,6 +289,7 @@ export default function YouTubeMontagem() {
           musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
+          thumbnailUrl: thumbnailUrl || undefined,
         }),
       });
 
