@@ -108,7 +108,7 @@ export default function ThinkDiffusionPage() {
               if (saveData.url) finalUrl = saveData.url;
             } catch { /* keep Runway URL */ }
 
-            setClips((prev) => ({ ...prev, [imageName]: { ...prev[imageName], status: "done", clipUrl: finalUrl } }));
+            setClips((prev) => ({ ...prev, [imageName]: { ...prev[imageName], status: "done", clipUrl: finalUrl + "?t=" + Date.now() } }));
             return;
           }
           if (task?.status === "failed") {
