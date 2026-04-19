@@ -50,3 +50,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: msg }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { filename } = await req.json();
+    if (!filename) return NextResponse.json({ erro: "filename obrigatorio." }, { status: 400 });
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!supabaseUrl || !serviceKey) return NextResponse.json({ erro: "Supabase nao configurado." }, { status: 500 });
+
+    const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
+    await supabase.storage.from("course-assets").remove([`youtube/clips/${filename}`]);
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    return NextResponse.json({ erro: err instanceof Error ? err.message : String(err) }, { status: 500 });
+  }
+}
