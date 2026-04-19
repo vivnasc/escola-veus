@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import runwayMotionPrompts from "@/data/runway-motion-prompts.json";
+
+const MOTION_PROMPTS = runwayMotionPrompts as Record<string, string>;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -46,15 +49,17 @@ type ShortsState = {
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const DEFAULT_MOTION =
-  "slow vertical camera lift, cinematic, gentle parallax, soft breathing motion";
 const CLIP_DURATION = 10;
 const NUM_SLOTS = 3;
+
+function motionForPromptId(promptId: string): string {
+  return MOTION_PROMPTS[promptId] || "";
+}
 
 const EMPTY_SLOT: SlotState = {
   imageUrl: "",
   promptId: "",
-  motionPrompt: DEFAULT_MOTION,
+  motionPrompt: "",
   clipUrl: "",
   generating: false,
   error: "",
@@ -212,9 +217,14 @@ export default function ShortsPage() {
   };
 
   const setSlotImage = (slotIdx: number, image: ImageItem) => {
+    const existing = state.slots[slotIdx].motionPrompt;
+    const fromLibrary = motionForPromptId(image.promptId);
     updateSlot(slotIdx, {
       imageUrl: image.url,
       promptId: image.promptId,
+      // prefer the exact motion prompt from the YouTube library;
+      // only keep the user's edit if the slot already had the same imageUrl
+      motionPrompt: fromLibrary || existing,
       clipUrl: "",
       error: "",
     });
@@ -232,12 +242,18 @@ export default function ShortsPage() {
 
     updateSlot(slotIdx, { generating: true, error: "", clipUrl: "" });
     try {
+      const motionPrompt = slot.motionPrompt || motionForPromptId(slot.promptId);
+      if (!motionPrompt.trim()) {
+        throw new Error(
+          "Sem motion prompt para esta imagem — acrescenta um prompt ao runway-motion-prompts.json ou escreve na caixa.",
+        );
+      }
       const res = await fetch("/api/admin/shorts/animate-one", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imageUrl: slot.imageUrl,
-          motionPrompt: slot.motionPrompt || DEFAULT_MOTION,
+          motionPrompt,
           label: slot.promptId,
           durationSec: CLIP_DURATION,
         }),
@@ -508,9 +524,18 @@ export default function ShortsPage() {
                   updateSlot(i, { motionPrompt: e.target.value })
                 }
                 rows={3}
-                placeholder={DEFAULT_MOTION}
+                placeholder={
+                  slot.promptId
+                    ? "Sem motion prompt para este id em runway-motion-prompts.json"
+                    : "Escolhe imagem primeiro — motion prompt vem da biblioteca YouTube"
+                }
                 className="w-full rounded border border-escola-border bg-escola-bg-card px-2 py-1 text-xs text-escola-creme"
               />
+              {slot.imageUrl && !motionForPromptId(slot.promptId) && !slot.motionPrompt && (
+                <p className="text-[10px] text-amber-300">
+                  Sem motion prompt definido para <code>{slot.promptId}</code>.
+                </p>
+              )}
               <button
                 onClick={() => animateSlot(i)}
                 disabled={!slot.imageUrl || slot.generating}
