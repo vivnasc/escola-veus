@@ -77,29 +77,22 @@ function buildEdit(
   musicVolume: number,
   clipDuration: number,
 ) {
-  // Two-track overlap with HARD cuts (no fade transitions).
-  // - Each clip full length (clipDuration, e.g. 10s — match Runway source).
-  // - Adjacent clips overlap by OVERLAP seconds.
-  // - trackB is above trackA: during the overlap, the next clip covers the
-  //   previous. Result: first & last OVERLAP seconds of every clip are hidden
-  //   behind the neighbour — exactly where Runway tends to put jittery
-  //   first/last frames. No fade-to-black midpoint (fade transitions caused
-  //   the mid-crossfade darkening perceived as "flashing").
-  const OVERLAP = 0.5;
+  // Crossfade between clips using 2 alternating tracks.
+  // Every clip has fade-in + fade-out of OVERLAP seconds. Adjacent clips
+  // overlap by OVERLAP — out-fade of N happens simultaneously with in-fade of
+  // N+1, producing a smooth dissolve. 1s overlap (vs 0.5s) gives a gentler,
+  // less perceptible transition.
+  const OVERLAP = 1.0;
   const stride = clipDuration - OVERLAP;
-  const lastIndex = clips.length - 1;
   const trackA: unknown[] = [];
   const trackB: unknown[] = [];
   clips.forEach((url, i) => {
-    const transition: { in?: "fade"; out?: "fade" } = {};
-    if (i === 0) transition.in = "fade";            // gentle opening
-    if (i === lastIndex) transition.out = "fade";   // gentle closing
     const clip = {
       asset: { type: "video" as const, src: url, volume: 0 },
       start: i * stride,
       length: clipDuration,
       fit: "crop" as const,
-      ...(transition.in || transition.out ? { transition } : {}),
+      transition: { in: "fade" as const, out: "fade" as const },
     };
     (i % 2 === 0 ? trackA : trackB).push(clip);
   });
