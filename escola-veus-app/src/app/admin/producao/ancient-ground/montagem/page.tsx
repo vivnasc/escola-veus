@@ -17,16 +17,182 @@ function emptyseo(): SeoMeta {
   return { thumbnailTitle: "", postTitle: "", description: "", hashtags: [] };
 }
 
-// Pull metadata for a video by its plan id (e.g. video-01) from youtube-metadata.json.
-function seoFromMetadata(videoId: string, planTitle: string): SeoMeta {
-  const meta = (youtubeMetadata as { videos: YTMetadataVideo[] }).videos.find((v) => v.id === videoId);
-  if (!meta) return { ...emptyseo(), thumbnailTitle: planTitle };
+// Template-based SEO generator per category — used for any of the 50 videos
+// when there is no hand-written metadata. Output is meant as a proposal for
+// the Vivianne to edit, not a final version.
+type CategoryTemplate = {
+  emoji: string;
+  englishTitle: string; // e.g. "Indian Ocean"
+  mood: string;         // e.g. "Relaxing Ocean Waves"
+  setting: string;      // "Mozambique coastline"
+  hook: string;         // first description paragraph
+  perfectFor: string[]; // bullets
+  hashtags: string[];
+};
+
+const CATEGORY_TEMPLATES: Record<string, CategoryTemplate> = {
+  mar: {
+    emoji: "🌊",
+    englishTitle: "Indian Ocean",
+    mood: "Relaxing Ocean Waves",
+    setting: "Mozambique coastline",
+    hook: "Immerse yourself in the breathtaking beauty of Mozambique's Indian Ocean coastline. Crystal clear turquoise waters, golden hour light, and gentle waves create the perfect atmosphere for meditation, study, or deep relaxation.",
+    perfectFor: ["Meditation & mindfulness", "Study & focus", "Sleep & relaxation", "Yoga & breathing exercises", "Stress relief"],
+    hashtags: ["#MozambiqueOcean", "#IndianOcean", "#RelaxingWaves", "#OceanSounds", "#TropicalOcean", "#CalmWaves"],
+  },
+  praia: {
+    emoji: "🏖️",
+    englishTitle: "Beaches of Mozambique",
+    mood: "Tropical Paradise",
+    setting: "Mozambique beaches — Tofo, Bazaruto, Vilankulo, Pemba, Ilha, Quirimbas",
+    hook: "Discover the pristine beaches of Mozambique — from white sands in the south to remote shores in the north. This visual journey spans the entire 2,500 km coastline of one of Africa's most beautiful countries.",
+    perfectFor: ["Meditation & mindfulness", "Holiday inspiration", "Sleep & relaxation", "Beach atmosphere", "Travel dreams"],
+    hashtags: ["#MozambiqueBeaches", "#AfricanBeaches", "#TropicalParadise", "#Pemba", "#Tofo", "#Bazaruto"],
+  },
+  rio: {
+    emoji: "🌿",
+    englishTitle: "Rivers & Waterfalls",
+    mood: "African Forest Ambience",
+    setting: "Zambezi, Gorongosa, Mozambique interior",
+    hook: "Journey deep into the rivers, waterfalls, and forests of Mozambique's interior. From the mighty Zambezi delta to hidden waterfalls in Gorongosa National Park, experience the lush tropical beauty of inland East Africa.",
+    perfectFor: ["Meditation & mindfulness", "Study & focus", "Sleep with water sounds", "Forest bathing", "Stress relief"],
+    hashtags: ["#AfricanRivers", "#Waterfalls", "#Gorongosa", "#Zambezi", "#ForestAmbience", "#RiverSounds"],
+  },
+  ceu: {
+    emoji: "☁️",
+    englishTitle: "African Sky",
+    mood: "Dramatic Clouds & Sunsets",
+    setting: "skies over Mozambique",
+    hook: "Watch the magnificent skies of Mozambique — from golden sunsets over the savanna to dramatic storm clouds over the Indian Ocean. Africa's skies are among the most spectacular on Earth.",
+    perfectFor: ["Meditation", "Creative inspiration", "Relaxation", "Contemplation", "Timelapse appreciation"],
+    hashtags: ["#AfricanSky", "#AfricanSunset", "#DramaticClouds", "#GoldenHour", "#SkyTimelapse"],
+  },
+  chuva: {
+    emoji: "🌧️",
+    englishTitle: "Tropical Rain",
+    mood: "Rain Sounds & African Music",
+    setting: "Mozambique rainy season",
+    hook: "Experience the beauty of tropical rain in Mozambique — from gentle monsoon showers on forest canopy to warm rain on pristine beaches. The rainy season transforms the landscape into a lush green paradise.",
+    perfectFor: ["Sleep & relaxation", "Study & focus", "Meditation", "ASMR rain lovers", "Stress relief"],
+    hashtags: ["#TropicalRain", "#RainSounds", "#AfricanRain", "#RainAmbience", "#SleepSounds", "#MonsoonRain"],
+  },
+  savana: {
+    emoji: "🦁",
+    englishTitle: "Golden Savanna",
+    mood: "African Grasslands",
+    setting: "Gorongosa, Mozambique savanna",
+    hook: "Vast golden grasslands stretching to the horizon, ancient baobab trees, and the warm amber light of the African savanna. Experience the timeless beauty of Mozambique's interior landscapes.",
+    perfectFor: ["Meditation", "Nature lovers", "Africa dreamers", "Relaxation", "Wildlife contemplation"],
+    hashtags: ["#AfricanSavanna", "#Gorongosa", "#BaobabTree", "#GoldenGrassland", "#SavannaAmbience", "#WildAfrica"],
+  },
+  flora: {
+    emoji: "🌺",
+    englishTitle: "African Flora",
+    mood: "Tropical Plants & Flowers",
+    setting: "Mozambique wild flora",
+    hook: "Step into the lush tropical flora of Mozambique — vibrant flowers, ancient trees, and tangled green life under the warm African sun. Nature in full bloom.",
+    perfectFor: ["Meditation", "Botanical appreciation", "Calm background", "Art inspiration", "Relaxation"],
+    hashtags: ["#AfricanFlora", "#TropicalFlowers", "#AfricanPlants", "#WildFlora", "#GreenNature"],
+  },
+  nevoeiro: {
+    emoji: "🌫️",
+    englishTitle: "Mysterious Mist",
+    mood: "Misty Ambience",
+    setting: "Mozambique highlands & coast in mist",
+    hook: "Wander into the mysterious mist of Mozambique — soft fog drifting across forests, mountains, and coastline. A meditative landscape that invites deep stillness.",
+    perfectFor: ["Meditation", "Deep relaxation", "Atmospheric writing", "Sleep", "Contemplation"],
+    hashtags: ["#MistyForest", "#FogAmbience", "#MysteriousNature", "#MistyLandscape", "#CalmFog"],
+  },
+  fogo: {
+    emoji: "🔥",
+    englishTitle: "Fire & Embers",
+    mood: "Campfire Ambience",
+    setting: "Mozambique nightscapes",
+    hook: "Gather around the warm glow of fire and embers under the African night. The ancient sound of crackling wood, the dance of flame — a primal calm.",
+    perfectFor: ["Meditation", "Sleep", "Focused work", "Winter warmth", "Ancestral calm"],
+    hashtags: ["#Campfire", "#FireSounds", "#EmbersGlow", "#AfricanNight", "#FireMeditation"],
+  },
+  terra: {
+    emoji: "🟤",
+    englishTitle: "Red Earth",
+    mood: "Grounded African Soil",
+    setting: "Mozambique interior",
+    hook: "The deep red earth of Mozambique — cracked, warm, alive. Ancient landscapes that have watched civilisations rise and return to dust.",
+    perfectFor: ["Meditation", "Grounding", "Slow reading", "Stillness", "Reconnecting"],
+    hashtags: ["#RedEarth", "#AfricanSoil", "#GroundedNature", "#AfricanLandscape", "#AncestralEarth"],
+  },
+  noite: {
+    emoji: "✨",
+    englishTitle: "Starry Night",
+    mood: "African Night Sky",
+    setting: "Mozambique night skies",
+    hook: "Beneath a canopy of stars so thick it feels like an ocean overhead. The African night — vast, silent, infinite. Let it hold you.",
+    perfectFor: ["Sleep", "Deep meditation", "Stargazing sounds", "Nighttime study", "Cosmic contemplation"],
+    hashtags: ["#StarryNight", "#AfricanSky", "#NightAmbience", "#MilkyWay", "#SleepUnderStars"],
+  },
+  caminho: {
+    emoji: "🛤️",
+    englishTitle: "Paths & Trails",
+    mood: "Forest & Savanna Walks",
+    setting: "Mozambique wild paths",
+    hook: "Follow the quiet paths of Mozambique — through forest, savanna, and memory. Every trail holds a story in its dust.",
+    perfectFor: ["Meditation", "Journey reflections", "Walking inspiration", "Contemplative work", "Stillness"],
+    hashtags: ["#ForestPath", "#AfricanTrails", "#WildPath", "#NatureWalk", "#PathMeditation"],
+  },
+};
+
+function smartSeoForVideo(
+  videoId: string,
+  planTitle: string,
+  categorias: string[],
+  durationMin: number,
+): SeoMeta {
+  const primary = categorias[0] || "mar";
+  const tpl = CATEGORY_TEMPLATES[primary] || CATEGORY_TEMPLATES.mar;
+
+  const postTitle = `${tpl.emoji} ${tpl.englishTitle} Mozambique — ${durationMin} Min ${tpl.mood} & African Music`;
+
+  const description = [
+    tpl.hook,
+    "",
+    `This video features real landscapes inspired by ${tpl.setting}, paired with original African-inspired instrumental music from Ancient Ground (music.seteveus.space).`,
+    "",
+    "🌍 Mozambique has over 2,500 km of pristine Indian Ocean coastline and vast interior landscapes, making it one of the most visually stunning countries in Africa.",
+    "",
+    "🎵 Music: Ancient Ground — music.seteveus.space",
+    `📍 Inspired by: Mozambique, East Africa`,
+    "",
+    "Perfect for:",
+    ...tpl.perfectFor.map((p) => `• ${p}`),
+    "",
+    "🎵 Ancient Ground — music.seteveus.space",
+  ].join("\n");
+
+  // Merge category hashtags with universal Moçambique tags (dedup).
+  const universal = ["#Mozambique", "#Moçambique", "#AfricanNature", "#RelaxingNature", "#AmbientVideo", "#Meditation", "#CalmMusic"];
+  const hashtags = Array.from(new Set([...tpl.hashtags, ...universal])).slice(0, 15);
+
   return {
-    thumbnailTitle: planTitle, // short, derived from plan; user can edit
-    postTitle: meta.titulo_yt,
-    description: meta.descricao,
-    hashtags: meta.hashtags,
+    thumbnailTitle: planTitle, // short PT title shown on thumbnail
+    postTitle,
+    description,
+    hashtags,
   };
+}
+
+// Prefer hand-written metadata from youtube-metadata.json when available;
+// otherwise fall back to the category-based template generator above.
+function seoFromMetadata(videoId: string, planTitle: string, categorias: string[] = [], durationMin = 60): SeoMeta {
+  const meta = (youtubeMetadata as { videos: YTMetadataVideo[] }).videos.find((v) => v.id === videoId);
+  if (meta) {
+    return {
+      thumbnailTitle: planTitle,
+      postTitle: meta.titulo_yt,
+      description: meta.descricao,
+      hashtags: meta.hashtags,
+    };
+  }
+  return smartSeoForVideo(videoId, planTitle, categorias, durationMin);
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -581,12 +747,13 @@ export default function YouTubeMontagem() {
           value={videoId}
           onChange={(e) => {
             const id = e.target.value;
-            const plan = (videoPlan as Array<{id: string; titulo: string}>).find((v) => v.id === id);
+            const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === id);
             setVideoId(id);
             setTitle(plan?.titulo || "");
-            // Auto-fill SEO if not customised yet (or always when video changes — user can edit).
+            // Auto-fill SEO (hand-written metadata OR generated template).
             if (id && plan) {
-              setSeo(seoFromMetadata(id, plan.titulo));
+              const durationMin = Math.round(VIDEO_DURATION / 60);
+              setSeo(seoFromMetadata(id, plan.titulo, plan.categorias, durationMin));
             }
           }}
           className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
@@ -1048,7 +1215,10 @@ function SeoComposerSection({
 
   const refillFromMetadata = () => {
     if (!videoId) return;
-    onSeoChange(seoFromMetadata(videoId, title));
+    const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === videoId);
+    const categorias = plan?.categorias || [];
+    const durationMin = Math.round(VIDEO_DURATION / 60);
+    onSeoChange(seoFromMetadata(videoId, title, categorias, durationMin));
   };
 
   const updateSeo = (patch: Partial<SeoMeta>) => onSeoChange({ ...seo, ...patch });
@@ -1069,7 +1239,7 @@ function SeoComposerSection({
             disabled={!videoId}
             className="text-xs text-escola-creme-50 hover:text-escola-creme disabled:opacity-30"
           >
-            Auto-preencher do metadata
+            Gerar proposta SEO
           </button>
         </div>
 
