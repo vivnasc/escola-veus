@@ -1,5 +1,10 @@
 # Prompts ThinkDiffusion — Natureza Realista (Moçambique/África)
 
+> **Âmbito:** este ficheiro cobre **só os vídeos Ancient Ground** (natureza
+> de Moçambique). Os prompts do **funil Nomear** (Colecção B, abstracto,
+> sem pessoas) estão em `escola-veus-app/src/data/funil-prompts.seed.json`
+> e editáveis na página `/admin/producao/funil` (tab Prompts).
+
 **Uso:** Gerar imagens base realistas → alimentar Runway image-to-video → clips para YouTube.
 
 **Config ThinkDiffusion:**

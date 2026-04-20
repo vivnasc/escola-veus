@@ -1,11 +1,17 @@
 # Escola dos Véus — Pipelines de Vídeo
 
+> **Nota (2026-04-20):** música passou a ser **Ancient Ground (Loranne)** em
+> todas as tracks — Suno saiu do plano. As tracks de produção vivem em
+> `/admin/producao/`: **Aulas** (pipeline 1), **Funil** (pipeline 2 Nomear),
+> **Ancient Ground** (natureza Moçambique), **Shorts**, **Audios**.
+> Ver `/CURSOS/PRODUCAO-STATUS.md` para estado actual.
+
 Dois pipelines distintos numa única ferramenta CLI.
 
 | Pipeline | Input | Output | Uso |
 |----------|-------|--------|-----|
-| **Cursos** | Scripts Markdown | Slides animados + Suno → MP4 | 80+ aulas, conteúdo educativo |
-| **YouTube** | Clips Runway + Script de texto | Clips + texto overlay + Suno → MP4 | Funil, conteúdo contemplativo |
+| **Cursos** | Scripts Markdown | Slides animados + Ancient Ground → MP4 | 80+ aulas, conteúdo educativo |
+| **YouTube Funil** | Clips Runway + Script de texto | Clips + texto overlay + Ancient Ground → MP4 | Funil Nomear, 122 vídeos |
 
 ---
 
