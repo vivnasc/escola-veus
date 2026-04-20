@@ -368,6 +368,27 @@
     {"id": "nomear-ep02-08-laptop-uma-manha", "category": "nomear-ouro-proprio", "mood": ["compulsao", "insonia"],
       "prompt": "open laptop on a dark wooden desk at 1am, screen glowing softly and illuminating scattered papers and a cold mug, rest of the room in deep shadow, muted tones, feeling of restless night, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"},
     {"id": "nomear-ep02-09-chavena-reuniao", "category": "nomear-ouro-proprio", "mood": ["exaustao", "silencio"],
-      "prompt": "single empty espresso cup on a dark cafe table next to a few crumpled paper notes, warm overhead light, muted tones, feeling of a hard day ending, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"}
+      "prompt": "single empty espresso cup on a dark cafe table next to a few crumpled paper notes, warm overhead light, muted tones, feeling of a hard day ending, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"},
+
+    {"id": "nomear-ep03-01-desculpa-porta", "category": "nomear-ouro-proprio", "mood": ["recusa", "protecao"],
+      "prompt": "front door closed from inside a dim hallway, soft warm light under the door frame, muted tones, feeling of quiet refusal, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-02-palavras-cor", "category": "nomear-ouro-proprio", "mood": ["repeticao", "automatico"],
+      "prompt": "pile of small blank white cards stacked neatly on a dark wooden desk, warm side light, soft shadow, muted tones, feeling of rehearsed words, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-03-cansaco-corredor", "category": "nomear-ouro-proprio", "mood": ["cansaco", "disfarce"],
+      "prompt": "long narrow hallway at night with a single amber wall sconce, aged wallpaper, soft shadows, muted earth tones, contemplative silence, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-04-conta-dividida", "category": "nomear-ouro-proprio", "mood": ["vergonha", "conta"],
+      "prompt": "folded paper restaurant bill next to a few coins on a dark cafe table, warm overhead light, muted tones, feeling of a small unresolved debt, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-05-prato-barato", "category": "nomear-ouro-proprio", "mood": ["privacao", "escolha"],
+      "prompt": "simple ceramic bowl of plain soup on a dimly lit restaurant table, other empty chairs around, warm low lamp, muted tones, feeling of quiet restraint, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-06-mesa-longa", "category": "nomear-ouro-proprio", "mood": ["ausencia", "grupo"],
+      "prompt": "long restaurant table with many empty chairs pulled back, used napkins and half empty glasses left behind, warm dim hanging lights, muted tones, feeling of after everyone left, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-07-janela-fechada", "category": "nomear-ouro-proprio", "mood": ["solidao", "noite"],
+      "prompt": "closed window at night seen from inside a dim living room, distant blurred city lights beyond the glass, soft interior reflections, muted blue and amber tones, contemplative silence, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-08-casaco-cabide", "category": "nomear-ouro-proprio", "mood": ["personalidade", "identidade"],
+      "prompt": "single dark coat hanging alone on a wall hook by a front door, soft warm light from side lamp, aged wooden floor below, muted tones, feeling of a life held back, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-09-noite-perdida", "category": "nomear-ouro-proprio", "mood": ["perda", "nostalgia"],
+      "prompt": "small warm lit restaurant seen from outside across an empty rainy night street, soft reflections on wet cobblestones, muted amber and deep blue tones, contemplative distance, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"},
+    {"id": "nomear-ep03-10-convite-porta", "category": "nomear-ouro-proprio", "mood": ["abertura", "cta"],
+      "prompt": "front door slightly ajar from outside with warm golden light spilling onto a dark stone step at night, soft mist around, muted tones, feeling of gentle invitation, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"}
   ]
 }
