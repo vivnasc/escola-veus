@@ -201,8 +201,13 @@ const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
 const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
 const CLIP_DURATION = 15; // seconds
-const VIDEO_DURATION = 3600; // 1 hour
-const TOTAL_CLIPS_NEEDED = VIDEO_DURATION / CLIP_DURATION; // 240 clips (repetidos do set)
+const DURATION_PRESETS: Array<{ label: string; seconds: number; credits: number }> = [
+  { label: "5 min (teste — 5 créditos)", seconds: 300, credits: 5 },
+  { label: "10 min (10 créditos)", seconds: 600, credits: 10 },
+  { label: "30 min (30 créditos)", seconds: 1800, credits: 30 },
+  { label: "1 h (60 créditos)", seconds: 3600, credits: 60 },
+];
+const DEFAULT_VIDEO_DURATION = 3600;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -286,6 +291,8 @@ export default function YouTubeMontagem() {
   // Group state: ordered promptIds + per-group ordered clip URLs.
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
   const [groupClips, setGroupClips] = useState<Record<string, string[]>>({});
+  const [videoDuration, setVideoDuration] = useState<number>(DEFAULT_VIDEO_DURATION);
+  const totalClipsNeeded = Math.ceil(videoDuration / CLIP_DURATION);
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [composedThumbnailDataUrl, setComposedThumbnailDataUrl] = useState<string>("");
   const [videoId, setVideoId] = useState<string>("");
@@ -386,7 +393,7 @@ export default function YouTubeMontagem() {
     if (seo.postTitle.trim() || seo.description.trim()) return; // user already has content
     const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === videoId);
     if (!plan) return;
-    const durationMin = Math.round(VIDEO_DURATION / 60);
+    const durationMin = Math.round(videoDuration / 60);
     setSeo(seoFromMetadata(videoId, plan.titulo, plan.categorias, durationMin));
   }, [videoId, seo.postTitle, seo.description]);
 
@@ -565,7 +572,7 @@ export default function YouTubeMontagem() {
         body: JSON.stringify({
           title,
           uniqueClips: validClips,
-          targetDuration: VIDEO_DURATION,
+          targetDuration: videoDuration,
           musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
@@ -666,9 +673,9 @@ export default function YouTubeMontagem() {
     const project = {
       title,
       specs: {
-        duration: VIDEO_DURATION,
+        duration: videoDuration,
         uniqueClips: filledClips,
-        totalClips: TOTAL_CLIPS_NEEDED,
+        totalClips: totalClipsNeeded,
         clipDuration: CLIP_DURATION,
       },
       music: {
@@ -747,7 +754,7 @@ export default function YouTubeMontagem() {
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-xs text-escola-creme-50">
-            {filledClips} clips únicos → {VIDEO_DURATION / 60} min (1h)
+            {filledClips} clips únicos · {Math.round(videoDuration / 60)} min alvo
           </span>
           <button
             onClick={resetProject}
@@ -772,7 +779,7 @@ export default function YouTubeMontagem() {
             setTitle(plan?.titulo || "");
             // Auto-fill SEO (hand-written metadata OR generated template).
             if (id && plan) {
-              const durationMin = Math.round(VIDEO_DURATION / 60);
+              const durationMin = Math.round(videoDuration / 60);
               setSeo(seoFromMetadata(id, plan.titulo, plan.categorias, durationMin));
             }
           }}
@@ -920,6 +927,7 @@ export default function YouTubeMontagem() {
         title={title}
         composedDataUrl={composedThumbnailDataUrl}
         onComposedChange={setComposedThumbnailDataUrl}
+        videoDurationSec={videoDuration}
       />
 
 
@@ -972,7 +980,7 @@ export default function YouTubeMontagem() {
           <div className="mt-2 h-1.5 w-full rounded-full bg-escola-border">
             <div
               className="h-full rounded-full bg-escola-coral transition-all"
-              style={{ width: `${(previewTime / VIDEO_DURATION) * 100}%` }}
+              style={{ width: `${(previewTime / videoDuration) * 100}%` }}
             />
           </div>
         )}
@@ -1029,7 +1037,7 @@ export default function YouTubeMontagem() {
         </h3>
 
         <p className="mb-3 text-xs text-escola-creme-50">
-          Os {filledClips} clips únicos serão repetidos pela ORDEM definida (sem baralhar) para preencher 1 hora ({TOTAL_CLIPS_NEEDED} clips × {CLIP_DURATION}s).
+          Os {filledClips} clips únicos serão repetidos pela ORDEM definida (sem baralhar) para preencher {Math.round(videoDuration / 60)} min ({totalClipsNeeded} clips × {CLIP_DURATION}s).
           Render via Shotstack (cloud). O vídeo fica no Supabase.
         </p>
 
@@ -1075,12 +1083,26 @@ export default function YouTubeMontagem() {
           </div>
         )}
 
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <label className="text-xs text-escola-creme-50">Duração:</label>
+          <select
+            value={videoDuration}
+            onChange={(e) => setVideoDuration(Number(e.target.value))}
+            disabled={rendering}
+            className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
+          >
+            {DURATION_PRESETS.map((p) => (
+              <option key={p.seconds} value={p.seconds}>{p.label}</option>
+            ))}
+          </select>
+        </div>
+
         <button
           onClick={startRender}
           disabled={filledClips === 0 || rendering}
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
-          {rendering ? "A renderizar..." : `Gerar MP4 de 1h (${filledClips} clips únicos → ${TOTAL_CLIPS_NEEDED} total)`}
+          {rendering ? "A renderizar..." : `Gerar MP4 de ${Math.round(videoDuration / 60)} min (${filledClips} clips únicos → ${totalClipsNeeded} total)`}
         </button>
       </section>
 
@@ -1339,6 +1361,7 @@ function SeoComposerSection({
   title,
   composedDataUrl,
   onComposedChange,
+  videoDurationSec,
 }: {
   thumbnailUrl: string;
   onSelect: (url: string) => void;
@@ -1348,6 +1371,7 @@ function SeoComposerSection({
   title: string;
   composedDataUrl: string;
   onComposedChange: (dataUrl: string) => void;
+  videoDurationSec: number;
 }) {
   const [composing, setComposing] = useState(false);
   const [composeError, setComposeError] = useState<string>("");
@@ -1386,7 +1410,7 @@ function SeoComposerSection({
       alert("Escolhe um vídeo em cima (secção 1) antes de gerar SEO.");
       return;
     }
-    const durationMin = Math.round(VIDEO_DURATION / 60);
+    const durationMin = Math.round(videoDurationSec / 60);
     onSeoChange(seoFromMetadata(plan.id, plan.titulo, plan.categorias, durationMin));
   };
 
