@@ -13,7 +13,7 @@ const ADMIN_NAV = [
   { href: "/admin/cursos", label: "Cursos" },
   { href: "/admin/conteudo", label: "Conteudo" },
   { href: "/admin/producao/ancient-ground", label: "Ancient Ground" },
-  { href: "/admin/youtube-montagem", label: "Montagem" },
+  { href: "/admin/producao/ancient-ground/montagem", label: "AG — Montagem" },
   { href: "/admin/shorts", label: "Shorts" },
   { href: "/admin/audio-bulk", label: "Audio" },
   { href: "/admin/revisao", label: "Revisao" },
