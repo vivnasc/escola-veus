@@ -12,6 +12,8 @@ const ADMIN_NAV = [
   { href: "/admin/alunas", label: "Alunas" },
   { href: "/admin/cursos", label: "Cursos" },
   { href: "/admin/conteudo", label: "Conteudo" },
+  { href: "/admin/producao/aulas", label: "Aulas" },
+  { href: "/admin/producao/funil", label: "Funil" },
   { href: "/admin/producao/ancient-ground", label: "Ancient Ground" },
   { href: "/admin/producao/ancient-ground/montagem", label: "AG — Montagem" },
   { href: "/admin/producao/shorts", label: "Shorts" },
