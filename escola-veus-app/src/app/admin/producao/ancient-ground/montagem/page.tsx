@@ -1083,7 +1083,150 @@ export default function YouTubeMontagem() {
           {rendering ? "A renderizar..." : `Gerar MP4 de 1h (${filledClips} clips únicos → ${TOTAL_CLIPS_NEEDED} total)`}
         </button>
       </section>
+
+      {/* ── 6. UPLOAD MANUAL DO MP4 (drag-and-drop) ── */}
+      <UploadMp4Section
+        title={title}
+        thumbnailUrl={composedThumbnailDataUrl || thumbnailUrl}
+        seo={seo}
+      />
     </div>
+  );
+}
+
+// ── Upload MP4 drag-and-drop ─────────────────────────────────────────────────
+
+function UploadMp4Section({
+  title,
+  thumbnailUrl,
+  seo,
+}: {
+  title: string;
+  thumbnailUrl: string;
+  seo: SeoMeta;
+}) {
+  const [dragging, setDragging] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [result, setResult] = useState<{ videoUrl: string; thumbnailUrl: string | null; seoUrl: string | null; filename: string } | null>(null);
+  const [error, setError] = useState<string>("");
+
+  const handleFile = async (file: File) => {
+    if (!file.type.startsWith("video/")) {
+      setError("Só ficheiros de vídeo.");
+      return;
+    }
+    if (!title.trim()) {
+      setError("Escolhe um vídeo em cima (secção 1) — o nome do ficheiro será derivado do título.");
+      return;
+    }
+
+    setError("");
+    setResult(null);
+    setUploading(true);
+    setProgress(0);
+
+    const form = new FormData();
+    form.append("file", file);
+    form.append("title", title);
+    if (thumbnailUrl) form.append("thumbnailUrl", thumbnailUrl);
+    if (seo) form.append("seo", JSON.stringify(seo));
+
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/admin/youtube/upload-mp4");
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) setProgress(Math.round((e.loaded / e.total) * 100));
+      };
+      xhr.onload = () => {
+        setUploading(false);
+        try {
+          const data = JSON.parse(xhr.responseText);
+          if (xhr.status !== 200) { setError(data.erro || `HTTP ${xhr.status}`); return; }
+          setResult(data);
+          setProgress(100);
+        } catch {
+          setError("Resposta invalida do servidor.");
+        }
+      };
+      xhr.onerror = () => { setUploading(false); setError("Erro de rede."); };
+      xhr.send(form);
+    } catch (err) {
+      setUploading(false);
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFile(file);
+  };
+
+  return (
+    <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+        6. Guardar MP4 já renderizado (drag-and-drop)
+      </h3>
+      <p className="mb-3 text-xs text-escola-creme-50">
+        Arrasta aqui o MP4 que já descarregaste do Shotstack. Vou renomear para{" "}
+        <code className="rounded bg-black/40 px-1">{(title || "youtube").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50)}-&lt;timestamp&gt;.mp4</code>{" "}
+        e guardar no Supabase (youtube/videos/) junto com a thumbnail composta e o SEO.
+      </p>
+
+      <label
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={onDrop}
+        className={`flex aspect-[5/1] w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed text-sm transition ${
+          dragging ? "border-escola-coral bg-escola-coral/10 text-escola-coral" : "border-escola-border text-escola-creme-50 hover:border-escola-coral/60"
+        }`}
+      >
+        <input
+          type="file"
+          accept="video/mp4,video/*"
+          className="hidden"
+          onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+        />
+        {dragging ? "Larga aqui o MP4..." : "Arrasta ou clica para escolher o MP4"}
+      </label>
+
+      {uploading && (
+        <div className="mt-3">
+          <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
+            <span>A enviar para Supabase...</span>
+            <span>{progress}%</span>
+          </div>
+          <div className="h-2 w-full rounded-full bg-escola-border">
+            <div className="h-full rounded-full bg-escola-coral transition-all" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+      )}
+
+      {error && <div className="mt-3 rounded bg-red-950/50 p-2 text-xs text-red-300">Erro: {error}</div>}
+
+      {result && (
+        <div className="mt-3 space-y-2 rounded bg-green-950/50 p-3 text-xs text-green-300">
+          <p>Guardado como <code className="rounded bg-black/40 px-1">{result.filename}</code></p>
+          <div className="flex flex-wrap gap-2">
+            <a href={result.videoUrl} target="_blank" rel="noopener noreferrer" className="rounded bg-escola-coral px-3 py-1 font-semibold text-white">
+              Abrir vídeo
+            </a>
+            {result.thumbnailUrl && (
+              <a href={result.thumbnailUrl} target="_blank" rel="noopener noreferrer" className="rounded border border-escola-border px-3 py-1 text-escola-creme hover:bg-escola-border/30">
+                Thumbnail
+              </a>
+            )}
+            {result.seoUrl && (
+              <a href={result.seoUrl} target="_blank" rel="noopener noreferrer" className="rounded border border-escola-border px-3 py-1 text-escola-creme hover:bg-escola-border/30">
+                SEO JSON
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </section>
   );
 }
 

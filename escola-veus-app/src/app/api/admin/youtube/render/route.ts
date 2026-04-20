@@ -41,13 +41,21 @@ function buildYouTubeEdit(
   musicVolume: number,
   clipDuration: number,
 ) {
-  const videoClips = clips.map((url, i) => ({
-    asset: { type: "video" as const, src: url, volume: 0 },
-    start: i * clipDuration,
-    length: clipDuration,
-    fit: "crop" as const,
-    transition: { in: "fade" as const, out: "fade" as const },
-  }));
+  // Hard cuts between clips. Fade only on the very first/last to avoid
+  // black-flash between interior clips.
+  const lastIndex = clips.length - 1;
+  const videoClips = clips.map((url, i) => {
+    const transition: { in?: "fade"; out?: "fade" } = {};
+    if (i === 0) transition.in = "fade";
+    if (i === lastIndex) transition.out = "fade";
+    return {
+      asset: { type: "video" as const, src: url, volume: 0 },
+      start: i * clipDuration,
+      length: clipDuration,
+      fit: "crop" as const,
+      ...(transition.in || transition.out ? { transition } : {}),
+    };
+  });
 
   const totalDuration = clips.length * clipDuration;
 
