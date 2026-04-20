@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-// Load prompts from the JSON file via import
-import promptsData from "@/data/thinkdiffusion-prompts.json";
+// JSON actua como seed/fallback. Em runtime carregamos da API (Supabase).
+import seedPrompts from "@/data/thinkdiffusion-prompts.json";
 import videoPlan from "@/data/video-plan.json";
 import motionPrompts from "@/data/runway-motion-prompts.json";
 
@@ -38,9 +38,125 @@ type ClipState = {
   error?: string;
 };
 
-const CATEGORIES = [...new Set(promptsData.prompts.map((p: PromptItem) => p.category))].sort();
-
 export default function ThinkDiffusionPage() {
+  // Prompts editaveis — carregados da API no mount, com fallback para o JSON seed
+  const [promptsList, setPromptsList] = useState<PromptItem[]>(
+    seedPrompts.prompts as PromptItem[]
+  );
+  const [promptsSource, setPromptsSource] = useState<"supabase" | "json" | "loading">("loading");
+
+  // Edicao inline
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editDraft, setEditDraft] = useState("");
+  const [savingId, setSavingId] = useState<string | null>(null);
+
+  // Novo prompt
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newPromptId, setNewPromptId] = useState("");
+  const [newPromptCategory, setNewPromptCategory] = useState("");
+  const [newPromptMood, setNewPromptMood] = useState("");
+  const [newPromptText, setNewPromptText] = useState("");
+
+  const CATEGORIES = [...new Set(promptsList.map((p) => p.category))].sort();
+
+  const reloadPrompts = async () => {
+    try {
+      const r = await fetch("/api/admin/thinkdiffusion/prompts", { cache: "no-store" });
+      const data = await r.json();
+      if (Array.isArray(data.prompts) && data.prompts.length > 0) {
+        setPromptsList(data.prompts as PromptItem[]);
+        setPromptsSource(data.source === "supabase" ? "supabase" : "json");
+      }
+    } catch {
+      setPromptsSource("json");
+    }
+  };
+
+  const savePromptEdit = async (id: string) => {
+    setSavingId(id);
+    try {
+      const r = await fetch("/api/admin/thinkdiffusion/prompts", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, prompt: editDraft }),
+      });
+      const data = await r.json();
+      if (data.ok) {
+        setPromptsList((prev) =>
+          prev.map((p) => (p.id === id ? { ...p, prompt: editDraft } : p))
+        );
+        setEditingId(null);
+        setEditDraft("");
+      } else {
+        alert("Erro a guardar: " + (data.erro || "desconhecido"));
+      }
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const addNewPrompt = async () => {
+    if (!newPromptId || !newPromptCategory || !newPromptText) {
+      alert("id, categoria e prompt sao obrigatorios");
+      return;
+    }
+    const mood = newPromptMood
+      .split(",")
+      .map((m) => m.trim())
+      .filter(Boolean);
+    const r = await fetch("/api/admin/thinkdiffusion/prompts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: newPromptId,
+        category: newPromptCategory,
+        mood,
+        prompt: newPromptText,
+      }),
+    });
+    const data = await r.json();
+    if (data.ok) {
+      await reloadPrompts();
+      setShowAddForm(false);
+      setNewPromptId("");
+      setNewPromptCategory("");
+      setNewPromptMood("");
+      setNewPromptText("");
+    } else {
+      alert("Erro: " + (data.erro || "desconhecido"));
+    }
+  };
+
+  const deletePrompt = async (id: string) => {
+    if (!confirm(`Apagar prompt ${id}?`)) return;
+    const r = await fetch(`/api/admin/thinkdiffusion/prompts?id=${encodeURIComponent(id)}`, {
+      method: "DELETE",
+    });
+    const data = await r.json();
+    if (data.ok) {
+      setPromptsList((prev) => prev.filter((p) => p.id !== id));
+    } else {
+      alert("Erro: " + (data.erro || "desconhecido"));
+    }
+  };
+
+  const seedSupabase = async () => {
+    if (!confirm("Importar todos os prompts do JSON para Supabase? (upsert — nao apaga existentes)"))
+      return;
+    const r = await fetch("/api/admin/thinkdiffusion/prompts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "seed" }),
+    });
+    const data = await r.json();
+    if (data.ok) {
+      alert(`Importados ${data.count} prompts.`);
+      await reloadPrompts();
+    } else {
+      alert("Erro: " + (data.erro || "desconhecido"));
+    }
+  };
+
   // Editable motion prompts per image
   const [editedMotion, setEditedMotion] = useState<Record<string, string>>({});
 
@@ -145,6 +261,12 @@ export default function ThinkDiffusionPage() {
   const [error, setError] = useState<string | null>(null);
   const [autoSave, setAutoSave] = useState(true);
 
+  // On mount: carregar prompts da API (com fallback para JSON seed)
+  useEffect(() => {
+    reloadPrompts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // On mount: check Supabase for existing uploaded images via server API
   useEffect(() => {
     // Sync images
@@ -196,10 +318,10 @@ export default function ThinkDiffusionPage() {
   const activeVideo = (videoPlan as VideoEntry[]).find((v) => v.id === selectedVideo);
 
   const filteredPrompts = activeVideo
-    ? promptsData.prompts.filter((p: PromptItem) => activeVideo.categorias.includes(p.category))
+    ? promptsList.filter((p: PromptItem) => activeVideo.categorias.includes(p.category))
     : selectedCategory === "all"
-    ? promptsData.prompts
-    : promptsData.prompts.filter((p: PromptItem) => p.category === selectedCategory);
+    ? promptsList
+    : promptsList.filter((p: PromptItem) => p.category === selectedCategory);
 
   // Count how many variations exist per prompt
   const variationCounts: Record<string, number> = {};
@@ -230,7 +352,7 @@ export default function ThinkDiffusionPage() {
         body: JSON.stringify({
           image: img.base64,
           filename: `${img.promptId}.png`,
-          category: promptsData.prompts.find((p: PromptItem) => p.id === img.promptId)?.category || "",
+          category: promptsList.find((p: PromptItem) => p.id === img.promptId)?.category || "",
         }),
       });
       const data = await res.json();
@@ -256,8 +378,8 @@ export default function ThinkDiffusionPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: prompt.prompt,
-          width: promptsData.config.width,
-          height: promptsData.config.height,
+          width: seedPrompts.config.width,
+          height: seedPrompts.config.height,
           category: prompt.category,
           filename: `${fullId}.png`,
         }),
@@ -461,14 +583,14 @@ export default function ThinkDiffusionPage() {
           <div className="flex items-start gap-2">
             <textarea
               readOnly
-              value={promptsData.config.negative_prompt}
+              value={seedPrompts.config.negative_prompt}
               className="flex-1 rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme-50"
               rows={2}
               onClick={(e) => (e.target as HTMLTextAreaElement).select()}
             />
             <button
               onClick={() => {
-                navigator.clipboard.writeText(promptsData.config.negative_prompt);
+                navigator.clipboard.writeText(seedPrompts.config.negative_prompt);
                 setCurrentPrompt("NEG_COPIED");
                 setTimeout(() => setCurrentPrompt(""), 2000);
               }}
@@ -517,24 +639,34 @@ export default function ThinkDiffusionPage() {
         )}
       </section>
 
-      {/* ── PROMPTS (collapsible) ── */}
+      {/* ── PROMPTS (editaveis) ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
-        <h3
-          className="text-sm font-semibold uppercase tracking-wider text-escola-coral cursor-pointer"
-          onClick={() => setShowPrompts(!showPrompts)}
-        >
-          {showPrompts ? "▼" : "▶"} Prompts ({filteredPrompts.length} total) — clica para {showPrompts ? "ocultar" : "ver"}
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3
+            className="text-sm font-semibold uppercase tracking-wider text-escola-coral cursor-pointer"
+            onClick={() => setShowPrompts(!showPrompts)}
+          >
+            {showPrompts ? "▼" : "▶"} Prompts ({filteredPrompts.length} total) — clica para {showPrompts ? "ocultar" : "ver"}
+          </h3>
+          <span className={`text-[10px] uppercase tracking-wider ${
+            promptsSource === "supabase" ? "text-green-500"
+              : promptsSource === "json" ? "text-yellow-500" : "text-escola-creme-50"
+          }`}>
+            {promptsSource === "supabase" ? "● editavel (supabase)"
+              : promptsSource === "json" ? "○ read-only (json fallback)"
+              : "a carregar..."}
+          </span>
+        </div>
         {showPrompts && (<>
         <div className="mt-3 mb-3 flex flex-wrap gap-1">
           <button
             onClick={() => setSelectedCategory("all")}
             className={`rounded px-2 py-1 text-xs ${selectedCategory === "all" ? "bg-escola-coral text-white" : "bg-escola-border text-escola-creme-50"}`}
           >
-            Todos ({promptsData.prompts.length})
+            Todos ({promptsList.length})
           </button>
           {CATEGORIES.map((cat) => {
-            const count = promptsData.prompts.filter((p: PromptItem) => p.category === cat).length;
+            const count = promptsList.filter((p: PromptItem) => p.category === cat).length;
             return (
               <button
                 key={cat}
@@ -547,16 +679,79 @@ export default function ThinkDiffusionPage() {
           })}
         </div>
 
-        {/* Prompts list with COPY buttons */}
+        <div className="mb-3 flex flex-wrap gap-2">
+          <button
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="rounded bg-green-700 px-3 py-1 text-xs font-semibold text-white hover:bg-green-600"
+          >
+            {showAddForm ? "× cancelar" : "+ novo prompt"}
+          </button>
+          {promptsSource === "json" && (
+            <button
+              onClick={seedSupabase}
+              className="rounded bg-yellow-700 px-3 py-1 text-xs font-semibold text-white hover:bg-yellow-600"
+              title="Importa todos os prompts do JSON para Supabase (upsert)"
+            >
+              ↑ importar JSON para Supabase
+            </button>
+          )}
+        </div>
+
+        {showAddForm && (
+          <div className="mb-3 rounded border border-green-800/50 bg-green-950/20 p-3 space-y-2">
+            <div className="grid grid-cols-3 gap-2">
+              <input
+                type="text"
+                placeholder="id (ex: mar-16-novo)"
+                value={newPromptId}
+                onChange={(e) => setNewPromptId(e.target.value)}
+                className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+              />
+              <input
+                type="text"
+                placeholder="categoria (ex: mar)"
+                value={newPromptCategory}
+                onChange={(e) => setNewPromptCategory(e.target.value)}
+                className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+              />
+              <input
+                type="text"
+                placeholder="mood (ex: calma, vasto)"
+                value={newPromptMood}
+                onChange={(e) => setNewPromptMood(e.target.value)}
+                className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+              />
+            </div>
+            <textarea
+              placeholder="prompt completo..."
+              value={newPromptText}
+              onChange={(e) => setNewPromptText(e.target.value)}
+              rows={4}
+              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+            />
+            <button
+              onClick={addNewPrompt}
+              className="rounded bg-green-700 px-3 py-1 text-xs font-semibold text-white hover:bg-green-600"
+            >
+              Criar prompt
+            </button>
+          </div>
+        )}
+
+        {/* Prompts list editaveis */}
         <div className="space-y-2">
           {filteredPrompts.map((p: PromptItem) => {
             const count = variationCounts[p.id] || 0;
             const complete = count >= variationsPerPrompt;
+            const isEditing = editingId === p.id;
+            const isSaving = savingId === p.id;
             return (
               <div
                 key={p.id}
                 className={`rounded border p-3 ${
-                  complete
+                  isEditing
+                    ? "border-blue-600 bg-blue-950/20"
+                    : complete
                     ? "border-green-800/50 bg-green-950/20"
                     : count > 0
                     ? "border-yellow-800/50 bg-yellow-950/20"
@@ -570,23 +765,72 @@ export default function ThinkDiffusionPage() {
                     <span className="tabular-nums text-xs text-escola-creme-50">{count}/{variationsPerPrompt}</span>
                   </div>
                 </div>
-                <p className="mb-2 text-xs leading-relaxed text-escola-creme-50/70">
-                  {p.prompt.slice(0, 150)}...
-                </p>
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(p.prompt);
-                    setCurrentPrompt(p.id);
-                    setTimeout(() => setCurrentPrompt(""), 2000);
-                  }}
-                  className={`w-full rounded py-2 text-sm font-bold ${
-                    currentPrompt === p.id
-                      ? "bg-green-700 text-white"
-                      : "bg-escola-coral text-white hover:bg-escola-coral/90"
-                  }`}
-                >
-                  {currentPrompt === p.id ? "✓ COPIADO!" : "COPIAR PROMPT"}
-                </button>
+
+                {isEditing ? (
+                  <textarea
+                    value={editDraft}
+                    onChange={(e) => setEditDraft(e.target.value)}
+                    rows={6}
+                    className="mb-2 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+                  />
+                ) : (
+                  <p className="mb-2 text-xs leading-relaxed text-escola-creme-50/70 whitespace-pre-wrap">
+                    {p.prompt}
+                  </p>
+                )}
+
+                <div className="flex gap-2">
+                  {isEditing ? (
+                    <>
+                      <button
+                        onClick={() => savePromptEdit(p.id)}
+                        disabled={isSaving || promptsSource !== "supabase"}
+                        className="flex-1 rounded bg-blue-700 py-2 text-sm font-bold text-white hover:bg-blue-600 disabled:opacity-50"
+                      >
+                        {isSaving ? "a guardar..." : "✓ GUARDAR"}
+                      </button>
+                      <button
+                        onClick={() => { setEditingId(null); setEditDraft(""); }}
+                        className="rounded bg-escola-border px-3 py-2 text-sm text-escola-creme-50 hover:bg-escola-bg"
+                      >
+                        cancelar
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(p.prompt);
+                          setCurrentPrompt(p.id);
+                          setTimeout(() => setCurrentPrompt(""), 2000);
+                        }}
+                        className={`flex-1 rounded py-2 text-sm font-bold ${
+                          currentPrompt === p.id
+                            ? "bg-green-700 text-white"
+                            : "bg-escola-coral text-white hover:bg-escola-coral/90"
+                        }`}
+                      >
+                        {currentPrompt === p.id ? "✓ COPIADO!" : "COPIAR"}
+                      </button>
+                      <button
+                        onClick={() => { setEditingId(p.id); setEditDraft(p.prompt); }}
+                        disabled={promptsSource !== "supabase"}
+                        className="rounded bg-blue-800 px-3 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                        title={promptsSource !== "supabase" ? "Importa primeiro o JSON para Supabase" : "Editar prompt"}
+                      >
+                        ✎ editar
+                      </button>
+                      <button
+                        onClick={() => deletePrompt(p.id)}
+                        disabled={promptsSource !== "supabase"}
+                        className="rounded bg-red-900 px-3 py-2 text-sm text-white hover:bg-red-800 disabled:opacity-40 disabled:cursor-not-allowed"
+                        title={promptsSource !== "supabase" ? "Importa primeiro o JSON para Supabase" : "Apagar prompt"}
+                      >
+                        🗑
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             );
           })}
