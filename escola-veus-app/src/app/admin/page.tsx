@@ -174,9 +174,9 @@ export default function AdminDashboard() {
       </h3>
       <div className="grid grid-cols-2 gap-3">
         <QuickAction href="/admin/alunas" label="Ver alunas" />
-        <QuickAction href="/admin/conteudo" label="Publicar conteudo" />
-        <QuickAction href="/admin/cursos" label="Gerir cursos" />
-        <QuickAction href="/admin/audio-bulk" label="Gerar audios em massa" />
+        <QuickAction href="/admin/escola" label="Gerir escola" />
+        <QuickAction href="/admin/producao/funil" label="Funil Nomear" />
+        <QuickAction href="/admin/producao/audios" label="Gerar audios em massa" />
         <QuickAction href="/admin/analytics" label="Ver analytics" />
         <QuickAction href="/" label="Ver site" />
       </div>
