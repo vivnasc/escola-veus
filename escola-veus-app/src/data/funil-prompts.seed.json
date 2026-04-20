@@ -756,6 +756,61 @@
         "cta"
       ],
       "prompt": "single lit beeswax candle placed at the edge of a dark wooden table, steady warm flame, soft glow on the wood grain, rest of the room in deep shadow, muted tones, feeling of a quiet decision made, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+
+    {
+      "id": "nomear-trailer-01-veu-suspenso",
+      "category": "trailer",
+      "mood": ["abertura", "corpo-sabe"],
+      "prompt": "pale translucent silk veil suspended motionless in dim soft amber light, blurred dark depths behind, contemplative stillness, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-02-veus-caindo",
+      "category": "trailer",
+      "mood": ["lista", "nomear"],
+      "prompt": "several thin silk veils overlapping and falling slowly through a column of warm golden light, layered transparency, soft particles in the air, deep navy background, contemplative atmosphere, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-03-agua-ondula",
+      "category": "trailer",
+      "mood": ["nao-es-errada", "calma"],
+      "prompt": "extreme close up of still dark water surface with a single ripple expanding gently outward, soft warm reflection on the water, muted tones, quiet contemplative stillness, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-04-cozinha-antiga",
+      "category": "trailer",
+      "mood": ["heranca", "cozinhas-que-ja-nao-existem"],
+      "prompt": "old country kitchen at dusk with worn ceramic tiles, single enamel cup and saucer on a weathered wooden table, soft diffused light through thin faded curtain, muted cream and sepia tones, feeling of a place from long ago, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-05-veu-luminoso",
+      "category": "trailer",
+      "mood": ["identidade", "nomear-se"],
+      "prompt": "single luminous silk veil hanging vertically in a dark space with warm golden light glowing through it from behind, soft halo of light around the fabric, deep navy surroundings, brand signature atmosphere, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-06-mapa-territorio",
+      "category": "trailer",
+      "mood": ["territorio", "curso"],
+      "prompt": "old folded paper map partially unrolled on a dark wooden desk with a small brass compass beside it, soft side lamp light, muted earth tones, feeling of an unseen territory about to be entered, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-07-sete-velas",
+      "category": "trailer",
+      "mood": ["sete-temas", "linha"],
+      "prompt": "seven small unlit beeswax candles arranged in a quiet straight line on a dark stone surface, soft directional side light casting faint long shadows, muted earth tones, contemplative still life suggesting seven territories, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-08-caixa-fechada",
+      "category": "trailer",
+      "mood": ["engolido", "guardado"],
+      "prompt": "closed dark wooden box resting on a worn shelf in a dim room, faint dust visible in a beam of soft side light, muted tones, sealed silent atmosphere, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-09-porta-luz",
+      "category": "trailer",
+      "mood": ["cta", "convite"],
+      "prompt": "wooden doorway slightly ajar at the end of a dark quiet corridor, warm golden light spilling through the opening onto old wooden floorboards, soft dust particles in the beam, muted tones in the rest of the hallway, feeling of gentle invitation, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
     }
   ]
 }
