@@ -10,16 +10,10 @@ const ADMIN_EMAILS = ["viv.saraiva@gmail.com"];
 const ADMIN_NAV = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/alunas", label: "Alunas" },
-  { href: "/admin/cursos", label: "Cursos" },
-  { href: "/admin/conteudo", label: "Conteudo" },
+  { href: "/admin/escola", label: "Escola" },
   { href: "/admin/producao", label: "Producao" },
-  { href: "/admin/territorios", label: "Territorios" },
-  { href: "/admin/youtube", label: "YouTube" },
-  { href: "/admin/thinkdiffusion", label: "Imagens" },
-  { href: "/admin/youtube-montagem", label: "Montagem" },
-  { href: "/admin/shorts", label: "Shorts" },
-  { href: "/admin/lora", label: "LoRA" },
-  { href: "/admin/guidelines", label: "Guidelines" },
+  { href: "/admin/calendario", label: "Calendario" },
+  { href: "/admin/biblioteca", label: "Biblioteca" },
   { href: "/admin/analytics", label: "Analytics" },
 ] as const;
 

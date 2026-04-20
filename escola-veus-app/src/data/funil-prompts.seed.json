@@ -1,0 +1,816 @@
+{
+  "config": {
+    "checkpoint": "RealVisXL v4",
+    "width": 1920,
+    "height": 1080,
+    "cfg_scale": 6,
+    "steps": 35,
+    "sampler_name": "DPM++ 2M Karras",
+    "batch_size": 4,
+    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns"
+  },
+  "prompts": [
+    {
+      "id": "nomear-ep01-01-voz-antiga",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "culpa",
+        "heranca"
+      ],
+      "prompt": "dim empty room at dusk, single warm lamp glowing faintly in corner, heavy dark wooden furniture, dust particles floating in a narrow beam of light, muted earth tones, deep shadows, contemplative stillness, completely empty of people no human figures anywhere, cinematic still life photography, shallow depth of field, moody editorial, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep01-02-sacos-porta",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "culpa",
+        "hesitacao"
+      ],
+      "prompt": "a few shopping paper bags left standing alone on a wooden hallway floor just inside a half open front door, late afternoon light spilling softly onto the floorboards, long quiet shadows, no people no hands no figures, muted warm palette, editorial still life, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "nomear-ep01-03-cozinha-vazia",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "ausencia",
+        "memoria"
+      ],
+      "prompt": "old kitchen at twilight, worn wooden table empty except for a single ceramic cup and a faded cloth, soft window light filtering through thin curtains, dust in the air, muted cream and sepia tones, feeling of a place someone used to live in, completely empty of people no figures, cinematic still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep01-04-anel-heranca",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "heranca",
+        "peso"
+      ],
+      "prompt": "close up of a single old gold ring resting on folded dark velvet inside a small open wooden jewellery box on a dark surface, one warm lamp casting soft light from the side, delicate dust particles, muted earth tones, feeling of inherited weight and memory, no people no hands anywhere in frame, cinematic macro still life, shallow depth of field, 8k"
+    },
+    {
+      "id": "nomear-ep01-05-montra-loja",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "hesitacao",
+        "vergonha"
+      ],
+      "prompt": "shop window at night seen from the dark empty street outside, warm interior light glowing through the glass, soft reflections of streetlamps on the pavement, rain on the window softening the view of the objects inside, quiet and contemplative mood, completely empty of people no figures or silhouettes, cinematic photography, shallow depth of field, muted tones, 8k"
+    },
+    {
+      "id": "nomear-ep01-06-mesa-jantar",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "privacao",
+        "silencio"
+      ],
+      "prompt": "modest dinner table set for one, one empty ceramic plate, a simple glass of water, folded linen napkin, the rest of the long wooden table bare, warm low hanging lamp above casting a circle of light, surrounding room in soft shadow, quiet restrained atmosphere, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, muted warm tones, 8k"
+    },
+    {
+      "id": "nomear-ep01-07-moedas-mesa",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "sacrificio",
+        "tensao"
+      ],
+      "prompt": "small pile of old worn coins and a few folded banknotes left on the edge of a dark cafe table next to an empty coffee cup and a crumpled receipt, soft overhead light, muted tones, quiet end of evening mood, no people no hands in frame, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep01-08-tecido-vento",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "memoria",
+        "passado"
+      ],
+      "prompt": "long pale curtain of old linen fabric drifting slowly in the breeze by an open window at dusk, soft golden light passing through the weave, muted cream and faded rose tones, feeling of time and remembrance, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "nomear-ep01-09-balanca-antiga",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "peso",
+        "julgamento"
+      ],
+      "prompt": "old brass balance scale sitting alone on a dark wooden shelf, both pans slightly uneven, a few small stones resting in one pan, warm directional light from the side casting long shadow on aged wall, muted earth palette, feeling of silent judgement, completely empty of people no hands in frame, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep01-10-raizes-chao",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "heranca",
+        "peso"
+      ],
+      "prompt": "dark rich soil with old tree roots emerging from the ground in a quiet forest clearing at dawn, soft mist near the earth, cool blue and deep brown tones, feeling of ancestry and what came before, completely empty of people no figures anywhere, cinematic nature photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep01-11-fresta-luz",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "esperanca",
+        "cta"
+      ],
+      "prompt": "a single narrow doorway slightly ajar at the end of a dark quiet corridor, warm golden light spilling through the opening onto an old wooden floor, soft dust particles in the beam, muted tones in the rest of the hallway, feeling of gentle invitation, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-01-noite-quarto",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "hesitacao",
+        "noite"
+      ],
+      "prompt": "dim bedroom late at night, only light source is a small bedside lamp, unmade linen sheets, silent contemplative atmosphere, deep blue shadows in the room, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-02-ecra-glow",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "hesitacao",
+        "tensao"
+      ],
+      "prompt": "close up of a smartphone screen face up on a dark wooden bedside table at night, soft cold glow illuminating the wood around it, blurred dark room in background, muted tones, completely empty of people no hands in frame, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-03-extracto-papel",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "adiar",
+        "silencio"
+      ],
+      "prompt": "folded paper bank statement left unopened on an old wooden desk, single lamp casting warm side light, soft shadow of the paper on the wood, muted earth tones, feeling of something unread, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-04-veredicto-martelo",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "julgamento",
+        "peso"
+      ],
+      "prompt": "old wooden gavel resting on a worn dark bench in a quiet empty courtroom at dusk, single warm window light falling on the wood, dust in the air, muted tones, feeling of quiet judgement, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-05-reflexo-vidro",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "vergonha",
+        "memoria"
+      ],
+      "prompt": "close up of a rain streaked window at night, soft reflection of a dim interior lamp on the glass, muted blue and warm amber tones, contemplative silence, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-06-relogio-noite",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "tempo",
+        "pausa"
+      ],
+      "prompt": "old wall pendulum clock in a dim quiet hallway at night, soft warm light from a single sconce, long shadow on aged wall, muted tones, feeling of time stretching, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-07-suspiro-cortina",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "acumulacao",
+        "respiracao"
+      ],
+      "prompt": "pale curtain softly stirring over a slightly open window at night, soft moonlight filtering through the fabric, muted cool tones, quiet breathing atmosphere, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-08-laptop-uma-manha",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "compulsao",
+        "insonia"
+      ],
+      "prompt": "open laptop on a dark wooden desk at 1am, screen glowing softly and illuminating scattered papers and a cold mug, rest of the room in deep shadow, muted tones, feeling of restless night, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep02-09-chavena-reuniao",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "exaustao",
+        "silencio"
+      ],
+      "prompt": "single empty espresso cup on a dark cafe table next to a few crumpled paper notes, warm overhead light, muted tones, feeling of a hard day ending, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-01-desculpa-porta",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "recusa",
+        "protecao"
+      ],
+      "prompt": "front door closed from inside a dim hallway, soft warm light under the door frame, muted tones, feeling of quiet refusal, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-02-palavras-cor",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "repeticao",
+        "automatico"
+      ],
+      "prompt": "pile of small blank white cards stacked neatly on a dark wooden desk, warm side light, soft shadow, muted tones, feeling of rehearsed words, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-03-cansaco-corredor",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "cansaco",
+        "disfarce"
+      ],
+      "prompt": "long narrow hallway at night with a single amber wall sconce, aged wallpaper, soft shadows, muted earth tones, contemplative silence, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-04-conta-dividida",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "vergonha",
+        "conta"
+      ],
+      "prompt": "folded paper restaurant bill next to a few coins on a dark cafe table, warm overhead light, muted tones, feeling of a small unresolved debt, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-05-prato-barato",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "privacao",
+        "escolha"
+      ],
+      "prompt": "simple ceramic bowl of plain soup on a dimly lit restaurant table, other empty chairs around, warm low lamp, muted tones, feeling of quiet restraint, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-06-mesa-longa",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "ausencia",
+        "grupo"
+      ],
+      "prompt": "long restaurant table with many empty chairs pulled back, used napkins and half empty glasses left behind, warm dim hanging lights, muted tones, feeling of after everyone left, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-07-janela-fechada",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "solidao",
+        "noite"
+      ],
+      "prompt": "closed window at night seen from inside a dim living room, distant blurred city lights beyond the glass, soft interior reflections, muted blue and amber tones, contemplative silence, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-08-casaco-cabide",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "personalidade",
+        "identidade"
+      ],
+      "prompt": "single dark coat hanging alone on a wall hook by a front door, soft warm light from side lamp, aged wooden floor below, muted tones, feeling of a life held back, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-09-noite-perdida",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "perda",
+        "nostalgia"
+      ],
+      "prompt": "small warm lit restaurant seen from outside across an empty rainy night street, soft reflections on wet cobblestones, muted amber and deep blue tones, contemplative distance, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep03-10-convite-porta",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "abertura",
+        "cta"
+      ],
+      "prompt": "front door slightly ajar from outside with warm golden light spilling onto a dark stone step at night, soft mist around, muted tones, feeling of gentle invitation, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-01-preco-papel",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "calculo",
+        "valor"
+      ],
+      "prompt": "handwritten price tag on aged paper resting on a dark wooden desk, faint pencil marks showing a number crossed out and rewritten lower, warm side light, muted earth tones, quiet tension, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-02-lapis-apagar",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "duvida",
+        "corrigir"
+      ],
+      "prompt": "pencil and worn eraser resting beside a paper with faint eraser smudges on a dark wooden desk, soft overhead light, muted tones, feeling of last second doubt, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-03-voz-cassete",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "interno",
+        "voz-antiga"
+      ],
+      "prompt": "old audio cassette tape on a dark surface next to a vintage tape player, soft amber desk lamp, muted tones, feeling of a voice kept but never played, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-04-medo-generosidade",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "medo",
+        "disfarce"
+      ],
+      "prompt": "a simple ceramic vase with a few dried flowers on a dark windowsill, soft backlight from the window, muted earth tones, quiet poised atmosphere, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-05-heranca-fio",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "heranca",
+        "invisivel"
+      ],
+      "prompt": "a single long silk thread resting on an old dark wooden table, soft side light revealing the thin line and its faint shadow, muted tones, feeling of an invisible inheritance, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-06-mae-servir",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "sacrificio",
+        "familia"
+      ],
+      "prompt": "family dining table with several plates of different sizes, the smallest plate closest to the camera mostly empty, the others fuller, warm low hanging lamp, muted tones, quiet evening atmosphere, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-07-avos-pedir",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "ancestral",
+        "peso"
+      ],
+      "prompt": "old rosary beads and a folded handkerchief resting on a dark aged wooden surface, warm side light, muted earth tones, feeling of generations of restraint, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-08-veus-sobrepostos",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "heranca",
+        "atravessar"
+      ],
+      "prompt": "several sheer pale fabric veils hanging overlapping by a window at dusk, soft light passing through each layer, muted cream and dusty rose tones, feeling of inherited layers, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-09-moedas-janela",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "gestos-pequenos",
+        "sacrificio"
+      ],
+      "prompt": "small line of old worn coins arranged on a narrow wooden windowsill, soft daylight from behind, muted earth tones, quiet memory of small sacrifices, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep04-10-lugar-no-mundo",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "posicao",
+        "decisao"
+      ],
+      "prompt": "empty wooden chair alone at the centre of a sunlit dusty room with large window behind, soft beams of light through fine dust, muted warm tones, feeling of a space waiting to be taken, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-01-casa-calou",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "silencio",
+        "noite"
+      ],
+      "prompt": "quiet living room late at night with a single lamp on, aged armchair and a small side table, soft shadows, muted warm tones, feeling of a house gone still, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-02-cadeira-sos",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "solidao",
+        "pensamento"
+      ],
+      "prompt": "single upholstered armchair in a dim room next to a reading lamp casting a small circle of warm light, dust particles drifting in the beam, muted tones, feeling of a night conversation with oneself, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-03-calculadora-noite",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "matematica",
+        "conta"
+      ],
+      "prompt": "old desktop calculator and a sheet of paper on a dark wooden desk with dim amber lamp, soft shadow, muted tones, feeling of silent counting, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-04-contas-mesa",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "renda",
+        "peso"
+      ],
+      "prompt": "small pile of unopened envelopes on a kitchen table at night, soft overhead light, muted earth tones, feeling of pending obligations, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-05-corredor-portas",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "interior",
+        "escolha"
+      ],
+      "prompt": "dim hallway with several closed doors on both sides, soft warm sconce lighting, aged wallpaper, muted tones, feeling of unspoken decisions behind each door, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-06-duas-cadeiras",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "silencio",
+        "relacao"
+      ],
+      "prompt": "two empty wooden chairs facing each other across a small round table in a dim quiet room, soft side lamp light, muted tones, feeling of a conversation never had, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-07-chaves-prato",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "limite",
+        "saida"
+      ],
+      "prompt": "set of worn house keys resting in a small ceramic dish on a console table by the front door, soft warm side light, muted tones, feeling of a threshold, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-08-gaiola-porta",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "dependencia",
+        "liberdade"
+      ],
+      "prompt": "delicate antique wooden birdcage with its small door open, sitting on a dark wooden shelf, soft side light, muted tones, quiet feeling of possibility and restraint, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-09-corredor-luz",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "saida",
+        "esperanca"
+      ],
+      "prompt": "long empty tiled corridor with a single distant warm light at the far end, muted cool tones fading into warmth, contemplative stillness, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-10-numero-ecra",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "saber",
+        "conta"
+      ],
+      "prompt": "close up of an old LCD calculator display with blurred soft numerals visible, rest of room in dim shadow, warm side light, muted tones, feeling of a number finally seen, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep05-11-porta-aberta",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "saida",
+        "cta"
+      ],
+      "prompt": "wooden apartment door fully open onto a softly lit stairwell landing, warm light beyond, muted tones, feeling of a path outward, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-01-frigorifico-aberto",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "fome",
+        "noite"
+      ],
+      "prompt": "fridge door left slightly ajar in a dark kitchen at night, cold blue interior light spilling onto the tiled floor, rest of the kitchen in deep shadow, muted tones, feeling of a hunger that has nothing to do with food, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-02-telefone-cama",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "compulsao",
+        "noite"
+      ],
+      "prompt": "smartphone face up on a dark bed sheet at night, screen glowing a cold pale light, blurred soft pillows around, muted tones, feeling of mindless scrolling, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-03-montra-vazia",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "desejo",
+        "vazio"
+      ],
+      "prompt": "dimly lit empty storefront window at night with softly lit mannequin forms without heads, quiet rainy street reflected in the glass, muted tones, feeling of wanting without knowing what, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-04-tigela-vazia",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "saciedade",
+        "limite"
+      ],
+      "prompt": "simple ceramic bowl sitting empty on a dark wooden table, soft overhead light, muted tones, feeling of a hunger that filling cannot resolve, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-05-comida-inacabada",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "saciedade",
+        "vazio"
+      ],
+      "prompt": "half eaten food left on a plate on a kitchen counter late at night, fork resting across the edge, muted warm tones, soft overhead light, feeling of eating without resolving, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-06-banco-neblina",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "ausencia",
+        "falta-presenca"
+      ],
+      "prompt": "single empty wooden park bench in soft mist at dusk, bare trees in the blurred background, cool muted tones, quiet solitude, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-07-vela-apagada",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "pertenca",
+        "interior"
+      ],
+      "prompt": "single unlit beeswax candle on a small wooden table next to a matchbox, soft diffused window light, muted earth tones, quiet contemplative atmosphere, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-08-cortina-palco",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "permissao",
+        "ser"
+      ],
+      "prompt": "heavy old velvet stage curtain slightly parted revealing a sliver of dark empty stage, warm dim light from behind, muted deep red and amber tones, feeling of a quiet permission, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep06-09-gotas-anel",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "gestos-pequenos",
+        "devagar"
+      ],
+      "prompt": "single drop of water hitting a dark wooden surface creating concentric ripples on a thin film of water, extreme close up, soft side light, muted tones, feeling of slow patient gestures, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-01-cozinha-antiga",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "infancia",
+        "memoria"
+      ],
+      "prompt": "old country kitchen with worn ceramic tiles, single enamel cup and saucer on a wooden table, soft diffused morning light through thin curtain, muted cream and sepia tones, feeling of a long time ago, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-02-contas-suspiro",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "peso",
+        "quotidiano"
+      ],
+      "prompt": "open accounts ledger with a worn fountain pen resting across the page on a dark desk, soft amber lamp light, muted earth tones, feeling of a recurring burden, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-03-moldura-vazia",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "cara-que-mudou",
+        "ausencia"
+      ],
+      "prompt": "empty ornate wooden picture frame hanging on an aged wallpapered wall, dust and soft side light, muted tones, feeling of a face no longer there, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-04-brinquedos-chao",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "crianca",
+        "aprendizagem"
+      ],
+      "prompt": "a few faded wooden toys scattered on worn wooden floorboards by a window, soft warm daylight, muted tones, feeling of a childhood that listened without knowing, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-05-radio-prateleira",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "corpo-ouvia",
+        "escuta"
+      ],
+      "prompt": "old wooden radio on a dusty shelf next to a few aged books, soft amber lamp light from the side, muted earth tones, feeling of voices quietly absorbed, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-06-caixa-cartas",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "guardado",
+        "heranca"
+      ],
+      "prompt": "closed vintage cardboard box tied with faded ribbon on a dark wooden shelf, soft window light falling on the dust, muted tones, feeling of words kept without being read, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-07-portao-fechado",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "exclusao",
+        "isto-nao-e-para-nos"
+      ],
+      "prompt": "ornate wrought iron garden gate closed, seen from outside on a dim street at dusk, glimpse of a distant warm lit house behind, muted tones, feeling of a place not for us, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-08-envelope-vazio",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "salario",
+        "nao-chega"
+      ],
+      "prompt": "single opened empty paper envelope on a wooden kitchen table, soft window light, muted earth tones, feeling of something that never lasts, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-09-gravador-fita",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "voz-aprendeu",
+        "heranca"
+      ],
+      "prompt": "old reel to reel tape recorder on a dark wooden desk with one reel half wound, soft amber desk lamp, muted earth tones, feeling of a voice recorded long ago still playing underneath, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep09-10-fresta-corredor",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "escolha",
+        "cta"
+      ],
+      "prompt": "slightly open door at the end of a dim corridor with soft golden light spilling out onto old wooden floorboards, fine dust particles in the beam, muted tones, feeling of gentle permission to choose again, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-01-janela-ceu",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "liberdade",
+        "abertura"
+      ],
+      "prompt": "large open window framing a calm blue morning sky, pale linen curtain softly moving in the breeze, muted cool tones, feeling of quiet possibility, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-02-caderno-branco",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "decisao",
+        "comeco"
+      ],
+      "prompt": "open blank notebook page with a simple graphite pencil resting on top, placed on a plain wooden desk, soft natural daylight from side, muted tones, feeling of a number about to be written, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-03-balcao-minimo",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "viver",
+        "basico"
+      ],
+      "prompt": "minimalist kitchen counter with a simple ceramic plate, a glass of water and a small bowl of fruit, soft morning light from a side window, muted tones, feeling of a quiet sufficient life, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-04-contas-utilitarias",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "custo",
+        "realidade"
+      ],
+      "prompt": "stack of folded utility bills on a plain wooden table next to a small plant in a clay pot, soft natural light, muted earth tones, quiet practical atmosphere, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-05-fruta-simples",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "minimo",
+        "suficiencia"
+      ],
+      "prompt": "simple wooden bowl holding a few pieces of whole fruit on a plain wooden surface, soft window light, muted warm tones, feeling of simple daily needs, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-06-abaco-estante",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "conta",
+        "nunca-calculado"
+      ],
+      "prompt": "old dusty wooden abacus sitting on a dark bookshelf among aged volumes, soft side light, muted earth tones, feeling of a tool long unused, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-07-balanca-vazia",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "admitir-preco",
+        "peso"
+      ],
+      "prompt": "antique brass balance scale with one empty pan, sitting on a dark wooden surface with soft directional light, muted tones, feeling of an honest measurement about to be taken, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-08-vidro-fosco",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "vagueza",
+        "protege"
+      ],
+      "prompt": "frosted glass window softly blurring a view of a quiet street beyond, warm amber light passing through, muted tones, feeling of soft protective haze, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-09-ampulheta",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "esperanca",
+        "adiamento"
+      ],
+      "prompt": "old glass hourglass on a dark wooden desk with most of the sand already fallen, soft amber desk lamp, muted tones, feeling of quiet waiting for something to resolve itself, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-10-corredor-neblina",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "nao-sei",
+        "medo"
+      ],
+      "prompt": "long dim corridor fading into soft mist at the end, faint distant light barely visible, muted cool tones, contemplative uncertainty, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-11-abaco-alinhado",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "conta-feita",
+        "clareza"
+      ],
+      "prompt": "old wooden abacus with beads neatly arranged into a clear position, sitting on a plain wooden table, soft directional daylight, muted earth tones, feeling of an answer finally counted, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-12-mapa-alfinete",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "saber",
+        "posicao"
+      ],
+      "prompt": "old paper map unfolded on a dark wooden table with a single metal pin marking one point, soft side lamp light, muted earth tones, feeling of knowing where you stand, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-ep10-13-vela-beira",
+      "category": "nomear-ouro-proprio",
+      "mood": [
+        "decisao-saber",
+        "cta"
+      ],
+      "prompt": "single lit beeswax candle placed at the edge of a dark wooden table, steady warm flame, soft glow on the wood grain, rest of the room in deep shadow, muted tones, feeling of a quiet decision made, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+
+    {
+      "id": "nomear-trailer-01-veu-suspenso",
+      "category": "trailer",
+      "mood": ["abertura", "corpo-sabe"],
+      "prompt": "pale translucent silk veil suspended motionless in dim soft amber light, blurred dark depths behind, contemplative stillness, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-02-veus-caindo",
+      "category": "trailer",
+      "mood": ["lista", "nomear"],
+      "prompt": "several thin silk veils overlapping and falling slowly through a column of warm golden light, layered transparency, soft particles in the air, deep navy background, contemplative atmosphere, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-03-agua-ondula",
+      "category": "trailer",
+      "mood": ["nao-es-errada", "calma"],
+      "prompt": "extreme close up of still dark water surface with a single ripple expanding gently outward, soft warm reflection on the water, muted tones, quiet contemplative stillness, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-04-cozinha-antiga",
+      "category": "trailer",
+      "mood": ["heranca", "cozinhas-que-ja-nao-existem"],
+      "prompt": "old country kitchen at dusk with worn ceramic tiles, single enamel cup and saucer on a weathered wooden table, soft diffused light through thin faded curtain, muted cream and sepia tones, feeling of a place from long ago, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-05-veu-luminoso",
+      "category": "trailer",
+      "mood": ["identidade", "nomear-se"],
+      "prompt": "single luminous silk veil hanging vertically in a dark space with warm golden light glowing through it from behind, soft halo of light around the fabric, deep navy surroundings, brand signature atmosphere, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-06-mapa-territorio",
+      "category": "trailer",
+      "mood": ["territorio", "curso"],
+      "prompt": "old folded paper map partially unrolled on a dark wooden desk with a small brass compass beside it, soft side lamp light, muted earth tones, feeling of an unseen territory about to be entered, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-07-sete-velas",
+      "category": "trailer",
+      "mood": ["sete-temas", "linha"],
+      "prompt": "seven small unlit beeswax candles arranged in a quiet straight line on a dark stone surface, soft directional side light casting faint long shadows, muted earth tones, contemplative still life suggesting seven territories, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-08-caixa-fechada",
+      "category": "trailer",
+      "mood": ["engolido", "guardado"],
+      "prompt": "closed dark wooden box resting on a worn shelf in a dim room, faint dust visible in a beam of soft side light, muted tones, sealed silent atmosphere, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+    },
+    {
+      "id": "nomear-trailer-09-porta-luz",
+      "category": "trailer",
+      "mood": ["cta", "convite"],
+      "prompt": "wooden doorway slightly ajar at the end of a dark quiet corridor, warm golden light spilling through the opening onto old wooden floorboards, soft dust particles in the beam, muted tones in the rest of the hallway, feeling of gentle invitation, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+    }
+  ]
+}

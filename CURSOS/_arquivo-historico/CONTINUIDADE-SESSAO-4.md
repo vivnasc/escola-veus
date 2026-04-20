@@ -1,4 +1,4 @@
-# Prompt de Continuidade — Sessão 4
+# Prompt de Continuidade — Sessão 5
 
 **Projecto:** Escola dos Véus (@vivnasc/escola-veus)
 **Branch:** claude/fix-runway-generation-iyIk9

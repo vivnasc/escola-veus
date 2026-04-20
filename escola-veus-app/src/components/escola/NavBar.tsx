@@ -41,7 +41,7 @@ export function NavBar() {
         })}
         {isAdminUser && (
           <Link
-            href="/admin/producao"
+            href="/admin"
             className={`flex flex-col items-center gap-0.5 px-4 py-3 text-xs transition-colors ${
               pathname?.startsWith("/admin") ? "text-escola-dourado" : "text-escola-creme-50 hover:text-escola-creme"
             }`}
