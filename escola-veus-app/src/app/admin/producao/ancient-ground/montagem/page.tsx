@@ -360,19 +360,20 @@ export default function YouTubeMontagem() {
 
   const filledClips = orderedClipUrls.length;
 
-  // Render MP4 via Shotstack
+  // Render MP4 via Shotstack — decoupled submit/poll/save flow so long renders
+  // survive browser reloads and are not bound to Vercel's 300s function cap.
   const startRender = async () => {
     const validClips = orderedClipUrls.filter((u) => u && u.trim().length > 0);
     if (validClips.length === 0) return;
 
     setRendering(true);
     setRenderProgress(0);
-    setRenderLabel("A iniciar...");
+    setRenderLabel("A submeter ao Shotstack...");
     setRenderResult(null);
     setRenderError(null);
 
     try {
-      const res = await fetch("/api/admin/youtube/render", {
+      const submitRes = await fetch("/api/admin/youtube/render-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -382,57 +383,97 @@ export default function YouTubeMontagem() {
           musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
-          // Prefer composed (with text overlay); fallback to raw image.
-          thumbnailUrl: composedThumbnailDataUrl || thumbnailUrl || undefined,
-          seo,
         }),
       });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
-        throw new Error(err.erro || `HTTP ${res.status}`);
+      const submitData = await submitRes.json();
+      if (!submitRes.ok || !submitData.renderId) {
+        throw new Error(submitData.erro || `HTTP ${submitRes.status}`);
       }
-
-      const reader = res.body?.getReader();
-      if (!reader) throw new Error("Sem stream");
-
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n\n");
-        buffer = lines.pop() || "";
-
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          try {
-            const event = JSON.parse(line.slice(6));
-            if (event.type === "progress") {
-              setRenderProgress(event.percent);
-              setRenderLabel(event.label);
-            } else if (event.type === "result") {
-              setRenderResult(event.videoUrl);
-              setRenderLabel("Video pronto!");
-              setRenderProgress(100);
-            } else if (event.type === "error") {
-              throw new Error(event.message);
-            }
-          } catch (e) {
-            if (e instanceof SyntaxError) continue;
-            throw e;
-          }
-        }
-      }
+      localStorage.setItem("yt-pending-render", JSON.stringify({ renderId: submitData.renderId, title, thumbnailUrl: composedThumbnailDataUrl || thumbnailUrl || null, seo, startedAt: Date.now() }));
+      await pollAndSaveRender(submitData.renderId);
     } catch (err) {
       setRenderError(err instanceof Error ? err.message : String(err));
-    } finally {
       setRendering(false);
     }
   };
+
+  // Poll Shotstack status and save to Supabase once done. Safe to call on page
+  // mount to resume a pending render (renderId stored in localStorage).
+  const pollAndSaveRender = useCallback(async (renderId: string) => {
+    setRendering(true);
+    setRenderError(null);
+
+    const progressMap: Record<string, number> = {
+      queued: 10, fetching: 30, rendering: 60, saving: 85, done: 95, failed: 0,
+    };
+
+    // Poll every 10s. No client-side timeout — Shotstack tells us when done/failed.
+    let lastStatus = "";
+    while (true) {
+      await new Promise((r) => setTimeout(r, 10_000));
+      let data: { status?: string; url?: string; error?: string; erro?: string };
+      try {
+        const r = await fetch(`/api/admin/youtube/render-status?id=${encodeURIComponent(renderId)}`);
+        data = await r.json();
+      } catch {
+        setRenderLabel("Ligacao perdida — a tentar de novo...");
+        continue;
+      }
+      if (data.erro) { setRenderError(data.erro); setRendering(false); return; }
+      const status = data.status || "...";
+      if (status !== lastStatus) {
+        setRenderLabel(status);
+        setRenderProgress(progressMap[status] ?? 50);
+        lastStatus = status;
+      }
+      if (status === "failed") {
+        setRenderError(data.error || "Shotstack render failed.");
+        setRendering(false);
+        localStorage.removeItem("yt-pending-render");
+        return;
+      }
+      if (status === "done" && data.url) {
+        setRenderLabel("A guardar no Supabase...");
+        setRenderProgress(90);
+        try {
+          const saved = await fetch("/api/admin/youtube/render-save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              shotstackUrl: data.url,
+              title,
+              thumbnailUrl: composedThumbnailDataUrl || thumbnailUrl || undefined,
+              seo,
+            }),
+          });
+          const savedData = await saved.json();
+          if (!saved.ok) throw new Error(savedData.erro || `Save HTTP ${saved.status}`);
+          setRenderResult(savedData.videoUrl);
+          setRenderProgress(100);
+          setRenderLabel("Video pronto!");
+        } catch (err) {
+          // Shotstack has the file; save failed. Show Shotstack URL so nothing is lost.
+          setRenderResult(data.url);
+          setRenderLabel(`Supabase upload falhou — descarrega do Shotstack. (${err instanceof Error ? err.message : err})`);
+        }
+        setRendering(false);
+        localStorage.removeItem("yt-pending-render");
+        return;
+      }
+    }
+  }, [title, thumbnailUrl, composedThumbnailDataUrl, seo]);
+
+  // Resume any pending render if the user reloads the page.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("yt-pending-render");
+      if (!raw) return;
+      const pending: { renderId?: string } = JSON.parse(raw);
+      if (pending.renderId) pollAndSaveRender(pending.renderId);
+    } catch { /* ignore */ }
+    // Only on mount — pollAndSaveRender reads the latest title/seo via closures.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Download project JSON
   const downloadProject = () => {
