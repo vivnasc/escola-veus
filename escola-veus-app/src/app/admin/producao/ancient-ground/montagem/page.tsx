@@ -2,6 +2,198 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import videoPlan from "@/data/video-plan.json";
+import youtubeMetadata from "@/data/youtube-metadata.json";
+
+type SeoMeta = {
+  thumbnailTitle: string;
+  postTitle: string;
+  description: string;
+  hashtags: string[];
+};
+
+type YTMetadataVideo = { id: string; titulo_yt: string; descricao: string; hashtags: string[] };
+
+function emptyseo(): SeoMeta {
+  return { thumbnailTitle: "", postTitle: "", description: "", hashtags: [] };
+}
+
+// Template-based SEO generator per category — used for any of the 50 videos
+// when there is no hand-written metadata. Output is meant as a proposal for
+// the Vivianne to edit, not a final version.
+type CategoryTemplate = {
+  emoji: string;
+  englishTitle: string; // e.g. "Indian Ocean"
+  mood: string;         // e.g. "Relaxing Ocean Waves"
+  setting: string;      // "Mozambique coastline"
+  hook: string;         // first description paragraph
+  perfectFor: string[]; // bullets
+  hashtags: string[];
+};
+
+const CATEGORY_TEMPLATES: Record<string, CategoryTemplate> = {
+  mar: {
+    emoji: "🌊",
+    englishTitle: "Indian Ocean",
+    mood: "Relaxing Ocean Waves",
+    setting: "Mozambique coastline",
+    hook: "Immerse yourself in the breathtaking beauty of Mozambique's Indian Ocean coastline. Crystal clear turquoise waters, golden hour light, and gentle waves create the perfect atmosphere for meditation, study, or deep relaxation.",
+    perfectFor: ["Meditation & mindfulness", "Study & focus", "Sleep & relaxation", "Yoga & breathing exercises", "Stress relief"],
+    hashtags: ["#MozambiqueOcean", "#IndianOcean", "#RelaxingWaves", "#OceanSounds", "#TropicalOcean", "#CalmWaves"],
+  },
+  praia: {
+    emoji: "🏖️",
+    englishTitle: "Beaches of Mozambique",
+    mood: "Tropical Paradise",
+    setting: "Mozambique beaches — Tofo, Bazaruto, Vilankulo, Pemba, Ilha, Quirimbas",
+    hook: "Discover the pristine beaches of Mozambique — from white sands in the south to remote shores in the north. This visual journey spans the entire 2,500 km coastline of one of Africa's most beautiful countries.",
+    perfectFor: ["Meditation & mindfulness", "Holiday inspiration", "Sleep & relaxation", "Beach atmosphere", "Travel dreams"],
+    hashtags: ["#MozambiqueBeaches", "#AfricanBeaches", "#TropicalParadise", "#Pemba", "#Tofo", "#Bazaruto"],
+  },
+  rio: {
+    emoji: "🌿",
+    englishTitle: "Rivers & Waterfalls",
+    mood: "African Forest Ambience",
+    setting: "Zambezi, Gorongosa, Mozambique interior",
+    hook: "Journey deep into the rivers, waterfalls, and forests of Mozambique's interior. From the mighty Zambezi delta to hidden waterfalls in Gorongosa National Park, experience the lush tropical beauty of inland East Africa.",
+    perfectFor: ["Meditation & mindfulness", "Study & focus", "Sleep with water sounds", "Forest bathing", "Stress relief"],
+    hashtags: ["#AfricanRivers", "#Waterfalls", "#Gorongosa", "#Zambezi", "#ForestAmbience", "#RiverSounds"],
+  },
+  ceu: {
+    emoji: "☁️",
+    englishTitle: "African Sky",
+    mood: "Dramatic Clouds & Sunsets",
+    setting: "skies over Mozambique",
+    hook: "Watch the magnificent skies of Mozambique — from golden sunsets over the savanna to dramatic storm clouds over the Indian Ocean. Africa's skies are among the most spectacular on Earth.",
+    perfectFor: ["Meditation", "Creative inspiration", "Relaxation", "Contemplation", "Timelapse appreciation"],
+    hashtags: ["#AfricanSky", "#AfricanSunset", "#DramaticClouds", "#GoldenHour", "#SkyTimelapse"],
+  },
+  chuva: {
+    emoji: "🌧️",
+    englishTitle: "Tropical Rain",
+    mood: "Rain Sounds & African Music",
+    setting: "Mozambique rainy season",
+    hook: "Experience the beauty of tropical rain in Mozambique — from gentle monsoon showers on forest canopy to warm rain on pristine beaches. The rainy season transforms the landscape into a lush green paradise.",
+    perfectFor: ["Sleep & relaxation", "Study & focus", "Meditation", "ASMR rain lovers", "Stress relief"],
+    hashtags: ["#TropicalRain", "#RainSounds", "#AfricanRain", "#RainAmbience", "#SleepSounds", "#MonsoonRain"],
+  },
+  savana: {
+    emoji: "🦁",
+    englishTitle: "Golden Savanna",
+    mood: "African Grasslands",
+    setting: "Gorongosa, Mozambique savanna",
+    hook: "Vast golden grasslands stretching to the horizon, ancient baobab trees, and the warm amber light of the African savanna. Experience the timeless beauty of Mozambique's interior landscapes.",
+    perfectFor: ["Meditation", "Nature lovers", "Africa dreamers", "Relaxation", "Wildlife contemplation"],
+    hashtags: ["#AfricanSavanna", "#Gorongosa", "#BaobabTree", "#GoldenGrassland", "#SavannaAmbience", "#WildAfrica"],
+  },
+  flora: {
+    emoji: "🌺",
+    englishTitle: "African Flora",
+    mood: "Tropical Plants & Flowers",
+    setting: "Mozambique wild flora",
+    hook: "Step into the lush tropical flora of Mozambique — vibrant flowers, ancient trees, and tangled green life under the warm African sun. Nature in full bloom.",
+    perfectFor: ["Meditation", "Botanical appreciation", "Calm background", "Art inspiration", "Relaxation"],
+    hashtags: ["#AfricanFlora", "#TropicalFlowers", "#AfricanPlants", "#WildFlora", "#GreenNature"],
+  },
+  nevoeiro: {
+    emoji: "🌫️",
+    englishTitle: "Mysterious Mist",
+    mood: "Misty Ambience",
+    setting: "Mozambique highlands & coast in mist",
+    hook: "Wander into the mysterious mist of Mozambique — soft fog drifting across forests, mountains, and coastline. A meditative landscape that invites deep stillness.",
+    perfectFor: ["Meditation", "Deep relaxation", "Atmospheric writing", "Sleep", "Contemplation"],
+    hashtags: ["#MistyForest", "#FogAmbience", "#MysteriousNature", "#MistyLandscape", "#CalmFog"],
+  },
+  fogo: {
+    emoji: "🔥",
+    englishTitle: "Fire & Embers",
+    mood: "Campfire Ambience",
+    setting: "Mozambique nightscapes",
+    hook: "Gather around the warm glow of fire and embers under the African night. The ancient sound of crackling wood, the dance of flame — a primal calm.",
+    perfectFor: ["Meditation", "Sleep", "Focused work", "Winter warmth", "Ancestral calm"],
+    hashtags: ["#Campfire", "#FireSounds", "#EmbersGlow", "#AfricanNight", "#FireMeditation"],
+  },
+  terra: {
+    emoji: "🟤",
+    englishTitle: "Red Earth",
+    mood: "Grounded African Soil",
+    setting: "Mozambique interior",
+    hook: "The deep red earth of Mozambique — cracked, warm, alive. Ancient landscapes that have watched civilisations rise and return to dust.",
+    perfectFor: ["Meditation", "Grounding", "Slow reading", "Stillness", "Reconnecting"],
+    hashtags: ["#RedEarth", "#AfricanSoil", "#GroundedNature", "#AfricanLandscape", "#AncestralEarth"],
+  },
+  noite: {
+    emoji: "✨",
+    englishTitle: "Starry Night",
+    mood: "African Night Sky",
+    setting: "Mozambique night skies",
+    hook: "Beneath a canopy of stars so thick it feels like an ocean overhead. The African night — vast, silent, infinite. Let it hold you.",
+    perfectFor: ["Sleep", "Deep meditation", "Stargazing sounds", "Nighttime study", "Cosmic contemplation"],
+    hashtags: ["#StarryNight", "#AfricanSky", "#NightAmbience", "#MilkyWay", "#SleepUnderStars"],
+  },
+  caminho: {
+    emoji: "🛤️",
+    englishTitle: "Paths & Trails",
+    mood: "Forest & Savanna Walks",
+    setting: "Mozambique wild paths",
+    hook: "Follow the quiet paths of Mozambique — through forest, savanna, and memory. Every trail holds a story in its dust.",
+    perfectFor: ["Meditation", "Journey reflections", "Walking inspiration", "Contemplative work", "Stillness"],
+    hashtags: ["#ForestPath", "#AfricanTrails", "#WildPath", "#NatureWalk", "#PathMeditation"],
+  },
+};
+
+function smartSeoForVideo(
+  videoId: string,
+  planTitle: string,
+  categorias: string[],
+  durationMin: number,
+): SeoMeta {
+  const primary = categorias[0] || "mar";
+  const tpl = CATEGORY_TEMPLATES[primary] || CATEGORY_TEMPLATES.mar;
+
+  const postTitle = `${tpl.emoji} ${tpl.englishTitle} Mozambique — ${durationMin} Min ${tpl.mood} & African Music`;
+
+  const description = [
+    tpl.hook,
+    "",
+    `This video features real landscapes inspired by ${tpl.setting}, paired with original African-inspired instrumental music from Ancient Ground (music.seteveus.space).`,
+    "",
+    "🌍 Mozambique has over 2,500 km of pristine Indian Ocean coastline and vast interior landscapes, making it one of the most visually stunning countries in Africa.",
+    "",
+    "🎵 Music: Ancient Ground — music.seteveus.space",
+    `📍 Inspired by: Mozambique, East Africa`,
+    "",
+    "Perfect for:",
+    ...tpl.perfectFor.map((p) => `• ${p}`),
+    "",
+    "🎵 Ancient Ground — music.seteveus.space",
+  ].join("\n");
+
+  // Merge category hashtags with universal Moçambique tags (dedup).
+  const universal = ["#Mozambique", "#Moçambique", "#AfricanNature", "#RelaxingNature", "#AmbientVideo", "#Meditation", "#CalmMusic"];
+  const hashtags = Array.from(new Set([...tpl.hashtags, ...universal])).slice(0, 15);
+
+  return {
+    thumbnailTitle: planTitle, // short PT title shown on thumbnail
+    postTitle,
+    description,
+    hashtags,
+  };
+}
+
+// Prefer hand-written metadata from youtube-metadata.json when available;
+// otherwise fall back to the category-based template generator above.
+function seoFromMetadata(videoId: string, planTitle: string, categorias: string[] = [], durationMin = 60): SeoMeta {
+  const meta = (youtubeMetadata as { videos: YTMetadataVideo[] }).videos.find((v) => v.id === videoId);
+  if (meta) {
+    return {
+      thumbnailTitle: planTitle,
+      postTitle: meta.titulo_yt,
+      description: meta.descricao,
+      hashtags: meta.hashtags,
+    };
+  }
+  return smartSeoForVideo(videoId, planTitle, categorias, durationMin);
+}
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -9,8 +201,13 @@ const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
 const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
 const CLIP_DURATION = 15; // seconds
-const VIDEO_DURATION = 3600; // 1 hour
-const TOTAL_CLIPS_NEEDED = VIDEO_DURATION / CLIP_DURATION; // 240 clips (repetidos do set)
+const DURATION_PRESETS: Array<{ label: string; seconds: number; credits: number }> = [
+  { label: "5 min (teste — 5 créditos)", seconds: 300, credits: 5 },
+  { label: "10 min (10 créditos)", seconds: 600, credits: 10 },
+  { label: "30 min (30 créditos)", seconds: 1800, credits: 30 },
+  { label: "1 h (60 créditos)", seconds: 3600, credits: 60 },
+];
+const DEFAULT_VIDEO_DURATION = 3600;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -32,6 +229,9 @@ type ProjectState = {
   groupOrder?: string[]; // ordered promptIds
   groupClips?: Record<string, string[]>; // promptId → ordered clip URLs
   thumbnailUrl?: string;
+  composedThumbnailDataUrl?: string; // canvas-composed thumbnail (data: URL)
+  seo?: SeoMeta;
+  videoId?: string; // video-XX from plan
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -91,7 +291,12 @@ export default function YouTubeMontagem() {
   // Group state: ordered promptIds + per-group ordered clip URLs.
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
   const [groupClips, setGroupClips] = useState<Record<string, string[]>>({});
+  const [videoDuration, setVideoDuration] = useState<number>(DEFAULT_VIDEO_DURATION);
+  const totalClipsNeeded = Math.ceil(videoDuration / CLIP_DURATION);
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
+  const [composedThumbnailDataUrl, setComposedThumbnailDataUrl] = useState<string>("");
+  const [videoId, setVideoId] = useState<string>("");
+  const [seo, setSeo] = useState<SeoMeta>(emptyseo());
   const [musicPair, setMusicPair] = useState(1); // pair 1 = faixas 01+02
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
@@ -125,6 +330,7 @@ export default function YouTubeMontagem() {
 
   // Preview
   const [previewing, setPreviewing] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [previewClipIndex, setPreviewClipIndex] = useState(0);
   const [previewTime, setPreviewTime] = useState(0);
   const videoRefA = useRef<HTMLVideoElement>(null);
@@ -142,6 +348,9 @@ export default function YouTubeMontagem() {
         if (state.title) setTitle(state.title);
         if (state.musicPair) setMusicPair(state.musicPair);
         if (state.thumbnailUrl) setThumbnailUrl(state.thumbnailUrl);
+        if (state.composedThumbnailDataUrl) setComposedThumbnailDataUrl(state.composedThumbnailDataUrl);
+        if (state.videoId) setVideoId(state.videoId);
+        if (state.seo) setSeo(state.seo);
         if (state.groupOrder && state.groupClips) {
           setGroupOrder(state.groupOrder);
           setGroupClips(state.groupClips);
@@ -157,13 +366,36 @@ export default function YouTubeMontagem() {
   }, []);
 
   const saveState = useCallback(() => {
-    const state: ProjectState = { title, clips: [], musicPair, groupOrder, groupClips, thumbnailUrl };
+    const state: ProjectState = {
+      title, clips: [], musicPair, groupOrder, groupClips,
+      thumbnailUrl, composedThumbnailDataUrl, videoId, seo,
+    };
     localStorage.setItem("yt-montagem-state", JSON.stringify(state));
-  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl]);
+  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo]);
 
   useEffect(() => {
     saveState();
-  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, saveState]);
+  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo, saveState]);
+
+  // Legacy migration: older localStorage only kept `title` (the human titulo),
+  // never `videoId`. If title matches a plan entry, restore the videoId.
+  useEffect(() => {
+    if (videoId || !title) return;
+    const plan = (videoPlan as Array<{id: string; titulo: string}>).find((v) => v.titulo === title);
+    if (plan) setVideoId(plan.id);
+  }, [videoId, title]);
+
+  // Auto-generate SEO when a video is selected but the fields are still empty.
+  // Covers the case where videoId comes from localStorage (user had selected a
+  // video in a previous session before the SEO generator existed).
+  useEffect(() => {
+    if (!videoId) return;
+    if (seo.postTitle.trim() || seo.description.trim()) return; // user already has content
+    const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === videoId);
+    if (!plan) return;
+    const durationMin = Math.round(videoDuration / 60);
+    setSeo(seoFromMetadata(videoId, plan.titulo, plan.categorias, durationMin));
+  }, [videoId, seo.postTitle, seo.description]);
 
   // Sync with Supabase — re-fetch and merge (keeps user ordering, adds new clips).
   const syncClipsFromSupabase = useCallback(async () => {
@@ -238,6 +470,7 @@ export default function YouTubeMontagem() {
   const startPreview = () => {
     if (orderedClipUrls.length === 0) return;
     setPreviewing(true);
+    setPaused(false);
     setPreviewClipIndex(0);
     setPreviewTime(0);
     setActiveBuffer(0);
@@ -254,20 +487,41 @@ export default function YouTubeMontagem() {
     const a = getBuffer(0);
     if (a) a.play().catch(() => {});
 
-    startClipTimer(0);
+    startClipTimer(0, 0);
   };
 
   const stopPreview = () => {
     setPreviewing(false);
+    setPaused(false);
     if (timerRef.current) clearInterval(timerRef.current);
     videoRefA.current?.pause();
     videoRefB.current?.pause();
     if (audioRef.current) audioRef.current.pause();
   };
 
-  const startClipTimer = (clipIndex: number) => {
+  const pausePreview = () => {
+    setPaused(true);
     if (timerRef.current) clearInterval(timerRef.current);
-    const startTime = Date.now();
+    getBuffer(activeBuffer)?.pause();
+    audioRef.current?.pause();
+    audioRefB.current?.pause();
+  };
+
+  const resumePreview = () => {
+    setPaused(false);
+    const cur = getBuffer(activeBuffer);
+    if (cur) cur.play().catch(() => {});
+    if (currentTrackIndex === 0) audioRef.current?.play().catch(() => {});
+    else audioRefB.current?.play().catch(() => {});
+    // Resume timer accounting for already-elapsed time on this clip.
+    const cur2 = getBuffer(activeBuffer);
+    const elapsedOnClip = cur2 ? cur2.currentTime : 0;
+    startClipTimer(previewClipIndex, elapsedOnClip);
+  };
+
+  const startClipTimer = (clipIndex: number, startElapsed = 0) => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    const startTime = Date.now() - startElapsed * 1000;
     timerRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTime) / 1000;
       setPreviewTime(clipIndex * CLIP_DURATION + elapsed);
@@ -294,91 +548,134 @@ export default function YouTubeMontagem() {
       cur.currentTime = 0;
       cur.play().catch(() => {});
     }
-    startClipTimer(nextIndex);
+    startClipTimer(nextIndex, 0);
   };
 
   const filledClips = orderedClipUrls.length;
 
-  // Render MP4 via Shotstack
+  // Render MP4 via Shotstack — decoupled submit/poll/save flow so long renders
+  // survive browser reloads and are not bound to Vercel's 300s function cap.
   const startRender = async () => {
     const validClips = orderedClipUrls.filter((u) => u && u.trim().length > 0);
     if (validClips.length === 0) return;
 
     setRendering(true);
     setRenderProgress(0);
-    setRenderLabel("A iniciar...");
+    setRenderLabel("A submeter ao Shotstack...");
     setRenderResult(null);
     setRenderError(null);
 
     try {
-      const res = await fetch("/api/admin/youtube/render", {
+      const submitRes = await fetch("/api/admin/youtube/render-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
           uniqueClips: validClips,
-          targetDuration: VIDEO_DURATION,
+          targetDuration: videoDuration,
           musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
-          thumbnailUrl: thumbnailUrl || undefined,
         }),
       });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
-        throw new Error(err.erro || `HTTP ${res.status}`);
+      const submitData = await submitRes.json();
+      if (!submitRes.ok || !submitData.renderId) {
+        throw new Error(submitData.erro || `HTTP ${submitRes.status}`);
       }
-
-      const reader = res.body?.getReader();
-      if (!reader) throw new Error("Sem stream");
-
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n\n");
-        buffer = lines.pop() || "";
-
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          try {
-            const event = JSON.parse(line.slice(6));
-            if (event.type === "progress") {
-              setRenderProgress(event.percent);
-              setRenderLabel(event.label);
-            } else if (event.type === "result") {
-              setRenderResult(event.videoUrl);
-              setRenderLabel("Video pronto!");
-              setRenderProgress(100);
-            } else if (event.type === "error") {
-              throw new Error(event.message);
-            }
-          } catch (e) {
-            if (e instanceof SyntaxError) continue;
-            throw e;
-          }
-        }
-      }
+      localStorage.setItem("yt-pending-render", JSON.stringify({ renderId: submitData.renderId, title, thumbnailUrl: composedThumbnailDataUrl || thumbnailUrl || null, seo, startedAt: Date.now() }));
+      await pollAndSaveRender(submitData.renderId);
     } catch (err) {
       setRenderError(err instanceof Error ? err.message : String(err));
-    } finally {
       setRendering(false);
     }
   };
+
+  // Poll Shotstack status and save to Supabase once done. Safe to call on page
+  // mount to resume a pending render (renderId stored in localStorage).
+  const pollAndSaveRender = useCallback(async (renderId: string) => {
+    setRendering(true);
+    setRenderError(null);
+
+    const progressMap: Record<string, number> = {
+      queued: 10, fetching: 30, rendering: 60, saving: 85, done: 95, failed: 0,
+    };
+
+    // Poll every 10s. No client-side timeout — Shotstack tells us when done/failed.
+    let lastStatus = "";
+    while (true) {
+      await new Promise((r) => setTimeout(r, 10_000));
+      let data: { status?: string; url?: string; error?: string; erro?: string };
+      try {
+        const r = await fetch(`/api/admin/youtube/render-status?id=${encodeURIComponent(renderId)}`);
+        data = await r.json();
+      } catch {
+        setRenderLabel("Ligacao perdida — a tentar de novo...");
+        continue;
+      }
+      if (data.erro) { setRenderError(data.erro); setRendering(false); return; }
+      const status = data.status || "...";
+      if (status !== lastStatus) {
+        setRenderLabel(status);
+        setRenderProgress(progressMap[status] ?? 50);
+        lastStatus = status;
+      }
+      if (status === "failed") {
+        setRenderError(data.error || "Shotstack render failed.");
+        setRendering(false);
+        localStorage.removeItem("yt-pending-render");
+        return;
+      }
+      if (status === "done" && data.url) {
+        setRenderLabel("A guardar no Supabase...");
+        setRenderProgress(90);
+        try {
+          const saved = await fetch("/api/admin/youtube/render-save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              shotstackUrl: data.url,
+              title,
+              thumbnailUrl: composedThumbnailDataUrl || thumbnailUrl || undefined,
+              seo,
+            }),
+          });
+          const savedData = await saved.json();
+          if (!saved.ok) throw new Error(savedData.erro || `Save HTTP ${saved.status}`);
+          setRenderResult(savedData.videoUrl);
+          setRenderProgress(100);
+          setRenderLabel("Video pronto!");
+        } catch (err) {
+          // Shotstack has the file; save failed. Show Shotstack URL so nothing is lost.
+          setRenderResult(data.url);
+          setRenderLabel(`Supabase upload falhou — descarrega do Shotstack. (${err instanceof Error ? err.message : err})`);
+        }
+        setRendering(false);
+        localStorage.removeItem("yt-pending-render");
+        return;
+      }
+    }
+  }, [title, thumbnailUrl, composedThumbnailDataUrl, seo]);
+
+  // Resume any pending render if the user reloads the page.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("yt-pending-render");
+      if (!raw) return;
+      const pending: { renderId?: string } = JSON.parse(raw);
+      if (pending.renderId) pollAndSaveRender(pending.renderId);
+    } catch { /* ignore */ }
+    // Only on mount — pollAndSaveRender reads the latest title/seo via closures.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Download project JSON
   const downloadProject = () => {
     const project = {
       title,
       specs: {
-        duration: VIDEO_DURATION,
+        duration: videoDuration,
         uniqueClips: filledClips,
-        totalClips: TOTAL_CLIPS_NEEDED,
+        totalClips: totalClipsNeeded,
         clipDuration: CLIP_DURATION,
       },
       music: {
@@ -389,6 +686,9 @@ export default function YouTubeMontagem() {
         loop: "A → B → A → B...",
       },
       thumbnail: thumbnailUrl || null,
+      thumbnailComposedDataUrl: composedThumbnailDataUrl || null,
+      videoId: videoId || null,
+      seo,
       groups: groupOrder.map((pid) => ({
         promptId: pid,
         clips: groupClips[pid] || [],
@@ -411,9 +711,12 @@ export default function YouTubeMontagem() {
   const resetProject = () => {
     if (!confirm("Limpar tudo e começar de novo?")) return;
     setTitle("");
+    setVideoId("");
+    setSeo(emptyseo());
     setGroupOrder([]);
     setGroupClips({});
     setThumbnailUrl("");
+    setComposedThumbnailDataUrl("");
     setMusicPair(1);
     localStorage.removeItem("yt-montagem-state");
   };
@@ -451,7 +754,7 @@ export default function YouTubeMontagem() {
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-xs text-escola-creme-50">
-            {filledClips} clips únicos → {VIDEO_DURATION / 60} min (1h)
+            {filledClips} clips únicos · {Math.round(videoDuration / 60)} min alvo
           </span>
           <button
             onClick={resetProject}
@@ -468,13 +771,23 @@ export default function YouTubeMontagem() {
           1. Vídeo
         </h3>
         <select
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={videoId}
+          onChange={(e) => {
+            const id = e.target.value;
+            const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === id);
+            setVideoId(id);
+            setTitle(plan?.titulo || "");
+            // Auto-fill SEO (hand-written metadata OR generated template).
+            if (id && plan) {
+              const durationMin = Math.round(videoDuration / 60);
+              setSeo(seoFromMetadata(id, plan.titulo, plan.categorias, durationMin));
+            }
+          }}
           className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
         >
           <option value="">Selecciona o vídeo...</option>
           {(videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).map((v) => (
-            <option key={v.id} value={v.titulo}>
+            <option key={v.id} value={v.id}>
               {v.id.replace("video-", "#")} — {v.titulo} ({v.categorias.join(" + ")})
             </option>
           ))}
@@ -605,7 +918,17 @@ export default function YouTubeMontagem() {
       </section>
 
       {/* ── 3B. THUMBNAIL ── */}
-      <ThumbnailSection thumbnailUrl={thumbnailUrl} onSelect={setThumbnailUrl} />
+      <SeoComposerSection
+        thumbnailUrl={thumbnailUrl}
+        onSelect={setThumbnailUrl}
+        seo={seo}
+        onSeoChange={setSeo}
+        videoId={videoId}
+        title={title}
+        composedDataUrl={composedThumbnailDataUrl}
+        onComposedChange={setComposedThumbnailDataUrl}
+        videoDurationSec={videoDuration}
+      />
 
 
       {/* ── 4. PREVIEW ── */}
@@ -657,12 +980,12 @@ export default function YouTubeMontagem() {
           <div className="mt-2 h-1.5 w-full rounded-full bg-escola-border">
             <div
               className="h-full rounded-full bg-escola-coral transition-all"
-              style={{ width: `${(previewTime / VIDEO_DURATION) * 100}%` }}
+              style={{ width: `${(previewTime / videoDuration) * 100}%` }}
             />
           </div>
         )}
 
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {!previewing ? (
             <button
               onClick={startPreview}
@@ -672,12 +995,29 @@ export default function YouTubeMontagem() {
               ▶ Play
             </button>
           ) : (
-            <button
-              onClick={stopPreview}
-              className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white"
-            >
-              ⏹ Parar
-            </button>
+            <>
+              {paused ? (
+                <button
+                  onClick={resumePreview}
+                  className="rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white"
+                >
+                  ▶ Continuar
+                </button>
+              ) : (
+                <button
+                  onClick={pausePreview}
+                  className="rounded bg-yellow-700 px-4 py-2 text-sm font-semibold text-white"
+                >
+                  ⏸ Pause
+                </button>
+              )}
+              <button
+                onClick={stopPreview}
+                className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white"
+              >
+                ⏹ Parar
+              </button>
+            </>
           )}
 
           <button
@@ -697,7 +1037,7 @@ export default function YouTubeMontagem() {
         </h3>
 
         <p className="mb-3 text-xs text-escola-creme-50">
-          Os {filledClips} clips únicos serão baralhados e repetidos para preencher 1 hora ({TOTAL_CLIPS_NEEDED} clips × {CLIP_DURATION}s).
+          Os {filledClips} clips únicos serão repetidos pela ORDEM definida (sem baralhar) para preencher {Math.round(videoDuration / 60)} min ({totalClipsNeeded} clips × {CLIP_DURATION}s).
           Render via Shotstack (cloud). O vídeo fica no Supabase.
         </p>
 
@@ -743,21 +1083,466 @@ export default function YouTubeMontagem() {
           </div>
         )}
 
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <label className="text-xs text-escola-creme-50">Duração:</label>
+          <select
+            value={videoDuration}
+            onChange={(e) => setVideoDuration(Number(e.target.value))}
+            disabled={rendering}
+            className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
+          >
+            {DURATION_PRESETS.map((p) => (
+              <option key={p.seconds} value={p.seconds}>{p.label}</option>
+            ))}
+          </select>
+        </div>
+
         <button
           onClick={startRender}
           disabled={filledClips === 0 || rendering}
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
-          {rendering ? "A renderizar..." : `Gerar MP4 de 1h (${filledClips} clips únicos → ${TOTAL_CLIPS_NEEDED} total)`}
+          {rendering ? "A renderizar..." : `Gerar MP4 de ${Math.round(videoDuration / 60)} min (${filledClips} clips únicos → ${totalClipsNeeded} total)`}
         </button>
       </section>
+
+      {/* ── 6. UPLOAD MANUAL DO MP4 (drag-and-drop) ── */}
+      <UploadMp4Section
+        title={title}
+        thumbnailUrl={composedThumbnailDataUrl || thumbnailUrl}
+        seo={seo}
+      />
     </div>
   );
 }
 
-// ── Thumbnail picker ─────────────────────────────────────────────────────────
+// ── Upload MP4 drag-and-drop ─────────────────────────────────────────────────
+
+function UploadMp4Section({
+  title,
+  thumbnailUrl,
+  seo,
+}: {
+  title: string;
+  thumbnailUrl: string;
+  seo: SeoMeta;
+}) {
+  const [dragging, setDragging] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [result, setResult] = useState<{ videoUrl: string; thumbnailUrl: string | null; seoUrl: string | null; filename: string } | null>(null);
+  const [error, setError] = useState<string>("");
+
+  const handleFile = async (file: File) => {
+    if (!file.type.startsWith("video/")) {
+      setError("Só ficheiros de vídeo.");
+      return;
+    }
+    if (!title.trim()) {
+      setError("Escolhe um vídeo em cima (secção 1) — o nome do ficheiro será derivado do título.");
+      return;
+    }
+
+    setError("");
+    setResult(null);
+    setUploading(true);
+    setProgress(0);
+
+    const form = new FormData();
+    form.append("file", file);
+    form.append("title", title);
+    if (thumbnailUrl) form.append("thumbnailUrl", thumbnailUrl);
+    if (seo) form.append("seo", JSON.stringify(seo));
+
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/admin/youtube/upload-mp4");
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) setProgress(Math.round((e.loaded / e.total) * 100));
+      };
+      xhr.onload = () => {
+        setUploading(false);
+        try {
+          const data = JSON.parse(xhr.responseText);
+          if (xhr.status !== 200) { setError(data.erro || `HTTP ${xhr.status}`); return; }
+          setResult(data);
+          setProgress(100);
+        } catch {
+          setError("Resposta invalida do servidor.");
+        }
+      };
+      xhr.onerror = () => { setUploading(false); setError("Erro de rede."); };
+      xhr.send(form);
+    } catch (err) {
+      setUploading(false);
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFile(file);
+  };
+
+  return (
+    <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+        6. Guardar MP4 já renderizado (drag-and-drop)
+      </h3>
+      <p className="mb-3 text-xs text-escola-creme-50">
+        Arrasta aqui o MP4 que já descarregaste do Shotstack. Vou renomear para{" "}
+        <code className="rounded bg-black/40 px-1">{(title || "youtube").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50)}-&lt;timestamp&gt;.mp4</code>{" "}
+        e guardar no Supabase (youtube/videos/) junto com a thumbnail composta e o SEO.
+      </p>
+
+      <label
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={onDrop}
+        className={`flex aspect-[5/1] w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed text-sm transition ${
+          dragging ? "border-escola-coral bg-escola-coral/10 text-escola-coral" : "border-escola-border text-escola-creme-50 hover:border-escola-coral/60"
+        }`}
+      >
+        <input
+          type="file"
+          accept="video/mp4,video/*"
+          className="hidden"
+          onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+        />
+        {dragging ? "Larga aqui o MP4..." : "Arrasta ou clica para escolher o MP4"}
+      </label>
+
+      {uploading && (
+        <div className="mt-3">
+          <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
+            <span>A enviar para Supabase...</span>
+            <span>{progress}%</span>
+          </div>
+          <div className="h-2 w-full rounded-full bg-escola-border">
+            <div className="h-full rounded-full bg-escola-coral transition-all" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+      )}
+
+      {error && <div className="mt-3 rounded bg-red-950/50 p-2 text-xs text-red-300">Erro: {error}</div>}
+
+      {result && (
+        <div className="mt-3 space-y-2 rounded bg-green-950/50 p-3 text-xs text-green-300">
+          <p>Guardado como <code className="rounded bg-black/40 px-1">{result.filename}</code></p>
+          <div className="flex flex-wrap gap-2">
+            <a href={result.videoUrl} target="_blank" rel="noopener noreferrer" className="rounded bg-escola-coral px-3 py-1 font-semibold text-white">
+              Abrir vídeo
+            </a>
+            {result.thumbnailUrl && (
+              <a href={result.thumbnailUrl} target="_blank" rel="noopener noreferrer" className="rounded border border-escola-border px-3 py-1 text-escola-creme hover:bg-escola-border/30">
+                Thumbnail
+              </a>
+            )}
+            {result.seoUrl && (
+              <a href={result.seoUrl} target="_blank" rel="noopener noreferrer" className="rounded border border-escola-border px-3 py-1 text-escola-creme hover:bg-escola-border/30">
+                SEO JSON
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+// ── SEO + Thumbnail composer ─────────────────────────────────────────────────
 
 type ImageItem = { name: string; url: string; promptId: string };
+
+const THUMB_W = 1280;
+const THUMB_H = 720;
+
+// Compose a YouTube thumbnail (1280x720) on canvas:
+// background image (cover) + bottom gradient + title (DM Serif) + tagline.
+async function composeThumbnail(
+  imageUrl: string,
+  title: string,
+  tagline: string,
+): Promise<string> {
+  const canvas = document.createElement("canvas");
+  canvas.width = THUMB_W;
+  canvas.height = THUMB_H;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return "";
+
+  // Load image (CORS so we can export the canvas).
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const i = new Image();
+    i.crossOrigin = "anonymous";
+    i.onload = () => resolve(i);
+    i.onerror = (e) => reject(e);
+    i.src = imageUrl;
+  });
+
+  // Cover-fit the image to 1280x720.
+  const imgRatio = img.width / img.height;
+  const targetRatio = THUMB_W / THUMB_H;
+  let sx = 0, sy = 0, sw = img.width, sh = img.height;
+  if (imgRatio > targetRatio) {
+    sw = img.height * targetRatio;
+    sx = (img.width - sw) / 2;
+  } else {
+    sh = img.width / targetRatio;
+    sy = (img.height - sh) / 2;
+  }
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, THUMB_W, THUMB_H);
+
+  // Bottom gradient overlay for legibility.
+  const grad = ctx.createLinearGradient(0, THUMB_H * 0.45, 0, THUMB_H);
+  grad.addColorStop(0, "rgba(0,0,0,0)");
+  grad.addColorStop(1, "rgba(0,0,0,0.85)");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, THUMB_W, THUMB_H);
+
+  // Title: large, white, with shadow. Wrap to 2 lines max.
+  ctx.shadowColor = "rgba(0,0,0,0.85)";
+  ctx.shadowBlur = 16;
+  ctx.shadowOffsetY = 4;
+  ctx.fillStyle = "#FFFFFF";
+  ctx.font = `700 96px "DM Serif Display", "Times New Roman", serif`;
+  ctx.textBaseline = "alphabetic";
+  const padX = 64;
+  const maxW = THUMB_W - padX * 2;
+  const lines = wrapText(ctx, title, maxW, 2);
+  let y = THUMB_H - 80 - (lines.length - 1) * 100;
+  for (const line of lines) {
+    ctx.fillText(line, padX, y);
+    y += 100;
+  }
+
+  // Tagline (smaller, coral).
+  if (tagline) {
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = "#E94560";
+    ctx.font = `600 36px "Nunito", system-ui, sans-serif`;
+    ctx.fillText(tagline, padX, THUMB_H - 28);
+  }
+
+  return canvas.toDataURL("image/png");
+}
+
+// Wrap text to up to maxLines, ellipsis the last line if it overflows.
+function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number, maxLines: number): string[] {
+  const words = text.split(/\s+/);
+  const lines: string[] = [];
+  let line = "";
+  for (const w of words) {
+    const tryLine = line ? `${line} ${w}` : w;
+    if (ctx.measureText(tryLine).width > maxWidth) {
+      if (line) lines.push(line);
+      line = w;
+      if (lines.length >= maxLines - 1) break;
+    } else {
+      line = tryLine;
+    }
+  }
+  if (line && lines.length < maxLines) lines.push(line);
+  if (lines.length >= maxLines && words.length > lines.flatMap((l) => l.split(" ")).length) {
+    let last = lines[maxLines - 1];
+    while (ctx.measureText(last + "…").width > maxWidth && last.length > 0) last = last.slice(0, -1);
+    lines[maxLines - 1] = last + "…";
+  }
+  return lines;
+}
+
+function SeoComposerSection({
+  thumbnailUrl,
+  onSelect,
+  seo,
+  onSeoChange,
+  videoId,
+  title,
+  composedDataUrl,
+  onComposedChange,
+  videoDurationSec,
+}: {
+  thumbnailUrl: string;
+  onSelect: (url: string) => void;
+  seo: SeoMeta;
+  onSeoChange: (s: SeoMeta) => void;
+  videoId: string;
+  title: string;
+  composedDataUrl: string;
+  onComposedChange: (dataUrl: string) => void;
+  videoDurationSec: number;
+}) {
+  const [composing, setComposing] = useState(false);
+  const [composeError, setComposeError] = useState<string>("");
+
+  // Re-compose when image, title, or tagline changes.
+  useEffect(() => {
+    if (!thumbnailUrl || !seo.thumbnailTitle.trim()) {
+      onComposedChange("");
+      return;
+    }
+    let cancelled = false;
+    setComposing(true);
+    setComposeError("");
+    composeThumbnail(thumbnailUrl, seo.thumbnailTitle, "music.seteveus.space")
+      .then((dataUrl) => { if (!cancelled) onComposedChange(dataUrl); })
+      .catch((e) => { if (!cancelled) setComposeError(e?.message || "Erro a compor (CORS na imagem?)"); })
+      .finally(() => { if (!cancelled) setComposing(false); });
+    return () => { cancelled = true; };
+  }, [thumbnailUrl, seo.thumbnailTitle, onComposedChange]);
+
+  const downloadComposed = () => {
+    if (!composedDataUrl) return;
+    const a = document.createElement("a");
+    a.href = composedDataUrl;
+    a.download = `thumbnail-${videoId || "youtube"}.png`;
+    a.click();
+  };
+
+  const refillFromMetadata = () => {
+    // Resolve plan via videoId OR title (legacy state may lack videoId).
+    const plans = videoPlan as Array<{id: string; titulo: string; categorias: string[]}>;
+    const plan =
+      plans.find((v) => v.id === videoId) ||
+      plans.find((v) => v.titulo === title);
+    if (!plan) {
+      alert("Escolhe um vídeo em cima (secção 1) antes de gerar SEO.");
+      return;
+    }
+    const durationMin = Math.round(videoDurationSec / 60);
+    onSeoChange(seoFromMetadata(plan.id, plan.titulo, plan.categorias, durationMin));
+  };
+
+  const updateSeo = (patch: Partial<SeoMeta>) => onSeoChange({ ...seo, ...patch });
+
+  return (
+    <>
+      {/* 3B — Picker da imagem base */}
+      <ThumbnailSection thumbnailUrl={thumbnailUrl} onSelect={onSelect} />
+
+      {/* 3C — SEO + Thumbnail composer */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
+            3C. SEO + Thumbnail YouTube
+          </h3>
+          <button
+            onClick={refillFromMetadata}
+            disabled={!videoId && !title}
+            className="text-xs text-escola-creme-50 hover:text-escola-creme disabled:opacity-30"
+          >
+            Gerar proposta SEO
+          </button>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          {/* Esquerda: campos editáveis */}
+          <div className="space-y-3">
+            <div>
+              <label className="mb-1 block text-xs text-escola-creme-50">
+                Título da thumbnail (curto, 2-4 palavras)
+              </label>
+              <input
+                type="text"
+                value={seo.thumbnailTitle}
+                onChange={(e) => updateSeo({ thumbnailTitle: e.target.value })}
+                placeholder="Oceano Índico"
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-escola-creme-50">
+                Título do post YouTube (SEO completo)
+              </label>
+              <input
+                type="text"
+                value={seo.postTitle}
+                onChange={(e) => updateSeo({ postTitle: e.target.value })}
+                placeholder="🌊 Indian Ocean Mozambique — 10 Min Relaxing..."
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+              />
+              <p className="mt-1 text-xs text-escola-creme-50">{seo.postTitle.length}/100 chars</p>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-escola-creme-50">Descrição</label>
+              <textarea
+                value={seo.description}
+                onChange={(e) => updateSeo({ description: e.target.value })}
+                rows={6}
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+              />
+              <p className="mt-1 text-xs text-escola-creme-50">{seo.description.length} chars</p>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-escola-creme-50">
+                Hashtags (uma por linha ou separadas por espaço)
+              </label>
+              <textarea
+                value={seo.hashtags.join(" ")}
+                onChange={(e) =>
+                  updateSeo({
+                    hashtags: e.target.value
+                      .split(/\s+/)
+                      .map((h) => h.trim())
+                      .filter((h) => h.startsWith("#")),
+                  })
+                }
+                rows={3}
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme"
+              />
+              <p className="mt-1 text-xs text-escola-creme-50">{seo.hashtags.length} hashtags</p>
+            </div>
+          </div>
+
+          {/* Direita: preview da thumbnail composta */}
+          <div className="space-y-2">
+            <p className="text-xs text-escola-creme-50">Preview thumbnail YouTube (1280×720)</p>
+            <div className="relative aspect-video w-full overflow-hidden rounded border border-escola-border bg-black">
+              {composedDataUrl ? (
+                <img src={composedDataUrl} alt="Thumbnail composta" className="h-full w-full object-cover" />
+              ) : thumbnailUrl ? (
+                <div className="flex h-full w-full items-center justify-center text-xs text-escola-creme-50">
+                  {composing ? "A compor..." : "Escreve um título para gerar"}
+                </div>
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-xs text-escola-creme-50">
+                  Escolhe uma imagem em 3B
+                </div>
+              )}
+            </div>
+            {composeError && (
+              <p className="text-xs text-red-400">{composeError}</p>
+            )}
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={downloadComposed}
+                disabled={!composedDataUrl}
+                className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-30"
+              >
+                Descarregar PNG
+              </button>
+              <button
+                onClick={() => navigator.clipboard.writeText(seo.postTitle)}
+                disabled={!seo.postTitle}
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-border/30 disabled:opacity-30"
+              >
+                Copiar título
+              </button>
+              <button
+                onClick={() => navigator.clipboard.writeText(`${seo.description}\n\n${seo.hashtags.join(" ")}`)}
+                disabled={!seo.description}
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-border/30 disabled:opacity-30"
+              >
+                Copiar descrição + hashtags
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
 
 function ThumbnailSection({
   thumbnailUrl,

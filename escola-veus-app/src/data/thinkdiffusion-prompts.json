@@ -7,7 +7,7 @@
     "steps": 35,
     "sampler_name": "DPM++ 2M Karras",
     "batch_size": 4,
-    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns"
+    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns, dramatic limestone cliffs, karst formations, towering sea cliffs, Thailand, Halong Bay, Phi Phi islands, Vietnam coast, Philippines, Raja Ampat, Palawan, tropical Asian karst, chalk cliffs, fjords, mountainous coastline, steep rocky islands, vertical rock walls rising from sea, Greek architecture, Mediterranean village, Santorini, Italian village, Portuguese village, Brazilian village, Cape Verde village, European buildings, red tiled roofs dense village, stone church, cathedral, castle, fort, bandstand, gazebo, pavilion, ornate ironwork, cobblestone street, calcada pavement, white painted walls, colonial buildings, townscape"
   },
   "prompts": [
     {
@@ -287,7 +287,7 @@
         "calma",
         "contemplativo"
       ],
-      "prompt": "pristine white sand beach of Wimby Bay Pemba, crystal clear turquoise shallow water stretching far from shore, untouched tropical paradise, coconut palms lining the shore, warm golden afternoon light, feeling of discovering a secret beach, northern Mozambique Cabo Delgado, cinematic photography, 8k"
+      "prompt": "wide flat pristine white sand beach of Wimby Bay Pemba Mozambique, extremely long shallow turquoise water stretching far from shore with minimal waves, low flat coastal landscape, scattered coconut palms at treeline, no cliffs no mountains, simple African coastal horizon, warm golden afternoon light, documentary travel photography, 8k"
     },
     {
       "id": "praia-17-pemba-baia",
@@ -296,7 +296,7 @@
         "vasto",
         "contemplativo"
       ],
-      "prompt": "panoramic view of Pemba Bay from elevated position, dramatic red laterite cliffs meeting deep blue Indian Ocean, traditional dhow boats scattered across calm bay, lush green vegetation on clifftops, one of the largest natural bays in the world, golden hour light, northern Mozambique, epic landscape photography, 8k"
+      "prompt": "wide panoramic view of Pemba Bay Mozambique from gentle low coastal slope, calm flat dark blue water of natural bay, low red earth coastal banks with tropical vegetation, no dramatic cliffs, traditional wooden dhow boats with white sails on calm water, simple African shoreline, golden hour light, documentary landscape photography, 8k"
     },
     {
       "id": "praia-18-ilha-mocambique",
@@ -305,7 +305,7 @@
         "heranca",
         "ancestral"
       ],
-      "prompt": "historic Island of Mozambique coastline, turquoise water surrounding coral stone fortress, weathered Portuguese colonial architecture in warm earth tones, traditional dhow sailing past ancient walls, centuries of history meeting tropical ocean, UNESCO world heritage atmosphere, Ilha de Mocambique, cinematic photography, 8k"
+      "prompt": "wide flat coastal sandbank of northern Mozambique at low tide, turquoise shallow water stretching around white sand, scattered coconut palms along edge, traditional wooden dhow with white sail gliding past in distance, no buildings no cliffs, simple African coastal horizon, warm golden hour light, documentary photography, 8k"
     },
     {
       "id": "praia-19-quirimbas-norte",
@@ -314,7 +314,7 @@
         "calma",
         "misterio"
       ],
-      "prompt": "remote pristine beach in Quirimbas Archipelago northern Mozambique, pure white sandbank emerging from shallow turquoise lagoon at low tide, no buildings no people, untouched coral reef visible through crystal water, scattered clouds reflecting in still water, feeling of edge of the world, aerial drone perspective, 8k"
+      "prompt": "aerial top-down view of flat sandbank island in Quirimbas Archipelago northern Mozambique, pure white sand emerging from shallow turquoise lagoon at low tide, completely flat low island, coral reef patterns visible through crystal clear water, no cliffs no hills no mountains, scattered clouds above, drone photography straight down perspective, 8k"
     },
     {
       "id": "praia-20-nacala",
@@ -323,7 +323,7 @@
         "vasto",
         "recomeco"
       ],
-      "prompt": "sweeping view of Nacala Bay at sunrise, deep natural harbor with calm dark blue water, tropical green hills surrounding the bay, fishing boats heading out in warm morning light, mist rising from water surface, one of the deepest natural ports in Africa, northern Mozambique Nampula, cinematic wide angle photography, 8k"
+      "prompt": "wide view of Nacala Bay Mozambique at sunrise, calm natural harbor with deep dark blue water, low rolling tropical green hills surrounding the bay with no cliffs, small fishing boats heading out in warm morning light, soft mist rising from water, northern Mozambique Nampula province, documentary wide angle photography, 8k"
     },
     {
       "id": "rio-01-forest",
@@ -533,6 +533,69 @@
       "prompt": "massive dramatic cloud formations over flat African landscape, towering anvil-shaped cumulonimbus reaching stratosphere, tiny acacia trees on horizon for scale, feeling of nature's overwhelming power and beauty, late afternoon light, Mozambique, epic landscape photography, 8k"
     },
     {
+      "id": "ceu-09-sol-ceu-vazio",
+      "category": "ceu",
+      "mood": [
+        "solidao",
+        "vasto"
+      ],
+      "prompt": "single sun high in vast empty sky over Mozambique savanna, minimalist composition with only deep blue sky and small white sun, tiny baobab silhouette at bottom edge, feeling of endless space and stillness, only one sun in frame, cinematic photography, 8k ultra wide"
+    },
+    {
+      "id": "ceu-10-ceu-ferros-nuvens",
+      "category": "ceu",
+      "mood": [
+        "melancolia",
+        "contemplativo"
+      ],
+      "prompt": "overcast African sky with layered grey and cream clouds, soft diffused light filtering through, no direct sun, flat Mozambique landscape below in muted tones, feeling of quiet introspection, documentary photography, 8k"
+    },
+    {
+      "id": "ceu-11-estrelas-cadentes",
+      "category": "ceu",
+      "mood": [
+        "esperanca",
+        "misterio"
+      ],
+      "prompt": "night sky over African savanna with visible shooting stars streaking across, deep indigo sky full of stars, single baobab silhouetted against starscape, feeling of wishes crossing the sky, Mozambique interior, long exposure astrophotography, 8k"
+    },
+    {
+      "id": "ceu-12-raios-sol-nuvens",
+      "category": "ceu",
+      "mood": [
+        "esperanca",
+        "recomeco"
+      ],
+      "prompt": "dramatic god rays piercing through broken African clouds after storm, shafts of golden light reaching ground, dark grey clouds contrasting with bright light beams, Mozambique landscape far below, feeling of divine revelation, cinematic photography, 8k"
+    },
+    {
+      "id": "ceu-13-sol-poente-coral",
+      "category": "ceu",
+      "mood": [
+        "desejo",
+        "sensual"
+      ],
+      "prompt": "deep coral and magenta sunset sky over African horizon, entire sky in shades of warm pink and burning orange, thin cirrus clouds like brushstrokes, single sun sinking behind horizon, vast open savanna silhouette below, Mozambique, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "ceu-14-nuvens-algodao",
+      "category": "ceu",
+      "mood": [
+        "calma",
+        "esperanca"
+      ],
+      "prompt": "fluffy white cumulus clouds drifting across bright blue African sky, deep saturated sky blue between clouds, tiny birds flying high, feeling of childlike wonder and peace, sunny afternoon over Mozambique landscape, cinematic photography, 8k"
+    },
+    {
+      "id": "ceu-15-ceu-violeta-estrelas",
+      "category": "ceu",
+      "mood": [
+        "contemplativo",
+        "misterio"
+      ],
+      "prompt": "deep violet twilight sky over Mozambique coast, first bright stars emerging, thin crescent moon low on horizon, pastel gradient from coral on horizon to indigo above, feeling of transition between worlds, cinematic photography, only one moon in frame, 8k"
+    },
+    {
       "id": "chuva-01-ocean-rain",
       "category": "chuva",
       "mood": [
@@ -585,6 +648,87 @@
         "contemplativo"
       ],
       "prompt": "rain drops creating expanding circular ripples in muddy puddle on red African earth, each drop a small explosion, surrounding dry grass beginning to green, overcast sky reflected in puddle, feeling of change arriving slowly, Mozambique rainy season, macro photography, 8k"
+    },
+    {
+      "id": "chuva-07-janela-molhada",
+      "category": "chuva",
+      "mood": [
+        "melancolia",
+        "contemplativo"
+      ],
+      "prompt": "close-up of tropical rain streaming down old wooden window pane, blurred green Mozambique landscape visible through water droplets, soft diffused afternoon light, each drop tracing slow path down glass, feeling of quiet reflection, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "chuva-08-pingos-folhas",
+      "category": "chuva",
+      "mood": [
+        "calma",
+        "ancestral"
+      ],
+      "prompt": "close-up of rain water dripping from edge of wide green banana leaf, golden afternoon light illuminating each falling drop, blurred background of red earth and green tropical vegetation, no buildings, Mozambique rural landscape, macro photography, hyperrealistic, 8k"
+    },
+    {
+      "id": "chuva-09-chuva-baoba",
+      "category": "chuva",
+      "mood": [
+        "ancestral",
+        "vital"
+      ],
+      "prompt": "heavy tropical rain falling on ancient baobab tree in African savanna, water streaming down massive trunk and gnarled branches, fresh green leaves awakening, dark dramatic sky, feeling of life returning to dry land, Mozambique, cinematic photography, 8k"
+    },
+    {
+      "id": "chuva-10-chuva-terra-vermelha",
+      "category": "chuva",
+      "mood": [
+        "recomeco",
+        "vital"
+      ],
+      "prompt": "first heavy rain falling on dry red African earth, dust rising as drops hit cracked soil, smell of rain almost visible, muted warm tones transitioning to darker wet earth, feeling of long-awaited renewal, Mozambique dry season ending, cinematic photography, 8k"
+    },
+    {
+      "id": "chuva-11-chuva-rio",
+      "category": "chuva",
+      "mood": [
+        "conexao",
+        "poderoso"
+      ],
+      "prompt": "tropical rain falling on flowing African river surface, thousands of raindrops creating textured pattern on water, lush green banks blurred in mist, overcast grey light, feeling of water joining water, Mozambique interior, cinematic photography, 8k"
+    },
+    {
+      "id": "chuva-12-nuvem-chuva-distante",
+      "category": "chuva",
+      "mood": [
+        "contemplativo",
+        "vasto"
+      ],
+      "prompt": "distant rain curtain visible over vast African savanna, dark cumulonimbus cloud with visible rain falling like grey veil, golden sunlight still reaching foreground, dramatic contrast, feeling of storm arriving, Mozambique landscape, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "chuva-13-chuva-palmeira",
+      "category": "chuva",
+      "mood": [
+        "calma",
+        "sensual"
+      ],
+      "prompt": "warm tropical rain falling on wide palm fronds, water collecting and cascading off leaf tips, soft overcast light, lush green palm silhouettes against grey sky, Mozambique coast during rainy season, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "chuva-14-chuva-chao-pedras",
+      "category": "chuva",
+      "mood": [
+        "contemplativo",
+        "misterio"
+      ],
+      "prompt": "tropical rain wetting smooth dark stones on Mozambican path, each stone glistening with water, puddles forming in crevices, muted grey and warm earth tones, soft rainy light, feeling of patience and grounding, macro photography, 8k"
+    },
+    {
+      "id": "chuva-15-chuva-fim-amarelo",
+      "category": "chuva",
+      "mood": [
+        "esperanca",
+        "recomeco"
+      ],
+      "prompt": "last drops of tropical rain as sun breaks through clouds, warm golden light illuminating rain-soaked African landscape, everything glistening wet, dramatic rainbow beginning to form, Mozambique savanna, feeling of passage and renewal, cinematic photography, 8k"
     },
     {
       "id": "savana-01-sunrise",
@@ -656,7 +800,70 @@
         "heranca",
         "misterio"
       ],
-      "prompt": "massive cathedral termite mound in African savanna, towering red earth structure against blue sky, intricate architecture created by millions of tiny builders, warm afternoon light on textured surface, baobab tree nearby, feeling of hidden intelligence and collective creation, Mozambique, documentary photography, 8k"
+      "prompt": "tall red earth termite mound rising from African savanna grass, natural conical shape sculpted by millions of insects, textured surface against blue sky, warm afternoon light, baobab tree nearby, no buildings, feeling of hidden collective patience, Mozambique, documentary photography, 8k"
+    },
+    {
+      "id": "savana-09-girafas-horizonte",
+      "category": "savana",
+      "mood": [
+        "vasto",
+        "ancestral"
+      ],
+      "prompt": "silhouettes of two giraffes walking across African savanna at sunset, warm amber sky behind, golden grass extending to horizon, elegant long necks against sky, feeling of gentle ancient presence, Mozambique Gorongosa atmosphere, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-10-savana-chuva",
+      "category": "savana",
+      "mood": [
+        "vital",
+        "recomeco"
+      ],
+      "prompt": "African savanna after fresh rain, golden grass glistening with water droplets, dark fertile red soil visible, dramatic sky with retreating storm clouds, steam rising from warm ground, feeling of land reborn, Mozambique interior, cinematic photography, 8k"
+    },
+    {
+      "id": "savana-11-baoba-crepusculo",
+      "category": "savana",
+      "mood": [
+        "ancestral",
+        "contemplativo"
+      ],
+      "prompt": "ancient baobab tree silhouette against deep orange twilight sky over Mozambique savanna, branches like hands reaching to sky, flat horizon line, last light of day, feeling of trees holding the sky, cinematic photography, 8k ultra wide"
+    },
+    {
+      "id": "savana-12-zebras",
+      "category": "savana",
+      "mood": [
+        "conexao",
+        "vital"
+      ],
+      "prompt": "small herd of zebras grazing peacefully in African grassland, stripes catching warm afternoon light, golden grass around them, distant acacia trees, feeling of quiet harmony, Mozambique Gorongosa wildlife, National Geographic quality, 8k"
+    },
+    {
+      "id": "savana-13-caminho-savana",
+      "category": "savana",
+      "mood": [
+        "solidao",
+        "vasto"
+      ],
+      "prompt": "single red dirt path winding through tall golden African grass, small worn trail disappearing over horizon, scattered acacia trees, warm late afternoon light, feeling of long journey, Mozambique interior, cinematic photography, 8k"
+    },
+    {
+      "id": "savana-14-leoa-descansa",
+      "category": "savana",
+      "mood": [
+        "poderoso",
+        "calma"
+      ],
+      "prompt": "lioness resting in shade of acacia tree on African savanna, golden fur blending with dry grass, calm watchful eyes, warm afternoon light filtering through leaves creating dappled pattern, feeling of quiet strength, Mozambique wildlife photography, 8k"
+    },
+    {
+      "id": "savana-15-ceu-savana",
+      "category": "savana",
+      "mood": [
+        "expansivo",
+        "libertacao"
+      ],
+      "prompt": "low angle shot of African savanna looking up at vast blue sky with scattered cumulus clouds, tall golden grass filling foreground, feeling of overwhelming space and freedom, warm sunshine, Mozambique interior, cinematic photography, 8k ultra wide"
     },
     {
       "id": "flora-01-flower-rain",
@@ -720,6 +927,78 @@
         "expansivo"
       ],
       "prompt": "vast field of wild purple and yellow flowers covering African hillside, warm afternoon light, butterflies and bees visible, gentle breeze suggested by tilted flower heads, feeling of nature in full celebration, Mozambique highlands after rains, landscape photography, 8k"
+    },
+    {
+      "id": "flora-08-flor-hibisco",
+      "category": "flora",
+      "mood": [
+        "desejo",
+        "sensual"
+      ],
+      "prompt": "extreme close-up of vibrant red hibiscus flower in Mozambique garden, velvet petals with water droplets, pollen on yellow stamen, blurred green leaves background, morning sunlight, feeling of feminine beauty and opening, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-09-folhas-tropicais",
+      "category": "flora",
+      "mood": [
+        "conexao",
+        "calma"
+      ],
+      "prompt": "dense layered tropical foliage in Mozambique forest, overlapping large green leaves of different shapes and textures, dappled golden light filtering through canopy, fresh and lush, feeling of abundant life, macro nature photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-10-capim-sementes",
+      "category": "flora",
+      "mood": [
+        "libertacao",
+        "contemplativo"
+      ],
+      "prompt": "close-up of wild grass seed heads at golden hour, backlit by warm sun creating halo effect, seeds catching breeze about to drift, blurred African landscape background, feeling of letting go and new beginnings, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-11-flor-baoba",
+      "category": "flora",
+      "mood": [
+        "ancestral",
+        "misterio"
+      ],
+      "prompt": "large white baobab flower hanging from ancient tree branch, delicate petals against dark foliage, soft golden evening light, rare beauty that only blooms briefly, feeling of sacred moment, Mozambique savanna, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-12-musgo-raiz",
+      "category": "flora",
+      "mood": [
+        "ancestral",
+        "misterio"
+      ],
+      "prompt": "close-up of ancient tree root covered in green moss and small ferns, forest floor detail, dappled light filtering through Mozambique forest canopy, rich earth tones, feeling of slow timeless growth, macro nature photography, 8k"
+    },
+    {
+      "id": "flora-13-flor-selvagem",
+      "category": "flora",
+      "mood": [
+        "recomeco",
+        "vital"
+      ],
+      "prompt": "single wild pink flower growing alone in dry African earth, delicate petals against harsh landscape, warm morning light, feeling of resilient beauty, Mozambique interior, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-14-palmeira-solitaria",
+      "category": "flora",
+      "mood": [
+        "solidao",
+        "calma"
+      ],
+      "prompt": "single coconut palm tree silhouette against warm sunset sky over Mozambique beach, elegant curved trunk and fronds, minimalist composition, feeling of tropical solitude, cinematic photography, 8k"
+    },
+    {
+      "id": "flora-15-cacto-flor",
+      "category": "flora",
+      "mood": [
+        "recomeco",
+        "vital"
+      ],
+      "prompt": "flowering cactus in African semi-arid landscape, bright magenta blossoms on green thorny plant, harsh midday light, feeling of beauty thriving in difficult conditions, Mozambique interior, macro photography, 8k"
     },
     {
       "id": "nevoeiro-01-floresta",
@@ -794,6 +1073,69 @@
       "prompt": "row of tall palm trees in thick morning fog, Mozambique coast, trunks fading into white mist at different depths, ground covered in fallen palm fronds, soft diffused warm light, melancholic and peaceful, minimalist composition, fine art photography, 8k"
     },
     {
+      "id": "nevoeiro-09-nevoeiro-agua",
+      "category": "nevoeiro",
+      "mood": [
+        "misterio",
+        "calma"
+      ],
+      "prompt": "morning mist hovering just above still African river surface, thin white vapor curling over dark water, blurred green banks in background, first sunbeams breaking through, feeling of water breathing, Mozambique, cinematic photography, 8k"
+    },
+    {
+      "id": "nevoeiro-10-palmeiras-costeiras",
+      "category": "nevoeiro",
+      "mood": [
+        "ancestral",
+        "misterio"
+      ],
+      "prompt": "row of tall coconut palms emerging from thick morning coastal fog in northern Mozambique, dark tree silhouettes at different depths disappearing into white mist, muted warm tones, soft diffused light, no buildings, feeling of centuries quietly passing, cinematic photography, 8k"
+    },
+    {
+      "id": "nevoeiro-11-nevoeiro-dhow",
+      "category": "nevoeiro",
+      "mood": [
+        "solidao",
+        "melancolia"
+      ],
+      "prompt": "traditional Mozambican dhow sailing boat emerging from thick morning sea fog, silhouette barely visible, calm grey water, muted dawn light, feeling of ghost ship from another time, Mozambique coast, cinematic photography, 8k"
+    },
+    {
+      "id": "nevoeiro-12-gorongosa-nevoeiro",
+      "category": "nevoeiro",
+      "mood": [
+        "misterio",
+        "vasto"
+      ],
+      "prompt": "Gorongosa mountain valley filled with rolling morning fog, lush green slopes emerging above mist, golden sunrise light filtering through clouds, dramatic scale, feeling of primordial landscape, Mozambique national park, drone photography, 8k"
+    },
+    {
+      "id": "nevoeiro-13-nevoeiro-mangal",
+      "category": "nevoeiro",
+      "mood": [
+        "misterio",
+        "conexao"
+      ],
+      "prompt": "twisted mangrove roots emerging from low morning mist on African coastline, dark silhouettes against white fog, still water between roots, mysterious ecosystem, Mozambique coast, nature documentary photography, 8k"
+    },
+    {
+      "id": "nevoeiro-14-nevoeiro-paisagem",
+      "category": "nevoeiro",
+      "mood": [
+        "contemplativo",
+        "melancolia"
+      ],
+      "prompt": "distant hills appearing as soft layers through veils of morning mist in Mozambique interior, gradient of greys from dark foreground to palest background, minimalist painterly composition, feeling of quiet depth, fine art landscape photography, 8k"
+    },
+    {
+      "id": "nevoeiro-15-luz-nevoeiro",
+      "category": "nevoeiro",
+      "mood": [
+        "esperanca",
+        "misterio"
+      ],
+      "prompt": "single shaft of golden sunlight piercing through dense African forest fog, god ray illuminating floating moisture particles, dark tree silhouettes around, feeling of revelation in mystery, Mozambique highland forest, cinematic photography, 8k"
+    },
+    {
       "id": "fogo-01-fogueira-praia",
       "category": "fogo",
       "mood": [
@@ -857,6 +1199,78 @@
       "prompt": "fiery red sunrise over African ocean, entire sky burning in shades of deep red orange and gold, calm dark water reflecting the inferno above, thin line of horizon separating fire and water, Mozambique Indian Ocean coast, feeling of world being reborn, cinematic photography, 8k"
     },
     {
+      "id": "fogo-08-faiscas-noite",
+      "category": "fogo",
+      "mood": [
+        "libertacao",
+        "vital"
+      ],
+      "prompt": "bright orange sparks rising from bonfire on Mozambique beach at night, dark sky full of stars behind, warm glowing embers at base of fire, feeling of small lights ascending, intimate and magical, long exposure photography, 8k"
+    },
+    {
+      "id": "fogo-09-fogo-lareira",
+      "category": "fogo",
+      "mood": [
+        "conexao",
+        "calma"
+      ],
+      "prompt": "traditional African clay fireplace with cooking fire, warm orange flames illuminating earthen walls, cast iron pot above, smoke rising, muted warm tones, feeling of ancestral home, Mozambique rural dwelling, documentary photography, 8k"
+    },
+    {
+      "id": "fogo-10-fogo-ceu-poente",
+      "category": "fogo",
+      "mood": [
+        "poderoso",
+        "desejo"
+      ],
+      "prompt": "dramatic fire-colored sunset over Mozambique savanna, intense orange and red sky filling frame, silhouette of baobab tree, grassland in deep shadow below, feeling of sky on fire, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "fogo-11-brasas-vento",
+      "category": "fogo",
+      "mood": [
+        "libertacao",
+        "poderoso"
+      ],
+      "prompt": "glowing orange embers being carried by wind across dark African night, traces of light in air like fireflies, dark silhouettes of trees, long exposure creating light streaks, feeling of sparks letting go, Mozambique, cinematic photography, 8k"
+    },
+    {
+      "id": "fogo-12-fogo-circulo",
+      "category": "fogo",
+      "mood": [
+        "ancestral",
+        "conexao"
+      ],
+      "prompt": "circle of stones around bonfire in African clearing at night, warm orange flames at center, smoke rising, dark forest around, feeling of ancient ritual and gathering place, Mozambique interior, intimate photography, 8k"
+    },
+    {
+      "id": "fogo-13-cinza-madeira",
+      "category": "fogo",
+      "mood": [
+        "melancolia",
+        "ancestral"
+      ],
+      "prompt": "close-up of white ash and charred wood in dying fire, last few glowing embers, grey and black textures, soft morning light, feeling of fire remembered, macro photography, hyperrealistic, Mozambique, 8k"
+    },
+    {
+      "id": "fogo-14-chama-vela",
+      "category": "fogo",
+      "mood": [
+        "esperanca",
+        "contemplativo"
+      ],
+      "prompt": "row of small candle flames burning in darkness, warm golden pools of light, flames flickering gently, dark background with subtle bokeh, feeling of prayers or remembrance, intimate macro photography, 8k"
+    },
+    {
+      "id": "fogo-15-chama-reflexo",
+      "category": "fogo",
+      "mood": [
+        "contemplativo",
+        "sensual"
+      ],
+      "prompt": "warm flames of bonfire reflected in still water of Mozambique river at night, orange light dancing on dark surface, silhouette of palm trees, feeling of fire meeting water, long exposure photography, 8k"
+    },
+    {
       "id": "terra-01-solo-vermelho",
       "category": "terra",
       "mood": [
@@ -909,6 +1323,87 @@
         "esperanca"
       ],
       "prompt": "freshly tilled African farmland in morning light, rich dark soil in neat rows stretching to horizon, green shoots just emerging, morning dew glistening, single tree on far edge of field, feeling of beginning and potential, Mozambique rural landscape, cinematic wide angle, 8k"
+    },
+    {
+      "id": "terra-07-dunas-vermelhas",
+      "category": "terra",
+      "mood": [
+        "vasto",
+        "solidao"
+      ],
+      "prompt": "rolling red sand dunes at Bazaruto Archipelago Mozambique, wind-sculpted patterns in warm orange sand, turquoise ocean visible in distance, golden afternoon light creating long shadows, feeling of ancient shifting earth, aerial drone photography, 8k"
+    },
+    {
+      "id": "terra-08-argila-rachada",
+      "category": "terra",
+      "mood": [
+        "melancolia",
+        "heranca"
+      ],
+      "prompt": "extreme close-up of dry cracked clay earth in African dry season, intricate geometric patterns of cracks, warm terracotta tones, harsh midday light emphasizing texture, feeling of waiting for rain, Mozambique interior, macro photography, hyperrealistic, 8k"
+    },
+    {
+      "id": "terra-09-pedras-rio",
+      "category": "terra",
+      "mood": [
+        "contemplativo",
+        "ancestral"
+      ],
+      "prompt": "smooth weathered river stones in warm earth tones covering African riverbed, stones polished by centuries of water, dappled sunlight, feeling of patient transformation, Mozambique interior, macro nature photography, 8k"
+    },
+    {
+      "id": "terra-10-barro-mao",
+      "category": "terra",
+      "mood": [
+        "conexao",
+        "ancestral"
+      ],
+      "prompt": "close-up of fresh dark red African clay with finger imprints and texture, wet workable earth, warm natural light, feeling of human connection to earth, Mozambique traditional pottery material, macro photography, 8k"
+    },
+    {
+      "id": "terra-11-penedo-savana",
+      "category": "terra",
+      "mood": [
+        "poderoso",
+        "heranca"
+      ],
+      "prompt": "massive isolated granite boulder rising from African savanna, weathered ancient stone, golden grass around base, blue sky above, feeling of timeless presence, Mozambique Chimanimani landscape, epic landscape photography, 8k"
+    },
+    {
+      "id": "terra-12-terra-sementes",
+      "category": "terra",
+      "mood": [
+        "recomeco",
+        "vital"
+      ],
+      "prompt": "close-up of dark rich Mozambique soil with scattered seeds, freshly turned earth, warm morning light, tiny green sprouts beginning to emerge, feeling of hope being planted, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "terra-13-duna-mar",
+      "category": "terra",
+      "mood": [
+        "conexao",
+        "vasto"
+      ],
+      "prompt": "where red dune meets turquoise Indian Ocean, pristine Mozambique coast, dramatic color contrast between warm sand and cool water, gentle waves lapping at base of dune, feeling of elements meeting, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "terra-14-caverna-luz",
+      "category": "terra",
+      "mood": [
+        "misterio",
+        "esperanca"
+      ],
+      "prompt": "dark African cave opening with shaft of golden sunlight piercing through, warm earth walls illuminated, moss and ferns growing near entrance, feeling of hidden sanctuary, Mozambique interior, cinematic photography, 8k"
+    },
+    {
+      "id": "terra-15-terra-raizes-expostas",
+      "category": "terra",
+      "mood": [
+        "ancestral",
+        "conexao"
+      ],
+      "prompt": "massive tree roots exposed after erosion, intertwined with red African soil, warm afternoon light creating dramatic shadows, feeling of hidden foundations revealed, Mozambique forest floor, macro landscape photography, 8k"
     },
     {
       "id": "noite-01-estrelas-baoba",
@@ -974,6 +1469,78 @@
       "prompt": "distant thunderstorm on African horizon at night, lightning illuminating massive cloud towers from within, stars visible overhead in clear sky, dark savanna foreground, dramatic contrast between storm and calm, Mozambique landscape, long exposure photography, 8k"
     },
     {
+      "id": "noite-08-lua-cheia-savana",
+      "category": "noite",
+      "mood": [
+        "solidao",
+        "ancestral"
+      ],
+      "prompt": "single enormous full moon rising over African savanna, warm golden moonlight illuminating grassland, silhouettes of acacia trees, scattered clouds catching moonlight, feeling of ancient nocturnal world, only one moon in frame, Mozambique, hyperrealistic photography, 8k"
+    },
+    {
+      "id": "noite-09-via-lactea-baoba",
+      "category": "noite",
+      "mood": [
+        "vasto",
+        "misterio"
+      ],
+      "prompt": "Milky Way stretching across sky above ancient baobab tree, millions of stars and cosmic dust visible, tree silhouetted in foreground, deep blue and purple cosmos, feeling of cosmic scale, Mozambique interior, astrophotography, 8k"
+    },
+    {
+      "id": "noite-10-noite-tropical",
+      "category": "noite",
+      "mood": [
+        "desejo",
+        "sensual"
+      ],
+      "prompt": "warm tropical night on Mozambique beach, single full moon reflected on calm ocean, fireflies glowing near palm trees, deep blue sky with stars, soft warm air visible, intimate and sensual atmosphere, only one moon, long exposure photography, 8k"
+    },
+    {
+      "id": "noite-11-ceu-nocturno-rio",
+      "category": "noite",
+      "mood": [
+        "contemplativo",
+        "misterio"
+      ],
+      "prompt": "stars reflected in still African river at night, double sky effect as water mirrors cosmos, dark tree silhouettes framing composition, feeling of sky doubled, Mozambique interior, long exposure astrophotography, 8k"
+    },
+    {
+      "id": "noite-12-cabana-luz",
+      "category": "noite",
+      "mood": [
+        "conexao",
+        "calma"
+      ],
+      "prompt": "traditional African thatched hut with warm orange light glowing from interior, dark night landscape around, few stars visible in clear sky, feeling of home in vast wilderness, Mozambique rural, intimate cinematic photography, 8k"
+    },
+    {
+      "id": "noite-13-silhuetas-baoba",
+      "category": "noite",
+      "mood": [
+        "ancestral",
+        "vasto"
+      ],
+      "prompt": "row of baobab trees silhouetted against deep blue night sky, stars visible between branches, flat horizon line, feeling of ancient sentinels standing guard, Mozambique savanna, long exposure photography, 8k"
+    },
+    {
+      "id": "noite-14-noite-mar-luar",
+      "category": "noite",
+      "mood": [
+        "solidao",
+        "melancolia"
+      ],
+      "prompt": "single full moon over calm dark Indian Ocean, silver moonlight path on water, deep indigo sky with few stars, empty Mozambique beach in foreground, feeling of peaceful solitude, only one moon in frame, long exposure photography, 8k"
+    },
+    {
+      "id": "noite-15-noite-misteriosa",
+      "category": "noite",
+      "mood": [
+        "misterio",
+        "medo"
+      ],
+      "prompt": "dense African forest at night under faint moonlight, dark trees emerging from shadow, soft blue-grey tones, barely visible path disappearing into darkness, feeling of unknown depths, Mozambique, cinematic photography, 8k"
+    },
+    {
       "id": "caminho-01-trilho-floresta",
       "category": "caminho",
       "mood": [
@@ -1017,6 +1584,231 @@
         "vital"
       ],
       "prompt": "natural rock steps carved by water leading upward through African landscape, warm golden light at the top, ferns and moss growing in crevices, waterfall mist nearby, feeling of ascending toward something, Gorongosa Mozambique, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-06-trilho-baoba",
+      "category": "caminho",
+      "mood": [
+        "ancestral",
+        "solidao"
+      ],
+      "prompt": "narrow winding footpath through African savanna leading toward ancient baobab tree in distance, warm golden afternoon light, red dirt path visible in golden grass, feeling of pilgrimage toward something sacred, Mozambique interior, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "caminho-07-estrada-chuva",
+      "category": "caminho",
+      "mood": [
+        "melancolia",
+        "contemplativo"
+      ],
+      "prompt": "empty red dirt road in rural Mozambique after fresh rain, wet earth reflecting grey overcast sky, puddles forming, lush green vegetation on both sides, mist hovering low, feeling of peaceful solitary journey, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-08-pontao-rio",
+      "category": "caminho",
+      "mood": [
+        "conexao",
+        "misterio"
+      ],
+      "prompt": "long wooden walkway extending over African wetland, weathered planks leading to horizon, reflections in still dark water, lush green banks, feeling of bridge between worlds, Mozambique, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-09-trilho-costeiro",
+      "category": "caminho",
+      "mood": [
+        "heranca",
+        "ancestral"
+      ],
+      "prompt": "narrow sandy path winding between tall coconut palms along northern Mozambique coast, warm afternoon sunlight creating long palm shadows on white sand, no buildings, feeling of walking through ancient coastal landscape, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-10-trilho-nevoeiro",
+      "category": "caminho",
+      "mood": [
+        "misterio",
+        "esperanca"
+      ],
+      "prompt": "narrow forest path disappearing into morning fog, Gorongosa Mozambique, lush vegetation on sides, soft diffused light, feeling of stepping into unknown, shallow depth of field, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-11-passarela-mar",
+      "category": "caminho",
+      "mood": [
+        "calma",
+        "expansivo"
+      ],
+      "prompt": "simple wooden footbridge over golden sand leading toward turquoise Indian Ocean, Mozambique beach, warm morning light, palm trees framing composition, feeling of path to paradise, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-12-curva-rio",
+      "category": "caminho",
+      "mood": [
+        "contemplativo",
+        "vasto"
+      ],
+      "prompt": "meandering red dirt path following curve of African river, lush green banks, warm late afternoon light, distant mountains in background, feeling of patient meandering journey, Mozambique interior, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "caminho-13-clareira-luz",
+      "category": "caminho",
+      "mood": [
+        "esperanca",
+        "recomeco"
+      ],
+      "prompt": "narrow forest path opening into warm sunlit clearing in Mozambique tropical forest, dappled golden light ahead between dark tree trunks, lush green vegetation, no buildings, feeling of invitation and new passage, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "caminho-14-encruzilhada",
+      "category": "caminho",
+      "mood": [
+        "misterio",
+        "contemplativo"
+      ],
+      "prompt": "two red dirt roads crossing in vast African savanna, single baobab tree at intersection, warm afternoon light, open landscape stretching in all directions, feeling of decision point, Mozambique interior, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "caminho-15-chegada-luz",
+      "category": "caminho",
+      "mood": [
+        "esperanca",
+        "recomeco"
+      ],
+      "prompt": "narrow path emerging from dark forest into bright African clearing filled with warm sunlight, contrast between shadow and light, golden grass in clearing, feeling of emerging into open, Mozambique, cinematic photography, 8k"
+    },
+    {
+      "id": "jardim-01-tunduru-baoba",
+      "category": "jardim",
+      "mood": [
+        "ancestral",
+        "contemplativo"
+      ],
+      "prompt": "ancient massive baobab tree in Mozambican public garden, warm golden afternoon light filtering through sparse canopy, winding gravel garden path below, lush tropical vegetation around, no buildings, feeling of century-old urban oasis, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "jardim-02-namorados-banco",
+      "category": "jardim",
+      "mood": [
+        "desejo",
+        "melancolia"
+      ],
+      "prompt": "empty simple wooden garden bench under tall tropical tree at twilight, warm amber light, dappled shadows, scattered jacaranda petals on grass and earth path, no buildings, Mozambican public garden, feeling of waiting romance, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "jardim-03-alameda-arvores",
+      "category": "jardim",
+      "mood": [
+        "heranca",
+        "ancestral"
+      ],
+      "prompt": "long alameda of tall ancient tropical trees in Mozambican public garden, warm afternoon light creating dappled pattern on simple earth path, no buildings, feeling of walking between silent trunks, cinematic photography, 8k"
+    },
+    {
+      "id": "jardim-04-jacaranda-flor",
+      "category": "jardim",
+      "mood": [
+        "desejo",
+        "esperanca"
+      ],
+      "prompt": "ancient jacaranda tree in full purple bloom in Mozambican public garden, thick carpet of fallen violet petals covering green grass and earth path below, soft warm afternoon light, no buildings, feeling of ephemeral beauty, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "jardim-05-bougainvillea",
+      "category": "jardim",
+      "mood": [
+        "desejo",
+        "vital"
+      ],
+      "prompt": "vibrant pink and magenta bougainvillea cascading from tall green hedge in Mozambican public garden, tropical afternoon light, blurred green plants behind, no buildings, lush layered foliage, feeling of coastal tropical charm, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "jardim-06-fetos-sombra",
+      "category": "jardim",
+      "mood": [
+        "calma",
+        "contemplativo"
+      ],
+      "prompt": "lush tropical ferns growing in shaded corner of Mozambican public garden, deep green fronds unfurling, dappled light filtering through canopy, rich dark earth below, no buildings, feeling of quiet green sanctuary, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "jardim-07-arvores-chama-sombra",
+      "category": "jardim",
+      "mood": [
+        "heranca",
+        "melancolia"
+      ],
+      "prompt": "flame tree canopy seen from below in Mozambican public garden, scattered red flowers among deep green leaves against bright sky, warm golden hour light, feeling of leafy shelter, no buildings, cinematic photography, 8k"
+    },
+    {
+      "id": "jardim-08-relva-palmeiras",
+      "category": "jardim",
+      "mood": [
+        "recomeco",
+        "expansivo"
+      ],
+      "prompt": "wide open grass lawn in Mozambican public garden, tall royal palm trees scattered across green field, warm afternoon light, scattered flame tree flowers on grass, no buildings, feeling of urban breathing space, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "jardim-09-flame-tree",
+      "category": "jardim",
+      "mood": [
+        "vital",
+        "desejo"
+      ],
+      "prompt": "massive flame tree in full red bloom in Mozambican public garden, brilliant scarlet flowers against bright blue sky, fallen petals creating red carpet on green grass below, warm tropical afternoon light, no buildings, feeling of passionate natural beauty, cinematic photography, 8k"
+    },
+    {
+      "id": "jardim-10-canteiro-flores",
+      "category": "jardim",
+      "mood": [
+        "calma",
+        "esperanca"
+      ],
+      "prompt": "cluster of colorful tropical flowers in Mozambican public garden bed, mixed yellow red and orange blooms among green leaves, earth path alongside, warm morning light, no buildings no walls, feeling of cared-for natural space, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "jardim-11-folhas-caidas",
+      "category": "jardim",
+      "mood": [
+        "heranca",
+        "contemplativo"
+      ],
+      "prompt": "extreme close-up of scattered fallen jacaranda petals and dry tropical leaves on earth garden path, warm golden light creating soft shadows, shallow depth of field, feeling of time passing quietly, Mozambican public garden, macro photography, 8k"
+    },
+    {
+      "id": "jardim-12-palmeiras-alameda",
+      "category": "jardim",
+      "mood": [
+        "vasto",
+        "esperanca"
+      ],
+      "prompt": "long symmetrical avenue of tall royal palm trees in Mozambican public garden, perfect vanishing point perspective, warm afternoon light creating long palm shadows across grass and earth path, no buildings, feeling of ordered tropical grandeur, cinematic photography, 8k"
+    },
+    {
+      "id": "jardim-13-frangipani-centro",
+      "category": "jardim",
+      "mood": [
+        "ancestral",
+        "misterio"
+      ],
+      "prompt": "single frangipani tree in full bloom at center of small Mozambican garden clearing, white and yellow flowers scattered on green grass below, lush tropical greenery surrounding, warm afternoon light filtering through leaves, no buildings, feeling of hidden sanctuary, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "jardim-14-arvore-antiga",
+      "category": "jardim",
+      "mood": [
+        "melancolia",
+        "heranca"
+      ],
+      "prompt": "very old tropical tree with thick gnarled trunk in Mozambican public garden, massive roots spreading across grass, dappled afternoon shadows, a few fallen dry leaves, no buildings, feeling of slow memory growing in silence, cinematic photography, 8k"
+    },
+    {
+      "id": "jardim-15-jardim-amanhecer",
+      "category": "jardim",
+      "mood": [
+        "recomeco",
+        "calma"
+      ],
+      "prompt": "Mozambican public garden at early morning, soft golden first light filtering through tall tropical trees, empty simple wooden bench beside earth path, fresh dew on green leaves and grass, mist hovering between jacaranda trunks, no buildings, feeling of garden slowly waking, cinematic photography, 8k"
     }
   ]
 }
