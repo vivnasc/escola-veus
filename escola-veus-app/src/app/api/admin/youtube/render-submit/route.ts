@@ -78,14 +78,12 @@ function buildEdit(
   clipDuration: number,
 ) {
   // Crossfade between clips using 2 alternating tracks.
-  // Each clip has a 0.5s fade in + fade out. Adjacent clips overlap by 0.5s so
-  // the out-fade of clip N happens simultaneously with the in-fade of clip N+1.
-  // This masks any dark first/last frames that Runway-generated clips often
-  // have, eliminating the flashing between cuts. Clips on the same track
-  // cannot overlap, so we alternate even-indexed clips on track A and
-  // odd-indexed on track B.
-  const OVERLAP = 0.5; // seconds
-  const stride = clipDuration - OVERLAP; // how much time each clip advances the timeline
+  // Every clip has fade-in + fade-out of OVERLAP seconds. Adjacent clips
+  // overlap by OVERLAP — out-fade of N happens simultaneously with in-fade of
+  // N+1, producing a smooth dissolve. 1s overlap (vs 0.5s) gives a gentler,
+  // less perceptible transition.
+  const OVERLAP = 1.0;
+  const stride = clipDuration - OVERLAP;
   const trackA: unknown[] = [];
   const trackB: unknown[] = [];
   clips.forEach((url, i) => {

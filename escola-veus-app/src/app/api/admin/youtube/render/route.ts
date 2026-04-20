@@ -41,8 +41,8 @@ function buildYouTubeEdit(
   musicVolume: number,
   clipDuration: number,
 ) {
-  // Crossfade between clips via 2 alternating tracks with 0.5s overlap.
-  const OVERLAP = 0.5;
+  // Crossfade via 2 alternating tracks with 1s overlap + fades.
+  const OVERLAP = 1.0;
   const stride = clipDuration - OVERLAP;
   const trackA: unknown[] = [];
   const trackB: unknown[] = [];
