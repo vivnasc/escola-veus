@@ -7,7 +7,7 @@
     "steps": 35,
     "sampler_name": "DPM++ 2M Karras",
     "batch_size": 4,
-    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns"
+    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns, dramatic limestone cliffs, karst formations, towering sea cliffs, Thailand, Halong Bay, Phi Phi islands, Vietnam coast, Philippines, Raja Ampat, Palawan, tropical Asian karst, chalk cliffs, fjords, mountainous coastline, steep rocky islands, vertical rock walls rising from sea"
   },
   "prompts": [
     {
@@ -95,15 +95,15 @@
     {"id": "praia-15-amanhecer-pescadores", "category": "praia", "mood": ["heranca", "recomeco"],
       "prompt": "early morning beach scene with traditional fishing boats launching at dawn, warm golden first light, calm Indian Ocean, fishermen preparing nets as silhouettes against orange sky, ancient daily ritual, Inhambane Mozambique, documentary photography, 8k"},
     {"id": "praia-16-wimby", "category": "praia", "mood": ["calma", "contemplativo"],
-      "prompt": "pristine white sand beach of Wimby Bay Pemba, crystal clear turquoise shallow water stretching far from shore, untouched tropical paradise, coconut palms lining the shore, warm golden afternoon light, feeling of discovering a secret beach, northern Mozambique Cabo Delgado, cinematic photography, 8k"},
+      "prompt": "wide flat pristine white sand beach of Wimby Bay Pemba Mozambique, extremely long shallow turquoise water stretching far from shore with minimal waves, low flat coastal landscape, scattered coconut palms at treeline, no cliffs no mountains, simple African coastal horizon, warm golden afternoon light, documentary travel photography, 8k"},
     {"id": "praia-17-pemba-baia", "category": "praia", "mood": ["vasto", "contemplativo"],
-      "prompt": "panoramic view of Pemba Bay from elevated position, dramatic red laterite cliffs meeting deep blue Indian Ocean, traditional dhow boats scattered across calm bay, lush green vegetation on clifftops, one of the largest natural bays in the world, golden hour light, northern Mozambique, epic landscape photography, 8k"},
+      "prompt": "wide panoramic view of Pemba Bay Mozambique from gentle low coastal slope, calm flat dark blue water of natural bay, low red earth coastal banks with tropical vegetation, no dramatic cliffs, traditional wooden dhow boats with white sails on calm water, simple African shoreline, golden hour light, documentary landscape photography, 8k"},
     {"id": "praia-18-ilha-mocambique", "category": "praia", "mood": ["heranca", "ancestral"],
-      "prompt": "historic Island of Mozambique coastline, turquoise water surrounding coral stone fortress, weathered Portuguese colonial architecture in warm earth tones, traditional dhow sailing past ancient walls, centuries of history meeting tropical ocean, UNESCO world heritage atmosphere, Ilha de Mocambique, cinematic photography, 8k"},
+      "prompt": "flat coastline of historic Ilha de Mocambique, turquoise shallow water meeting low coral stone seawall, weathered Portuguese colonial buildings in warm cream and ochre tones at ground level, traditional wooden dhow sailing past low fortress wall, no cliffs no hills, UNESCO world heritage atmosphere, Nampula Mozambique, documentary photography, 8k"},
     {"id": "praia-19-quirimbas-norte", "category": "praia", "mood": ["calma", "misterio"],
-      "prompt": "remote pristine beach in Quirimbas Archipelago northern Mozambique, pure white sandbank emerging from shallow turquoise lagoon at low tide, no buildings no people, untouched coral reef visible through crystal water, scattered clouds reflecting in still water, feeling of edge of the world, aerial drone perspective, 8k"},
+      "prompt": "aerial top-down view of flat sandbank island in Quirimbas Archipelago northern Mozambique, pure white sand emerging from shallow turquoise lagoon at low tide, completely flat low island, coral reef patterns visible through crystal clear water, no cliffs no hills no mountains, scattered clouds above, drone photography straight down perspective, 8k"},
     {"id": "praia-20-nacala", "category": "praia", "mood": ["vasto", "recomeco"],
-      "prompt": "sweeping view of Nacala Bay at sunrise, deep natural harbor with calm dark blue water, tropical green hills surrounding the bay, fishing boats heading out in warm morning light, mist rising from water surface, one of the deepest natural ports in Africa, northern Mozambique Nampula, cinematic wide angle photography, 8k"},
+      "prompt": "wide view of Nacala Bay Mozambique at sunrise, calm natural harbor with deep dark blue water, low rolling tropical green hills surrounding the bay with no cliffs, small fishing boats heading out in warm morning light, soft mist rising from water, northern Mozambique Nampula province, documentary wide angle photography, 8k"},
     {
       "id": "rio-01-forest",
       "category": "rio",
