@@ -39,9 +39,11 @@ type ShortsState = {
   album: string;
   trackUrl: string;
   trackName: string;
-  lyrics: string;
   theme: string;
   verses: [string, string];
+  candidates: string[];
+  albumTitle: string;
+  trackTitle: string;
   tiktokCaption: string;
   youtubeTitle: string;
   youtubeDescription: string;
@@ -74,9 +76,11 @@ const EMPTY_STATE: ShortsState = {
   album: "",
   trackUrl: "",
   trackName: "",
-  lyrics: "",
   theme: "",
   verses: ["", ""],
+  candidates: [],
+  albumTitle: "",
+  trackTitle: "",
   tiktokCaption: "",
   youtubeTitle: "",
   youtubeDescription: "",
@@ -283,8 +287,8 @@ export default function ShortsPage() {
   // ── Suggest verses + captions ───────────────────────────────────────────────
 
   const suggest = async () => {
-    if (!state.lyrics.trim()) {
-      alert("Cola as letras primeiro.");
+    if (!state.album || !state.trackName) {
+      alert("Escolhe álbum e faixa primeiro.");
       return;
     }
     setSuggesting(true);
@@ -293,15 +297,18 @@ export default function ShortsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          albumSlug: state.album,
           trackName: state.trackName,
-          lyrics: state.lyrics,
           theme: state.theme,
         }),
       });
       const data = await res.json();
       if (data.erro) throw new Error(data.erro);
       updateState({
-        verses: [data.verses[0] || "", data.verses[1] || ""],
+        verses: [data.verses?.[0] || "", data.verses?.[1] || ""],
+        candidates: Array.isArray(data.candidates) ? data.candidates : [],
+        albumTitle: data.albumTitle || "",
+        trackTitle: data.trackTitle || "",
         tiktokCaption: data.tiktokCaption || "",
         youtubeTitle: data.youtubeTitle || "",
         youtubeDescription: data.youtubeDescription || "",
@@ -685,45 +692,79 @@ export default function ShortsPage() {
         )}
       </section>
 
-      {/* ── 4. LETRAS + VERSOS FORTES ── */}
+      {/* ── 4. FRASES INSPIRADORAS (letra Loranne) ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          4. Letras · versos fortes
+          4. Frases inspiradoras · baseadas na letra
         </h3>
 
-        <label className="mb-1 block text-xs text-escola-creme-50">
-          Cola a letra da faixa (uma linha por verso).
-        </label>
-        <textarea
-          value={state.lyrics}
-          onChange={(e) => updateState({ lyrics: e.target.value })}
-          rows={8}
-          placeholder={"Linha 1\nLinha 2\nLinha 3\n..."}
-          className="mb-2 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme"
-        />
+        {state.trackTitle ? (
+          <p className="mb-3 text-xs text-escola-creme-50">
+            <span className="text-escola-creme">{state.trackTitle}</span>
+            {state.albumTitle ? ` · ${state.albumTitle}` : ""}
+          </p>
+        ) : (
+          <p className="mb-3 text-xs text-escola-creme-50">
+            Clica em &quot;Sugerir&quot; para extrair da letra da faixa escolhida em #3.
+          </p>
+        )}
 
         <div className="mb-3 flex items-center gap-2">
           <input
             type="text"
             value={state.theme}
             onChange={(e) => updateState({ theme: e.target.value })}
-            placeholder="Tema (opcional · ex: véus, coragem)"
+            placeholder="Tema (opcional · ex: véus, coragem, raiz)"
             className="flex-1 rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme"
           />
           <button
             onClick={suggest}
-            disabled={suggesting || !state.lyrics.trim()}
+            disabled={suggesting || !state.album || !state.trackName}
             className="rounded bg-escola-coral px-4 py-1.5 text-xs font-semibold text-white disabled:opacity-30"
           >
-            {suggesting ? "..." : "Sugerir 2 versos + legendas"}
+            {suggesting ? "..." : "Sugerir frases + legendas"}
           </button>
         </div>
+
+        {state.candidates.length > 0 && (
+          <div className="mb-3">
+            <p className="mb-2 text-[10px] uppercase tracking-wider text-escola-creme-50">
+              Candidatas extraídas da letra (clica para enviar para Verso 1 ou 2)
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {state.candidates.map((c, i) => (
+                <div
+                  key={`${i}-${c}`}
+                  className="group flex items-stretch overflow-hidden rounded border border-escola-border bg-escola-bg"
+                >
+                  <span className="max-w-[400px] truncate px-2 py-1 text-xs text-escola-creme">
+                    {c}
+                  </span>
+                  <button
+                    onClick={() => updateState({ verses: [c, state.verses[1]] })}
+                    className="border-l border-escola-border px-2 py-1 text-[10px] text-escola-coral hover:bg-escola-border/30"
+                    title="Enviar para Verso 1"
+                  >
+                    → 1
+                  </button>
+                  <button
+                    onClick={() => updateState({ verses: [state.verses[0], c] })}
+                    className="border-l border-escola-border px-2 py-1 text-[10px] text-escola-coral hover:bg-escola-border/30"
+                    title="Enviar para Verso 2"
+                  >
+                    → 2
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="grid gap-2 sm:grid-cols-2">
           {[0, 1].map((i) => (
             <div key={i}>
               <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
-                Verso {i + 1} (overlay do clip {i === 0 ? "1" : "3"})
+                Frase {i + 1} (overlay do clip {i === 0 ? "1" : "3"})
               </label>
               <textarea
                 value={state.verses[i]}
