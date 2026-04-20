@@ -54,7 +54,7 @@ function YouTubeTab() {
     <div>
       <div className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4 text-xs text-escola-creme-50">
         <p>
-          Schedule: <span className="text-escola-creme">{YOUTUBE_SCHEDULE.publishDays.join(", ")}</span>
+          Schedule: <span className="text-escola-creme">{YOUTUBE_SCHEDULE.daysOfWeek.join(", ")} · {YOUTUBE_SCHEDULE.publishTime}</span>
           {" · "}
           {YOUTUBE_WEEKS.length} semanas planeadas
         </p>
@@ -63,11 +63,11 @@ function YouTubeTab() {
       <div className="space-y-2">
         {YOUTUBE_WEEKS.map((w) => (
           <details
-            key={w.week}
+            key={w.number}
             className="overflow-hidden rounded-xl border border-escola-border bg-escola-card"
           >
             <summary className="cursor-pointer px-4 py-3 text-sm text-escola-creme">
-              Semana {w.week} — {w.theme}{" "}
+              Semana {w.number} — {w.theme}{" "}
               <span className="text-xs text-escola-creme-50">
                 · {w.videos.length} vídeos
               </span>
@@ -83,7 +83,7 @@ function YouTubeTab() {
                       #{v.number} {v.title}
                     </p>
                     <p className="text-escola-creme-50">
-                      {getDayLabel(v.day)} · {v.course}
+                      {getDayLabel(v.day)} · {v.courseOrigin}
                     </p>
                   </div>
                   <span className="ml-3 shrink-0 rounded-full bg-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50">
@@ -110,11 +110,11 @@ function SocialTab() {
       <div className="space-y-2">
         {allWeeks.map((w) => (
           <details
-            key={w.week}
+            key={w.weekNumber}
             className="overflow-hidden rounded-xl border border-escola-border bg-escola-card"
           >
             <summary className="cursor-pointer px-4 py-3 text-sm text-escola-creme">
-              Semana {w.week} — {w.theme}{" "}
+              Semana {w.weekNumber} — {w.title}{" "}
               <span className="text-xs text-escola-creme-50">· {w.days.length} dias</span>
             </summary>
             <ul className="divide-y divide-escola-border border-t border-escola-border">
