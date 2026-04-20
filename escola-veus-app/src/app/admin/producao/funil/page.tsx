@@ -3,16 +3,18 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
-import promptsData from "@/data/thinkdiffusion-prompts.json";
+import funilSeed from "@/data/funil-prompts.seed.json";
+import PromptEditor from "@/components/admin/PromptEditor";
 
 type Prompt = { id: string; category: string; mood: string[]; prompt: string };
 
 export default function FunilPage() {
   const [openSerie, setOpenSerie] = useState<string | null>(NOMEAR_PRESETS[0]?.id ?? null);
+  const [tab, setTab] = useState<"series" | "prompts">("series");
 
   const promptsByEp = useMemo(() => {
     const map = new Map<string, number>();
-    for (const p of promptsData.prompts as Prompt[]) {
+    for (const p of funilSeed.prompts as Prompt[]) {
       const m = p.id.match(/^nomear-(ep\d+)/);
       if (m) map.set(m[1], (map.get(m[1]) ?? 0) + 1);
     }
@@ -44,14 +46,27 @@ export default function FunilPage() {
         >
           → Áudios ElevenLabs (Nomear)
         </Link>
-        <Link
-          href="/admin/producao/ancient-ground"
-          className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
-        >
-          → Imagens / clips (ThinkDiffusion + Runway)
-        </Link>
       </div>
 
+      <nav className="mb-6 flex gap-1 border-b border-escola-border">
+        {(["series", "prompts"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`border-b-2 px-3 py-2 text-xs transition-colors ${
+              tab === t
+                ? "border-escola-dourado text-escola-dourado"
+                : "border-transparent text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            {t === "series" ? "Séries" : "Prompts"}
+          </button>
+        ))}
+      </nav>
+
+      {tab === "prompts" && <PromptEditor collection="funil" />}
+
+      {tab === "series" && (
       <div className="space-y-2">
         {NOMEAR_PRESETS.map((serie) => {
           const open = openSerie === serie.id;
@@ -112,6 +127,7 @@ export default function FunilPage() {
           );
         })}
       </div>
+      )}
     </div>
   );
 }

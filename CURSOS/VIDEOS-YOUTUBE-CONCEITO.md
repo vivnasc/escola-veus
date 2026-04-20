@@ -1,8 +1,9 @@
 # Vídeos YouTube — Conceito Completo
 
-**Última actualização:** 2026-04-17
+**Última actualização:** 2026-04-20
 
----
+> Conceito dos 2 tipos de vídeo YouTube. Estado de produção:
+> `/CURSOS/PRODUCAO-STATUS.md`.
 
 ## DOIS TIPOS DE VÍDEOS YOUTUBE
 
@@ -76,7 +77,11 @@
 | O Relógio Partido | tempo, fragmento, vazio |
 | O Ofício de Ser | raiz, luz, porta |
 
-**ESTADO:** Prompts por criar. Vivianne aprovou a filosofia visual.
+**ESTADO (2026-04-20):** Ouro Próprio completo — 83 prompts Colecção B
+para os 8 episódios Nomear do curso (ep01–ep06, ep09, ep10). Próximo:
+Limite Sagrado (ep07, ep08 + ampliação série 6). Prompts guardados em
+`escola-veus-app/src/data/funil-prompts.seed.json` e editáveis na página
+`/admin/producao/funil` (tab Prompts).
 
 ---
 
