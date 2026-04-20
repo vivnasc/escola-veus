@@ -1001,6 +1001,141 @@
       "prompt": "flowering cactus in African semi-arid landscape, bright magenta blossoms on green thorny plant, harsh midday light, feeling of beauty thriving in difficult conditions, Mozambique interior, macro photography, 8k"
     },
     {
+      "id": "flora-16-jacaranda-macro",
+      "category": "flora",
+      "mood": [
+        "desejo",
+        "melancolia"
+      ],
+      "prompt": "extreme close-up of purple jacaranda flowers in full bloom, delicate bell-shaped violet blossoms clustered on thin branch, soft blurred green leaves in background, warm afternoon light, Mozambique tropical tree, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-17-flamboyant-vermelho",
+      "category": "flora",
+      "mood": [
+        "vital",
+        "desejo"
+      ],
+      "prompt": "extreme close-up of bright red flame tree flowers, flamboyant blossoms with long red petals and yellow stamens, deep green fern-like leaves behind, warm tropical afternoon light, Mozambique flora, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-18-bougainvillea-macro",
+      "category": "flora",
+      "mood": [
+        "desejo",
+        "expansivo"
+      ],
+      "prompt": "extreme close-up of magenta and pink bougainvillea flowers, papery thin petals catching golden afternoon light, delicate white centers, blurred green foliage behind, no buildings, Mozambique tropical garden flora, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-19-ave-paraiso",
+      "category": "flora",
+      "mood": [
+        "vital",
+        "sensual"
+      ],
+      "prompt": "close-up of strelitzia bird of paradise flower in Mozambique tropical garden, sculptural orange and blue petals emerging from green bract, blurred tropical foliage behind, warm morning light, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-20-lirio-agua",
+      "category": "flora",
+      "mood": [
+        "calma",
+        "contemplativo"
+      ],
+      "prompt": "pink water lily floating on still dark African pond, delicate petals opening to morning sun, large round green lily pad floating beside, soft dappled reflections, Mozambique wetlands, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-21-heliconia",
+      "category": "flora",
+      "mood": [
+        "vital",
+        "expansivo"
+      ],
+      "prompt": "close-up of bright red and yellow heliconia flower hanging from green tropical plant, sculptural beak-like bracts, dense green foliage background, warm humid light of Mozambique tropical garden, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-22-orquidea-selvagem",
+      "category": "flora",
+      "mood": [
+        "misterio",
+        "desejo"
+      ],
+      "prompt": "wild purple orchid growing on ancient tree bark in Mozambique highland forest, delicate flower with spotted petals, moss and lichen around, dappled green light filtering through canopy, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-23-mangueira-flor",
+      "category": "flora",
+      "mood": [
+        "recomeco",
+        "esperanca"
+      ],
+      "prompt": "close-up of tiny cream-colored mango tree blossoms clustered on branch, deep green mango leaves behind, warm afternoon light in Mozambican garden, feeling of fruit to come, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-24-bananeira-flor",
+      "category": "flora",
+      "mood": [
+        "vital",
+        "sensual"
+      ],
+      "prompt": "large purple banana flower hanging from green banana tree, heavy sculptural bract opening to reveal small yellow flowers, wide green banana leaves around, warm tropical light, Mozambique rural flora, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-25-cajueiro-caju",
+      "category": "flora",
+      "mood": [
+        "ancestral",
+        "vital"
+      ],
+      "prompt": "close-up of ripe cashew fruit hanging from cashew tree in Mozambique, yellow and red fleshy false fruit with grey cashew nut below, green leaves around, warm golden afternoon light, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-26-papaia-folhas",
+      "category": "flora",
+      "mood": [
+        "calma",
+        "vital"
+      ],
+      "prompt": "papaya tree seen from below, large lobed green papaya leaves against bright blue sky, clusters of green papaya fruits growing against thin trunk, warm tropical Mozambique light, cinematic photography, 8k"
+    },
+    {
+      "id": "flora-27-aloe-flor",
+      "category": "flora",
+      "mood": [
+        "ancestral",
+        "poderoso"
+      ],
+      "prompt": "tall orange aloe flower spike rising from rosette of thick green succulent leaves, Mozambique dry landscape, warm late afternoon light, architectural plant form, macro landscape photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-28-capim-elefante",
+      "category": "flora",
+      "mood": [
+        "vasto",
+        "libertacao"
+      ],
+      "prompt": "tall dense elephant grass swaying in Mozambique savanna, green and golden stalks rising above head height, warm afternoon light filtering through, feeling of walking through tall grass sea, cinematic photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-29-marula-frutos",
+      "category": "flora",
+      "mood": [
+        "ancestral",
+        "vital"
+      ],
+      "prompt": "close-up of ripe yellow marula fruits hanging from marula tree branch, small round fruits among deep green leaves, warm afternoon light in Mozambique savanna, feeling of abundant traditional tree, macro photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "flora-30-canna-vermelha",
+      "category": "flora",
+      "mood": [
+        "desejo",
+        "vital"
+      ],
+      "prompt": "vibrant red canna lily flower in Mozambican public garden, wide green paddle-shaped leaves, warm late afternoon light, no buildings, lush tropical color, macro photography, shallow depth of field, 8k"
+    },
+    {
       "id": "nevoeiro-01-floresta",
       "category": "nevoeiro",
       "mood": [
