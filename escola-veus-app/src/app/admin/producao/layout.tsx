@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const TABS = [
+type Tab = { href: string; label: string; exact?: boolean };
+
+const TABS: Tab[] = [
   { href: "/admin/producao/aulas", label: "Aulas" },
   { href: "/admin/producao/funil", label: "Funil" },
   { href: "/admin/producao/ancient-ground", label: "Ancient Ground", exact: true },
   { href: "/admin/producao/ancient-ground/montagem", label: "AG — Montagem" },
   { href: "/admin/producao/shorts", label: "Shorts" },
   { href: "/admin/producao/audios", label: "Audios" },
-] as const;
+];
 
 export default function ProducaoLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
