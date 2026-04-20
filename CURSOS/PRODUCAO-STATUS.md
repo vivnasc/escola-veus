@@ -1,11 +1,33 @@
 # Escola dos Véus — Estado da Produção
 
-**Última actualização:** 2026-04-20 (reestruturação admin + funil Ouro Próprio)
+**Última actualização:** 2026-04-20 (sessão 6 — montagem com grupos, SEO, render desacoplado)
 
 > Ficheiro único de continuidade entre sessões. Ler no início de cada sessão nova.
 > Actualizar no fim. Histórico antigo em `_arquivo-historico/INDEX.md`.
 
 ---
+
+## Última sessão (6 — 2026-04-20)
+
+Melhorias à página `/admin/producao/ancient-ground/montagem` e pipeline de render:
+
+- **Clips agrupados** por prompt (15 grupos × 4 variações) com reordenação intra-grupo e ordem dos grupos
+- **Thumbnail picker** + **compositor SEO** (canvas 1280×720 com título overlay)
+- **Painel SEO** com auto-preenchimento do `youtube-metadata.json` OU gerador template-based por categoria (todos os 50 vídeos)
+- **Paginação** em `list-clips`/`list-images` para superar cap de 100
+- **Preview double-buffer** com Pause/Resume (sem delay entre clips)
+- **Render desacoplado** (submit/status/save) para fugir ao 5min Vercel cap
+- **Render respeita ordem do utilizador** (deixou de baralhar)
+- **CLIP_DURATION 15s → 10s** (alinha com Runway gen4_turbo real)
+- **Upload MP4 drag-and-drop** (secção 6) com rename automático + sidecars
+- **Duration selector** (5m/10m/30m/1h) para teste barato antes de 1h
+
+### Problema pendente (para próxima sessão)
+
+**Piscar entre clips no vídeo renderizado** — persiste após múltiplos fixes. Ver `CONTINUIDADE-SESSAO-6.md` para hipóteses e passos de diagnóstico. **Antes de mais renders, confirmar se piscar aparece também no preview** (= problema dos clips Runway, não do render).
+
+---
+
 
 ## Leitura por esta ordem
 
