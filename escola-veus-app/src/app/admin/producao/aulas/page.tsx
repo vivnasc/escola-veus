@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import COURSES from "@/data/courses";
+import PromptEditor from "@/components/admin/PromptEditor";
 
 export default function AulasPage() {
   const [open, setOpen] = useState<string | null>(COURSES[0]?.slug ?? null);
+  const [tab, setTab] = useState<"cursos" | "prompts">("cursos");
 
   const totalModules = COURSES.reduce((n, c) => n + c.modules.length, 0);
   const totalSubLessons = COURSES.reduce(
@@ -43,6 +45,25 @@ export default function AulasPage() {
         </Link>
       </div>
 
+      <nav className="mb-6 flex gap-1 border-b border-escola-border">
+        {(["cursos", "prompts"] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`border-b-2 px-3 py-2 text-xs transition-colors ${
+              tab === t
+                ? "border-escola-dourado text-escola-dourado"
+                : "border-transparent text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            {t === "cursos" ? "Cursos" : "Prompts"}
+          </button>
+        ))}
+      </nav>
+
+      {tab === "prompts" && <PromptEditor collection="aulas" />}
+
+      {tab === "cursos" && (
       <div className="space-y-2">
         {COURSES.map((c) => {
           const isOpen = open === c.slug;
@@ -86,6 +107,7 @@ export default function AulasPage() {
           );
         })}
       </div>
+      )}
     </div>
   );
 }
