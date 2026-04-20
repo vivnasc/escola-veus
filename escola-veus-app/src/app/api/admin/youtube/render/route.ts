@@ -41,23 +41,23 @@ function buildYouTubeEdit(
   musicVolume: number,
   clipDuration: number,
 ) {
-  // Hard cuts between clips. Fade only on the very first/last to avoid
-  // black-flash between interior clips.
-  const lastIndex = clips.length - 1;
-  const videoClips = clips.map((url, i) => {
-    const transition: { in?: "fade"; out?: "fade" } = {};
-    if (i === 0) transition.in = "fade";
-    if (i === lastIndex) transition.out = "fade";
-    return {
+  // Crossfade between clips via 2 alternating tracks with 0.5s overlap.
+  const OVERLAP = 0.5;
+  const stride = clipDuration - OVERLAP;
+  const trackA: unknown[] = [];
+  const trackB: unknown[] = [];
+  clips.forEach((url, i) => {
+    const clip = {
       asset: { type: "video" as const, src: url, volume: 0 },
-      start: i * clipDuration,
+      start: i * stride,
       length: clipDuration,
       fit: "crop" as const,
-      ...(transition.in || transition.out ? { transition } : {}),
+      transition: { in: "fade" as const, out: "fade" as const },
     };
+    (i % 2 === 0 ? trackA : trackB).push(clip);
   });
 
-  const totalDuration = clips.length * clipDuration;
+  const totalDuration = (clips.length - 1) * stride + clipDuration;
 
   // Loop music pair: A → B → A → B... until video ends
   // Estimate ~3-4 min per Suno track. Place them alternating.
@@ -89,7 +89,8 @@ function buildYouTubeEdit(
     timeline: {
       background: "#000000",
       tracks: [
-        { clips: videoClips },
+        { clips: trackA },
+        { clips: trackB },
         { clips: musicClips },
       ],
     },

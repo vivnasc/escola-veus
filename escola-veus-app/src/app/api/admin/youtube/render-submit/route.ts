@@ -77,31 +77,37 @@ function buildEdit(
   musicVolume: number,
   clipDuration: number,
 ) {
-  // Hard cuts between clips (no per-clip fade) to avoid black-flash between clips.
-  // Fade-in only on the very first clip and fade-out only on the very last —
-  // opening and closing of the 1h ambient are gentle, but transitions inside
-  // are direct so the eye sees one continuous flow.
-  const lastIndex = clips.length - 1;
-  const videoClips = clips.map((url, i) => {
-    const transition: { in?: "fade"; out?: "fade" } = {};
-    if (i === 0) transition.in = "fade";
-    if (i === lastIndex) transition.out = "fade";
-    return {
+  // Crossfade between clips using 2 alternating tracks.
+  // Each clip has a 0.5s fade in + fade out. Adjacent clips overlap by 0.5s so
+  // the out-fade of clip N happens simultaneously with the in-fade of clip N+1.
+  // This masks any dark first/last frames that Runway-generated clips often
+  // have, eliminating the flashing between cuts. Clips on the same track
+  // cannot overlap, so we alternate even-indexed clips on track A and
+  // odd-indexed on track B.
+  const OVERLAP = 0.5; // seconds
+  const stride = clipDuration - OVERLAP; // how much time each clip advances the timeline
+  const trackA: unknown[] = [];
+  const trackB: unknown[] = [];
+  clips.forEach((url, i) => {
+    const clip = {
       asset: { type: "video" as const, src: url, volume: 0 },
-      start: i * clipDuration,
+      start: i * stride,
       length: clipDuration,
       fit: "crop" as const,
-      ...(transition.in || transition.out ? { transition } : {}),
+      transition: { in: "fade" as const, out: "fade" as const },
     };
+    (i % 2 === 0 ? trackA : trackB).push(clip);
   });
 
-  const totalDuration = clips.length * clipDuration;
+  // With overlap, total timeline = last clip end = (N-1)*stride + clipDuration.
+  const totalDuration = (clips.length - 1) * stride + clipDuration;
+
   const ESTIMATED_TRACK_DURATION = 210;
   const musicClips: unknown[] = [];
   let musicTime = 0;
-  let trackIndex = 0;
+  let musicIdx = 0;
   while (musicTime < totalDuration) {
-    const url = musicUrls[trackIndex % musicUrls.length];
+    const url = musicUrls[musicIdx % musicUrls.length];
     const remaining = totalDuration - musicTime;
     const length = Math.min(ESTIMATED_TRACK_DURATION, remaining);
     musicClips.push({
@@ -114,13 +120,16 @@ function buildEdit(
       },
     });
     musicTime += length;
-    trackIndex++;
+    musicIdx++;
   }
 
   return {
     timeline: {
       background: "#000000",
-      tracks: [{ clips: videoClips }, { clips: musicClips }],
+      // Shotstack renders lower-indexed tracks below higher-indexed ones, so
+      // trackA (even clips) and trackB (odd clips) layer on top of each other;
+      // their fades create the crossfade effect at overlaps.
+      tracks: [{ clips: trackA }, { clips: trackB }, { clips: musicClips }],
     },
     output: { format: "mp4" as const, resolution: "1080" as const, fps: 30 },
   };
