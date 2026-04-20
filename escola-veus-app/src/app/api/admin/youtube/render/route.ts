@@ -104,6 +104,7 @@ export async function POST(req: NextRequest) {
     musicUrl,
     musicVolume = 0.8,
     clipDuration = 15,
+    thumbnailUrl,
   } = body;
 
   // Support both: uniqueClips (shuffled to fill targetDuration) or clips (direct list)
@@ -212,18 +213,39 @@ export async function POST(req: NextRequest) {
 
           if (serviceKey && supabaseUrl) {
             send({ type: "progress", percent: 90, label: "A guardar no Supabase..." });
+            const slug = (title || "youtube").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50);
+            const stamp = Date.now();
             try {
               const videoRes = await fetch(videoUrl);
               if (videoRes.ok) {
                 const { createClient } = await import("@supabase/supabase-js");
                 const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
-                const slug = (title || "youtube").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50);
-                const filePath = `youtube/videos/${slug}-${Date.now()}.mp4`;
+                const filePath = `youtube/videos/${slug}-${stamp}.mp4`;
                 const buffer = new Uint8Array(await videoRes.arrayBuffer());
                 const { error } = await supabase.storage
                   .from("course-assets")
                   .upload(filePath, buffer, { contentType: "video/mp4", upsert: true });
                 if (!error) finalUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
+
+                // Companion thumbnail (if picked on montagem page).
+                if (thumbnailUrl) {
+                  send({ type: "progress", percent: 95, label: "A guardar thumbnail..." });
+                  try {
+                    const thumbRes = await fetch(thumbnailUrl);
+                    if (thumbRes.ok) {
+                      const ext = (thumbnailUrl.split("?")[0].split(".").pop() || "jpg").toLowerCase();
+                      const safeExt = ["jpg", "jpeg", "png", "webp"].includes(ext) ? ext : "jpg";
+                      const thumbPath = `youtube/videos/${slug}-${stamp}-thumb.${safeExt}`;
+                      const thumbBuffer = new Uint8Array(await thumbRes.arrayBuffer());
+                      await supabase.storage
+                        .from("course-assets")
+                        .upload(thumbPath, thumbBuffer, {
+                          contentType: thumbRes.headers.get("content-type") || `image/${safeExt}`,
+                          upsert: true,
+                        });
+                    }
+                  } catch { /* thumbnail is optional */ }
+                }
               }
             } catch { /* fallback to Shotstack URL */ }
           }
