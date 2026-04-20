@@ -801,7 +801,7 @@ export default function YouTubeMontagem() {
         </h3>
 
         <p className="mb-3 text-xs text-escola-creme-50">
-          Os {filledClips} clips únicos serão baralhados e repetidos para preencher 1 hora ({TOTAL_CLIPS_NEEDED} clips × {CLIP_DURATION}s).
+          Os {filledClips} clips únicos serão repetidos pela ORDEM definida (sem baralhar) para preencher 1 hora ({TOTAL_CLIPS_NEEDED} clips × {CLIP_DURATION}s).
           Render via Shotstack (cloud). O vídeo fica no Supabase.
         </p>
 

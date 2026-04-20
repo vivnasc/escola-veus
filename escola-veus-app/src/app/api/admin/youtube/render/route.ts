@@ -108,16 +108,15 @@ export async function POST(req: NextRequest) {
     seo,
   } = body;
 
-  // Support both: uniqueClips (shuffled to fill targetDuration) or clips (direct list)
+  // Support both: uniqueClips (looped in order to fill targetDuration) or clips (direct list)
   let clips: string[];
   if (uniqueClips && Array.isArray(uniqueClips) && uniqueClips.length > 0) {
     const valid = uniqueClips.filter((u: string) => u && u.trim().length > 0);
     const totalNeeded = Math.ceil(targetDuration / clipDuration);
+    // Loop the user-supplied order (no shuffle) to preserve group sequencing.
     clips = [];
-    // Shuffle and repeat to fill duration
-    for (let i = 0; clips.length < totalNeeded; i++) {
-      const shuffled = [...valid].sort(() => Math.random() - 0.5);
-      clips.push(...shuffled);
+    while (clips.length < totalNeeded) {
+      clips.push(...valid);
     }
     clips = clips.slice(0, totalNeeded);
   } else if (rawClips && Array.isArray(rawClips)) {
