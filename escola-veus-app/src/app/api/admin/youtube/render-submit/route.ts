@@ -77,24 +77,29 @@ function buildEdit(
   musicVolume: number,
   clipDuration: number,
 ) {
-  // Crossfade between clips using 2 alternating tracks.
-  // Each clip has a 0.5s fade in + fade out. Adjacent clips overlap by 0.5s so
-  // the out-fade of clip N happens simultaneously with the in-fade of clip N+1.
-  // This masks any dark first/last frames that Runway-generated clips often
-  // have, eliminating the flashing between cuts. Clips on the same track
-  // cannot overlap, so we alternate even-indexed clips on track A and
-  // odd-indexed on track B.
-  const OVERLAP = 0.5; // seconds
-  const stride = clipDuration - OVERLAP; // how much time each clip advances the timeline
+  // Two-track overlap with HARD cuts (no fade transitions).
+  // - Each clip full length (clipDuration, e.g. 10s — match Runway source).
+  // - Adjacent clips overlap by OVERLAP seconds.
+  // - trackB is above trackA: during the overlap, the next clip covers the
+  //   previous. Result: first & last OVERLAP seconds of every clip are hidden
+  //   behind the neighbour — exactly where Runway tends to put jittery
+  //   first/last frames. No fade-to-black midpoint (fade transitions caused
+  //   the mid-crossfade darkening perceived as "flashing").
+  const OVERLAP = 0.5;
+  const stride = clipDuration - OVERLAP;
+  const lastIndex = clips.length - 1;
   const trackA: unknown[] = [];
   const trackB: unknown[] = [];
   clips.forEach((url, i) => {
+    const transition: { in?: "fade"; out?: "fade" } = {};
+    if (i === 0) transition.in = "fade";            // gentle opening
+    if (i === lastIndex) transition.out = "fade";   // gentle closing
     const clip = {
       asset: { type: "video" as const, src: url, volume: 0 },
       start: i * stride,
       length: clipDuration,
       fit: "crop" as const,
-      transition: { in: "fade" as const, out: "fade" as const },
+      ...(transition.in || transition.out ? { transition } : {}),
     };
     (i % 2 === 0 ? trackA : trackB).push(clip);
   });

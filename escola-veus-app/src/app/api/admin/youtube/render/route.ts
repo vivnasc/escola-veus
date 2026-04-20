@@ -41,18 +41,24 @@ function buildYouTubeEdit(
   musicVolume: number,
   clipDuration: number,
 ) {
-  // Crossfade between clips via 2 alternating tracks with 0.5s overlap.
+  // Two-track overlap with HARD cuts — the next clip covers the previous
+  // during the overlap, hiding the jittery first/last frames Runway tends to
+  // produce. Fade transitions caused mid-crossfade darkening = "flashing".
   const OVERLAP = 0.5;
   const stride = clipDuration - OVERLAP;
+  const lastIndex = clips.length - 1;
   const trackA: unknown[] = [];
   const trackB: unknown[] = [];
   clips.forEach((url, i) => {
+    const transition: { in?: "fade"; out?: "fade" } = {};
+    if (i === 0) transition.in = "fade";
+    if (i === lastIndex) transition.out = "fade";
     const clip = {
       asset: { type: "video" as const, src: url, volume: 0 },
       start: i * stride,
       length: clipDuration,
       fit: "crop" as const,
-      transition: { in: "fade" as const, out: "fade" as const },
+      ...(transition.in || transition.out ? { transition } : {}),
     };
     (i % 2 === 0 ? trackA : trackB).push(clip);
   });
