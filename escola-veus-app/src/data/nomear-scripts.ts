@@ -18,6 +18,67 @@ export type NomearPreset = {
 
 export const NOMEAR_PRESETS: NomearPreset[] = [
   {
+    id: "nomear-trailer",
+    titulo: "Trailer — Escola dos Véus",
+    descricao: "Apresentação do canal. Primeiro vídeo que novos espectadores vêem.",
+    scripts: [
+      {
+        id: "nomear-trailer-00",
+        titulo: "Trailer Escola dos Véus",
+        curso: "geral",
+        texto: `[calm] Há frases que o teu corpo já sabe de cor.
+
+[pause]
+
+Mas que nunca ninguém te disse.
+
+[long pause]
+
+A culpa que chega antes da compra. O sim que sai antes do corpo decidir. A fome que não é fome. [short pause] O silêncio que pesa.
+
+[pause]
+
+[thoughtful] Não aprendeste estas coisas sozinha.
+
+Aprendeste-as em cozinhas que já não existem. Em suspiros que nunca foram explicados. Em olhares que mudaram quando o assunto chegou.
+
+[long pause]
+
+Este canal chama-se Escola dos Véus.
+
+[short pause]
+
+E não se ensina nada aqui.
+
+Nomeia-se.
+
+[pause]
+
+Cada vídeo é uma frase que o teu corpo já sabia — e que finalmente alguém disse em voz alta.
+
+Cada curso é um território que ainda não te tinham mostrado.
+
+[short pause]
+
+Dinheiro. Corpo. Limites. Voz. Fome. Silêncio. Herança.
+
+[short pause]
+
+Tudo o que aprendeste a engolir.
+
+[long pause]
+
+Se alguma destas frases te tocou, [short pause] subscreve.
+
+Há um novo véu a cair de cada vez.
+
+[pause]
+
+Escola dos Véus. [short pause] seteveus.space.`,
+      },
+    ],
+  },
+  {
     id: "nomear-serie-1",
     titulo: "Série Nomear — Episódios 1-10",
     descricao: "10 pilares YouTube: Ouro Próprio + Limite Sagrado + transversais.",
