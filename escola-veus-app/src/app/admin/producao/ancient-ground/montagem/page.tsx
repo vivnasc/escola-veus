@@ -200,7 +200,7 @@ function seoFromMetadata(videoId: string, planTitle: string, categorias: string[
 const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
 const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
-const CLIP_DURATION = 15; // seconds
+const CLIP_DURATION = 10; // seconds — matches Runway gen4_turbo clip length
 const DURATION_PRESETS: Array<{ label: string; seconds: number; credits: number }> = [
   { label: "5 min (teste — 5 créditos)", seconds: 300, credits: 5 },
   { label: "10 min (10 créditos)", seconds: 600, credits: 10 },
