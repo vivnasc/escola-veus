@@ -370,6 +370,18 @@ export default function YouTubeMontagem() {
     saveState();
   }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo, saveState]);
 
+  // Auto-generate SEO when a video is selected but the fields are still empty.
+  // Covers the case where videoId comes from localStorage (user had selected a
+  // video in a previous session before the SEO generator existed).
+  useEffect(() => {
+    if (!videoId) return;
+    if (seo.postTitle.trim() || seo.description.trim()) return; // user already has content
+    const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === videoId);
+    if (!plan) return;
+    const durationMin = Math.round(VIDEO_DURATION / 60);
+    setSeo(seoFromMetadata(videoId, plan.titulo, plan.categorias, durationMin));
+  }, [videoId, seo.postTitle, seo.description]);
+
   // Sync with Supabase — re-fetch and merge (keeps user ordering, adds new clips).
   const syncClipsFromSupabase = useCallback(async () => {
     try {
