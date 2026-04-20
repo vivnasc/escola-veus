@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import COURSES from "@/data/courses";
 
@@ -25,6 +26,21 @@ export default function AulasPage() {
           Vídeo = slides + música Ancient Ground (sem voz). Áudio ElevenLabs é
           entrega separada para quem prefere ouvir.
         </p>
+      </div>
+
+      <div className="mb-6 flex flex-wrap gap-2 text-xs">
+        <Link
+          href="/admin/producao/audios"
+          className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
+        >
+          → Áudios ElevenLabs (cursos)
+        </Link>
+        <Link
+          href="/admin/escola/materiais"
+          className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
+        >
+          → Manuais & cadernos
+        </Link>
       </div>
 
       <div className="space-y-2">

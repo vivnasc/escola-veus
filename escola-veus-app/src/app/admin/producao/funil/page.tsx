@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 import promptsData from "@/data/thinkdiffusion-prompts.json";
@@ -34,6 +35,21 @@ export default function FunilPage() {
             imagens
           </p>
         </div>
+      </div>
+
+      <div className="mb-6 flex flex-wrap gap-2 text-xs">
+        <Link
+          href="/admin/producao/audios"
+          className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
+        >
+          → Áudios ElevenLabs (Nomear)
+        </Link>
+        <Link
+          href="/admin/producao/ancient-ground"
+          className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
+        >
+          → Imagens / clips (ThinkDiffusion + Runway)
+        </Link>
       </div>
 
       <div className="space-y-2">
