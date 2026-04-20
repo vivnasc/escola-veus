@@ -127,7 +127,9 @@ export default function YouTubeMontagem() {
   const [previewing, setPreviewing] = useState(false);
   const [previewClipIndex, setPreviewClipIndex] = useState(0);
   const [previewTime, setPreviewTime] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRefA = useRef<HTMLVideoElement>(null);
+  const videoRefB = useRef<HTMLVideoElement>(null);
+  const [activeBuffer, setActiveBuffer] = useState<0 | 1>(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -217,11 +219,28 @@ export default function YouTubeMontagem() {
     }
   };
 
-  // Preview controls
+  // Preview controls — double-buffered to avoid load-delay between clips.
+  // Buffer A plays clip N, buffer B preloads clip N+1, then swap.
+  const getBuffer = (bufIdx: 0 | 1) => (bufIdx === 0 ? videoRefA.current : videoRefB.current);
+
+  const preloadInto = (bufIdx: 0 | 1, url: string | undefined) => {
+    const el = getBuffer(bufIdx);
+    if (!el) return;
+    if (!url) { el.removeAttribute("src"); el.load(); return; }
+    if (el.src !== url) {
+      el.src = url;
+      el.load();
+    }
+    el.pause();
+    el.currentTime = 0;
+  };
+
   const startPreview = () => {
+    if (orderedClipUrls.length === 0) return;
     setPreviewing(true);
     setPreviewClipIndex(0);
     setPreviewTime(0);
+    setActiveBuffer(0);
 
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
@@ -229,40 +248,53 @@ export default function YouTubeMontagem() {
       audioRef.current.play().catch(() => {});
     }
 
-    playClip(0);
+    // Buffer 0 = clip 0 (plays), buffer 1 = clip 1 (preload).
+    preloadInto(0, orderedClipUrls[0]);
+    preloadInto(1, orderedClipUrls[1]);
+    const a = getBuffer(0);
+    if (a) a.play().catch(() => {});
+
+    startClipTimer(0);
   };
 
   const stopPreview = () => {
     setPreviewing(false);
     if (timerRef.current) clearInterval(timerRef.current);
-    if (videoRef.current) videoRef.current.pause();
+    videoRefA.current?.pause();
+    videoRefB.current?.pause();
     if (audioRef.current) audioRef.current.pause();
   };
 
-  const playClip = (index: number) => {
-    if (index >= orderedClipUrls.length) {
-      stopPreview();
-      return;
-    }
-
-    setPreviewClipIndex(index);
-
-    const url = orderedClipUrls[index];
-    if (videoRef.current && url) {
-      videoRef.current.src = url;
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(() => {});
-    }
-
+  const startClipTimer = (clipIndex: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
     const startTime = Date.now();
     timerRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTime) / 1000;
-      setPreviewTime(index * CLIP_DURATION + elapsed);
-      if (elapsed >= CLIP_DURATION) {
-        playClip(index + 1);
-      }
+      setPreviewTime(clipIndex * CLIP_DURATION + elapsed);
     }, 100);
+  };
+
+  // Advance when the active clip ends naturally — no setInterval for clip swap.
+  const advancePreview = (endedBufIdx: 0 | 1) => {
+    const nextIndex = previewClipIndex + 1;
+    if (nextIndex >= orderedClipUrls.length) {
+      stopPreview();
+      return;
+    }
+    // The buffer that just ended now preloads the clip AFTER next.
+    const newActive: 0 | 1 = endedBufIdx === 0 ? 1 : 0;
+    const preloadUrl = orderedClipUrls[nextIndex + 1];
+    preloadInto(endedBufIdx, preloadUrl);
+
+    setActiveBuffer(newActive);
+    setPreviewClipIndex(nextIndex);
+
+    const cur = getBuffer(newActive);
+    if (cur) {
+      cur.currentTime = 0;
+      cur.play().catch(() => {});
+    }
+    startClipTimer(nextIndex);
   };
 
   const filledClips = orderedClipUrls.length;
@@ -584,10 +616,22 @@ export default function YouTubeMontagem() {
 
         <div className="relative aspect-video w-full overflow-hidden rounded bg-black">
           <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
+            ref={videoRefA}
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-75"
+            style={{ opacity: activeBuffer === 0 ? 1 : 0 }}
             muted
             playsInline
+            preload="auto"
+            onEnded={() => advancePreview(0)}
+          />
+          <video
+            ref={videoRefB}
+            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-75"
+            style={{ opacity: activeBuffer === 1 ? 1 : 0 }}
+            muted
+            playsInline
+            preload="auto"
+            onEnded={() => advancePreview(1)}
           />
 
           {previewing && (
