@@ -105,6 +105,7 @@ export async function POST(req: NextRequest) {
     musicVolume = 0.8,
     clipDuration = 15,
     thumbnailUrl,
+    seo,
   } = body;
 
   // Support both: uniqueClips (shuffled to fill targetDuration) or clips (direct list)
@@ -227,24 +228,50 @@ export async function POST(req: NextRequest) {
                   .upload(filePath, buffer, { contentType: "video/mp4", upsert: true });
                 if (!error) finalUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
 
-                // Companion thumbnail (if picked on montagem page).
+                // Companion thumbnail (composed data: URL OR raw image).
                 if (thumbnailUrl) {
                   send({ type: "progress", percent: 95, label: "A guardar thumbnail..." });
                   try {
-                    const thumbRes = await fetch(thumbnailUrl);
-                    if (thumbRes.ok) {
-                      const ext = (thumbnailUrl.split("?")[0].split(".").pop() || "jpg").toLowerCase();
-                      const safeExt = ["jpg", "jpeg", "png", "webp"].includes(ext) ? ext : "jpg";
+                    let thumbBuffer: Uint8Array | null = null;
+                    let safeExt = "jpg";
+                    let contentType = "image/jpeg";
+
+                    if (thumbnailUrl.startsWith("data:")) {
+                      // data:image/png;base64,XXXX
+                      const match = thumbnailUrl.match(/^data:(image\/\w+);base64,(.+)$/);
+                      if (match) {
+                        contentType = match[1];
+                        safeExt = contentType.split("/")[1] || "png";
+                        thumbBuffer = new Uint8Array(Buffer.from(match[2], "base64"));
+                      }
+                    } else {
+                      const thumbRes = await fetch(thumbnailUrl);
+                      if (thumbRes.ok) {
+                        const ext = (thumbnailUrl.split("?")[0].split(".").pop() || "jpg").toLowerCase();
+                        safeExt = ["jpg", "jpeg", "png", "webp"].includes(ext) ? ext : "jpg";
+                        contentType = thumbRes.headers.get("content-type") || `image/${safeExt}`;
+                        thumbBuffer = new Uint8Array(await thumbRes.arrayBuffer());
+                      }
+                    }
+
+                    if (thumbBuffer) {
                       const thumbPath = `youtube/videos/${slug}-${stamp}-thumb.${safeExt}`;
-                      const thumbBuffer = new Uint8Array(await thumbRes.arrayBuffer());
                       await supabase.storage
                         .from("course-assets")
-                        .upload(thumbPath, thumbBuffer, {
-                          contentType: thumbRes.headers.get("content-type") || `image/${safeExt}`,
-                          upsert: true,
-                        });
+                        .upload(thumbPath, thumbBuffer, { contentType, upsert: true });
                     }
                   } catch { /* thumbnail is optional */ }
+                }
+
+                // SEO sidecar JSON (title, description, hashtags) for later YouTube upload.
+                if (seo && (seo.postTitle || seo.description)) {
+                  try {
+                    const seoPath = `youtube/videos/${slug}-${stamp}-seo.json`;
+                    const seoBuffer = new Uint8Array(Buffer.from(JSON.stringify(seo, null, 2), "utf-8"));
+                    await supabase.storage
+                      .from("course-assets")
+                      .upload(seoPath, seoBuffer, { contentType: "application/json", upsert: true });
+                  } catch { /* optional */ }
                 }
               }
             } catch { /* fallback to Shotstack URL */ }

@@ -2,6 +2,32 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import videoPlan from "@/data/video-plan.json";
+import youtubeMetadata from "@/data/youtube-metadata.json";
+
+type SeoMeta = {
+  thumbnailTitle: string;
+  postTitle: string;
+  description: string;
+  hashtags: string[];
+};
+
+type YTMetadataVideo = { id: string; titulo_yt: string; descricao: string; hashtags: string[] };
+
+function emptyseo(): SeoMeta {
+  return { thumbnailTitle: "", postTitle: "", description: "", hashtags: [] };
+}
+
+// Pull metadata for a video by its plan id (e.g. video-01) from youtube-metadata.json.
+function seoFromMetadata(videoId: string, planTitle: string): SeoMeta {
+  const meta = (youtubeMetadata as { videos: YTMetadataVideo[] }).videos.find((v) => v.id === videoId);
+  if (!meta) return { ...emptyseo(), thumbnailTitle: planTitle };
+  return {
+    thumbnailTitle: planTitle, // short, derived from plan; user can edit
+    postTitle: meta.titulo_yt,
+    description: meta.descricao,
+    hashtags: meta.hashtags,
+  };
+}
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -32,6 +58,9 @@ type ProjectState = {
   groupOrder?: string[]; // ordered promptIds
   groupClips?: Record<string, string[]>; // promptId → ordered clip URLs
   thumbnailUrl?: string;
+  composedThumbnailDataUrl?: string; // canvas-composed thumbnail (data: URL)
+  seo?: SeoMeta;
+  videoId?: string; // video-XX from plan
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -92,6 +121,9 @@ export default function YouTubeMontagem() {
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
   const [groupClips, setGroupClips] = useState<Record<string, string[]>>({});
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
+  const [composedThumbnailDataUrl, setComposedThumbnailDataUrl] = useState<string>("");
+  const [videoId, setVideoId] = useState<string>("");
+  const [seo, setSeo] = useState<SeoMeta>(emptyseo());
   const [musicPair, setMusicPair] = useState(1); // pair 1 = faixas 01+02
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
@@ -125,6 +157,7 @@ export default function YouTubeMontagem() {
 
   // Preview
   const [previewing, setPreviewing] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [previewClipIndex, setPreviewClipIndex] = useState(0);
   const [previewTime, setPreviewTime] = useState(0);
   const videoRefA = useRef<HTMLVideoElement>(null);
@@ -142,6 +175,9 @@ export default function YouTubeMontagem() {
         if (state.title) setTitle(state.title);
         if (state.musicPair) setMusicPair(state.musicPair);
         if (state.thumbnailUrl) setThumbnailUrl(state.thumbnailUrl);
+        if (state.composedThumbnailDataUrl) setComposedThumbnailDataUrl(state.composedThumbnailDataUrl);
+        if (state.videoId) setVideoId(state.videoId);
+        if (state.seo) setSeo(state.seo);
         if (state.groupOrder && state.groupClips) {
           setGroupOrder(state.groupOrder);
           setGroupClips(state.groupClips);
@@ -157,13 +193,16 @@ export default function YouTubeMontagem() {
   }, []);
 
   const saveState = useCallback(() => {
-    const state: ProjectState = { title, clips: [], musicPair, groupOrder, groupClips, thumbnailUrl };
+    const state: ProjectState = {
+      title, clips: [], musicPair, groupOrder, groupClips,
+      thumbnailUrl, composedThumbnailDataUrl, videoId, seo,
+    };
     localStorage.setItem("yt-montagem-state", JSON.stringify(state));
-  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl]);
+  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo]);
 
   useEffect(() => {
     saveState();
-  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, saveState]);
+  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo, saveState]);
 
   // Sync with Supabase — re-fetch and merge (keeps user ordering, adds new clips).
   const syncClipsFromSupabase = useCallback(async () => {
@@ -238,6 +277,7 @@ export default function YouTubeMontagem() {
   const startPreview = () => {
     if (orderedClipUrls.length === 0) return;
     setPreviewing(true);
+    setPaused(false);
     setPreviewClipIndex(0);
     setPreviewTime(0);
     setActiveBuffer(0);
@@ -254,20 +294,41 @@ export default function YouTubeMontagem() {
     const a = getBuffer(0);
     if (a) a.play().catch(() => {});
 
-    startClipTimer(0);
+    startClipTimer(0, 0);
   };
 
   const stopPreview = () => {
     setPreviewing(false);
+    setPaused(false);
     if (timerRef.current) clearInterval(timerRef.current);
     videoRefA.current?.pause();
     videoRefB.current?.pause();
     if (audioRef.current) audioRef.current.pause();
   };
 
-  const startClipTimer = (clipIndex: number) => {
+  const pausePreview = () => {
+    setPaused(true);
     if (timerRef.current) clearInterval(timerRef.current);
-    const startTime = Date.now();
+    getBuffer(activeBuffer)?.pause();
+    audioRef.current?.pause();
+    audioRefB.current?.pause();
+  };
+
+  const resumePreview = () => {
+    setPaused(false);
+    const cur = getBuffer(activeBuffer);
+    if (cur) cur.play().catch(() => {});
+    if (currentTrackIndex === 0) audioRef.current?.play().catch(() => {});
+    else audioRefB.current?.play().catch(() => {});
+    // Resume timer accounting for already-elapsed time on this clip.
+    const cur2 = getBuffer(activeBuffer);
+    const elapsedOnClip = cur2 ? cur2.currentTime : 0;
+    startClipTimer(previewClipIndex, elapsedOnClip);
+  };
+
+  const startClipTimer = (clipIndex: number, startElapsed = 0) => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    const startTime = Date.now() - startElapsed * 1000;
     timerRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTime) / 1000;
       setPreviewTime(clipIndex * CLIP_DURATION + elapsed);
@@ -294,7 +355,7 @@ export default function YouTubeMontagem() {
       cur.currentTime = 0;
       cur.play().catch(() => {});
     }
-    startClipTimer(nextIndex);
+    startClipTimer(nextIndex, 0);
   };
 
   const filledClips = orderedClipUrls.length;
@@ -321,7 +382,9 @@ export default function YouTubeMontagem() {
           musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
-          thumbnailUrl: thumbnailUrl || undefined,
+          // Prefer composed (with text overlay); fallback to raw image.
+          thumbnailUrl: composedThumbnailDataUrl || thumbnailUrl || undefined,
+          seo,
         }),
       });
 
@@ -389,6 +452,9 @@ export default function YouTubeMontagem() {
         loop: "A → B → A → B...",
       },
       thumbnail: thumbnailUrl || null,
+      thumbnailComposedDataUrl: composedThumbnailDataUrl || null,
+      videoId: videoId || null,
+      seo,
       groups: groupOrder.map((pid) => ({
         promptId: pid,
         clips: groupClips[pid] || [],
@@ -411,9 +477,12 @@ export default function YouTubeMontagem() {
   const resetProject = () => {
     if (!confirm("Limpar tudo e começar de novo?")) return;
     setTitle("");
+    setVideoId("");
+    setSeo(emptyseo());
     setGroupOrder([]);
     setGroupClips({});
     setThumbnailUrl("");
+    setComposedThumbnailDataUrl("");
     setMusicPair(1);
     localStorage.removeItem("yt-montagem-state");
   };
@@ -468,13 +537,22 @@ export default function YouTubeMontagem() {
           1. Vídeo
         </h3>
         <select
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={videoId}
+          onChange={(e) => {
+            const id = e.target.value;
+            const plan = (videoPlan as Array<{id: string; titulo: string}>).find((v) => v.id === id);
+            setVideoId(id);
+            setTitle(plan?.titulo || "");
+            // Auto-fill SEO if not customised yet (or always when video changes — user can edit).
+            if (id && plan) {
+              setSeo(seoFromMetadata(id, plan.titulo));
+            }
+          }}
           className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
         >
           <option value="">Selecciona o vídeo...</option>
           {(videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).map((v) => (
-            <option key={v.id} value={v.titulo}>
+            <option key={v.id} value={v.id}>
               {v.id.replace("video-", "#")} — {v.titulo} ({v.categorias.join(" + ")})
             </option>
           ))}
@@ -605,7 +683,16 @@ export default function YouTubeMontagem() {
       </section>
 
       {/* ── 3B. THUMBNAIL ── */}
-      <ThumbnailSection thumbnailUrl={thumbnailUrl} onSelect={setThumbnailUrl} />
+      <SeoComposerSection
+        thumbnailUrl={thumbnailUrl}
+        onSelect={setThumbnailUrl}
+        seo={seo}
+        onSeoChange={setSeo}
+        videoId={videoId}
+        title={title}
+        composedDataUrl={composedThumbnailDataUrl}
+        onComposedChange={setComposedThumbnailDataUrl}
+      />
 
 
       {/* ── 4. PREVIEW ── */}
@@ -662,7 +749,7 @@ export default function YouTubeMontagem() {
           </div>
         )}
 
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {!previewing ? (
             <button
               onClick={startPreview}
@@ -672,12 +759,29 @@ export default function YouTubeMontagem() {
               ▶ Play
             </button>
           ) : (
-            <button
-              onClick={stopPreview}
-              className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white"
-            >
-              ⏹ Parar
-            </button>
+            <>
+              {paused ? (
+                <button
+                  onClick={resumePreview}
+                  className="rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white"
+                >
+                  ▶ Continuar
+                </button>
+              ) : (
+                <button
+                  onClick={pausePreview}
+                  className="rounded bg-yellow-700 px-4 py-2 text-sm font-semibold text-white"
+                >
+                  ⏸ Pause
+                </button>
+              )}
+              <button
+                onClick={stopPreview}
+                className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white"
+              >
+                ⏹ Parar
+              </button>
+            </>
           )}
 
           <button
@@ -755,9 +859,286 @@ export default function YouTubeMontagem() {
   );
 }
 
-// ── Thumbnail picker ─────────────────────────────────────────────────────────
+// ── SEO + Thumbnail composer ─────────────────────────────────────────────────
 
 type ImageItem = { name: string; url: string; promptId: string };
+
+const THUMB_W = 1280;
+const THUMB_H = 720;
+
+// Compose a YouTube thumbnail (1280x720) on canvas:
+// background image (cover) + bottom gradient + title (DM Serif) + tagline.
+async function composeThumbnail(
+  imageUrl: string,
+  title: string,
+  tagline: string,
+): Promise<string> {
+  const canvas = document.createElement("canvas");
+  canvas.width = THUMB_W;
+  canvas.height = THUMB_H;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return "";
+
+  // Load image (CORS so we can export the canvas).
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const i = new Image();
+    i.crossOrigin = "anonymous";
+    i.onload = () => resolve(i);
+    i.onerror = (e) => reject(e);
+    i.src = imageUrl;
+  });
+
+  // Cover-fit the image to 1280x720.
+  const imgRatio = img.width / img.height;
+  const targetRatio = THUMB_W / THUMB_H;
+  let sx = 0, sy = 0, sw = img.width, sh = img.height;
+  if (imgRatio > targetRatio) {
+    sw = img.height * targetRatio;
+    sx = (img.width - sw) / 2;
+  } else {
+    sh = img.width / targetRatio;
+    sy = (img.height - sh) / 2;
+  }
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, THUMB_W, THUMB_H);
+
+  // Bottom gradient overlay for legibility.
+  const grad = ctx.createLinearGradient(0, THUMB_H * 0.45, 0, THUMB_H);
+  grad.addColorStop(0, "rgba(0,0,0,0)");
+  grad.addColorStop(1, "rgba(0,0,0,0.85)");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, THUMB_W, THUMB_H);
+
+  // Title: large, white, with shadow. Wrap to 2 lines max.
+  ctx.shadowColor = "rgba(0,0,0,0.85)";
+  ctx.shadowBlur = 16;
+  ctx.shadowOffsetY = 4;
+  ctx.fillStyle = "#FFFFFF";
+  ctx.font = `700 96px "DM Serif Display", "Times New Roman", serif`;
+  ctx.textBaseline = "alphabetic";
+  const padX = 64;
+  const maxW = THUMB_W - padX * 2;
+  const lines = wrapText(ctx, title, maxW, 2);
+  let y = THUMB_H - 80 - (lines.length - 1) * 100;
+  for (const line of lines) {
+    ctx.fillText(line, padX, y);
+    y += 100;
+  }
+
+  // Tagline (smaller, coral).
+  if (tagline) {
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = "#E94560";
+    ctx.font = `600 36px "Nunito", system-ui, sans-serif`;
+    ctx.fillText(tagline, padX, THUMB_H - 28);
+  }
+
+  return canvas.toDataURL("image/png");
+}
+
+// Wrap text to up to maxLines, ellipsis the last line if it overflows.
+function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number, maxLines: number): string[] {
+  const words = text.split(/\s+/);
+  const lines: string[] = [];
+  let line = "";
+  for (const w of words) {
+    const tryLine = line ? `${line} ${w}` : w;
+    if (ctx.measureText(tryLine).width > maxWidth) {
+      if (line) lines.push(line);
+      line = w;
+      if (lines.length >= maxLines - 1) break;
+    } else {
+      line = tryLine;
+    }
+  }
+  if (line && lines.length < maxLines) lines.push(line);
+  if (lines.length >= maxLines && words.length > lines.flatMap((l) => l.split(" ")).length) {
+    let last = lines[maxLines - 1];
+    while (ctx.measureText(last + "…").width > maxWidth && last.length > 0) last = last.slice(0, -1);
+    lines[maxLines - 1] = last + "…";
+  }
+  return lines;
+}
+
+function SeoComposerSection({
+  thumbnailUrl,
+  onSelect,
+  seo,
+  onSeoChange,
+  videoId,
+  title,
+  composedDataUrl,
+  onComposedChange,
+}: {
+  thumbnailUrl: string;
+  onSelect: (url: string) => void;
+  seo: SeoMeta;
+  onSeoChange: (s: SeoMeta) => void;
+  videoId: string;
+  title: string;
+  composedDataUrl: string;
+  onComposedChange: (dataUrl: string) => void;
+}) {
+  const [composing, setComposing] = useState(false);
+  const [composeError, setComposeError] = useState<string>("");
+
+  // Re-compose when image, title, or tagline changes.
+  useEffect(() => {
+    if (!thumbnailUrl || !seo.thumbnailTitle.trim()) {
+      onComposedChange("");
+      return;
+    }
+    let cancelled = false;
+    setComposing(true);
+    setComposeError("");
+    composeThumbnail(thumbnailUrl, seo.thumbnailTitle, "music.seteveus.space")
+      .then((dataUrl) => { if (!cancelled) onComposedChange(dataUrl); })
+      .catch((e) => { if (!cancelled) setComposeError(e?.message || "Erro a compor (CORS na imagem?)"); })
+      .finally(() => { if (!cancelled) setComposing(false); });
+    return () => { cancelled = true; };
+  }, [thumbnailUrl, seo.thumbnailTitle, onComposedChange]);
+
+  const downloadComposed = () => {
+    if (!composedDataUrl) return;
+    const a = document.createElement("a");
+    a.href = composedDataUrl;
+    a.download = `thumbnail-${videoId || "youtube"}.png`;
+    a.click();
+  };
+
+  const refillFromMetadata = () => {
+    if (!videoId) return;
+    onSeoChange(seoFromMetadata(videoId, title));
+  };
+
+  const updateSeo = (patch: Partial<SeoMeta>) => onSeoChange({ ...seo, ...patch });
+
+  return (
+    <>
+      {/* 3B — Picker da imagem base */}
+      <ThumbnailSection thumbnailUrl={thumbnailUrl} onSelect={onSelect} />
+
+      {/* 3C — SEO + Thumbnail composer */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
+            3C. SEO + Thumbnail YouTube
+          </h3>
+          <button
+            onClick={refillFromMetadata}
+            disabled={!videoId}
+            className="text-xs text-escola-creme-50 hover:text-escola-creme disabled:opacity-30"
+          >
+            Auto-preencher do metadata
+          </button>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          {/* Esquerda: campos editáveis */}
+          <div className="space-y-3">
+            <div>
+              <label className="mb-1 block text-xs text-escola-creme-50">
+                Título da thumbnail (curto, 2-4 palavras)
+              </label>
+              <input
+                type="text"
+                value={seo.thumbnailTitle}
+                onChange={(e) => updateSeo({ thumbnailTitle: e.target.value })}
+                placeholder="Oceano Índico"
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-escola-creme-50">
+                Título do post YouTube (SEO completo)
+              </label>
+              <input
+                type="text"
+                value={seo.postTitle}
+                onChange={(e) => updateSeo({ postTitle: e.target.value })}
+                placeholder="🌊 Indian Ocean Mozambique — 10 Min Relaxing..."
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+              />
+              <p className="mt-1 text-xs text-escola-creme-50">{seo.postTitle.length}/100 chars</p>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-escola-creme-50">Descrição</label>
+              <textarea
+                value={seo.description}
+                onChange={(e) => updateSeo({ description: e.target.value })}
+                rows={6}
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+              />
+              <p className="mt-1 text-xs text-escola-creme-50">{seo.description.length} chars</p>
+            </div>
+            <div>
+              <label className="mb-1 block text-xs text-escola-creme-50">
+                Hashtags (uma por linha ou separadas por espaço)
+              </label>
+              <textarea
+                value={seo.hashtags.join(" ")}
+                onChange={(e) =>
+                  updateSeo({
+                    hashtags: e.target.value
+                      .split(/\s+/)
+                      .map((h) => h.trim())
+                      .filter((h) => h.startsWith("#")),
+                  })
+                }
+                rows={3}
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme"
+              />
+              <p className="mt-1 text-xs text-escola-creme-50">{seo.hashtags.length} hashtags</p>
+            </div>
+          </div>
+
+          {/* Direita: preview da thumbnail composta */}
+          <div className="space-y-2">
+            <p className="text-xs text-escola-creme-50">Preview thumbnail YouTube (1280×720)</p>
+            <div className="relative aspect-video w-full overflow-hidden rounded border border-escola-border bg-black">
+              {composedDataUrl ? (
+                <img src={composedDataUrl} alt="Thumbnail composta" className="h-full w-full object-cover" />
+              ) : thumbnailUrl ? (
+                <div className="flex h-full w-full items-center justify-center text-xs text-escola-creme-50">
+                  {composing ? "A compor..." : "Escreve um título para gerar"}
+                </div>
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-xs text-escola-creme-50">
+                  Escolhe uma imagem em 3B
+                </div>
+              )}
+            </div>
+            {composeError && (
+              <p className="text-xs text-red-400">{composeError}</p>
+            )}
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={downloadComposed}
+                disabled={!composedDataUrl}
+                className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-30"
+              >
+                Descarregar PNG
+              </button>
+              <button
+                onClick={() => navigator.clipboard.writeText(seo.postTitle)}
+                disabled={!seo.postTitle}
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-border/30 disabled:opacity-30"
+              >
+                Copiar título
+              </button>
+              <button
+                onClick={() => navigator.clipboard.writeText(`${seo.description}\n\n${seo.hashtags.join(" ")}`)}
+                disabled={!seo.description}
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-border/30 disabled:opacity-30"
+              >
+                Copiar descrição + hashtags
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
 
 function ThumbnailSection({
   thumbnailUrl,
