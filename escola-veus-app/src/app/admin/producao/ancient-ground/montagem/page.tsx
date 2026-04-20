@@ -201,8 +201,13 @@ const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
 const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
 const CLIP_DURATION = 15; // seconds
-const VIDEO_DURATION = 3600; // 1 hour
-const TOTAL_CLIPS_NEEDED = VIDEO_DURATION / CLIP_DURATION; // 240 clips (repetidos do set)
+const DURATION_PRESETS: Array<{ label: string; seconds: number; credits: number }> = [
+  { label: "5 min (teste — 5 créditos)", seconds: 300, credits: 5 },
+  { label: "10 min (10 créditos)", seconds: 600, credits: 10 },
+  { label: "30 min (30 créditos)", seconds: 1800, credits: 30 },
+  { label: "1 h (60 créditos)", seconds: 3600, credits: 60 },
+];
+const DEFAULT_VIDEO_DURATION = 3600;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -286,6 +291,8 @@ export default function YouTubeMontagem() {
   // Group state: ordered promptIds + per-group ordered clip URLs.
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
   const [groupClips, setGroupClips] = useState<Record<string, string[]>>({});
+  const [videoDuration, setVideoDuration] = useState<number>(DEFAULT_VIDEO_DURATION);
+  const totalClipsNeeded = Math.ceil(videoDuration / CLIP_DURATION);
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [composedThumbnailDataUrl, setComposedThumbnailDataUrl] = useState<string>("");
   const [videoId, setVideoId] = useState<string>("");
@@ -369,6 +376,26 @@ export default function YouTubeMontagem() {
   useEffect(() => {
     saveState();
   }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo, saveState]);
+
+  // Legacy migration: older localStorage only kept `title` (the human titulo),
+  // never `videoId`. If title matches a plan entry, restore the videoId.
+  useEffect(() => {
+    if (videoId || !title) return;
+    const plan = (videoPlan as Array<{id: string; titulo: string}>).find((v) => v.titulo === title);
+    if (plan) setVideoId(plan.id);
+  }, [videoId, title]);
+
+  // Auto-generate SEO when a video is selected but the fields are still empty.
+  // Covers the case where videoId comes from localStorage (user had selected a
+  // video in a previous session before the SEO generator existed).
+  useEffect(() => {
+    if (!videoId) return;
+    if (seo.postTitle.trim() || seo.description.trim()) return; // user already has content
+    const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === videoId);
+    if (!plan) return;
+    const durationMin = Math.round(videoDuration / 60);
+    setSeo(seoFromMetadata(videoId, plan.titulo, plan.categorias, durationMin));
+  }, [videoId, seo.postTitle, seo.description]);
 
   // Sync with Supabase — re-fetch and merge (keeps user ordering, adds new clips).
   const syncClipsFromSupabase = useCallback(async () => {
@@ -545,7 +572,7 @@ export default function YouTubeMontagem() {
         body: JSON.stringify({
           title,
           uniqueClips: validClips,
-          targetDuration: VIDEO_DURATION,
+          targetDuration: videoDuration,
           musicUrls: [musicUrlA, musicUrlB],
           musicVolume: 0.8,
           clipDuration: CLIP_DURATION,
@@ -646,9 +673,9 @@ export default function YouTubeMontagem() {
     const project = {
       title,
       specs: {
-        duration: VIDEO_DURATION,
+        duration: videoDuration,
         uniqueClips: filledClips,
-        totalClips: TOTAL_CLIPS_NEEDED,
+        totalClips: totalClipsNeeded,
         clipDuration: CLIP_DURATION,
       },
       music: {
@@ -727,7 +754,7 @@ export default function YouTubeMontagem() {
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-xs text-escola-creme-50">
-            {filledClips} clips únicos → {VIDEO_DURATION / 60} min (1h)
+            {filledClips} clips únicos · {Math.round(videoDuration / 60)} min alvo
           </span>
           <button
             onClick={resetProject}
@@ -752,7 +779,7 @@ export default function YouTubeMontagem() {
             setTitle(plan?.titulo || "");
             // Auto-fill SEO (hand-written metadata OR generated template).
             if (id && plan) {
-              const durationMin = Math.round(VIDEO_DURATION / 60);
+              const durationMin = Math.round(videoDuration / 60);
               setSeo(seoFromMetadata(id, plan.titulo, plan.categorias, durationMin));
             }
           }}
@@ -900,6 +927,7 @@ export default function YouTubeMontagem() {
         title={title}
         composedDataUrl={composedThumbnailDataUrl}
         onComposedChange={setComposedThumbnailDataUrl}
+        videoDurationSec={videoDuration}
       />
 
 
@@ -952,7 +980,7 @@ export default function YouTubeMontagem() {
           <div className="mt-2 h-1.5 w-full rounded-full bg-escola-border">
             <div
               className="h-full rounded-full bg-escola-coral transition-all"
-              style={{ width: `${(previewTime / VIDEO_DURATION) * 100}%` }}
+              style={{ width: `${(previewTime / videoDuration) * 100}%` }}
             />
           </div>
         )}
@@ -1009,7 +1037,7 @@ export default function YouTubeMontagem() {
         </h3>
 
         <p className="mb-3 text-xs text-escola-creme-50">
-          Os {filledClips} clips únicos serão repetidos pela ORDEM definida (sem baralhar) para preencher 1 hora ({TOTAL_CLIPS_NEEDED} clips × {CLIP_DURATION}s).
+          Os {filledClips} clips únicos serão repetidos pela ORDEM definida (sem baralhar) para preencher {Math.round(videoDuration / 60)} min ({totalClipsNeeded} clips × {CLIP_DURATION}s).
           Render via Shotstack (cloud). O vídeo fica no Supabase.
         </p>
 
@@ -1055,15 +1083,172 @@ export default function YouTubeMontagem() {
           </div>
         )}
 
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <label className="text-xs text-escola-creme-50">Duração:</label>
+          <select
+            value={videoDuration}
+            onChange={(e) => setVideoDuration(Number(e.target.value))}
+            disabled={rendering}
+            className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
+          >
+            {DURATION_PRESETS.map((p) => (
+              <option key={p.seconds} value={p.seconds}>{p.label}</option>
+            ))}
+          </select>
+        </div>
+
         <button
           onClick={startRender}
           disabled={filledClips === 0 || rendering}
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
-          {rendering ? "A renderizar..." : `Gerar MP4 de 1h (${filledClips} clips únicos → ${TOTAL_CLIPS_NEEDED} total)`}
+          {rendering ? "A renderizar..." : `Gerar MP4 de ${Math.round(videoDuration / 60)} min (${filledClips} clips únicos → ${totalClipsNeeded} total)`}
         </button>
       </section>
+
+      {/* ── 6. UPLOAD MANUAL DO MP4 (drag-and-drop) ── */}
+      <UploadMp4Section
+        title={title}
+        thumbnailUrl={composedThumbnailDataUrl || thumbnailUrl}
+        seo={seo}
+      />
     </div>
+  );
+}
+
+// ── Upload MP4 drag-and-drop ─────────────────────────────────────────────────
+
+function UploadMp4Section({
+  title,
+  thumbnailUrl,
+  seo,
+}: {
+  title: string;
+  thumbnailUrl: string;
+  seo: SeoMeta;
+}) {
+  const [dragging, setDragging] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [result, setResult] = useState<{ videoUrl: string; thumbnailUrl: string | null; seoUrl: string | null; filename: string } | null>(null);
+  const [error, setError] = useState<string>("");
+
+  const handleFile = async (file: File) => {
+    if (!file.type.startsWith("video/")) {
+      setError("Só ficheiros de vídeo.");
+      return;
+    }
+    if (!title.trim()) {
+      setError("Escolhe um vídeo em cima (secção 1) — o nome do ficheiro será derivado do título.");
+      return;
+    }
+
+    setError("");
+    setResult(null);
+    setUploading(true);
+    setProgress(0);
+
+    const form = new FormData();
+    form.append("file", file);
+    form.append("title", title);
+    if (thumbnailUrl) form.append("thumbnailUrl", thumbnailUrl);
+    if (seo) form.append("seo", JSON.stringify(seo));
+
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/admin/youtube/upload-mp4");
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) setProgress(Math.round((e.loaded / e.total) * 100));
+      };
+      xhr.onload = () => {
+        setUploading(false);
+        try {
+          const data = JSON.parse(xhr.responseText);
+          if (xhr.status !== 200) { setError(data.erro || `HTTP ${xhr.status}`); return; }
+          setResult(data);
+          setProgress(100);
+        } catch {
+          setError("Resposta invalida do servidor.");
+        }
+      };
+      xhr.onerror = () => { setUploading(false); setError("Erro de rede."); };
+      xhr.send(form);
+    } catch (err) {
+      setUploading(false);
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFile(file);
+  };
+
+  return (
+    <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+        6. Guardar MP4 já renderizado (drag-and-drop)
+      </h3>
+      <p className="mb-3 text-xs text-escola-creme-50">
+        Arrasta aqui o MP4 que já descarregaste do Shotstack. Vou renomear para{" "}
+        <code className="rounded bg-black/40 px-1">{(title || "youtube").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50)}-&lt;timestamp&gt;.mp4</code>{" "}
+        e guardar no Supabase (youtube/videos/) junto com a thumbnail composta e o SEO.
+      </p>
+
+      <label
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={onDrop}
+        className={`flex aspect-[5/1] w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed text-sm transition ${
+          dragging ? "border-escola-coral bg-escola-coral/10 text-escola-coral" : "border-escola-border text-escola-creme-50 hover:border-escola-coral/60"
+        }`}
+      >
+        <input
+          type="file"
+          accept="video/mp4,video/*"
+          className="hidden"
+          onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+        />
+        {dragging ? "Larga aqui o MP4..." : "Arrasta ou clica para escolher o MP4"}
+      </label>
+
+      {uploading && (
+        <div className="mt-3">
+          <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
+            <span>A enviar para Supabase...</span>
+            <span>{progress}%</span>
+          </div>
+          <div className="h-2 w-full rounded-full bg-escola-border">
+            <div className="h-full rounded-full bg-escola-coral transition-all" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+      )}
+
+      {error && <div className="mt-3 rounded bg-red-950/50 p-2 text-xs text-red-300">Erro: {error}</div>}
+
+      {result && (
+        <div className="mt-3 space-y-2 rounded bg-green-950/50 p-3 text-xs text-green-300">
+          <p>Guardado como <code className="rounded bg-black/40 px-1">{result.filename}</code></p>
+          <div className="flex flex-wrap gap-2">
+            <a href={result.videoUrl} target="_blank" rel="noopener noreferrer" className="rounded bg-escola-coral px-3 py-1 font-semibold text-white">
+              Abrir vídeo
+            </a>
+            {result.thumbnailUrl && (
+              <a href={result.thumbnailUrl} target="_blank" rel="noopener noreferrer" className="rounded border border-escola-border px-3 py-1 text-escola-creme hover:bg-escola-border/30">
+                Thumbnail
+              </a>
+            )}
+            {result.seoUrl && (
+              <a href={result.seoUrl} target="_blank" rel="noopener noreferrer" className="rounded border border-escola-border px-3 py-1 text-escola-creme hover:bg-escola-border/30">
+                SEO JSON
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -1176,6 +1361,7 @@ function SeoComposerSection({
   title,
   composedDataUrl,
   onComposedChange,
+  videoDurationSec,
 }: {
   thumbnailUrl: string;
   onSelect: (url: string) => void;
@@ -1185,6 +1371,7 @@ function SeoComposerSection({
   title: string;
   composedDataUrl: string;
   onComposedChange: (dataUrl: string) => void;
+  videoDurationSec: number;
 }) {
   const [composing, setComposing] = useState(false);
   const [composeError, setComposeError] = useState<string>("");
@@ -1214,11 +1401,17 @@ function SeoComposerSection({
   };
 
   const refillFromMetadata = () => {
-    if (!videoId) return;
-    const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === videoId);
-    const categorias = plan?.categorias || [];
-    const durationMin = Math.round(VIDEO_DURATION / 60);
-    onSeoChange(seoFromMetadata(videoId, title, categorias, durationMin));
+    // Resolve plan via videoId OR title (legacy state may lack videoId).
+    const plans = videoPlan as Array<{id: string; titulo: string; categorias: string[]}>;
+    const plan =
+      plans.find((v) => v.id === videoId) ||
+      plans.find((v) => v.titulo === title);
+    if (!plan) {
+      alert("Escolhe um vídeo em cima (secção 1) antes de gerar SEO.");
+      return;
+    }
+    const durationMin = Math.round(videoDurationSec / 60);
+    onSeoChange(seoFromMetadata(plan.id, plan.titulo, plan.categorias, durationMin));
   };
 
   const updateSeo = (patch: Partial<SeoMeta>) => onSeoChange({ ...seo, ...patch });
@@ -1236,7 +1429,7 @@ function SeoComposerSection({
           </h3>
           <button
             onClick={refillFromMetadata}
-            disabled={!videoId}
+            disabled={!videoId && !title}
             className="text-xs text-escola-creme-50 hover:text-escola-creme disabled:opacity-30"
           >
             Gerar proposta SEO
