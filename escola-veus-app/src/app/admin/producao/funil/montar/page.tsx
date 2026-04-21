@@ -1,0 +1,342 @@
+"use client";
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
+
+type Clip = { name: string; url: string };
+type Track = { name: string; url: string; sizeMB?: number };
+type Audio = { name: string; url: string };
+
+type Progress = { percent: number; label: string };
+
+const EPISODES = [
+  { key: "trailer", slug: "nomear-trailer-00", label: "Trailer" },
+  { key: "ep01", slug: "nomear-ep01", label: "ep01 — A culpa" },
+  { key: "ep02", slug: "nomear-ep02", label: "ep02 — O extracto" },
+  { key: "ep03", slug: "nomear-ep03", label: "ep03 — A vergonha" },
+  { key: "ep04", slug: "nomear-ep04", label: "ep04 — O desconto" },
+  { key: "ep05", slug: "nomear-ep05", label: "ep05 — Matemática" },
+  { key: "ep06", slug: "nomear-ep06", label: "ep06 — A fome" },
+  { key: "ep07", slug: "nomear-ep07", label: "ep07 — O sim" },
+  { key: "ep08", slug: "nomear-ep08", label: "ep08 — O silêncio" },
+  { key: "ep09", slug: "nomear-ep09", label: "ep09 — As frases" },
+  { key: "ep10", slug: "nomear-ep10", label: "ep10 — A liberdade" },
+] as const;
+
+export default function FunilMontarPage() {
+  const [epKey, setEpKey] = useState<(typeof EPISODES)[number]["key"]>("trailer");
+  const ep = EPISODES.find((e) => e.key === epKey)!;
+
+  const [allClips, setAllClips] = useState<Clip[]>([]);
+  const [allAudios, setAllAudios] = useState<Audio[]>([]);
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState<string | null>(null);
+
+  const [selectedNarration, setSelectedNarration] = useState<string>("");
+  const [selectedMusic, setSelectedMusic] = useState<string[]>([]);
+  const [musicVolume, setMusicVolume] = useState(0.15);
+  const [clipOrder, setClipOrder] = useState<string[]>([]);
+
+  const [rendering, setRendering] = useState(false);
+  const [progress, setProgress] = useState<Progress | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+
+  // ── Load assets on mount ──────────────────────────────────────────────
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([
+      fetch("/api/admin/thinkdiffusion/list-clips").then((r) => r.json()),
+      fetch("/api/admin/biblioteca/list?folder=youtube&limit=500").then((r) => r.json()),
+      fetch("/api/admin/music/list-album?album=ancient-ground").then((r) => r.json()),
+    ])
+      .then(([clipsD, audiosD, musicD]) => {
+        setAllClips(Array.isArray(clipsD.clips) ? clipsD.clips : []);
+        setAllAudios(
+          (Array.isArray(audiosD.files) ? audiosD.files : []).filter((f: Audio) =>
+            f.name.endsWith(".mp3"),
+          ),
+        );
+        setTracks(Array.isArray(musicD.tracks) ? musicD.tracks : []);
+      })
+      .catch((e) => setErr(String(e)))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // ── Filter assets by episode ──────────────────────────────────────────
+  const epClips = useMemo(() => {
+    const prefix = epKey === "trailer" ? "nomear-trailer-" : `nomear-${epKey}-`;
+    return allClips
+      .filter((c) => c.name.startsWith(prefix))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allClips, epKey]);
+
+  const epNarration = useMemo(() => {
+    // Nomear audio filename format: "<script-id>-<timestamp>.mp3"
+    const prefix = `${ep.slug}-`;
+    const matches = allAudios.filter(
+      (a) => a.name.startsWith(prefix) || a.name.startsWith(ep.slug + ".") || a.name === `${ep.slug}.mp3`,
+    );
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allAudios, ep.slug]);
+
+  // Auto-set default narration + clip order when ep changes
+  useEffect(() => {
+    setSelectedNarration(epNarration?.url ?? "");
+    setClipOrder(epClips.map((c) => c.url));
+    setVideoUrl(null);
+    setProgress(null);
+  }, [epNarration, epClips]);
+
+  // Auto-pick first pair of tracks
+  useEffect(() => {
+    if (tracks.length > 0 && selectedMusic.length === 0) {
+      setSelectedMusic(tracks.slice(0, 2).map((t) => t.url));
+    }
+  }, [tracks, selectedMusic.length]);
+
+  const moveClip = useCallback((from: number, to: number) => {
+    setClipOrder((prev) => {
+      if (to < 0 || to >= prev.length) return prev;
+      const next = [...prev];
+      const [x] = next.splice(from, 1);
+      next.splice(to, 0, x);
+      return next;
+    });
+  }, []);
+
+  // ── Render ────────────────────────────────────────────────────────────
+  const render = async () => {
+    if (clipOrder.length === 0) return setErr("Sem clips.");
+    if (!selectedNarration) return setErr("Sem narração seleccionada.");
+    if (selectedMusic.length === 0) return setErr("Sem música seleccionada.");
+
+    setRendering(true);
+    setErr(null);
+    setVideoUrl(null);
+    setProgress({ percent: 0, label: "A iniciar..." });
+
+    try {
+      const res = await fetch("/api/admin/funil/render", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: ep.label,
+          clips: clipOrder,
+          clipDuration: 10,
+          narrationUrl: selectedNarration,
+          musicUrls: selectedMusic,
+          musicVolume,
+        }),
+      });
+
+      if (!res.body) throw new Error("Sem stream.");
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split("\n\n");
+        buf = lines.pop() ?? "";
+        for (const line of lines) {
+          const data = line.replace(/^data: /, "").trim();
+          if (!data) continue;
+          try {
+            const ev = JSON.parse(data);
+            if (ev.type === "progress") setProgress({ percent: ev.percent, label: ev.label });
+            if (ev.type === "result") setVideoUrl(ev.videoUrl);
+            if (ev.type === "error") setErr(ev.message);
+          } catch {
+            /* ignore */
+          }
+        }
+      }
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setRendering(false);
+    }
+  };
+
+  if (loading) return <p className="text-xs text-escola-creme-50">A carregar...</p>;
+
+  return (
+    <div>
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h2 className="font-serif text-2xl font-semibold text-escola-creme">
+            Funil — Montar vídeo
+          </h2>
+          <p className="mt-1 text-xs text-escola-creme-50">
+            Clips + narração ElevenLabs + Ancient Ground de fundo → MP4.
+          </p>
+        </div>
+        <Link href="/admin/producao/funil" className="text-xs text-escola-creme-50 hover:text-escola-creme">
+          ← voltar
+        </Link>
+      </div>
+
+      {err && <p className="mb-3 text-xs text-escola-terracota">{err}</p>}
+
+      {/* ── 1. Episode ───────────────────────────────────────────── */}
+      <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+        <h3 className="mb-2 text-sm text-escola-creme">1. Episódio</h3>
+        <div className="flex flex-wrap gap-1">
+          {EPISODES.map((e) => {
+            const prefix = e.key === "trailer" ? "nomear-trailer-" : `nomear-${e.key}-`;
+            const nClips = allClips.filter((c) => c.name.startsWith(prefix)).length;
+            return (
+              <button
+                key={e.key}
+                onClick={() => setEpKey(e.key)}
+                className={`rounded border px-2.5 py-1 text-xs transition-colors ${
+                  epKey === e.key
+                    ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+              >
+                {e.label} · {nClips}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── 2. Narration ─────────────────────────────────────────── */}
+      <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+        <h3 className="mb-2 text-sm text-escola-creme">2. Narração ElevenLabs</h3>
+        {epNarration ? (
+          <div className="flex items-center gap-3">
+            <audio src={selectedNarration} controls className="flex-1 max-w-md" />
+            <span className="text-xs text-escola-creme-50">{epNarration.name}</span>
+          </div>
+        ) : (
+          <p className="text-xs text-escola-terracota">
+            Sem áudio Nomear no Supabase para <code>{ep.slug}</code>. Gera em /admin/producao/audios primeiro.
+          </p>
+        )}
+      </section>
+
+      {/* ── 3. Music ─────────────────────────────────────────────── */}
+      <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+        <h3 className="mb-2 text-sm text-escola-creme">3. Música Ancient Ground (fundo)</h3>
+        <div className="mb-2 flex items-center gap-3 text-xs">
+          <label className="text-escola-creme-50">Volume:</label>
+          <input
+            type="range"
+            min="0"
+            max="0.5"
+            step="0.01"
+            value={musicVolume}
+            onChange={(e) => setMusicVolume(parseFloat(e.target.value))}
+            className="flex-1 max-w-xs"
+          />
+          <span className="text-escola-creme">{Math.round(musicVolume * 100)}%</span>
+        </div>
+        <select
+          multiple
+          value={selectedMusic}
+          onChange={(e) =>
+            setSelectedMusic(Array.from(e.target.selectedOptions).map((o) => o.value))
+          }
+          className="h-32 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+        >
+          {tracks.map((t) => (
+            <option key={t.url} value={t.url}>
+              {t.name}
+            </option>
+          ))}
+        </select>
+        <p className="mt-1 text-[10px] text-escola-creme-50">
+          Ctrl/⌘ para escolher múltiplas (faz loop). {selectedMusic.length} seleccionadas.
+        </p>
+      </section>
+
+      {/* ── 4. Clips ─────────────────────────────────────────────── */}
+      <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+        <h3 className="mb-2 text-sm text-escola-creme">4. Clips ({clipOrder.length})</h3>
+        {clipOrder.length === 0 ? (
+          <p className="text-xs text-escola-terracota">
+            Sem clips para <code>{ep.slug}</code>. Gera em /admin/producao/funil/gerar.
+          </p>
+        ) : (
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {clipOrder.map((url, i) => {
+              const name = allClips.find((c) => c.url === url)?.name ?? "?";
+              return (
+                <li key={url} className="overflow-hidden rounded border border-escola-border">
+                  <video src={url} className="aspect-video w-full" muted />
+                  <div className="flex items-center justify-between gap-1 border-t border-escola-border bg-escola-bg px-2 py-1 text-[10px]">
+                    <span className="truncate text-escola-creme-50">
+                      {i + 1}. {name}
+                    </span>
+                    <div className="flex gap-0.5">
+                      <button
+                        onClick={() => moveClip(i, i - 1)}
+                        disabled={i === 0}
+                        className="rounded border border-escola-border px-1 text-escola-creme disabled:opacity-30"
+                      >
+                        ↑
+                      </button>
+                      <button
+                        onClick={() => moveClip(i, i + 1)}
+                        disabled={i === clipOrder.length - 1}
+                        className="rounded border border-escola-border px-1 text-escola-creme disabled:opacity-30"
+                      >
+                        ↓
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+
+      {/* ── 5. Render ────────────────────────────────────────────── */}
+      <section className="rounded-xl border border-escola-border bg-escola-card p-4">
+        <button
+          onClick={render}
+          disabled={rendering || clipOrder.length === 0 || !selectedNarration || selectedMusic.length === 0}
+          className="w-full rounded bg-escola-coral px-4 py-3 text-sm font-bold text-white disabled:opacity-50"
+        >
+          {rendering ? "A montar..." : "5. Montar vídeo (Shotstack)"}
+        </button>
+
+        {progress && (
+          <div className="mt-3">
+            <div className="h-2 overflow-hidden rounded bg-escola-bg">
+              <div
+                className="h-full bg-escola-dourado transition-all"
+                style={{ width: `${progress.percent}%` }}
+              />
+            </div>
+            <p className="mt-1 text-xs text-escola-creme-50">
+              {progress.percent}% · {progress.label}
+            </p>
+          </div>
+        )}
+
+        {videoUrl && (
+          <div className="mt-4 rounded border border-escola-dourado bg-escola-bg p-3">
+            <p className="mb-2 text-xs text-escola-dourado">✓ Vídeo pronto</p>
+            <video src={videoUrl} className="w-full rounded" controls />
+            <a
+              href={videoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 inline-block text-xs text-escola-creme-50 hover:text-escola-creme"
+            >
+              abrir URL ↗
+            </a>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}

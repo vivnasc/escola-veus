@@ -47,6 +47,12 @@ export default function FunilPage() {
           → Gerar imagens & clips
         </Link>
         <Link
+          href="/admin/producao/funil/montar"
+          className="rounded-lg border border-escola-dourado bg-escola-dourado/10 px-3 py-1.5 font-semibold text-escola-dourado hover:bg-escola-dourado/20"
+        >
+          → Montar vídeo final
+        </Link>
+        <Link
           href="/admin/producao/audios"
           className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
         >
