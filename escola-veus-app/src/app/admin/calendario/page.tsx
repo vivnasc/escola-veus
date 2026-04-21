@@ -132,22 +132,167 @@ function SocialTab() {
 }
 
 function UploadTab() {
+  const [videoUrl, setVideoUrl] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [srtUrl, setSrtUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [tagsStr, setTagsStr] = useState("escola dos véus, nomear, contemplativo");
+  const [publishAt, setPublishAt] = useState("");
+  const [privacy, setPrivacy] = useState<"private" | "unlisted" | "public">("private");
+  const [uploading, setUploading] = useState(false);
+  const [result, setResult] = useState<{ videoId: string; watchUrl: string } | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+
+  const submit = async () => {
+    setUploading(true);
+    setErr(null);
+    setResult(null);
+    try {
+      const r = await fetch("/api/admin/youtube/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          videoUrl,
+          title,
+          description,
+          tags: tagsStr.split(",").map((t) => t.trim()).filter(Boolean),
+          thumbnailUrl: thumbnailUrl || undefined,
+          srtUrl: srtUrl || undefined,
+          publishAt: publishAt ? new Date(publishAt).toISOString() : undefined,
+          privacyStatus: privacy,
+        }),
+      });
+      const d = await r.json();
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      setResult(d);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
-    <div className="rounded-xl border border-escola-border bg-escola-card p-6">
-      <h3 className="text-sm text-escola-creme">Upload YouTube — agendado</h3>
-      <p className="mt-2 text-xs text-escola-creme-50">
-        Stub. Liga aqui o YouTube Data API v3 para upload + agendamento por
-        data, partindo dos vídeos renderizados em
-        <code className="mx-1 rounded bg-escola-border px-1">
-          course-assets/youtube/videos/
-        </code>
-        e dos slots planeados na aba YouTube.
-      </p>
-      <ul className="mt-4 space-y-1 text-xs text-escola-creme-50">
-        <li>• OAuth2 da conta YouTube → token guardado em Vercel env</li>
-        <li>• POST /upload com title, description, tags, thumbnail, scheduled_publish_at</li>
-        <li>• Cron diário a publicar vídeos com publish_at &lt;= now</li>
-      </ul>
+    <div className="space-y-4">
+      <div className="rounded-xl border border-escola-border bg-escola-card p-4 text-xs text-escola-creme-50">
+        <p className="mb-2 text-escola-creme">Setup (uma vez, ~15 min):</p>
+        <ol className="list-decimal space-y-1 pl-5">
+          <li>Google Cloud Console → New Project → Enable "YouTube Data API v3"</li>
+          <li>APIs &amp; Services → Credentials → Create OAuth Client ID (Desktop app)</li>
+          <li>Guarda <code className="rounded bg-escola-bg px-1">client_id</code> e <code className="rounded bg-escola-bg px-1">client_secret</code></li>
+          <li>
+            Vai a{" "}
+            <a
+              href="https://developers.google.com/oauthplayground/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-escola-dourado underline"
+            >
+              OAuth Playground
+            </a>
+            , cog ⚙️ → "Use your own OAuth credentials" → cola client_id/secret
+          </li>
+          <li>
+            Scope: <code className="rounded bg-escola-bg px-1">https://www.googleapis.com/auth/youtube.upload</code> +{" "}
+            <code className="rounded bg-escola-bg px-1">https://www.googleapis.com/auth/youtube.force-ssl</code>
+          </li>
+          <li>Authorize APIs (entra com a conta do canal), Exchange code for token → copia <code className="rounded bg-escola-bg px-1">refresh_token</code></li>
+          <li>
+            No Vercel, Settings → Environment Variables, adiciona:
+            <code className="ml-1 rounded bg-escola-bg px-1">GOOGLE_OAUTH_CLIENT_ID</code>
+            {", "}
+            <code className="rounded bg-escola-bg px-1">GOOGLE_OAUTH_CLIENT_SECRET</code>
+            {", "}
+            <code className="rounded bg-escola-bg px-1">GOOGLE_OAUTH_REFRESH_TOKEN</code>
+          </li>
+        </ol>
+      </div>
+
+      <div className="space-y-3 rounded-xl border border-escola-border bg-escola-card p-4 text-xs">
+        <Field label="Video URL (Supabase MP4)" value={videoUrl} onChange={setVideoUrl} placeholder="https://…/funil-videos/trailer-…mp4" />
+        <Field label="Thumbnail URL (opcional)" value={thumbnailUrl} onChange={setThumbnailUrl} placeholder="https://…/thumbnails/ep01-…png" />
+        <Field label="SRT URL (opcional)" value={srtUrl} onChange={setSrtUrl} placeholder="https://…/subtitles/ep01-…srt" />
+        <Field label="Título" value={title} onChange={setTitle} placeholder="Título do vídeo no YouTube" />
+        <div>
+          <label className="mb-1 block text-escola-creme-50">Descrição</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+            className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+          />
+        </div>
+        <Field label="Tags (separadas por vírgula)" value={tagsStr} onChange={setTagsStr} />
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="mb-1 block text-escola-creme-50">Agendamento (opcional)</label>
+            <input
+              type="datetime-local"
+              value={publishAt}
+              onChange={(e) => setPublishAt(e.target.value)}
+              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-escola-creme-50">Visibilidade (se sem agendamento)</label>
+            <select
+              value={privacy}
+              onChange={(e) => setPrivacy(e.target.value as "private" | "unlisted" | "public")}
+              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+            >
+              <option value="private">Private</option>
+              <option value="unlisted">Unlisted</option>
+              <option value="public">Public</option>
+            </select>
+          </div>
+        </div>
+        <button
+          onClick={submit}
+          disabled={uploading || !videoUrl || !title}
+          className="w-full rounded bg-escola-coral px-4 py-2 text-xs font-semibold text-white disabled:opacity-50"
+        >
+          {uploading ? "A enviar para YouTube..." : "Upload YouTube"}
+        </button>
+        {err && <p className="text-escola-terracota">{err}</p>}
+        {result && (
+          <div className="rounded border border-escola-dourado bg-escola-bg p-3">
+            <p className="text-escola-dourado">✓ Upload OK — {result.videoId}</p>
+            <a
+              href={result.watchUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-1 inline-block text-escola-creme-50 underline"
+            >
+              {result.watchUrl}
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Field({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <label className="mb-1 block text-escola-creme-50">{label}</label>
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+      />
     </div>
   );
 }

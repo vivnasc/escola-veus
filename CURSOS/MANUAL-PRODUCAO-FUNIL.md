@@ -129,12 +129,39 @@ SRT é line-level (agrupa palavras em frases curtas de ~3-4s). Timings exactos d
 
 ## Passo 8 — Upload YouTube
 
-1. **`course-assets/youtube/funil-videos/<nome>.mp4`** → download do Supabase
+**Via app (`/admin/calendario` tab Upload):**
+Depois de configurares o OAuth (setup em baixo), colas os URLs Supabase (MP4, thumbnail, SRT), preenches título/descrição/tags, opcionalmente data de agendamento, clicas **Upload YouTube**. O vídeo sobe com thumbnail + legendas em PT-PT automaticamente.
+
+**Via YouTube Studio (alternativa manual):**
+1. `course-assets/youtube/funil-videos/<nome>.mp4` → download do Supabase
 2. YouTube Studio → **Upload video** → selecciona MP4
-3. Título, descrição (usa o texto do script como base), tags
-4. Thumbnail: upload manual (por fazer pipeline — ver melhorias abaixo)
-5. **Subtitles → Add language → Portuguese (Portugal) → Upload file** → selecciona SRT
+3. Título, descrição, tags
+4. Thumbnail: upload manual do PNG de `youtube/thumbnails/`
+5. **Subtitles → Add language → Portuguese (Portugal) → Upload file** → SRT
 6. Visibility: Scheduled ou Public
+
+### Setup OAuth YouTube (uma vez, ~15 min)
+
+Para o upload via app funcionar:
+
+1. **Google Cloud Console** → New Project
+2. **APIs & Services → Library** → "YouTube Data API v3" → Enable
+3. **APIs & Services → Credentials** → Create Credentials → OAuth Client ID
+4. Application type: Desktop app → copia `client_id` e `client_secret`
+5. Abre [OAuth Playground](https://developers.google.com/oauthplayground/)
+6. Cog ⚙️ → "Use your own OAuth credentials" → cola client_id + client_secret
+7. Scopes:
+   - `https://www.googleapis.com/auth/youtube.upload`
+   - `https://www.googleapis.com/auth/youtube.force-ssl` (necessário para legendas)
+8. Authorize APIs → entra com a conta do canal YouTube
+9. Exchange authorization code for tokens → copia `refresh_token`
+10. Vercel → Settings → Environment Variables → adiciona:
+    - `GOOGLE_OAUTH_CLIENT_ID`
+    - `GOOGLE_OAUTH_CLIENT_SECRET`
+    - `GOOGLE_OAUTH_REFRESH_TOKEN`
+11. Redeploy
+
+O refresh token não expira (excepto se revogares manualmente). Basta configurar uma vez.
 
 ---
 
