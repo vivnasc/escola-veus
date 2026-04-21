@@ -1,16 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 import funilSeed from "@/data/funil-prompts.seed.json";
 import PromptEditor from "@/components/admin/PromptEditor";
 
 type Prompt = { id: string; category: string; mood: string[]; prompt: string };
 
+type EpStatus = {
+  script: boolean;
+  audio: boolean;
+  promptsTotal: number;
+  imagesCount: number;
+  clipsCount: number;
+  video: boolean;
+  srt: boolean;
+};
+
+type EpStatusEntry = {
+  id: string;
+  titulo: string;
+  curso: string;
+  epKey: string;
+  status: EpStatus;
+};
+
 export default function FunilPage() {
   const [openSerie, setOpenSerie] = useState<string | null>(NOMEAR_PRESETS[0]?.id ?? null);
   const [tab, setTab] = useState<"series" | "prompts">("series");
+  const [statusMap, setStatusMap] = useState<Map<string, EpStatus> | null>(null);
+  const [statusLoading, setStatusLoading] = useState(false);
 
   // Extrai chave do episodio: "nomear-trailer-..." -> "trailer", "nomear-ep01-..." -> "ep01"
   const epKeyFromId = (id: string) => id.split("-")[1] ?? "";
@@ -23,6 +43,20 @@ export default function FunilPage() {
       if (key) map.set(key, (map.get(key) ?? 0) + 1);
     }
     return map;
+  }, []);
+
+  useEffect(() => {
+    setStatusLoading(true);
+    fetch("/api/admin/funil/status", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (!Array.isArray(d.episodes)) return;
+        const m = new Map<string, EpStatus>();
+        for (const ep of d.episodes as EpStatusEntry[]) m.set(ep.id, ep.status);
+        setStatusMap(m);
+      })
+      .catch(() => {})
+      .finally(() => setStatusLoading(false));
   }, []);
 
   const totalEpisodes = NOMEAR_PRESETS.reduce((n, s) => n + s.scripts.length, 0);
@@ -113,27 +147,59 @@ export default function FunilPage() {
                 <ul className="divide-y divide-escola-border border-t border-escola-border">
                   {serie.scripts.map((ep) => {
                     const key = epKeyFromId(ep.id);
-                    const count = key ? promptsByEp.get(key) ?? 0 : 0;
+                    const promptsCount = key ? promptsByEp.get(key) ?? 0 : 0;
+                    const st = statusMap?.get(ep.id);
                     return (
-                      <li
-                        key={ep.id}
-                        className="flex items-center justify-between px-4 py-2.5 text-sm"
-                      >
-                        <div className="min-w-0">
-                          <p className="truncate text-escola-creme">{ep.titulo}</p>
-                          <p className="text-xs text-escola-creme-50">
-                            {ep.id} · {ep.curso}
-                          </p>
+                      <li key={ep.id} className="px-4 py-2.5 text-sm">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-escola-creme">{ep.titulo}</p>
+                            <p className="text-[10px] text-escola-creme-50">
+                              {ep.id} · {ep.curso}
+                            </p>
+                          </div>
                         </div>
-                        <span
-                          className={`ml-3 shrink-0 rounded-full px-2 py-0.5 text-[10px] ${
-                            count > 0
-                              ? "bg-escola-dourado/10 text-escola-dourado"
-                              : "bg-escola-border text-escola-creme-50"
-                          }`}
-                        >
-                          {count > 0 ? `${count} imagens` : "sem imagens"}
-                        </span>
+                        {/* Checklist */}
+                        <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[10px]">
+                          <Pill label="script" ok value={"✓"} />
+                          <Pill
+                            label="áudio"
+                            ok={!!st?.audio}
+                            value={st?.audio ? "✓" : "×"}
+                            loading={statusLoading && !st}
+                          />
+                          <Pill
+                            label="prompts"
+                            ok={promptsCount > 0}
+                            value={`${promptsCount}`}
+                          />
+                          <Pill
+                            label="imagens"
+                            ok={promptsCount > 0 && (st?.imagesCount ?? 0) >= promptsCount}
+                            partial={(st?.imagesCount ?? 0) > 0 && (st?.imagesCount ?? 0) < promptsCount}
+                            value={st ? `${st.imagesCount}/${promptsCount}` : promptsCount > 0 ? `?/${promptsCount}` : "—"}
+                            loading={statusLoading && !st}
+                          />
+                          <Pill
+                            label="clips"
+                            ok={promptsCount > 0 && (st?.clipsCount ?? 0) >= promptsCount}
+                            partial={(st?.clipsCount ?? 0) > 0 && (st?.clipsCount ?? 0) < promptsCount}
+                            value={st ? `${st.clipsCount}/${promptsCount}` : promptsCount > 0 ? `?/${promptsCount}` : "—"}
+                            loading={statusLoading && !st}
+                          />
+                          <Pill
+                            label="vídeo"
+                            ok={!!st?.video}
+                            value={st?.video ? "✓" : "×"}
+                            loading={statusLoading && !st}
+                          />
+                          <Pill
+                            label="srt"
+                            ok={!!st?.srt}
+                            value={st?.srt ? "✓" : "×"}
+                            loading={statusLoading && !st}
+                          />
+                        </div>
                       </li>
                     );
                   })}
@@ -145,5 +211,30 @@ export default function FunilPage() {
       </div>
       )}
     </div>
+  );
+}
+
+function Pill({
+  label,
+  value,
+  ok,
+  partial,
+  loading,
+}: {
+  label: string;
+  value: string;
+  ok?: boolean;
+  partial?: boolean;
+  loading?: boolean;
+}) {
+  let cls = "bg-escola-border text-escola-creme-50";
+  if (loading) cls = "bg-escola-border text-escola-creme-50 animate-pulse";
+  else if (ok) cls = "bg-escola-dourado/10 text-escola-dourado";
+  else if (partial) cls = "bg-escola-terracota/10 text-escola-terracota";
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ${cls}`}>
+      <span className="text-[9px] uppercase tracking-wider opacity-70">{label}</span>
+      <span className="font-semibold">{value}</span>
+    </span>
   );
 }
