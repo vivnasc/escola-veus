@@ -115,6 +115,10 @@ async function main() {
     trimEdge = 0.3,
     fps = 30,
     musicVolume = 0.8,
+    // Fades no output final (vídeo para preto + áudio para silêncio).
+    // Default 3s à saída: suficiente para não parecer corte, nem tão longo
+    // que desperdice conteúdo. Se quiseres desactivar, manda 0.
+    fadeOut = 3,
     thumbnailUrl,
     thumbnailDataUrl,
     seo,
@@ -223,26 +227,62 @@ async function main() {
 
   await writeResult(jobId, { status: "running", phase: "loop", progress: 65 });
 
-  // ── PASSO 2b: Loop + música ───────────────────────────────────────────────
-  // Faz loop do base sem re-encode de vídeo (-c:v copy) até targetDuration.
-  // A música é igualmente loopada via stream_loop sobre o ficheiro combinado.
-  console.log(`[5/6] Loop base até ${targetDuration}s + música`);
+  // ── PASSO 2b: Loop + música + fades ───────────────────────────────────────
+  // Loop do base até targetDuration, música loopada, e fade-out final em
+  // VÍDEO (para preto) e ÁUDIO (para silêncio). O fade obriga a re-encodar
+  // o vídeo (perdemos o -c:v copy), mas garante uma saída suave em vez de
+  // corte brusco. ~15 min extra no runner para 1h. Se fadeOut=0, voltamos
+  // ao caminho rápido com -c:v copy.
+  console.log(`[5/6] Loop base até ${targetDuration}s + música + fadeOut ${fadeOut}s`);
   const outPath = path.join(WORK_DIR, "output.mp4");
 
-  await runFfmpeg([
-    "-y",
-    "-stream_loop", "-1", "-i", baseOut,
-    "-stream_loop", "-1", "-i", musicInput,
-    "-filter_complex", `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2[music]`,
-    "-map", "0:v",
-    "-map", "[music]",
-    "-t", String(targetDuration),
-    "-c:v", "copy",
-    "-c:a", "aac",
-    "-b:a", "192k",
-    "-movflags", "+faststart",
-    outPath,
-  ], "final");
+  const fadeStart = Math.max(0, targetDuration - fadeOut);
+  const wantFade = fadeOut > 0;
+
+  const audioFilter = wantFade
+    ? `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2,afade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[music]`
+    : `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2[music]`;
+
+  if (wantFade) {
+    // Re-encode com fade de vídeo para preto.
+    await runFfmpeg([
+      "-y",
+      "-stream_loop", "-1", "-i", baseOut,
+      "-stream_loop", "-1", "-i", musicInput,
+      "-filter_complex",
+      `[0:v]fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout];${audioFilter}`,
+      "-map", "[vout]",
+      "-map", "[music]",
+      "-t", String(targetDuration),
+      "-c:v", "libx264",
+      "-preset", "medium",
+      "-crf", "23",
+      "-maxrate", "4M",
+      "-bufsize", "8M",
+      "-pix_fmt", "yuv420p",
+      "-r", String(fps),
+      "-c:a", "aac",
+      "-b:a", "192k",
+      "-movflags", "+faststart",
+      outPath,
+    ], "final");
+  } else {
+    // Caminho rápido (sem fade): -c:v copy, só re-encoda áudio.
+    await runFfmpeg([
+      "-y",
+      "-stream_loop", "-1", "-i", baseOut,
+      "-stream_loop", "-1", "-i", musicInput,
+      "-filter_complex", audioFilter,
+      "-map", "0:v",
+      "-map", "[music]",
+      "-t", String(targetDuration),
+      "-c:v", "copy",
+      "-c:a", "aac",
+      "-b:a", "192k",
+      "-movflags", "+faststart",
+      outPath,
+    ], "final");
+  }
 
   await writeResult(jobId, { status: "running", phase: "upload", progress: 85 });
 

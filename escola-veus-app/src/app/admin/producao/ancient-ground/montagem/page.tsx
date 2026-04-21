@@ -292,6 +292,9 @@ export default function YouTubeMontagem() {
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
   const [groupClips, setGroupClips] = useState<Record<string, string[]>>({});
   const [videoDuration, setVideoDuration] = useState<number>(DEFAULT_VIDEO_DURATION);
+  // FadeOut em segundos. 0 = corte seco (rápido, -c:v copy). >0 = fade para
+  // preto + silêncio no fim (mais ~15min de runner para 1h).
+  const [fadeOut, setFadeOut] = useState<number>(3);
   const totalClipsNeeded = Math.ceil(videoDuration / CLIP_DURATION);
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [composedThumbnailDataUrl, setComposedThumbnailDataUrl] = useState<string>("");
@@ -797,6 +800,7 @@ export default function YouTubeMontagem() {
           trimEdge: 0.3,
           crossfade: 1.5,
           fps: 30,
+          fadeOut,
           thumbnailDataUrl: composedThumbnailDataUrl || undefined,
           thumbnailUrl: thumbnailUrl || undefined,
           seo,
@@ -1349,27 +1353,44 @@ export default function YouTubeMontagem() {
           </div>
         )}
 
-        <div className="mb-3 flex flex-wrap items-center gap-2">
-          <label className="text-xs text-escola-creme-50">Duração:</label>
-          <select
-            value={videoDuration}
-            onChange={(e) => setVideoDuration(Number(e.target.value))}
-            disabled={rendering}
-            className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
-          >
-            {DURATION_PRESETS.map((p) => {
-              const mins = p.seconds / 60;
-              const durLabel = mins < 60 ? `${mins} min` : `${mins / 60} h`;
-              const costLabel = renderEngine === "ffmpeg"
-                ? "grátis"
-                : `${p.credits} créditos`;
-              return (
-                <option key={p.seconds} value={p.seconds}>
-                  {durLabel} · {costLabel}
-                </option>
-              );
-            })}
-          </select>
+        <div className="mb-3 flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-escola-creme-50">Duração:</label>
+            <select
+              value={videoDuration}
+              onChange={(e) => setVideoDuration(Number(e.target.value))}
+              disabled={rendering}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
+            >
+              {DURATION_PRESETS.map((p) => {
+                const mins = p.seconds / 60;
+                const durLabel = mins < 60 ? `${mins} min` : `${mins / 60} h`;
+                const costLabel = renderEngine === "ffmpeg"
+                  ? "grátis"
+                  : `${p.credits} créditos`;
+                return (
+                  <option key={p.seconds} value={p.seconds}>
+                    {durLabel} · {costLabel}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-escola-creme-50">Fade-out:</label>
+            <select
+              value={fadeOut}
+              onChange={(e) => setFadeOut(Number(e.target.value))}
+              disabled={rendering}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
+              title="Fade do vídeo para preto + áudio para silêncio no fim. 0 = corte seco (mais rápido). >0 = re-encoda o final, ~15min extra para 1h."
+            >
+              <option value={0}>0s (corte seco · rápido)</option>
+              <option value={2}>2s (subtil)</option>
+              <option value={3}>3s (recomendado)</option>
+              <option value={5}>5s (longo)</option>
+            </select>
+          </div>
         </div>
 
         <button
