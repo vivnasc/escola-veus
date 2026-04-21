@@ -148,6 +148,7 @@ async function main() {
     // + normalização + concat antes da base. Default 5s.
     introUrl = null,
     introDuration = 5,
+    introText = "ANCIENT GROUND",
     thumbnailUrl,
     thumbnailDataUrl,
     seo,
@@ -178,15 +179,37 @@ async function main() {
   // problemas de resolução/codec mismatch com a base.
   let introPath = null;
   if (introUrl) {
-    console.log(`[2b/7] Download + normalização do intro (${introDuration}s)`);
+    console.log(`[2b/7] Download + normalização do intro (${introDuration}s)${introText ? ` + texto "${introText}"` : ""}`);
     const rawIntro = path.join(WORK_DIR, "intro-raw.mp4");
     await downloadTo(introUrl, rawIntro);
     introPath = path.join(WORK_DIR, "intro.mp4");
+
+    // Filter de vídeo: scale+pad → drawtext opcional com fade in/out suave.
+    // O texto aparece ~1s após o início (quando o logo AG já está estabilizado)
+    // e sai 0.5s antes do fim do intro para não chocar com a transição para os
+    // nature clips. DejaVu Serif Bold vem de base no runner Ubuntu.
+    let vfilter = `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=${fps},format=yuv420p`;
+    if (introText && introText.trim()) {
+      // Escape do texto para FFmpeg: dois-pontos e plicas precisam de escape.
+      const safeText = introText
+        .replace(/\\/g, "\\\\")
+        .replace(/:/g, "\\:")
+        .replace(/'/g, "\\'");
+      const fadeIn = 1.0; // começa a aparecer
+      const fullAt = 2.0; // totalmente visível
+      const fadeStart = Math.max(fullAt + 0.5, introDuration - 1.0);
+      const fadeEnd = Math.max(fadeStart + 0.5, introDuration - 0.2);
+      // alpha expression: 0 antes de fadeIn, sobe linearmente até fullAt,
+      // fica a 1, depois desce entre fadeStart → fadeEnd.
+      const alpha = `if(lt(t\\,${fadeIn})\\,0\\,if(lt(t\\,${fullAt})\\,(t-${fadeIn})/(${fullAt}-${fadeIn})\\,if(lt(t\\,${fadeStart})\\,1\\,if(lt(t\\,${fadeEnd})\\,1-(t-${fadeStart})/(${fadeEnd}-${fadeStart})\\,0))))`;
+      vfilter += `,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf:text='${safeText}':fontsize=54:fontcolor=white:alpha='${alpha}':x=(w-text_w)/2:y=h*0.82`;
+    }
+
     await runFfmpeg([
       "-y",
       "-i", rawIntro,
       "-t", String(introDuration),
-      "-vf", `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=${fps},format=yuv420p`,
+      "-vf", vfilter,
       "-c:v", "libx264",
       "-preset", "veryfast",
       "-crf", "18",

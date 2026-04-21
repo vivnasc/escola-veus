@@ -208,7 +208,7 @@ const DURATION_PRESETS: Array<{ label: string; seconds: number; credits: number 
   { label: "1 h (60 créditos)", seconds: 3600, credits: 60 },
 ];
 const DEFAULT_VIDEO_DURATION = 3600;
-const AG_INTRO_URL = "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/course-assets/youtube/brand/intro.mp4";
+const AG_INTRO_URL = "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/course-assets/youtube/brand/intro-AG.mp4";
 const AG_INTRO_DURATION = 5;
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -795,7 +795,10 @@ export default function YouTubeMontagem() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          slug: videoId || undefined,
+          // slug do ficheiro: preferimos o título (ex: "oceano-indico") ao
+          // videoId ("video-01") para os MP4s terem nome legível no Supabase.
+          // Se não houver título, cai para videoId.
+          slug: title || videoId || undefined,
           uniqueClips: validClips,
           targetDuration: videoDuration,
           musicUrls: [musicUrlA, musicUrlB],
