@@ -24,6 +24,11 @@ const TRACKS = [
     desc: "Junta clips em vídeo de ~60min com música Loranne (ancient-ground).",
   },
   {
+    href: "/admin/producao/ancient-ground/shorts",
+    label: "AG — Shorts",
+    desc: "30s verticais para canal AG: reusa clips Runway, música ancient-ground, texto próprio.",
+  },
+  {
     href: "/admin/producao/shorts",
     label: "Shorts",
     desc: "30s verticais (TikTok / IG Reels / YouTube Shorts) com Loranne + versos.",
