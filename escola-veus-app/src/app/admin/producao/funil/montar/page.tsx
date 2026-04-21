@@ -42,6 +42,7 @@ export default function FunilMontarPage() {
   const [rendering, setRendering] = useState(false);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [engine, setEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
 
   // ── Load assets on mount ──────────────────────────────────────────────
   useEffect(() => {
@@ -118,7 +119,10 @@ export default function FunilMontarPage() {
     setProgress({ percent: 0, label: "A iniciar..." });
 
     try {
-      const res = await fetch("/api/admin/funil/render", {
+      const endpoint = engine === "ffmpeg"
+        ? "/api/admin/funil/render-ffmpeg"
+        : "/api/admin/funil/render";
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -300,12 +304,31 @@ export default function FunilMontarPage() {
 
       {/* ── 5. Render ────────────────────────────────────────────── */}
       <section className="rounded-xl border border-escola-border bg-escola-card p-4">
+        <div className="mb-3 flex items-center gap-4 text-xs">
+          <span className="text-escola-creme-50">Motor:</span>
+          <label className="flex items-center gap-1.5 cursor-pointer">
+            <input
+              type="radio"
+              checked={engine === "ffmpeg"}
+              onChange={() => setEngine("ffmpeg")}
+            />
+            <span className="text-escola-creme">FFmpeg · grátis · ducking</span>
+          </label>
+          <label className="flex items-center gap-1.5 cursor-pointer">
+            <input
+              type="radio"
+              checked={engine === "shotstack"}
+              onChange={() => setEngine("shotstack")}
+            />
+            <span className="text-escola-creme-50">Shotstack · ~$0.20</span>
+          </label>
+        </div>
         <button
           onClick={render}
           disabled={rendering || clipOrder.length === 0 || !selectedNarration || selectedMusic.length === 0}
           className="w-full rounded bg-escola-coral px-4 py-3 text-sm font-bold text-white disabled:opacity-50"
         >
-          {rendering ? "A montar..." : "5. Montar vídeo (Shotstack)"}
+          {rendering ? "A montar..." : `5. Montar vídeo (${engine === "ffmpeg" ? "FFmpeg" : "Shotstack"})`}
         </button>
 
         {progress && (
