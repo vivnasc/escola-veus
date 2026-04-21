@@ -1,13 +1,13 @@
 {
   "config": {
-    "checkpoint": "_td/00-TD-UltraReal.safetensors",
+    "checkpoint": "_td/td/td_forge/td_flux/flux1-dev-bnb-nf4-v2.safetensors",
     "width": 1920,
     "height": 1080,
-    "cfg_scale": 6,
-    "steps": 35,
-    "sampler_name": "DPM++ 2M Karras",
+    "cfg_scale": 3.5,
+    "steps": 25,
+    "sampler_name": "Euler (schedule: Simple)",
     "batch_size": 4,
-    "negative_prompt": "person, people, woman, man, human, face, portrait, body, skin, hair, eyes, nose, mouth, lips, hands, fingers, silhouette, figure, girl, boy, child, model, mannequin, cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns"
+    "negative_prompt": "people, person, text, watermark, logo, signature"
   },
   "prompts": [
     {
