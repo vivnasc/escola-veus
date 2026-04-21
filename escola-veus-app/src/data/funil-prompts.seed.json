@@ -7,7 +7,7 @@
     "steps": 25,
     "sampler_name": "Euler (schedule: Simple)",
     "batch_size": 4,
-    "negative_prompt": "people, person, text, watermark, logo, signature"
+    "negative_prompt": "person, people, woman, man, human, face, portrait, body, skin, hair, eyes, nose, mouth, lips, hands, fingers, silhouette, figure, girl, boy, child, model, mannequin, cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns"
   },
   "prompts": [
     {
