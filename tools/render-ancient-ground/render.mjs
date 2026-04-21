@@ -185,7 +185,7 @@ async function main() {
     introPath = path.join(WORK_DIR, "intro.mp4");
 
     // Filter de vídeo: scale+pad → drawtext opcional com fade in/out suave.
-    // O texto aparece ~1s após o início (quando a mandala já está estabilizada)
+    // O texto aparece ~1s após o início (quando o logo AG já está estabilizado)
     // e sai 0.5s antes do fim do intro para não chocar com a transição para os
     // nature clips. DejaVu Serif Bold vem de base no runner Ubuntu.
     let vfilter = `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=${fps},format=yuv420p`;
