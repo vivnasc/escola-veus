@@ -704,6 +704,10 @@ export default function YouTubeMontagem() {
           setRenderResult(savedData.videoUrl);
           setRenderProgress(100);
           setRenderLabel("Video pronto!");
+          localStorage.setItem("yt-last-ffmpeg-render", JSON.stringify({
+            videoUrl: savedData.videoUrl,
+            completedAt: Date.now(),
+          }));
         } catch (err) {
           // Shotstack has the file; save failed. Show Shotstack URL so nothing is lost.
           setRenderResult(data.url);
@@ -756,6 +760,11 @@ export default function YouTubeMontagem() {
         setRenderLabel("Video pronto!");
         setRendering(false);
         localStorage.removeItem("yt-pending-ffmpeg-render");
+        // Persist o último render completado para sobreviver a reloads.
+        localStorage.setItem("yt-last-ffmpeg-render", JSON.stringify({
+          videoUrl: data.videoUrl,
+          completedAt: Date.now(),
+        }));
         return;
       }
     }
@@ -809,17 +818,33 @@ export default function YouTubeMontagem() {
   };
 
   // Resume any pending render if the user reloads the page.
+  // Se não houver pending, restaura o último render completado (para que a
+  // Vivianne veja o link do vídeo mesmo depois de recarregar a página).
   useEffect(() => {
     try {
       const raw = localStorage.getItem("yt-pending-render");
+      const rawF = localStorage.getItem("yt-pending-ffmpeg-render");
+      const hasPending = !!(raw || rawF);
+
       if (raw) {
         const pending: { renderId?: string } = JSON.parse(raw);
         if (pending.renderId) pollAndSaveRender(pending.renderId);
       }
-      const rawF = localStorage.getItem("yt-pending-ffmpeg-render");
       if (rawF) {
         const pf: { jobId?: string } = JSON.parse(rawF);
         if (pf.jobId) pollFfmpegStatus(pf.jobId);
+      }
+
+      // Nenhum render em curso → mostra o último vídeo gerado (se houver).
+      if (!hasPending) {
+        const last = localStorage.getItem("yt-last-ffmpeg-render");
+        if (last) {
+          const parsed: { videoUrl?: string } = JSON.parse(last);
+          if (parsed.videoUrl) {
+            setRenderResult(parsed.videoUrl);
+            setRenderLabel("Último vídeo gerado nesta página");
+          }
+        }
       }
     } catch { /* ignore */ }
     // Only on mount — callbacks read the latest state via closures.
@@ -1294,8 +1319,19 @@ export default function YouTubeMontagem() {
 
         {renderResult && (
           <div className="mb-3 space-y-2">
-            <div className="rounded bg-green-950/50 p-2 text-xs text-green-300">
-              Video pronto!
+            <div className="flex items-center justify-between rounded bg-green-950/50 p-2 text-xs text-green-300">
+              <span>{renderLabel || "Vídeo pronto!"}</span>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("yt-last-ffmpeg-render");
+                  setRenderResult(null);
+                  setRenderLabel("");
+                }}
+                className="text-green-400/60 hover:text-green-200"
+                title="Esconder (não apaga o ficheiro do Supabase)"
+              >
+                ✕ esconder
+              </button>
             </div>
             <video
               src={renderResult}
