@@ -348,6 +348,9 @@ export default function YouTubeMontagem() {
   const [renderLabel, setRenderLabel] = useState("");
   const [renderResult, setRenderResult] = useState<string | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
+  // "ffmpeg" = GitHub Actions + FFmpeg (grátis, mais controlo). "shotstack" =
+  // serviço pago, mantido como fallback até validarmos o FFmpeg em produção.
+  const [renderEngine, setRenderEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
 
   // Preview
   const [previewing, setPreviewing] = useState(false);
@@ -713,15 +716,113 @@ export default function YouTubeMontagem() {
     }
   }, [title, thumbnailUrl, composedThumbnailDataUrl, seo]);
 
+  // Render MP4 via FFmpeg em GitHub Actions — dispatch e polling ao result.json
+  // em Supabase. O workflow corre ffmpeg, faz upload e escreve o resultado.
+  const pollFfmpegStatus = useCallback(async (jobId: string) => {
+    setRendering(true);
+    setRenderError(null);
+
+    while (true) {
+      await new Promise((r) => setTimeout(r, 10_000));
+      let data: {
+        status?: string;
+        phase?: string;
+        progress?: number;
+        videoUrl?: string;
+        error?: string;
+        erro?: string;
+      };
+      try {
+        const r = await fetch(`/api/admin/youtube/render-ffmpeg-status?jobId=${encodeURIComponent(jobId)}`);
+        data = await r.json();
+      } catch {
+        setRenderLabel("Ligacao perdida — a tentar de novo...");
+        continue;
+      }
+      if (data.erro) { setRenderError(data.erro); setRendering(false); return; }
+      const status = data.status || "...";
+      const phase = data.phase ? ` (${data.phase})` : "";
+      setRenderLabel(`${status}${phase}`);
+      if (typeof data.progress === "number") setRenderProgress(data.progress);
+      if (status === "failed") {
+        setRenderError(data.error || "FFmpeg render failed. Ver logs em GitHub Actions.");
+        setRendering(false);
+        localStorage.removeItem("yt-pending-ffmpeg-render");
+        return;
+      }
+      if (status === "done" && data.videoUrl) {
+        setRenderResult(data.videoUrl);
+        setRenderProgress(100);
+        setRenderLabel("Video pronto!");
+        setRendering(false);
+        localStorage.removeItem("yt-pending-ffmpeg-render");
+        return;
+      }
+    }
+  }, []);
+
+  const startFfmpegRender = async () => {
+    const validClips = orderedClipUrls.filter((u) => u && u.trim().length > 0);
+    if (validClips.length === 0) return;
+
+    setRendering(true);
+    setRenderProgress(0);
+    setRenderLabel("A despachar GitHub Actions...");
+    setRenderResult(null);
+    setRenderError(null);
+
+    try {
+      const res = await fetch("/api/admin/youtube/render-ffmpeg-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          slug: videoId || undefined,
+          uniqueClips: validClips,
+          targetDuration: videoDuration,
+          musicUrls: [musicUrlA, musicUrlB],
+          musicVolume: 0.8,
+          clipDuration: CLIP_DURATION,
+          // Parâmetros que resolvem o piscar: trim de 0.3s nas pontas dos clips
+          // + xfade longo de 1.5s. Deterministico, ao contrário do Shotstack.
+          trimEdge: 0.3,
+          crossfade: 1.5,
+          fps: 30,
+          thumbnailDataUrl: composedThumbnailDataUrl || undefined,
+          thumbnailUrl: thumbnailUrl || undefined,
+          seo,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.jobId) {
+        throw new Error(data.erro || `HTTP ${res.status}`);
+      }
+      localStorage.setItem("yt-pending-ffmpeg-render", JSON.stringify({
+        jobId: data.jobId,
+        startedAt: Date.now(),
+      }));
+      await pollFfmpegStatus(data.jobId);
+    } catch (err) {
+      setRenderError(err instanceof Error ? err.message : String(err));
+      setRendering(false);
+    }
+  };
+
   // Resume any pending render if the user reloads the page.
   useEffect(() => {
     try {
       const raw = localStorage.getItem("yt-pending-render");
-      if (!raw) return;
-      const pending: { renderId?: string } = JSON.parse(raw);
-      if (pending.renderId) pollAndSaveRender(pending.renderId);
+      if (raw) {
+        const pending: { renderId?: string } = JSON.parse(raw);
+        if (pending.renderId) pollAndSaveRender(pending.renderId);
+      }
+      const rawF = localStorage.getItem("yt-pending-ffmpeg-render");
+      if (rawF) {
+        const pf: { jobId?: string } = JSON.parse(rawF);
+        if (pf.jobId) pollFfmpegStatus(pf.jobId);
+      }
     } catch { /* ignore */ }
-    // Only on mount — pollAndSaveRender reads the latest title/seo via closures.
+    // Only on mount — callbacks read the latest state via closures.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -1135,8 +1236,40 @@ export default function YouTubeMontagem() {
 
         <p className="mb-3 text-xs text-escola-creme-50">
           Os {filledClips} clips únicos serão repetidos pela ORDEM definida (sem baralhar) para preencher {Math.round(videoDuration / 60)} min ({totalClipsNeeded} clips × {CLIP_DURATION}s).
-          Render via Shotstack (cloud). O vídeo fica no Supabase.
+          O vídeo fica no Supabase assim que o render termina.
         </p>
+
+        <div className="mb-3 rounded border border-escola-border/60 bg-black/20 p-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-escola-creme-50">
+            Motor de render
+          </p>
+          <div className="flex flex-col gap-2 text-sm text-escola-creme sm:flex-row sm:gap-6">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                checked={renderEngine === "ffmpeg"}
+                onChange={() => setRenderEngine("ffmpeg")}
+                disabled={rendering}
+              />
+              <span>
+                FFmpeg <span className="text-green-400">(grátis, GitHub Actions)</span>
+                <span className="ml-2 text-escola-creme-50">— xfade 1.5s + trim 0.3s, determinístico</span>
+              </span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                checked={renderEngine === "shotstack"}
+                onChange={() => setRenderEngine("shotstack")}
+                disabled={rendering}
+              />
+              <span>
+                Shotstack <span className="text-yellow-400">(pago, ~1 cr/min)</span>
+                <span className="ml-2 text-escola-creme-50">— fallback</span>
+              </span>
+            </label>
+          </div>
+        </div>
 
         {rendering && (
           <div className="mb-3">
@@ -1195,11 +1328,13 @@ export default function YouTubeMontagem() {
         </div>
 
         <button
-          onClick={startRender}
+          onClick={renderEngine === "ffmpeg" ? startFfmpegRender : startRender}
           disabled={filledClips === 0 || rendering}
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
-          {rendering ? "A renderizar..." : `Gerar MP4 de ${Math.round(videoDuration / 60)} min (${filledClips} clips únicos → ${totalClipsNeeded} total)`}
+          {rendering
+            ? "A renderizar..."
+            : `Gerar MP4 de ${Math.round(videoDuration / 60)} min (${filledClips} clips únicos${renderEngine === "ffmpeg" ? " — FFmpeg grátis" : ` → ${totalClipsNeeded} total · Shotstack`})`}
         </button>
       </section>
 
