@@ -1,14 +1,30 @@
-# Manual de Produção — Vídeo Funil (Nomear)
+# Manual de Produção — Escola dos Véus
 
 **Versão:** 2026-04-21
-**Escala:** 1 vídeo Funil Nomear do zero até estar pronto para YouTube
 
-> Funil Nomear = vídeos curtos (~90-120s) do canal YouTube com narração
-> contemplativa + imagens abstractas (Colecção B) + música Ancient Ground.
-> Diferente das Aulas dos cursos (pagas, sem voz) e diferente do Ancient
-> Ground ambient (1h, sem narração).
+Cobre 3 pipelines distintos:
+
+- **Funil YouTube (Nomear)** — vídeos curtos (~90-120s) com narração contemplativa. 122 episódios planeados.
+- **Aulas (cursos pagos)** — vídeos de aula com slides + áudio podcast à parte. 480 sub-aulas × 20 cursos.
+- **Ancient Ground** — vídeos ambient de 1h de natureza moçambicana. ~50 vídeos.
+
+Shorts (30s verticais) têm pipeline próprio em `/admin/producao/shorts` — não documentado aqui.
+
+### Comparação dos 3 pipelines
+
+| | Funil | Aulas | Ancient Ground |
+|---|---|---|---|
+| **Duração** | ~90-120s | 3-8 min/aula | ~1h |
+| **Narração** | ElevenLabs | ElevenLabs (à parte) | sem voz |
+| **Visual** | MJ → Runway | Slides editorial escuro | ThinkDiffusion → Runway |
+| **Música** | AG duckada | AG fundo | AG em loop |
+| **Motor render** | FFmpeg Vercel | CLI local | FFmpeg GitHub Actions |
+| **Dashboard** | `/admin/producao/funil` | `/admin/producao/aulas` | `/admin/producao/ancient-ground` |
 
 ---
+
+# Pipeline 1 — Funil YouTube (Nomear)
+
 
 ## Visão geral — 8 passos
 
@@ -200,8 +216,112 @@ Priorizar por ordem: **3** (ver progresso) → **1** (thumbnail) → **4** (uplo
 |---|---|
 | `/admin/producao/funil` | Lista de episódios + tab Prompts |
 | `/admin/producao/funil/gerar` | Upload imagens + gerar clips |
-| `/admin/producao/funil/montar` | Montagem final + SRT |
+| `/admin/producao/funil/montar` | Montagem final + SRT + thumbnail |
 | `/admin/producao/audios` | Áudios ElevenLabs em massa |
 | `/admin/producao/ancient-ground` | Pipeline separado (natureza 1h) |
 | `/admin/biblioteca` | Browser do Supabase |
-| `/admin/calendario` | Calendário de publicação |
+| `/admin/calendario` | Calendário de publicação + upload YouTube |
+
+---
+
+# Pipeline 2 — Aulas (cursos pagos)
+
+**Conceito:** vídeo da aula = **slides editoriais escuros + música Ancient Ground no fundo (sem voz no vídeo)**. O áudio narrado existe mas é **entrega separada** ("podcast" da aula), disponível no painel do aluno.
+
+**Escala:** 20 cursos × 8 módulos × 3 sub-aulas = **480 vídeos-aula**. Actualmente 7 cursos escritos (168 aulas).
+
+## Fluxo por aula
+
+| # | Passo | Onde | Tempo | Custo |
+|---|---|---|---|---|
+| 1 | Escolher aula | `/admin/producao/aulas` | 1 min | — |
+| 2 | Gerar áudio podcast | `/admin/producao/audios` | 2 min | ~$0.20 (~3-5 min áudio) |
+| 3 | Parsear script → slides.json | CLI `escola-veus curso parse aula.md` | 1 min | 0 |
+| 4 | Preview dos slides | CLI `escola-veus curso preview` | — | 0 |
+| 5 | Render vídeo final | CLI `escola-veus curso render` | 5-10 min | 0 (local Puppeteer+FFmpeg) |
+| 6 | Upload YouTube / plataforma pagos | manual ou `/admin/calendario` | 5 min | — |
+
+### Passo 2 — Áudio podcast
+
+Na página `/admin/producao/audios`:
+- Botão **"Só `<curso>`"** ou **"Carregar TODOS os cursos"** (168 aulas Nomear das 7 completas)
+- Folder: `curso-<slug>` (ex: `curso-ouro-proprio`)
+- Voice: mesma `UnchUh06d8TYP17TuqgU`
+- Sync Supabase antes de gerar (evita dupla cobrança)
+
+### Passo 3-5 — Slides + Render (CLI local)
+
+Actualmente feito via `tools/escola-veus-cli/`:
+
+```bash
+# Parse do script em Markdown
+escola-veus curso parse cursos/ouro-proprio/m1/m1a.md
+# → gera slides.json
+
+# Preview HTML no browser (revisar textos/timings)
+escola-veus curso preview m1a/slides.json
+
+# Render final → MP4
+escola-veus curso render m1a/slides.json --musica contemplativa-mod1.mp3
+```
+
+Output: `output/ouro-proprio/m1-a1.mp4`
+
+**Pendente:** painel admin para render em massa por curso (hoje é tudo CLI).
+
+## Por fazer (Aulas)
+
+- Admin UI para render de slides (actualmente só CLI)
+- Geração de **thumbnails por aula** (título + número do módulo sobre mandala)
+- Templates para **manuais PDF** (1/20 feitos) + **cadernos de exercícios** (8/160)
+- **Upload YouTube** de aulas já funciona via `/admin/calendario`
+
+---
+
+# Pipeline 3 — Ancient Ground (natureza Moçambique, ~1h)
+
+**Conceito:** vídeos ambient/meditação com paisagens realistas de Moçambique. Oceano Índico, Bazaruto, savana, baobás, céu africano, rios, chuva tropical. Sem narração; só clips Runway encadeados + música Loranne do álbum Ancient Ground em loop.
+
+**Escala:** ~50 vídeos planeados em `video-plan.json`. 12 categorias de natureza.
+
+## Fluxo por vídeo AG
+
+| # | Passo | Onde | Tempo | Custo |
+|---|---|---|---|---|
+| 1 | Escolher vídeo do plano | `/admin/producao/ancient-ground` | 2 min | — |
+| 2 | Gerar/editar prompts ThinkDiffusion | mesma página (aba prompts) | 5-15 min | — |
+| 3 | Gerar imagens (SDXL/UltraReal) | ThinkDiffusion web | 30-60 min | ~$3 (QUICK tier) |
+| 4 | Upload imagens | mesma página | 5 min | — |
+| 5 | Gerar clips Runway | mesma página (botão clip) | ~30 min | ~$15-20 (~40 clips) |
+| 6 | Montar vídeo 1h | `/admin/producao/ancient-ground/montagem` | 15-25 min GitHub Actions | 0 |
+| 7 | Upload YouTube | manual ou `/admin/calendario` | 5 min | — |
+
+### Passo 2 — Prompts
+
+`thinkdiffusion-prompts.json` tem **200 prompts** agrupados por 13 categorias: mar, praia, rio, savana, flora, céu, caminho, noite, chuva, fogo, jardim, nevoeiro, terra. Editáveis inline.
+
+### Passo 6 — Montagem 1h
+
+`/admin/producao/ancient-ground/montagem`:
+- Clips agrupados por prompt (4 variações cada → 1 grupo)
+- Reordenar grupos + reordenar clips dentro de cada grupo
+- Música: **pares Ancient Ground A+B em loop** (diferente do funil, que usa 1 faixa)
+- Thumbnail + SEO: tem secção própria
+- Render via GitHub Actions (FFmpeg): ~15-25 min para 1h de vídeo
+- Output: `course-assets/youtube/videos/`
+
+### Diferença relevante vs Funil
+
+| | Funil | Ancient Ground |
+|---|---|---|
+| Visual | Colecção B (sem pessoas) | Natureza realista |
+| Modelo imagens | Midjourney v7 | SDXL UltraReal/Juggernaut XL |
+| Música | 1 faixa duckada | Pares A+B em loop, sem ducking |
+| Narração | ElevenLabs | nenhuma |
+| Trim de clips | 0.5s | 0.3s (anti-flicker) |
+
+---
+
+# Padrão técnico — Dashboard de estado
+
+Documentado em `CURSOS/PADRAO-DASHBOARD-ESTADO.md`. Receita para replicar em qualquer pipeline: endpoint `/api/admin/<track>/status` + UI com Pills.
