@@ -65,16 +65,41 @@ async function uploadToSupabase(pathInBucket, data, contentType) {
   }
 }
 
-function runFfmpeg(args, label = "ffmpeg") {
+function runFfmpeg(args, label = "ffmpeg", onStderrLine) {
   return new Promise((resolve, reject) => {
     console.log(`\n[${label}] ffmpeg ${args.join(" ")}\n`);
-    const p = spawn("ffmpeg", ["-hide_banner", ...args], { stdio: ["ignore", "inherit", "inherit"] });
+    // Quando há onStderrLine precisamos de intercepar stderr para parse do
+    // "time=HH:MM:SS.ms" e podermos reportar progresso em tempo real.
+    const stderrMode = onStderrLine ? "pipe" : "inherit";
+    const p = spawn("ffmpeg", ["-hide_banner", ...args], { stdio: ["ignore", "inherit", stderrMode] });
+    if (onStderrLine && p.stderr) {
+      let buf = "";
+      p.stderr.on("data", (chunk) => {
+        const text = chunk.toString();
+        process.stderr.write(text);
+        buf += text;
+        // FFmpeg usa "\r" para actualizar a linha de status; partimos por ambos.
+        let idx;
+        while ((idx = buf.search(/[\r\n]/)) >= 0) {
+          const line = buf.slice(0, idx);
+          buf = buf.slice(idx + 1);
+          if (line.trim()) onStderrLine(line);
+        }
+      });
+    }
     p.on("error", reject);
     p.on("exit", (code) => {
       if (code === 0) resolve();
       else reject(new Error(`ffmpeg saiu com código ${code}`));
     });
   });
+}
+
+// Parse "time=HH:MM:SS.ms" do stderr do FFmpeg e devolve segundos decorridos.
+function parseFfmpegTime(line) {
+  const m = line.match(/time=(\d+):(\d+):(\d+(?:\.\d+)?)/);
+  if (!m) return null;
+  return parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60 + parseFloat(m[3]);
 }
 
 async function writeResult(jobId, payload) {
@@ -181,6 +206,8 @@ async function main() {
     : stride * (clipPaths.length - 1) + effective;
   console.log(`Base duration esperada: ${baseDuration.toFixed(2)}s`);
 
+  // Progresso em tempo real durante a base sequence: mapeia entre 25% e 50%.
+  let lastProgressWriteBase = 0;
   await runFfmpeg([
     "-y",
     ...inputs,
@@ -198,7 +225,19 @@ async function main() {
     "-an",
     "-movflags", "+faststart",
     baseOut,
-  ], "base");
+  ], "base", async (line) => {
+    const t = parseFfmpegTime(line);
+    if (t == null) return;
+    const now = Date.now();
+    if (now - lastProgressWriteBase < 5000) return; // max 1x/5s
+    lastProgressWriteBase = now;
+    const pct = Math.min(1, t / baseDuration);
+    await writeResult(jobId, {
+      status: "running",
+      phase: "base-sequence",
+      progress: 25 + Math.round(pct * 25), // 25 → 50
+    }).catch(() => {});
+  });
 
   await writeResult(jobId, { status: "running", phase: "music", progress: 50 });
 
@@ -243,29 +282,50 @@ async function main() {
     ? `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2,afade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[music]`
     : `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2[music]`;
 
+  // Progresso em tempo real durante o loop/final encode: mapeia entre 65% e 85%.
+  let lastProgressWriteLoop = 0;
+  const onLoopProgress = async (line) => {
+    const t = parseFfmpegTime(line);
+    if (t == null) return;
+    const now = Date.now();
+    if (now - lastProgressWriteLoop < 5000) return;
+    lastProgressWriteLoop = now;
+    const pct = Math.min(1, t / targetDuration);
+    await writeResult(jobId, {
+      status: "running",
+      phase: "loop",
+      progress: 65 + Math.round(pct * 20), // 65 → 85
+    }).catch(() => {});
+  };
+
   if (wantFade) {
     // Re-encode com fade de vídeo para preto.
+    // Preset veryfast + CRF 21 em vez de medium + CRF 23: 2-3x mais rápido
+    // (1h re-encoda em ~25-35min em vez de 1-2h) com qualidade visualmente
+    // equivalente para nature ambient. Maxrate 5M + bufsize 10M dá headroom
+    // às zonas xfade (complexas) para não haver artifacts de baixo bitrate
+    // nas junções — era o que estava a causar o "piscar" de volta.
     await runFfmpeg([
       "-y",
       "-stream_loop", "-1", "-i", baseOut,
       "-stream_loop", "-1", "-i", musicInput,
       "-filter_complex",
-      `[0:v]fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout];${audioFilter}`,
+      `[0:v]fade=t=in:st=0:d=1,fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout];${audioFilter}`,
       "-map", "[vout]",
       "-map", "[music]",
       "-t", String(targetDuration),
       "-c:v", "libx264",
-      "-preset", "medium",
-      "-crf", "23",
-      "-maxrate", "4M",
-      "-bufsize", "8M",
+      "-preset", "veryfast",
+      "-crf", "21",
+      "-maxrate", "5M",
+      "-bufsize", "10M",
       "-pix_fmt", "yuv420p",
       "-r", String(fps),
       "-c:a", "aac",
       "-b:a", "192k",
       "-movflags", "+faststart",
       outPath,
-    ], "final");
+    ], "final", onLoopProgress);
   } else {
     // Caminho rápido (sem fade): -c:v copy, só re-encoda áudio.
     await runFfmpeg([
@@ -281,7 +341,7 @@ async function main() {
       "-b:a", "192k",
       "-movflags", "+faststart",
       outPath,
-    ], "final");
+    ], "final", onLoopProgress);
   }
 
   await writeResult(jobId, { status: "running", phase: "upload", progress: 85 });
