@@ -63,6 +63,9 @@ export default function FunilMontarPage() {
   const [progress, setProgress] = useState<Progress | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [engine, setEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
+  const [srtGenerating, setSrtGenerating] = useState(false);
+  const [srtUrl, setSrtUrl] = useState<string | null>(null);
+  const [srtErr, setSrtErr] = useState<string | null>(null);
 
   // ── Load assets on mount ──────────────────────────────────────────────
   useEffect(() => {
@@ -111,6 +114,8 @@ export default function FunilMontarPage() {
     setClipOrder(epClips.map((c) => c.url));
     setVideoUrl(null);
     setProgress(null);
+    setSrtUrl(null);
+    setSrtErr(null);
   }, [epNarration, epClips]);
 
   // Auto-pick single first track (one track covers full funnel video duration)
@@ -289,10 +294,57 @@ export default function FunilMontarPage() {
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
         <h3 className="mb-2 text-sm text-escola-creme">2. Narração ElevenLabs</h3>
         {epNarration ? (
-          <div className="flex items-center gap-3">
-            <audio src={selectedNarration} controls className="flex-1 max-w-md" />
-            <span className="text-xs text-escola-creme-50">{epNarration.name}</span>
-          </div>
+          <>
+            <div className="flex items-center gap-3">
+              <audio src={selectedNarration} controls className="flex-1 max-w-md" />
+              <span className="text-xs text-escola-creme-50">{epNarration.name}</span>
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+              <button
+                onClick={async () => {
+                  setSrtGenerating(true);
+                  setSrtErr(null);
+                  setSrtUrl(null);
+                  try {
+                    const r = await fetch("/api/admin/funil/generate-srt", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        narrationUrl: selectedNarration,
+                        scriptId: ep.slug,
+                        filename: ep.key,
+                      }),
+                    });
+                    const d = await r.json();
+                    if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+                    setSrtUrl(d.url);
+                  } catch (e) {
+                    setSrtErr(e instanceof Error ? e.message : String(e));
+                  } finally {
+                    setSrtGenerating(false);
+                  }
+                }}
+                disabled={srtGenerating || !selectedNarration}
+                className="rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40 disabled:opacity-50"
+              >
+                {srtGenerating ? "A gerar SRT..." : "Gerar legenda SRT (Whisper)"}
+              </button>
+              {srtUrl && (
+                <a
+                  href={srtUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado hover:bg-escola-dourado/20"
+                >
+                  ✓ abrir / descarregar SRT
+                </a>
+              )}
+              {srtErr && <span className="text-escola-terracota">{srtErr}</span>}
+            </div>
+            <p className="mt-1 text-[10px] text-escola-creme-50">
+              Upload do SRT no YouTube Studio → Subtitles → Add language → Upload file.
+            </p>
+          </>
         ) : (
           <p className="text-xs text-escola-terracota">
             Sem áudio Nomear no Supabase para <code>{ep.slug}</code>. Gera em /admin/producao/audios primeiro.
