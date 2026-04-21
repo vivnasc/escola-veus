@@ -144,6 +144,10 @@ async function main() {
     // Default 3s à saída: suficiente para não parecer corte, nem tão longo
     // que desperdice conteúdo. Se quiseres desactivar, manda 0.
     fadeOut = 3,
+    // Intro opcional prepended ao início: se introUrl for fornecido, download
+    // + normalização + concat antes da base. Default 5s.
+    introUrl = null,
+    introDuration = 5,
     thumbnailUrl,
     thumbnailDataUrl,
     seo,
@@ -167,6 +171,31 @@ async function main() {
     const dest = path.join(WORK_DIR, "music", `music-${i}.mp3`);
     await downloadTo(music[i], dest);
     musicPaths.push(dest);
+  }
+
+  // Intro opcional — descarrega e normaliza para 1920x1080 @ fps, yuv420p,
+  // silencioso. Pré-normalizar garante que o concat no passo final não tem
+  // problemas de resolução/codec mismatch com a base.
+  let introPath = null;
+  if (introUrl) {
+    console.log(`[2b/7] Download + normalização do intro (${introDuration}s)`);
+    const rawIntro = path.join(WORK_DIR, "intro-raw.mp4");
+    await downloadTo(introUrl, rawIntro);
+    introPath = path.join(WORK_DIR, "intro.mp4");
+    await runFfmpeg([
+      "-y",
+      "-i", rawIntro,
+      "-t", String(introDuration),
+      "-vf", `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=${fps},format=yuv420p`,
+      "-c:v", "libx264",
+      "-preset", "veryfast",
+      "-crf", "18",
+      "-pix_fmt", "yuv420p",
+      "-r", String(fps),
+      "-an",
+      "-movflags", "+faststart",
+      introPath,
+    ], "intro-normalize");
   }
 
   await writeResult(jobId, { status: "running", phase: "base-sequence", progress: 25 });
@@ -272,15 +301,28 @@ async function main() {
   // o vídeo (perdemos o -c:v copy), mas garante uma saída suave em vez de
   // corte brusco. ~15 min extra no runner para 1h. Se fadeOut=0, voltamos
   // ao caminho rápido com -c:v copy.
-  console.log(`[5/6] Loop base até ${targetDuration}s + música + fadeOut ${fadeOut}s`);
+  console.log(`[5/6] Loop base até ${targetDuration}s + música + fadeOut ${fadeOut}s${introPath ? ` + intro ${introDuration}s` : ""}`);
   const outPath = path.join(WORK_DIR, "output.mp4");
 
   const fadeStart = Math.max(0, targetDuration - fadeOut);
   const wantFade = fadeOut > 0;
+  const hasIntro = !!introPath;
 
-  const audioFilter = wantFade
-    ? `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2,afade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[music]`
-    : `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2[music]`;
+  // Índices dos inputs ffmpeg. Quando há intro, ele passa a ser [0]; caso
+  // contrário a base é [0]. A música é sempre o último.
+  const baseIdx = hasIntro ? 1 : 0;
+  const musicIdx = hasIntro ? 2 : 1;
+
+  const afadeOutFragment = wantFade ? `,afade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}` : "";
+
+  // Filter de áudio:
+  // - Sem intro: fade-in normal de 2s, volume musicVolume
+  // - Com intro: volume sobe de 20% → 100% ao longo do introDuration (e depois
+  //   mantém-se), para "despertar" em paralelo com o visual. O fade-in suave
+  //   torna a entrada do logo não-intrusiva.
+  const audioFilter = hasIntro
+    ? `[${musicIdx}:a]volume='${musicVolume}*min(0.2+0.8*t/${introDuration},1)':eval=frame${afadeOutFragment}[music]`
+    : `[${musicIdx}:a]volume=${musicVolume},afade=t=in:ss=0:d=2${afadeOutFragment}[music]`;
 
   // Progresso em tempo real durante o loop/final encode: mapeia entre 65% e 85%.
   let lastProgressWriteLoop = 0;
@@ -298,19 +340,35 @@ async function main() {
     }).catch(() => {});
   };
 
-  if (wantFade) {
-    // Re-encode com fade de vídeo para preto.
-    // Preset veryfast + CRF 21 em vez de medium + CRF 23: 2-3x mais rápido
-    // (1h re-encoda em ~25-35min em vez de 1-2h) com qualidade visualmente
-    // equivalente para nature ambient. Maxrate 5M + bufsize 10M dá headroom
-    // às zonas xfade (complexas) para não haver artifacts de baixo bitrate
-    // nas junções — era o que estava a causar o "piscar" de volta.
+  // Filter de vídeo, conforme intro/fade activos.
+  let videoFilter = null;
+  if (hasIntro) {
+    // Concat do intro (finito) + base-loop (infinito até -t).
+    const concat = `[0:v][${baseIdx}:v]concat=n=2:v=1:a=0[vraw]`;
+    videoFilter = wantFade
+      ? `${concat};[vraw]fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout]`
+      : `${concat};[vraw]null[vout]`;
+  } else if (wantFade) {
+    videoFilter = `[${baseIdx}:v]fade=t=in:st=0:d=1,fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout]`;
+  }
+  // else: vídeo copy, sem filter
+
+  const needsReencode = hasIntro || wantFade;
+
+  const inputsFinal = [];
+  if (hasIntro) inputsFinal.push("-i", introPath);
+  inputsFinal.push("-stream_loop", "-1", "-i", baseOut);
+  inputsFinal.push("-stream_loop", "-1", "-i", musicInput);
+
+  if (needsReencode) {
+    // Re-encode do output final (intro concat + fade).
+    // Preset veryfast + CRF 21: 2-3x mais rápido que medium com qualidade
+    // equivalente para nature ambient. Maxrate 5M evita artifacts nas junções.
+    const filterComplex = videoFilter ? `${videoFilter};${audioFilter}` : audioFilter;
     await runFfmpeg([
       "-y",
-      "-stream_loop", "-1", "-i", baseOut,
-      "-stream_loop", "-1", "-i", musicInput,
-      "-filter_complex",
-      `[0:v]fade=t=in:st=0:d=1,fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout];${audioFilter}`,
+      ...inputsFinal,
+      "-filter_complex", filterComplex,
       "-map", "[vout]",
       "-map", "[music]",
       "-t", String(targetDuration),
@@ -327,13 +385,12 @@ async function main() {
       outPath,
     ], "final", onLoopProgress);
   } else {
-    // Caminho rápido (sem fade): -c:v copy, só re-encoda áudio.
+    // Caminho rápido (sem intro, sem fade): -c:v copy, só re-encoda áudio.
     await runFfmpeg([
       "-y",
-      "-stream_loop", "-1", "-i", baseOut,
-      "-stream_loop", "-1", "-i", musicInput,
+      ...inputsFinal,
       "-filter_complex", audioFilter,
-      "-map", "0:v",
+      "-map", `${baseIdx}:v`,
       "-map", "[music]",
       "-t", String(targetDuration),
       "-c:v", "copy",
