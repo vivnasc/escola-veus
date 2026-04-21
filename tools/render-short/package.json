@@ -1,0 +1,13 @@
+{
+  "name": "render-short",
+  "version": "0.1.0",
+  "description": "FFmpeg-based renderer for Escola dos Veus vertical Shorts (30s, 1080x1920)",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "render-short": "./render.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

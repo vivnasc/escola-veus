@@ -397,12 +397,9 @@ export default function ShortsPage() {
         musicVolume: 0.9,
       };
 
-      let endpoint = "/api/admin/shorts/render";
-      let body: Record<string, unknown> = { ...baseBody, verses: state.verses };
-
       if (engine === "ffmpeg") {
-        // Renderiza as 2 frases como PNGs transparentes 1080x1920 no browser
-        // (contorna ausência de fonte no binário FFmpeg serverless).
+        // FFmpeg em GitHub Actions — mesmo padrão do Ancient Ground.
+        // Submit → workflow_dispatch → polling do result.json em Supabase.
         setRenderLabel("A desenhar overlays...");
         const [png1, png2] = await Promise.all([
           overlay1Ref.current
@@ -420,47 +417,94 @@ export default function ShortsPage() {
               })
             : Promise.resolve(""),
         ]);
-        endpoint = "/api/admin/shorts/render-ffmpeg";
-        body = { ...baseBody, overlayPngs: [png1, png2] };
-      }
 
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
-        throw new Error(err.erro || `HTTP ${res.status}`);
-      }
-      const reader = res.body?.getReader();
-      if (!reader) throw new Error("Sem stream");
+        setRenderLabel("A despachar GitHub Actions...");
+        const submitRes = await fetch("/api/admin/shorts/render-short-submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...baseBody, overlayPngs: [png1, png2] }),
+        });
+        const submitData = await submitRes.json();
+        if (!submitRes.ok || !submitData.jobId) {
+          throw new Error(submitData.erro || `HTTP ${submitRes.status}`);
+        }
 
-      const decoder = new TextDecoder();
-      let buffer = "";
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n\n");
-        buffer = lines.pop() || "";
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
+        // Polling do result.json em Supabase
+        while (true) {
+          await new Promise((r) => setTimeout(r, 10_000));
+          let data: {
+            status?: string;
+            phase?: string;
+            progress?: number;
+            videoUrl?: string;
+            error?: string;
+            erro?: string;
+          };
           try {
-            const ev = JSON.parse(line.slice(6));
-            if (ev.type === "progress") {
-              setRenderProgress(ev.percent);
-              setRenderLabel(ev.label);
-            } else if (ev.type === "result") {
-              setRenderResult(ev.videoUrl);
-              setRenderLabel("Short pronto!");
-              setRenderProgress(100);
-            } else if (ev.type === "error") {
-              throw new Error(ev.message);
+            const r = await fetch(`/api/admin/shorts/render-short-status?jobId=${encodeURIComponent(submitData.jobId)}`);
+            data = await r.json();
+          } catch {
+            setRenderLabel("Ligação perdida — a tentar de novo...");
+            continue;
+          }
+          if (data.erro) throw new Error(data.erro);
+          const status = data.status || "...";
+          const phase = data.phase ? ` (${data.phase})` : "";
+          setRenderLabel(`${status}${phase}`);
+          if (typeof data.progress === "number") setRenderProgress(data.progress);
+          if (status === "failed") {
+            throw new Error(data.error || "FFmpeg render failed.");
+          }
+          if (status === "done" && data.videoUrl) {
+            setRenderResult(data.videoUrl);
+            setRenderProgress(100);
+            setRenderLabel("Short pronto!");
+            break;
+          }
+        }
+      } else {
+        // Shotstack (fallback) — mantém SSE stream original.
+        const endpoint = "/api/admin/shorts/render";
+        const body = { ...baseBody, verses: state.verses };
+
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
+          throw new Error(err.erro || `HTTP ${res.status}`);
+        }
+        const reader = res.body?.getReader();
+        if (!reader) throw new Error("Sem stream");
+
+        const decoder = new TextDecoder();
+        let buffer = "";
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n\n");
+          buffer = lines.pop() || "";
+          for (const line of lines) {
+            if (!line.startsWith("data: ")) continue;
+            try {
+              const ev = JSON.parse(line.slice(6));
+              if (ev.type === "progress") {
+                setRenderProgress(ev.percent);
+                setRenderLabel(ev.label);
+              } else if (ev.type === "result") {
+                setRenderResult(ev.videoUrl);
+                setRenderLabel("Short pronto!");
+                setRenderProgress(100);
+              } else if (ev.type === "error") {
+                throw new Error(ev.message);
+              }
+            } catch (e) {
+              if (e instanceof SyntaxError) continue;
+              throw e;
             }
-          } catch (e) {
-            if (e instanceof SyntaxError) continue;
-            throw e;
           }
         }
       }
@@ -920,7 +964,7 @@ export default function ShortsPage() {
               checked={engine === "ffmpeg"}
               onChange={() => setEngine("ffmpeg")}
             />
-            <span className="text-escola-creme">FFmpeg · grátis</span>
+            <span className="text-escola-creme">FFmpeg · grátis <span className="text-escola-creme-50">(GitHub Actions)</span></span>
           </label>
           <label className="flex cursor-pointer items-center gap-1.5">
             <input

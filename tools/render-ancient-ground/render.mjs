@@ -184,7 +184,11 @@ async function main() {
     "-map", `[${baseMap}]`,
     "-c:v", "libx264",
     "-preset", "medium",
-    "-crf", "20",
+    // CRF 23 + cap de bitrate evita que 1h a 1080p estoure os ~1.95GB do bucket.
+    // Nature ambient comprime muito bem a este CRF — visualmente equivalente a CRF 20.
+    "-crf", "23",
+    "-maxrate", "4M",
+    "-bufsize", "8M",
     "-pix_fmt", "yuv420p",
     "-r", String(fps),
     "-an",
