@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef, forwardRef } from "react";
+import * as htmlToImage from "html-to-image";
 import runwayMotionPrompts from "@/data/runway-motion-prompts.json";
 
 const MOTION_PROMPTS = runwayMotionPrompts as Record<string, string>;
@@ -120,6 +121,22 @@ export default function ShortsPage() {
   const [loadingTracks, setLoadingTracks] = useState(false);
 
   const [suggesting, setSuggesting] = useState(false);
+
+  const [engine, setEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
+  const overlay1Ref = useRef<HTMLDivElement>(null);
+  const overlay2Ref = useRef<HTMLDivElement>(null);
+
+  // Carrega Montserrat 800 uma vez para os overlays PNG ficarem bold de verdade
+  useEffect(() => {
+    const id = "montserrat-800-overlay";
+    if (document.getElementById(id)) return;
+    const link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href =
+      "https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap";
+    document.head.appendChild(link);
+  }, []);
 
   const [thumbnailing, setThumbnailing] = useState(false);
   const [thumbnailError, setThumbnailError] = useState<string | null>(null);
@@ -372,17 +389,45 @@ export default function ShortsPage() {
     setRenderError(null);
 
     try {
-      const res = await fetch("/api/admin/shorts/render", {
+      const baseBody = {
+        title: state.title || state.trackName.replace(/\.[^.]+$/, ""),
+        clips: state.slots.map((s) => s.clipUrl),
+        clipDuration: CLIP_DURATION,
+        musicUrl: state.trackUrl,
+        musicVolume: 0.9,
+      };
+
+      let endpoint = "/api/admin/shorts/render";
+      let body: Record<string, unknown> = { ...baseBody, verses: state.verses };
+
+      if (engine === "ffmpeg") {
+        // Renderiza as 2 frases como PNGs transparentes 1080x1920 no browser
+        // (contorna ausência de fonte no binário FFmpeg serverless).
+        setRenderLabel("A desenhar overlays...");
+        const [png1, png2] = await Promise.all([
+          overlay1Ref.current
+            ? htmlToImage.toPng(overlay1Ref.current, {
+                pixelRatio: 1,
+                cacheBust: true,
+                backgroundColor: undefined,
+              })
+            : Promise.resolve(""),
+          overlay2Ref.current
+            ? htmlToImage.toPng(overlay2Ref.current, {
+                pixelRatio: 1,
+                cacheBust: true,
+                backgroundColor: undefined,
+              })
+            : Promise.resolve(""),
+        ]);
+        endpoint = "/api/admin/shorts/render-ffmpeg";
+        body = { ...baseBody, overlayPngs: [png1, png2] };
+      }
+
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: state.title || state.trackName.replace(/\.[^.]+$/, ""),
-          clips: state.slots.map((s) => s.clipUrl),
-          clipDuration: CLIP_DURATION,
-          musicUrl: state.trackUrl,
-          musicVolume: 0.9,
-          verses: state.verses,
-        }),
+        body: JSON.stringify(body),
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({ erro: `HTTP ${res.status}` }));
@@ -867,6 +912,26 @@ export default function ShortsPage() {
           </div>
         )}
 
+        <div className="mb-3 flex items-center gap-4 text-xs">
+          <span className="text-escola-creme-50">Motor:</span>
+          <label className="flex cursor-pointer items-center gap-1.5">
+            <input
+              type="radio"
+              checked={engine === "ffmpeg"}
+              onChange={() => setEngine("ffmpeg")}
+            />
+            <span className="text-escola-creme">FFmpeg · grátis</span>
+          </label>
+          <label className="flex cursor-pointer items-center gap-1.5">
+            <input
+              type="radio"
+              checked={engine === "shotstack"}
+              onChange={() => setEngine("shotstack")}
+            />
+            <span className="text-escola-creme-50">Shotstack · ~$0.20</span>
+          </label>
+        </div>
+
         <button
           onClick={startRender}
           disabled={
@@ -874,7 +939,9 @@ export default function ShortsPage() {
           }
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
-          {rendering ? "A montar..." : "Montar Short MP4 (30s · 9:16)"}
+          {rendering
+            ? "A montar..."
+            : `Montar Short MP4 (30s · 9:16 · ${engine === "ffmpeg" ? "FFmpeg" : "Shotstack"})`}
         </button>
         {!allClipsReady && (
           <p className="mt-2 text-xs text-escola-creme-50">
@@ -986,9 +1053,63 @@ export default function ShortsPage() {
           Render via Shotstack (~10–20s). 1080×1920 JPG guardado em <code>shorts/thumbs/</code>.
         </p>
       </section>
+
+      {/* ── OVERLAYS ESCONDIDOS — renderizados como PNG pelo html-to-image ── */}
+      <div
+        aria-hidden
+        style={{
+          position: "fixed",
+          left: "-99999px",
+          top: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <OverlayCard ref={overlay1Ref} text={state.verses[0]} />
+        <OverlayCard ref={overlay2Ref} text={state.verses[1]} />
+      </div>
     </div>
   );
 }
+
+const OverlayCard = forwardRef<HTMLDivElement, { text: string }>(
+  function OverlayCard({ text }, ref) {
+    return (
+      <div
+        ref={ref}
+        style={{
+          width: 1080,
+          height: 1920,
+          backgroundColor: "transparent",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 80px",
+          boxSizing: "border-box",
+          fontFamily: "'Montserrat', system-ui, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 72,
+            lineHeight: 1.18,
+            fontWeight: 800,
+            color: "#ffffff",
+            textAlign: "center",
+            padding: "36px 44px",
+            borderRadius: 22,
+            backgroundColor: "rgba(0,0,0,0.42)",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.35)",
+            maxWidth: 900,
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+          }}
+        >
+          {text || " "}
+        </div>
+      </div>
+    );
+  },
+);
 
 // ── Small helpers ─────────────────────────────────────────────────────────────
 
