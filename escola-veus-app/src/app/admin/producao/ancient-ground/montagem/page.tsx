@@ -1321,9 +1321,18 @@ export default function YouTubeMontagem() {
             disabled={rendering}
             className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
           >
-            {DURATION_PRESETS.map((p) => (
-              <option key={p.seconds} value={p.seconds}>{p.label}</option>
-            ))}
+            {DURATION_PRESETS.map((p) => {
+              const mins = p.seconds / 60;
+              const durLabel = mins < 60 ? `${mins} min` : `${mins / 60} h`;
+              const costLabel = renderEngine === "ffmpeg"
+                ? "grátis"
+                : `${p.credits} créditos`;
+              return (
+                <option key={p.seconds} value={p.seconds}>
+                  {durLabel} · {costLabel}
+                </option>
+              );
+            })}
           </select>
         </div>
 
