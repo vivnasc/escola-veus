@@ -119,43 +119,95 @@ export default function FunilMontarPage() {
     setProgress({ percent: 0, label: "A iniciar..." });
 
     try {
-      const endpoint = engine === "ffmpeg"
-        ? "/api/admin/funil/render-ffmpeg"
-        : "/api/admin/funil/render";
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: ep.label,
-          clips: clipOrder,
-          clipDuration: 10,
-          narrationUrl: selectedNarration,
-          musicUrls: selectedMusic,
-          musicVolume,
-        }),
-      });
+      if (engine === "ffmpeg") {
+        // FFmpeg em GitHub Actions — mesmo padrão do Ancient Ground e Shorts.
+        setProgress({ percent: 5, label: "A despachar GitHub Actions..." });
+        const submitRes = await fetch("/api/admin/funil/render-funil-submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: ep.label,
+            clips: clipOrder,
+            clipDuration: 10,
+            narrationUrl: selectedNarration,
+            musicUrls: selectedMusic,
+            musicVolume,
+          }),
+        });
+        const submitData = await submitRes.json();
+        if (!submitRes.ok || !submitData.jobId) {
+          throw new Error(submitData.erro || `HTTP ${submitRes.status}`);
+        }
 
-      if (!res.body) throw new Error("Sem stream.");
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buf = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        const lines = buf.split("\n\n");
-        buf = lines.pop() ?? "";
-        for (const line of lines) {
-          const data = line.replace(/^data: /, "").trim();
-          if (!data) continue;
+        while (true) {
+          await new Promise((r) => setTimeout(r, 10_000));
+          let data: {
+            status?: string;
+            phase?: string;
+            progress?: number;
+            videoUrl?: string;
+            error?: string;
+            erro?: string;
+          };
           try {
-            const ev = JSON.parse(data);
-            if (ev.type === "progress") setProgress({ percent: ev.percent, label: ev.label });
-            if (ev.type === "result") setVideoUrl(ev.videoUrl);
-            if (ev.type === "error") setErr(ev.message);
+            const r = await fetch(`/api/admin/funil/render-funil-status?jobId=${encodeURIComponent(submitData.jobId)}`);
+            data = await r.json();
           } catch {
-            /* ignore */
+            setProgress({ percent: 0, label: "Ligação perdida — a tentar de novo..." });
+            continue;
+          }
+          if (data.erro) throw new Error(data.erro);
+          const status = data.status || "...";
+          const phase = data.phase ? ` (${data.phase})` : "";
+          setProgress({
+            percent: typeof data.progress === "number" ? data.progress : 0,
+            label: `${status}${phase}`,
+          });
+          if (status === "failed") throw new Error(data.error || "FFmpeg render failed.");
+          if (status === "done" && data.videoUrl) {
+            setVideoUrl(data.videoUrl);
+            setProgress({ percent: 100, label: "Vídeo pronto!" });
+            break;
+          }
+        }
+      } else {
+        // Shotstack fallback — SSE stream original
+        const endpoint = "/api/admin/funil/render";
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: ep.label,
+            clips: clipOrder,
+            clipDuration: 10,
+            narrationUrl: selectedNarration,
+            musicUrls: selectedMusic,
+            musicVolume,
+          }),
+        });
+
+        if (!res.body) throw new Error("Sem stream.");
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buf = "";
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          const lines = buf.split("\n\n");
+          buf = lines.pop() ?? "";
+          for (const line of lines) {
+            const data = line.replace(/^data: /, "").trim();
+            if (!data) continue;
+            try {
+              const ev = JSON.parse(data);
+              if (ev.type === "progress") setProgress({ percent: ev.percent, label: ev.label });
+              if (ev.type === "result") setVideoUrl(ev.videoUrl);
+              if (ev.type === "error") setErr(ev.message);
+            } catch {
+              /* ignore */
+            }
           }
         }
       }
@@ -312,7 +364,7 @@ export default function FunilMontarPage() {
               checked={engine === "ffmpeg"}
               onChange={() => setEngine("ffmpeg")}
             />
-            <span className="text-escola-creme">FFmpeg · grátis · ducking</span>
+            <span className="text-escola-creme">FFmpeg · grátis <span className="text-escola-creme-50">(GitHub Actions · ducking automático)</span></span>
           </label>
           <label className="flex items-center gap-1.5 cursor-pointer">
             <input

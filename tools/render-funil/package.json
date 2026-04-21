@@ -1,0 +1,13 @@
+{
+  "name": "render-funil",
+  "version": "0.1.0",
+  "description": "FFmpeg renderer for Escola dos Veus Nomear/Funil videos (~2min, narração + música ducked)",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "render-funil": "./render.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
