@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import videoPlan from "@/data/video-plan.json";
 import youtubeMetadata from "@/data/youtube-metadata.json";
 
@@ -300,8 +300,29 @@ export default function YouTubeMontagem() {
   const [musicPair, setMusicPair] = useState(1); // pair 1 = faixas 01+02
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
+  // Diagnóstico do piscar (não afecta o render — só o preview).
+  // trimEdges: salta 0.3s do início e 0.3s do fim de cada clip (testa frames-edge Runway)
+  // hardCut: desliga o fade 75ms entre buffers A/B (testa transição CSS)
+  // loopSingleClip: repete só o 1º clip 4x (isola edges-do-clip vs jump-cut entre clips)
+  const [trimEdges, setTrimEdges] = useState(false);
+  const [hardCut, setHardCut] = useState(false);
+  const [loopSingleClip, setLoopSingleClip] = useState(false);
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const TRIM = 0.3;
+
   // Derived: flat ordered clip URLs respecting groupOrder + per-group order.
   const orderedClipUrls: string[] = groupOrder.flatMap((pid) => groupClips[pid] || []);
+
+  // O preview pode tocar uma sequência diferente do render (ex: loop dum só clip
+  // para diagnóstico). previewClipUrls é o que vai para o player; orderedClipUrls
+  // continua a ser o que vai para o render Shotstack.
+  const previewClipUrls: string[] = useMemo(() => {
+    if (loopSingleClip && orderedClipUrls.length > 0) {
+      return [orderedClipUrls[0], orderedClipUrls[0], orderedClipUrls[0], orderedClipUrls[0]];
+    }
+    return orderedClipUrls;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loopSingleClip, orderedClipUrls.join("|")]);
 
   // Auto-load clips from Supabase on mount (only if no saved state yet).
   useEffect(() => {
@@ -455,7 +476,7 @@ export default function YouTubeMontagem() {
   // Buffer A plays clip N, buffer B preloads clip N+1, then swap.
   const getBuffer = (bufIdx: 0 | 1) => (bufIdx === 0 ? videoRefA.current : videoRefB.current);
 
-  const preloadInto = (bufIdx: 0 | 1, url: string | undefined) => {
+  const preloadInto = (bufIdx: 0 | 1, url: string | undefined, startAt = 0) => {
     const el = getBuffer(bufIdx);
     if (!el) return;
     if (!url) { el.removeAttribute("src"); el.load(); return; }
@@ -464,11 +485,29 @@ export default function YouTubeMontagem() {
       el.load();
     }
     el.pause();
-    el.currentTime = 0;
+    el.currentTime = startAt;
+  };
+
+  const clearAdvanceTimer = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+  };
+
+  // Quando o trimEdges está activo, não podemos esperar pelo `onEnded` — temos
+  // de avançar antes do último 0.3s. Este timer é a única forma de avançar.
+  // Quando trimEdges está off, o `onEnded` dispara e ignoramos o timer.
+  const scheduleTrimAdvance = (bufIdx: 0 | 1, msRemaining: number) => {
+    clearAdvanceTimer();
+    if (!trimEdges) return;
+    advanceTimerRef.current = setTimeout(() => {
+      advancePreview(bufIdx);
+    }, Math.max(0, msRemaining));
   };
 
   const startPreview = () => {
-    if (orderedClipUrls.length === 0) return;
+    if (previewClipUrls.length === 0) return;
     setPreviewing(true);
     setPaused(false);
     setPreviewClipIndex(0);
@@ -481,19 +520,25 @@ export default function YouTubeMontagem() {
       audioRef.current.play().catch(() => {});
     }
 
+    const startAt = trimEdges ? TRIM : 0;
     // Buffer 0 = clip 0 (plays), buffer 1 = clip 1 (preload).
-    preloadInto(0, orderedClipUrls[0]);
-    preloadInto(1, orderedClipUrls[1]);
+    preloadInto(0, previewClipUrls[0], startAt);
+    preloadInto(1, previewClipUrls[1], startAt);
     const a = getBuffer(0);
     if (a) a.play().catch(() => {});
 
     startClipTimer(0, 0);
+    if (trimEdges) {
+      const effectiveMs = (CLIP_DURATION - 2 * TRIM) * 1000;
+      scheduleTrimAdvance(0, effectiveMs);
+    }
   };
 
   const stopPreview = () => {
     setPreviewing(false);
     setPaused(false);
     if (timerRef.current) clearInterval(timerRef.current);
+    clearAdvanceTimer();
     videoRefA.current?.pause();
     videoRefB.current?.pause();
     if (audioRef.current) audioRef.current.pause();
@@ -502,6 +547,7 @@ export default function YouTubeMontagem() {
   const pausePreview = () => {
     setPaused(true);
     if (timerRef.current) clearInterval(timerRef.current);
+    clearAdvanceTimer();
     getBuffer(activeBuffer)?.pause();
     audioRef.current?.pause();
     audioRefB.current?.pause();
@@ -517,6 +563,11 @@ export default function YouTubeMontagem() {
     const cur2 = getBuffer(activeBuffer);
     const elapsedOnClip = cur2 ? cur2.currentTime : 0;
     startClipTimer(previewClipIndex, elapsedOnClip);
+    if (trimEdges) {
+      const endAt = CLIP_DURATION - TRIM;
+      const remainingMs = Math.max(0, (endAt - elapsedOnClip) * 1000);
+      scheduleTrimAdvance(activeBuffer, remainingMs);
+    }
   };
 
   const startClipTimer = (clipIndex: number, startElapsed = 0) => {
@@ -530,25 +581,31 @@ export default function YouTubeMontagem() {
 
   // Advance when the active clip ends naturally — no setInterval for clip swap.
   const advancePreview = (endedBufIdx: 0 | 1) => {
+    clearAdvanceTimer();
     const nextIndex = previewClipIndex + 1;
-    if (nextIndex >= orderedClipUrls.length) {
+    if (nextIndex >= previewClipUrls.length) {
       stopPreview();
       return;
     }
+    const startAt = trimEdges ? TRIM : 0;
     // The buffer that just ended now preloads the clip AFTER next.
     const newActive: 0 | 1 = endedBufIdx === 0 ? 1 : 0;
-    const preloadUrl = orderedClipUrls[nextIndex + 1];
-    preloadInto(endedBufIdx, preloadUrl);
+    const preloadUrl = previewClipUrls[nextIndex + 1];
+    preloadInto(endedBufIdx, preloadUrl, startAt);
 
     setActiveBuffer(newActive);
     setPreviewClipIndex(nextIndex);
 
     const cur = getBuffer(newActive);
     if (cur) {
-      cur.currentTime = 0;
+      cur.currentTime = startAt;
       cur.play().catch(() => {});
     }
     startClipTimer(nextIndex, 0);
+    if (trimEdges) {
+      const effectiveMs = (CLIP_DURATION - 2 * TRIM) * 1000;
+      scheduleTrimAdvance(newActive, effectiveMs);
+    }
   };
 
   const filledClips = orderedClipUrls.length;
@@ -937,29 +994,69 @@ export default function YouTubeMontagem() {
           4. Preview
         </h3>
 
+        {/* Diagnóstico do piscar — afecta só o preview, NÃO o render Shotstack. */}
+        <div className="mb-3 rounded border border-escola-border/60 bg-black/20 p-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-escola-creme-50">
+            Diagnóstico piscar (só preview)
+          </p>
+          <div className="flex flex-wrap gap-4 text-sm text-escola-creme">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={trimEdges}
+                onChange={(e) => setTrimEdges(e.target.checked)}
+                disabled={previewing}
+              />
+              <span>Cortar 0.3s das pontas <span className="text-escola-creme-50">(testa frames-edge Runway)</span></span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={hardCut}
+                onChange={(e) => setHardCut(e.target.checked)}
+              />
+              <span>Cut duro <span className="text-escola-creme-50">(sem fade 75ms)</span></span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={loopSingleClip}
+                onChange={(e) => setLoopSingleClip(e.target.checked)}
+                disabled={previewing}
+              />
+              <span>Loop do 1º clip 4x <span className="text-escola-creme-50">(isola edge vs jump-cut)</span></span>
+            </label>
+          </div>
+          <p className="mt-2 text-xs text-escola-creme-50">
+            Se o piscar desaparece com <strong>Cortar 0.3s</strong> → são frames-edge dos clips Runway (aplicar ao render).<br />
+            Se desaparece com <strong>Cut duro</strong> → é o fade CSS do preview (cosmético, render não é afectado).<br />
+            Se desaparece com <strong>Loop 1 clip</strong> → o piscar vem do jump-cut entre clips diferentes (precisa crossfade maior ou reordenar grupos).
+          </p>
+        </div>
+
         <div className="relative aspect-video w-full overflow-hidden rounded bg-black">
           <video
             ref={videoRefA}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-75"
+            className={`absolute inset-0 h-full w-full object-cover ${hardCut ? "" : "transition-opacity duration-75"}`}
             style={{ opacity: activeBuffer === 0 ? 1 : 0 }}
             muted
             playsInline
             preload="auto"
-            onEnded={() => advancePreview(0)}
+            onEnded={() => { if (!trimEdges) advancePreview(0); }}
           />
           <video
             ref={videoRefB}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-75"
+            className={`absolute inset-0 h-full w-full object-cover ${hardCut ? "" : "transition-opacity duration-75"}`}
             style={{ opacity: activeBuffer === 1 ? 1 : 0 }}
             muted
             playsInline
             preload="auto"
-            onEnded={() => advancePreview(1)}
+            onEnded={() => { if (!trimEdges) advancePreview(1); }}
           />
 
           {previewing && (
             <div className="absolute bottom-3 left-3 rounded bg-black/60 px-2 py-1 text-xs text-white">
-              Clip {previewClipIndex + 1}/{orderedClipUrls.length} —{" "}
+              Clip {previewClipIndex + 1}/{previewClipUrls.length} —{" "}
               {Math.floor(previewTime / 60)}:
               {String(Math.floor(previewTime % 60)).padStart(2, "0")}
             </div>
