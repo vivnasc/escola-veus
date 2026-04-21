@@ -42,6 +42,7 @@ function buildShortEdit(
   musicUrl: string,
   musicVolume: number,
   verses: [string, string],
+  musicStartSec: number,
 ) {
   const total = clips.length * clipDuration;
 
@@ -50,11 +51,16 @@ function buildShortEdit(
     start: i * clipDuration,
     length: clipDuration,
     fit: "cover" as const,
-    transition: { in: i === 0 ? ("fade" as const) : ("fade" as const), out: ("fade" as const) },
+    transition: { in: "fade" as const, out: "fade" as const },
   }));
 
   const musicClip = {
-    asset: { type: "audio" as const, src: musicUrl, volume: musicVolume },
+    asset: {
+      type: "audio" as const,
+      src: musicUrl,
+      volume: musicVolume,
+      trim: Math.max(0, Math.floor(musicStartSec)) || undefined,
+    },
     start: 0,
     length: total,
     transition: { in: "fade" as const, out: "fade" as const },
@@ -134,6 +140,7 @@ export async function POST(req: NextRequest) {
     clipDuration = 10,
     musicUrl,
     musicVolume = 0.9,
+    musicStartSec = 0,
     verses,
   } = body;
 
@@ -164,7 +171,7 @@ export async function POST(req: NextRequest) {
     try {
       send({ type: "progress", percent: 5, label: "A enviar para Shotstack..." });
 
-      const edit = buildShortEdit(validClips, clipDuration, musicUrl, musicVolume, safeVerses);
+      const edit = buildShortEdit(validClips, clipDuration, musicUrl, musicVolume, safeVerses, musicStartSec);
 
       const renderRes = await fetch(`${baseUrl}/render`, {
         method: "POST",

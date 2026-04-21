@@ -40,6 +40,7 @@ type ShortsState = {
   album: string;
   trackUrl: string;
   trackName: string;
+  musicStartSec: number;
   theme: string;
   verses: [string, string];
   candidates: string[];
@@ -77,6 +78,7 @@ const EMPTY_STATE: ShortsState = {
   album: "",
   trackUrl: "",
   trackName: "",
+  musicStartSec: 0,
   theme: "",
   verses: ["", ""],
   candidates: [],
@@ -395,6 +397,7 @@ export default function ShortsPage() {
         clipDuration: CLIP_DURATION,
         musicUrl: state.trackUrl,
         musicVolume: 0.9,
+        musicStartSec: state.musicStartSec || 0,
       };
 
       let endpoint = "/api/admin/shorts/render";
@@ -701,29 +704,20 @@ export default function ShortsPage() {
                 {filteredTracks.map((t) => {
                   const selected = state.trackUrl === t.url;
                   return (
-                    <div
+                    <TrackRow
                       key={t.url}
-                      className={`flex items-center gap-2 border-b border-escola-border/30 p-2 last:border-0 ${
-                        selected ? "bg-escola-coral/10" : ""
-                      }`}
-                    >
-                      <button
-                        onClick={() =>
-                          updateState({ trackUrl: t.url, trackName: t.name })
-                        }
-                        className={`w-24 shrink-0 rounded px-2 py-1 text-xs font-semibold ${
-                          selected
-                            ? "bg-escola-coral text-white"
-                            : "border border-escola-border text-escola-creme hover:bg-escola-border/30"
-                        }`}
-                      >
-                        {selected ? "Escolhida" : "Escolher"}
-                      </button>
-                      <span className="w-28 shrink-0 truncate text-xs text-escola-creme">
-                        {t.name}
-                      </span>
-                      <audio src={t.url} controls className="h-8 flex-1" preload="none" />
-                    </div>
+                      track={t}
+                      selected={selected}
+                      onSelect={() =>
+                        updateState({
+                          trackUrl: t.url,
+                          trackName: t.name,
+                          musicStartSec: 0,
+                        })
+                      }
+                      musicStartSec={state.musicStartSec}
+                      onSetStart={(s) => updateState({ musicStartSec: s })}
+                    />
                   );
                 })}
                 {filteredTracks.length === 0 && (
@@ -892,24 +886,7 @@ export default function ShortsPage() {
         )}
 
         {renderResult && (
-          <div className="mb-3 space-y-2">
-            <div className="rounded bg-green-950/50 p-2 text-xs text-green-300">
-              Short pronto!
-            </div>
-            <video
-              src={renderResult}
-              controls
-              className="mx-auto aspect-[9/16] max-w-sm rounded"
-            />
-            <a
-              href={renderResult}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white"
-            >
-              Abrir / Descarregar MP4
-            </a>
-          </div>
+          <ShortResult url={renderResult} title={state.title || state.trackName || "short"} />
         )}
 
         <div className="mb-3 flex items-center gap-4 text-xs">
@@ -1156,6 +1133,187 @@ function CopyField({
         rows={rows}
         className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
       />
+    </div>
+  );
+}
+
+// ── Short result: video + download/share (mobile-friendly) ──────────────────
+
+function ShortResult({ url, title }: { url: string; title: string }) {
+  const [downloading, setDownloading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const isIOS = typeof navigator !== "undefined" && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const canShare = typeof navigator !== "undefined" && !!(navigator as Navigator & { share?: unknown }).share;
+
+  const filename = `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-short.mp4`;
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+    } catch {
+      window.open(url, "_blank");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const handleShare = async () => {
+    const nav = navigator as Navigator & {
+      share?: (d: { title?: string; url?: string; files?: File[] }) => Promise<void>;
+      canShare?: (d: { files?: File[] }) => boolean;
+    };
+    try {
+      // Preferível: partilhar ficheiro (permite "Guardar vídeo" no iOS)
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const file = new File([blob], filename, { type: blob.type || "video/mp4" });
+      if (nav.canShare?.({ files: [file] })) {
+        await nav.share?.({ files: [file], title });
+        return;
+      }
+      await nav.share?.({ title, url });
+    } catch {
+      /* user cancelou ou nao ha share */
+    }
+  };
+
+  const handleCopyUrl = async () => {
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <div className="mb-3 space-y-3">
+      <div className="rounded bg-green-950/50 p-2 text-xs text-green-300">
+        Short pronto!
+      </div>
+      <video
+        src={url}
+        controls
+        playsInline
+        className="mx-auto aspect-[9/16] max-w-sm rounded"
+      />
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="flex-1 rounded bg-escola-coral px-4 py-3 text-sm font-semibold text-white disabled:opacity-30"
+        >
+          {downloading ? "A descarregar..." : "⬇ Descarregar MP4"}
+        </button>
+        {canShare && (
+          <button
+            onClick={handleShare}
+            className="flex-1 rounded border border-escola-coral px-4 py-3 text-sm font-semibold text-escola-coral"
+          >
+            ↗ Partilhar / Guardar
+          </button>
+        )}
+        <button
+          onClick={handleCopyUrl}
+          className="rounded border border-escola-border px-3 py-3 text-xs text-escola-creme hover:bg-escola-border/30"
+        >
+          {copied ? "✓ URL copiado" : "Copiar URL"}
+        </button>
+      </div>
+      {isIOS && (
+        <p className="text-xs text-escola-creme-50">
+          📱 No iPhone: se o &quot;Descarregar&quot; não guardar, toca &quot;Partilhar / Guardar&quot; → &quot;Guardar Vídeo&quot;.
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ── Track row com audio + botão "usar a partir daqui" ────────────────────────
+
+function fmtTime(sec: number): string {
+  const s = Math.max(0, Math.floor(sec));
+  const m = Math.floor(s / 60);
+  const ss = String(s % 60).padStart(2, "0");
+  return `${m}:${ss}`;
+}
+
+function TrackRow({
+  track,
+  selected,
+  onSelect,
+  musicStartSec,
+  onSetStart,
+}: {
+  track: MusicTrack;
+  selected: boolean;
+  onSelect: () => void;
+  musicStartSec: number;
+  onSetStart: (s: number) => void;
+}) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  return (
+    <div
+      className={`flex flex-col gap-2 border-b border-escola-border/30 p-2 last:border-0 ${
+        selected ? "bg-escola-coral/10" : ""
+      }`}
+    >
+      <div className="flex items-center gap-2">
+        <button
+          onClick={onSelect}
+          className={`w-24 shrink-0 rounded px-2 py-1 text-xs font-semibold ${
+            selected
+              ? "bg-escola-coral text-white"
+              : "border border-escola-border text-escola-creme hover:bg-escola-border/30"
+          }`}
+        >
+          {selected ? "Escolhida" : "Escolher"}
+        </button>
+        <span className="w-28 shrink-0 truncate text-xs text-escola-creme">
+          {track.name}
+        </span>
+        <audio
+          ref={audioRef}
+          src={track.url}
+          controls
+          className="h-8 flex-1"
+          preload="none"
+        />
+      </div>
+      {selected && (
+        <div className="flex flex-wrap items-center gap-2 pl-26 text-xs">
+          <span className="text-escola-creme-50">
+            Início no short:{" "}
+            <span className="text-escola-creme">{fmtTime(musicStartSec)}</span>
+          </span>
+          <button
+            onClick={() => {
+              const t = audioRef.current?.currentTime ?? 0;
+              onSetStart(Math.max(0, Math.floor(t)));
+            }}
+            className="rounded border border-escola-coral px-2 py-1 text-[11px] text-escola-coral hover:bg-escola-coral/10"
+            title="Usa o ponto onde o leitor está parado"
+          >
+            📍 Usar a partir daqui
+          </button>
+          {musicStartSec > 0 && (
+            <button
+              onClick={() => onSetStart(0)}
+              className="text-[11px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              ↺ início
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
