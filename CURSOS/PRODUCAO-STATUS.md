@@ -1,11 +1,61 @@
 # Escola dos Véus — Estado da Produção
 
-**Última actualização:** 2026-04-20 (reestruturação admin + funil Ouro Próprio)
+**Última actualização:** 2026-04-21 (sessão 7 — Shotstack → FFmpeg, piscar resolvido)
 
 > Ficheiro único de continuidade entre sessões. Ler no início de cada sessão nova.
 > Actualizar no fim. Histórico antigo em `_arquivo-historico/INDEX.md`.
 
 ---
+
+## Última sessão (7 — 2026-04-21)
+
+**Migração Shotstack → FFmpeg nos 3 pipelines de vídeo. Piscar dos Ancient Ground resolvido determinisiticamente.**
+
+Shotstack passou a fallback opcional. Default é sempre FFmpeg, custo 0.
+
+### Ancient Ground (1h) — FFmpeg em GitHub Actions
+
+- **3 toggles de diagnóstico no preview** (trim 0.3s, cut duro, loop 1 clip) para isolar edges-frame vs jump-cut sem gastar créditos
+- **Novo motor FFmpeg grátis** via `render-ancient-ground.yml` + `tools/render-ancient-ground/render.mjs`
+- **Trim 0.3s + xfade 1.5s** determinístico → piscar eliminado (validado 5min; 1h em teste)
+- **Flow manifest-based**: escreve `render-jobs/<jobId>.json` em Supabase, despacha workflow via `POST /workflows/.../dispatches`, polling ao `render-jobs/<jobId>-result.json` que o workflow vai actualizando
+- **Loop eficiente**: base sequence encodada 1x, depois `-stream_loop -1 -c:v copy` para chegar à duração alvo (5min/10min/30min/1h) sem re-encode
+- **Endpoints novos**: `/render-ffmpeg-submit` + `/render-ffmpeg-status`
+- **Bucket `course-assets`**: global file size limit 1.95GB (era 50MB default, bloqueava uploads >50MB)
+- **Dropdown duração** dinâmico: mostra "grátis" com FFmpeg, "N créditos" com Shotstack
+
+### Funil (Nomear) — FFmpeg em Vercel serverless
+
+- Commit `a8ccef5` — `POST /api/admin/funil/render-ffmpeg`
+- Usa `@ffmpeg-installer/ffmpeg` (binário empacotado dentro do bundle da Vercel function)
+- Filter graph: xfade encadeado + narração + música com **sidechain compressor** (ducking automático: música baixa quando voz fala, sobe no silêncio)
+- Output 1080p libx264 crf 20, upload Supabase `youtube/funil-videos/`
+- Streaming SSE com parse do `stderr` FFmpeg (linhas `time=...`)
+- Vídeos são curtos (~2 min), cabem dentro do 5min cap Vercel
+
+### Shorts (30s verticais) — FFmpeg em Vercel serverless
+
+- Commit `5c0366f` — `POST /api/admin/shorts/render-ffmpeg`
+- Mesmo `@ffmpeg-installer/ffmpeg` dentro da função Vercel
+- Filter graph: concat de 3 clips 9:16, overlay de 2 PNGs com versos (renderizados no browser via html-to-image e passados como dataURL base64), música com fade
+- Output 1080×1920 verticais, upload `shorts/videos/`
+
+### Diagnóstico do piscar antes do fix
+
+Confirmado por Vivianne no preview do Ancient Ground: piscar presente entre clips. Logo não era do Shotstack — eram as pontas dos clips Runway + falta de crossfade longo. O FFmpeg com `trim=0.3:9.7` + `xfade=fade:duration=1.5` resolveu determinisiticamente.
+
+### Dois padrões FFmpeg coexistentes (propositado)
+
+| Pipeline | Duração | Host | Porquê |
+|---|---|---|---|
+| Ancient Ground | ~1h | GitHub Actions runner | Vercel cap 5min, inviável |
+| Funil (Nomear) | ~2min | Vercel serverless + @ffmpeg-installer | Cabe no cap, deploy único |
+| Shorts | 30s | Vercel serverless + @ffmpeg-installer | Cabe no cap, deploy único |
+
+Ambas as abordagens funcionam e não conflituam; cada uma é a certa para a sua escala.
+
+---
+
 
 ## Leitura por esta ordem
 
@@ -114,7 +164,8 @@ Ancient Ground continua a ler de `thinkdiffusion-prompts.json` (read-only na UI)
 | ElevenLabs | `ELEVENLABS_API_KEY` | OK — voz `UnchUh06d8TYP17TuqgU` (pt-PT) |
 | ThinkDiffusion | manual via UI web | $30 saldo — QUICK $0.79/h |
 | Runway | `RUNWAY_API_KEY` | OK — Gen-4 Turbo, ~200 cr |
-| Shotstack | `SHOTSTACK_API_KEY` + `SHOTSTACK_ENV` | OK |
+| Shotstack | `SHOTSTACK_API_KEY` + `SHOTSTACK_ENV` | FALLBACK — Ancient Ground/Funil/Shorts usam FFmpeg por defeito |
+| GitHub Actions (render Ancient Ground) | `GITHUB_DISPATCH_TOKEN` (PAT classic, scope `workflow`) | OK — despacha `render-ancient-ground.yml` |
 | Supabase | NEXT_PUBLIC + SERVICE_ROLE | OK — bucket `course-assets` |
 | fal.ai / Flux / LoRA | **ABOLIDO** | — |
 | Suno | **RISCADO** | Não usar — música = Ancient Ground |
@@ -123,13 +174,15 @@ Ancient Ground continua a ler de `thinkdiffusion-prompts.json` (read-only na UI)
 
 ## Próximas acções (ordem)
 
-1. **Validar ep01 visualmente** no ThinkDiffusion (11 prompts). Ajustar tom se precisar.
-2. **Gerar Limite Sagrado** — 8 eps Nomear (ep07, ep08 + ampliação Ep 44-47 série 6 + ampliação série 2).
-3. Continuar pelos 5 cursos com áudios prontos: Sangue e Seda, Silêncio que Grita, Pele Nua, A Fome, A Chama.
-4. Terminar áudios ElevenLabs em falta (~10 Nomear + vários de cursos).
+1. **Validar render 1h Ancient Ground com FFmpeg** (em curso no fim da sessão 7) — se passar sem piscar, migração está fechada.
+2. **Piloto ep01 Ouro Próprio** — 11 prompts × 1 áudio Nomear × música → pipeline `/admin/producao/funil/montar` com FFmpeg+ducking. Primeiro vídeo Nomear completo.
+3. **Validar ep01 visualmente** no ThinkDiffusion (11 prompts). Ajustar tom se precisar.
+4. **Gerar Limite Sagrado** — 8 eps Nomear (ep07, ep08 + ampliação Ep 44-47 série 6 + ampliação série 2).
+5. Continuar pelos 5 cursos com áudios prontos: Sangue e Seda, Silêncio que Grita, Pele Nua, A Fome, A Chama.
+6. Terminar áudios ElevenLabs em falta (~10 Nomear + vários de cursos).
    - **Pele Nua M8.A ("A pele como casa") e M8.B ("A reconciliação possível")** — apagados da lista audio-bulk, nunca gerados. Re-carregar "Só Pele Nua" e gerar esses 2 quando houver créditos.
-5. Piloto: render completo do ep01 (áudio + 11 clips Runway + texto + música → MP4).
-6. Upload YouTube API + agendamento em `/admin/calendario` (hoje é stub).
+7. Upload YouTube API + agendamento em `/admin/calendario` (hoje é stub).
+8. **Limpar Shotstack** — depois de 3 renders FFmpeg bem-sucedidos em cada pipeline, apagar endpoints `render-submit/status/save`, envs `SHOTSTACK_*`, e o radio fallback na UI. Manter só `render-ffmpeg*`.
 
 ---
 
@@ -145,3 +198,7 @@ Ancient Ground continua a ler de `thinkdiffusion-prompts.json` (read-only na UI)
 8. **Motion prompts**: evitar "dancing", "shimmering", "twinkling", "shifting" — causam flickering.
 9. **Sem deploys** por edição de prompt — usar `/admin/producao/{funil,aulas}` tab Prompts.
 10. **Negative prompt** deve incluir "multiple moons, duplicate moon, multiple suns, duplicate sun" (evita SDXL doppel-sun).
+11. **PR único e claro, merge na UI GitHub** (merge via API MCP não dispara webhook Vercel).
+12. **Motor de render default = FFmpeg (grátis)**. Shotstack só como fallback quando FFmpeg falha ou quando se quer comparar.
+13. **CLIP_DURATION = 10s** (Runway gen4_turbo real).
+14. **Ancient Ground render**: trim 0.3s nas pontas + xfade 1.5s — parâmetros validados contra piscar, não mexer sem razão.

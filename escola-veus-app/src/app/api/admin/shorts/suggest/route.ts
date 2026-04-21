@@ -1,19 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getTrackLyrics, parseTrackNumber } from "@/lib/loranne";
 
 /**
  * POST /api/admin/shorts/suggest
  *
- * Heuristic helper for shorts. Given a track name and raw lyrics, returns:
- *  - two strongest verses (for on-screen overlay)
- *  - tiktok caption (<=150 chars, 3–4 hashtags)
- *  - youtube title (<=70 chars)
- *  - youtube description (multi-line, with credits + hashtags)
+ * Dado o album Loranne + faixa, carrega letras do repo `loranne-lyrics/`,
+ * extrai as frases mais fortes como candidatas a overlay, e gera legendas
+ * para TikTok/YouTube (sem auto-promo).
  *
- * Body: {
- *   trackName: string,   // e.g. "faixa-17.mp3"
- *   trackLabel?: string, // optional nicer label
- *   lyrics: string,      // raw multi-line lyrics pasted by the user
- *   theme?: string,      // optional theme hint ("véus", "coragem", etc.)
+ * Body (preferido): {
+ *   albumSlug: string,       // ex "eter-raiz-vermelha"
+ *   trackNumber?: number,    // ex 8
+ *   trackName?: string,      // alternativa — ex "faixa-08.mp3"
+ *   theme?: string,
+ * }
+ * Fallback legacy: {
+ *   lyrics: string, theme?: string, trackLabel?: string
+ * }
+ *
+ * Returns: {
+ *   verses: [string, string],       // 2 frases por defeito (as 2 mais fortes)
+ *   candidates: string[],           // ate 6 frases candidatas (incluindo as 2)
+ *   albumTitle, trackTitle, trackNumber,
+ *   tiktokCaption, youtubeTitle, youtubeDescription
  * }
  */
 
@@ -24,9 +33,12 @@ const EMOTION_WORDS = [
   "memória", "raiz", "terra", "chao", "chão", "agua", "água", "corpo",
   "ferida", "cicatriz", "grito", "canto", "respira", "abraco", "abraço",
   "sonho", "perda", "caminho", "porta", "abre", "escuta", "ouve",
+  "casa", "ninho", "fim", "comeco", "começo", "inteira", "inteiro",
+  "sozinha", "sozinho", "sangue", "ventre", "peito", "mao", "mão",
 ];
 
-const PRONOUNS_START = /^(eu |tu |nos |nós |voce |você |ela |ele |vem |sou |es |és |amo |vejo |sinto |ouco |ouço |vou |choro |rio |vivo )/i;
+const PRONOUNS_START =
+  /^(eu |tu |nos |nós |voce |você |ela |ele |vem |sou |es |és |amo |vejo |sinto |ouco |ouço |vou |choro |rio |vivo |volto |abro |fecho |tenho |quero |posso |preciso |esta |está )/i;
 
 function stripDiacritics(s: string): string {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -35,8 +47,8 @@ function stripDiacritics(s: string): string {
 function scoreLine(line: string): number {
   const trimmed = line.trim();
   if (!trimmed) return -999;
-  if (/^\[.*\]$/.test(trimmed)) return -999; // [chorus], [verse]
-  if (/^\(.+\)$/.test(trimmed)) return -500; // parenthetical
+  if (/^\[.*\]$/.test(trimmed)) return -999; // [Verse], [Chorus]
+  if (/^\(.+\)$/.test(trimmed)) return -500; // (parenthetical)
   const lower = stripDiacritics(trimmed.toLowerCase());
 
   let score = 0;
@@ -56,114 +68,161 @@ function scoreLine(line: string): number {
 
   if (/[?!]$/.test(trimmed)) score += 1;
   if (/,/.test(trimmed)) score += 0.5;
-  // penalise lines that are mostly filler
   if (/^(oh+|ah+|ooh+|uuh+|na+)(\s|$)/i.test(trimmed)) score -= 3;
 
   return score;
 }
 
-function pickTwoVerses(lyrics: string): [string, string] {
+function pickCandidates(lyrics: string, max = 6): string[] {
   const lines = lyrics
     .split(/\r?\n/)
     .map((l) => l.trim())
-    .filter((l) => l.length > 0);
+    .filter((l) => l.length > 0 && !/^\[.*\]$/.test(l));
 
-  if (lines.length === 0) return ["", ""];
-  if (lines.length === 1) return [lines[0], ""];
+  if (lines.length === 0) return [];
 
   const scored = lines.map((line, i) => ({ line, i, score: scoreLine(line) }));
-  const sorted = [...scored].sort((a, b) => b.score - a.score);
 
-  const first = sorted[0];
-  // prefer a second verse from a different half than the first
-  const half = lines.length / 2;
-  const firstHalf = first.i < half;
-  const alt = sorted.find(
-    (s) => s.i !== first.i && (s.i < half) !== firstHalf,
-  );
-  const second = alt || sorted[1] || { line: "", i: -1 };
+  // De-dup por linha (as letras com refrao repetem)
+  const seen = new Set<string>();
+  const uniq = scored.filter((s) => {
+    const k = stripDiacritics(s.line.toLowerCase());
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 
-  const ordered = first.i <= second.i
-    ? [first.line, second.line]
-    : [second.line, first.line];
-
-  return [ordered[0], ordered[1]];
+  const sorted = [...uniq].sort((a, b) => b.score - a.score);
+  return sorted.slice(0, max).map((s) => s.line);
 }
 
-function slugifyTrackLabel(name: string): string {
-  // faixa-17.mp3 -> Faixa 17 ; ancient-ground-03.mp3 -> Ancient Ground 03
-  const base = name.replace(/\.(mp3|wav|m4a|flac|ogg)$/i, "");
-  return base
-    .split(/[-_]/)
-    .filter(Boolean)
-    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-    .join(" ");
+function pickTwoVerses(candidates: string[], allLines: string[]): [string, string] {
+  if (candidates.length === 0) return ["", ""];
+  if (candidates.length === 1) return [candidates[0], ""];
+
+  // Preferir 1 da primeira metade da letra + 1 da segunda
+  const byIndex: Record<string, number> = {};
+  allLines.forEach((l, i) => {
+    if (!(l in byIndex)) byIndex[l] = i;
+  });
+  const half = allLines.length / 2;
+
+  const first = candidates[0];
+  const firstHalf = (byIndex[first] ?? 0) < half;
+  const second =
+    candidates.find((c) => c !== first && (byIndex[c] ?? 0) < half !== firstHalf) ||
+    candidates[1];
+
+  const i1 = byIndex[first] ?? 0;
+  const i2 = byIndex[second] ?? 0;
+  return i1 <= i2 ? [first, second] : [second, first];
 }
 
 function makeTikTokCaption(v1: string, v2: string, theme?: string): string {
   const verseLine = [v1, v2].filter(Boolean).join(" / ");
-  const core = verseLine.length > 90
-    ? verseLine.slice(0, 87) + "..."
-    : verseLine;
-  const hashtags = [
-    "#Loranne",
-    "#EscoladosVéus",
-    theme ? `#${theme.replace(/\s+/g, "")}` : "#AncientGround",
-    "#poesia",
-    "#portugal",
-  ].join(" ");
-  const full = `${core}\n\n${hashtags}`;
+  const core = verseLine.length > 100 ? verseLine.slice(0, 97) + "..." : verseLine;
+  const tags = ["#Loranne", "#poesia", theme ? `#${theme.replace(/\s+/g, "")}` : "#frasesinspiradoras"];
+  const full = `${core}\n\n${tags.join(" ")}`;
   return full.length > 150 ? full.slice(0, 147) + "..." : full;
 }
 
-function makeYouTubeTitle(trackLabel: string, v1: string): string {
-  const first = v1.length > 40 ? v1.slice(0, 37) + "..." : v1;
-  const base = first ? `${first} · ${trackLabel} — Loranne` : `${trackLabel} — Loranne · Short`;
+function makeYouTubeTitle(trackTitle: string, albumTitle: string, v1: string): string {
+  const first = v1.length > 35 ? v1.slice(0, 32) + "..." : v1;
+  const base = first ? `${first} · ${trackTitle} (${albumTitle})` : `${trackTitle} · ${albumTitle}`;
   return base.length > 70 ? base.slice(0, 67) + "..." : base;
 }
 
 function makeYouTubeDescription(
-  trackLabel: string,
+  trackTitle: string,
+  albumTitle: string,
   v1: string,
   v2: string,
   theme?: string,
 ): string {
   const verses = [v1, v2].filter(Boolean).join("\n");
-  const themeLine = theme ? `\nTema: ${theme}\n` : "\n";
+  const themeLine = theme ? `\n${theme}\n` : "";
   return [
     verses,
     themeLine,
-    "Música original de Loranne · faixa do álbum Ancient Ground.",
-    "Curso Escola dos Véus · escola.seteveus.space",
-    "Música · music.seteveus.space",
+    `Música: Loranne · ${albumTitle} · ${trackTitle}`,
     "",
-    "#Loranne #AncientGround #EscoladosVéus #Shorts #poesia",
+    "#Loranne #poesia #frasesinspiradoras",
   ].join("\n");
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const { trackName, trackLabel, lyrics, theme } = await req.json();
+    const body = await req.json();
+    const { albumSlug, trackNumber: tn, trackName, theme, lyrics: rawLyrics, trackLabel } = body || {};
 
-    if (!lyrics || typeof lyrics !== "string") {
+    let lyrics = "";
+    let trackTitle = "";
+    let albumTitle = "";
+    let finalTrackNumber = typeof tn === "number" ? tn : null;
+
+    if (albumSlug) {
+      const n = finalTrackNumber ?? (trackName ? parseTrackNumber(trackName) : null);
+      if (!n) {
+        return NextResponse.json(
+          { erro: "trackNumber ou trackName valido obrigatorio com albumSlug." },
+          { status: 400 },
+        );
+      }
+      const found = getTrackLyrics(albumSlug, n);
+      if (!found) {
+        return NextResponse.json(
+          { erro: `Nao encontrei letra para ${albumSlug}/${n}.` },
+          { status: 404 },
+        );
+      }
+      lyrics = found.lyrics;
+      trackTitle = found.trackTitle;
+      albumTitle = found.albumTitle;
+      finalTrackNumber = found.trackNumber;
+    } else if (rawLyrics && typeof rawLyrics === "string") {
+      // Fallback legacy
+      lyrics = rawLyrics;
+      trackTitle = trackLabel || "";
+      albumTitle = "";
+    } else {
       return NextResponse.json(
-        { erro: "lyrics obrigatorio (string)." },
+        { erro: "albumSlug + trackNumber/trackName obrigatorios (ou lyrics legacy)." },
         { status: 400 },
       );
     }
 
-    const label = trackLabel || (trackName ? slugifyTrackLabel(trackName) : "Loranne");
-    const [v1, v2] = pickTwoVerses(lyrics);
+    if (!lyrics.trim()) {
+      return NextResponse.json(
+        {
+          erro: `Faixa "${trackTitle}" nao tem letra em loranne-lyrics/ (possivelmente instrumental).`,
+        },
+        { status: 404 },
+      );
+    }
 
-    const tiktokCaption = makeTikTokCaption(v1, v2, theme);
-    const youtubeTitle = makeYouTubeTitle(label, v1);
-    const youtubeDescription = makeYouTubeDescription(label, v1, v2, theme);
+    const allLines = lyrics
+      .split(/\r?\n/)
+      .map((l) => l.trim())
+      .filter((l) => l.length > 0 && !/^\[.*\]$/.test(l));
+    const candidates = pickCandidates(lyrics, 6);
+    const [v1, v2] = pickTwoVerses(candidates, allLines);
 
     return NextResponse.json({
+      albumSlug,
+      albumTitle,
+      trackNumber: finalTrackNumber,
+      trackTitle,
       verses: [v1, v2],
-      tiktokCaption,
-      youtubeTitle,
-      youtubeDescription,
+      candidates,
+      tiktokCaption: makeTikTokCaption(v1, v2, theme),
+      youtubeTitle: makeYouTubeTitle(trackTitle || "Loranne", albumTitle || "", v1),
+      youtubeDescription: makeYouTubeDescription(
+        trackTitle || "Loranne",
+        albumTitle || "",
+        v1,
+        v2,
+        theme,
+      ),
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import videoPlan from "@/data/video-plan.json";
 import youtubeMetadata from "@/data/youtube-metadata.json";
 
@@ -200,7 +200,7 @@ function seoFromMetadata(videoId: string, planTitle: string, categorias: string[
 const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
 const TOTAL_MUSIC_PAIRS = 50; // 100 faixas em 50 pares (1+2, 3+4, etc.)
-const CLIP_DURATION = 15; // seconds
+const CLIP_DURATION = 10; // seconds — matches Runway gen4_turbo clip length
 const DURATION_PRESETS: Array<{ label: string; seconds: number; credits: number }> = [
   { label: "5 min (teste — 5 créditos)", seconds: 300, credits: 5 },
   { label: "10 min (10 créditos)", seconds: 600, credits: 10 },
@@ -292,6 +292,9 @@ export default function YouTubeMontagem() {
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
   const [groupClips, setGroupClips] = useState<Record<string, string[]>>({});
   const [videoDuration, setVideoDuration] = useState<number>(DEFAULT_VIDEO_DURATION);
+  // FadeOut em segundos. 0 = corte seco (rápido, -c:v copy). >0 = fade para
+  // preto + silêncio no fim (mais ~15min de runner para 1h).
+  const [fadeOut, setFadeOut] = useState<number>(3);
   const totalClipsNeeded = Math.ceil(videoDuration / CLIP_DURATION);
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [composedThumbnailDataUrl, setComposedThumbnailDataUrl] = useState<string>("");
@@ -300,8 +303,29 @@ export default function YouTubeMontagem() {
   const [musicPair, setMusicPair] = useState(1); // pair 1 = faixas 01+02
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
+  // Diagnóstico do piscar (não afecta o render — só o preview).
+  // trimEdges: salta 0.3s do início e 0.3s do fim de cada clip (testa frames-edge Runway)
+  // hardCut: desliga o fade 75ms entre buffers A/B (testa transição CSS)
+  // loopSingleClip: repete só o 1º clip 4x (isola edges-do-clip vs jump-cut entre clips)
+  const [trimEdges, setTrimEdges] = useState(false);
+  const [hardCut, setHardCut] = useState(false);
+  const [loopSingleClip, setLoopSingleClip] = useState(false);
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const TRIM = 0.3;
+
   // Derived: flat ordered clip URLs respecting groupOrder + per-group order.
   const orderedClipUrls: string[] = groupOrder.flatMap((pid) => groupClips[pid] || []);
+
+  // O preview pode tocar uma sequência diferente do render (ex: loop dum só clip
+  // para diagnóstico). previewClipUrls é o que vai para o player; orderedClipUrls
+  // continua a ser o que vai para o render Shotstack.
+  const previewClipUrls: string[] = useMemo(() => {
+    if (loopSingleClip && orderedClipUrls.length > 0) {
+      return [orderedClipUrls[0], orderedClipUrls[0], orderedClipUrls[0], orderedClipUrls[0]];
+    }
+    return orderedClipUrls;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loopSingleClip, orderedClipUrls.join("|")]);
 
   // Auto-load clips from Supabase on mount (only if no saved state yet).
   useEffect(() => {
@@ -327,6 +351,9 @@ export default function YouTubeMontagem() {
   const [renderLabel, setRenderLabel] = useState("");
   const [renderResult, setRenderResult] = useState<string | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
+  // "ffmpeg" = GitHub Actions + FFmpeg (grátis, mais controlo). "shotstack" =
+  // serviço pago, mantido como fallback até validarmos o FFmpeg em produção.
+  const [renderEngine, setRenderEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
 
   // Preview
   const [previewing, setPreviewing] = useState(false);
@@ -455,7 +482,7 @@ export default function YouTubeMontagem() {
   // Buffer A plays clip N, buffer B preloads clip N+1, then swap.
   const getBuffer = (bufIdx: 0 | 1) => (bufIdx === 0 ? videoRefA.current : videoRefB.current);
 
-  const preloadInto = (bufIdx: 0 | 1, url: string | undefined) => {
+  const preloadInto = (bufIdx: 0 | 1, url: string | undefined, startAt = 0) => {
     const el = getBuffer(bufIdx);
     if (!el) return;
     if (!url) { el.removeAttribute("src"); el.load(); return; }
@@ -464,11 +491,29 @@ export default function YouTubeMontagem() {
       el.load();
     }
     el.pause();
-    el.currentTime = 0;
+    el.currentTime = startAt;
+  };
+
+  const clearAdvanceTimer = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+  };
+
+  // Quando o trimEdges está activo, não podemos esperar pelo `onEnded` — temos
+  // de avançar antes do último 0.3s. Este timer é a única forma de avançar.
+  // Quando trimEdges está off, o `onEnded` dispara e ignoramos o timer.
+  const scheduleTrimAdvance = (bufIdx: 0 | 1, msRemaining: number) => {
+    clearAdvanceTimer();
+    if (!trimEdges) return;
+    advanceTimerRef.current = setTimeout(() => {
+      advancePreview(bufIdx);
+    }, Math.max(0, msRemaining));
   };
 
   const startPreview = () => {
-    if (orderedClipUrls.length === 0) return;
+    if (previewClipUrls.length === 0) return;
     setPreviewing(true);
     setPaused(false);
     setPreviewClipIndex(0);
@@ -481,19 +526,25 @@ export default function YouTubeMontagem() {
       audioRef.current.play().catch(() => {});
     }
 
+    const startAt = trimEdges ? TRIM : 0;
     // Buffer 0 = clip 0 (plays), buffer 1 = clip 1 (preload).
-    preloadInto(0, orderedClipUrls[0]);
-    preloadInto(1, orderedClipUrls[1]);
+    preloadInto(0, previewClipUrls[0], startAt);
+    preloadInto(1, previewClipUrls[1], startAt);
     const a = getBuffer(0);
     if (a) a.play().catch(() => {});
 
     startClipTimer(0, 0);
+    if (trimEdges) {
+      const effectiveMs = (CLIP_DURATION - 2 * TRIM) * 1000;
+      scheduleTrimAdvance(0, effectiveMs);
+    }
   };
 
   const stopPreview = () => {
     setPreviewing(false);
     setPaused(false);
     if (timerRef.current) clearInterval(timerRef.current);
+    clearAdvanceTimer();
     videoRefA.current?.pause();
     videoRefB.current?.pause();
     if (audioRef.current) audioRef.current.pause();
@@ -502,6 +553,7 @@ export default function YouTubeMontagem() {
   const pausePreview = () => {
     setPaused(true);
     if (timerRef.current) clearInterval(timerRef.current);
+    clearAdvanceTimer();
     getBuffer(activeBuffer)?.pause();
     audioRef.current?.pause();
     audioRefB.current?.pause();
@@ -517,6 +569,11 @@ export default function YouTubeMontagem() {
     const cur2 = getBuffer(activeBuffer);
     const elapsedOnClip = cur2 ? cur2.currentTime : 0;
     startClipTimer(previewClipIndex, elapsedOnClip);
+    if (trimEdges) {
+      const endAt = CLIP_DURATION - TRIM;
+      const remainingMs = Math.max(0, (endAt - elapsedOnClip) * 1000);
+      scheduleTrimAdvance(activeBuffer, remainingMs);
+    }
   };
 
   const startClipTimer = (clipIndex: number, startElapsed = 0) => {
@@ -530,25 +587,31 @@ export default function YouTubeMontagem() {
 
   // Advance when the active clip ends naturally — no setInterval for clip swap.
   const advancePreview = (endedBufIdx: 0 | 1) => {
+    clearAdvanceTimer();
     const nextIndex = previewClipIndex + 1;
-    if (nextIndex >= orderedClipUrls.length) {
+    if (nextIndex >= previewClipUrls.length) {
       stopPreview();
       return;
     }
+    const startAt = trimEdges ? TRIM : 0;
     // The buffer that just ended now preloads the clip AFTER next.
     const newActive: 0 | 1 = endedBufIdx === 0 ? 1 : 0;
-    const preloadUrl = orderedClipUrls[nextIndex + 1];
-    preloadInto(endedBufIdx, preloadUrl);
+    const preloadUrl = previewClipUrls[nextIndex + 1];
+    preloadInto(endedBufIdx, preloadUrl, startAt);
 
     setActiveBuffer(newActive);
     setPreviewClipIndex(nextIndex);
 
     const cur = getBuffer(newActive);
     if (cur) {
-      cur.currentTime = 0;
+      cur.currentTime = startAt;
       cur.play().catch(() => {});
     }
     startClipTimer(nextIndex, 0);
+    if (trimEdges) {
+      const effectiveMs = (CLIP_DURATION - 2 * TRIM) * 1000;
+      scheduleTrimAdvance(newActive, effectiveMs);
+    }
   };
 
   const filledClips = orderedClipUrls.length;
@@ -644,6 +707,10 @@ export default function YouTubeMontagem() {
           setRenderResult(savedData.videoUrl);
           setRenderProgress(100);
           setRenderLabel("Video pronto!");
+          localStorage.setItem("yt-last-ffmpeg-render", JSON.stringify({
+            videoUrl: savedData.videoUrl,
+            completedAt: Date.now(),
+          }));
         } catch (err) {
           // Shotstack has the file; save failed. Show Shotstack URL so nothing is lost.
           setRenderResult(data.url);
@@ -656,15 +723,135 @@ export default function YouTubeMontagem() {
     }
   }, [title, thumbnailUrl, composedThumbnailDataUrl, seo]);
 
+  // Render MP4 via FFmpeg em GitHub Actions — dispatch e polling ao result.json
+  // em Supabase. O workflow corre ffmpeg, faz upload e escreve o resultado.
+  const pollFfmpegStatus = useCallback(async (jobId: string) => {
+    setRendering(true);
+    setRenderError(null);
+
+    while (true) {
+      await new Promise((r) => setTimeout(r, 10_000));
+      let data: {
+        status?: string;
+        phase?: string;
+        progress?: number;
+        videoUrl?: string;
+        error?: string;
+        erro?: string;
+      };
+      try {
+        const r = await fetch(`/api/admin/youtube/render-ffmpeg-status?jobId=${encodeURIComponent(jobId)}`);
+        data = await r.json();
+      } catch {
+        setRenderLabel("Ligacao perdida — a tentar de novo...");
+        continue;
+      }
+      if (data.erro) { setRenderError(data.erro); setRendering(false); return; }
+      const status = data.status || "...";
+      const phase = data.phase ? ` (${data.phase})` : "";
+      setRenderLabel(`${status}${phase}`);
+      if (typeof data.progress === "number") setRenderProgress(data.progress);
+      if (status === "failed") {
+        setRenderError(data.error || "FFmpeg render failed. Ver logs em GitHub Actions.");
+        setRendering(false);
+        localStorage.removeItem("yt-pending-ffmpeg-render");
+        return;
+      }
+      if (status === "done" && data.videoUrl) {
+        setRenderResult(data.videoUrl);
+        setRenderProgress(100);
+        setRenderLabel("Video pronto!");
+        setRendering(false);
+        localStorage.removeItem("yt-pending-ffmpeg-render");
+        // Persist o último render completado para sobreviver a reloads.
+        localStorage.setItem("yt-last-ffmpeg-render", JSON.stringify({
+          videoUrl: data.videoUrl,
+          completedAt: Date.now(),
+        }));
+        return;
+      }
+    }
+  }, []);
+
+  const startFfmpegRender = async () => {
+    const validClips = orderedClipUrls.filter((u) => u && u.trim().length > 0);
+    if (validClips.length === 0) return;
+
+    setRendering(true);
+    setRenderProgress(0);
+    setRenderLabel("A despachar GitHub Actions...");
+    setRenderResult(null);
+    setRenderError(null);
+
+    try {
+      const res = await fetch("/api/admin/youtube/render-ffmpeg-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          slug: videoId || undefined,
+          uniqueClips: validClips,
+          targetDuration: videoDuration,
+          musicUrls: [musicUrlA, musicUrlB],
+          musicVolume: 0.8,
+          clipDuration: CLIP_DURATION,
+          // Parâmetros que resolvem o piscar: trim de 0.3s nas pontas dos clips
+          // + xfade longo de 1.5s. Deterministico, ao contrário do Shotstack.
+          trimEdge: 0.3,
+          crossfade: 1.5,
+          fps: 30,
+          fadeOut,
+          thumbnailDataUrl: composedThumbnailDataUrl || undefined,
+          thumbnailUrl: thumbnailUrl || undefined,
+          seo,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.jobId) {
+        throw new Error(data.erro || `HTTP ${res.status}`);
+      }
+      localStorage.setItem("yt-pending-ffmpeg-render", JSON.stringify({
+        jobId: data.jobId,
+        startedAt: Date.now(),
+      }));
+      await pollFfmpegStatus(data.jobId);
+    } catch (err) {
+      setRenderError(err instanceof Error ? err.message : String(err));
+      setRendering(false);
+    }
+  };
+
   // Resume any pending render if the user reloads the page.
+  // Se não houver pending, restaura o último render completado (para que a
+  // Vivianne veja o link do vídeo mesmo depois de recarregar a página).
   useEffect(() => {
     try {
       const raw = localStorage.getItem("yt-pending-render");
-      if (!raw) return;
-      const pending: { renderId?: string } = JSON.parse(raw);
-      if (pending.renderId) pollAndSaveRender(pending.renderId);
+      const rawF = localStorage.getItem("yt-pending-ffmpeg-render");
+      const hasPending = !!(raw || rawF);
+
+      if (raw) {
+        const pending: { renderId?: string } = JSON.parse(raw);
+        if (pending.renderId) pollAndSaveRender(pending.renderId);
+      }
+      if (rawF) {
+        const pf: { jobId?: string } = JSON.parse(rawF);
+        if (pf.jobId) pollFfmpegStatus(pf.jobId);
+      }
+
+      // Nenhum render em curso → mostra o último vídeo gerado (se houver).
+      if (!hasPending) {
+        const last = localStorage.getItem("yt-last-ffmpeg-render");
+        if (last) {
+          const parsed: { videoUrl?: string } = JSON.parse(last);
+          if (parsed.videoUrl) {
+            setRenderResult(parsed.videoUrl);
+            setRenderLabel("Último vídeo gerado nesta página");
+          }
+        }
+      }
     } catch { /* ignore */ }
-    // Only on mount — pollAndSaveRender reads the latest title/seo via closures.
+    // Only on mount — callbacks read the latest state via closures.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -937,29 +1124,69 @@ export default function YouTubeMontagem() {
           4. Preview
         </h3>
 
+        {/* Diagnóstico do piscar — afecta só o preview, NÃO o render Shotstack. */}
+        <div className="mb-3 rounded border border-escola-border/60 bg-black/20 p-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-escola-creme-50">
+            Diagnóstico piscar (só preview)
+          </p>
+          <div className="flex flex-wrap gap-4 text-sm text-escola-creme">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={trimEdges}
+                onChange={(e) => setTrimEdges(e.target.checked)}
+                disabled={previewing}
+              />
+              <span>Cortar 0.3s das pontas <span className="text-escola-creme-50">(testa frames-edge Runway)</span></span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={hardCut}
+                onChange={(e) => setHardCut(e.target.checked)}
+              />
+              <span>Cut duro <span className="text-escola-creme-50">(sem fade 75ms)</span></span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={loopSingleClip}
+                onChange={(e) => setLoopSingleClip(e.target.checked)}
+                disabled={previewing}
+              />
+              <span>Loop do 1º clip 4x <span className="text-escola-creme-50">(isola edge vs jump-cut)</span></span>
+            </label>
+          </div>
+          <p className="mt-2 text-xs text-escola-creme-50">
+            Se o piscar desaparece com <strong>Cortar 0.3s</strong> → são frames-edge dos clips Runway (aplicar ao render).<br />
+            Se desaparece com <strong>Cut duro</strong> → é o fade CSS do preview (cosmético, render não é afectado).<br />
+            Se desaparece com <strong>Loop 1 clip</strong> → o piscar vem do jump-cut entre clips diferentes (precisa crossfade maior ou reordenar grupos).
+          </p>
+        </div>
+
         <div className="relative aspect-video w-full overflow-hidden rounded bg-black">
           <video
             ref={videoRefA}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-75"
+            className={`absolute inset-0 h-full w-full object-cover ${hardCut ? "" : "transition-opacity duration-75"}`}
             style={{ opacity: activeBuffer === 0 ? 1 : 0 }}
             muted
             playsInline
             preload="auto"
-            onEnded={() => advancePreview(0)}
+            onEnded={() => { if (!trimEdges) advancePreview(0); }}
           />
           <video
             ref={videoRefB}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-75"
+            className={`absolute inset-0 h-full w-full object-cover ${hardCut ? "" : "transition-opacity duration-75"}`}
             style={{ opacity: activeBuffer === 1 ? 1 : 0 }}
             muted
             playsInline
             preload="auto"
-            onEnded={() => advancePreview(1)}
+            onEnded={() => { if (!trimEdges) advancePreview(1); }}
           />
 
           {previewing && (
             <div className="absolute bottom-3 left-3 rounded bg-black/60 px-2 py-1 text-xs text-white">
-              Clip {previewClipIndex + 1}/{orderedClipUrls.length} —{" "}
+              Clip {previewClipIndex + 1}/{previewClipUrls.length} —{" "}
               {Math.floor(previewTime / 60)}:
               {String(Math.floor(previewTime % 60)).padStart(2, "0")}
             </div>
@@ -1038,8 +1265,40 @@ export default function YouTubeMontagem() {
 
         <p className="mb-3 text-xs text-escola-creme-50">
           Os {filledClips} clips únicos serão repetidos pela ORDEM definida (sem baralhar) para preencher {Math.round(videoDuration / 60)} min ({totalClipsNeeded} clips × {CLIP_DURATION}s).
-          Render via Shotstack (cloud). O vídeo fica no Supabase.
+          O vídeo fica no Supabase assim que o render termina.
         </p>
+
+        <div className="mb-3 rounded border border-escola-border/60 bg-black/20 p-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-escola-creme-50">
+            Motor de render
+          </p>
+          <div className="flex flex-col gap-2 text-sm text-escola-creme sm:flex-row sm:gap-6">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                checked={renderEngine === "ffmpeg"}
+                onChange={() => setRenderEngine("ffmpeg")}
+                disabled={rendering}
+              />
+              <span>
+                FFmpeg <span className="text-green-400">(grátis, GitHub Actions)</span>
+                <span className="ml-2 text-escola-creme-50">— xfade 1.5s + trim 0.3s, determinístico</span>
+              </span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                checked={renderEngine === "shotstack"}
+                onChange={() => setRenderEngine("shotstack")}
+                disabled={rendering}
+              />
+              <span>
+                Shotstack <span className="text-yellow-400">(pago, ~1 cr/min)</span>
+                <span className="ml-2 text-escola-creme-50">— fallback</span>
+              </span>
+            </label>
+          </div>
+        </div>
 
         {rendering && (
           <div className="mb-3">
@@ -1064,8 +1323,19 @@ export default function YouTubeMontagem() {
 
         {renderResult && (
           <div className="mb-3 space-y-2">
-            <div className="rounded bg-green-950/50 p-2 text-xs text-green-300">
-              Video pronto!
+            <div className="flex items-center justify-between rounded bg-green-950/50 p-2 text-xs text-green-300">
+              <span>{renderLabel || "Vídeo pronto!"}</span>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("yt-last-ffmpeg-render");
+                  setRenderResult(null);
+                  setRenderLabel("");
+                }}
+                className="text-green-400/60 hover:text-green-200"
+                title="Esconder (não apaga o ficheiro do Supabase)"
+              >
+                ✕ esconder
+              </button>
             </div>
             <video
               src={renderResult}
@@ -1083,26 +1353,54 @@ export default function YouTubeMontagem() {
           </div>
         )}
 
-        <div className="mb-3 flex flex-wrap items-center gap-2">
-          <label className="text-xs text-escola-creme-50">Duração:</label>
-          <select
-            value={videoDuration}
-            onChange={(e) => setVideoDuration(Number(e.target.value))}
-            disabled={rendering}
-            className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
-          >
-            {DURATION_PRESETS.map((p) => (
-              <option key={p.seconds} value={p.seconds}>{p.label}</option>
-            ))}
-          </select>
+        <div className="mb-3 flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-escola-creme-50">Duração:</label>
+            <select
+              value={videoDuration}
+              onChange={(e) => setVideoDuration(Number(e.target.value))}
+              disabled={rendering}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
+            >
+              {DURATION_PRESETS.map((p) => {
+                const mins = p.seconds / 60;
+                const durLabel = mins < 60 ? `${mins} min` : `${mins / 60} h`;
+                const costLabel = renderEngine === "ffmpeg"
+                  ? "grátis"
+                  : `${p.credits} créditos`;
+                return (
+                  <option key={p.seconds} value={p.seconds}>
+                    {durLabel} · {costLabel}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-escola-creme-50">Fade-out:</label>
+            <select
+              value={fadeOut}
+              onChange={(e) => setFadeOut(Number(e.target.value))}
+              disabled={rendering}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme disabled:opacity-50"
+              title="Fade do vídeo para preto + áudio para silêncio no fim. 0 = corte seco (mais rápido). >0 = re-encoda o final, ~15min extra para 1h."
+            >
+              <option value={0}>0s (corte seco · rápido)</option>
+              <option value={2}>2s (subtil)</option>
+              <option value={3}>3s (recomendado)</option>
+              <option value={5}>5s (longo)</option>
+            </select>
+          </div>
         </div>
 
         <button
-          onClick={startRender}
+          onClick={renderEngine === "ffmpeg" ? startFfmpegRender : startRender}
           disabled={filledClips === 0 || rendering}
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
-          {rendering ? "A renderizar..." : `Gerar MP4 de ${Math.round(videoDuration / 60)} min (${filledClips} clips únicos → ${totalClipsNeeded} total)`}
+          {rendering
+            ? "A renderizar..."
+            : `Gerar MP4 de ${Math.round(videoDuration / 60)} min (${filledClips} clips únicos${renderEngine === "ffmpeg" ? " — FFmpeg grátis" : ` → ${totalClipsNeeded} total · Shotstack`})`}
         </button>
       </section>
 

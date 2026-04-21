@@ -1,0 +1,46 @@
+name: Render Ancient Ground
+
+# Disparado pelo admin UI (/api/admin/youtube/render-ffmpeg-submit) via
+# workflow_dispatch. O manifest já foi colocado em Supabase antes do dispatch
+# (course-assets/render-jobs/<jobId>.json) — aqui só passamos o jobId.
+
+on:
+  workflow_dispatch:
+    inputs:
+      jobId:
+        description: "ID único do render job (lê o manifest de course-assets/render-jobs/<jobId>.json)"
+        required: true
+        type: string
+
+# O run-name inclui o jobId para podermos encontrá-lo pela API GitHub Actions
+# quando precisarmos (ex. cancelar, ler logs). A UI, no entanto, faz polling
+# ao ficheiro render-jobs/<jobId>-result.json no Supabase.
+run-name: "render-ancient-ground: ${{ inputs.jobId }}"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240 # 4h de margem para renders de 1h reais
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+        with:
+          ffmpeg-version: "release"
+
+      - name: Show FFmpeg version
+        run: ffmpeg -version | head -3
+
+      - name: Render
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        working-directory: tools/render-ancient-ground
+        run: node render.mjs "${{ inputs.jobId }}"
