@@ -44,6 +44,8 @@ export default function FunilGerarPage() {
 
   const [images, setImages] = useState<UploadedImage[]>([]);
   const [uploading, setUploading] = useState<string | null>(null);
+  const [generatingFal, setGeneratingFal] = useState<string | null>(null);
+  const [falProgress, setFalProgress] = useState<{ promptId: string; done: number; total: number } | null>(null);
   const [clips, setClips] = useState<Record<string, ClipState>>({});
 
   // ── Load prompts from Supabase Storage (with seed fallback) ────────────
@@ -125,6 +127,47 @@ export default function FunilGerarPage() {
     navigator.clipboard.writeText(text);
     setCopied(tag);
     setTimeout(() => setCopied(null), 1500);
+  };
+
+  const generateFalFor = async (prompt: PromptItem, variations = 4) => {
+    setGeneratingFal(prompt.id);
+    setErr(null);
+
+    const existing = images.filter((i) => i.promptId === prompt.id);
+    let hCount = existing.filter((i) => i.name.includes("-h-")).length;
+
+    for (let v = 1; v <= variations; v++) {
+      setFalProgress({ promptId: prompt.id, done: v - 1, total: variations });
+      const num = ++hCount;
+      const filename = `${prompt.id}-h-${String(num).padStart(2, "0")}.png`;
+      const category = `${prompt.id}/horizontal`;
+
+      try {
+        const r = await fetch("/api/admin/thinkdiffusion/generate-falai", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: prompt.prompt,
+            width: config.width ?? 1920,
+            height: config.height ?? 1080,
+            category,
+            filename,
+          }),
+        });
+        const d = await r.json();
+        if (!r.ok || !d.url) {
+          setErr(`${prompt.id} v${v}: ${d.erro ?? `HTTP ${r.status}`}`);
+          break;
+        }
+        setImages((prev) => [...prev, { name: filename, url: d.url, promptId: prompt.id }]);
+      } catch (e) {
+        setErr(`${prompt.id} v${v}: ${e instanceof Error ? e.message : String(e)}`);
+        break;
+      }
+    }
+
+    setFalProgress(null);
+    setGeneratingFal(null);
   };
 
   const uploadForPrompt = async (promptId: string, files: File[]) => {
@@ -336,12 +379,23 @@ export default function FunilGerarPage() {
                   <p className="text-[10px] text-escola-creme-50">{p.mood.join(" · ")}</p>
                   <p className="mt-2 text-xs leading-relaxed text-escola-creme-50">{p.prompt}</p>
                 </div>
-                <button
-                  onClick={() => copy(p.prompt, p.id)}
-                  className="shrink-0 rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white"
-                >
-                  {copied === p.id ? "✓ copiado" : "copiar"}
-                </button>
+                <div className="flex shrink-0 flex-col gap-1.5">
+                  <button
+                    onClick={() => copy(p.prompt, p.id)}
+                    className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40"
+                  >
+                    {copied === p.id ? "✓ copiado" : "copiar"}
+                  </button>
+                  <button
+                    onClick={() => generateFalFor(p, 4)}
+                    disabled={generatingFal !== null}
+                    className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
+                  >
+                    {generatingFal === p.id && falProgress
+                      ? `gerando ${falProgress.done}/${falProgress.total}…`
+                      : "gerar 4× fal.ai"}
+                  </button>
+                </div>
               </div>
 
               {/* Upload area */}
