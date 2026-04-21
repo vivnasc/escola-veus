@@ -97,7 +97,8 @@ async function main() {
     clipDuration = 10,
     narrationUrl,
     musicUrls,
-    musicVolume = 0.15,
+    musicVolume = 0.2,
+    narrationVolume = 1.2,
     crossfade = 0.5,
     thumbnailUrl,
     seo,
@@ -124,27 +125,62 @@ async function main() {
 
   await writeResult(jobId, { status: "running", phase: "render", progress: 25 });
 
+  // ── Audio duration probe ─────────────────────────────────────────────────
+  // Ensure video covers the full narration so it isn't cut brusco at the end.
+  async function probeSeconds(file) {
+    return new Promise((resolve) => {
+      const p = spawn("ffprobe", [
+        "-v", "error",
+        "-show_entries", "format=duration",
+        "-of", "default=noprint_wrappers=1:nokey=1",
+        file,
+      ]);
+      let out = "";
+      p.stdout.on("data", (c) => (out += c.toString()));
+      p.on("close", () => resolve(parseFloat(out.trim()) || 0));
+      p.on("error", () => resolve(0));
+    });
+  }
+  const narrSec = await probeSeconds(narrationPath);
+
   // ── Filter graph ──────────────────────────────────────────────────────────
-  // Video: xfade encadeado entre clips
-  // Audio: narração (100%) + música (concat → loop → volume → sidechain duck)
-  //         → amix final
+  // Video: xfade encadeado entre clips + freeze do último para cobrir narração
+  //        + fade in 1s e fade out 2s para não começar/acabar brusco.
+  // Audio: narração (com boost e fade in 0.5s) + música (loop, volume, duck,
+  //        fade out 3s) → amix.
   const stride = clipDuration - crossfade;
-  const totalDuration = (clips.length - 1) * stride + clipDuration;
+  const clipsDuration = (clips.length - 1) * stride + clipDuration;
+  const TAIL_PAD = 1.5; // segundos de respiração depois da narração acabar
+  const totalDuration = Math.max(clipsDuration, narrSec + TAIL_PAD);
+  const FADE_IN = 1.0;
+  const FADE_OUT = 2.0;
 
   const videoFilters = [];
   if (clips.length === 1) {
-    videoFilters.push(`[0:v]copy[vout]`);
+    videoFilters.push(`[0:v]tpad=stop_mode=clone:stop_duration=${Math.max(0, totalDuration - clipDuration).toFixed(2)}[vcat]`);
   } else {
     let prev = "0:v";
     for (let i = 1; i < clips.length; i++) {
-      const out = i === clips.length - 1 ? "vout" : `vx${i}`;
+      const last = i === clips.length - 1;
+      const out = last ? "vlast" : `vx${i}`;
       const offset = i * stride;
       videoFilters.push(
         `[${prev}][${i}:v]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(2)}[${out}]`
       );
       prev = out;
     }
+    // Freeze last frame to cover extra narration tail (if any).
+    const tailExtra = Math.max(0, totalDuration - clipsDuration);
+    if (tailExtra > 0.05) {
+      videoFilters.push(`[vlast]tpad=stop_mode=clone:stop_duration=${tailExtra.toFixed(2)}[vcat]`);
+    } else {
+      videoFilters.push(`[vlast]null[vcat]`);
+    }
   }
+  // Fade in/out on final video
+  videoFilters.push(
+    `[vcat]fade=t=in:st=0:d=${FADE_IN},fade=t=out:st=${(totalDuration - FADE_OUT).toFixed(2)}:d=${FADE_OUT}[vout]`
+  );
 
   // Audio indices: narration = clips.length, music[0..] = clips.length+1..
   const narrationIdx = clips.length;
@@ -155,10 +191,16 @@ async function main() {
     ? `${musicInputs}concat=n=${musicPaths.length}:v=0:a=1[musicraw]`
     : `[${musicStartIdx}:a]acopy[musicraw]`;
 
+  const MUSIC_FADE_IN = 2.0;
+  const MUSIC_FADE_OUT = 3.0;
+  const NARR_FADE_IN = 0.5;
+  const NARR_FADE_OUT = 0.8;
+
   const audioFilter = [
     musicConcat,
-    `[musicraw]aloop=loop=-1:size=2e+09,atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume}[musicvol]`,
-    `[${narrationIdx}:a]asplit=2[narr1][narr2]`,
+    `[musicraw]aloop=loop=-1:size=2e+09,atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=${MUSIC_FADE_IN},afade=t=out:st=${(totalDuration - MUSIC_FADE_OUT).toFixed(2)}:d=${MUSIC_FADE_OUT}[musicvol]`,
+    `[${narrationIdx}:a]volume=${narrationVolume},afade=t=in:st=0:d=${NARR_FADE_IN},afade=t=out:st=${Math.max(0, narrSec - NARR_FADE_OUT).toFixed(2)}:d=${NARR_FADE_OUT}[narrproc]`,
+    `[narrproc]asplit=2[narr1][narr2]`,
     `[musicvol][narr1]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[musicduck]`,
     `[narr2][musicduck]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]`,
   ].join(";");
