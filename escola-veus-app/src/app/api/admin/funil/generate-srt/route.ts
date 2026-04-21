@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 
 export const maxDuration = 120;
 
 /**
  * POST /api/admin/funil/generate-srt
  *
- * Gera SRT para a narração via fal.ai Whisper (usa FAL_KEY, já configurado
- * no Vercel). Fallback: OpenAI Whisper se FAL_KEY ausente e OPENAI_API_KEY
- * presente.
+ * Gera SRT para a narração via ElevenLabs Speech-to-Text (Scribe).
+ * Usa a ELEVENLABS_API_KEY já configurada para o bulk audio.
  *
  * Body: { narrationUrl, scriptId?, filename? }
  * Retorna: { url, srt }
@@ -20,17 +18,18 @@ type Body = {
   filename?: string;
 };
 
-type Chunk = { timestamp: [number, number]; text: string };
+type ScribeWord = {
+  text: string;
+  type?: "word" | "spacing" | "audio_event";
+  start?: number;
+  end?: number;
+};
 
-function findScriptTextById(id: string): string | null {
-  for (const preset of NOMEAR_PRESETS) {
-    const hit = preset.scripts.find((s) => s.id === id);
-    if (hit) {
-      return hit.texto.replace(/\[[^\]]+\]/g, " ").replace(/\s+/g, " ").trim();
-    }
-  }
-  return null;
-}
+type ScribeResponse = {
+  language_code?: string;
+  text?: string;
+  words?: ScribeWord[];
+};
 
 function fmtSrtTime(seconds: number): string {
   const h = Math.floor(seconds / 3600);
@@ -48,54 +47,58 @@ function fmtSrtTime(seconds: number): string {
   );
 }
 
-function chunksToSrt(chunks: Chunk[]): string {
-  return chunks
-    .filter((c) => c && Array.isArray(c.timestamp) && typeof c.text === "string")
-    .map((c, i) => {
-      const [start, end] = c.timestamp;
-      return `${i + 1}\n${fmtSrtTime(start)} --> ${fmtSrtTime(end)}\n${c.text.trim()}\n`;
-    })
+/**
+ * Group Scribe words into SRT-friendly lines.
+ * New line when:
+ *  - gap >= 0.8s between words
+ *  - current line has >= 10 words
+ *  - current line duration >= 4s
+ *  - previous word ended with . ! ? :
+ */
+function wordsToSrt(words: ScribeWord[]): string {
+  const speaking = words.filter(
+    (w) => w && w.type === "word" && typeof w.start === "number" && typeof w.end === "number" && w.text,
+  );
+  if (speaking.length === 0) return "";
+
+  type Line = { start: number; end: number; text: string };
+  const lines: Line[] = [];
+  let buf: ScribeWord[] = [];
+  let bufStart = speaking[0].start!;
+  let prevEnd = speaking[0].start!;
+
+  const flush = () => {
+    if (buf.length === 0) return;
+    const text = buf.map((w) => w.text).join(" ").replace(/\s+([.,!?;:])/g, "$1");
+    lines.push({ start: bufStart, end: prevEnd, text });
+    buf = [];
+  };
+
+  for (const w of speaking) {
+    const gap = buf.length === 0 ? 0 : w.start! - prevEnd;
+    const lineDuration = buf.length === 0 ? 0 : w.end! - bufStart;
+    const lastWordEnded = buf.length > 0 && /[.!?:]$/.test(buf[buf.length - 1].text);
+
+    const shouldBreak =
+      buf.length > 0 &&
+      (gap >= 0.8 || buf.length >= 10 || lineDuration >= 4 || lastWordEnded);
+
+    if (shouldBreak) flush();
+
+    if (buf.length === 0) bufStart = w.start!;
+    buf.push(w);
+    prevEnd = w.end!;
+  }
+  flush();
+
+  return lines
+    .map((l, i) => `${i + 1}\n${fmtSrtTime(l.start)} --> ${fmtSrtTime(l.end)}\n${l.text.trim()}\n`)
     .join("\n");
 }
 
-async function transcribeFalAi(narrationUrl: string): Promise<{ srt: string } | { erro: string }> {
-  const key = process.env.FAL_KEY;
-  if (!key) return { erro: "FAL_KEY ausente" };
-
-  const res = await fetch("https://fal.run/fal-ai/whisper", {
-    method: "POST",
-    headers: {
-      Authorization: `Key ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      audio_url: narrationUrl,
-      task: "transcribe",
-      language: "pt",
-      chunk_level: "segment", // segment-level dá linhas naturais para SRT
-    }),
-  });
-
-  if (!res.ok) {
-    const err = await res.text().catch(() => "");
-    return { erro: `fal.ai ${res.status}: ${err.slice(0, 300)}` };
-  }
-
-  const data = await res.json();
-  const chunks: Chunk[] = Array.isArray(data.chunks) ? data.chunks : [];
-  if (chunks.length === 0) {
-    return { erro: "fal.ai nao devolveu chunks (transcricao vazia)" };
-  }
-
-  return { srt: chunksToSrt(chunks) };
-}
-
-async function transcribeOpenai(
-  narrationUrl: string,
-  prompt?: string,
-): Promise<{ srt: string } | { erro: string }> {
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) return { erro: "OPENAI_API_KEY ausente" };
+async function transcribeElevenLabs(narrationUrl: string): Promise<{ srt: string } | { erro: string }> {
+  const key = process.env.ELEVENLABS_API_KEY;
+  if (!key) return { erro: "ELEVENLABS_API_KEY ausente" };
 
   const audioRes = await fetch(narrationUrl);
   if (!audioRes.ok) return { erro: `Download MP3 ${audioRes.status}` };
@@ -103,23 +106,30 @@ async function transcribeOpenai(
 
   const form = new FormData();
   form.append("file", new File([audioBlob], "narration.mp3", { type: "audio/mpeg" }));
-  form.append("model", "whisper-1");
-  form.append("response_format", "srt");
-  form.append("language", "pt");
-  if (prompt) form.append("prompt", prompt);
+  form.append("model_id", "scribe_v1");
+  form.append("language_code", "por");
+  form.append("timestamps_granularity", "word");
+  form.append("tag_audio_events", "false");
+  form.append("diarize", "false");
 
-  const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+  const res = await fetch("https://api.elevenlabs.io/v1/speech-to-text", {
     method: "POST",
-    headers: { Authorization: `Bearer ${key}` },
+    headers: { "xi-api-key": key },
     body: form,
   });
 
   if (!res.ok) {
     const err = await res.text().catch(() => "");
-    return { erro: `OpenAI ${res.status}: ${err.slice(0, 300)}` };
+    return { erro: `ElevenLabs Scribe ${res.status}: ${err.slice(0, 300)}` };
   }
 
-  return { srt: await res.text() };
+  const data = (await res.json()) as ScribeResponse;
+  const words = Array.isArray(data.words) ? data.words : [];
+  if (words.length === 0) {
+    return { erro: "ElevenLabs Scribe nao devolveu words (transcricao vazia)" };
+  }
+
+  return { srt: wordsToSrt(words) };
 }
 
 export async function POST(req: NextRequest) {
@@ -129,32 +139,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "narrationUrl obrigatorio." }, { status: 400 });
     }
 
-    const prompt = scriptId ? findScriptTextById(scriptId)?.slice(0, 900) : undefined;
-
-    // Prefer fal.ai (FAL_KEY já configurada); fallback para OpenAI.
-    let result: { srt: string } | { erro: string };
-    if (process.env.FAL_KEY) {
-      result = await transcribeFalAi(narrationUrl);
-      // Se fal.ai falhar mas OpenAI existir, tenta OpenAI
-      if ("erro" in result && process.env.OPENAI_API_KEY) {
-        result = await transcribeOpenai(narrationUrl, prompt);
-      }
-    } else if (process.env.OPENAI_API_KEY) {
-      result = await transcribeOpenai(narrationUrl, prompt);
-    } else {
+    if (!process.env.ELEVENLABS_API_KEY) {
       return NextResponse.json(
-        { erro: "Nenhum transcriber configurado (precisa FAL_KEY ou OPENAI_API_KEY)." },
+        { erro: "ELEVENLABS_API_KEY nao configurada." },
         { status: 500 },
       );
     }
 
+    const result = await transcribeElevenLabs(narrationUrl);
     if ("erro" in result) {
       return NextResponse.json({ erro: result.erro }, { status: 502 });
     }
-
     const srt = result.srt;
 
-    // Upload SRT to Supabase
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) {
