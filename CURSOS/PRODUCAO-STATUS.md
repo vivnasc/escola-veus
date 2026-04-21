@@ -71,7 +71,8 @@ Páginas abolidas e apagadas: `producao` (antigo), `lora`, `territorios`, `youtu
 
 ### Pipeline 2 — Funil YouTube (122 Nomear)
 - Clips Runway Gen-4 Turbo (10s cada)
-- Imagens base: ThinkDiffusion SDXL RealVisXL v4 (1920×1080)
+- Imagens base: ThinkDiffusion **Flux** `flux1-dev-bnb-nf4-v2` (1920×1080, CFG 3.5, steps 25, Euler + Simple)
+- SDXL tem bias para humanos quando vê "silk/veil/fabric" e ignora contagens — **não usar em funil**
 - Regras Colecção B: **sem pessoas**, abstracto/simbólico, global (nada africano)
 - Música Ancient Ground + texto overlay contemplativo
 - Cada vídeo: áudio Nomear (~100s) / clip 10s = ~10 clips por vídeo
@@ -79,6 +80,7 @@ Páginas abolidas e apagadas: `producao` (antigo), `lora`, `territorios`, `youtu
 
 ### Ancient Ground (natureza)
 - Imagens realistas Moçambique (mar, praia, rio, savana, céu, flora)
+- Checkpoint: **UltraReal / Juggernaut XL** (SDXL — paisagem tolera interpretação livre)
 - Clips 10s → vídeos de ~60min em loop (channel ambient)
 - Música Loranne — álbum Ancient Ground (pares A+B em loop)
 - Montagem: `/admin/producao/ancient-ground/montagem` → Shotstack
