@@ -28,6 +28,18 @@ const JOB_DIR = "render-jobs";
 const VIDEO_DIR = "youtube/funil-videos";
 const WORK_DIR = "/tmp/funil-render";
 
+// Brand intro/outro (mandala animated, same clip for both).
+// Text is composited via drawtext — source MP4 itself has no text.
+const INTRO_URL = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/youtube/brand/intro.mp4`;
+const INTRO_DURATION = 5; // seconds
+const OUTRO_DURATION = 5;
+const BRAND_TEXT = "A ESCOLA DOS VÉUS";
+const CTA_TEXT = "seteveus.space";
+// Cream brand colour #F5F0E6. Drawtext accepts hex without #.
+const TEXT_COLOR = "0xF5F0E6";
+// Use fontconfig (Ubuntu GitHub Actions runners include libfontconfig + DejaVu Serif).
+const TEXT_FONT = "Serif";
+
 function requireEnv(name) {
   const v = process.env[name];
   if (!v) throw new Error(`Falta env ${name}`);
@@ -97,7 +109,8 @@ async function main() {
     clipDuration = 10,
     narrationUrl,
     musicUrls,
-    musicVolume = 0.15,
+    musicVolume = 0.2,
+    narrationVolume = 1.2,
     crossfade = 0.5,
     thumbnailUrl,
     seo,
@@ -111,12 +124,16 @@ async function main() {
 
   await writeResult(jobId, { status: "running", phase: "download", progress: 10 });
 
-  console.log(`[2/5] Download ${clips.length} clips + narração + ${musicUrls.length} faixas música`);
+  console.log(`[2/5] Download intro + ${clips.length} clips + narração + ${musicUrls.length} faixas música`);
+  const introPath = path.join(WORK_DIR, "brand-intro.mp4");
+  const outroPath = path.join(WORK_DIR, "brand-outro.mp4");
   const clipPaths = clips.map((_, i) => path.join(WORK_DIR, `clip-${i}.mp4`));
   const narrationPath = path.join(WORK_DIR, "narration.mp3");
   const musicPaths = musicUrls.map((_, i) => path.join(WORK_DIR, `music-${i}.mp3`));
 
   await Promise.all([
+    downloadTo(INTRO_URL, introPath),
+    downloadTo(INTRO_URL, outroPath), // same source, text differs via drawtext
     ...clips.map((url, i) => downloadTo(url, clipPaths[i])),
     downloadTo(narrationUrl, narrationPath),
     ...musicUrls.map((url, i) => downloadTo(url, musicPaths[i])),
@@ -124,41 +141,138 @@ async function main() {
 
   await writeResult(jobId, { status: "running", phase: "render", progress: 25 });
 
+  // ── Audio duration probe ─────────────────────────────────────────────────
+  // Ensure video covers the full narration so it isn't cut brusco at the end.
+  async function probeSeconds(file) {
+    return new Promise((resolve) => {
+      const p = spawn("ffprobe", [
+        "-v", "error",
+        "-show_entries", "format=duration",
+        "-of", "default=noprint_wrappers=1:nokey=1",
+        file,
+      ]);
+      let out = "";
+      p.stdout.on("data", (c) => (out += c.toString()));
+      p.on("close", () => resolve(parseFloat(out.trim()) || 0));
+      p.on("error", () => resolve(0));
+    });
+  }
+  const narrSec = await probeSeconds(narrationPath);
+
   // ── Filter graph ──────────────────────────────────────────────────────────
-  // Video: xfade encadeado entre clips
-  // Audio: narração (100%) + música (concat → loop → volume → sidechain duck)
-  //         → amix final
+  // Inputs ordered as: [intro][clip0]..[clipN-1][outro][narration][music0]..[musicM-1]
+  //
+  // Video chain:
+  //   xfade(intro → clip0 → clip1 → ... → clipN-1 → outro) encadeados
+  //   drawtext "A ESCOLA DOS VÉUS" visível 1s-4.5s (intro)
+  //   drawtext "A ESCOLA DOS VÉUS" + "seteveus.space" no outro
+  //   fade in 1s no início + fade out 2s no fim
+  //
+  // Audio:
+  //   narração com adelay = (introDuration - crossfade) → começa durante fade
+  //                       entre intro e clip0 (não esmaga a abertura do brand)
+  //   música toca desde t=0 até ao fim, loop, ducking, fades
   const stride = clipDuration - crossfade;
-  const totalDuration = (clips.length - 1) * stride + clipDuration;
+  const clipsDuration = (clips.length - 1) * stride + clipDuration;
+  // Offsets acumulados do xfade: intro (5-0.5=4.5), depois clips (stride), depois outro.
+  const introStride = INTRO_DURATION - crossfade;
+  const outroStride = OUTRO_DURATION - crossfade;
+  const TAIL_PAD = 1.5;
+  const bodyDuration = introStride + clipsDuration + outroStride; // tempo total de reprodução
+  // Se narração for maior que o body, alargamos o outro via tpad no último xfade.
+  const narrationStartAt = introStride; // quando a voz entra
+  const totalDuration = Math.max(bodyDuration, narrationStartAt + narrSec + TAIL_PAD);
+  const tailExtra = Math.max(0, totalDuration - bodyDuration);
+  const FADE_IN = 1.0;
+  const FADE_OUT = 2.0;
+
+  // Video inputs: 0 = intro, 1..N = clips, N+1 = outro
+  const introIdx = 0;
+  const clipStartIdx = 1;
+  const outroIdx = clips.length + 1;
+  const lastIdx = outroIdx;
 
   const videoFilters = [];
-  if (clips.length === 1) {
-    videoFilters.push(`[0:v]copy[vout]`);
-  } else {
-    let prev = "0:v";
-    for (let i = 1; i < clips.length; i++) {
-      const out = i === clips.length - 1 ? "vout" : `vx${i}`;
-      const offset = i * stride;
-      videoFilters.push(
-        `[${prev}][${i}:v]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(2)}[${out}]`
-      );
-      prev = out;
-    }
+  let prev = `${introIdx}:v`;
+
+  // intro → clip0
+  videoFilters.push(
+    `[${prev}][${clipStartIdx}:v]xfade=transition=fade:duration=${crossfade}:offset=${introStride.toFixed(2)}[vx0]`
+  );
+  prev = "vx0";
+
+  // clip0 → clip1 → ... → clipN-1
+  for (let i = 1; i < clips.length; i++) {
+    const out = `vx${i}`;
+    const offset = introStride + i * stride;
+    videoFilters.push(
+      `[${prev}][${clipStartIdx + i}:v]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(2)}[${out}]`
+    );
+    prev = out;
   }
 
-  // Audio indices: narration = clips.length, music[0..] = clips.length+1..
-  const narrationIdx = clips.length;
-  const musicStartIdx = clips.length + 1;
+  // clipN-1 → outro
+  const outroOffset = introStride + clipsDuration - crossfade;
+  videoFilters.push(
+    `[${prev}][${outroIdx}:v]xfade=transition=fade:duration=${crossfade}:offset=${outroOffset.toFixed(2)}[vchain]`
+  );
+
+  // Freeze frame extra se narração for maior que body
+  if (tailExtra > 0.05) {
+    videoFilters.push(`[vchain]tpad=stop_mode=clone:stop_duration=${tailExtra.toFixed(2)}[vcat]`);
+  } else {
+    videoFilters.push(`[vchain]null[vcat]`);
+  }
+
+  // Text overlays — intro + outro
+  // Intro: BRAND_TEXT centrado abaixo do mandala, visível t=1..4.5
+  const introTextStart = 1.0;
+  const introTextEnd = INTRO_DURATION - 0.5;
+  // Outro: BRAND_TEXT + CTA, visíveis no início do outro até quase o fim
+  const outroVideoStart = totalDuration - OUTRO_DURATION;
+  const outroTextStart = outroVideoStart + 0.5;
+  const outroTextEnd = totalDuration - 0.3;
+
+  // Escape de caracteres especiais do drawtext não necessário aqui (sem : ou ').
+  videoFilters.push(
+    `[vcat]` +
+      `drawtext=font='${TEXT_FONT}':text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:` +
+      `x=(w-text_w)/2:y=h*0.82:` +
+      `enable='between(t,${introTextStart},${introTextEnd})',` +
+      `drawtext=font='${TEXT_FONT}':text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:` +
+      `x=(w-text_w)/2:y=h*0.72:` +
+      `enable='between(t,${outroTextStart.toFixed(2)},${outroTextEnd.toFixed(2)})',` +
+      `drawtext=font='${TEXT_FONT}':text='${CTA_TEXT}':fontsize=40:fontcolor=${TEXT_COLOR}:` +
+      `x=(w-text_w)/2:y=h*0.82:` +
+      `enable='between(t,${(outroTextStart + 0.5).toFixed(2)},${outroTextEnd.toFixed(2)})'` +
+      `[vtext]`
+  );
+
+  // Fade in/out final
+  videoFilters.push(
+    `[vtext]fade=t=in:st=0:d=${FADE_IN},fade=t=out:st=${(totalDuration - FADE_OUT).toFixed(2)}:d=${FADE_OUT}[vout]`
+  );
+
+  // Audio indices: narration = outroIdx+1, music[0..] = narrIdx+1..
+  const narrationIdx = lastIdx + 1;
+  const musicStartIdx = narrationIdx + 1;
 
   const musicInputs = musicPaths.map((_, i) => `[${musicStartIdx + i}:a]`).join("");
   const musicConcat = musicPaths.length > 1
     ? `${musicInputs}concat=n=${musicPaths.length}:v=0:a=1[musicraw]`
     : `[${musicStartIdx}:a]acopy[musicraw]`;
 
+  const MUSIC_FADE_IN = 2.0;
+  const MUSIC_FADE_OUT = 3.0;
+  const NARR_FADE_IN = 0.5;
+  const NARR_FADE_OUT = 0.8;
+  const narrDelayMs = Math.round(narrationStartAt * 1000);
+
   const audioFilter = [
     musicConcat,
-    `[musicraw]aloop=loop=-1:size=2e+09,atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume}[musicvol]`,
-    `[${narrationIdx}:a]asplit=2[narr1][narr2]`,
+    `[musicraw]aloop=loop=-1:size=2e+09,atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=${MUSIC_FADE_IN},afade=t=out:st=${(totalDuration - MUSIC_FADE_OUT).toFixed(2)}:d=${MUSIC_FADE_OUT}[musicvol]`,
+    `[${narrationIdx}:a]volume=${narrationVolume},afade=t=in:st=0:d=${NARR_FADE_IN},afade=t=out:st=${Math.max(0, narrSec - NARR_FADE_OUT).toFixed(2)}:d=${NARR_FADE_OUT},adelay=${narrDelayMs}|${narrDelayMs}[narrproc]`,
+    `[narrproc]asplit=2[narr1][narr2]`,
     `[musicvol][narr1]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[musicduck]`,
     `[narr2][musicduck]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]`,
   ].join(";");
@@ -168,7 +282,9 @@ async function main() {
   const outPath = path.join(WORK_DIR, "out.mp4");
   await runFfmpeg([
     "-y",
+    "-i", introPath,
     ...clipPaths.flatMap((p) => ["-i", p]),
+    "-i", outroPath,
     "-i", narrationPath,
     ...musicPaths.flatMap((p) => ["-i", p]),
     "-filter_complex", filterComplex,

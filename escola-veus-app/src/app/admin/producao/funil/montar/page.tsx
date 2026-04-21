@@ -56,7 +56,7 @@ export default function FunilMontarPage() {
 
   const [selectedNarration, setSelectedNarration] = useState<string>("");
   const [selectedMusic, setSelectedMusic] = useState<string[]>([]);
-  const [musicVolume, setMusicVolume] = useState(0.15);
+  const [musicVolume, setMusicVolume] = useState(0.2);
   const [clipOrder, setClipOrder] = useState<string[]>([]);
 
   const [rendering, setRendering] = useState(false);
