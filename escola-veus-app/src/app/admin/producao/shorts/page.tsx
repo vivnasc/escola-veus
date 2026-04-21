@@ -727,15 +727,15 @@ export default function ShortsPage() {
         </div>
 
         {state.candidates.length > 0 && (
-          <div className="mb-3">
-            <p className="mb-2 text-[10px] uppercase tracking-wider text-escola-creme-50">
-              Candidatas extraídas da letra (clica para enviar para Verso 1 ou 2)
-            </p>
-            <div className="flex flex-wrap gap-1.5">
+          <details className="mb-3 rounded border border-escola-border bg-escola-bg px-3 py-2">
+            <summary className="cursor-pointer text-[10px] uppercase tracking-wider text-escola-creme-50">
+              Outras candidatas extraídas ({state.candidates.length})
+            </summary>
+            <div className="mt-2 flex flex-wrap gap-1.5">
               {state.candidates.map((c, i) => (
                 <div
                   key={`${i}-${c}`}
-                  className="group flex items-stretch overflow-hidden rounded border border-escola-border bg-escola-bg"
+                  className="group flex items-stretch overflow-hidden rounded border border-escola-border bg-escola-bg-card"
                 >
                   <span className="max-w-[400px] truncate px-2 py-1 text-xs text-escola-creme">
                     {c}
@@ -743,21 +743,21 @@ export default function ShortsPage() {
                   <button
                     onClick={() => updateState({ verses: [c, state.verses[1]] })}
                     className="border-l border-escola-border px-2 py-1 text-[10px] text-escola-coral hover:bg-escola-border/30"
-                    title="Enviar para Verso 1"
+                    title="Enviar para Frase 1"
                   >
                     → 1
                   </button>
                   <button
                     onClick={() => updateState({ verses: [state.verses[0], c] })}
                     className="border-l border-escola-border px-2 py-1 text-[10px] text-escola-coral hover:bg-escola-border/30"
-                    title="Enviar para Verso 2"
+                    title="Enviar para Frase 2"
                   >
                     → 2
                   </button>
                 </div>
               ))}
             </div>
-          </div>
+          </details>
         )}
 
         <div className="grid gap-2 sm:grid-cols-2">
