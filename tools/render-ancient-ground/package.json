@@ -1,0 +1,13 @@
+{
+  "name": "render-ancient-ground",
+  "version": "0.1.0",
+  "description": "FFmpeg-based renderer for Ancient Ground 1h ambient videos",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "render-ancient-ground": "./render.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
