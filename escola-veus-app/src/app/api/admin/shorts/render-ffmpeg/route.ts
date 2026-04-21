@@ -21,7 +21,7 @@ export const runtime = "nodejs";
  *       - concat 3 clips (scale+pad para 1080x1920 cada)
  *       - overlay PNG1 entre 0–halfSec, overlay PNG2 entre halfSec–total
  *       - musica como audio principal (volume fixo)
- *  4. Upload para Supabase em shorts/videos/
+ *  4. Upload para Supabase bucket `escola-shorts`, pasta `videos/`
  *  5. SSE: progress baseado no time= do stderr
  *
  * Body: {
@@ -296,17 +296,17 @@ export async function POST(req: NextRequest) {
         title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") ||
         "short";
       const filename = `${safe}-${Date.now()}.mp4`;
-      const storagePath = `shorts/videos/${filename}`;
+      const storagePath = `videos/${filename}`;
 
       const { error } = await supabase.storage
-        .from("course-assets")
+        .from("escola-shorts")
         .upload(storagePath, new Uint8Array(buffer), {
           contentType: "video/mp4",
           upsert: false,
         });
       if (error) throw new Error(`Upload: ${error.message}`);
 
-      const publicUrl = `${supaUrl}/storage/v1/object/public/course-assets/${storagePath}`;
+      const publicUrl = `${supaUrl}/storage/v1/object/public/escola-shorts/${storagePath}`;
 
       send({ type: "progress", percent: 100, label: "Pronto!" });
       send({ type: "result", videoUrl: publicUrl });
