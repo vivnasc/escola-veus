@@ -6,18 +6,12 @@ export const maxDuration = 120;
 /**
  * POST /api/admin/funil/generate-srt
  *
- * Gera SRT (line-level) para a narração via OpenAI Whisper.
+ * Gera SRT para a narração via fal.ai Whisper (usa FAL_KEY, já configurado
+ * no Vercel). Fallback: OpenAI Whisper se FAL_KEY ausente e OPENAI_API_KEY
+ * presente.
  *
  * Body: { narrationUrl, scriptId?, filename? }
- *   - narrationUrl: URL pública do MP3 no Supabase
- *   - scriptId: id do script (ex: "nomear-trailer-00") — usado para procurar o
- *     texto no NOMEAR_PRESETS e passar como `prompt` do Whisper (melhora
- *     precisão com vocabulário contemplativo PT-PT)
- *   - filename: nome base para o SRT (sem extensão)
- *
  * Retorna: { url, srt }
- *   url = URL pública do SRT gravado em youtube/subtitles/<filename>.srt
- *   srt = texto do SRT (para preview)
  */
 
 type Body = {
@@ -26,72 +20,145 @@ type Body = {
   filename?: string;
 };
 
+type Chunk = { timestamp: [number, number]; text: string };
+
 function findScriptTextById(id: string): string | null {
   for (const preset of NOMEAR_PRESETS) {
     const hit = preset.scripts.find((s) => s.id === id);
     if (hit) {
-      // Strip ElevenLabs tags ([pause], [calm], etc.) — não queremos no prompt do Whisper.
       return hit.texto.replace(/\[[^\]]+\]/g, " ").replace(/\s+/g, " ").trim();
     }
   }
   return null;
 }
 
+function fmtSrtTime(seconds: number): string {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+  const ms = Math.round((seconds - Math.floor(seconds)) * 1000);
+  return (
+    String(h).padStart(2, "0") +
+    ":" +
+    String(m).padStart(2, "0") +
+    ":" +
+    String(s).padStart(2, "0") +
+    "," +
+    String(ms).padStart(3, "0")
+  );
+}
+
+function chunksToSrt(chunks: Chunk[]): string {
+  return chunks
+    .filter((c) => c && Array.isArray(c.timestamp) && typeof c.text === "string")
+    .map((c, i) => {
+      const [start, end] = c.timestamp;
+      return `${i + 1}\n${fmtSrtTime(start)} --> ${fmtSrtTime(end)}\n${c.text.trim()}\n`;
+    })
+    .join("\n");
+}
+
+async function transcribeFalAi(narrationUrl: string): Promise<{ srt: string } | { erro: string }> {
+  const key = process.env.FAL_KEY;
+  if (!key) return { erro: "FAL_KEY ausente" };
+
+  const res = await fetch("https://fal.run/fal-ai/whisper", {
+    method: "POST",
+    headers: {
+      Authorization: `Key ${key}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      audio_url: narrationUrl,
+      task: "transcribe",
+      language: "pt",
+      chunk_level: "segment", // segment-level dá linhas naturais para SRT
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text().catch(() => "");
+    return { erro: `fal.ai ${res.status}: ${err.slice(0, 300)}` };
+  }
+
+  const data = await res.json();
+  const chunks: Chunk[] = Array.isArray(data.chunks) ? data.chunks : [];
+  if (chunks.length === 0) {
+    return { erro: "fal.ai nao devolveu chunks (transcricao vazia)" };
+  }
+
+  return { srt: chunksToSrt(chunks) };
+}
+
+async function transcribeOpenai(
+  narrationUrl: string,
+  prompt?: string,
+): Promise<{ srt: string } | { erro: string }> {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) return { erro: "OPENAI_API_KEY ausente" };
+
+  const audioRes = await fetch(narrationUrl);
+  if (!audioRes.ok) return { erro: `Download MP3 ${audioRes.status}` };
+  const audioBlob = await audioRes.blob();
+
+  const form = new FormData();
+  form.append("file", new File([audioBlob], "narration.mp3", { type: "audio/mpeg" }));
+  form.append("model", "whisper-1");
+  form.append("response_format", "srt");
+  form.append("language", "pt");
+  if (prompt) form.append("prompt", prompt);
+
+  const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key}` },
+    body: form,
+  });
+
+  if (!res.ok) {
+    const err = await res.text().catch(() => "");
+    return { erro: `OpenAI ${res.status}: ${err.slice(0, 300)}` };
+  }
+
+  return { srt: await res.text() };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { narrationUrl, scriptId, filename }: Body = await req.json();
-
     if (!narrationUrl) {
       return NextResponse.json({ erro: "narrationUrl obrigatorio." }, { status: 400 });
     }
 
-    const openaiKey = process.env.OPENAI_API_KEY;
-    if (!openaiKey) {
-      return NextResponse.json({ erro: "OPENAI_API_KEY nao configurada." }, { status: 500 });
-    }
-
-    // Download MP3
-    const audioRes = await fetch(narrationUrl);
-    if (!audioRes.ok) {
-      return NextResponse.json(
-        { erro: `Download MP3 falhou: ${audioRes.status}` },
-        { status: 502 },
-      );
-    }
-    const audioBlob = await audioRes.blob();
-
-    // Optional prompt: script text guides Whisper for PT-PT contemplative vocabulary
     const prompt = scriptId ? findScriptTextById(scriptId)?.slice(0, 900) : undefined;
 
-    // Call Whisper
-    const form = new FormData();
-    form.append("file", new File([audioBlob], "narration.mp3", { type: "audio/mpeg" }));
-    form.append("model", "whisper-1");
-    form.append("response_format", "srt");
-    form.append("language", "pt");
-    if (prompt) form.append("prompt", prompt);
-
-    const whisperRes = await fetch("https://api.openai.com/v1/audio/transcriptions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${openaiKey}` },
-      body: form,
-    });
-
-    if (!whisperRes.ok) {
-      const errText = await whisperRes.text();
+    // Prefer fal.ai (FAL_KEY já configurada); fallback para OpenAI.
+    let result: { srt: string } | { erro: string };
+    if (process.env.FAL_KEY) {
+      result = await transcribeFalAi(narrationUrl);
+      // Se fal.ai falhar mas OpenAI existir, tenta OpenAI
+      if ("erro" in result && process.env.OPENAI_API_KEY) {
+        result = await transcribeOpenai(narrationUrl, prompt);
+      }
+    } else if (process.env.OPENAI_API_KEY) {
+      result = await transcribeOpenai(narrationUrl, prompt);
+    } else {
       return NextResponse.json(
-        { erro: `Whisper ${whisperRes.status}: ${errText.slice(0, 300)}` },
-        { status: 502 },
+        { erro: "Nenhum transcriber configurado (precisa FAL_KEY ou OPENAI_API_KEY)." },
+        { status: 500 },
       );
     }
 
-    const srt = await whisperRes.text();
+    if ("erro" in result) {
+      return NextResponse.json({ erro: result.erro }, { status: 502 });
+    }
+
+    const srt = result.srt;
 
     // Upload SRT to Supabase
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) {
-      return NextResponse.json({ srt, erro: "Supabase nao configurado — SRT nao persistido." }, { status: 200 });
+      return NextResponse.json({ srt, erro: "Supabase nao configurado." }, { status: 200 });
     }
 
     const safeBase = (filename || scriptId || "narration")
