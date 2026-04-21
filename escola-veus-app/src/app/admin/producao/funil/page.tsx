@@ -12,11 +12,15 @@ export default function FunilPage() {
   const [openSerie, setOpenSerie] = useState<string | null>(NOMEAR_PRESETS[0]?.id ?? null);
   const [tab, setTab] = useState<"series" | "prompts">("series");
 
+  // Extrai chave do episodio: "nomear-trailer-..." -> "trailer", "nomear-ep01-..." -> "ep01"
+  const epKeyFromId = (id: string) => id.split("-")[1] ?? "";
+
   const promptsByEp = useMemo(() => {
     const map = new Map<string, number>();
     for (const p of funilSeed.prompts as Prompt[]) {
-      const m = p.id.match(/^nomear-(ep\d+)/);
-      if (m) map.set(m[1], (map.get(m[1]) ?? 0) + 1);
+      if (!p.id.startsWith("nomear-")) continue;
+      const key = epKeyFromId(p.id);
+      if (key) map.set(key, (map.get(key) ?? 0) + 1);
     }
     return map;
   }, []);
@@ -40,6 +44,18 @@ export default function FunilPage() {
       </div>
 
       <div className="mb-6 flex flex-wrap gap-2 text-xs">
+        <Link
+          href="/admin/producao/funil/gerar"
+          className="rounded-lg border border-escola-dourado bg-escola-dourado/10 px-3 py-1.5 font-semibold text-escola-dourado hover:bg-escola-dourado/20"
+        >
+          → Gerar imagens & clips
+        </Link>
+        <Link
+          href="/admin/producao/funil/montar"
+          className="rounded-lg border border-escola-dourado bg-escola-dourado/10 px-3 py-1.5 font-semibold text-escola-dourado hover:bg-escola-dourado/20"
+        >
+          → Montar vídeo final
+        </Link>
         <Link
           href="/admin/producao/audios"
           className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
@@ -71,8 +87,8 @@ export default function FunilPage() {
         {NOMEAR_PRESETS.map((serie) => {
           const open = openSerie === serie.id;
           const withPrompts = serie.scripts.filter((s) => {
-            const m = s.id.match(/^nomear-(ep\d+)/);
-            return m && promptsByEp.has(m[1]);
+            const key = epKeyFromId(s.id);
+            return key && promptsByEp.has(key);
           }).length;
 
           return (
@@ -96,8 +112,8 @@ export default function FunilPage() {
               {open && (
                 <ul className="divide-y divide-escola-border border-t border-escola-border">
                   {serie.scripts.map((ep) => {
-                    const m = ep.id.match(/^nomear-(ep\d+)/);
-                    const count = m ? promptsByEp.get(m[1]) ?? 0 : 0;
+                    const key = epKeyFromId(ep.id);
+                    const count = key ? promptsByEp.get(key) ?? 0 : 0;
                     return (
                       <li
                         key={ep.id}
