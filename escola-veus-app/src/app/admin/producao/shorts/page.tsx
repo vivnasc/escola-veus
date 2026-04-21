@@ -553,6 +553,9 @@ export default function ShortsPage() {
         </button>
       </div>
 
+      {/* ── DASHBOARD DE ESTADO DOS SHORTS ── */}
+      <ShortsStatusDashboard />
+
       {/* ── 1. IMAGENS VERTICAIS ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
@@ -1218,6 +1221,145 @@ function CopyField({
         className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
       />
     </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dashboard de estado por short (Snippet Nomear)
+// ─────────────────────────────────────────────────────────────────────────────
+
+type ShortStatus = {
+  hasEpisodeAudio: boolean;
+  hasEpisodeImages: boolean;
+  snippetAudio: boolean;
+  verticalImage: boolean;
+  rendered: boolean;
+};
+type ShortEntry = {
+  id: string;
+  titulo: string;
+  curso: string;
+  epKey: string;
+  status: ShortStatus;
+};
+
+function ShortsStatusDashboard() {
+  const [items, setItems] = useState<ShortEntry[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open || items) return;
+    setLoading(true);
+    fetch("/api/admin/shorts/status", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.shorts)) setItems(d.shorts);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [open, items]);
+
+  const summary = items
+    ? {
+        rendered: items.filter((s) => s.status.rendered).length,
+        ready: items.filter((s) => s.status.hasEpisodeAudio && s.status.hasEpisodeImages).length,
+        total: items.length,
+      }
+    : null;
+
+  return (
+    <section className="rounded-lg border border-escola-border bg-escola-bg-card">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between px-4 py-3 text-left"
+      >
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
+            Dashboard Snippet Nomear
+          </h3>
+          <p className="text-xs text-escola-creme-50">
+            {summary
+              ? `${summary.rendered}/${summary.total} renderizados · ${summary.ready}/${summary.total} com áudio+imagem prontos`
+              : "clica para carregar (1 short por Nomear)"}
+          </p>
+        </div>
+        <span className="text-escola-creme-50">{open ? "−" : "+"}</span>
+      </button>
+
+      {open && (
+        <div className="border-t border-escola-border">
+          {loading && (
+            <p className="p-4 text-xs text-escola-creme-50">A carregar (~2-3s)...</p>
+          )}
+          {items && (
+            <ul className="divide-y divide-escola-border">
+              {items.map((s) => (
+                <li key={s.id} className="px-4 py-2">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-xs text-escola-creme">
+                        {s.epKey} · {s.titulo}
+                      </p>
+                      <p className="text-[10px] text-escola-creme-50">{s.curso}</p>
+                    </div>
+                  </div>
+                  <div className="mt-1.5 flex flex-wrap gap-1">
+                    <ShortPill
+                      label="áudio-ep"
+                      ok={s.status.hasEpisodeAudio}
+                      value={s.status.hasEpisodeAudio ? "✓" : "×"}
+                    />
+                    <ShortPill
+                      label="imag-ep"
+                      ok={s.status.hasEpisodeImages}
+                      value={s.status.hasEpisodeImages ? "✓" : "×"}
+                    />
+                    <ShortPill
+                      label="snippet"
+                      ok={s.status.snippetAudio}
+                      value={s.status.snippetAudio ? "✓" : "×"}
+                    />
+                    <ShortPill
+                      label="9:16"
+                      ok={s.status.verticalImage}
+                      value={s.status.verticalImage ? "✓" : "×"}
+                    />
+                    <ShortPill
+                      label="render"
+                      ok={s.status.rendered}
+                      value={s.status.rendered ? "✓" : "×"}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function ShortPill({
+  label,
+  value,
+  ok,
+  partial,
+}: {
+  label: string;
+  value: string;
+  ok?: boolean;
+  partial?: boolean;
+}) {
+  let cls = "bg-escola-border text-escola-creme-50";
+  if (ok) cls = "bg-escola-dourado/10 text-escola-dourado";
+  else if (partial) cls = "bg-escola-terracota/10 text-escola-terracota";
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] ${cls}`}>
+      <span className="text-[9px] uppercase tracking-wider opacity-70">{label}</span>
+      <span className="font-semibold">{value}</span>
+    </span>
   );
 }
 

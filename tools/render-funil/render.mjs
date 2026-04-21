@@ -233,24 +233,21 @@ async function main() {
   const outroTextStart = outroVideoStart + 0.5;
   const outroTextEnd = totalDuration - 0.3;
 
-  // Escape de caracteres especiais do drawtext não necessário aqui (sem : ou ').
+  // Separate filters with semicolons + intermediate labels — mais legível e
+  // evita ambiguidades do parser do ffmpeg com vírgulas dentro de enable='between(t,X,Y)'.
   videoFilters.push(
-    `[vcat]` +
-      `drawtext=font='${TEXT_FONT}':text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:` +
-      `x=(w-text_w)/2:y=h*0.82:` +
-      `enable='between(t,${introTextStart},${introTextEnd})',` +
-      `drawtext=font='${TEXT_FONT}':text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:` +
-      `x=(w-text_w)/2:y=h*0.72:` +
-      `enable='between(t,${outroTextStart.toFixed(2)},${outroTextEnd.toFixed(2)})',` +
-      `drawtext=font='${TEXT_FONT}':text='${CTA_TEXT}':fontsize=40:fontcolor=${TEXT_COLOR}:` +
-      `x=(w-text_w)/2:y=h*0.82:` +
-      `enable='between(t,${(outroTextStart + 0.5).toFixed(2)},${outroTextEnd.toFixed(2)})'` +
-      `[vtext]`
+    `[vcat]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text=${JSON.stringify(BRAND_TEXT)}:fontsize=72:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.82:enable='between(t\\,${introTextStart}\\,${introTextEnd})'[v1]`,
+  );
+  videoFilters.push(
+    `[v1]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text=${JSON.stringify(BRAND_TEXT)}:fontsize=72:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.72:enable='between(t\\,${outroTextStart.toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[v2]`,
+  );
+  videoFilters.push(
+    `[v2]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text=${JSON.stringify(CTA_TEXT)}:fontsize=40:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.82:enable='between(t\\,${(outroTextStart + 0.5).toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[vtext]`,
   );
 
   // Fade in/out final
   videoFilters.push(
-    `[vtext]fade=t=in:st=0:d=${FADE_IN},fade=t=out:st=${(totalDuration - FADE_OUT).toFixed(2)}:d=${FADE_OUT}[vout]`
+    `[vtext]fade=t=in:st=0:d=${FADE_IN}[vfi];[vfi]fade=t=out:st=${(totalDuration - FADE_OUT).toFixed(2)}:d=${FADE_OUT}[vout]`
   );
 
   // Audio indices: narration = outroIdx+1, music[0..] = narrIdx+1..
