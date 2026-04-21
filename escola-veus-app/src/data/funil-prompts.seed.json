@@ -762,55 +762,55 @@
       "id": "nomear-trailer-01-veu-suspenso",
       "category": "trailer",
       "mood": ["abertura", "corpo-sabe"],
-      "prompt": "pale translucent silk veil suspended motionless in dim soft amber light, blurred dark depths behind, contemplative stillness, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+      "prompt": "A single pale translucent sheer veil suspended motionless in mid-air, lit from one side by a soft warm amber glow. The background is a deep empty darkness. Fine dust particles drift slowly through the beam of light. Abstract still life photograph, cinematic, no people."
     },
     {
       "id": "nomear-trailer-02-veus-caindo",
       "category": "trailer",
       "mood": ["lista", "nomear"],
-      "prompt": "several thin silk veils overlapping and falling slowly through a column of warm golden light, layered transparency, soft particles in the air, deep navy background, contemplative atmosphere, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+      "prompt": "Three or four thin translucent fabric veils descending slowly through a narrow vertical column of warm golden light, layering over each other. Deep navy blue darkness surrounds them. Dust motes drift upward. Cinematic abstract still life photograph, no people, no figures."
     },
     {
       "id": "nomear-trailer-03-agua-ondula",
       "category": "trailer",
       "mood": ["nao-es-errada", "calma"],
-      "prompt": "extreme close up of still dark water surface with a single ripple expanding gently outward, soft warm reflection on the water, muted tones, quiet contemplative stillness, completely empty of people no hands anywhere, cinematic macro still life, shallow depth of field, hyperrealistic, 8k"
+      "prompt": "Extreme close-up top-down view of a still dark water surface. One single concentric ripple expands outward from the centre. Soft warm reflection in the water. Nothing else is visible. Macro photograph, no people."
     },
     {
       "id": "nomear-trailer-04-cozinha-antiga",
       "category": "trailer",
       "mood": ["heranca", "cozinhas-que-ja-nao-existem"],
-      "prompt": "old country kitchen at dusk with worn ceramic tiles, single enamel cup and saucer on a weathered wooden table, soft diffused light through thin faded curtain, muted cream and sepia tones, feeling of a place from long ago, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+      "prompt": "An old rustic kitchen at dusk. A single enamel cup and saucer sit alone on a worn wooden table. Thin faded linen curtain hangs softly at a small window behind, soft diffused light filtering through. Muted cream and sepia tones. The table is otherwise empty. No people. Cinematic still life photograph."
     },
     {
       "id": "nomear-trailer-05-veu-luminoso",
       "category": "trailer",
       "mood": ["identidade", "nomear-se"],
-      "prompt": "single luminous silk veil hanging vertically in a dark space with warm golden light glowing through it from behind, soft halo of light around the fabric, deep navy surroundings, brand signature atmosphere, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, muted tones, hyperrealistic, 8k"
+      "prompt": "A single luminous sheer silk veil hangs vertically in a deep dark space. Warm golden light glows softly from behind it, creating a faint halo around the fabric. The background is a deep navy blue, almost black. Minimal abstract still life photograph, no people, no figures."
     },
     {
       "id": "nomear-trailer-06-mapa-territorio",
       "category": "trailer",
       "mood": ["territorio", "curso"],
-      "prompt": "old folded paper map partially unrolled on a dark wooden desk with a small brass compass beside it, soft side lamp light, muted earth tones, feeling of an unseen territory about to be entered, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+      "prompt": "An old folded paper map, partially unrolled on a dark wooden desk. A single small brass compass sits beside it. One soft side lamp lights the scene warmly from the left. Muted earth tones. Close-up still life photograph, no people, no hands."
     },
     {
       "id": "nomear-trailer-07-sete-velas",
       "category": "trailer",
       "mood": ["sete-temas", "linha"],
-      "prompt": "seven small unlit beeswax candles arranged in a quiet straight line on a dark stone surface, soft directional side light casting faint long shadows, muted earth tones, contemplative still life suggesting seven territories, completely empty of people no hands anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+      "prompt": "Exactly seven small unlit beeswax candles, arranged in a single horizontal row on a dark stone surface. Top-down overhead view. Soft warm directional light from one side casts faint shadows of each candle. Only seven candles, nothing else. Muted earth tones, still life photograph, no people."
     },
     {
       "id": "nomear-trailer-08-caixa-fechada",
       "category": "trailer",
       "mood": ["engolido", "guardado"],
-      "prompt": "closed dark wooden box resting on a worn shelf in a dim room, faint dust visible in a beam of soft side light, muted tones, sealed silent atmosphere, completely empty of people no figures anywhere, cinematic still life photography, shallow depth of field, hyperrealistic, 8k"
+      "prompt": "A single closed dark wooden box with a small metal latch, resting alone on a worn wooden shelf in a dim room. A soft side beam of warm light passes through the air. Faint dust particles visible in the beam. Deep shadow around. Still life photograph, no people, sealed silent atmosphere."
     },
     {
       "id": "nomear-trailer-09-porta-luz",
       "category": "trailer",
       "mood": ["cta", "convite"],
-      "prompt": "wooden doorway slightly ajar at the end of a dark quiet corridor, warm golden light spilling through the opening onto old wooden floorboards, soft dust particles in the beam, muted tones in the rest of the hallway, feeling of gentle invitation, completely empty of people no figures anywhere, cinematic photography, shallow depth of field, hyperrealistic, 8k"
+      "prompt": "A single wooden door, slightly ajar, at the end of a dark corridor. Only one door is visible. Warm golden light pours out through the narrow gap between the door and the frame, falling onto the aged wooden floor. Fine dust particles drift in the beam. The rest of the scene is in deep shadow. Cinematic photograph, no people, one single door only."
     },
 
     {"id": "nomear-ep07-01-carta-caixa", "category": "nomear-limite-sagrado", "mood": ["sim-automatico", "antes-do-corpo"],
