@@ -731,6 +731,141 @@
       "prompt": "two African rivers meeting at confluence, different colored waters merging in swirling patterns, brown river meeting clear turquoise stream, lush green banks, dramatic aerial perspective, feeling of separate paths becoming one, Mozambique, drone photography, 8k"
     },
     {
+      "id": "rio-16-zambeze-delta",
+      "category": "rio",
+      "mood": [
+        "vasto",
+        "ancestral"
+      ],
+      "prompt": "aerial view of Zambezi river delta in Mozambique, branching brown waters creating organic patterns meeting Indian Ocean, vast mangrove wetlands, scattered sandbars, warm afternoon light, no buildings no people, Marromeu reserve atmosphere, drone photography, 8k"
+    },
+    {
+      "id": "rio-17-zambeze-curva",
+      "category": "rio",
+      "mood": [
+        "vasto",
+        "calma"
+      ],
+      "prompt": "wide curve of Rio Zambeze Mozambique at golden hour, brown muddy waters reflecting orange sky, lush green banks with acacia trees, scattered hippos in water far in distance, warm light, no buildings no people, documentary landscape photography, 8k"
+    },
+    {
+      "id": "rio-18-cahora-bassa-lago",
+      "category": "rio",
+      "mood": [
+        "vasto",
+        "poderoso"
+      ],
+      "prompt": "vast Cahora Bassa lake in Tete Mozambique, calm blue water extending to rocky shoreline, scattered submerged dead tree trunks rising from water, dramatic stormy sky above, warm late afternoon light, no buildings no people, epic landscape photography, 8k"
+    },
+    {
+      "id": "rio-19-cahora-bassa-rochas",
+      "category": "rio",
+      "mood": [
+        "ancestral",
+        "misterio"
+      ],
+      "prompt": "Cahora Bassa lake Mozambique at sunrise, calm water meeting granite rock formations, submerged tree skeletons rising from water surface, low mist hovering, warm pink dawn light, no buildings no people, cinematic photography, 8k"
+    },
+    {
+      "id": "rio-20-niassa-lago",
+      "category": "rio",
+      "mood": [
+        "vasto",
+        "contemplativo"
+      ],
+      "prompt": "Lake Niassa shore Mozambique Niassa province, clear blue freshwater meeting sandy beach, low green hills in distance on other side, scattered baobabs along shore, warm afternoon light, no buildings no people, Africas third largest lake, documentary photography, 8k"
+    },
+    {
+      "id": "rio-21-niassa-canoa",
+      "category": "rio",
+      "mood": [
+        "heranca",
+        "solidao"
+      ],
+      "prompt": "traditional wooden dugout canoe resting on sandy Lake Niassa shore Mozambique, weathered paddle beside, gentle lake waves lapping, warm golden hour light, distant hazy shoreline across lake, no people, documentary photography, 8k"
+    },
+    {
+      "id": "rio-22-limpopo",
+      "category": "rio",
+      "mood": [
+        "ancestral",
+        "vasto"
+      ],
+      "prompt": "wide slow Rio Limpopo in southern Mozambique Gaza province, muddy brown water reflecting blue sky, sandy banks with scattered trees, low tropical vegetation on both sides, warm midday light, no buildings no people, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "rio-23-save-mangal",
+      "category": "rio",
+      "mood": [
+        "conexao",
+        "misterio"
+      ],
+      "prompt": "estuary of Rio Save meeting Indian Ocean Mozambique, dark mangrove forest on banks, winding brown river channel, turquoise ocean visible beyond, aerial view, warm light, no buildings no people, drone photography, 8k"
+    },
+    {
+      "id": "rio-24-rovuma-frontier",
+      "category": "rio",
+      "mood": [
+        "vasto",
+        "misterio"
+      ],
+      "prompt": "Rio Rovuma wide brown waters along Mozambique northern border, dense tropical forest on banks, sandbar in middle of river, warm late afternoon light, remote wilderness feeling, no buildings no people, Cabo Delgado Mozambique, documentary photography, 8k"
+    },
+    {
+      "id": "rio-25-lurio-curva",
+      "category": "rio",
+      "mood": [
+        "contemplativo",
+        "calma"
+      ],
+      "prompt": "gentle bend of Rio Lurio in Nampula Mozambique, calm clear water reflecting acacia trees on bank, sandy shore with smooth rocks, warm morning light, no buildings no people, peaceful rural river, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "rio-26-hipopotamos",
+      "category": "rio",
+      "mood": [
+        "ancestral",
+        "poderoso"
+      ],
+      "prompt": "group of hippopotamuses submerged in Mozambique river, only eyes and ears visible above brown water, ripples around them, lush green riverbank behind, warm afternoon light, Gorongosa wildlife, no people, wildlife photography, 8k"
+    },
+    {
+      "id": "rio-27-crocodilo-margem",
+      "category": "rio",
+      "mood": [
+        "misterio",
+        "poderoso"
+      ],
+      "prompt": "large Nile crocodile resting on sandy bank of Mozambique river, textured scaly skin in warm afternoon light, river water flowing past in background, no people, Zambezi valley atmosphere, wildlife photography, 8k"
+    },
+    {
+      "id": "rio-28-canoa-lenta",
+      "category": "rio",
+      "mood": [
+        "calma",
+        "heranca"
+      ],
+      "prompt": "traditional wooden dugout canoe drifting on calm slow brown river in Mozambique interior, single paddle leaning inside, reflections of tropical trees in still water, warm morning light, no people, documentary photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "rio-29-rede-rio",
+      "category": "rio",
+      "mood": [
+        "heranca",
+        "ancestral"
+      ],
+      "prompt": "traditional fishing net stretched on wooden stakes in shallow river water in Mozambique interior, water flowing through mesh, lush green reeds on banks, warm golden morning light, no people, documentary photography, 8k"
+    },
+    {
+      "id": "rio-30-pungue-gorongosa",
+      "category": "rio",
+      "mood": [
+        "vital",
+        "vasto"
+      ],
+      "prompt": "Rio Pungue flowing through Gorongosa floodplain in Mozambique, wide shallow river reflecting scattered clouds, green wetland grass on banks, distant Gorongosa mountain silhouette, warm afternoon light, no buildings no people, cinematic landscape photography, 8k"
+    },
+    {
       "id": "ceu-01-sunset",
       "category": "ceu",
       "mood": [
@@ -1134,6 +1269,141 @@
         "libertacao"
       ],
       "prompt": "low angle shot of African savanna looking up at vast blue sky with scattered cumulus clouds, tall golden grass filling foreground, feeling of overwhelming space and freedom, warm sunshine, Mozambique interior, cinematic photography, 8k ultra wide"
+    },
+    {
+      "id": "savana-16-pala-pala",
+      "category": "savana",
+      "mood": [
+        "ancestral",
+        "poderoso"
+      ],
+      "prompt": "sable antelope standing proudly in Mozambique savanna, large curved horns silhouetted against warm sky, dark brown coat with white belly, golden grass around, Niassa Reserve atmosphere, warm afternoon light, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-17-bufalos-manada",
+      "category": "savana",
+      "mood": [
+        "poderoso",
+        "conexao"
+      ],
+      "prompt": "herd of African buffalo grazing in Mozambique savanna, dust rising gently from hooves, massive dark bodies with curved horns, scattered acacia trees, warm afternoon light, Gorongosa National Park atmosphere, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-18-hipopotamos-lago",
+      "category": "savana",
+      "mood": [
+        "ancestral",
+        "calma"
+      ],
+      "prompt": "pod of hippopotamuses resting in shallow lake Urema in Gorongosa Mozambique, eyes and backs visible above water, green wetland grass around, warm late afternoon light, distant mountains in haze, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-19-impalas-saltam",
+      "category": "savana",
+      "mood": [
+        "libertacao",
+        "vital"
+      ],
+      "prompt": "herd of impalas leaping through tall golden grass of Mozambique savanna, elegant bodies mid-air, warm late afternoon light catching fur, dust rising behind, Gorongosa wildlife, cinematic photography, 8k"
+    },
+    {
+      "id": "savana-20-leopardo-arvore",
+      "category": "savana",
+      "mood": [
+        "misterio",
+        "poderoso"
+      ],
+      "prompt": "leopard resting on thick acacia branch in Mozambique savanna, spotted coat blending with dappled leaves, warm golden hour light through canopy, watchful calm predator, Niassa Reserve, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-21-leao-familia",
+      "category": "savana",
+      "mood": [
+        "heranca",
+        "conexao"
+      ],
+      "prompt": "pride of lions resting together under large acacia tree in Mozambique savanna, male lion with dark mane and lionesses around, dappled afternoon shade, golden grass around, Gorongosa wildlife, National Geographic quality, 8k"
+    },
+    {
+      "id": "savana-22-elefante-agua",
+      "category": "savana",
+      "mood": [
+        "ancestral",
+        "vital"
+      ],
+      "prompt": "elephant spraying water from trunk at shallow river in Mozambique, water droplets catching afternoon sun, massive body reflected in water, green trees on banks, warm light, Gorongosa wildlife, photography, 8k"
+    },
+    {
+      "id": "savana-23-girafa-acacia",
+      "category": "savana",
+      "mood": [
+        "contemplativo",
+        "vasto"
+      ],
+      "prompt": "tall giraffe reaching up to eat from acacia tree in Mozambique savanna, long neck extended, warm afternoon light, golden grass around, distant hills in haze, peaceful feeding, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-24-zebra-manada",
+      "category": "savana",
+      "mood": [
+        "conexao",
+        "expansivo"
+      ],
+      "prompt": "herd of zebras moving across Mozambique savanna, distinctive stripes catching warm afternoon light, dust gently rising, scattered acacia trees, Gorongosa wildlife, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "savana-25-gnu-travessia",
+      "category": "savana",
+      "mood": [
+        "poderoso",
+        "vital"
+      ],
+      "prompt": "wildebeest herd crossing dusty savanna in Mozambique, dark bodies in motion, dust cloud rising, warm golden light, distant acacia trees, Niassa Reserve atmosphere, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-26-abutre-arvore",
+      "category": "savana",
+      "mood": [
+        "misterio",
+        "ancestral"
+      ],
+      "prompt": "white-backed vulture perched on dead acacia branch in Mozambique savanna, folded wings, watchful eyes, warm sunset sky behind, silhouette against orange, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-27-aguia-pesqueira",
+      "category": "savana",
+      "mood": [
+        "libertacao",
+        "poderoso"
+      ],
+      "prompt": "African fish eagle perched on dead branch above Mozambique river, white head and chest vivid, hooked beak, alert posture, blurred green river behind, warm afternoon light, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-28-babuinos",
+      "category": "savana",
+      "mood": [
+        "conexao",
+        "ancestral"
+      ],
+      "prompt": "troop of yellow baboons foraging in Mozambique savanna, mothers with young, adults watching surroundings, warm afternoon light, acacia trees and golden grass around, Gorongosa wildlife, documentary photography, 8k"
+    },
+    {
+      "id": "savana-29-flamingos-urema",
+      "category": "savana",
+      "mood": [
+        "libertacao",
+        "expansivo"
+      ],
+      "prompt": "flock of pink flamingos wading in shallow Lake Urema in Gorongosa Mozambique, reflections in still water, soft pink and white plumage, warm morning light, distant green horizon, wildlife photography, 8k"
+    },
+    {
+      "id": "savana-30-mabeco",
+      "category": "savana",
+      "mood": [
+        "misterio",
+        "conexao"
+      ],
+      "prompt": "African wild dog with distinctive mottled coat standing alert in Mozambique savanna, large round ears, golden grass around, warm late afternoon light, Niassa Reserve rare sighting, wildlife photography, 8k"
     },
     {
       "id": "flora-01-flower-rain",
@@ -2169,6 +2439,141 @@
         "recomeco"
       ],
       "prompt": "narrow path emerging from dark forest into bright African clearing filled with warm sunlight, contrast between shadow and light, golden grass in clearing, feeling of emerging into open, Mozambique, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-16-en1-terra",
+      "category": "caminho",
+      "mood": [
+        "solidao",
+        "vasto"
+      ],
+      "prompt": "long straight dirt section of national road through Mozambique savanna, red laterite road stretching to distant horizon, scattered baobabs on both sides, warm afternoon light, dust in air, no buildings no people, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "caminho-17-estrada-poeira",
+      "category": "caminho",
+      "mood": [
+        "heranca",
+        "vasto"
+      ],
+      "prompt": "rural Mozambique dirt road at golden hour, fine red dust suspended in warm air, long shadows of acacia trees across road, vast savanna landscape around, no buildings no people, documentary photography, 8k"
+    },
+    {
+      "id": "caminho-18-ponte-zambeze",
+      "category": "caminho",
+      "mood": [
+        "conexao",
+        "poderoso"
+      ],
+      "prompt": "wide road bridge crossing vast brown Rio Zambeze in Mozambique, warm afternoon light on water below, green banks extending into distance, bridge structure simple and low, no people no vehicles, documentary photography, 8k"
+    },
+    {
+      "id": "caminho-19-picada-capim",
+      "category": "caminho",
+      "mood": [
+        "misterio",
+        "solidao"
+      ],
+      "prompt": "narrow dirt track winding through tall head-high elephant grass in Mozambique interior, grass closing in on both sides, warm afternoon light filtering through, no buildings no people, feeling of hidden passage, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-20-caminho-machamba",
+      "category": "caminho",
+      "mood": [
+        "heranca",
+        "calma"
+      ],
+      "prompt": "simple red earth footpath between small rural farm plots in Mozambique, rows of maize and cassava on both sides, scattered banana trees, warm late afternoon light, no buildings no people, documentary rural photography, 8k"
+    },
+    {
+      "id": "caminho-21-cocotal-corredor",
+      "category": "caminho",
+      "mood": [
+        "ancestral",
+        "calma"
+      ],
+      "prompt": "long sandy path between rows of tall coconut palms in Inhambane Mozambique, palm trunks creating natural colonnade, dappled afternoon light on sand, fallen coconuts, no buildings no people, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-22-estrada-chuva",
+      "category": "caminho",
+      "mood": [
+        "melancolia",
+        "recomeco"
+      ],
+      "prompt": "rural red earth road in Mozambique after heavy rain, wet surface reflecting grey overcast sky, scattered puddles, green vegetation glistening on sides, no buildings no people, documentary photography, 8k"
+    },
+    {
+      "id": "caminho-23-ponte-madeira",
+      "category": "caminho",
+      "mood": [
+        "heranca",
+        "calma"
+      ],
+      "prompt": "simple wooden plank bridge over small rural stream in Mozambique, weathered planks over clear flowing water, lush green tropical vegetation on banks, warm afternoon light, no buildings no people, documentary photography, 8k"
+    },
+    {
+      "id": "caminho-24-estrada-baoba",
+      "category": "caminho",
+      "mood": [
+        "solidao",
+        "ancestral"
+      ],
+      "prompt": "long rural dirt road in Mozambique savanna with massive ancient baobab at end, red earth path leading to tree silhouetted against warm sunset sky, no buildings no people, epic landscape photography, 8k"
+    },
+    {
+      "id": "caminho-25-trilho-floresta-miombo",
+      "category": "caminho",
+      "mood": [
+        "misterio",
+        "vasto"
+      ],
+      "prompt": "narrow footpath winding through open miombo woodland in Mozambique interior, tall slender trees with golden yellow leaves in dry season, warm afternoon light filtering through, no buildings no people, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-26-estrada-montanha",
+      "category": "caminho",
+      "mood": [
+        "esperanca",
+        "vasto"
+      ],
+      "prompt": "winding dirt road climbing into Gorongosa mountains Mozambique, red earth track curving up slope, lush green vegetation on both sides, distant misty valleys below, warm morning light, no buildings no people, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "caminho-27-ferrovia-antiga",
+      "category": "caminho",
+      "mood": [
+        "heranca",
+        "melancolia"
+      ],
+      "prompt": "old rural railway tracks running through Mozambique savanna, weathered wooden sleepers and rusted rails, golden grass growing between, scattered acacia trees, warm late afternoon light, no trains no people, documentary photography, 8k"
+    },
+    {
+      "id": "caminho-28-estrada-palmares",
+      "category": "caminho",
+      "mood": [
+        "heranca",
+        "contemplativo"
+      ],
+      "prompt": "dirt road running between endless rows of coconut palm plantation in Zambezia Mozambique, long symmetrical perspective, warm afternoon light creating palm shadows across road, no buildings no people, cinematic photography, 8k"
+    },
+    {
+      "id": "caminho-29-cruzamento-mato",
+      "category": "caminho",
+      "mood": [
+        "misterio",
+        "contemplativo"
+      ],
+      "prompt": "crossroads of two red earth rural roads in Mozambique savanna, single lonely baobab at intersection, warm late afternoon light, vast open landscape around, dust lifted by imagined breeze, no buildings no people, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "caminho-30-estrada-queimada",
+      "category": "caminho",
+      "mood": [
+        "melancolia",
+        "recomeco"
+      ],
+      "prompt": "red earth rural road running through recently burned Mozambique savanna, blackened grass stubble on both sides, green fresh shoots already appearing, thin smoke in distance, warm afternoon light, no buildings no people, documentary photography, 8k"
     },
     {
       "id": "jardim-01-tunduru-baoba",
