@@ -146,6 +146,141 @@
       "prompt": "deep twilight over calm Indian Ocean, last amber glow fading on horizon, dark water reflecting deep blue sky, single bright star appearing, feeling of day surrendering to night, peaceful transition, Mozambique coast, cinematic photography, 8k"
     },
     {
+      "id": "mar2-01-tubarao-baleia",
+      "category": "mar2",
+      "mood": [
+        "misterio",
+        "poderoso"
+      ],
+      "prompt": "underwater photograph of massive whale shark swimming slowly through clear blue water, Tofo Mozambique, white spots pattern on grey body, small pilot fish swimming alongside, sunbeams penetrating from surface above, feeling of gentle giant, no people, hyperrealistic marine photography, 8k"
+    },
+    {
+      "id": "mar2-02-jubarte-salto",
+      "category": "mar2",
+      "mood": [
+        "libertacao",
+        "poderoso"
+      ],
+      "prompt": "humpback whale breaching out of Indian Ocean, massive body rising from water with spray, distant Mozambique coastline on horizon, warm morning light, feeling of raw ocean power, whale watching season in Mozambique Channel, wildlife photography, 8k"
+    },
+    {
+      "id": "mar2-03-jubarte-cauda",
+      "category": "mar2",
+      "mood": [
+        "ancestral",
+        "contemplativo"
+      ],
+      "prompt": "single humpback whale tail flukes rising above calm blue Indian Ocean surface, water cascading off tail, scattered droplets catching warm afternoon sun, empty sea around, no people, Mozambique Channel, wildlife photography, 8k"
+    },
+    {
+      "id": "mar2-04-golfinhos-grupo",
+      "category": "mar2",
+      "mood": [
+        "libertacao",
+        "conexao"
+      ],
+      "prompt": "pod of bottlenose dolphins leaping through clear turquoise water of Mozambique Indian Ocean, spray catching golden light, dolphins moving in unison, feeling of joyful freedom, no boats no people, wildlife photography, 8k"
+    },
+    {
+      "id": "mar2-05-manta-ray",
+      "category": "mar2",
+      "mood": [
+        "misterio",
+        "sensual"
+      ],
+      "prompt": "underwater photograph of large manta ray gliding through clear blue water near Tofo Mozambique, massive wings spread wide, small fish swimming below, sunbeams filtering from surface, feeling of graceful flight underwater, no people, hyperrealistic marine photography, 8k"
+    },
+    {
+      "id": "mar2-06-tartaruga-marinha",
+      "category": "mar2",
+      "mood": [
+        "ancestral",
+        "calma"
+      ],
+      "prompt": "green sea turtle swimming peacefully over Mozambique coral reef, shell illuminated by sunbeams, colorful tropical fish in background, sea grass below, feeling of ancient traveler, no people, underwater photography, 8k"
+    },
+    {
+      "id": "mar2-07-recife-vida",
+      "category": "mar2",
+      "mood": [
+        "conexao",
+        "vital"
+      ],
+      "prompt": "vibrant Mozambique coral reef teeming with life, diverse corals in orange purple and yellow, school of tropical fish swimming through, sunlight penetrating clear turquoise water, Bazaruto Archipelago, no people, hyperrealistic underwater photography, 8k"
+    },
+    {
+      "id": "mar2-08-peixe-palhaco",
+      "category": "mar2",
+      "mood": [
+        "conexao",
+        "sensual"
+      ],
+      "prompt": "close-up of orange and white clownfish swimming within purple sea anemone tentacles, clear blue Mozambique Indian Ocean water behind, dappled sunlight from surface, intimate macro underwater photography, 8k"
+    },
+    {
+      "id": "mar2-09-cardume",
+      "category": "mar2",
+      "mood": [
+        "conexao",
+        "expansivo"
+      ],
+      "prompt": "massive school of small silver fish forming swirling shape underwater in Mozambique Indian Ocean, fish moving in unison like single organism, sunbeams from surface, deep blue background, mesmerizing, no people, underwater photography, 8k"
+    },
+    {
+      "id": "mar2-10-polvo-coral",
+      "category": "mar2",
+      "mood": [
+        "misterio",
+        "calma"
+      ],
+      "prompt": "octopus resting on Mozambique coral reef, tentacles curled around coral, skin color patterns subtle and beautiful, clear blue water, natural colors, no people, intimate underwater macro photography, 8k"
+    },
+    {
+      "id": "mar2-11-pesca-rede",
+      "category": "mar2",
+      "mood": [
+        "ancestral",
+        "heranca"
+      ],
+      "prompt": "traditional fishing net being pulled from Indian Ocean onto white sand beach, wet net glistening with silver fish, morning light catching water droplets, no people visible only the net and rope tracks in sand, documentary Mozambique coast, 8k"
+    },
+    {
+      "id": "mar2-12-canoa-pescador",
+      "category": "mar2",
+      "mood": [
+        "solidao",
+        "heranca"
+      ],
+      "prompt": "traditional wooden dugout canoe floating alone on calm turquoise sea, weathered wooden paddle resting inside, fishing line over edge, warm morning light, distant Mozambique coastline, no people, documentary photography, 8k"
+    },
+    {
+      "id": "mar2-13-dhow-navega",
+      "category": "mar2",
+      "mood": [
+        "libertacao",
+        "expansivo"
+      ],
+      "prompt": "traditional Mozambican dhow sailing on deep blue Indian Ocean, large white lateen sail full with wind, wake trailing behind, dramatic cumulus clouds above, warm late afternoon light, no people visible only boat and sail, cinematic photography, 8k"
+    },
+    {
+      "id": "mar2-14-peixe-voador",
+      "category": "mar2",
+      "mood": [
+        "libertacao",
+        "misterio"
+      ],
+      "prompt": "flying fish leaping across surface of calm Mozambique Indian Ocean, silver fish mid-flight with wings spread, gentle wake behind, warm sunset light on water, empty horizon, wildlife photography, 8k"
+    },
+    {
+      "id": "mar2-15-moray-eel",
+      "category": "mar2",
+      "mood": [
+        "misterio",
+        "poderoso"
+      ],
+      "prompt": "moray eel peering from hole in Mozambique coral reef, dark green and yellow patterned skin, surrounding coral and small colorful fish, clear blue water, natural underwater light, no people, documentary photography, 8k"
+    },
+    {
       "id": "praia-01-tofo-sunrise",
       "category": "praia",
       "mood": [
@@ -324,6 +459,141 @@
         "recomeco"
       ],
       "prompt": "wide view of Nacala Bay Mozambique at sunrise, calm natural harbor with deep dark blue water, low rolling tropical green hills surrounding the bay with no cliffs, small fishing boats heading out in warm morning light, soft mist rising from water, northern Mozambique Nampula province, documentary wide angle photography, 8k"
+    },
+    {
+      "id": "praia2-01-bilene-lagoa",
+      "category": "praia2",
+      "mood": [
+        "calma",
+        "contemplativo"
+      ],
+      "prompt": "aerial view of Lagoa Uembje in Bilene Mozambique, large calm coastal lagoon with turquoise water separated from ocean by thin sandbar, lush green vegetation surrounding, warm afternoon light, no buildings, southern Mozambique Gaza province, drone photography, 8k"
+    },
+    {
+      "id": "praia2-02-xai-xai-dunas",
+      "category": "praia2",
+      "mood": [
+        "vasto",
+        "solidao"
+      ],
+      "prompt": "wide beach of Xai-Xai Mozambique with tall golden sand dunes rising behind, long empty shoreline stretching into distance, gentle Indian Ocean waves breaking, warm late afternoon light, no buildings, southern Mozambique Gaza, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "praia2-03-pomene-peninsula",
+      "category": "praia2",
+      "mood": [
+        "misterio",
+        "vasto"
+      ],
+      "prompt": "aerial view of Pomene peninsula in Inhambane Mozambique, thin sandy strip extending into turquoise Indian Ocean, mangrove estuary on one side and open ocean on other, warm golden hour light, no buildings, drone photography, 8k"
+    },
+    {
+      "id": "praia2-04-zavora-escondida",
+      "category": "praia2",
+      "mood": [
+        "solidao",
+        "calma"
+      ],
+      "prompt": "secluded Zavora beach in southern Mozambique, empty white sand between coconut palms and turquoise water, low grassy dunes, warm soft afternoon light, no buildings, feeling of hidden paradise, cinematic photography, 8k"
+    },
+    {
+      "id": "praia2-05-inhassoro-cocotal",
+      "category": "praia2",
+      "mood": [
+        "calma",
+        "heranca"
+      ],
+      "prompt": "dense coconut grove meeting white sand beach in Inhassoro Mozambique, many tall palm trunks creating natural colonnade, dappled afternoon light, turquoise ocean visible between trunks, no buildings, documentary photography, 8k"
+    },
+    {
+      "id": "praia2-06-vilankulo-costa",
+      "category": "praia2",
+      "mood": [
+        "calma",
+        "esperanca"
+      ],
+      "prompt": "long curved beach of Vilankulo Mozambique at low tide, vast wet sand reflecting sky, scattered dhows pulled onto beach in distance, warm morning light, gentle waves far out, no buildings visible, cinematic wide angle photography, 8k"
+    },
+    {
+      "id": "praia2-07-cocotal-denso",
+      "category": "praia2",
+      "mood": [
+        "ancestral",
+        "contemplativo"
+      ],
+      "prompt": "dense coconut palm grove typical of Inhambane Mozambique coast, hundreds of tall palm trunks viewed from within, warm afternoon light filtering through canopy creating dappled pattern on sandy ground, fallen coconuts, no buildings, cinematic photography, 8k"
+    },
+    {
+      "id": "praia2-08-redes-secar",
+      "category": "praia2",
+      "mood": [
+        "heranca",
+        "ancestral"
+      ],
+      "prompt": "traditional fishing nets stretched on wooden stakes drying on empty Mozambique beach, morning golden light catching net mesh, gentle ocean waves in background, no people, documentary photography, 8k"
+    },
+    {
+      "id": "praia2-09-caranguejo-fantasma",
+      "category": "praia2",
+      "mood": [
+        "solidao",
+        "misterio"
+      ],
+      "prompt": "small pale ghost crab on white Mozambique sand, tiny tracks radiating behind, extreme close-up, warm afternoon light creating long shadows in sand ripples, blurred ocean in background, macro wildlife photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "praia2-10-estrela-mar",
+      "category": "praia2",
+      "mood": [
+        "contemplativo",
+        "calma"
+      ],
+      "prompt": "orange starfish resting in shallow clear tide pool on Mozambique rocky shore, surrounding coral sand and small shells, warm afternoon light refracting through still water, macro nature photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "praia2-11-busios-areia",
+      "category": "praia2",
+      "mood": [
+        "heranca",
+        "contemplativo"
+      ],
+      "prompt": "collection of large beautiful conch shells arranged on white Mozambique sand, natural earth tones and spiral patterns, warm golden morning light, gentle wave foam nearby, no people, macro still life photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "praia2-12-peixe-secar",
+      "category": "praia2",
+      "mood": [
+        "heranca",
+        "ancestral"
+      ],
+      "prompt": "rows of small silver fish drying on raised wooden racks on empty Mozambique beach, warm afternoon sun, gentle sea breeze, ocean in background, no people, traditional coastal food preservation, documentary photography, shallow depth of field, 8k"
+    },
+    {
+      "id": "praia2-13-canoa-areal",
+      "category": "praia2",
+      "mood": [
+        "solidao",
+        "heranca"
+      ],
+      "prompt": "traditional wooden dugout canoe pulled onto empty Mozambique beach, weathered hull resting on white sand, single oar lying inside, warm late afternoon light casting long shadow, gentle waves in background, no people, documentary photography, 8k"
+    },
+    {
+      "id": "praia2-14-ourico-rocha",
+      "category": "praia2",
+      "mood": [
+        "misterio",
+        "vital"
+      ],
+      "prompt": "cluster of black sea urchins clinging to dark rocks in Mozambique tide pool, crystal clear shallow water above, spines visible in detail, warm afternoon light reflecting on water surface, macro underwater photography, 8k"
+    },
+    {
+      "id": "praia2-15-bilene-nenufa",
+      "category": "praia2",
+      "mood": [
+        "calma",
+        "contemplativo"
+      ],
+      "prompt": "still corner of Bilene lagoon in southern Mozambique, pink water lilies floating on dark calm water near reedy shore, dragonfly hovering above, soft morning light, lush green vegetation around, no buildings, macro nature photography, 8k"
     },
     {
       "id": "rio-01-forest",
@@ -1539,6 +1809,96 @@
         "conexao"
       ],
       "prompt": "massive tree roots exposed after erosion, intertwined with red African soil, warm afternoon light creating dramatic shadows, feeling of hidden foundations revealed, Mozambique forest floor, macro landscape photography, 8k"
+    },
+    {
+      "id": "terra-16-gurue-cha-terracos",
+      "category": "terra",
+      "mood": [
+        "contemplativo",
+        "vasto"
+      ],
+      "prompt": "rolling terraces of bright green tea plantation in Gurue Zambezia Mozambique, rows of tea bushes following mountain contours, misty highland morning, soft diffused light, no buildings no people, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "terra-17-gurue-vale-cha",
+      "category": "terra",
+      "mood": [
+        "vasto",
+        "esperanca"
+      ],
+      "prompt": "wide valley filled with tea plantations in Gurue Mozambique, sea of vibrant green tea bushes extending to distant mountains, warm morning light breaking through low clouds, red earth paths between fields, no buildings no people, epic highland landscape photography, 8k"
+    },
+    {
+      "id": "terra-18-gurue-aerea",
+      "category": "terra",
+      "mood": [
+        "expansivo",
+        "vasto"
+      ],
+      "prompt": "aerial view of Gurue tea fields Mozambique, patchwork of vibrant green tea plantations covering mountain slopes, thin red earth roads winding between fields, morning mist hovering in valleys, no buildings, drone photography, 8k"
+    },
+    {
+      "id": "terra-19-chimanimani",
+      "category": "terra",
+      "mood": [
+        "ancestral",
+        "poderoso"
+      ],
+      "prompt": "dramatic granite peaks of Chimanimani mountains Mozambique Manica province, rocky summits rising above lush green forested slopes, low clouds clinging to ridges, warm golden hour light, no buildings, epic landscape photography, 8k"
+    },
+    {
+      "id": "terra-20-namuli",
+      "category": "terra",
+      "mood": [
+        "sagrado",
+        "vasto"
+      ],
+      "prompt": "Monte Namuli dome in Zambezia Mozambique, massive granite inselberg rising from surrounding green plateau, warm afternoon light on smooth rock face, misty lowlands around, no buildings, sacred mountain presence, epic landscape photography, 8k"
+    },
+    {
+      "id": "terra-21-gorongosa-serra",
+      "category": "terra",
+      "mood": [
+        "heranca",
+        "vasto"
+      ],
+      "prompt": "Gorongosa mountain range rising above vast green plains of Sofala Mozambique, layered ridges in morning haze, warm soft light, scattered acacia trees on plains below, no buildings, cinematic landscape photography, 8k"
+    },
+    {
+      "id": "terra-22-machamba",
+      "category": "terra",
+      "mood": [
+        "heranca",
+        "ancestral"
+      ],
+      "prompt": "traditional rural machamba smallholder farm in Mozambique interior, neat rows of maize and cassava growing in rich red earth, scattered banana trees at edges, warm late afternoon light, simple wooden fence, no buildings no people, documentary photography, 8k"
+    },
+    {
+      "id": "terra-23-campo-mandioca",
+      "category": "terra",
+      "mood": [
+        "vital",
+        "heranca"
+      ],
+      "prompt": "rows of cassava plants growing in red Mozambique soil, large lobed leaves catching warm afternoon sunlight, rural field extending into distance, scattered baobab on horizon, no buildings no people, documentary agricultural photography, 8k"
+    },
+    {
+      "id": "terra-24-campo-sorgo",
+      "category": "terra",
+      "mood": [
+        "recomeco",
+        "heranca"
+      ],
+      "prompt": "field of ripe golden sorghum swaying in gentle breeze in rural Mozambique, heavy seed heads bending stalks, warm golden afternoon light, distant acacia trees on horizon, no buildings no people, cinematic agricultural photography, 8k"
+    },
+    {
+      "id": "terra-25-queimada",
+      "category": "terra",
+      "mood": [
+        "melancolia",
+        "ancestral"
+      ],
+      "prompt": "recently burned savanna field in Mozambique interior, blackened earth with scattered charred grass stubble, thin smoke still rising in distance, green fresh shoots already emerging from ground, warm afternoon light, no buildings no people, documentary photography, 8k"
     },
     {
       "id": "noite-01-estrelas-baoba",
