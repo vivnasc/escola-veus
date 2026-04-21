@@ -66,6 +66,9 @@ export default function FunilMontarPage() {
   const [srtGenerating, setSrtGenerating] = useState(false);
   const [srtUrl, setSrtUrl] = useState<string | null>(null);
   const [srtErr, setSrtErr] = useState<string | null>(null);
+  const [thumbGenerating, setThumbGenerating] = useState(false);
+  const [thumbUrl, setThumbUrl] = useState<string | null>(null);
+  const [thumbErr, setThumbErr] = useState<string | null>(null);
 
   // ── Load assets on mount ──────────────────────────────────────────────
   useEffect(() => {
@@ -116,6 +119,8 @@ export default function FunilMontarPage() {
     setProgress(null);
     setSrtUrl(null);
     setSrtErr(null);
+    setThumbUrl(null);
+    setThumbErr(null);
   }, [epNarration, epClips]);
 
   // Auto-pick single first track (one track covers full funnel video duration)
@@ -482,6 +487,58 @@ export default function FunilMontarPage() {
             >
               abrir URL ↗
             </a>
+          </div>
+        )}
+      </section>
+
+      {/* ── 6. Thumbnail YouTube ─────────────────────────────────── */}
+      <section className="mt-4 rounded-xl border border-escola-border bg-escola-card p-4">
+        <h3 className="mb-2 text-sm text-escola-creme">6. Thumbnail YouTube</h3>
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Composta a partir da mandala + título do episódio. Upload depois no YouTube Studio.
+        </p>
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <button
+            onClick={async () => {
+              setThumbGenerating(true);
+              setThumbErr(null);
+              setThumbUrl(null);
+              try {
+                const titulo = ep.label.includes("—") ? ep.label.split("—").slice(1).join("—").trim() : ep.label;
+                const r = await fetch("/api/admin/funil/generate-thumbnail", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ titulo, epKey: ep.key, filename: ep.key }),
+                });
+                const d = await r.json();
+                if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+                setThumbUrl(d.url);
+              } catch (e) {
+                setThumbErr(e instanceof Error ? e.message : String(e));
+              } finally {
+                setThumbGenerating(false);
+              }
+            }}
+            disabled={thumbGenerating}
+            className="rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40 disabled:opacity-50"
+          >
+            {thumbGenerating ? "A gerar..." : "Gerar thumbnail"}
+          </button>
+          {thumbUrl && (
+            <a
+              href={thumbUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado hover:bg-escola-dourado/20"
+            >
+              ✓ abrir / descarregar PNG
+            </a>
+          )}
+          {thumbErr && <span className="text-escola-terracota">{thumbErr}</span>}
+        </div>
+        {thumbUrl && (
+          <div className="mt-3">
+            <img src={thumbUrl} alt="Thumbnail" className="w-full max-w-2xl rounded border border-escola-border" />
           </div>
         )}
       </section>
