@@ -190,35 +190,63 @@ async function main() {
     // nature clips. DejaVu Serif Bold vem de base no runner Ubuntu.
     let vfilter = `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=${fps},format=yuv420p`;
     if (introText && introText.trim()) {
-      // Escape do texto para FFmpeg: dois-pontos e plicas precisam de escape.
+      // Escape mínimo: só ':' e "'". Evitamos expressão complexa de alpha
+      // (que partia o filter parser); usamos enable= + fontcolor@opacity
+      // para simplicidade e robustez. Hard cut-in at 1s, hard cut-out 0.5s
+      // antes do fim do intro.
       const safeText = introText
-        .replace(/\\/g, "\\\\")
-        .replace(/:/g, "\\:")
-        .replace(/'/g, "\\'");
-      const fadeIn = 1.0; // começa a aparecer
-      const fullAt = 2.0; // totalmente visível
-      const fadeStart = Math.max(fullAt + 0.5, introDuration - 1.0);
-      const fadeEnd = Math.max(fadeStart + 0.5, introDuration - 0.2);
-      // alpha expression: 0 antes de fadeIn, sobe linearmente até fullAt,
-      // fica a 1, depois desce entre fadeStart → fadeEnd.
-      const alpha = `if(lt(t\\,${fadeIn})\\,0\\,if(lt(t\\,${fullAt})\\,(t-${fadeIn})/(${fullAt}-${fadeIn})\\,if(lt(t\\,${fadeStart})\\,1\\,if(lt(t\\,${fadeEnd})\\,1-(t-${fadeStart})/(${fadeEnd}-${fadeStart})\\,0))))`;
-      vfilter += `,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf:text='${safeText}':fontsize=54:fontcolor=white:alpha='${alpha}':x=(w-text_w)/2:y=h*0.82`;
+        .replace(/'/g, "\\'")
+        .replace(/:/g, "\\:");
+      const showFrom = 1.0;
+      const showUntil = Math.max(showFrom + 1.5, introDuration - 0.5);
+      vfilter +=
+        `,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf` +
+        `:text='${safeText}'` +
+        `:fontsize=54` +
+        `:fontcolor=white@0.92` +
+        `:x=(w-text_w)/2` +
+        `:y=h*0.82` +
+        `:enable='between(t\\,${showFrom}\\,${showUntil})'`;
     }
 
-    await runFfmpeg([
-      "-y",
-      "-i", rawIntro,
-      "-t", String(introDuration),
-      "-vf", vfilter,
-      "-c:v", "libx264",
-      "-preset", "veryfast",
-      "-crf", "18",
-      "-pix_fmt", "yuv420p",
-      "-r", String(fps),
-      "-an",
-      "-movflags", "+faststart",
-      introPath,
-    ], "intro-normalize");
+    try {
+      await runFfmpeg([
+        "-y",
+        "-i", rawIntro,
+        "-t", String(introDuration),
+        "-vf", vfilter,
+        "-c:v", "libx264",
+        "-preset", "veryfast",
+        "-crf", "18",
+        "-pix_fmt", "yuv420p",
+        "-r", String(fps),
+        "-an",
+        "-movflags", "+faststart",
+        introPath,
+      ], "intro-normalize");
+    } catch (err) {
+      // Se o drawtext falhar (font missing, filter parser issue, etc.),
+      // tenta de novo sem texto — melhor ter intro sem texto do que nada.
+      if (introText && introText.trim()) {
+        console.warn(`Intro drawtext falhou (${err?.message || err}); a re-tentar SEM texto.`);
+        await runFfmpeg([
+          "-y",
+          "-i", rawIntro,
+          "-t", String(introDuration),
+          "-vf", `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=${fps},format=yuv420p`,
+          "-c:v", "libx264",
+          "-preset", "veryfast",
+          "-crf", "18",
+          "-pix_fmt", "yuv420p",
+          "-r", String(fps),
+          "-an",
+          "-movflags", "+faststart",
+          introPath,
+        ], "intro-normalize-notext");
+      } else {
+        throw err;
+      }
+    }
   }
 
   await writeResult(jobId, { status: "running", phase: "base-sequence", progress: 25 });
