@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import runwayMotionPrompts from "@/data/runway-motion-prompts.json";
+
+const MOTION_PROMPTS = runwayMotionPrompts as Record<string, string>;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -36,25 +39,32 @@ type ShortsState = {
   album: string;
   trackUrl: string;
   trackName: string;
-  lyrics: string;
   theme: string;
   verses: [string, string];
+  candidates: string[];
+  albumTitle: string;
+  trackTitle: string;
   tiktokCaption: string;
   youtubeTitle: string;
   youtubeDescription: string;
+  thumbSlotIndex: number;
+  thumbText: string;
+  thumbnailUrl: string;
 };
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const DEFAULT_MOTION =
-  "slow vertical camera lift, cinematic, gentle parallax, soft breathing motion";
 const CLIP_DURATION = 10;
 const NUM_SLOTS = 3;
+
+function motionForPromptId(promptId: string): string {
+  return MOTION_PROMPTS[promptId] || "";
+}
 
 const EMPTY_SLOT: SlotState = {
   imageUrl: "",
   promptId: "",
-  motionPrompt: DEFAULT_MOTION,
+  motionPrompt: "",
   clipUrl: "",
   generating: false,
   error: "",
@@ -66,12 +76,17 @@ const EMPTY_STATE: ShortsState = {
   album: "",
   trackUrl: "",
   trackName: "",
-  lyrics: "",
   theme: "",
   verses: ["", ""],
+  candidates: [],
+  albumTitle: "",
+  trackTitle: "",
   tiktokCaption: "",
   youtubeTitle: "",
   youtubeDescription: "",
+  thumbSlotIndex: 0,
+  thumbText: "",
+  thumbnailUrl: "",
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -105,6 +120,9 @@ export default function ShortsPage() {
   const [loadingTracks, setLoadingTracks] = useState(false);
 
   const [suggesting, setSuggesting] = useState(false);
+
+  const [thumbnailing, setThumbnailing] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState<string | null>(null);
 
   const [rendering, setRendering] = useState(false);
   const [renderProgress, setRenderProgress] = useState(0);
@@ -212,9 +230,14 @@ export default function ShortsPage() {
   };
 
   const setSlotImage = (slotIdx: number, image: ImageItem) => {
+    const existing = state.slots[slotIdx].motionPrompt;
+    const fromLibrary = motionForPromptId(image.promptId);
     updateSlot(slotIdx, {
       imageUrl: image.url,
       promptId: image.promptId,
+      // prefer the exact motion prompt from the YouTube library;
+      // only keep the user's edit if the slot already had the same imageUrl
+      motionPrompt: fromLibrary || existing,
       clipUrl: "",
       error: "",
     });
@@ -232,12 +255,18 @@ export default function ShortsPage() {
 
     updateSlot(slotIdx, { generating: true, error: "", clipUrl: "" });
     try {
+      const motionPrompt = slot.motionPrompt || motionForPromptId(slot.promptId);
+      if (!motionPrompt.trim()) {
+        throw new Error(
+          "Sem motion prompt para esta imagem — acrescenta um prompt ao runway-motion-prompts.json ou escreve na caixa.",
+        );
+      }
       const res = await fetch("/api/admin/shorts/animate-one", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           imageUrl: slot.imageUrl,
-          motionPrompt: slot.motionPrompt || DEFAULT_MOTION,
+          motionPrompt,
           label: slot.promptId,
           durationSec: CLIP_DURATION,
         }),
@@ -258,8 +287,8 @@ export default function ShortsPage() {
   // ── Suggest verses + captions ───────────────────────────────────────────────
 
   const suggest = async () => {
-    if (!state.lyrics.trim()) {
-      alert("Cola as letras primeiro.");
+    if (!state.album || !state.trackName) {
+      alert("Escolhe álbum e faixa primeiro.");
       return;
     }
     setSuggesting(true);
@@ -268,15 +297,18 @@ export default function ShortsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          albumSlug: state.album,
           trackName: state.trackName,
-          lyrics: state.lyrics,
           theme: state.theme,
         }),
       });
       const data = await res.json();
       if (data.erro) throw new Error(data.erro);
       updateState({
-        verses: [data.verses[0] || "", data.verses[1] || ""],
+        verses: [data.verses?.[0] || "", data.verses?.[1] || ""],
+        candidates: Array.isArray(data.candidates) ? data.candidates : [],
+        albumTitle: data.albumTitle || "",
+        trackTitle: data.trackTitle || "",
         tiktokCaption: data.tiktokCaption || "",
         youtubeTitle: data.youtubeTitle || "",
         youtubeDescription: data.youtubeDescription || "",
@@ -285,6 +317,37 @@ export default function ShortsPage() {
       alert(`Erro: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setSuggesting(false);
+    }
+  };
+
+  // ── Generate thumbnail (Shotstack JPG) ──────────────────────────────────────
+
+  const generateThumbnail = async () => {
+    const slot = state.slots[state.thumbSlotIndex];
+    if (!slot?.imageUrl) {
+      alert("Escolhe um slot com imagem primeiro.");
+      return;
+    }
+    setThumbnailing(true);
+    setThumbnailError(null);
+    try {
+      const text = state.thumbText.trim() || state.verses[0] || "";
+      const res = await fetch("/api/admin/shorts/render-thumbnail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageUrl: slot.imageUrl,
+          text,
+          title: state.title || state.trackName.replace(/\.[^.]+$/, "") || slot.promptId,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.erro) throw new Error(data.erro || `HTTP ${res.status}`);
+      updateState({ thumbnailUrl: data.url });
+    } catch (err) {
+      setThumbnailError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setThumbnailing(false);
     }
   };
 
@@ -508,9 +571,18 @@ export default function ShortsPage() {
                   updateSlot(i, { motionPrompt: e.target.value })
                 }
                 rows={3}
-                placeholder={DEFAULT_MOTION}
+                placeholder={
+                  slot.promptId
+                    ? "Sem motion prompt para este id em runway-motion-prompts.json"
+                    : "Escolhe imagem primeiro — motion prompt vem da biblioteca YouTube"
+                }
                 className="w-full rounded border border-escola-border bg-escola-bg-card px-2 py-1 text-xs text-escola-creme"
               />
+              {slot.imageUrl && !motionForPromptId(slot.promptId) && !slot.motionPrompt && (
+                <p className="text-[10px] text-amber-300">
+                  Sem motion prompt definido para <code>{slot.promptId}</code>.
+                </p>
+              )}
               <button
                 onClick={() => animateSlot(i)}
                 disabled={!slot.imageUrl || slot.generating}
@@ -620,45 +692,79 @@ export default function ShortsPage() {
         )}
       </section>
 
-      {/* ── 4. LETRAS + VERSOS FORTES ── */}
+      {/* ── 4. FRASES INSPIRADORAS (letra Loranne) ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          4. Letras · versos fortes
+          4. Frases inspiradoras · baseadas na letra
         </h3>
 
-        <label className="mb-1 block text-xs text-escola-creme-50">
-          Cola a letra da faixa (uma linha por verso).
-        </label>
-        <textarea
-          value={state.lyrics}
-          onChange={(e) => updateState({ lyrics: e.target.value })}
-          rows={8}
-          placeholder={"Linha 1\nLinha 2\nLinha 3\n..."}
-          className="mb-2 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme"
-        />
+        {state.trackTitle ? (
+          <p className="mb-3 text-xs text-escola-creme-50">
+            <span className="text-escola-creme">{state.trackTitle}</span>
+            {state.albumTitle ? ` · ${state.albumTitle}` : ""}
+          </p>
+        ) : (
+          <p className="mb-3 text-xs text-escola-creme-50">
+            Clica em &quot;Sugerir&quot; para extrair da letra da faixa escolhida em #3.
+          </p>
+        )}
 
         <div className="mb-3 flex items-center gap-2">
           <input
             type="text"
             value={state.theme}
             onChange={(e) => updateState({ theme: e.target.value })}
-            placeholder="Tema (opcional · ex: véus, coragem)"
+            placeholder="Tema (opcional · ex: véus, coragem, raiz)"
             className="flex-1 rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme"
           />
           <button
             onClick={suggest}
-            disabled={suggesting || !state.lyrics.trim()}
+            disabled={suggesting || !state.album || !state.trackName}
             className="rounded bg-escola-coral px-4 py-1.5 text-xs font-semibold text-white disabled:opacity-30"
           >
-            {suggesting ? "..." : "Sugerir 2 versos + legendas"}
+            {suggesting ? "..." : "Sugerir frases + legendas"}
           </button>
         </div>
+
+        {state.candidates.length > 0 && (
+          <details className="mb-3 rounded border border-escola-border bg-escola-bg px-3 py-2">
+            <summary className="cursor-pointer text-[10px] uppercase tracking-wider text-escola-creme-50">
+              Outras candidatas extraídas ({state.candidates.length})
+            </summary>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {state.candidates.map((c, i) => (
+                <div
+                  key={`${i}-${c}`}
+                  className="group flex items-stretch overflow-hidden rounded border border-escola-border bg-escola-bg-card"
+                >
+                  <span className="max-w-[400px] truncate px-2 py-1 text-xs text-escola-creme">
+                    {c}
+                  </span>
+                  <button
+                    onClick={() => updateState({ verses: [c, state.verses[1]] })}
+                    className="border-l border-escola-border px-2 py-1 text-[10px] text-escola-coral hover:bg-escola-border/30"
+                    title="Enviar para Frase 1"
+                  >
+                    → 1
+                  </button>
+                  <button
+                    onClick={() => updateState({ verses: [state.verses[0], c] })}
+                    className="border-l border-escola-border px-2 py-1 text-[10px] text-escola-coral hover:bg-escola-border/30"
+                    title="Enviar para Frase 2"
+                  >
+                    → 2
+                  </button>
+                </div>
+              ))}
+            </div>
+          </details>
+        )}
 
         <div className="grid gap-2 sm:grid-cols-2">
           {[0, 1].map((i) => (
             <div key={i}>
               <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
-                Verso {i + 1} (overlay do clip {i === 0 ? "1" : "3"})
+                Frase {i + 1} (overlay do clip {i === 0 ? "1" : "3"})
               </label>
               <textarea
                 value={state.verses[i]}
@@ -775,6 +881,110 @@ export default function ShortsPage() {
             Precisas dos 3 clips Runway gerados + 1 faixa escolhida.
           </p>
         )}
+      </section>
+
+      {/* ── 7. THUMBNAIL ── */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          7. Thumbnail · capa 9:16 (TikTok cover · YouTube Shorts)
+        </h3>
+
+        <div className="mb-3">
+          <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Imagem base
+          </label>
+          <div className="flex gap-2">
+            {state.slots.map((slot, i) => {
+              const selected = state.thumbSlotIndex === i;
+              return (
+                <button
+                  key={i}
+                  onClick={() => updateState({ thumbSlotIndex: i, thumbnailUrl: "" })}
+                  disabled={!slot.imageUrl}
+                  className={`relative aspect-[9/16] w-20 overflow-hidden rounded border transition-colors disabled:opacity-30 ${
+                    selected
+                      ? "border-escola-coral ring-2 ring-escola-coral"
+                      : "border-escola-border hover:border-escola-coral"
+                  }`}
+                >
+                  {slot.imageUrl ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={slot.imageUrl} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-xs text-escola-creme-50">
+                      #{i + 1}
+                    </div>
+                  )}
+                  <span className="absolute left-1 top-1 rounded bg-black/70 px-1.5 text-xs font-bold text-white">
+                    {i + 1}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mb-3">
+          <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Texto (opcional · default = verso 1)
+          </label>
+          <textarea
+            value={state.thumbText}
+            onChange={(e) => updateState({ thumbText: e.target.value })}
+            rows={2}
+            placeholder={state.verses[0] || "Sem verso 1 — gera as legendas em #4 ou escreve aqui"}
+            className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+          />
+        </div>
+
+        {thumbnailError && (
+          <div className="mb-3 rounded bg-red-950/50 p-2 text-xs text-red-300">
+            Erro: {thumbnailError}
+          </div>
+        )}
+
+        {state.thumbnailUrl && (
+          <div className="mb-3 space-y-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={state.thumbnailUrl}
+              alt="thumbnail"
+              className="mx-auto aspect-[9/16] max-w-[200px] rounded border border-escola-border"
+            />
+            <div className="flex gap-2">
+              <a
+                href={state.thumbnailUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white"
+              >
+                Descarregar JPG
+              </a>
+              <button
+                onClick={() => copyToClipboard(state.thumbnailUrl)}
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-border/30"
+              >
+                Copiar URL
+              </button>
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={generateThumbnail}
+          disabled={thumbnailing || !state.slots[state.thumbSlotIndex]?.imageUrl}
+          className="rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white disabled:opacity-30"
+        >
+          {thumbnailing
+            ? "A gerar thumbnail..."
+            : state.thumbnailUrl
+              ? "Regenerar thumbnail"
+              : "Gerar thumbnail"}
+        </button>
+        <p className="mt-2 text-xs text-escola-creme-50">
+          Render via Shotstack (~10–20s). 1080×1920 JPG guardado em <code>shorts/thumbs/</code>.
+        </p>
       </section>
     </div>
   );
