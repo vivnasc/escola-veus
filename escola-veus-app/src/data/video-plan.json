@@ -50,5 +50,8 @@
   { "id": "video-49", "titulo": "Fogueira na Praia", "categorias": ["fogo", "praia"], "prompts": 6, "variacoes": 9 },
   { "id": "video-50", "titulo": "Jornada Completa", "categorias": ["caminho", "terra", "ceu", "mar"], "prompts": 12, "variacoes": 5 },
   { "id": "video-51", "titulo": "Jardins de Mocambique", "categorias": ["jardim"], "prompts": 15, "variacoes": 4 },
-  { "id": "video-52", "titulo": "Jardins e Flores", "categorias": ["jardim", "flora"], "prompts": 15, "variacoes": 4 }
+  { "id": "video-52", "titulo": "Jardins e Flores", "categorias": ["jardim", "flora"], "prompts": 15, "variacoes": 4 },
+  { "id": "video-53", "titulo": "Fauna do Indico", "categorias": ["mar2"], "prompts": 15, "variacoes": 4 },
+  { "id": "video-54", "titulo": "Praias do Sul", "categorias": ["praia2"], "prompts": 15, "variacoes": 4 },
+  { "id": "video-55", "titulo": "Gurue e Montanhas", "categorias": ["terra"], "prompts": 15, "variacoes": 4 }
 ]
