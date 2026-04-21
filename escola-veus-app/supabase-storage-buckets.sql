@@ -7,7 +7,8 @@
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES
   ('escola-videos', 'escola-videos', true, 524288000, ARRAY['video/mp4', 'video/webm', 'video/quicktime']),
-  ('escola-workbooks', 'escola-workbooks', true, 10485760, ARRAY['application/pdf'])
+  ('escola-workbooks', 'escola-workbooks', true, 10485760, ARRAY['application/pdf']),
+  ('escola-shorts', 'escola-shorts', true, 209715200, ARRAY['video/mp4', 'image/jpeg', 'image/png'])
 ON CONFLICT (id) DO NOTHING;
 
 -- 2. Policies para escola-videos
@@ -84,6 +85,47 @@ CREATE POLICY "escola-workbooks: admin delete"
   ON storage.objects FOR DELETE
   USING (
     bucket_id = 'escola-workbooks'
+    AND EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid() AND is_admin = true
+    )
+  );
+
+-- 4. Policies para escola-shorts
+-- Conteudo: clips Runway + shorts finais + thumbnails (pasta separada de cursos)
+
+-- Qualquer pessoa pode ver (publico — precisa de ser partilhavel para TikTok/IG)
+CREATE POLICY "escola-shorts: public read"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'escola-shorts');
+
+-- Apenas admins podem fazer upload
+CREATE POLICY "escola-shorts: admin insert"
+  ON storage.objects FOR INSERT
+  WITH CHECK (
+    bucket_id = 'escola-shorts'
+    AND EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid() AND is_admin = true
+    )
+  );
+
+-- Apenas admins podem actualizar
+CREATE POLICY "escola-shorts: admin update"
+  ON storage.objects FOR UPDATE
+  USING (
+    bucket_id = 'escola-shorts'
+    AND EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid() AND is_admin = true
+    )
+  );
+
+-- Apenas admins podem apagar
+CREATE POLICY "escola-shorts: admin delete"
+  ON storage.objects FOR DELETE
+  USING (
+    bucket_id = 'escola-shorts'
     AND EXISTS (
       SELECT 1 FROM public.profiles
       WHERE id = auth.uid() AND is_admin = true

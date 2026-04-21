@@ -1111,7 +1111,7 @@ export default function ShortsPage() {
               : "Gerar thumbnail"}
         </button>
         <p className="mt-2 text-xs text-escola-creme-50">
-          Render via Shotstack (~10–20s). 1080×1920 JPG guardado em <code>shorts/thumbs/</code>.
+          Render via Shotstack (~10–20s). 1080×1920 JPG guardado no bucket <code>escola-shorts/thumbs/</code>.
         </p>
       </section>
 

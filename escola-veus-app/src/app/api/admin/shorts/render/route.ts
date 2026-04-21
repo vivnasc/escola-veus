@@ -217,7 +217,7 @@ export async function POST(req: NextRequest) {
           const videoUrl = statusData.response?.url;
           if (!videoUrl) throw new Error("Shotstack nao devolveu URL.");
 
-          // Save to Supabase shorts/videos/
+          // Save to Supabase bucket `escola-shorts`, pasta `videos/`
           const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
           const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
           let finalUrl = videoUrl;
@@ -235,16 +235,16 @@ export async function POST(req: NextRequest) {
                   .toLowerCase()
                   .replace(/[^a-z0-9]+/g, "-")
                   .slice(0, 50) || "short";
-                const filePath = `shorts/videos/${slug}-${Date.now()}.mp4`;
+                const filePath = `videos/${slug}-${Date.now()}.mp4`;
                 const buf = new Uint8Array(await videoRes.arrayBuffer());
                 const { error } = await supabase.storage
-                  .from("course-assets")
+                  .from("escola-shorts")
                   .upload(filePath, buf, {
                     contentType: "video/mp4",
                     upsert: true,
                   });
                 if (!error) {
-                  finalUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
+                  finalUrl = `${supabaseUrl}/storage/v1/object/public/escola-shorts/${filePath}`;
                 }
               }
             } catch { /* fallback to shotstack URL */ }
