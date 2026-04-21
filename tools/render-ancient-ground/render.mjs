@@ -245,20 +245,25 @@ async function main() {
 
   if (wantFade) {
     // Re-encode com fade de vídeo para preto.
+    // Preset veryfast + CRF 21 em vez de medium + CRF 23: 2-3x mais rápido
+    // (1h re-encoda em ~25-35min em vez de 1-2h) com qualidade visualmente
+    // equivalente para nature ambient. Maxrate 5M + bufsize 10M dá headroom
+    // às zonas xfade (complexas) para não haver artifacts de baixo bitrate
+    // nas junções — era o que estava a causar o "piscar" de volta.
     await runFfmpeg([
       "-y",
       "-stream_loop", "-1", "-i", baseOut,
       "-stream_loop", "-1", "-i", musicInput,
       "-filter_complex",
-      `[0:v]fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout];${audioFilter}`,
+      `[0:v]fade=t=in:st=0:d=1,fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout];${audioFilter}`,
       "-map", "[vout]",
       "-map", "[music]",
       "-t", String(targetDuration),
       "-c:v", "libx264",
-      "-preset", "medium",
-      "-crf", "23",
-      "-maxrate", "4M",
-      "-bufsize", "8M",
+      "-preset", "veryfast",
+      "-crf", "21",
+      "-maxrate", "5M",
+      "-bufsize", "10M",
       "-pix_fmt", "yuv420p",
       "-r", String(fps),
       "-c:a", "aac",
