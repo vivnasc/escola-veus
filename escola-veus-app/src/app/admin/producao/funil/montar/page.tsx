@@ -44,6 +44,8 @@ const EPISODES = [
   { key: "ep10", slug: "nomear-ep10", label: "ep10 — A liberdade" },
 ] as const;
 
+const supabasePublicUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+
 export default function FunilMontarPage() {
   const [epKey, setEpKey] = useState<(typeof EPISODES)[number]["key"]>("trailer");
   const ep = EPISODES.find((e) => e.key === epKey)!;
@@ -390,6 +392,40 @@ export default function FunilMontarPage() {
         </p>
       </section>
 
+      {/* ── Preview timeline ─────────────────────────────────────── */}
+      <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+        <h3 className="mb-2 text-sm text-escola-creme">Preview — ordem de montagem</h3>
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Intro e outro com mandala + texto brand são adicionados automaticamente no render.
+        </p>
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          <BrandCard
+            label="Intro · 5s"
+            sublabel="A ESCOLA DOS VÉUS"
+            src={`${supabasePublicUrl}/storage/v1/object/public/course-assets/youtube/brand/intro.mp4`}
+          />
+          {clipOrder.map((url, i) => {
+            const name = allClips.find((c) => c.url === url)?.name ?? "?";
+            return (
+              <div key={url} className="shrink-0 overflow-hidden rounded border border-escola-border">
+                <video src={url} className="h-[90px] w-40 object-cover" muted />
+                <p className="truncate border-t border-escola-border bg-escola-bg px-1.5 py-0.5 text-[9px] text-escola-creme-50">
+                  {i + 1}. {name.replace(/\.mp4$/, "").replace(/^nomear-\w+-\d+-/, "")}
+                </p>
+              </div>
+            );
+          })}
+          <BrandCard
+            label="Outro · 5s"
+            sublabel="A ESCOLA DOS VÉUS · seteveus.space"
+            src={`${supabasePublicUrl}/storage/v1/object/public/course-assets/youtube/brand/intro.mp4`}
+          />
+        </div>
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          Total estimado: ~{5 + clipOrder.length * 9.5 + 5}s (intro 5s + {clipOrder.length} clips × ~9.5s + outro 5s)
+        </p>
+      </section>
+
       {/* ── 4. Clips ─────────────────────────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
         <h3 className="mb-2 text-sm text-escola-creme">4. Clips ({clipOrder.length})</h3>
@@ -542,6 +578,33 @@ export default function FunilMontarPage() {
           </div>
         )}
       </section>
+    </div>
+  );
+}
+
+function BrandCard({
+  label,
+  sublabel,
+  src,
+}: {
+  label: string;
+  sublabel: string;
+  src: string;
+}) {
+  return (
+    <div className="shrink-0 overflow-hidden rounded border-2 border-escola-dourado/40 bg-escola-bg">
+      <video
+        src={src}
+        className="h-[90px] w-40 object-cover"
+        muted
+        loop
+        autoPlay
+        playsInline
+      />
+      <div className="border-t border-escola-dourado/40 bg-escola-dourado/5 px-1.5 py-0.5">
+        <p className="truncate text-[9px] font-semibold text-escola-dourado">{label}</p>
+        <p className="truncate text-[8px] text-escola-creme-50">{sublabel}</p>
+      </div>
     </div>
   );
 }
