@@ -684,7 +684,7 @@ export default function AudioBulkPage() {
                     <button
                       onClick={() => removeScript(script.id)}
                       className="text-[10px] text-escola-creme-50 hover:text-escola-terracota shrink-0"
-                      title="Remover"
+                      title="Esconder da lista (não apaga o ficheiro do Supabase)"
                     >
                       ✕
                     </button>

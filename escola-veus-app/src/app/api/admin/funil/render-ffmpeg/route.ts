@@ -137,7 +137,7 @@ export async function POST(req: NextRequest) {
       const videoFilters: string[] = [];
       let prev = "0:v";
       for (let i = 1; i < clips.length; i++) {
-        const out = i === clips.length - 1 ? "vout" : `v${i}`;
+        const out = i === clips.length - 1 ? "vconcat" : `v${i}`;
         const offset = i * stride;
         videoFilters.push(
           `[${prev}][${i}:v]xfade=transition=fade:duration=${OVERLAP}:offset=${offset.toFixed(2)}[${out}]`,
@@ -145,8 +145,15 @@ export async function POST(req: NextRequest) {
         prev = out;
       }
       if (clips.length === 1) {
-        videoFilters.push(`[0:v]copy[vout]`);
+        videoFilters.push(`[0:v]copy[vconcat]`);
       }
+
+      // Add fade in from black (1s) at start + fade to black (2s) at end for produced feel
+      const FADE_IN = 1.0;
+      const FADE_OUT = 2.0;
+      videoFilters.push(
+        `[vconcat]fade=t=in:st=0:d=${FADE_IN},fade=t=out:st=${(totalDuration - FADE_OUT).toFixed(2)}:d=${FADE_OUT}[vout]`,
+      );
 
       // Audio indices: narration = clips.length, music[0..] = clips.length+1..
       const narrationIdx = clips.length;
@@ -158,11 +165,16 @@ export async function POST(req: NextRequest) {
         ? `${musicInputs}concat=n=${musicPaths.length}:v=0:a=1[musicraw]`
         : `[${musicStartIdx}:a]acopy[musicraw]`;
 
-      // Loop music to cover total duration, trim to total, apply volume, duck under narration
+      // Loop music + volume + duck + fade out; narration fade in + duck-key split;
+      // final mix has fade in/out for produced feel
+      const NARR_FADE_IN = 0.5;
+      const MUSIC_FADE_IN = 2.0;
+      const MUSIC_FADE_OUT = 3.0;
       const audioFilter = [
         musicConcat,
-        `[musicraw]aloop=loop=-1:size=2e+09,atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume}[musicvol]`,
-        `[${narrationIdx}:a]asplit=2[narr1][narr2]`,
+        `[musicraw]aloop=loop=-1:size=2e+09,atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=${MUSIC_FADE_IN},afade=t=out:st=${(totalDuration - MUSIC_FADE_OUT).toFixed(2)}:d=${MUSIC_FADE_OUT}[musicvol]`,
+        `[${narrationIdx}:a]afade=t=in:st=0:d=${NARR_FADE_IN}[narrfaded]`,
+        `[narrfaded]asplit=2[narr1][narr2]`,
         `[musicvol][narr1]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[musicduck]`,
         `[narr2][musicduck]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]`,
       ].join(";");

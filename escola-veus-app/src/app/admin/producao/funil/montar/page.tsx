@@ -4,6 +4,26 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 
+// Slug algorithm matching /api/admin/audio-bulk/generate-one/route.ts filename logic.
+// audio-bulk saves ElevenLabs audio as `${slug-of-title}-${timestamp}.mp3`.
+function titleToSlug(title: string): string {
+  return (title || "audio")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+function findScriptById(id: string): { titulo: string } | null {
+  for (const preset of NOMEAR_PRESETS) {
+    const hit = preset.scripts.find((s) => s.id === id);
+    if (hit) return hit;
+  }
+  return null;
+}
+
 type Clip = { name: string; url: string };
 type Track = { name: string; url: string; sizeMB?: number };
 type Audio = { name: string; url: string };
@@ -74,10 +94,13 @@ export default function FunilMontarPage() {
   }, [allClips, epKey]);
 
   const epNarration = useMemo(() => {
-    // Nomear audio filename format: "<script-id>-<timestamp>.mp3"
-    const prefix = `${ep.slug}-`;
+    // audio-bulk saves with filename = `${slug-of-title}-${timestamp}.mp3`
+    const script = findScriptById(ep.slug);
+    if (!script) return null;
+    const titleSlug = titleToSlug(script.titulo);
+    const prefix = `${titleSlug}-`;
     const matches = allAudios.filter(
-      (a) => a.name.startsWith(prefix) || a.name.startsWith(ep.slug + ".") || a.name === `${ep.slug}.mp3`,
+      (a) => a.name.startsWith(prefix) || a.name === `${titleSlug}.mp3`,
     );
     return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
   }, [allAudios, ep.slug]);
@@ -90,10 +113,10 @@ export default function FunilMontarPage() {
     setProgress(null);
   }, [epNarration, epClips]);
 
-  // Auto-pick first pair of tracks
+  // Auto-pick single first track (one track covers full funnel video duration)
   useEffect(() => {
     if (tracks.length > 0 && selectedMusic.length === 0) {
-      setSelectedMusic(tracks.slice(0, 2).map((t) => t.url));
+      setSelectedMusic([tracks[0].url]);
     }
   }, [tracks, selectedMusic.length]);
 
@@ -294,13 +317,11 @@ export default function FunilMontarPage() {
           <span className="text-escola-creme">{Math.round(musicVolume * 100)}%</span>
         </div>
         <select
-          multiple
-          value={selectedMusic}
-          onChange={(e) =>
-            setSelectedMusic(Array.from(e.target.selectedOptions).map((o) => o.value))
-          }
-          className="h-32 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+          value={selectedMusic[0] ?? ""}
+          onChange={(e) => setSelectedMusic(e.target.value ? [e.target.value] : [])}
+          className="w-full rounded border border-escola-border bg-escola-bg px-2 py-2 text-xs text-escola-creme"
         >
+          <option value="">— escolhe uma faixa —</option>
           {tracks.map((t) => (
             <option key={t.url} value={t.url}>
               {t.name}
@@ -308,7 +329,7 @@ export default function FunilMontarPage() {
           ))}
         </select>
         <p className="mt-1 text-[10px] text-escola-creme-50">
-          Ctrl/⌘ para escolher múltiplas (faz loop). {selectedMusic.length} seleccionadas.
+          Uma faixa só. Trocar a meio distrai da narração. AG dura ~3-5 min, cobre o vídeo todo.
         </p>
       </section>
 

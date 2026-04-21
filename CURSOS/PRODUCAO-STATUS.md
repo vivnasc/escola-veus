@@ -121,7 +121,8 @@ Páginas abolidas e apagadas: `producao` (antigo), `lora`, `territorios`, `youtu
 
 ### Pipeline 2 — Funil YouTube (122 Nomear)
 - Clips Runway Gen-4 Turbo (10s cada)
-- Imagens base: ThinkDiffusion SDXL RealVisXL v4 (1920×1080)
+- Imagens base: ThinkDiffusion **Flux** `flux1-dev-bnb-nf4-v2` (1920×1080, CFG 3.5, steps 25, Euler + Simple)
+- SDXL tem bias para humanos quando vê "silk/veil/fabric" e ignora contagens — **não usar em funil**
 - Regras Colecção B: **sem pessoas**, abstracto/simbólico, global (nada africano)
 - Música Ancient Ground + texto overlay contemplativo
 - Cada vídeo: áudio Nomear (~100s) / clip 10s = ~10 clips por vídeo
@@ -129,6 +130,7 @@ Páginas abolidas e apagadas: `producao` (antigo), `lora`, `territorios`, `youtu
 
 ### Ancient Ground (natureza)
 - Imagens realistas Moçambique (mar, praia, rio, savana, céu, flora)
+- Checkpoint: **UltraReal / Juggernaut XL** (SDXL — paisagem tolera interpretação livre)
 - Clips 10s → vídeos de ~60min em loop (channel ambient)
 - Música Loranne — álbum Ancient Ground (pares A+B em loop)
 - Montagem: `/admin/producao/ancient-ground/montagem` → Shotstack
@@ -178,6 +180,7 @@ Ancient Ground continua a ler de `thinkdiffusion-prompts.json` (read-only na UI)
 4. **Gerar Limite Sagrado** — 8 eps Nomear (ep07, ep08 + ampliação Ep 44-47 série 6 + ampliação série 2).
 5. Continuar pelos 5 cursos com áudios prontos: Sangue e Seda, Silêncio que Grita, Pele Nua, A Fome, A Chama.
 6. Terminar áudios ElevenLabs em falta (~10 Nomear + vários de cursos).
+   - **Pele Nua M8.A ("A pele como casa") e M8.B ("A reconciliação possível")** — apagados da lista audio-bulk, nunca gerados. Re-carregar "Só Pele Nua" e gerar esses 2 quando houver créditos.
 7. Upload YouTube API + agendamento em `/admin/calendario` (hoje é stub).
 8. **Limpar Shotstack** — depois de 3 renders FFmpeg bem-sucedidos em cada pipeline, apagar endpoints `render-submit/status/save`, envs `SHOTSTACK_*`, e o radio fallback na UI. Manter só `render-ffmpeg*`.
 
