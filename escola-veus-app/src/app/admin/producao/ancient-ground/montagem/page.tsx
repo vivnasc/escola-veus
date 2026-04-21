@@ -795,7 +795,10 @@ export default function YouTubeMontagem() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          slug: videoId || undefined,
+          // slug do ficheiro: preferimos o título (ex: "oceano-indico") ao
+          // videoId ("video-01") para os MP4s terem nome legível no Supabase.
+          // Se não houver título, cai para videoId.
+          slug: title || videoId || undefined,
           uniqueClips: validClips,
           targetDuration: videoDuration,
           musicUrls: [musicUrlA, musicUrlB],
