@@ -127,7 +127,7 @@ Ancient Ground continua a ler de `thinkdiffusion-prompts.json` (read-only na UI)
 2. **Gerar Limite Sagrado** — 8 eps Nomear (ep07, ep08 + ampliação Ep 44-47 série 6 + ampliação série 2).
 3. Continuar pelos 5 cursos com áudios prontos: Sangue e Seda, Silêncio que Grita, Pele Nua, A Fome, A Chama.
 4. Terminar áudios ElevenLabs em falta (~10 Nomear + vários de cursos).
-   - **Ouro Próprio M8.A e M8.B** — apagados da lista audio-bulk, nunca gerados. Re-carregar "Só Ouro Próprio" e gerar esses 2 quando houver créditos.
+   - **Pele Nua M8.A ("A pele como casa") e M8.B ("A reconciliação possível")** — apagados da lista audio-bulk, nunca gerados. Re-carregar "Só Pele Nua" e gerar esses 2 quando houver créditos.
 5. Piloto: render completo do ep01 (áudio + 11 clips Runway + texto + música → MP4).
 6. Upload YouTube API + agendamento em `/admin/calendario` (hoje é stub).
 
