@@ -129,9 +129,9 @@ export async function POST(req: NextRequest) {
     const safeLabel =
       (label || "clip").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40) ||
       "clip";
-    const filePath = `shorts/clips/${safeLabel}-${Date.now()}.mp4`;
+    const filePath = `clips/${safeLabel}-${Date.now()}.mp4`;
     const { error: upErr } = await supabase.storage
-      .from("course-assets")
+      .from("escola-shorts")
       .upload(filePath, new Uint8Array(buf), {
         contentType: "video/mp4",
         upsert: true,
@@ -143,7 +143,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const publicUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
+    const publicUrl = `${supabaseUrl}/storage/v1/object/public/escola-shorts/${filePath}`;
     return NextResponse.json({ url: publicUrl, path: filePath });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);

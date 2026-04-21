@@ -21,7 +21,7 @@ export const runtime = "nodejs";
  *       - concat 3 clips (scale+pad para 1080x1920 cada)
  *       - overlay PNG1 entre 0–halfSec, overlay PNG2 entre halfSec–total
  *       - musica como audio principal (volume fixo)
- *  4. Upload para Supabase em shorts/videos/
+ *  4. Upload para Supabase bucket `escola-shorts`, pasta `videos/`
  *  5. SSE: progress baseado no time= do stderr
  *
  * Body: {
@@ -99,6 +99,7 @@ export async function POST(req: NextRequest) {
     clipDuration = 10,
     musicUrl,
     musicVolume = 0.9,
+    musicStartSec = 0,
     overlayPngs,
     overlayStart,
     overlayEnd,
@@ -108,6 +109,7 @@ export async function POST(req: NextRequest) {
     clipDuration?: number;
     musicUrl?: string;
     musicVolume?: number;
+    musicStartSec?: number;
     overlayPngs?: [string, string];
     overlayStart?: [number, number];
     overlayEnd?: [number, number];
@@ -116,9 +118,7 @@ export async function POST(req: NextRequest) {
   if (!Array.isArray(clips) || clips.length === 0) {
     return NextResponse.json({ erro: "clips[] obrigatorio." }, { status: 400 });
   }
-  if (!musicUrl) {
-    return NextResponse.json({ erro: "musicUrl obrigatorio." }, { status: 400 });
-  }
+  const hasMusic = !!musicUrl;
 
   const { stream, send, close } = createSSE();
 
@@ -129,14 +129,20 @@ export async function POST(req: NextRequest) {
       workDirRef = workDir;
       const ffmpeg = await getFfmpegPath();
 
-      send({ type: "progress", percent: 2, label: `A baixar ${clips.length} clips + música...` });
+      send({
+        type: "progress",
+        percent: 2,
+        label: hasMusic
+          ? `A baixar ${clips.length} clips + música...`
+          : `A baixar ${clips.length} clips (sem música)...`,
+      });
 
       const clipPaths = clips.map((_, i) => join(workDir, `clip-${i}.mp4`));
-      const musicPath = join(workDir, "music.mp3");
+      const musicPath = hasMusic ? join(workDir, "music.mp3") : null;
 
       await Promise.all([
         ...clips.map((url, i) => download(url, clipPaths[i])),
-        download(musicUrl, musicPath),
+        ...(musicPath && musicUrl ? [download(musicUrl, musicPath)] : []),
       ]);
 
       // Overlay PNGs (opcionais)
@@ -147,36 +153,56 @@ export async function POST(req: NextRequest) {
 
       send({ type: "progress", percent: 15, label: "Download OK. A montar timeline..." });
 
-      const totalDuration = clips.length * clipDuration;
+      // xfade (crossfade) entre clips: total = (N-1)*stride + clipDuration
+      const OVERLAP = 0.6;
+      const stride = clipDuration - OVERLAP;
+      const totalDuration = (clips.length - 1) * stride + clipDuration;
       const halfSec = totalDuration / 2;
-      const [o1Start, o2Start] = overlayStart ?? [0, halfSec];
-      const [o1End, o2End] = overlayEnd ?? [halfSec, totalDuration];
+      const [o1Start, o2Start] = overlayStart ?? [0.4, halfSec + 0.1];
+      const [o1End, o2End] = overlayEnd ?? [halfSec - 0.2, totalDuration - 0.4];
 
-      // Video filter graph:
-      //  - Para cada clip: scale+pad para 1080x1920 9:16 (cover) + setsar=1
-      //  - concat os N clips
-      //  - overlay PNGs timed via enable='between(t,start,end)'
+      // 1) Normaliza cada clip: scale+crop para 1080x1920 + setsar + fps + trim
       const scaleFilters = clips.map(
         (_, i) =>
-          `[${i}:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30[v${i}]`,
+          `[${i}:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30,trim=0:${clipDuration.toFixed(
+            2,
+          )},setpts=PTS-STARTPTS[v${i}]`,
       );
-      const concatInputs = clips.map((_, i) => `[v${i}]`).join("");
-      const concatFilter = `${concatInputs}concat=n=${clips.length}:v=1:a=0[vconcat]`;
 
-      // Music indice = clips.length (audio-only input)
-      // Overlay PNG indices começam depois da música
-      const musicIdx = clips.length;
-      let ovlIdxCounter = clips.length + 1;
+      // 2) Encadeia xfade 0.6s: [v0][v1]xfade=offset=9.4[vx1]; [vx1][v2]xfade=offset=18.8[vfinal]
+      const xfadeFilters: string[] = [];
+      let prev = "v0";
+      if (clips.length === 1) {
+        xfadeFilters.push(`[v0]copy[vfinal]`);
+      } else {
+        for (let i = 1; i < clips.length; i++) {
+          const out = i === clips.length - 1 ? "vfinal" : `vx${i}`;
+          const offset = i * stride;
+          xfadeFilters.push(
+            `[${prev}][v${i}]xfade=transition=fade:duration=${OVERLAP}:offset=${offset.toFixed(
+              2,
+            )}[${out}]`,
+          );
+          prev = out;
+        }
+      }
+
+      // 3) Overlays PNG timed. As entradas de overlay começam depois do vídeo
+      //    (e depois da música, se existir).
+      const ovlBaseIdx = clips.length + (hasMusic ? 1 : 0);
+      let ovlIdxCounter = ovlBaseIdx;
       const ovlInputs: string[] = [];
       const ovlFilters: string[] = [];
-      let lastVideoLabel = "vconcat";
+      let lastVideoLabel = "vfinal";
 
       if (overlayPath1) {
         const idx = ovlIdxCounter++;
         ovlInputs.push(overlayPath1);
         const out = overlayPath2 ? "vo1" : "vout";
         ovlFilters.push(
-          `[${lastVideoLabel}][${idx}:v]overlay=0:0:enable='between(t,${o1Start},${o1End})'[${out}]`,
+          `[${lastVideoLabel}][${idx}:v]overlay=0:0:enable='between(t,${o1Start.toFixed(
+            2,
+          )},${o1End.toFixed(2)})'[${out}]`,
         );
         lastVideoLabel = out;
       }
@@ -185,34 +211,52 @@ export async function POST(req: NextRequest) {
         ovlInputs.push(overlayPath2);
         const out = "vout";
         ovlFilters.push(
-          `[${lastVideoLabel}][${idx}:v]overlay=0:0:enable='between(t,${o2Start},${o2End})'[${out}]`,
+          `[${lastVideoLabel}][${idx}:v]overlay=0:0:enable='between(t,${o2Start.toFixed(
+            2,
+          )},${o2End.toFixed(2)})'[${out}]`,
         );
         lastVideoLabel = out;
       }
       if (!overlayPath1 && !overlayPath2) {
-        ovlFilters.push(`[vconcat]copy[vout]`);
+        ovlFilters.push(`[vfinal]copy[vout]`);
       }
 
-      // Audio: just music at musicVolume, trimmed to totalDuration, with fade in/out
-      const audioFilter = `[${musicIdx}:a]atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=0.5,afade=t=out:st=${(totalDuration - 0.5).toFixed(2)}:d=0.5[aout]`;
+      // 4) Audio: música com fade in/out (se existir). Sem música → sem filter áudio.
+      const filterParts = [...scaleFilters, ...xfadeFilters, ...ovlFilters];
+      if (hasMusic) {
+        const musicIdx = clips.length;
+        filterParts.push(
+          `[${musicIdx}:a]atrim=0:${totalDuration.toFixed(
+            2,
+          )},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=0.6,afade=t=out:st=${(
+            totalDuration - 0.6
+          ).toFixed(2)}:d=0.6[aout]`,
+        );
+      }
 
-      const filterComplex = [...scaleFilters, concatFilter, ...ovlFilters, audioFilter].join(";");
+      const filterComplex = filterParts.join(";");
 
       const outPath = join(workDir, "out.mp4");
+
+      // Input seek do audio: -ss ANTES de -i usa fast seek (keyframe-acc., ~ok p/ mp3)
+      const safeStart = Math.max(0, Math.floor(musicStartSec));
       const args: string[] = [
         "-y",
         ...clips.flatMap((_, i) => ["-i", clipPaths[i]]),
-        "-i", musicPath,
+        ...(hasMusic && musicPath
+          ? [...(safeStart > 0 ? ["-ss", String(safeStart)] : []), "-i", musicPath]
+          : []),
         ...ovlInputs.flatMap((p) => ["-i", p]),
         "-filter_complex", filterComplex,
         "-map", "[vout]",
-        "-map", "[aout]",
+        ...(hasMusic ? ["-map", "[aout]"] : []),
         "-c:v", "libx264",
         "-preset", "veryfast",
         "-crf", "20",
         "-pix_fmt", "yuv420p",
-        "-c:a", "aac",
-        "-b:a", "192k",
+        ...(hasMusic
+          ? ["-c:a", "aac", "-b:a", "192k"]
+          : []),
         "-movflags", "+faststart",
         "-t", totalDuration.toFixed(2),
         outPath,
@@ -252,17 +296,17 @@ export async function POST(req: NextRequest) {
         title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") ||
         "short";
       const filename = `${safe}-${Date.now()}.mp4`;
-      const storagePath = `shorts/videos/${filename}`;
+      const storagePath = `videos/${filename}`;
 
       const { error } = await supabase.storage
-        .from("course-assets")
+        .from("escola-shorts")
         .upload(storagePath, new Uint8Array(buffer), {
           contentType: "video/mp4",
           upsert: false,
         });
       if (error) throw new Error(`Upload: ${error.message}`);
 
-      const publicUrl = `${supaUrl}/storage/v1/object/public/course-assets/${storagePath}`;
+      const publicUrl = `${supaUrl}/storage/v1/object/public/escola-shorts/${storagePath}`;
 
       send({ type: "progress", percent: 100, label: "Pronto!" });
       send({ type: "result", videoUrl: publicUrl });

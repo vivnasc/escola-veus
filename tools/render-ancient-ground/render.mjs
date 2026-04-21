@@ -65,16 +65,41 @@ async function uploadToSupabase(pathInBucket, data, contentType) {
   }
 }
 
-function runFfmpeg(args, label = "ffmpeg") {
+function runFfmpeg(args, label = "ffmpeg", onStderrLine) {
   return new Promise((resolve, reject) => {
     console.log(`\n[${label}] ffmpeg ${args.join(" ")}\n`);
-    const p = spawn("ffmpeg", ["-hide_banner", ...args], { stdio: ["ignore", "inherit", "inherit"] });
+    // Quando há onStderrLine precisamos de intercepar stderr para parse do
+    // "time=HH:MM:SS.ms" e podermos reportar progresso em tempo real.
+    const stderrMode = onStderrLine ? "pipe" : "inherit";
+    const p = spawn("ffmpeg", ["-hide_banner", ...args], { stdio: ["ignore", "inherit", stderrMode] });
+    if (onStderrLine && p.stderr) {
+      let buf = "";
+      p.stderr.on("data", (chunk) => {
+        const text = chunk.toString();
+        process.stderr.write(text);
+        buf += text;
+        // FFmpeg usa "\r" para actualizar a linha de status; partimos por ambos.
+        let idx;
+        while ((idx = buf.search(/[\r\n]/)) >= 0) {
+          const line = buf.slice(0, idx);
+          buf = buf.slice(idx + 1);
+          if (line.trim()) onStderrLine(line);
+        }
+      });
+    }
     p.on("error", reject);
     p.on("exit", (code) => {
       if (code === 0) resolve();
       else reject(new Error(`ffmpeg saiu com código ${code}`));
     });
   });
+}
+
+// Parse "time=HH:MM:SS.ms" do stderr do FFmpeg e devolve segundos decorridos.
+function parseFfmpegTime(line) {
+  const m = line.match(/time=(\d+):(\d+):(\d+(?:\.\d+)?)/);
+  if (!m) return null;
+  return parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60 + parseFloat(m[3]);
 }
 
 async function writeResult(jobId, payload) {
@@ -119,6 +144,11 @@ async function main() {
     // Default 3s à saída: suficiente para não parecer corte, nem tão longo
     // que desperdice conteúdo. Se quiseres desactivar, manda 0.
     fadeOut = 3,
+    // Intro opcional prepended ao início: se introUrl for fornecido, download
+    // + normalização + concat antes da base. Default 5s.
+    introUrl = null,
+    introDuration = 5,
+    introText = "ANCIENT GROUND",
     thumbnailUrl,
     thumbnailDataUrl,
     seo,
@@ -142,6 +172,81 @@ async function main() {
     const dest = path.join(WORK_DIR, "music", `music-${i}.mp3`);
     await downloadTo(music[i], dest);
     musicPaths.push(dest);
+  }
+
+  // Intro opcional — descarrega e normaliza para 1920x1080 @ fps, yuv420p,
+  // silencioso. Pré-normalizar garante que o concat no passo final não tem
+  // problemas de resolução/codec mismatch com a base.
+  let introPath = null;
+  if (introUrl) {
+    console.log(`[2b/7] Download + normalização do intro (${introDuration}s)${introText ? ` + texto "${introText}"` : ""}`);
+    const rawIntro = path.join(WORK_DIR, "intro-raw.mp4");
+    await downloadTo(introUrl, rawIntro);
+    introPath = path.join(WORK_DIR, "intro.mp4");
+
+    // Filter de vídeo: scale+pad → drawtext opcional com fade in/out suave.
+    // O texto aparece ~1s após o início (quando o logo AG já está estabilizado)
+    // e sai 0.5s antes do fim do intro para não chocar com a transição para os
+    // nature clips. DejaVu Serif Bold vem de base no runner Ubuntu.
+    let vfilter = `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=${fps},format=yuv420p`;
+    if (introText && introText.trim()) {
+      // Escape mínimo: só ':' e "'". Evitamos expressão complexa de alpha
+      // (que partia o filter parser); usamos enable= + fontcolor@opacity
+      // para simplicidade e robustez. Hard cut-in at 1s, hard cut-out 0.5s
+      // antes do fim do intro.
+      const safeText = introText
+        .replace(/'/g, "\\'")
+        .replace(/:/g, "\\:");
+      const showFrom = 1.0;
+      const showUntil = Math.max(showFrom + 1.5, introDuration - 0.5);
+      vfilter +=
+        `,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf` +
+        `:text='${safeText}'` +
+        `:fontsize=54` +
+        `:fontcolor=white@0.92` +
+        `:x=(w-text_w)/2` +
+        `:y=h*0.82` +
+        `:enable='between(t\\,${showFrom}\\,${showUntil})'`;
+    }
+
+    try {
+      await runFfmpeg([
+        "-y",
+        "-i", rawIntro,
+        "-t", String(introDuration),
+        "-vf", vfilter,
+        "-c:v", "libx264",
+        "-preset", "veryfast",
+        "-crf", "18",
+        "-pix_fmt", "yuv420p",
+        "-r", String(fps),
+        "-an",
+        "-movflags", "+faststart",
+        introPath,
+      ], "intro-normalize");
+    } catch (err) {
+      // Se o drawtext falhar (font missing, filter parser issue, etc.),
+      // tenta de novo sem texto — melhor ter intro sem texto do que nada.
+      if (introText && introText.trim()) {
+        console.warn(`Intro drawtext falhou (${err?.message || err}); a re-tentar SEM texto.`);
+        await runFfmpeg([
+          "-y",
+          "-i", rawIntro,
+          "-t", String(introDuration),
+          "-vf", `scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,fps=${fps},format=yuv420p`,
+          "-c:v", "libx264",
+          "-preset", "veryfast",
+          "-crf", "18",
+          "-pix_fmt", "yuv420p",
+          "-r", String(fps),
+          "-an",
+          "-movflags", "+faststart",
+          introPath,
+        ], "intro-normalize-notext");
+      } else {
+        throw err;
+      }
+    }
   }
 
   await writeResult(jobId, { status: "running", phase: "base-sequence", progress: 25 });
@@ -181,6 +286,8 @@ async function main() {
     : stride * (clipPaths.length - 1) + effective;
   console.log(`Base duration esperada: ${baseDuration.toFixed(2)}s`);
 
+  // Progresso em tempo real durante a base sequence: mapeia entre 25% e 50%.
+  let lastProgressWriteBase = 0;
   await runFfmpeg([
     "-y",
     ...inputs,
@@ -198,7 +305,19 @@ async function main() {
     "-an",
     "-movflags", "+faststart",
     baseOut,
-  ], "base");
+  ], "base", async (line) => {
+    const t = parseFfmpegTime(line);
+    if (t == null) return;
+    const now = Date.now();
+    if (now - lastProgressWriteBase < 5000) return; // max 1x/5s
+    lastProgressWriteBase = now;
+    const pct = Math.min(1, t / baseDuration);
+    await writeResult(jobId, {
+      status: "running",
+      phase: "base-sequence",
+      progress: 25 + Math.round(pct * 25), // 25 → 50
+    }).catch(() => {});
+  });
 
   await writeResult(jobId, { status: "running", phase: "music", progress: 50 });
 
@@ -233,47 +352,96 @@ async function main() {
   // o vídeo (perdemos o -c:v copy), mas garante uma saída suave em vez de
   // corte brusco. ~15 min extra no runner para 1h. Se fadeOut=0, voltamos
   // ao caminho rápido com -c:v copy.
-  console.log(`[5/6] Loop base até ${targetDuration}s + música + fadeOut ${fadeOut}s`);
+  console.log(`[5/6] Loop base até ${targetDuration}s + música + fadeOut ${fadeOut}s${introPath ? ` + intro ${introDuration}s` : ""}`);
   const outPath = path.join(WORK_DIR, "output.mp4");
 
   const fadeStart = Math.max(0, targetDuration - fadeOut);
   const wantFade = fadeOut > 0;
+  const hasIntro = !!introPath;
 
-  const audioFilter = wantFade
-    ? `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2,afade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[music]`
-    : `[1:a]volume=${musicVolume},afade=t=in:ss=0:d=2[music]`;
+  // Índices dos inputs ffmpeg. Quando há intro, ele passa a ser [0]; caso
+  // contrário a base é [0]. A música é sempre o último.
+  const baseIdx = hasIntro ? 1 : 0;
+  const musicIdx = hasIntro ? 2 : 1;
 
-  if (wantFade) {
-    // Re-encode com fade de vídeo para preto.
+  const afadeOutFragment = wantFade ? `,afade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}` : "";
+
+  // Filter de áudio:
+  // - Sem intro: fade-in normal de 2s, volume musicVolume
+  // - Com intro: volume sobe de 20% → 100% ao longo do introDuration (e depois
+  //   mantém-se), para "despertar" em paralelo com o visual. O fade-in suave
+  //   torna a entrada do logo não-intrusiva.
+  const audioFilter = hasIntro
+    ? `[${musicIdx}:a]volume='${musicVolume}*min(0.2+0.8*t/${introDuration},1)':eval=frame${afadeOutFragment}[music]`
+    : `[${musicIdx}:a]volume=${musicVolume},afade=t=in:ss=0:d=2${afadeOutFragment}[music]`;
+
+  // Progresso em tempo real durante o loop/final encode: mapeia entre 65% e 85%.
+  let lastProgressWriteLoop = 0;
+  const onLoopProgress = async (line) => {
+    const t = parseFfmpegTime(line);
+    if (t == null) return;
+    const now = Date.now();
+    if (now - lastProgressWriteLoop < 5000) return;
+    lastProgressWriteLoop = now;
+    const pct = Math.min(1, t / targetDuration);
+    await writeResult(jobId, {
+      status: "running",
+      phase: "loop",
+      progress: 65 + Math.round(pct * 20), // 65 → 85
+    }).catch(() => {});
+  };
+
+  // Filter de vídeo, conforme intro/fade activos.
+  let videoFilter = null;
+  if (hasIntro) {
+    // Concat do intro (finito) + base-loop (infinito até -t).
+    const concat = `[0:v][${baseIdx}:v]concat=n=2:v=1:a=0[vraw]`;
+    videoFilter = wantFade
+      ? `${concat};[vraw]fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout]`
+      : `${concat};[vraw]null[vout]`;
+  } else if (wantFade) {
+    videoFilter = `[${baseIdx}:v]fade=t=in:st=0:d=1,fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout]`;
+  }
+  // else: vídeo copy, sem filter
+
+  const needsReencode = hasIntro || wantFade;
+
+  const inputsFinal = [];
+  if (hasIntro) inputsFinal.push("-i", introPath);
+  inputsFinal.push("-stream_loop", "-1", "-i", baseOut);
+  inputsFinal.push("-stream_loop", "-1", "-i", musicInput);
+
+  if (needsReencode) {
+    // Re-encode do output final (intro concat + fade).
+    // Preset veryfast + CRF 21: 2-3x mais rápido que medium com qualidade
+    // equivalente para nature ambient. Maxrate 5M evita artifacts nas junções.
+    const filterComplex = videoFilter ? `${videoFilter};${audioFilter}` : audioFilter;
     await runFfmpeg([
       "-y",
-      "-stream_loop", "-1", "-i", baseOut,
-      "-stream_loop", "-1", "-i", musicInput,
-      "-filter_complex",
-      `[0:v]fade=t=out:st=${fadeStart.toFixed(3)}:d=${fadeOut}[vout];${audioFilter}`,
+      ...inputsFinal,
+      "-filter_complex", filterComplex,
       "-map", "[vout]",
       "-map", "[music]",
       "-t", String(targetDuration),
       "-c:v", "libx264",
-      "-preset", "medium",
-      "-crf", "23",
-      "-maxrate", "4M",
-      "-bufsize", "8M",
+      "-preset", "veryfast",
+      "-crf", "21",
+      "-maxrate", "5M",
+      "-bufsize", "10M",
       "-pix_fmt", "yuv420p",
       "-r", String(fps),
       "-c:a", "aac",
       "-b:a", "192k",
       "-movflags", "+faststart",
       outPath,
-    ], "final");
+    ], "final", onLoopProgress);
   } else {
-    // Caminho rápido (sem fade): -c:v copy, só re-encoda áudio.
+    // Caminho rápido (sem intro, sem fade): -c:v copy, só re-encoda áudio.
     await runFfmpeg([
       "-y",
-      "-stream_loop", "-1", "-i", baseOut,
-      "-stream_loop", "-1", "-i", musicInput,
+      ...inputsFinal,
       "-filter_complex", audioFilter,
-      "-map", "0:v",
+      "-map", `${baseIdx}:v`,
       "-map", "[music]",
       "-t", String(targetDuration),
       "-c:v", "copy",
@@ -281,7 +449,7 @@ async function main() {
       "-b:a", "192k",
       "-movflags", "+faststart",
       outPath,
-    ], "final");
+    ], "final", onLoopProgress);
   }
 
   await writeResult(jobId, { status: "running", phase: "upload", progress: 85 });

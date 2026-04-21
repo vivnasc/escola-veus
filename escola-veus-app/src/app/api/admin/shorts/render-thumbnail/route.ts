@@ -7,7 +7,7 @@ export const maxDuration = 120;
  *
  * Renderiza um still 9:16 (1080x1920) via Shotstack: 1 imagem como
  * fundo + (opcional) verso sobreposto. Output JPG. Guarda em
- * shorts/thumbs/ no Supabase.
+ * bucket `escola-shorts`, pasta `thumbs/` no Supabase.
  *
  * Body: {
  *   imageUrl: string,
@@ -158,13 +158,13 @@ export async function POST(req: NextRequest) {
       const slug =
         (title || "thumb").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 50) ||
         "thumb";
-      const filePath = `shorts/thumbs/${slug}-${Date.now()}.jpg`;
+      const filePath = `thumbs/${slug}-${Date.now()}.jpg`;
       const buf = new Uint8Array(await imgRes.arrayBuffer());
       const { error } = await supabase.storage
-        .from("course-assets")
+        .from("escola-shorts")
         .upload(filePath, buf, { contentType: "image/jpeg", upsert: true });
       if (error) return NextResponse.json({ url: imageUrlOut, path: "" });
-      const publicUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
+      const publicUrl = `${supabaseUrl}/storage/v1/object/public/escola-shorts/${filePath}`;
       return NextResponse.json({ url: publicUrl, path: filePath });
     } catch {
       return NextResponse.json({ url: imageUrlOut, path: "" });

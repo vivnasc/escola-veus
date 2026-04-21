@@ -208,6 +208,8 @@ const DURATION_PRESETS: Array<{ label: string; seconds: number; credits: number 
   { label: "1 h (60 créditos)", seconds: 3600, credits: 60 },
 ];
 const DEFAULT_VIDEO_DURATION = 3600;
+const AG_INTRO_URL = "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/course-assets/youtube/brand/intro-AG.mp4";
+const AG_INTRO_DURATION = 5;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -295,6 +297,10 @@ export default function YouTubeMontagem() {
   // FadeOut em segundos. 0 = corte seco (rápido, -c:v copy). >0 = fade para
   // preto + silêncio no fim (mais ~15min de runner para 1h).
   const [fadeOut, setFadeOut] = useState<number>(3);
+  // Intro Ancient Ground. Default ligado — prepend do clip de brand ao início
+  // de cada render. URL hardcoded; se um dia mudares, basta substituir o MP4
+  // em course-assets/youtube/brand/intro.mp4 (não precisas tocar aqui).
+  const [useIntro, setUseIntro] = useState<boolean>(true);
   const totalClipsNeeded = Math.ceil(videoDuration / CLIP_DURATION);
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [composedThumbnailDataUrl, setComposedThumbnailDataUrl] = useState<string>("");
@@ -789,7 +795,10 @@ export default function YouTubeMontagem() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          slug: videoId || undefined,
+          // slug do ficheiro: preferimos o título (ex: "oceano-indico") ao
+          // videoId ("video-01") para os MP4s terem nome legível no Supabase.
+          // Se não houver título, cai para videoId.
+          slug: title || videoId || undefined,
           uniqueClips: validClips,
           targetDuration: videoDuration,
           musicUrls: [musicUrlA, musicUrlB],
@@ -801,6 +810,8 @@ export default function YouTubeMontagem() {
           crossfade: 1.5,
           fps: 30,
           fadeOut,
+          introUrl: useIntro ? AG_INTRO_URL : undefined,
+          introDuration: AG_INTRO_DURATION,
           thumbnailDataUrl: composedThumbnailDataUrl || undefined,
           thumbnailUrl: thumbnailUrl || undefined,
           seo,
@@ -1312,6 +1323,21 @@ export default function YouTubeMontagem() {
                 style={{ width: `${renderProgress}%` }}
               />
             </div>
+            <button
+              onClick={() => {
+                if (!confirm("Destravar o render? Usa isto quando o workflow GitHub foi cancelado ou falhou mas a barra ficou parada. NÃO cancela o render em si — só desbloqueia a UI para poderes começar outro.")) return;
+                localStorage.removeItem("yt-pending-ffmpeg-render");
+                localStorage.removeItem("yt-pending-render");
+                setRendering(false);
+                setRenderProgress(0);
+                setRenderLabel("");
+                setRenderError(null);
+              }}
+              className="mt-2 text-xs text-escola-creme-50 hover:text-red-300 underline decoration-dotted"
+              title="Limpa o estado local. Usa só se o render travou ou foi cancelado no GitHub."
+            >
+              Destravar render / cancelar polling
+            </button>
           </div>
         )}
 
@@ -1391,6 +1417,15 @@ export default function YouTubeMontagem() {
               <option value={5}>5s (longo)</option>
             </select>
           </div>
+          <label className="flex items-center gap-2 text-xs text-escola-creme-50" title={`Prepend do clip ${AG_INTRO_DURATION}s Ancient Ground. Música sobe de 20% → 100% durante o intro.`}>
+            <input
+              type="checkbox"
+              checked={useIntro}
+              onChange={(e) => setUseIntro(e.target.checked)}
+              disabled={rendering}
+            />
+            <span>Intro AG <span className="text-escola-creme/80">({AG_INTRO_DURATION}s)</span></span>
+          </label>
         </div>
 
         <button

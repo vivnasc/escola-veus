@@ -42,6 +42,7 @@ function buildShortEdit(
   musicUrl: string,
   musicVolume: number,
   verses: [string, string],
+  musicStartSec: number,
 ) {
   const total = clips.length * clipDuration;
 
@@ -50,11 +51,16 @@ function buildShortEdit(
     start: i * clipDuration,
     length: clipDuration,
     fit: "cover" as const,
-    transition: { in: i === 0 ? ("fade" as const) : ("fade" as const), out: ("fade" as const) },
+    transition: { in: "fade" as const, out: "fade" as const },
   }));
 
   const musicClip = {
-    asset: { type: "audio" as const, src: musicUrl, volume: musicVolume },
+    asset: {
+      type: "audio" as const,
+      src: musicUrl,
+      volume: musicVolume,
+      trim: Math.max(0, Math.floor(musicStartSec)) || undefined,
+    },
     start: 0,
     length: total,
     transition: { in: "fade" as const, out: "fade" as const },
@@ -108,15 +114,14 @@ function buildShortEdit(
     });
   }
 
+  const tracks: Array<{ clips: unknown[] }> = [
+    { clips: textClips }, // topmost (text)
+    { clips: videoClips },
+  ];
+  if (musicUrl) tracks.push({ clips: [musicClip] });
+
   return {
-    timeline: {
-      background: "#000000",
-      tracks: [
-        { clips: textClips }, // topmost (text)
-        { clips: videoClips },
-        { clips: [musicClip] },
-      ],
-    },
+    timeline: { background: "#000000", tracks },
     output: {
       format: "mp4" as const,
       resolution: "1080" as const,
@@ -134,6 +139,7 @@ export async function POST(req: NextRequest) {
     clipDuration = 10,
     musicUrl,
     musicVolume = 0.9,
+    musicStartSec = 0,
     verses,
   } = body;
 
@@ -144,9 +150,7 @@ export async function POST(req: NextRequest) {
   if (validClips.length === 0) {
     return NextResponse.json({ erro: "Nenhum clip valido." }, { status: 400 });
   }
-  if (!musicUrl || typeof musicUrl !== "string") {
-    return NextResponse.json({ erro: "musicUrl obrigatorio." }, { status: 400 });
-  }
+  const safeMusicUrl = typeof musicUrl === "string" && musicUrl.trim() ? musicUrl : "";
   const safeVerses: [string, string] = Array.isArray(verses)
     ? [String(verses[0] || ""), String(verses[1] || "")]
     : ["", ""];
@@ -164,7 +168,7 @@ export async function POST(req: NextRequest) {
     try {
       send({ type: "progress", percent: 5, label: "A enviar para Shotstack..." });
 
-      const edit = buildShortEdit(validClips, clipDuration, musicUrl, musicVolume, safeVerses);
+      const edit = buildShortEdit(validClips, clipDuration, safeMusicUrl, musicVolume, safeVerses, musicStartSec);
 
       const renderRes = await fetch(`${baseUrl}/render`, {
         method: "POST",
@@ -213,7 +217,7 @@ export async function POST(req: NextRequest) {
           const videoUrl = statusData.response?.url;
           if (!videoUrl) throw new Error("Shotstack nao devolveu URL.");
 
-          // Save to Supabase shorts/videos/
+          // Save to Supabase bucket `escola-shorts`, pasta `videos/`
           const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
           const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
           let finalUrl = videoUrl;
@@ -231,16 +235,16 @@ export async function POST(req: NextRequest) {
                   .toLowerCase()
                   .replace(/[^a-z0-9]+/g, "-")
                   .slice(0, 50) || "short";
-                const filePath = `shorts/videos/${slug}-${Date.now()}.mp4`;
+                const filePath = `videos/${slug}-${Date.now()}.mp4`;
                 const buf = new Uint8Array(await videoRes.arrayBuffer());
                 const { error } = await supabase.storage
-                  .from("course-assets")
+                  .from("escola-shorts")
                   .upload(filePath, buf, {
                     contentType: "video/mp4",
                     upsert: true,
                   });
                 if (!error) {
-                  finalUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}`;
+                  finalUrl = `${supabaseUrl}/storage/v1/object/public/escola-shorts/${filePath}`;
                 }
               }
             } catch { /* fallback to shotstack URL */ }
