@@ -1,6 +1,6 @@
 {
   "config": {
-    "checkpoint": "RealVisXL v4",
+    "checkpoint": "_td/00-TD-UltraReal.safetensors",
     "width": 1920,
     "height": 1080,
     "cfg_scale": 6,
