@@ -118,9 +118,7 @@ export async function POST(req: NextRequest) {
   if (!Array.isArray(clips) || clips.length === 0) {
     return NextResponse.json({ erro: "clips[] obrigatorio." }, { status: 400 });
   }
-  if (!musicUrl) {
-    return NextResponse.json({ erro: "musicUrl obrigatorio." }, { status: 400 });
-  }
+  const hasMusic = !!musicUrl;
 
   const { stream, send, close } = createSSE();
 
@@ -131,14 +129,20 @@ export async function POST(req: NextRequest) {
       workDirRef = workDir;
       const ffmpeg = await getFfmpegPath();
 
-      send({ type: "progress", percent: 2, label: `A baixar ${clips.length} clips + música...` });
+      send({
+        type: "progress",
+        percent: 2,
+        label: hasMusic
+          ? `A baixar ${clips.length} clips + música...`
+          : `A baixar ${clips.length} clips (sem música)...`,
+      });
 
       const clipPaths = clips.map((_, i) => join(workDir, `clip-${i}.mp4`));
-      const musicPath = join(workDir, "music.mp3");
+      const musicPath = hasMusic ? join(workDir, "music.mp3") : null;
 
       await Promise.all([
         ...clips.map((url, i) => download(url, clipPaths[i])),
-        download(musicUrl, musicPath),
+        ...(musicPath && musicUrl ? [download(musicUrl, musicPath)] : []),
       ]);
 
       // Overlay PNGs (opcionais)
@@ -183,9 +187,10 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // 3) Overlays PNG timed
-      const musicIdx = clips.length;
-      let ovlIdxCounter = clips.length + 1;
+      // 3) Overlays PNG timed. As entradas de overlay começam depois do vídeo
+      //    (e depois da música, se existir).
+      const ovlBaseIdx = clips.length + (hasMusic ? 1 : 0);
+      let ovlIdxCounter = ovlBaseIdx;
       const ovlInputs: string[] = [];
       const ovlFilters: string[] = [];
       let lastVideoLabel = "vfinal";
@@ -216,19 +221,20 @@ export async function POST(req: NextRequest) {
         ovlFilters.push(`[vfinal]copy[vout]`);
       }
 
-      // 4) Audio: música com fade in/out. O -ss pré-input já deu seek; aqui só fade + volume + trim de segurança
-      const audioFilter = `[${musicIdx}:a]atrim=0:${totalDuration.toFixed(
-        2,
-      )},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=0.6,afade=t=out:st=${(
-        totalDuration - 0.6
-      ).toFixed(2)}:d=0.6[aout]`;
+      // 4) Audio: música com fade in/out (se existir). Sem música → sem filter áudio.
+      const filterParts = [...scaleFilters, ...xfadeFilters, ...ovlFilters];
+      if (hasMusic) {
+        const musicIdx = clips.length;
+        filterParts.push(
+          `[${musicIdx}:a]atrim=0:${totalDuration.toFixed(
+            2,
+          )},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=0.6,afade=t=out:st=${(
+            totalDuration - 0.6
+          ).toFixed(2)}:d=0.6[aout]`,
+        );
+      }
 
-      const filterComplex = [
-        ...scaleFilters,
-        ...xfadeFilters,
-        ...ovlFilters,
-        audioFilter,
-      ].join(";");
+      const filterComplex = filterParts.join(";");
 
       const outPath = join(workDir, "out.mp4");
 
@@ -237,18 +243,20 @@ export async function POST(req: NextRequest) {
       const args: string[] = [
         "-y",
         ...clips.flatMap((_, i) => ["-i", clipPaths[i]]),
-        ...(safeStart > 0 ? ["-ss", String(safeStart)] : []),
-        "-i", musicPath,
+        ...(hasMusic && musicPath
+          ? [...(safeStart > 0 ? ["-ss", String(safeStart)] : []), "-i", musicPath]
+          : []),
         ...ovlInputs.flatMap((p) => ["-i", p]),
         "-filter_complex", filterComplex,
         "-map", "[vout]",
-        "-map", "[aout]",
+        ...(hasMusic ? ["-map", "[aout]"] : []),
         "-c:v", "libx264",
         "-preset", "veryfast",
         "-crf", "20",
         "-pix_fmt", "yuv420p",
-        "-c:a", "aac",
-        "-b:a", "192k",
+        ...(hasMusic
+          ? ["-c:a", "aac", "-b:a", "192k"]
+          : []),
         "-movflags", "+faststart",
         "-t", totalDuration.toFixed(2),
         outPath,

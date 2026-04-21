@@ -114,15 +114,14 @@ function buildShortEdit(
     });
   }
 
+  const tracks: Array<{ clips: unknown[] }> = [
+    { clips: textClips }, // topmost (text)
+    { clips: videoClips },
+  ];
+  if (musicUrl) tracks.push({ clips: [musicClip] });
+
   return {
-    timeline: {
-      background: "#000000",
-      tracks: [
-        { clips: textClips }, // topmost (text)
-        { clips: videoClips },
-        { clips: [musicClip] },
-      ],
-    },
+    timeline: { background: "#000000", tracks },
     output: {
       format: "mp4" as const,
       resolution: "1080" as const,
@@ -151,9 +150,7 @@ export async function POST(req: NextRequest) {
   if (validClips.length === 0) {
     return NextResponse.json({ erro: "Nenhum clip valido." }, { status: 400 });
   }
-  if (!musicUrl || typeof musicUrl !== "string") {
-    return NextResponse.json({ erro: "musicUrl obrigatorio." }, { status: 400 });
-  }
+  const safeMusicUrl = typeof musicUrl === "string" && musicUrl.trim() ? musicUrl : "";
   const safeVerses: [string, string] = Array.isArray(verses)
     ? [String(verses[0] || ""), String(verses[1] || "")]
     : ["", ""];
@@ -171,7 +168,7 @@ export async function POST(req: NextRequest) {
     try {
       send({ type: "progress", percent: 5, label: "A enviar para Shotstack..." });
 
-      const edit = buildShortEdit(validClips, clipDuration, musicUrl, musicVolume, safeVerses, musicStartSec);
+      const edit = buildShortEdit(validClips, clipDuration, safeMusicUrl, musicVolume, safeVerses, musicStartSec);
 
       const renderRes = await fetch(`${baseUrl}/render`, {
         method: "POST",

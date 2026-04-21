@@ -41,6 +41,7 @@ type ShortsState = {
   trackUrl: string;
   trackName: string;
   musicStartSec: number;
+  includeMusic: boolean;
   theme: string;
   verses: [string, string];
   candidates: string[];
@@ -79,6 +80,7 @@ const EMPTY_STATE: ShortsState = {
   trackUrl: "",
   trackName: "",
   musicStartSec: 0,
+  includeMusic: false,
   theme: "",
   verses: ["", ""],
   candidates: [],
@@ -305,9 +307,9 @@ export default function ShortsPage() {
 
   // ── Suggest verses + captions ───────────────────────────────────────────────
 
-  const suggest = async () => {
+  const runSuggest = useCallback(async (silent = false) => {
     if (!state.album || !state.trackName) {
-      alert("Escolhe álbum e faixa primeiro.");
+      if (!silent) alert("Escolhe álbum e faixa primeiro.");
       return;
     }
     setSuggesting(true);
@@ -333,11 +335,21 @@ export default function ShortsPage() {
         youtubeDescription: data.youtubeDescription || "",
       });
     } catch (err) {
-      alert(`Erro: ${err instanceof Error ? err.message : String(err)}`);
+      if (!silent) alert(`Erro: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setSuggesting(false);
     }
-  };
+  }, [state.album, state.trackName, state.theme, updateState]);
+
+  const suggest = () => runSuggest(false);
+
+  // Auto-trigga assim que o álbum+faixa ficam definidos (ou tema muda)
+  useEffect(() => {
+    if (!state.album || !state.trackName) return;
+    const t = setTimeout(() => { runSuggest(true); }, 250);
+    return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.album, state.trackName, state.theme]);
 
   // ── Generate thumbnail (Shotstack JPG) ──────────────────────────────────────
 
@@ -380,8 +392,8 @@ export default function ShortsPage() {
       alert("Gera os 3 clips Runway primeiro.");
       return;
     }
-    if (!state.trackUrl) {
-      alert("Escolhe uma faixa primeiro.");
+    if (state.includeMusic && !state.trackUrl) {
+      alert("Escolhe uma faixa ou desliga a música.");
       return;
     }
     setRendering(true);
@@ -391,13 +403,16 @@ export default function ShortsPage() {
     setRenderError(null);
 
     try {
+      // Música só entra no render se o toggle estiver ON — default é silencioso
+      // (TikTok/Instagram têm as próprias libs de música)
+      const withMusic = state.includeMusic && !!state.trackUrl;
       const baseBody = {
-        title: state.title || state.trackName.replace(/\.[^.]+$/, ""),
+        title: state.title || state.trackName.replace(/\.[^.]+$/, "") || "short",
         clips: state.slots.map((s) => s.clipUrl),
         clipDuration: CLIP_DURATION,
-        musicUrl: state.trackUrl,
-        musicVolume: 0.9,
-        musicStartSec: state.musicStartSec || 0,
+        musicUrl: withMusic ? state.trackUrl : "",
+        musicVolume: withMusic ? 0.9 : 0,
+        musicStartSec: withMusic ? state.musicStartSec || 0 : 0,
       };
 
       let endpoint = "/api/admin/shorts/render";
@@ -715,6 +730,7 @@ export default function ShortsPage() {
                           musicStartSec: 0,
                         })
                       }
+                      showStartPicker={state.includeMusic}
                       musicStartSec={state.musicStartSec}
                       onSetStart={(s) => updateState({ musicStartSec: s })}
                     />
@@ -756,13 +772,18 @@ export default function ShortsPage() {
             placeholder="Tema (opcional · ex: véus, coragem, raiz)"
             className="flex-1 rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme"
           />
-          <button
-            onClick={suggest}
-            disabled={suggesting || !state.album || !state.trackName}
-            className="rounded bg-escola-coral px-4 py-1.5 text-xs font-semibold text-white disabled:opacity-30"
-          >
-            {suggesting ? "..." : "Sugerir frases + legendas"}
-          </button>
+          {suggesting ? (
+            <span className="text-[10px] text-escola-creme-50">A gerar...</span>
+          ) : (
+            <button
+              onClick={suggest}
+              disabled={!state.album || !state.trackName}
+              className="rounded border border-escola-border px-3 py-1.5 text-[10px] text-escola-creme-50 hover:text-escola-creme disabled:opacity-30"
+              title="Reprocessa frases e legendas manualmente"
+            >
+              ↻ reprocessar
+            </button>
+          )}
         </div>
 
         {state.candidates.length > 0 && (
@@ -889,6 +910,22 @@ export default function ShortsPage() {
           <ShortResult url={renderResult} title={state.title || state.trackName || "short"} />
         )}
 
+        <div className="mb-3 flex flex-wrap items-center gap-4 text-xs">
+          <label className="flex cursor-pointer items-center gap-1.5">
+            <input
+              type="checkbox"
+              checked={state.includeMusic}
+              onChange={(e) => updateState({ includeMusic: e.target.checked })}
+            />
+            <span className="text-escola-creme">
+              Incluir música{" "}
+              <span className="text-escola-creme-50">
+                (default OFF · TikTok/IG têm música própria)
+              </span>
+            </span>
+          </label>
+        </div>
+
         <div className="mb-3 flex items-center gap-4 text-xs">
           <span className="text-escola-creme-50">Motor:</span>
           <label className="flex cursor-pointer items-center gap-1.5">
@@ -912,7 +949,10 @@ export default function ShortsPage() {
         <button
           onClick={startRender}
           disabled={
-            !allClipsReady || !state.trackUrl || rendering || anyGenerating
+            !allClipsReady ||
+            rendering ||
+            anyGenerating ||
+            (state.includeMusic && !state.trackUrl)
           }
           className="rounded bg-escola-coral px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-30"
         >
@@ -1251,12 +1291,14 @@ function TrackRow({
   onSelect,
   musicStartSec,
   onSetStart,
+  showStartPicker,
 }: {
   track: MusicTrack;
   selected: boolean;
   onSelect: () => void;
   musicStartSec: number;
   onSetStart: (s: number) => void;
+  showStartPicker: boolean;
 }) {
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -1288,7 +1330,7 @@ function TrackRow({
           preload="none"
         />
       </div>
-      {selected && (
+      {selected && showStartPicker && (
         <div className="flex flex-wrap items-center gap-2 pl-26 text-xs">
           <span className="text-escola-creme-50">
             Início no short:{" "}
