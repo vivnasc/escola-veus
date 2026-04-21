@@ -1312,6 +1312,21 @@ export default function YouTubeMontagem() {
                 style={{ width: `${renderProgress}%` }}
               />
             </div>
+            <button
+              onClick={() => {
+                if (!confirm("Destravar o render? Usa isto quando o workflow GitHub foi cancelado ou falhou mas a barra ficou parada. NÃO cancela o render em si — só desbloqueia a UI para poderes começar outro.")) return;
+                localStorage.removeItem("yt-pending-ffmpeg-render");
+                localStorage.removeItem("yt-pending-render");
+                setRendering(false);
+                setRenderProgress(0);
+                setRenderLabel("");
+                setRenderError(null);
+              }}
+              className="mt-2 text-xs text-escola-creme-50 hover:text-red-300 underline decoration-dotted"
+              title="Limpa o estado local. Usa só se o render travou ou foi cancelado no GitHub."
+            >
+              Destravar render / cancelar polling
+            </button>
           </div>
         )}
 
