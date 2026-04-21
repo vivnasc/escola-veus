@@ -4,6 +4,26 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 
+// Slug algorithm matching /api/admin/audio-bulk/generate-one/route.ts filename logic.
+// audio-bulk saves ElevenLabs audio as `${slug-of-title}-${timestamp}.mp3`.
+function titleToSlug(title: string): string {
+  return (title || "audio")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+function findScriptById(id: string): { titulo: string } | null {
+  for (const preset of NOMEAR_PRESETS) {
+    const hit = preset.scripts.find((s) => s.id === id);
+    if (hit) return hit;
+  }
+  return null;
+}
+
 type Clip = { name: string; url: string };
 type Track = { name: string; url: string; sizeMB?: number };
 type Audio = { name: string; url: string };
@@ -74,10 +94,13 @@ export default function FunilMontarPage() {
   }, [allClips, epKey]);
 
   const epNarration = useMemo(() => {
-    // Nomear audio filename format: "<script-id>-<timestamp>.mp3"
-    const prefix = `${ep.slug}-`;
+    // audio-bulk saves with filename = `${slug-of-title}-${timestamp}.mp3`
+    const script = findScriptById(ep.slug);
+    if (!script) return null;
+    const titleSlug = titleToSlug(script.titulo);
+    const prefix = `${titleSlug}-`;
     const matches = allAudios.filter(
-      (a) => a.name.startsWith(prefix) || a.name.startsWith(ep.slug + ".") || a.name === `${ep.slug}.mp3`,
+      (a) => a.name.startsWith(prefix) || a.name === `${titleSlug}.mp3`,
     );
     return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
   }, [allAudios, ep.slug]);
