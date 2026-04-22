@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import videoPlan from "@/data/video-plan.json";
 import youtubeMetadata from "@/data/youtube-metadata.json";
+import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
 
 type SeoMeta = {
   thumbnailTitle: string;
@@ -1444,14 +1445,12 @@ export default function YouTubeMontagem() {
                 )}
               </div>
             )}
-            <a
-              href={renderResult}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white"
-            >
-              Abrir / Descarregar MP4
-            </a>
+            <ShareVideoActions
+              videoUrl={renderResult}
+              title={seo.postTitle || title || "Ancient Ground"}
+              text={seo.description}
+              mode="long"
+            />
 
             {/* Bloco copy-paste para publicação YouTube — sempre visível
                 quando há vídeo pronto. Usa o SEO já editado em 3C. */}

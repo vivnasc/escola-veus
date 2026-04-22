@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, forwardRef } from "react";
 import * as htmlToImage from "html-to-image";
+import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
 
 // Shorts AG — reaproveitam clips Runway já pagos (listados em escola-shorts/clips/*
 // via list-clips-ag), música do álbum ancient-ground (100 faixas) e 2 versos
@@ -471,19 +472,15 @@ export default function AncientGroundShortsPage() {
           </div>
         )}
         {renderResult && (
-          <div className="mb-3 space-y-2">
+          <div className="mb-3 space-y-3">
             <div className="rounded bg-green-950/50 p-2 text-xs text-green-300">Short pronto!</div>
             <video src={renderResult} controls className="w-full max-w-sm rounded" />
-            <div>
-              <a
-                href={renderResult}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white"
-              >
-                Abrir / Descarregar MP4
-              </a>
-            </div>
+            <ShareVideoActions
+              videoUrl={renderResult}
+              title={youtubeTitle || "Ancient Ground Short"}
+              text={tiktokCaption}
+              mode="short"
+            />
           </div>
         )}
 
@@ -657,3 +654,4 @@ function CopyField({
     </div>
   );
 }
+
