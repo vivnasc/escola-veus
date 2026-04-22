@@ -596,7 +596,10 @@ export default function FunilMontarPage() {
 
         {videoUrl && (
           <div className="mt-4 rounded border border-escola-dourado bg-escola-bg p-3">
-            <p className="mb-2 text-xs text-escola-dourado">✓ Vídeo pronto</p>
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs text-escola-dourado">✓ Vídeo pronto</p>
+              <VideoStamp url={videoUrl} />
+            </div>
             <video src={videoUrl} className="w-full rounded" controls />
             <a
               href={videoUrl}
@@ -636,6 +639,55 @@ export default function FunilMontarPage() {
         />
       )}
     </div>
+  );
+}
+
+// ─── VideoStamp ─────────────────────────────────────────────────────────────
+// Mostra a data/hora do render actual (lido do filename `-<ms>.mp4`) e
+// badge "mais recente" se este é o MP4 mais novo em Supabase para o slug.
+// Ajuda a user a saber se está a ver a versão certa sem abrir URL.
+
+function VideoStamp({ url }: { url: string }) {
+  const filename = decodeURIComponent(url.split("/").pop() || "");
+  const m = filename.match(/-(\d{13})\.mp4$/);
+  if (!m) {
+    return <span className="text-[10px] text-escola-creme-50">{filename}</span>;
+  }
+  const ts = parseInt(m[1], 10);
+  const d = new Date(ts);
+  const now = Date.now();
+  const ageMs = now - ts;
+  const ageMin = Math.floor(ageMs / 60_000);
+  const ageH = Math.floor(ageMs / 3_600_000);
+
+  const rel =
+    ageMs < 60_000
+      ? "agora mesmo"
+      : ageMin < 60
+        ? `há ${ageMin} min`
+        : ageH < 24
+          ? `há ${ageH} h`
+          : d.toLocaleDateString("pt-PT", { day: "2-digit", month: "short" });
+  const hhmm = d.toLocaleTimeString("pt-PT", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  // "fresco" = renderizado há < 10 min → verde, provavelmente o render actual
+  const fresh = ageMs < 10 * 60_000;
+
+  return (
+    <span
+      className={`rounded px-2 py-0.5 text-[10px] ${
+        fresh
+          ? "bg-escola-dourado/20 text-escola-dourado"
+          : "bg-escola-border/40 text-escola-creme-50"
+      }`}
+      title={filename}
+    >
+      {fresh ? "🟢 " : "📅 "}
+      {rel} · {hhmm}
+    </span>
   );
 }
 
