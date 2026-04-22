@@ -15,7 +15,7 @@ type PromptFile = {
   prompts: PromptItem[];
 };
 
-const ALLOWED = new Set(["funil", "aulas"]);
+const ALLOWED = new Set(["funil", "aulas", "ancient-ground"]);
 
 /**
  * POST /api/admin/prompts/[collection]/save
