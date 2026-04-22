@@ -53,6 +53,8 @@ export default function FunilMontarPage() {
   const [allClips, setAllClips] = useState<Clip[]>([]);
   const [allAudios, setAllAudios] = useState<Audio[]>([]);
   const [allSrts, setAllSrts] = useState<Audio[]>([]);
+  const [allVideos, setAllVideos] = useState<Audio[]>([]);
+  const [allThumbs, setAllThumbs] = useState<Audio[]>([]);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -74,6 +76,8 @@ export default function FunilMontarPage() {
   const [thumbErr, setThumbErr] = useState<string | null>(null);
 
   // ── Load assets on mount ──────────────────────────────────────────────
+  // Todos os assets são carregados de Supabase → muda de dispositivo, abre
+  // a página, os vídeos/SRT/thumbs renderizados antes aparecem prontos.
   useEffect(() => {
     setLoading(true);
     Promise.all([
@@ -81,10 +85,13 @@ export default function FunilMontarPage() {
       fetch("/api/admin/biblioteca/list?folder=youtube&limit=500").then((r) => r.json()),
       fetch("/api/admin/music/list-album?album=ancient-ground").then((r) => r.json()),
       // SRTs em cache (geradas previamente via "Gerar legenda SRT").
-      // O nome é `${epKey}-${ts}.srt` por convenção do generate-srt route.
       fetch("/api/admin/biblioteca/list?folder=youtube/subtitles&limit=500").then((r) => r.json()),
+      // Vídeos MP4 finais já renderizados.
+      fetch("/api/admin/biblioteca/list?folder=youtube/funil-videos&limit=500").then((r) => r.json()),
+      // Thumbnails PNG já geradas.
+      fetch("/api/admin/biblioteca/list?folder=youtube/thumbnails&limit=500").then((r) => r.json()),
     ])
-      .then(([clipsD, audiosD, musicD, srtsD]) => {
+      .then(([clipsD, audiosD, musicD, srtsD, videosD, thumbsD]) => {
         setAllClips(Array.isArray(clipsD.clips) ? clipsD.clips : []);
         setAllAudios(
           (Array.isArray(audiosD.files) ? audiosD.files : []).filter((f: Audio) =>
@@ -95,6 +102,16 @@ export default function FunilMontarPage() {
         setAllSrts(
           (Array.isArray(srtsD.files) ? srtsD.files : []).filter((f: Audio) =>
             f.name.endsWith(".srt"),
+          ),
+        );
+        setAllVideos(
+          (Array.isArray(videosD.files) ? videosD.files : []).filter((f: Audio) =>
+            f.name.endsWith(".mp4"),
+          ),
+        );
+        setAllThumbs(
+          (Array.isArray(thumbsD.files) ? thumbsD.files : []).filter((f: Audio) =>
+            /\.(png|jpe?g)$/i.test(f.name),
           ),
         );
       })
@@ -110,6 +127,29 @@ export default function FunilMontarPage() {
     const matches = allSrts.filter((s) => s.name.startsWith(prefix));
     return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
   }, [allSrts, epKey]);
+
+  // Vídeo final renderizado em cache. Match por slug do título OU epKey
+  // (convenção actual do render-funil.mjs gera `<slug>-<ts>.mp4` onde
+  // slug é derivado de ep.label). Fallback para epKey.
+  const epCachedVideo = useMemo(() => {
+    const script = findScriptById(ep.slug);
+    const slug = script ? titleToSlug(script.titulo) : "";
+    const matches = allVideos.filter(
+      (v) =>
+        (slug && v.name.startsWith(`${slug}-`)) ||
+        v.name.startsWith(`${epKey}-`) ||
+        // fallback: ep.label lowercase slug
+        v.name.startsWith(`${ep.label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}-`),
+    );
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allVideos, ep.slug, ep.label, epKey]);
+
+  // Thumbnail em cache. Convenção: `<epKey>-<ts>.png` (filename=ep.key).
+  const epCachedThumb = useMemo(() => {
+    const prefix = `${epKey}-`;
+    const matches = allThumbs.filter((t) => t.name.startsWith(prefix));
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allThumbs, epKey]);
 
   // ── Filter assets by episode ──────────────────────────────────────────
   const epClips = useMemo(() => {
@@ -132,18 +172,18 @@ export default function FunilMontarPage() {
   }, [allAudios, ep.slug]);
 
   // Auto-set default narration + clip order when ep changes
+  // Todos os artefactos (vídeo, SRT, thumb) são lidos de Supabase →
+  // muda-se de dispositivo e aparecem prontos sem re-render nem re-gerar.
   useEffect(() => {
     setSelectedNarration(epNarration?.url ?? "");
     setClipOrder(epClips.map((c) => c.url));
-    setVideoUrl(null);
+    setVideoUrl(epCachedVideo?.url ?? null);
     setProgress(null);
-    // Pré-preencher com SRT em cache (zero custo Scribe). Se não houver, vazio
-    // → user pode clicar "Gerar SRT" se quiser legendas neste render.
     setSrtUrl(epCachedSrt?.url ?? null);
     setSrtErr(null);
-    setThumbUrl(null);
+    setThumbUrl(epCachedThumb?.url ?? null);
     setThumbErr(null);
-  }, [epNarration, epClips, epCachedSrt]);
+  }, [epNarration, epClips, epCachedSrt, epCachedVideo, epCachedThumb]);
 
   // Auto-pick single first track (one track covers full funnel video duration)
   useEffect(() => {
