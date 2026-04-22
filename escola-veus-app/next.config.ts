@@ -28,6 +28,11 @@ const nextConfig: NextConfig = {
       "./node_modules/@ffmpeg-installer/**/*",
       "./node_modules/@ffmpeg-installer/linux-x64/**/*",
     ],
+    "/api/admin/shorts/short-from-nomear": [
+      "./node_modules/@ffmpeg-installer/**/*",
+      "./node_modules/@ffmpeg-installer/linux-x64/**/*",
+      "./assets/fonts/*.ttf",
+    ],
   },
 };
 
