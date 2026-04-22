@@ -1005,6 +1005,10 @@ export default function ThinkDiffusionPage() {
           </div>
         )}
 
+        {/* Widget de estado — visibilidade do que há/não há em Supabase e
+            no Runway. Primeira coisa que a Vivianne vê se "nada aparece". */}
+        <RecoveryStatusWidget />
+
         {/* Recuperação automática — usa os taskIds guardados em Supabase
             no momento do submit (youtube/tasks/*.json). Um clique recupera
             tudo o que deu timeout ou foi abandonado. Créditos Runway não
@@ -1445,5 +1449,118 @@ function AgPill({
       <span className="text-[9px] uppercase tracking-wider opacity-70">{label}</span>
       <span className="font-semibold">{value}</span>
     </span>
+  );
+}
+
+// ── Widget de estado de recuperação Runway ─────────────────────────────────
+// Mostra clips guardados vs tasks pendentes. Ajuda a Vivianne a perceber se
+// "nada aparece" porque:
+//   (a) os taskIds foram guardados mas o Runway ainda os está a gerar ou
+//       os outputs já expiraram → tenta recover-all.
+//   (b) NADA foi guardado (save-task falhou silenciosamente) → única via
+//       é dev.runwayml.com > Request History + fallback manual.
+
+function RecoveryStatusWidget() {
+  const [status, setStatus] = useState<{
+    clipsCount: number;
+    tasksCount: number;
+    tasksRecent: Array<{ taskId: string; imageName?: string; ageMinutes?: number }>;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/thinkdiffusion/status", { cache: "no-store" });
+      const d = await r.json();
+      setStatus(d);
+    } catch {
+      // keep null
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  if (loading && !status) {
+    return (
+      <div className="mb-4 rounded-lg border border-escola-border bg-escola-bg-card p-4 text-xs text-escola-creme-50">
+        A verificar estado da biblioteca...
+      </div>
+    );
+  }
+  if (!status) return null;
+
+  const noTasks = status.tasksCount === 0;
+  const manyPending = status.tasksCount > 0;
+
+  return (
+    <div
+      className={`mb-4 rounded-lg border p-4 text-xs ${
+        noTasks
+          ? "border-red-700/50 bg-red-950/10"
+          : manyPending
+            ? "border-yellow-700/50 bg-yellow-950/10"
+            : "border-escola-border bg-escola-bg-card"
+      }`}
+    >
+      <div className="mb-2 flex items-center justify-between">
+        <h4 className="text-sm font-semibold text-escola-creme">📊 Estado da biblioteca</h4>
+        <button
+          onClick={load}
+          className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+        >
+          🔄 Refrescar
+        </button>
+      </div>
+      <div className="mb-2 flex flex-wrap gap-3 text-escola-creme-50">
+        <span>
+          Clips guardados: <strong className="text-escola-creme">{status.clipsCount}</strong>
+        </span>
+        <span>
+          Tasks pendentes: <strong className={status.tasksCount > 0 ? "text-yellow-300" : "text-escola-creme"}>{status.tasksCount}</strong>
+        </span>
+      </div>
+
+      {noTasks && status.clipsCount === 0 && (
+        <p className="text-red-300">
+          Nenhum clip e nenhuma task pendente. Se submeteste clips e deu timeout, os taskIds
+          não foram guardados em Supabase (erro silencioso do save-task). Tens duas opções:
+          <br />1) Voltar a gerar (custo novo).
+          <br />2) Ir a <a className="underline" href="https://dev.runwayml.com" target="_blank" rel="noopener">dev.runwayml.com</a> → Request History → copiar taskIds e colar no fallback manual em baixo.
+        </p>
+      )}
+      {noTasks && status.clipsCount > 0 && (
+        <p className="text-escola-creme-50">
+          Biblioteca OK, sem tasks pendentes. Se falta algum clip, provavelmente o submit foi feito sem passar pelo save-task — vê dev.runwayml.com para os mais recentes.
+        </p>
+      )}
+      {manyPending && (
+        <>
+          <p className="mb-2 text-yellow-300">
+            {status.tasksCount} task{status.tasksCount === 1 ? "" : "s"} pendente{status.tasksCount === 1 ? "" : "s"} — cliquem em <strong>RECUPERAR TUDO</strong> em baixo para consultar o Runway.
+          </p>
+          {status.tasksRecent.length > 0 && (
+            <details className="mt-2">
+              <summary className="cursor-pointer text-[10px] text-escola-creme-50">
+                Ver {status.tasksRecent.length} mais recentes
+              </summary>
+              <ul className="mt-1 space-y-0.5 pl-4 text-[10px] text-escola-creme-50">
+                {status.tasksRecent.map((t) => (
+                  <li key={t.taskId}>
+                    <code className="text-escola-creme">{t.taskId.slice(0, 8)}</code>
+                    {t.imageName && <> · {t.imageName}</>}
+                    {typeof t.ageMinutes === "number" && <> · há {t.ageMinutes}min</>}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </>
+      )}
+    </div>
   );
 }
