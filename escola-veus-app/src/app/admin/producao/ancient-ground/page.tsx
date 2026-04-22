@@ -316,51 +316,66 @@ export default function ThinkDiffusionPage() {
       .catch(() => {});
   }, []);
 
-  // On mount: auto-recover Runway taskIds pendentes. Se houver clips que
-  // terminaram no Runway mas o cliente desistiu (timeout, fechou browser,
-  // recarga), apanha-os sem precisar de clique. Notifica só quando há
-  // algo realmente recuperado, para não fazer ruido desnecessário.
+  // Auto-recover em tempo real: corre ao mount E a cada 60s enquanto houver
+  // tasks pendentes. Assim os clips aparecem na UI automaticamente à medida
+  // que o Runway termina, sem a Vivianne ter de clicar ou recarregar.
+  // Pára o polling quando tasksCount chega a 0 (nada mais a fazer).
   useEffect(() => {
-    const controller = new AbortController();
-    fetch("/api/admin/thinkdiffusion/recover-all", { signal: controller.signal })
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.erro) return;
-        if (d.recovered > 0 || d.alreadySaved > 0 || d.pending > 0) {
-          const parts = [
-            d.recovered > 0 ? `${d.recovered} recuperados agora` : null,
-            d.pending > 0 ? `${d.pending} ainda a gerar no Runway` : null,
-          ].filter(Boolean);
-          if (parts.length > 0) {
-            setCurrentPrompt(`✨ Auto-recover: ${parts.join(" · ")}`);
-            setTimeout(() => setCurrentPrompt(""), 6000);
-          }
-          if (d.recovered > 0) {
-            // Re-sincroniza a lista de clips localmente.
-            fetch("/api/admin/thinkdiffusion/list-clips")
-              .then((r) => r.json())
-              .then((data) => {
-                if (!data.clips) return;
-                const clipState: Record<string, ClipState> = {};
-                for (const clip of data.clips) {
-                  const baseName = clip.name;
-                  for (const ext of [".png", ".jpg", ".jpeg"]) {
-                    clipState[baseName + ext] = {
-                      imageUrl: "",
-                      imageName: baseName + ext,
-                      status: "done",
-                      clipUrl: clip.url,
-                    };
-                  }
-                }
-                setClips(clipState);
-              })
-              .catch(() => {});
+    let cancelled = false;
+    let pendingRounds = 0;
+    const MAX_ROUNDS = 30; // 30 × 60s = 30 min cap por sessão
+
+    const reloadClipsList = async () => {
+      try {
+        const r = await fetch("/api/admin/thinkdiffusion/list-clips", { cache: "no-store" });
+        const data = await r.json();
+        if (!data.clips) return;
+        const clipState: Record<string, ClipState> = {};
+        for (const clip of data.clips) {
+          const baseName = clip.name;
+          for (const ext of [".png", ".jpg", ".jpeg"]) {
+            clipState[baseName + ext] = {
+              imageUrl: "",
+              imageName: baseName + ext,
+              status: "done",
+              clipUrl: clip.url,
+            };
           }
         }
-      })
-      .catch(() => { /* silencioso — não é bloqueador */ });
-    return () => controller.abort();
+        if (!cancelled) setClips(clipState);
+      } catch { /* ignore */ }
+    };
+
+    const tick = async () => {
+      if (cancelled) return;
+      try {
+        const r = await fetch("/api/admin/thinkdiffusion/recover-all", { cache: "no-store" });
+        const d = await r.json();
+        if (cancelled || d.erro) return;
+
+        if (d.recovered > 0) {
+          setCurrentPrompt(`✨ ${d.recovered} clip${d.recovered === 1 ? "" : "s"} recuperado${d.recovered === 1 ? "" : "s"}!${d.pending > 0 ? ` (${d.pending} ainda a gerar)` : ""}`);
+          setTimeout(() => { if (!cancelled) setCurrentPrompt(""); }, 8000);
+          await reloadClipsList();
+        } else if (d.pending > 0 && pendingRounds === 0) {
+          // Primeira ronda com pending: avisa, depois fica silencioso.
+          setCurrentPrompt(`⏳ ${d.pending} clip${d.pending === 1 ? "" : "s"} a gerar no Runway — vou verificar a cada 60s`);
+          setTimeout(() => { if (!cancelled) setCurrentPrompt(""); }, 6000);
+        }
+
+        pendingRounds++;
+        if (d.pending > 0 && pendingRounds < MAX_ROUNDS && !cancelled) {
+          setTimeout(tick, 60_000);
+        }
+      } catch { /* ignore — tenta outra vez se ainda pending */
+        if (pendingRounds < MAX_ROUNDS && !cancelled) {
+          setTimeout(tick, 60_000);
+        }
+      }
+    };
+
+    tick();
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {
@@ -1015,6 +1030,10 @@ export default function ThinkDiffusionPage() {
           </div>
         )}
 
+        {/* Widget de estado — visibilidade do que há/não há em Supabase e
+            no Runway. Primeira coisa que a Vivianne vê se "nada aparece". */}
+        <RecoveryStatusWidget />
+
         {/* Recuperação automática — usa os taskIds guardados em Supabase
             no momento do submit (youtube/tasks/*.json). Um clique recupera
             tudo o que deu timeout ou foi abandonado. Créditos Runway não
@@ -1314,6 +1333,259 @@ export default function ThinkDiffusionPage() {
           })}
         </div>
       </section>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dashboard de estado por vídeo Ancient Ground
+// ─────────────────────────────────────────────────────────────────────────────
+
+type AgStatus = {
+  promptsCount: number;
+  imagesCount: number;
+  clipsCount: number;
+  videoRendered: boolean;
+};
+type AgVideo = {
+  id: string;
+  titulo: string;
+  categorias: string[];
+  status: AgStatus;
+};
+
+function AgStatusDashboard() {
+  const [videos, setVideos] = useState<AgVideo[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open || videos) return;
+    setLoading(true);
+    fetch("/api/admin/ancient-ground/status", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.videos)) setVideos(d.videos);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [open, videos]);
+
+  const summary = videos
+    ? {
+        rendered: videos.filter((v) => v.status.videoRendered).length,
+        withImages: videos.filter((v) => v.status.imagesCount > 0).length,
+        total: videos.length,
+      }
+    : null;
+
+  return (
+    <section className="rounded-lg border border-escola-border bg-escola-bg-card">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between px-4 py-3 text-left"
+      >
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
+            Dashboard de estado dos vídeos AG
+          </h3>
+          <p className="text-xs text-escola-creme-50">
+            {summary
+              ? `${summary.rendered}/${summary.total} renderizados · ${summary.withImages}/${summary.total} com imagens`
+              : "clica para carregar"}
+          </p>
+        </div>
+        <span className="text-escola-creme-50">{open ? "−" : "+"}</span>
+      </button>
+
+      {open && (
+        <div className="border-t border-escola-border">
+          {loading && (
+            <p className="p-4 text-xs text-escola-creme-50">A carregar (~3s)...</p>
+          )}
+          {videos && (
+            <ul className="divide-y divide-escola-border">
+              {videos.map((v) => (
+                <li key={v.id} className="px-4 py-2.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs text-escola-creme">
+                        {v.id.replace("video-", "#")} · {v.titulo}
+                      </p>
+                      <p className="text-[10px] text-escola-creme-50">
+                        {v.categorias.join(" + ")}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-1.5 flex flex-wrap gap-1">
+                    <AgPill
+                      label="prompts"
+                      ok={v.status.promptsCount > 0}
+                      value={String(v.status.promptsCount)}
+                    />
+                    <AgPill
+                      label="imagens"
+                      ok={v.status.promptsCount > 0 && v.status.imagesCount >= v.status.promptsCount}
+                      partial={
+                        v.status.imagesCount > 0 && v.status.imagesCount < v.status.promptsCount
+                      }
+                      value={`${v.status.imagesCount}`}
+                    />
+                    <AgPill
+                      label="clips"
+                      ok={v.status.clipsCount > 0 && v.status.clipsCount >= v.status.promptsCount}
+                      partial={
+                        v.status.clipsCount > 0 && v.status.clipsCount < v.status.promptsCount
+                      }
+                      value={`${v.status.clipsCount}`}
+                    />
+                    <AgPill
+                      label="render"
+                      ok={v.status.videoRendered}
+                      value={v.status.videoRendered ? "✓" : "×"}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function AgPill({
+  label,
+  value,
+  ok,
+  partial,
+}: {
+  label: string;
+  value: string;
+  ok?: boolean;
+  partial?: boolean;
+}) {
+  let cls = "bg-escola-border text-escola-creme-50";
+  if (ok) cls = "bg-escola-dourado/10 text-escola-dourado";
+  else if (partial) cls = "bg-escola-terracota/10 text-escola-terracota";
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] ${cls}`}>
+      <span className="text-[9px] uppercase tracking-wider opacity-70">{label}</span>
+      <span className="font-semibold">{value}</span>
+    </span>
+  );
+}
+
+// ── Widget de estado de recuperação Runway ─────────────────────────────────
+// Mostra clips guardados vs tasks pendentes. Ajuda a Vivianne a perceber se
+// "nada aparece" porque:
+//   (a) os taskIds foram guardados mas o Runway ainda os está a gerar ou
+//       os outputs já expiraram → tenta recover-all.
+//   (b) NADA foi guardado (save-task falhou silenciosamente) → única via
+//       é dev.runwayml.com > Request History + fallback manual.
+
+function RecoveryStatusWidget() {
+  const [status, setStatus] = useState<{
+    clipsCount: number;
+    tasksCount: number;
+    tasksRecent: Array<{ taskId: string; imageName?: string; ageMinutes?: number }>;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/thinkdiffusion/status", { cache: "no-store" });
+      const d = await r.json();
+      setStatus(d);
+    } catch {
+      // keep null
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  if (loading && !status) {
+    return (
+      <div className="mb-4 rounded-lg border border-escola-border bg-escola-bg-card p-4 text-xs text-escola-creme-50">
+        A verificar estado da biblioteca...
+      </div>
+    );
+  }
+  if (!status) return null;
+
+  const noTasks = status.tasksCount === 0;
+  const manyPending = status.tasksCount > 0;
+
+  return (
+    <div
+      className={`mb-4 rounded-lg border p-4 text-xs ${
+        noTasks
+          ? "border-red-700/50 bg-red-950/10"
+          : manyPending
+            ? "border-yellow-700/50 bg-yellow-950/10"
+            : "border-escola-border bg-escola-bg-card"
+      }`}
+    >
+      <div className="mb-2 flex items-center justify-between">
+        <h4 className="text-sm font-semibold text-escola-creme">📊 Estado da biblioteca</h4>
+        <button
+          onClick={load}
+          className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+        >
+          🔄 Refrescar
+        </button>
+      </div>
+      <div className="mb-2 flex flex-wrap gap-3 text-escola-creme-50">
+        <span>
+          Clips guardados: <strong className="text-escola-creme">{status.clipsCount}</strong>
+        </span>
+        <span>
+          Tasks pendentes: <strong className={status.tasksCount > 0 ? "text-yellow-300" : "text-escola-creme"}>{status.tasksCount}</strong>
+        </span>
+      </div>
+
+      {noTasks && status.clipsCount === 0 && (
+        <p className="text-red-300">
+          Nenhum clip e nenhuma task pendente. Se submeteste clips e deu timeout, os taskIds
+          não foram guardados em Supabase (erro silencioso do save-task). Tens duas opções:
+          <br />1) Voltar a gerar (custo novo).
+          <br />2) Ir a <a className="underline" href="https://dev.runwayml.com" target="_blank" rel="noopener">dev.runwayml.com</a> → Request History → copiar taskIds e colar no fallback manual em baixo.
+        </p>
+      )}
+      {noTasks && status.clipsCount > 0 && (
+        <p className="text-escola-creme-50">
+          Biblioteca OK, sem tasks pendentes. Se falta algum clip, provavelmente o submit foi feito sem passar pelo save-task — vê dev.runwayml.com para os mais recentes.
+        </p>
+      )}
+      {manyPending && (
+        <>
+          <p className="mb-2 text-yellow-300">
+            {status.tasksCount} task{status.tasksCount === 1 ? "" : "s"} pendente{status.tasksCount === 1 ? "" : "s"} — cliquem em <strong>RECUPERAR TUDO</strong> em baixo para consultar o Runway.
+          </p>
+          {status.tasksRecent.length > 0 && (
+            <details className="mt-2">
+              <summary className="cursor-pointer text-[10px] text-escola-creme-50">
+                Ver {status.tasksRecent.length} mais recentes
+              </summary>
+              <ul className="mt-1 space-y-0.5 pl-4 text-[10px] text-escola-creme-50">
+                {status.tasksRecent.map((t) => (
+                  <li key={t.taskId}>
+                    <code className="text-escola-creme">{t.taskId.slice(0, 8)}</code>
+                    {t.imageName && <> · {t.imageName}</>}
+                    {typeof t.ageMinutes === "number" && <> · há {t.ageMinutes}min</>}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </>
+      )}
     </div>
   );
 }
