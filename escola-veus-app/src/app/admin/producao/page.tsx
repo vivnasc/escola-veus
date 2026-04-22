@@ -5,6 +5,8 @@ import { useUniverse } from "@/contexts/UniverseContext";
 
 type Track = { href: string; label: string; desc: string };
 
+// Shorts Loranne é pólo independente; o acesso está no dashboard admin,
+// fora dos universos Cursos/AG.
 const TRACKS_CURSOS: Track[] = [
   {
     href: "/admin/producao/aulas",
@@ -15,11 +17,6 @@ const TRACKS_CURSOS: Track[] = [
     href: "/admin/producao/funil",
     label: "Funil",
     desc: "122 vídeos Nomear (Colecção B): áudio + imagens abstractas + clips + texto + render.",
-  },
-  {
-    href: "/admin/producao/shorts",
-    label: "Shorts (Loranne)",
-    desc: "30s verticais (TikTok / IG Reels / YouTube Shorts) com Loranne + versos.",
   },
   {
     href: "/admin/producao/audios",

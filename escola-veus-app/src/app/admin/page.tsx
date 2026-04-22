@@ -168,13 +168,33 @@ export default function AdminDashboard() {
         </section>
       )}
 
+      {/* Loranne — pólo independente (canal YouTube próprio + TikTok + IG).
+          Fica visível em qualquer universo (Cursos ou AG) porque não é
+          sub-categoria de nenhum dos dois. */}
+      <section className="mb-8 rounded-xl border border-purple-400/40 bg-purple-400/5 p-4">
+        <div className="mb-2 flex items-center justify-between">
+          <div>
+            <p className="text-sm font-semibold text-purple-300">🎵 Loranne</p>
+            <p className="text-xs text-escola-creme-50">
+              Pólo independente — canal YouTube próprio + TikTok + Instagram. Gerido à parte.
+            </p>
+          </div>
+          <Link
+            href="/admin/producao/shorts"
+            className="rounded bg-purple-400/20 px-3 py-1.5 text-xs font-semibold text-purple-200 hover:bg-purple-400/30"
+          >
+            Abrir Shorts Loranne →
+          </Link>
+        </div>
+      </section>
+
       {/* Quick actions */}
       <h3 className="mb-3 text-sm font-medium text-escola-creme">
         Accoes rapidas
       </h3>
       <div className="grid grid-cols-2 gap-3">
         <QuickAction href="/admin/alunas" label="Ver alunas" />
-        <QuickAction href="/admin/escola" label="Gerir escola" />
+        <QuickAction href="/admin/escola" label="Gerir cursos" />
         <QuickAction href="/admin/producao/funil" label="Funil Nomear" />
         <QuickAction href="/admin/producao/audios" label="Gerar audios em massa" />
         <QuickAction href="/admin/analytics" label="Ver analytics" />

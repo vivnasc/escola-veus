@@ -9,10 +9,11 @@ type Tab = { href: string; label: string; exact?: boolean };
 // Tabs organizadas por universo. Em modo "cursos" mostramos só o que
 // pertence à Escola dos Véus; em modo "ag" só a produção Ancient Ground.
 // Os URLs são os mesmos de antes — não partimos bookmarks.
+// Shorts Loranne NÃO aparece aqui — é pólo independente, com card visível
+// no dashboard admin. Mantemos a página /admin/producao/shorts intacta.
 const TABS_CURSOS: Tab[] = [
   { href: "/admin/producao/aulas", label: "Aulas" },
   { href: "/admin/producao/funil", label: "Funil" },
-  { href: "/admin/producao/shorts", label: "Shorts (Loranne)" },
   { href: "/admin/producao/audios", label: "Áudios" },
 ];
 

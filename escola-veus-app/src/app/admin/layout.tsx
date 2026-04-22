@@ -115,7 +115,7 @@ function UniverseSwitcher({
   onChange: (u: Universe) => void;
 }) {
   const options: { key: Universe; label: string; subtitle: string }[] = [
-    { key: "cursos", label: "Cursos", subtitle: "Escola dos Véus · Loranne · alunas" },
+    { key: "cursos", label: "Cursos", subtitle: "Escola dos Véus · alunas · aulas · funil" },
     { key: "ag", label: "Ancient Ground", subtitle: "Canal próprio · natureza · ambiente" },
   ];
   return (
