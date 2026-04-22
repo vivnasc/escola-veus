@@ -10,19 +10,24 @@ export const runtime = "nodejs";
 /**
  * POST /api/admin/funil/generate-thumbnail
  *
- * Thumbnail YouTube (1280x720) a partir da mandala brand do intro.mp4 do
- * funil (youtube/brand/intro.mp4) + texto do episódio via ffmpeg drawtext.
+ * Thumbnail YouTube (1280x720) a partir do VÍDEO FINAL do episódio (MP4
+ * renderizado pelo pipeline funil) + texto via ffmpeg drawtext.
+ *
+ * Cada episódio tem a sua thumbnail porque o frame é extraído do seu
+ * próprio vídeo (que tem os clips Runway específicos do ep). Se ainda
+ * não houver vídeo renderizado, faz fallback para o intro.mp4 brand
+ * (útil para gerar thumbnail antes da montagem).
  *
  * Porquê ffmpeg + drawtext (e não sharp+SVG):
  *   - @ffmpeg-installer em Vercel tem drawtext (libfreetype compilado)
- *   - MAS não tem fontconfig → `font='Serif'` falhava com "Cannot find
- *     a valid font for the family Serif"
+ *   - MAS não tem fontconfig → `font='Serif'` falha
  *   - Solução: `fontfile=<abs-path-to-bundled-ttf>` bypassa fontconfig
- *     e carrega o TTF directamente (via libfreetype).
- *   - sharp+SVG com @font-face data URI não funciona em Vercel porque
- *     o librsvg usado internamente não resolve as fontes embebidas.
+ *     e carrega o TTF directamente.
  *
- * Body: { titulo, epKey?, filename? }
+ * Body: { titulo, epKey?, filename?, videoUrl?, frameTimeSec? }
+ *   - videoUrl: URL do MP4 final do episódio. Se omitido, usa intro.mp4.
+ *   - frameTimeSec: segundo a extrair (default 10 — já dentro do 1º
+ *     clip Runway, depois da intro 5s + crossfade).
  */
 
 async function getFfmpegPath(): Promise<string> {
@@ -88,11 +93,14 @@ function wrapLines(text: string, maxChars: number): string[] {
 export async function POST(req: NextRequest) {
   let workDir: string | null = null;
   try {
-    const { titulo, epKey, filename } = (await req.json()) as {
-      titulo?: string;
-      epKey?: string;
-      filename?: string;
-    };
+    const { titulo, epKey, filename, videoUrl, frameTimeSec } =
+      (await req.json()) as {
+        titulo?: string;
+        epKey?: string;
+        filename?: string;
+        videoUrl?: string;
+        frameTimeSec?: number;
+      };
 
     if (!titulo || typeof titulo !== "string") {
       return NextResponse.json({ erro: "titulo obrigatorio." }, { status: 400 });
@@ -107,10 +115,25 @@ export async function POST(req: NextRequest) {
     workDir = await mkdtemp(join(tmpdir(), "funil-thumb-"));
     const ffmpeg = await getFfmpegPath();
 
-    // ── Download brand intro.mp4 ──────────────────────────────────────────
-    const introUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/brand/intro.mp4`;
-    const introPath = join(workDir, "intro.mp4");
-    await downloadTo(introUrl, introPath);
+    // ── Resolve source video: ep final -> fallback intro.mp4 ─────────────
+    // Se videoUrl foi passado (UI sabe qual é o MP4 final do episódio),
+    // usa-o. Senão fallback para o intro brand (thumbnail genérica —
+    // útil quando a thumbnail é pedida antes da montagem final).
+    const sourceUrl =
+      videoUrl ||
+      `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/brand/intro.mp4`;
+    const srcPath = join(workDir, "src.mp4");
+    await downloadTo(sourceUrl, srcPath);
+
+    // Frame a extrair. Default 10s:
+    //   - Se vídeo tem intro (5s) + crossfade 0.5s, estamos no 1º clip Runway
+    //   - Se vídeo não tem intro (só brand intro.mp4), 2.5s é o pico brilho
+    const frameT =
+      typeof frameTimeSec === "number"
+        ? Math.max(0, frameTimeSec)
+        : videoUrl
+          ? 10
+          : 2.5;
 
     const outPath = join(workDir, "thumb.png");
 
@@ -168,11 +191,11 @@ export async function POST(req: NextRequest) {
       ...drawTituloLines,
     ].join(",");
 
-    // ffmpeg -ss 2.5 -i intro.mp4 -frames:v 1 -vf "<filter>" out.png
+    // ffmpeg -ss <t> -i src.mp4 -frames:v 1 -vf "<filter>" out.png
     await runFfmpeg(ffmpeg, [
       "-y",
-      "-ss", "2.5",
-      "-i", introPath,
+      "-ss", String(frameT),
+      "-i", srcPath,
       "-frames:v", "1",
       "-vf", filterComplex,
       outPath,

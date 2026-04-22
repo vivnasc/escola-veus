@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 
@@ -611,56 +611,18 @@ export default function FunilMontarPage() {
       </section>
 
       {/* ── 6. Thumbnail YouTube ─────────────────────────────────── */}
-      <section className="mt-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">6. Thumbnail YouTube</h3>
-        <p className="mb-3 text-xs text-escola-creme-50">
-          Composta a partir da mandala + título do episódio. Upload depois no YouTube Studio.
-        </p>
-        <div className="flex flex-wrap items-center gap-2 text-xs">
-          <button
-            onClick={async () => {
-              setThumbGenerating(true);
-              setThumbErr(null);
-              setThumbUrl(null);
-              try {
-                const titulo = ep.label.includes("—") ? ep.label.split("—").slice(1).join("—").trim() : ep.label;
-                const r = await fetch("/api/admin/funil/generate-thumbnail", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ titulo, epKey: ep.key, filename: ep.key }),
-                });
-                const d = await r.json();
-                if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
-                setThumbUrl(d.url);
-              } catch (e) {
-                setThumbErr(e instanceof Error ? e.message : String(e));
-              } finally {
-                setThumbGenerating(false);
-              }
-            }}
-            disabled={thumbGenerating}
-            className="rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40 disabled:opacity-50"
-          >
-            {thumbGenerating ? "A gerar..." : "Gerar thumbnail"}
-          </button>
-          {thumbUrl && (
-            <a
-              href={thumbUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado hover:bg-escola-dourado/20"
-            >
-              ✓ abrir / descarregar PNG
-            </a>
-          )}
-          {thumbErr && <span className="text-escola-terracota">{thumbErr}</span>}
-        </div>
-        {thumbUrl && (
-          <div className="mt-3">
-            <img src={thumbUrl} alt="Thumbnail" className="w-full max-w-2xl rounded border border-escola-border" />
-          </div>
-        )}
-      </section>
+      <ThumbnailSection
+        videoUrl={videoUrl}
+        epLabel={ep.label}
+        epKey={ep.key}
+        thumbUrl={thumbUrl}
+        setThumbUrl={setThumbUrl}
+        thumbGenerating={thumbGenerating}
+        setThumbGenerating={setThumbGenerating}
+        thumbErr={thumbErr}
+        setThumbErr={setThumbErr}
+        onGenerated={(url, name) => setAllThumbs((prev) => [{ name, url }, ...prev])}
+      />
 
       {/* ── 7. Publicar no YouTube ────────────────────────────────── */}
       {videoUrl && (
@@ -1003,6 +965,179 @@ function CopyRow({
         onClick={(e) => (e.target as HTMLTextAreaElement).select()}
       />
     </div>
+  );
+}
+
+// ─── Thumbnail Section ──────────────────────────────────────────────────────
+// Extrai um frame do VÍDEO FINAL do episódio (não do intro brand — senão
+// todas as thumbnails ficavam iguais). Slider permite escolher o segundo.
+// Preview do frame actual antes de queimar o texto (para o user validar a
+// escolha). Se ainda não há vídeo final, usa intro.mp4 como fallback.
+
+function ThumbnailSection({
+  videoUrl,
+  epLabel,
+  epKey,
+  thumbUrl,
+  setThumbUrl,
+  thumbGenerating,
+  setThumbGenerating,
+  thumbErr,
+  setThumbErr,
+  onGenerated,
+}: {
+  videoUrl: string | null;
+  epLabel: string;
+  epKey: string;
+  thumbUrl: string | null;
+  setThumbUrl: (u: string | null) => void;
+  thumbGenerating: boolean;
+  setThumbGenerating: (b: boolean) => void;
+  thumbErr: string | null;
+  setThumbErr: (s: string | null) => void;
+  onGenerated: (url: string, name: string) => void;
+}) {
+  // Tempo default: 10s se há vídeo final (após intro 5s + crossfade, já no 1º
+  // clip Runway do ep). 2.5s se fallback intro.mp4 (pico de brilho mandala).
+  const defaultFrameT = videoUrl ? 10 : 2.5;
+  const [frameT, setFrameT] = useState(defaultFrameT);
+  const previewRef = useRef<HTMLVideoElement>(null);
+
+  // Ajusta default quando videoUrl aparece (depois de render)
+  useEffect(() => {
+    setFrameT(videoUrl ? 10 : 2.5);
+  }, [videoUrl]);
+
+  // Seek no preview video para o frame escolhido
+  useEffect(() => {
+    const v = previewRef.current;
+    if (v && videoUrl) {
+      try { v.currentTime = frameT; } catch { /* ignore */ }
+    }
+  }, [frameT, videoUrl]);
+
+  const duration = previewRef.current?.duration ?? 0;
+  const maxFrameT = duration > 0 ? Math.max(1, Math.floor(duration - 0.5)) : 120;
+
+  return (
+    <section className="mt-4 rounded-xl border border-escola-border bg-escola-card p-4">
+      <h3 className="mb-2 text-sm text-escola-creme">6. Thumbnail YouTube</h3>
+      <p className="mb-3 text-xs text-escola-creme-50">
+        {videoUrl
+          ? "Frame extraído do TEU vídeo final do episódio. Usa o slider para escolher o momento que melhor representa o ep."
+          : "Ainda não há vídeo final renderizado — vai ser usada a mandala brand como fallback. Monta o vídeo primeiro (secção 5) para uma thumbnail única."}
+      </p>
+
+      {/* Preview do frame escolhido (antes de queimar o texto) */}
+      {videoUrl && (
+        <div className="mb-3">
+          <video
+            ref={previewRef}
+            src={videoUrl}
+            className="w-full max-w-2xl rounded border border-escola-border"
+            muted
+            playsInline
+            preload="auto"
+          />
+          <div className="mt-2 flex items-center gap-3 text-xs">
+            <span className="text-escola-creme-50 whitespace-nowrap">
+              Frame: <b className="text-escola-creme">{frameT.toFixed(1)}s</b>
+            </span>
+            <input
+              type="range"
+              min="0"
+              max={maxFrameT}
+              step="0.5"
+              value={frameT}
+              onChange={(e) => setFrameT(parseFloat(e.target.value))}
+              className="flex-1"
+            />
+            <button
+              onClick={() => {
+                const cur = previewRef.current?.currentTime;
+                if (typeof cur === "number") setFrameT(+cur.toFixed(1));
+              }}
+              className="whitespace-nowrap rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
+              title="Usa o tempo actual do leitor"
+            >
+              📍 daqui
+            </button>
+          </div>
+          <p className="mt-1 text-[10px] text-escola-creme-50">
+            💡 Reproduz o vídeo, pausa no momento que quiseres e clica &quot;📍 daqui&quot;. Ou arrasta o slider.
+          </p>
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center gap-2 text-xs">
+        <button
+          onClick={async () => {
+            setThumbGenerating(true);
+            setThumbErr(null);
+            try {
+              const titulo = epLabel.includes("—")
+                ? epLabel.split("—").slice(1).join("—").trim()
+                : epLabel;
+              const r = await fetch("/api/admin/funil/generate-thumbnail", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  titulo,
+                  epKey,
+                  filename: epKey,
+                  videoUrl: videoUrl || undefined,
+                  frameTimeSec: frameT,
+                }),
+              });
+              const d = await r.json();
+              if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+              setThumbUrl(d.url);
+              if (d.url) {
+                const name = d.url.split("/").pop() || `${epKey}-${Date.now()}.png`;
+                onGenerated(d.url, name);
+              }
+            } catch (e) {
+              setThumbErr(e instanceof Error ? e.message : String(e));
+            } finally {
+              setThumbGenerating(false);
+            }
+          }}
+          disabled={thumbGenerating}
+          className="rounded bg-escola-dourado px-4 py-2 font-semibold text-escola-bg disabled:opacity-50"
+        >
+          {thumbGenerating
+            ? "A gerar..."
+            : thumbUrl
+              ? "↻ Regenerar com este frame"
+              : "Gerar thumbnail deste frame"}
+        </button>
+        {thumbUrl && (
+          <a
+            href={thumbUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado hover:bg-escola-dourado/20"
+          >
+            ✓ abrir / descarregar PNG
+          </a>
+        )}
+        {thumbErr && <span className="text-escola-terracota">{thumbErr}</span>}
+      </div>
+
+      {thumbUrl && (
+        <div className="mt-3">
+          <p className="mb-1 text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Thumbnail gerada (1280×720)
+          </p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={thumbUrl}
+            alt="Thumbnail"
+            className="w-full max-w-2xl rounded border border-escola-border"
+          />
+        </div>
+      )}
+    </section>
   );
 }
 
