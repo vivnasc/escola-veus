@@ -33,6 +33,11 @@ export async function POST(req: NextRequest) {
     thumbnailUrl,
     subtitlesUrl,
     subtitleStyle,
+    // Se true (default), o render ajusta clipDuration proporcionalmente à
+    // duração da narração para evitar voz-ahead-of-imagens. Ver render.mjs
+    // para a fórmula. Pode ser desligado com false se o user quiser manter
+    // clipDuration fixo (10s).
+    syncToNarration = true,
     seo,
   } = body || {};
 
@@ -67,6 +72,7 @@ export async function POST(req: NextRequest) {
     thumbnailUrl: thumbnailUrl || null,
     subtitlesUrl: subtitlesUrl || null,
     subtitleStyle: subtitleStyle || null,
+    syncToNarration: syncToNarration !== false,
     seo: seo || null,
     createdAt: new Date().toISOString(),
   };
