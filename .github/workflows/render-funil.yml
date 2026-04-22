@@ -27,13 +27,17 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install FFmpeg
-        uses: FedericoCarboni/setup-ffmpeg@v3
-        with:
-          ffmpeg-version: "release"
-
-      - name: Show FFmpeg version
-        run: ffmpeg -version | head -3
+      - name: Install FFmpeg (apt — inclui drawtext/libfreetype)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu
+          ffmpeg -version | head -3
+          # Sanity-check: o render usa drawtext para os títulos da intro/outro.
+          # Se faltar, abortar já em vez de só falhar no render.
+          ffmpeg -hide_banner -filters 2>&1 | grep -q "\\bdrawtext\\b" \
+            || (echo "ERRO: filtro drawtext ausente na build do ffmpeg" && exit 1)
+          test -f /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf \
+            || (echo "ERRO: DejaVuSerif.ttf ausente" && exit 1)
 
       - name: Render
         env:
