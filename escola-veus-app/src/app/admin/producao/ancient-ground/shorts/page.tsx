@@ -87,6 +87,8 @@ export default function AncientGroundShortsPage() {
   const [renderLabel, setRenderLabel] = useState("");
   const [renderResult, setRenderResult] = useState<string | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
+  // Incrementado sempre que um short termina — refresca a lista em cima.
+  const [recentReloadKey, setRecentReloadKey] = useState(0);
 
   const overlay1Ref = useRef<HTMLDivElement>(null);
   const overlay2Ref = useRef<HTMLDivElement>(null);
@@ -256,6 +258,7 @@ export default function AncientGroundShortsPage() {
           setRenderResult(data.videoUrl);
           setRenderProgress(100);
           setRenderLabel("Short pronto!");
+          setRecentReloadKey((k) => k + 1);
           break;
         }
       }
@@ -286,11 +289,13 @@ export default function AncientGroundShortsPage() {
         </button>
       </div>
 
-      {/* Últimos shorts AG gerados (do Supabase, cross-device) */}
+      {/* Últimos shorts AG gerados (do Supabase, cross-device).
+          reloadKey refresca automaticamente quando um novo short termina. */}
       <RecentRenders
         kind="short"
         title="📂 Últimos shorts AG gerados"
         subtitle="Aparece em qualquer dispositivo — clica num para partilhar ou copiar SEO."
+        reloadKey={recentReloadKey}
       />
 
       {/* 1. CLIPS */}
