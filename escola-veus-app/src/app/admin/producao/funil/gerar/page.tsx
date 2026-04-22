@@ -43,10 +43,26 @@ export default function FunilGerarPage() {
   const [filter, setFilter] = useState<string>("trailer");
 
   const [images, setImages] = useState<UploadedImage[]>([]);
+  const [loadingAssets, setLoadingAssets] = useState(true);
   const [uploading, setUploading] = useState<string | null>(null);
   const [generatingFal, setGeneratingFal] = useState<string | null>(null);
   const [falProgress, setFalProgress] = useState<{ promptId: string; done: number; total: number } | null>(null);
   const [clips, setClips] = useState<Record<string, ClipState>>({});
+  // Motion prompts override em Supabase (editados via /admin/producao/funil/motions).
+  // Se Supabase tiver a versão guardada, usa essa; senão cai no JSON bundled.
+  const [motionOverride, setMotionOverride] = useState<Record<string, string> | null>(null);
+
+  // ── Load motion prompts editados em Supabase (fallback: JSON bundled) ──
+  useEffect(() => {
+    fetch("/api/admin/prompts/runway-motion/load", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.prompts && typeof d.prompts === "object") {
+          setMotionOverride(d.prompts);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // ── Load prompts from Supabase Storage (with seed fallback) ────────────
   useEffect(() => {
@@ -61,7 +77,11 @@ export default function FunilGerarPage() {
   }, []);
 
   // ── Load existing images + clips ──────────────────────────────────────
+  // Este endpoint faz ~100+ list-calls ao Supabase (1 por cada subpasta de
+  // prompt × 2 orientações) — pode demorar 5-15s. loadingAssets permite à UI
+  // mostrar "a carregar" em vez de "sem imagens" nesse período.
   const reloadAssets = useCallback(async () => {
+    setLoadingAssets(true);
     try {
       const [imgRes, clipRes] = await Promise.all([
         fetch("/api/admin/thinkdiffusion/list-images").then((r) => r.json()),
@@ -84,6 +104,8 @@ export default function FunilGerarPage() {
       }
     } catch {
       /* silent */
+    } finally {
+      setLoadingAssets(false);
     }
   }, []);
 
@@ -114,13 +136,22 @@ export default function FunilGerarPage() {
     return map;
   }, [images]);
 
-  const getMotionPrompt = useCallback((imageName: string) => {
-    const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
-    return (
-      (motionPrompts as Record<string, string>)[promptId] ||
-      (motionPrompts as Record<string, string>)["_default"]
-    );
-  }, []);
+  const getMotionPrompt = useCallback(
+    (imageName: string) => {
+      const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
+      // Prioridade: override em Supabase (editado em /funil/motions) → bundle
+      // JSON → _default. motionOverride pode ser null se Supabase vazio.
+      const override = motionOverride || {};
+      const bundle = motionPrompts as Record<string, string>;
+      return (
+        override[promptId] ||
+        bundle[promptId] ||
+        override["_default"] ||
+        bundle["_default"]
+      );
+    },
+    [motionOverride],
+  );
 
   // ── Actions ────────────────────────────────────────────────────────────
   const copy = (text: string, tag: string) => {
@@ -404,6 +435,15 @@ export default function FunilGerarPage() {
                 uploading={uploading === p.id}
                 onFiles={(files) => uploadForPrompt(p.id, files)}
               />
+
+              {/* Loading state: evita impressao de "vazio" enquanto Supabase
+                  responde (o endpoint list-images demora 5-15s). */}
+              {loadingAssets && imgs.length === 0 && (
+                <div className="mt-3 flex items-center justify-center gap-2 rounded border border-dashed border-escola-border py-4 text-[11px] text-escola-creme-50">
+                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-escola-dourado" />
+                  A carregar imagens já guardadas em Supabase...
+                </div>
+              )}
 
               {/* Images */}
               {imgs.length > 0 && (
