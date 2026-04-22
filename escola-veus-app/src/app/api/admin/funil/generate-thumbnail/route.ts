@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFile } from "node:fs/promises";
+import { spawn } from "node:child_process";
+import { mkdtemp, writeFile, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 export const maxDuration = 60;
@@ -8,25 +10,67 @@ export const runtime = "nodejs";
 /**
  * POST /api/admin/funil/generate-thumbnail
  *
- * Gera thumbnail YouTube (1280x720) a partir da mandala brand + título do
- * episódio. Usa sharp + SVG com a fonte DejaVu Serif EMBEBIDA como data URI
- * — funciona em Vercel serverless sem depender de fontconfig/ffmpeg/fonts
- * do sistema (problemas conhecidos em AWS Lambda).
+ * Thumbnail YouTube (1280x720) a partir do VÍDEO FINAL do episódio (MP4
+ * renderizado pelo pipeline funil) + texto via ffmpeg drawtext.
  *
- * Body: { titulo, epKey?, filename? }
- *   titulo: texto principal (ex: "A culpa que chega antes da compra")
- *   epKey: sufixo para nome do ficheiro (ex: "ep01")
- *   filename: nome base opcional
+ * Cada episódio tem a sua thumbnail porque o frame é extraído do seu
+ * próprio vídeo (que tem os clips Runway específicos do ep). Se ainda
+ * não houver vídeo renderizado, faz fallback para o intro.mp4 brand
+ * (útil para gerar thumbnail antes da montagem).
  *
- * Pipeline:
- *  1. Lê public/hero-mandala.png + assets/fonts/DejaVuSerif(-Bold).ttf
- *  2. Constrói SVG 1280x720 com texto cream sobre gradient escurecedor
- *  3. Composite via sharp (mandala redimensionada + SVG overlay)
- *  4. Output PNG, upload Supabase youtube/thumbnails/
+ * Porquê ffmpeg + drawtext (e não sharp+SVG):
+ *   - @ffmpeg-installer em Vercel tem drawtext (libfreetype compilado)
+ *   - MAS não tem fontconfig → `font='Serif'` falha
+ *   - Solução: `fontfile=<abs-path-to-bundled-ttf>` bypassa fontconfig
+ *     e carrega o TTF directamente.
+ *
+ * Body: { titulo, epKey?, filename?, videoUrl?, frameTimeSec? }
+ *   - videoUrl: URL do MP4 final do episódio. Se omitido, usa intro.mp4.
+ *   - frameTimeSec: segundo a extrair (default 10 — já dentro do 1º
+ *     clip Runway, depois da intro 5s + crossfade).
  */
 
-const WIDTH = 1280;
-const HEIGHT = 720;
+async function getFfmpegPath(): Promise<string> {
+  const mod = await import("@ffmpeg-installer/ffmpeg");
+  const p = (mod as { path?: string; default?: { path: string } }).path
+    ?? (mod as { default?: { path: string } }).default?.path;
+  if (!p) throw new Error("ffmpeg binary path nao encontrado");
+  return p;
+}
+
+function runFfmpeg(ffmpeg: string, args: string[]): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const p = spawn(ffmpeg, args);
+    let err = "";
+    p.stderr.on("data", (c) => (err += c.toString()));
+    p.on("error", reject);
+    p.on("close", (code) =>
+      code === 0 ? resolve() : reject(new Error(`ffmpeg ${code}: ${err.slice(-500)}`)),
+    );
+  });
+}
+
+async function downloadTo(url: string, dest: string) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status} ${url}`);
+  await writeFile(dest, new Uint8Array(await r.arrayBuffer()));
+}
+
+/** Escapa caracteres especiais de drawtext (ffmpeg) */
+function escapeDrawtextText(s: string): string {
+  return s
+    .replace(/\\/g, "\\\\")
+    .replace(/'/g, "\\\\'")
+    .replace(/:/g, "\\:")
+    .replace(/%/g, "\\%");
+}
+
+/** Escapa path para uso em options do filter (colons e backslashes) */
+function escapeFilterPath(p: string): string {
+  // Em Linux: /var/task/escola-veus-app/assets/fonts/DejaVuSerif.ttf
+  // Colons no path precisam de ser escapados para o parser do filter_complex.
+  return p.replace(/\\/g, "/").replace(/:/g, "\\:");
+}
 
 /** Quebra texto em linhas com limite de caracteres por linha */
 function wrapLines(text: string, maxChars: number): string[] {
@@ -46,23 +90,17 @@ function wrapLines(text: string, maxChars: number): string[] {
   return lines;
 }
 
-/** Escapa entidades XML no texto para ir dentro de <text>...</text> */
-function xmlEscape(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
-
 export async function POST(req: NextRequest) {
+  let workDir: string | null = null;
   try {
-    const { titulo, epKey, filename } = (await req.json()) as {
-      titulo?: string;
-      epKey?: string;
-      filename?: string;
-    };
+    const { titulo, epKey, filename, videoUrl, frameTimeSec } =
+      (await req.json()) as {
+        titulo?: string;
+        epKey?: string;
+        filename?: string;
+        videoUrl?: string;
+        frameTimeSec?: number;
+      };
 
     if (!titulo || typeof titulo !== "string") {
       return NextResponse.json({ erro: "titulo obrigatorio." }, { status: 400 });
@@ -74,74 +112,98 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "Supabase nao configurado." }, { status: 500 });
     }
 
-    // ── Assets (mandala + fontes embebidas) ───────────────────────────────
-    // process.cwd() aponta para escola-veus-app/ em dev e em Vercel build.
+    workDir = await mkdtemp(join(tmpdir(), "funil-thumb-"));
+    const ffmpeg = await getFfmpegPath();
+
+    // ── Resolve source video: ep final -> fallback intro.mp4 ─────────────
+    // Se videoUrl foi passado (UI sabe qual é o MP4 final do episódio),
+    // usa-o. Senão fallback para o intro brand (thumbnail genérica —
+    // útil quando a thumbnail é pedida antes da montagem final).
+    const sourceUrl =
+      videoUrl ||
+      `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/brand/intro.mp4`;
+    const srcPath = join(workDir, "src.mp4");
+    await downloadTo(sourceUrl, srcPath);
+
+    // Frame a extrair. Default 10s:
+    //   - Se vídeo tem intro (5s) + crossfade 0.5s, estamos no 1º clip Runway
+    //   - Se vídeo não tem intro (só brand intro.mp4), 2.5s é o pico brilho
+    const frameT =
+      typeof frameTimeSec === "number"
+        ? Math.max(0, frameTimeSec)
+        : videoUrl
+          ? 10
+          : 2.5;
+
+    const outPath = join(workDir, "thumb.png");
+
+    // ── Resolve paths das fonts bundled ──────────────────────────────────
+    // Bundled em assets/fonts/ → incluídos no deploy Vercel via
+    // outputFileTracingIncludes em next.config.ts.
     const cwd = process.cwd();
-    const [mandalaBuf, fontRegularBuf, fontBoldBuf] = await Promise.all([
-      readFile(join(cwd, "public", "hero-mandala.png")),
-      readFile(join(cwd, "assets", "fonts", "DejaVuSerif.ttf")),
-      readFile(join(cwd, "assets", "fonts", "DejaVuSerif-Bold.ttf")),
+    const fontRegular = escapeFilterPath(
+      join(cwd, "assets", "fonts", "DejaVuSerif.ttf"),
+    );
+    const fontBold = escapeFilterPath(
+      join(cwd, "assets", "fonts", "DejaVuSerif-Bold.ttf"),
+    );
+
+    // ── Texto: brand pequeno dourado cima + título grande cream centro ──
+    const tituloLines = wrapLines(titulo.toUpperCase(), 22);
+    const tituloFontsize =
+      tituloLines.length >= 3 ? 72 :
+      tituloLines.length === 2 ? 88 :
+      104;
+
+    const drawBrand =
+      `drawtext=fontfile='${fontRegular}':` +
+      `text='${escapeDrawtextText("A ESCOLA DOS VÉUS")}':` +
+      `fontsize=44:fontcolor=0xD4A853:` +
+      `x=(w-text_w)/2:y=80:` +
+      `borderw=0`;
+
+    // Cada linha do título numa drawtext separada (para controlo exacto
+    // do y e line-spacing — "\n" em drawtext tem comportamento estranho).
+    const titleBlockH = tituloLines.length * tituloFontsize * 1.15;
+    const titleY0 = Math.round((720 - titleBlockH) / 2 + tituloFontsize * 0.8);
+
+    const drawTituloLines = tituloLines.map((ln, i) => {
+      const y = titleY0 + Math.round(i * tituloFontsize * 1.15);
+      return (
+        `drawtext=fontfile='${fontBold}':` +
+        `text='${escapeDrawtextText(ln)}':` +
+        `fontsize=${tituloFontsize}:fontcolor=0xF5F0E6:` +
+        `x=(w-text_w)/2:y=${y}:` +
+        // Borda preta fina para contraste em fundos médios
+        `borderw=3:bordercolor=0x000000`
+      );
+    });
+
+    // ── Filter chain ──────────────────────────────────────────────────────
+    const filterComplex = [
+      // 1. Scale+crop para 1280x720 (mandala ocupa frame central)
+      `[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1280:720,setsar=1`,
+      // 2. Vignette + curves escurecedor para contraste com texto
+      `curves=darker`,
+      // 3. Draw brand cima
+      drawBrand,
+      // 4. Draw título (linhas)
+      ...drawTituloLines,
+    ].join(",");
+
+    // ffmpeg -ss <t> -i src.mp4 -frames:v 1 -vf "<filter>" out.png
+    await runFfmpeg(ffmpeg, [
+      "-y",
+      "-ss", String(frameT),
+      "-i", srcPath,
+      "-frames:v", "1",
+      "-vf", filterComplex,
+      outPath,
     ]);
 
-    const fontRegularB64 = fontRegularBuf.toString("base64");
-    const fontBoldB64 = fontBoldBuf.toString("base64");
+    const pngBuf = await readFile(outPath);
 
-    // ── Texto: brand pequeno + título quebrado em linhas ─────────────────
-    const tituloLines = wrapLines(titulo.toUpperCase(), 26);
-    const tituloFontsize =
-      tituloLines.length >= 3 ? 68 : tituloLines.length === 2 ? 84 : 100;
-    const lineHeight = tituloFontsize * 1.15;
-    const totalTextH = lineHeight * tituloLines.length;
-    const centerY = HEIGHT / 2 + 50; // ligeiramente abaixo do centro
-    const firstLineY = centerY - totalTextH / 2 + tituloFontsize;
-
-    // ── SVG overlay: gradient de escurecimento + brand + título ──────────
-    // Fontes embebidas via data URI evitam fontconfig.
-    const tituloTspans = tituloLines
-      .map((ln, i) => {
-        const y = firstLineY + i * lineHeight;
-        return `<text x="${WIDTH / 2}" y="${y}" text-anchor="middle" font-family="DejaVuSerif" font-weight="700" font-size="${tituloFontsize}" fill="#F5F0E6" stroke="#000000" stroke-width="2" paint-order="stroke">${xmlEscape(ln)}</text>`;
-      })
-      .join("\n    ");
-
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
-  <defs>
-    <style type="text/css">
-      @font-face {
-        font-family: "DejaVuSerif";
-        font-weight: 400;
-        src: url(data:font/ttf;base64,${fontRegularB64}) format("truetype");
-      }
-      @font-face {
-        font-family: "DejaVuSerif";
-        font-weight: 700;
-        src: url(data:font/ttf;base64,${fontBoldB64}) format("truetype");
-      }
-    </style>
-    <linearGradient id="darken" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
-      <stop offset="35%" stop-color="#000000" stop-opacity="0.25"/>
-      <stop offset="65%" stop-color="#000000" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.70"/>
-    </linearGradient>
-  </defs>
-  <rect x="0" y="0" width="${WIDTH}" height="${HEIGHT}" fill="url(#darken)"/>
-  <text x="${WIDTH / 2}" y="110" text-anchor="middle" font-family="DejaVuSerif" font-weight="400" font-size="38" letter-spacing="4" fill="#D4A853">A ESCOLA DOS VÉUS</text>
-  ${tituloTspans}
-</svg>`;
-
-    // ── Sharp: mandala → 1280x720 (cover) + overlay SVG ───────────────────
-    const { default: sharp } = await import("sharp");
-    const mandalaResized = await sharp(mandalaBuf)
-      .resize(WIDTH, HEIGHT, { fit: "cover", position: "center" })
-      .toBuffer();
-
-    const pngBuf = await sharp(mandalaResized)
-      .composite([{ input: Buffer.from(svg), top: 0, left: 0 }])
-      .png({ compressionLevel: 9 })
-      .toBuffer();
-
-    // ── Upload Supabase ───────────────────────────────────────────────────
+    // ── Upload ────────────────────────────────────────────────────────────
     const { createClient } = await import("@supabase/supabase-js");
     const supabase = createClient(supabaseUrl, serviceKey, {
       auth: { persistSession: false },
@@ -170,5 +232,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ erro: msg }, { status: 500 });
+  } finally {
+    if (workDir) rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
 }

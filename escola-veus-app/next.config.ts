@@ -10,10 +10,11 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@ffmpeg-installer/ffmpeg"],
 
   outputFileTracingIncludes: {
-    // generate-thumbnail agora usa sharp + SVG com fonte embebida (TTF),
-    // não mais ffmpeg/drawtext. Precisa apenas da mandala + fontes bundled.
+    // generate-thumbnail: ffmpeg drawtext com fontfile=<abs-path> dos TTFs
+    // bundled (evita fontconfig que nao existe em Vercel).
     "/api/admin/funil/generate-thumbnail": [
-      "./public/hero-mandala.png",
+      "./node_modules/@ffmpeg-installer/**/*",
+      "./node_modules/@ffmpeg-installer/linux-x64/**/*",
       "./assets/fonts/*.ttf",
     ],
     "/api/admin/funil/render-ffmpeg": [
