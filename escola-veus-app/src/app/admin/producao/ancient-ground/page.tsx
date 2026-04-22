@@ -958,9 +958,45 @@ export default function ThinkDiffusionPage() {
           </div>
         )}
 
-        {/* Recover clips by taskId */}
+        {/* Recuperação automática — usa os taskIds guardados em Supabase
+            no momento do submit (youtube/tasks/*.json). Um clique recupera
+            tudo o que deu timeout ou foi abandonado. Créditos Runway não
+            se perdem: o task fica acessível por tempo no dev.runwayml.com. */}
+        <div className="mb-4 rounded-lg border border-green-700/50 bg-green-950/10 p-4">
+          <h4 className="mb-2 text-sm font-semibold text-green-400">
+            ✨ Recuperar clips automaticamente (zero input)
+          </h4>
+          <p className="mb-2 text-xs text-escola-creme-50">
+            Lê todos os taskIds pendentes em Supabase, consulta o Runway e
+            guarda os clips que já terminaram. Usa isto se deu timeout e
+            tens medo de ter perdido créditos — os clips estão lá.
+          </p>
+          <button
+            onClick={async () => {
+              setCurrentPrompt("A consultar taskIds pendentes...");
+              try {
+                const res = await fetch("/api/admin/thinkdiffusion/recover-all");
+                const d = await res.json();
+                if (d.erro) throw new Error(d.erro);
+                const msg = `✓ ${d.recovered} recuperados · ${d.alreadySaved} já tinhas · ${d.failed} falharam · ${d.pending} ainda a gerar (${d.total} total)`;
+                setCurrentPrompt(msg);
+                setTimeout(() => setCurrentPrompt(""), 8000);
+                // Força reload da lista de clips na biblioteca.
+                window.dispatchEvent(new Event("focus"));
+              } catch (e) {
+                setError(e instanceof Error ? e.message : String(e));
+                setCurrentPrompt("");
+              }
+            }}
+            className="w-full rounded bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-500"
+          >
+            RECUPERAR TUDO AUTOMATICAMENTE
+          </button>
+        </div>
+
+        {/* Recover clips by taskId (manual fallback) */}
         <div className="mb-4 rounded-lg border border-yellow-800/50 bg-yellow-950/10 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-yellow-400">Recuperar clips perdidos</h4>
+          <h4 className="mb-2 text-sm font-semibold text-yellow-400">Recuperar clips perdidos (manual)</h4>
           <p className="mb-2 text-xs text-escola-creme-50">
             Vai a dev.runwayml.com → Request History → copia os taskIds dos URLs (ex: /v1/tasks/<strong>abc123-def456</strong>). Cola aqui, um por linha.
           </p>

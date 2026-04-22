@@ -6,31 +6,22 @@ export const maxDuration = 300;
 /**
  * GET /api/admin/thinkdiffusion/recover-all
  *
- * Checks ALL known Runway taskIds, downloads completed clips, saves to Supabase.
- * One-click recovery — no input needed.
+ * Percorre TODOS os taskIds pendentes em `course-assets/youtube/tasks/*.json`
+ * (guardados pelo save-task no momento do submit ao Runway), consulta cada
+ * no Runway, descarrega os SUCCEEDED e guarda em `youtube/clips/` com o
+ * nome original da imagem. Apaga o task JSON quando recuperado ou falhou,
+ * para manter a "caixa" limpa.
+ *
+ * Zero input. Um clique recupera tudo o que deu timeout ou foi abandonado.
  */
 
-const TASK_IDS = [
-  "c9165ed8-c438-4427-ab9b-51fd003adf5d",
-  "c2b3adee-fccd-4dba-a21a-86678d73edb1",
-  "a0e6c045-6aa5-4bf9-b556-6cd4d203ada4",
-  "b4ff4a68-13ff-41b6-aaad-8eac092019b9",
-  "cda39b29-859d-45c7-9cfc-6af145ff0490",
-  "993f57e3-a94c-46e8-80fc-76185ca5be04",
-  "87b7ebb7-3153-432b-868d-680a4d267f57",
-  "ee90dd73-9f64-4e5c-ab38-efbd3cce37ac",
-  "1280e46b-9cf2-4945-8a53-c65c01b2d8d2",
-  "b816a516-2e24-43c0-87b4-45c2c58b2655",
-  "b1267cb1-fd35-4c61-8a3d-6333d36bb3c8",
-  "947a87ba-aeb8-40d2-88d3-ecd8abc7311e",
-  "c928af53-3237-49a0-8891-7dea313fed1c",
-  "233148f0-cc1d-4b1f-9064-c0a655314eaa",
-  "64aefb5c-e158-4379-bce5-ddf2815193f2",
-  "aeaa0fb4-01cb-46e4-810c-143157a7b61b",
-  "6d746865-369f-4922-aa10-3593256f796c",
-  "fd412948-6477-4ecb-8a4d-3352a752f054",
-  "e9fdf015-2154-40fc-a484-08fa3569dd2e",
-];
+type TaskRecord = {
+  taskId: string;
+  imageName?: string;
+  imageUrl?: string;
+  status?: string;
+  createdAt?: string;
+};
 
 export async function GET() {
   const apiKey = process.env.RUNWAY_API_KEY;
@@ -42,72 +33,143 @@ export async function GET() {
   }
 
   const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
-  const results: Array<{ taskId: string; status: string; saved?: boolean; url?: string }> = [];
 
-  for (const taskId of TASK_IDS) {
+  // 1. Lista tasks pendentes (auto-descoberta).
+  const { data: files, error: listErr } = await supabase.storage
+    .from("course-assets")
+    .list("youtube/tasks", { limit: 1000 });
+  if (listErr) {
+    return NextResponse.json({ erro: `List tasks: ${listErr.message}` }, { status: 500 });
+  }
+  const taskJsons = (files || []).filter((f) => f.name.endsWith(".json"));
+
+  if (taskJsons.length === 0) {
+    return NextResponse.json({
+      total: 0,
+      recovered: 0,
+      failed: 0,
+      pending: 0,
+      message: "Nenhum task pendente em youtube/tasks/. Nada a recuperar.",
+    });
+  }
+
+  // 2. Lista clips já existentes para não gravar duplicados.
+  const existingClips = new Set<string>();
+  let offset = 0;
+  while (true) {
+    const { data: clips } = await supabase.storage
+      .from("course-assets")
+      .list("youtube/clips", { limit: 1000, offset });
+    if (!clips || clips.length === 0) break;
+    for (const c of clips) existingClips.add(c.name);
+    if (clips.length < 1000) break;
+    offset += 1000;
+  }
+
+  const results: Array<{
+    taskId: string;
+    imageName?: string;
+    status: string;
+    url?: string;
+  }> = [];
+
+  for (const tf of taskJsons) {
     try {
-      // Check Runway status
-      const res = await fetch(`https://api.dev.runwayml.com/v1/tasks/${taskId}`, {
-        headers: { Authorization: `Bearer ${apiKey}`, "X-Runway-Version": "2024-11-06" },
-      });
-
-      if (!res.ok) {
-        results.push({ taskId, status: `runway-error-${res.status}` });
+      // Lê o JSON do task para ter imageName/imageUrl.
+      const taskRes = await fetch(
+        `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/tasks/${tf.name}?t=${Date.now()}`,
+        { cache: "no-store" },
+      );
+      if (!taskRes.ok) {
+        results.push({ taskId: tf.name.replace(".json", ""), status: `task-json-${taskRes.status}` });
         continue;
       }
+      const record: TaskRecord = await taskRes.json();
+      const taskId = record.taskId;
+      const imageName = record.imageName;
 
-      const data = await res.json();
+      // Consulta Runway.
+      const rwRes = await fetch(`https://api.dev.runwayml.com/v1/tasks/${taskId}`, {
+        headers: { Authorization: `Bearer ${apiKey}`, "X-Runway-Version": "2024-11-06" },
+      });
+      if (!rwRes.ok) {
+        results.push({ taskId, imageName, status: `runway-${rwRes.status}` });
+        continue;
+      }
+      const rw = await rwRes.json();
 
-      if (data.status === "SUCCEEDED" && data.output?.length > 0) {
-        const videoUrl = data.output[0];
+      if (rw.status === "SUCCEEDED" && rw.output?.length > 0) {
+        // Nome do ficheiro: usa imageName se disponível, senão cai em
+        // "recovered-<8primeiros>". Substitui extensão por .mp4.
+        const baseName = imageName
+          ? imageName.replace(/\.\w+$/, ".mp4")
+          : `recovered-${taskId.slice(0, 8)}.mp4`;
 
-        // Check if already saved
-        const filename = `recovered-${taskId.slice(0, 8)}.mp4`;
-        const filePath = `youtube/clips/${filename}`;
-
-        const { data: existing } = await supabase.storage
-          .from("course-assets")
-          .list("youtube/clips", { search: filename });
-
-        if (existing && existing.length > 0) {
-          results.push({ taskId, status: "already-saved", url: `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}` });
+        if (existingClips.has(baseName)) {
+          results.push({
+            taskId,
+            imageName,
+            status: "already-saved",
+            url: `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/clips/${baseName}`,
+          });
+          // Apaga o task JSON (job concluído).
+          await supabase.storage.from("course-assets").remove([`youtube/tasks/${tf.name}`]);
           continue;
         }
 
-        // Download and save
-        const vidRes = await fetch(videoUrl);
+        const vidRes = await fetch(rw.output[0]);
         if (!vidRes.ok) {
-          results.push({ taskId, status: "download-failed" });
+          results.push({ taskId, imageName, status: `download-${vidRes.status}` });
           continue;
         }
-
-        const buffer = new Uint8Array(await vidRes.arrayBuffer());
-        const { error } = await supabase.storage
+        const buf = new Uint8Array(await vidRes.arrayBuffer());
+        const { error: upErr } = await supabase.storage
           .from("course-assets")
-          .upload(filePath, buffer, { contentType: "video/mp4", upsert: true });
-
-        if (error) {
-          results.push({ taskId, status: `upload-error: ${error.message}` });
-        } else {
-          results.push({ taskId, status: "recovered", saved: true, url: `${supabaseUrl}/storage/v1/object/public/course-assets/${filePath}` });
+          .upload(`youtube/clips/${baseName}`, buf, {
+            contentType: "video/mp4",
+            upsert: true,
+          });
+        if (upErr) {
+          results.push({ taskId, imageName, status: `upload: ${upErr.message}` });
+          continue;
         }
-      } else if (data.status === "FAILED") {
-        results.push({ taskId, status: "failed-on-runway" });
+        // Apaga task JSON — clip está em clips/.
+        await supabase.storage.from("course-assets").remove([`youtube/tasks/${tf.name}`]);
+        results.push({
+          taskId,
+          imageName,
+          status: "recovered",
+          url: `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/clips/${baseName}`,
+        });
+      } else if (rw.status === "FAILED") {
+        // Apaga task JSON para não re-tentar.
+        await supabase.storage.from("course-assets").remove([`youtube/tasks/${tf.name}`]);
+        results.push({ taskId, imageName, status: "runway-failed" });
       } else {
-        results.push({ taskId, status: data.status || "unknown" });
+        // PENDING / RUNNING / THROTTLED — deixa para próxima ronda.
+        results.push({ taskId, imageName, status: rw.status || "unknown" });
       }
     } catch (err) {
-      results.push({ taskId, status: `error: ${err instanceof Error ? err.message : String(err)}` });
+      results.push({
+        taskId: tf.name.replace(".json", ""),
+        status: `error: ${err instanceof Error ? err.message : String(err)}`,
+      });
     }
   }
 
-  const recovered = results.filter((r) => r.saved).length;
+  const recovered = results.filter((r) => r.status === "recovered").length;
   const alreadySaved = results.filter((r) => r.status === "already-saved").length;
+  const failed = results.filter((r) => r.status === "runway-failed").length;
+  const pending = results.filter((r) =>
+    ["PENDING", "RUNNING", "THROTTLED", "unknown"].includes(r.status),
+  ).length;
 
   return NextResponse.json({
-    total: TASK_IDS.length,
+    total: taskJsons.length,
     recovered,
     alreadySaved,
+    failed,
+    pending,
     results,
   });
 }
