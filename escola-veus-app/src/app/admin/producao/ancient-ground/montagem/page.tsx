@@ -267,6 +267,23 @@ function fileNameFromUrl(url: string): string {
   return last.split("?")[0];
 }
 
+function formatDuration(totalSec: number): string {
+  const s = Math.round(totalSec);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return `${h}h ${String(m).padStart(2, "0")}m ${String(sec).padStart(2, "0")}s`;
+  if (m > 0) return `${m}m ${String(sec).padStart(2, "0")}s`;
+  return `${sec}s`;
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+}
+
 function buildGroups(clipUrls: string[]): ClipGroup[] {
   const map = new Map<string, string[]>();
   for (const url of clipUrls) {
@@ -357,6 +374,16 @@ export default function YouTubeMontagem() {
   const [renderLabel, setRenderLabel] = useState("");
   const [renderResult, setRenderResult] = useState<string | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
+  // Métricas do MP4 final reportadas por ffprobe no runner (duração real,
+  // tamanho em bytes, resolução, bitrate). Chegam no result.json do job FFmpeg
+  // quando status=done. Usadas para mostrar "1h 00m · 1.87 GB" ao lado do link.
+  const [renderMetrics, setRenderMetrics] = useState<{
+    durationSec?: number | null;
+    sizeBytes?: number | null;
+    width?: number | null;
+    height?: number | null;
+    bitrateBps?: number | null;
+  } | null>(null);
   // "ffmpeg" = GitHub Actions + FFmpeg (grátis, mais controlo). "shotstack" =
   // serviço pago, mantido como fallback até validarmos o FFmpeg em produção.
   const [renderEngine, setRenderEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
@@ -744,6 +771,11 @@ export default function YouTubeMontagem() {
         videoUrl?: string;
         error?: string;
         erro?: string;
+        durationSec?: number | null;
+        sizeBytes?: number | null;
+        width?: number | null;
+        height?: number | null;
+        bitrateBps?: number | null;
       };
       try {
         const r = await fetch(`/api/admin/youtube/render-ffmpeg-status?jobId=${encodeURIComponent(jobId)}`);
@@ -767,12 +799,21 @@ export default function YouTubeMontagem() {
         setRenderResult(data.videoUrl);
         setRenderProgress(100);
         setRenderLabel("Video pronto!");
+        const metrics = {
+          durationSec: data.durationSec ?? null,
+          sizeBytes: data.sizeBytes ?? null,
+          width: data.width ?? null,
+          height: data.height ?? null,
+          bitrateBps: data.bitrateBps ?? null,
+        };
+        setRenderMetrics(metrics);
         setRendering(false);
         localStorage.removeItem("yt-pending-ffmpeg-render");
         // Persist o último render completado para sobreviver a reloads.
         localStorage.setItem("yt-last-ffmpeg-render", JSON.stringify({
           videoUrl: data.videoUrl,
           completedAt: Date.now(),
+          ...metrics,
         }));
         return;
       }
@@ -788,6 +829,7 @@ export default function YouTubeMontagem() {
     setRenderLabel("A despachar GitHub Actions...");
     setRenderResult(null);
     setRenderError(null);
+    setRenderMetrics(null);
 
     try {
       const res = await fetch("/api/admin/youtube/render-ffmpeg-submit", {
@@ -854,10 +896,26 @@ export default function YouTubeMontagem() {
       if (!hasPending) {
         const last = localStorage.getItem("yt-last-ffmpeg-render");
         if (last) {
-          const parsed: { videoUrl?: string } = JSON.parse(last);
+          const parsed: {
+            videoUrl?: string;
+            durationSec?: number | null;
+            sizeBytes?: number | null;
+            width?: number | null;
+            height?: number | null;
+            bitrateBps?: number | null;
+          } = JSON.parse(last);
           if (parsed.videoUrl) {
             setRenderResult(parsed.videoUrl);
             setRenderLabel("Último vídeo gerado nesta página");
+            if (parsed.durationSec != null || parsed.sizeBytes != null) {
+              setRenderMetrics({
+                durationSec: parsed.durationSec ?? null,
+                sizeBytes: parsed.sizeBytes ?? null,
+                width: parsed.width ?? null,
+                height: parsed.height ?? null,
+                bitrateBps: parsed.bitrateBps ?? null,
+              });
+            }
           }
         }
       }
@@ -1332,6 +1390,7 @@ export default function YouTubeMontagem() {
                 setRenderProgress(0);
                 setRenderLabel("");
                 setRenderError(null);
+                setRenderMetrics(null);
               }}
               className="mt-2 text-xs text-escola-creme-50 hover:text-red-300 underline decoration-dotted"
               title="Limpa o estado local. Usa só se o render travou ou foi cancelado no GitHub."
@@ -1356,6 +1415,7 @@ export default function YouTubeMontagem() {
                   localStorage.removeItem("yt-last-ffmpeg-render");
                   setRenderResult(null);
                   setRenderLabel("");
+                  setRenderMetrics(null);
                 }}
                 className="text-green-400/60 hover:text-green-200"
                 title="Esconder (não apaga o ficheiro do Supabase)"
@@ -1368,6 +1428,22 @@ export default function YouTubeMontagem() {
               controls
               className="w-full rounded"
             />
+            {renderMetrics && (renderMetrics.durationSec != null || renderMetrics.sizeBytes != null) && (
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-escola-creme-50">
+                {renderMetrics.durationSec != null && (
+                  <span>Duração: <strong className="text-escola-creme">{formatDuration(renderMetrics.durationSec)}</strong></span>
+                )}
+                {renderMetrics.sizeBytes != null && (
+                  <span>Tamanho: <strong className="text-escola-creme">{formatBytes(renderMetrics.sizeBytes)}</strong></span>
+                )}
+                {renderMetrics.width != null && renderMetrics.height != null && (
+                  <span>Resolução: <strong className="text-escola-creme">{renderMetrics.width}×{renderMetrics.height}</strong></span>
+                )}
+                {renderMetrics.bitrateBps != null && (
+                  <span>Bitrate: <strong className="text-escola-creme">{(renderMetrics.bitrateBps / 1_000_000).toFixed(2)} Mbps</strong></span>
+                )}
+              </div>
+            )}
             <a
               href={renderResult}
               target="_blank"
@@ -1376,6 +1452,15 @@ export default function YouTubeMontagem() {
             >
               Abrir / Descarregar MP4
             </a>
+
+            {/* Bloco copy-paste para publicação YouTube — sempre visível
+                quando há vídeo pronto. Usa o SEO já editado em 3C. */}
+            <YoutubePublishCopy
+              videoUrl={renderResult}
+              title={seo.postTitle || title}
+              description={seo.description}
+              hashtags={seo.hashtags}
+            />
           </div>
         )}
 
@@ -1984,5 +2069,133 @@ function ThumbnailSection({
         </div>
       )}
     </section>
+  );
+}
+
+// ── YouTube publish copy ─────────────────────────────────────────────────────
+// Bloco grande, sempre visível depois do render. Mostra título + descrição
+// completa (com URL do vídeo no topo, hashtags no fim) prontos a colar no
+// YouTube Studio. Inclui tags separadas por vírgula (campo "Tags" do Studio
+// aceita CSV de hashtags sem '#'). Tudo SEO-optimizado: título <100 chars,
+// descrição com hook na 1ª linha, music+location credits, hashtags no fim.
+function YoutubePublishCopy({
+  videoUrl,
+  title,
+  description,
+  hashtags,
+}: {
+  videoUrl: string;
+  title: string;
+  description: string;
+  hashtags: string[];
+}) {
+  const fullDescription = [description, "", hashtags.join(" ")].filter(Boolean).join("\n");
+  const tagsCsv = hashtags.map((h) => h.replace(/^#/, "")).join(", ");
+
+  const copy = (text: string, label: string) => {
+    navigator.clipboard?.writeText(text).then(
+      () => { /* could toast */ },
+      () => alert(`Falhou copiar ${label}.`),
+    );
+  };
+
+  const titleOver = title.length > 100;
+
+  return (
+    <div className="mt-4 rounded-lg border border-escola-dourado/40 bg-escola-dourado/5 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h4 className="text-sm font-semibold text-escola-dourado">
+          📋 Pronto a publicar no YouTube — copia daqui
+        </h4>
+        <button
+          onClick={() =>
+            copy(
+              `TÍTULO:\n${title}\n\nDESCRIÇÃO:\n${fullDescription}\n\nTAGS:\n${tagsCsv}\n\nVÍDEO:\n${videoUrl}`,
+              "tudo",
+            )
+          }
+          className="rounded bg-escola-dourado px-3 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado/90"
+        >
+          Copiar TUDO
+        </button>
+      </div>
+
+      {(!title || !description) && (
+        <p className="mb-3 rounded bg-escola-bg/50 p-2 text-xs text-escola-coral">
+          ⚠️ Título ou descrição vazios. Vai à secção <strong>3C — SEO</strong> em cima e carrega em <strong>"Gerar proposta SEO"</strong> primeiro.
+        </p>
+      )}
+
+      <div className="space-y-3">
+        <CopyBlock
+          label="Título"
+          value={title}
+          warning={titleOver ? `${title.length}/100 chars (YouTube corta acima de 100)` : `${title.length}/100 chars`}
+          onCopy={() => copy(title, "título")}
+          rows={1}
+        />
+        <CopyBlock
+          label="Descrição (com hashtags)"
+          value={fullDescription}
+          warning={`${fullDescription.length}/5000 chars`}
+          onCopy={() => copy(fullDescription, "descrição")}
+          rows={8}
+        />
+        <CopyBlock
+          label="Tags (CSV — campo Tags do YouTube Studio)"
+          value={tagsCsv}
+          warning={`${hashtags.length} tags · YouTube aceita até 500 chars`}
+          onCopy={() => copy(tagsCsv, "tags")}
+          rows={2}
+        />
+        <CopyBlock
+          label="URL do vídeo (Supabase MP4)"
+          value={videoUrl}
+          warning="Cola na app do YouTube Studio para descarregar (se não estiveres no PC do render)."
+          onCopy={() => copy(videoUrl, "URL")}
+          rows={1}
+        />
+      </div>
+    </div>
+  );
+}
+
+function CopyBlock({
+  label,
+  value,
+  warning,
+  onCopy,
+  rows,
+}: {
+  label: string;
+  value: string;
+  warning?: string;
+  onCopy: () => void;
+  rows: number;
+}) {
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between">
+        <label className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+          {label}
+        </label>
+        <div className="flex items-center gap-3">
+          {warning && <span className="text-[10px] text-escola-creme-50">{warning}</span>}
+          <button
+            onClick={onCopy}
+            disabled={!value}
+            className="text-[10px] text-escola-coral hover:text-escola-coral/80 disabled:opacity-30"
+          >
+            Copiar
+          </button>
+        </div>
+      </div>
+      <textarea
+        value={value}
+        readOnly
+        rows={rows}
+        className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+      />
+    </div>
   );
 }

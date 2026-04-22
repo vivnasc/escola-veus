@@ -2,25 +2,36 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUniverse } from "@/contexts/UniverseContext";
 
 type Tab = { href: string; label: string; exact?: boolean };
 
-const TABS: Tab[] = [
+// Tabs organizadas por universo. Em modo "cursos" mostramos só o que
+// pertence à Escola dos Véus; em modo "ag" só a produção Ancient Ground.
+// Os URLs são os mesmos de antes — não partimos bookmarks.
+// Shorts Loranne NÃO aparece aqui — é pólo independente, com card visível
+// no dashboard admin. Mantemos a página /admin/producao/shorts intacta.
+const TABS_CURSOS: Tab[] = [
   { href: "/admin/producao/aulas", label: "Aulas" },
   { href: "/admin/producao/funil", label: "Funil" },
-  { href: "/admin/producao/ancient-ground", label: "Ancient Ground", exact: true },
-  { href: "/admin/producao/ancient-ground/montagem", label: "AG — Montagem" },
-  { href: "/admin/producao/shorts", label: "Shorts" },
-  { href: "/admin/producao/audios", label: "Audios" },
+  { href: "/admin/producao/audios", label: "Áudios" },
+];
+
+const TABS_AG: Tab[] = [
+  { href: "/admin/producao/ancient-ground", label: "Prompts + Clips", exact: true },
+  { href: "/admin/producao/ancient-ground/montagem", label: "Vídeo longo (60 min)" },
+  { href: "/admin/producao/ancient-ground/shorts", label: "Shorts AG" },
 ];
 
 export default function ProducaoLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { universe } = useUniverse();
+  const tabs = universe === "ag" ? TABS_AG : TABS_CURSOS;
 
   return (
     <div>
       <nav className="mb-6 flex gap-1 overflow-x-auto border-b border-escola-border">
-        {TABS.map(({ href, label, exact }) => {
+        {tabs.map(({ href, label, exact }) => {
           const active = exact
             ? pathname === href
             : pathname === href || pathname?.startsWith(href + "/");

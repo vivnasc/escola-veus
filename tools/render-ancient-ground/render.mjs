@@ -65,6 +65,43 @@ async function uploadToSupabase(pathInBucket, data, contentType) {
   }
 }
 
+// Corre ffprobe -show_format -show_streams e devolve duração/tamanho/bitrate
+// + dimensões do primeiro stream de vídeo. Usamos isto no final do render
+// para reportar à UI o que realmente saiu (e não só o que pedimos).
+function ffprobe(filePath) {
+  return new Promise((resolve, reject) => {
+    const args = [
+      "-v", "error",
+      "-print_format", "json",
+      "-show_format",
+      "-show_streams",
+      filePath,
+    ];
+    const p = spawn("ffprobe", args, { stdio: ["ignore", "pipe", "pipe"] });
+    let out = "";
+    let err = "";
+    p.stdout.on("data", (c) => { out += c.toString(); });
+    p.stderr.on("data", (c) => { err += c.toString(); });
+    p.on("error", reject);
+    p.on("exit", (code) => {
+      if (code !== 0) return reject(new Error(`ffprobe saiu com código ${code}: ${err.slice(0, 200)}`));
+      try {
+        const json = JSON.parse(out);
+        const vStream = (json.streams || []).find((s) => s.codec_type === "video");
+        resolve({
+          durationSec: json.format?.duration ? parseFloat(json.format.duration) : null,
+          sizeBytes: json.format?.size ? parseInt(json.format.size, 10) : null,
+          bitrateBps: json.format?.bit_rate ? parseInt(json.format.bit_rate, 10) : null,
+          width: vStream?.width ?? null,
+          height: vStream?.height ?? null,
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
+}
+
 function runFfmpeg(args, label = "ffmpeg", onStderrLine) {
   return new Promise((resolve, reject) => {
     console.log(`\n[${label}] ffmpeg ${args.join(" ")}\n`);
@@ -206,7 +243,10 @@ async function main() {
         `:fontcolor=white@0.92` +
         `:x=(w-text_w)/2` +
         `:y=h*0.82` +
-        `:enable='between(t\\,${showFrom}\\,${showUntil})'`;
+        // Aspas simples agrupam o valor de `enable`, pelo que vírgulas dentro
+        // delas SÃO literais. Escapá-las com `\,` parte o expression parser
+        // do FFmpeg e faz o drawtext cair no fallback sem texto.
+        `:enable='between(t,${showFrom},${showUntil})'`;
     }
 
     try {
@@ -452,6 +492,19 @@ async function main() {
     ], "final", onLoopProgress);
   }
 
+  // ffprobe do output para reportar duração real + tamanho à UI. Se o probe
+  // falhar, seguimos em frente (métricas ficam null) — não queremos perder
+  // um render de 1h por causa disto.
+  let probe = null;
+  try {
+    probe = await ffprobe(outPath);
+    console.log(
+      `Output: ${probe.durationSec?.toFixed(2)}s · ${(probe.sizeBytes / 1e6).toFixed(1)} MB · ${probe.width}x${probe.height} @ ${(probe.bitrateBps / 1e6).toFixed(2)} Mbps`
+    );
+  } catch (e) {
+    console.warn(`ffprobe falhou: ${e?.message || e}`);
+  }
+
   await writeResult(jobId, { status: "running", phase: "upload", progress: 85 });
 
   // ── PASSO 3: Upload ───────────────────────────────────────────────────────
@@ -486,7 +539,21 @@ async function main() {
   }
 
   if (seo) {
-    const seoJson = JSON.stringify({ ...seo, title, videoUrl, thumbUrl, renderedAt: new Date().toISOString() }, null, 2);
+    const seoJson = JSON.stringify(
+      {
+        ...seo,
+        title,
+        videoUrl,
+        thumbUrl,
+        renderedAt: new Date().toISOString(),
+        durationSec: probe?.durationSec ?? null,
+        sizeBytes: probe?.sizeBytes ?? null,
+        width: probe?.width ?? null,
+        height: probe?.height ?? null,
+      },
+      null,
+      2
+    );
     await uploadToSupabase(`${VIDEO_DIR}/${slug || "video"}-${stamp}-seo.json`, seoJson, "application/json");
   }
 
@@ -498,6 +565,11 @@ async function main() {
     thumbnailUrl: thumbUrl,
     title,
     slug,
+    durationSec: probe?.durationSec ?? null,
+    sizeBytes: probe?.sizeBytes ?? null,
+    width: probe?.width ?? null,
+    height: probe?.height ?? null,
+    bitrateBps: probe?.bitrateBps ?? null,
   });
 }
 
