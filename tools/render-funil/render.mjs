@@ -254,14 +254,19 @@ async function main() {
 
   // Separate filters with semicolons + intermediate labels — mais legível e
   // evita ambiguidades do parser do ffmpeg com vírgulas dentro de enable='between(t,X,Y)'.
+  //
+  // Nota sobre quoting: drawtext só remove aspas SIMPLES do valor de text=.
+  // JSON.stringify envolvia o texto em aspas duplas literais — o ffmpeg não
+  // as strippava e vinham renderizadas na intro/outro ("A ESCOLA DOS VÉUS").
+  // Usar single quotes (BRAND_TEXT/CTA_TEXT não contêm apóstrofos).
   videoFilters.push(
-    `[vcat]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text=${JSON.stringify(BRAND_TEXT)}:fontsize=72:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.82:enable='between(t\\,${introTextStart}\\,${introTextEnd})'[v1]`,
+    `[vcat]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.82:enable='between(t\\,${introTextStart}\\,${introTextEnd})'[v1]`,
   );
   videoFilters.push(
-    `[v1]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text=${JSON.stringify(BRAND_TEXT)}:fontsize=72:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.72:enable='between(t\\,${outroTextStart.toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[v2]`,
+    `[v1]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.72:enable='between(t\\,${outroTextStart.toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[v2]`,
   );
   videoFilters.push(
-    `[v2]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text=${JSON.stringify(CTA_TEXT)}:fontsize=40:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.82:enable='between(t\\,${(outroTextStart + 0.5).toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[vtext]`,
+    `[v2]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text='${CTA_TEXT}':fontsize=40:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.82:enable='between(t\\,${(outroTextStart + 0.5).toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[vtext]`,
   );
 
   // Fade in/out final
