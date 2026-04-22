@@ -303,6 +303,53 @@ export default function ThinkDiffusionPage() {
       .catch(() => {});
   }, []);
 
+  // On mount: auto-recover Runway taskIds pendentes. Se houver clips que
+  // terminaram no Runway mas o cliente desistiu (timeout, fechou browser,
+  // recarga), apanha-os sem precisar de clique. Notifica só quando há
+  // algo realmente recuperado, para não fazer ruido desnecessário.
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/admin/thinkdiffusion/recover-all", { signal: controller.signal })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.erro) return;
+        if (d.recovered > 0 || d.alreadySaved > 0 || d.pending > 0) {
+          const parts = [
+            d.recovered > 0 ? `${d.recovered} recuperados agora` : null,
+            d.pending > 0 ? `${d.pending} ainda a gerar no Runway` : null,
+          ].filter(Boolean);
+          if (parts.length > 0) {
+            setCurrentPrompt(`✨ Auto-recover: ${parts.join(" · ")}`);
+            setTimeout(() => setCurrentPrompt(""), 6000);
+          }
+          if (d.recovered > 0) {
+            // Re-sincroniza a lista de clips localmente.
+            fetch("/api/admin/thinkdiffusion/list-clips")
+              .then((r) => r.json())
+              .then((data) => {
+                if (!data.clips) return;
+                const clipState: Record<string, ClipState> = {};
+                for (const clip of data.clips) {
+                  const baseName = clip.name;
+                  for (const ext of [".png", ".jpg", ".jpeg"]) {
+                    clipState[baseName + ext] = {
+                      imageUrl: "",
+                      imageName: baseName + ext,
+                      status: "done",
+                      clipUrl: clip.url,
+                    };
+                  }
+                }
+                setClips(clipState);
+              })
+              .catch(() => {});
+          }
+        }
+      })
+      .catch(() => { /* silencioso — não é bloqueador */ });
+    return () => controller.abort();
+  }, []);
+
   useEffect(() => {
   }, []);
 
