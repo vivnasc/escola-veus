@@ -66,10 +66,14 @@ export function RecentRenders({
   kind,
   title = "📂 Últimos vídeos gerados",
   subtitle,
+  reloadKey,
 }: {
   kind: VideoKind;
   title?: string;
   subtitle?: string;
+  // Quando este valor muda, força refetch do Supabase. Usar por exemplo
+  // para recarregar a lista automaticamente quando um novo render termina.
+  reloadKey?: number | string;
 }) {
   const [videos, setVideos] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -100,7 +104,7 @@ export function RecentRenders({
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kind]);
+  }, [kind, reloadKey]);
 
   return (
     <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
@@ -153,7 +157,7 @@ export function RecentRenders({
               video={v}
               kind={kind}
               open={openItem === v.url}
-              onToggle={() => setOpenItem(openItem === v.url ? null : v.url)}
+              onToggle={() => { setOpenItem(openItem === v.url ? null : v.url); }}
             />
           ))}
         </div>

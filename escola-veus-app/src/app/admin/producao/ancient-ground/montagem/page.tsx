@@ -386,6 +386,9 @@ export default function YouTubeMontagem() {
     height?: number | null;
     bitrateBps?: number | null;
   } | null>(null);
+  // Incrementado sempre que um render termina — faz a secção
+  // "📂 Últimos vídeos AG gerados" refrescar automaticamente.
+  const [recentReloadKey, setRecentReloadKey] = useState(0);
   // "ffmpeg" = GitHub Actions + FFmpeg (grátis, mais controlo). "shotstack" =
   // serviço pago, mantido como fallback até validarmos o FFmpeg em produção.
   const [renderEngine, setRenderEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
@@ -742,6 +745,7 @@ export default function YouTubeMontagem() {
           setRenderResult(savedData.videoUrl);
           setRenderProgress(100);
           setRenderLabel("Video pronto!");
+          setRecentReloadKey((k) => k + 1);
           localStorage.setItem("yt-last-ffmpeg-render", JSON.stringify({
             videoUrl: savedData.videoUrl,
             completedAt: Date.now(),
@@ -801,6 +805,7 @@ export default function YouTubeMontagem() {
         setRenderResult(data.videoUrl);
         setRenderProgress(100);
         setRenderLabel("Video pronto!");
+        setRecentReloadKey((k) => k + 1);
         const metrics = {
           durationSec: data.durationSec ?? null,
           sizeBytes: data.sizeBytes ?? null,
@@ -877,13 +882,14 @@ export default function YouTubeMontagem() {
   };
 
   // Resume any pending render if the user reloads the page.
-  // Se não houver pending, restaura o último render completado (para que a
-  // Vivianne veja o link do vídeo mesmo depois de recarregar a página).
+  // Se houver render pending ao reload, retoma o polling. Não restauramos
+  // "último vídeo" do localStorage — a fonte oficial agora é a secção
+  // "📂 Últimos vídeos AG gerados" (vem do Supabase, funciona em qualquer
+  // dispositivo).
   useEffect(() => {
     try {
       const raw = localStorage.getItem("yt-pending-render");
       const rawF = localStorage.getItem("yt-pending-ffmpeg-render");
-      const hasPending = !!(raw || rawF);
 
       if (raw) {
         const pending: { renderId?: string } = JSON.parse(raw);
@@ -892,34 +898,6 @@ export default function YouTubeMontagem() {
       if (rawF) {
         const pf: { jobId?: string } = JSON.parse(rawF);
         if (pf.jobId) pollFfmpegStatus(pf.jobId);
-      }
-
-      // Nenhum render em curso → mostra o último vídeo gerado (se houver).
-      if (!hasPending) {
-        const last = localStorage.getItem("yt-last-ffmpeg-render");
-        if (last) {
-          const parsed: {
-            videoUrl?: string;
-            durationSec?: number | null;
-            sizeBytes?: number | null;
-            width?: number | null;
-            height?: number | null;
-            bitrateBps?: number | null;
-          } = JSON.parse(last);
-          if (parsed.videoUrl) {
-            setRenderResult(parsed.videoUrl);
-            setRenderLabel("Último vídeo gerado nesta página");
-            if (parsed.durationSec != null || parsed.sizeBytes != null) {
-              setRenderMetrics({
-                durationSec: parsed.durationSec ?? null,
-                sizeBytes: parsed.sizeBytes ?? null,
-                width: parsed.width ?? null,
-                height: parsed.height ?? null,
-                bitrateBps: parsed.bitrateBps ?? null,
-              });
-            }
-          }
-        }
       }
     } catch { /* ignore */ }
     // Only on mount — callbacks read the latest state via closures.
@@ -1023,11 +1001,13 @@ export default function YouTubeMontagem() {
         </div>
       </div>
 
-      {/* Últimos vídeos longos AG (do Supabase, cross-device) */}
+      {/* Últimos vídeos longos AG (do Supabase, cross-device).
+          reloadKey refresca automaticamente quando um novo render termina. */}
       <RecentRenders
         kind="long"
         title="📂 Últimos vídeos AG gerados"
         subtitle="Aparece em qualquer dispositivo — clica num para ver, partilhar ou copiar título/descrição."
+        reloadKey={recentReloadKey}
       />
 
       {/* ── 1. TITULO ── */}
