@@ -160,10 +160,23 @@ export default function ThinkDiffusionPage() {
   // Editable motion prompts per image
   const [editedMotion, setEditedMotion] = useState<Record<string, string>>({});
 
+  // Camera variations por variante (01-04) — evita 4 clips iguais
+  const CAMERA_VARIATIONS: Record<number, string> = {
+    1: ", slow cinematic camera push in toward subject",
+    2: ", slow cinematic camera drift left to right across scene",
+    3: ", static camera with natural subject motion",
+    4: ", slow cinematic camera orbit around subject",
+  };
+
   const getMotionPrompt = (imageName: string) => {
     if (editedMotion[imageName]) return editedMotion[imageName];
     const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
-    return (motionPrompts as Record<string, string>)[promptId] || (motionPrompts as Record<string, string>)["_default"];
+    const base = (motionPrompts as Record<string, string>)[promptId] || (motionPrompts as Record<string, string>)["_default"];
+    // Extrai o numero da variante (ex: mar-01-h-02.png -> 2)
+    const variantMatch = imageName.match(/-[hv]-(\d+)\.\w+$/);
+    const variant = variantMatch ? parseInt(variantMatch[1], 10) : 0;
+    const cameraMove = CAMERA_VARIATIONS[((variant - 1) % 4) + 1] || "";
+    return base + cameraMove;
   };
 
   // Runway clips
@@ -548,9 +561,6 @@ export default function ThinkDiffusionPage() {
           {images.length} geradas · {savedCount} guardadas no Supabase
         </span>
       </div>
-
-      {/* ── DASHBOARD ESTADO DOS VIDEOS ── */}
-      <AgStatusDashboard />
 
       {/* ── THINKDIFFUSION SETTINGS (collapsible) ── */}
       <section className="rounded-lg border border-escola-coral/40 bg-escola-bg-card p-4">
@@ -1222,145 +1232,5 @@ export default function ThinkDiffusionPage() {
         </div>
       </section>
     </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Dashboard de estado por vídeo Ancient Ground
-// ─────────────────────────────────────────────────────────────────────────────
-
-type AgStatus = {
-  promptsCount: number;
-  imagesCount: number;
-  clipsCount: number;
-  videoRendered: boolean;
-};
-type AgVideo = {
-  id: string;
-  titulo: string;
-  categorias: string[];
-  status: AgStatus;
-};
-
-function AgStatusDashboard() {
-  const [videos, setVideos] = useState<AgVideo[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (!open || videos) return;
-    setLoading(true);
-    fetch("/api/admin/ancient-ground/status", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((d) => {
-        if (Array.isArray(d.videos)) setVideos(d.videos);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, [open, videos]);
-
-  const summary = videos
-    ? {
-        rendered: videos.filter((v) => v.status.videoRendered).length,
-        withImages: videos.filter((v) => v.status.imagesCount > 0).length,
-        total: videos.length,
-      }
-    : null;
-
-  return (
-    <section className="rounded-lg border border-escola-border bg-escola-bg-card">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between px-4 py-3 text-left"
-      >
-        <div>
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
-            Dashboard de estado dos vídeos AG
-          </h3>
-          <p className="text-xs text-escola-creme-50">
-            {summary
-              ? `${summary.rendered}/${summary.total} renderizados · ${summary.withImages}/${summary.total} com imagens`
-              : "clica para carregar"}
-          </p>
-        </div>
-        <span className="text-escola-creme-50">{open ? "−" : "+"}</span>
-      </button>
-
-      {open && (
-        <div className="border-t border-escola-border">
-          {loading && (
-            <p className="p-4 text-xs text-escola-creme-50">A carregar (~3s)...</p>
-          )}
-          {videos && (
-            <ul className="divide-y divide-escola-border">
-              {videos.map((v) => (
-                <li key={v.id} className="px-4 py-2.5">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="min-w-0 flex-1">
-                      <p className="text-xs text-escola-creme">
-                        {v.id.replace("video-", "#")} · {v.titulo}
-                      </p>
-                      <p className="text-[10px] text-escola-creme-50">
-                        {v.categorias.join(" + ")}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="mt-1.5 flex flex-wrap gap-1">
-                    <AgPill
-                      label="prompts"
-                      ok={v.status.promptsCount > 0}
-                      value={String(v.status.promptsCount)}
-                    />
-                    <AgPill
-                      label="imagens"
-                      ok={v.status.promptsCount > 0 && v.status.imagesCount >= v.status.promptsCount}
-                      partial={
-                        v.status.imagesCount > 0 && v.status.imagesCount < v.status.promptsCount
-                      }
-                      value={`${v.status.imagesCount}`}
-                    />
-                    <AgPill
-                      label="clips"
-                      ok={v.status.clipsCount > 0 && v.status.clipsCount >= v.status.promptsCount}
-                      partial={
-                        v.status.clipsCount > 0 && v.status.clipsCount < v.status.promptsCount
-                      }
-                      value={`${v.status.clipsCount}`}
-                    />
-                    <AgPill
-                      label="render"
-                      ok={v.status.videoRendered}
-                      value={v.status.videoRendered ? "✓" : "×"}
-                    />
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-    </section>
-  );
-}
-
-function AgPill({
-  label,
-  value,
-  ok,
-  partial,
-}: {
-  label: string;
-  value: string;
-  ok?: boolean;
-  partial?: boolean;
-}) {
-  let cls = "bg-escola-border text-escola-creme-50";
-  if (ok) cls = "bg-escola-dourado/10 text-escola-dourado";
-  else if (partial) cls = "bg-escola-terracota/10 text-escola-terracota";
-  return (
-    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] ${cls}`}>
-      <span className="text-[9px] uppercase tracking-wider opacity-70">{label}</span>
-      <span className="font-semibold">{value}</span>
-    </span>
   );
 }
