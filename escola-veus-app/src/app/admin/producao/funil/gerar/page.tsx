@@ -471,7 +471,19 @@ export default function FunilGerarPage() {
                           ) : clip.status === "processing" ? (
                             <span className="text-escola-dourado">a gerar...</span>
                           ) : clip.status === "done" ? (
-                            <span className="text-escola-dourado">✓</span>
+                            <div className="flex shrink-0 items-center gap-1">
+                              <span className="text-escola-dourado">✓</span>
+                              <button
+                                onClick={() => {
+                                  if (!confirm(`Regenerar clip para ${img.name}?\n\nPaga novos créditos Runway. Usa o motion prompt mais recente (edições em /funil/motions aplicam-se).`)) return;
+                                  generateClip(img);
+                                }}
+                                className="rounded border border-escola-border px-1.5 py-0.5 text-escola-creme-50 hover:border-escola-terracota hover:text-escola-terracota"
+                                title="Regenerar clip com motion prompt actual"
+                              >
+                                ↻
+                              </button>
+                            </div>
                           ) : (
                             <span className="text-escola-terracota">{clip.error ?? "erro"}</span>
                           )}
