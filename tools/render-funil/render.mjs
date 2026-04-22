@@ -144,7 +144,7 @@ async function main() {
     title = "funil-video",
     slug: rawSlug,
     clips,
-    clipDuration = 10,
+    clipDuration: rawClipDuration = 10,
     narrationUrl,
     musicUrls,
     musicVolume = 0.2,
@@ -217,6 +217,40 @@ async function main() {
     });
   }
   const narrSec = await probeSeconds(narrationPath);
+
+  // ── Sync dos clips à narração ───────────────────────────────────────────
+  // Problema: clips Runway vêm todos em 10s fixos, mas a narração de cada
+  // episódio tem duração própria (80s, 95s, 110s…). Se mantivermos 10s por
+  // clip, o vídeo fica mais longo que a voz → as imagens continuam depois
+  // da voz acabar (parece que "a voz é mais rápida").
+  //
+  // Fix: calcular clipDuration de forma proporcional à narração para que
+  // soma-dos-clips ≈ duração-da-narração + pequeno tail. Se narração é
+  // muito longa (>N*10s), cap em 10s (Runway max) e deixa o tpad esticar
+  // o outro no fim. Clamp mínimo 4s para não ficar demasiado corto.
+  //
+  // Passado via body do manifest: `syncToNarration` (default true).
+  const sync = manifest.syncToNarration !== false;
+  let clipDuration = rawClipDuration;
+  if (sync && narrSec > 0 && clips.length > 0) {
+    const targetClipsBlock = narrSec + 1.0; // pequena folga para fade-out voz
+    const n = clips.length;
+    // clipsDuration = (n-1)*stride + clipDuration, stride = clipDuration - crossfade
+    // Queremos clipsDuration = target → resolver para clipDuration:
+    //   (n-1)*(clipDuration - crossfade) + clipDuration = target
+    //   n*clipDuration - (n-1)*crossfade = target
+    //   clipDuration = (target + (n-1)*crossfade) / n
+    const computed = (targetClipsBlock + (n - 1) * crossfade) / n;
+    const clamped = Math.max(4, Math.min(10, computed));
+    if (Math.abs(clamped - rawClipDuration) > 0.1) {
+      console.log(
+        `[sync] narrSec=${narrSec.toFixed(1)}s · clips=${n} · ` +
+        `clipDuration ajustado de ${rawClipDuration} → ${clamped.toFixed(2)}s ` +
+        `(target video body ${(clamped * n - (n - 1) * crossfade).toFixed(1)}s)`,
+      );
+    }
+    clipDuration = clamped;
+  }
 
   // ── Filter graph ──────────────────────────────────────────────────────────
   // Inputs ordered as: [intro][clip0]..[clipN-1][outro][narration][music0]..[musicM-1]
