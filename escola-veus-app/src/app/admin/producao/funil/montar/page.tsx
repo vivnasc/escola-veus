@@ -16,10 +16,10 @@ function titleToSlug(title: string): string {
     .slice(0, 60);
 }
 
-function findScriptById(id: string): { titulo: string } | null {
+function findScriptById(id: string): { titulo: string; texto?: string } | null {
   for (const preset of NOMEAR_PRESETS) {
     const hit = preset.scripts.find((s) => s.id === id);
-    if (hit) return hit;
+    if (hit) return hit as { titulo: string; texto?: string };
   }
   return null;
 }
@@ -53,6 +53,8 @@ export default function FunilMontarPage() {
   const [allClips, setAllClips] = useState<Clip[]>([]);
   const [allAudios, setAllAudios] = useState<Audio[]>([]);
   const [allSrts, setAllSrts] = useState<Audio[]>([]);
+  const [allVideos, setAllVideos] = useState<Audio[]>([]);
+  const [allThumbs, setAllThumbs] = useState<Audio[]>([]);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -74,6 +76,8 @@ export default function FunilMontarPage() {
   const [thumbErr, setThumbErr] = useState<string | null>(null);
 
   // ── Load assets on mount ──────────────────────────────────────────────
+  // Todos os assets são carregados de Supabase → muda de dispositivo, abre
+  // a página, os vídeos/SRT/thumbs renderizados antes aparecem prontos.
   useEffect(() => {
     setLoading(true);
     Promise.all([
@@ -81,10 +85,13 @@ export default function FunilMontarPage() {
       fetch("/api/admin/biblioteca/list?folder=youtube&limit=500").then((r) => r.json()),
       fetch("/api/admin/music/list-album?album=ancient-ground").then((r) => r.json()),
       // SRTs em cache (geradas previamente via "Gerar legenda SRT").
-      // O nome é `${epKey}-${ts}.srt` por convenção do generate-srt route.
       fetch("/api/admin/biblioteca/list?folder=youtube/subtitles&limit=500").then((r) => r.json()),
+      // Vídeos MP4 finais já renderizados.
+      fetch("/api/admin/biblioteca/list?folder=youtube/funil-videos&limit=500").then((r) => r.json()),
+      // Thumbnails PNG já geradas.
+      fetch("/api/admin/biblioteca/list?folder=youtube/thumbnails&limit=500").then((r) => r.json()),
     ])
-      .then(([clipsD, audiosD, musicD, srtsD]) => {
+      .then(([clipsD, audiosD, musicD, srtsD, videosD, thumbsD]) => {
         setAllClips(Array.isArray(clipsD.clips) ? clipsD.clips : []);
         setAllAudios(
           (Array.isArray(audiosD.files) ? audiosD.files : []).filter((f: Audio) =>
@@ -95,6 +102,16 @@ export default function FunilMontarPage() {
         setAllSrts(
           (Array.isArray(srtsD.files) ? srtsD.files : []).filter((f: Audio) =>
             f.name.endsWith(".srt"),
+          ),
+        );
+        setAllVideos(
+          (Array.isArray(videosD.files) ? videosD.files : []).filter((f: Audio) =>
+            f.name.endsWith(".mp4"),
+          ),
+        );
+        setAllThumbs(
+          (Array.isArray(thumbsD.files) ? thumbsD.files : []).filter((f: Audio) =>
+            /\.(png|jpe?g)$/i.test(f.name),
           ),
         );
       })
@@ -110,6 +127,29 @@ export default function FunilMontarPage() {
     const matches = allSrts.filter((s) => s.name.startsWith(prefix));
     return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
   }, [allSrts, epKey]);
+
+  // Vídeo final renderizado em cache. Match por slug do título OU epKey
+  // (convenção actual do render-funil.mjs gera `<slug>-<ts>.mp4` onde
+  // slug é derivado de ep.label). Fallback para epKey.
+  const epCachedVideo = useMemo(() => {
+    const script = findScriptById(ep.slug);
+    const slug = script ? titleToSlug(script.titulo) : "";
+    const matches = allVideos.filter(
+      (v) =>
+        (slug && v.name.startsWith(`${slug}-`)) ||
+        v.name.startsWith(`${epKey}-`) ||
+        // fallback: ep.label lowercase slug
+        v.name.startsWith(`${ep.label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}-`),
+    );
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allVideos, ep.slug, ep.label, epKey]);
+
+  // Thumbnail em cache. Convenção: `<epKey>-<ts>.png` (filename=ep.key).
+  const epCachedThumb = useMemo(() => {
+    const prefix = `${epKey}-`;
+    const matches = allThumbs.filter((t) => t.name.startsWith(prefix));
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allThumbs, epKey]);
 
   // ── Filter assets by episode ──────────────────────────────────────────
   const epClips = useMemo(() => {
@@ -132,18 +172,18 @@ export default function FunilMontarPage() {
   }, [allAudios, ep.slug]);
 
   // Auto-set default narration + clip order when ep changes
+  // Todos os artefactos (vídeo, SRT, thumb) são lidos de Supabase →
+  // muda-se de dispositivo e aparecem prontos sem re-render nem re-gerar.
   useEffect(() => {
     setSelectedNarration(epNarration?.url ?? "");
     setClipOrder(epClips.map((c) => c.url));
-    setVideoUrl(null);
+    setVideoUrl(epCachedVideo?.url ?? null);
     setProgress(null);
-    // Pré-preencher com SRT em cache (zero custo Scribe). Se não houver, vazio
-    // → user pode clicar "Gerar SRT" se quiser legendas neste render.
     setSrtUrl(epCachedSrt?.url ?? null);
     setSrtErr(null);
-    setThumbUrl(null);
+    setThumbUrl(epCachedThumb?.url ?? null);
     setThumbErr(null);
-  }, [epNarration, epClips, epCachedSrt]);
+  }, [epNarration, epClips, epCachedSrt, epCachedVideo, epCachedThumb]);
 
   // Auto-pick single first track (one track covers full funnel video duration)
   useEffect(() => {
@@ -621,6 +661,347 @@ export default function FunilMontarPage() {
           </div>
         )}
       </section>
+
+      {/* ── 7. Publicar no YouTube ────────────────────────────────── */}
+      {videoUrl && (
+        <PublishSection
+          videoUrl={videoUrl}
+          srtUrl={srtUrl}
+          thumbUrl={thumbUrl}
+          epLabel={ep.label}
+          epKey={ep.key}
+          episodeText={findScriptById(ep.slug)?.texto ?? ""}
+        />
+      )}
+    </div>
+  );
+}
+
+// ─── Publish Section ────────────────────────────────────────────────────────
+// Organiza TUDO num sítio: download + partilhar (mobile) + campos
+// pré-preenchidos copy-to-clipboard + link direto para YouTube Studio.
+// Desenhado para minimizar cliques: 3 passos, visíveis, numerados.
+
+function buildYoutubeMetadata(epLabel: string, episodeText: string) {
+  // Título: "ep01 — A culpa | Nomear · A Escola dos Véus" (máx 100 chars)
+  const cleanLabel = epLabel.replace(/^(\w+)\s*—\s*/, (_m, pref) => `${pref} · `);
+  const title = `${cleanLabel} | Nomear · A Escola dos Véus`.slice(0, 100);
+
+  // Descrição: texto do episódio + CTA + hashtags
+  const cta = [
+    "",
+    "━━━━━━━━━━━━━━━━",
+    "A Escola dos Véus é um espaço para mulheres que querem nomear o que nunca teve nome.",
+    "",
+    "→ Subscreve para receberes novos episódios da série Nomear.",
+    "→ Junta-te à escola: https://seteveus.space",
+    "",
+    "#EscolaDosVéus #Nomear #Mulheres #Consciência #Herança",
+  ].join("\n");
+
+  // Remove marcações [long pause] / [pause] / CTA duplicado do script
+  const body = episodeText
+    .replace(/\[(long pause|pause)\]/gi, "")
+    .replace(/Escola dos Véus\.\s*seteveus\.space\.?/gi, "")
+    .replace(/Se isto te nomeou alguma coisa[^.]*\./gi, "")
+    .trim();
+
+  const description = `${body}\n${cta}`.slice(0, 5000);
+
+  // Tags
+  const tags = [
+    "escola dos véus",
+    "nomear",
+    "mulheres",
+    "consciência",
+    "herança",
+    "dinheiro",
+    "culpa",
+    "vergonha",
+    "autoconhecimento",
+    "vivianne nascimento",
+  ];
+
+  return { title, description, tags };
+}
+
+async function downloadBlob(url: string, filename: string) {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = blobUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+}
+
+async function nativeShareFile(url: string, filename: string, title: string) {
+  const nav = navigator as Navigator & {
+    share?: (d: { title?: string; files?: File[]; url?: string }) => Promise<void>;
+    canShare?: (d: { files?: File[] }) => boolean;
+  };
+  const res = await fetch(url);
+  const blob = await res.blob();
+  const file = new File([blob], filename, { type: blob.type || "video/mp4" });
+  if (nav.canShare?.({ files: [file] })) {
+    await nav.share?.({ title, files: [file] });
+    return true;
+  }
+  if (nav.share) {
+    await nav.share({ title, url });
+    return true;
+  }
+  return false;
+}
+
+function PublishSection({
+  videoUrl,
+  srtUrl,
+  thumbUrl,
+  epLabel,
+  epKey,
+  episodeText,
+}: {
+  videoUrl: string;
+  srtUrl: string | null;
+  thumbUrl: string | null;
+  epLabel: string;
+  epKey: string;
+  episodeText: string;
+}) {
+  const meta = useMemo(
+    () => buildYoutubeMetadata(epLabel, episodeText),
+    [epLabel, episodeText],
+  );
+  const [copied, setCopied] = useState<string | null>(null);
+  const [shareMsg, setShareMsg] = useState<string | null>(null);
+  const canShare =
+    typeof navigator !== "undefined" &&
+    !!(navigator as Navigator & { share?: unknown }).share;
+
+  const doCopy = async (key: string, value: string) => {
+    await navigator.clipboard.writeText(value);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 1200);
+  };
+
+  const baseFilename = `${epKey}-escola-veus`;
+
+  return (
+    <section className="mt-4 rounded-xl border border-escola-dourado/40 bg-escola-card p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-escola-dourado">
+          7. Publicar no YouTube
+        </h3>
+        <span className="rounded-full bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado">
+          manual · 3 passos
+        </span>
+      </div>
+
+      {/* Passo 1: Descarregar / Partilhar ficheiros */}
+      <div className="mb-4 rounded-lg border border-escola-border bg-escola-bg p-3">
+        <p className="mb-2 text-xs font-semibold text-escola-creme">
+          <span className="mr-2 rounded-full bg-escola-dourado/20 px-2 text-escola-dourado">
+            1
+          </span>
+          Guardar ficheiros no teu dispositivo
+        </p>
+        <div className="flex flex-wrap gap-2 text-xs">
+          <button
+            onClick={() => downloadBlob(videoUrl, `${baseFilename}.mp4`)}
+            className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg"
+          >
+            ⬇ MP4 (vídeo)
+          </button>
+          {canShare && (
+            <button
+              onClick={async () => {
+                try {
+                  setShareMsg("A abrir partilha...");
+                  const ok = await nativeShareFile(
+                    videoUrl,
+                    `${baseFilename}.mp4`,
+                    meta.title,
+                  );
+                  setShareMsg(ok ? "Partilha aberta" : "Sem suporte neste dispositivo");
+                } catch {
+                  setShareMsg("Cancelado");
+                } finally {
+                  setTimeout(() => setShareMsg(null), 2000);
+                }
+              }}
+              className="rounded border border-escola-dourado px-3 py-2 font-semibold text-escola-dourado"
+              title="No mobile abre o sheet de partilha (YouTube Studio, TikTok, IG)"
+            >
+              ↗ Partilhar MP4
+            </button>
+          )}
+          {srtUrl && (
+            <button
+              onClick={() => downloadBlob(srtUrl, `${baseFilename}.srt`)}
+              className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40"
+            >
+              ⬇ SRT (legendas)
+            </button>
+          )}
+          {thumbUrl && (
+            <button
+              onClick={() => downloadBlob(thumbUrl, `${baseFilename}-thumb.png`)}
+              className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40"
+            >
+              ⬇ Thumbnail
+            </button>
+          )}
+        </div>
+        {shareMsg && (
+          <p className="mt-2 text-[10px] text-escola-creme-50">{shareMsg}</p>
+        )}
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          📱 Mobile: &quot;Partilhar MP4&quot; abre o sheet nativo → escolhe YouTube Studio,
+          TikTok ou Instagram. 💻 Desktop: usa &quot;⬇ MP4&quot; e arrasta para o Studio.
+        </p>
+      </div>
+
+      {/* Passo 2: Abrir YouTube Studio */}
+      <div className="mb-4 rounded-lg border border-escola-border bg-escola-bg p-3">
+        <p className="mb-2 text-xs font-semibold text-escola-creme">
+          <span className="mr-2 rounded-full bg-escola-dourado/20 px-2 text-escola-dourado">
+            2
+          </span>
+          Abrir YouTube Studio e fazer upload
+        </p>
+        <div className="flex flex-wrap gap-2 text-xs">
+          <a
+            href="https://studio.youtube.com/channel/UC/videos/upload"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg"
+          >
+            → Abrir YouTube Studio Upload
+          </a>
+        </div>
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          Arrasta o MP4 para a janela. Depois: Subtitles → Upload file → escolhe o
+          .srt. Thumbnail → sobe o PNG. Visibility → Scheduled → sexta 18h Maputo.
+        </p>
+      </div>
+
+      {/* Passo 3: Copy fields (título / descrição / tags) */}
+      <div className="rounded-lg border border-escola-border bg-escola-bg p-3">
+        <p className="mb-2 text-xs font-semibold text-escola-creme">
+          <span className="mr-2 rounded-full bg-escola-dourado/20 px-2 text-escola-dourado">
+            3
+          </span>
+          Copiar campos e colar no Studio
+        </p>
+        <div className="space-y-2 text-xs">
+          <CopyRow
+            label={`Título (${meta.title.length}/100)`}
+            value={meta.title}
+            copied={copied === "title"}
+            onCopy={() => doCopy("title", meta.title)}
+            rows={1}
+            warn={meta.title.length > 100}
+          />
+          <CopyRow
+            label={`Descrição (${meta.description.length}/5000)`}
+            value={meta.description}
+            copied={copied === "desc"}
+            onCopy={() => doCopy("desc", meta.description)}
+            rows={6}
+            warn={meta.description.length > 5000}
+          />
+          <CopyRow
+            label="Tags (separadas por vírgula)"
+            value={meta.tags.join(", ")}
+            copied={copied === "tags"}
+            onCopy={() => doCopy("tags", meta.tags.join(", "))}
+            rows={2}
+          />
+        </div>
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          💡 Edita livremente antes de copiar — o título/descrição são só sugestões
+          derivadas do script.
+        </p>
+      </div>
+
+      <details className="mt-4 rounded-lg border border-escola-border bg-escola-bg/50 p-3">
+        <summary className="cursor-pointer text-xs text-escola-creme-50 hover:text-escola-creme">
+          📱 Partilhar também em TikTok e Instagram Reels (para o shorts, depois)
+        </summary>
+        <div className="mt-2 space-y-1 text-[11px] text-escola-creme-50">
+          <p>
+            <b>TikTok</b>: App → + → Upload → seleciona MP4 vertical → caption +
+            hashtags → agenda até 10 dias à frente dentro da app.
+          </p>
+          <p>
+            <b>Instagram Reels</b>: App → + → Reel → MP4 → Caption. Agendamento em
+            <a
+              href="https://business.facebook.com/latest/content_planner"
+              target="_blank"
+              rel="noreferrer"
+              className="ml-1 text-escola-dourado underline"
+            >
+              Meta Business Suite
+            </a>{" "}
+            (grátis).
+          </p>
+          <p>
+            As legendas já estão queimadas no MP4 → funcionam automaticamente em
+            TikTok e Reels (que não têm CC nativo).
+          </p>
+        </div>
+      </details>
+
+      <p className="mt-3 text-[10px] text-escola-creme-50">
+        ⚙️ Quando configurares o Google OAuth, aparece aqui o botão
+        &quot;Publicar &amp; agendar automaticamente&quot; — um click faz tudo
+        (upload + thumbnail + captions + schedule).
+      </p>
+    </section>
+  );
+}
+
+function CopyRow({
+  label,
+  value,
+  copied,
+  onCopy,
+  rows,
+  warn,
+}: {
+  label: string;
+  value: string;
+  copied: boolean;
+  onCopy: () => void;
+  rows: number;
+  warn?: boolean;
+}) {
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between">
+        <label
+          className={`text-[10px] uppercase tracking-wider ${warn ? "text-escola-terracota" : "text-escola-creme-50"}`}
+        >
+          {label}
+        </label>
+        <button
+          onClick={onCopy}
+          className="rounded bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado hover:bg-escola-dourado/20"
+        >
+          {copied ? "✓ copiado" : "copiar"}
+        </button>
+      </div>
+      <textarea
+        value={value}
+        readOnly
+        rows={rows}
+        className="w-full rounded border border-escola-border bg-escola-card px-2 py-1.5 text-[11px] text-escola-creme"
+        onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+      />
     </div>
   );
 }

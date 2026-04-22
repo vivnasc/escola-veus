@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef, forwardRef } from "react";
+import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import runwayMotionPrompts from "@/data/runway-motion-prompts.json";
 
@@ -541,6 +542,13 @@ export default function ShortsPage() {
         <h2 className="font-serif text-lg text-escola-creme">
           Shorts · TikTok & YouTube (30s vertical)
         </h2>
+        <div className="flex gap-2">
+          <Link
+            href="/admin/producao/shorts/nomear"
+            className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1.5 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/20"
+          >
+            → Short do episódio Nomear
+          </Link>
         <button
           onClick={() => {
             if (!confirm("Limpar tudo e começar de novo?")) return;
@@ -551,6 +559,7 @@ export default function ShortsPage() {
         >
           Limpar
         </button>
+        </div>
       </div>
 
       {/* ── DASHBOARD DE ESTADO DOS SHORTS ── */}
