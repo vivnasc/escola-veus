@@ -43,6 +43,7 @@ export default function FunilGerarPage() {
   const [filter, setFilter] = useState<string>("trailer");
 
   const [images, setImages] = useState<UploadedImage[]>([]);
+  const [loadingAssets, setLoadingAssets] = useState(true);
   const [uploading, setUploading] = useState<string | null>(null);
   const [generatingFal, setGeneratingFal] = useState<string | null>(null);
   const [falProgress, setFalProgress] = useState<{ promptId: string; done: number; total: number } | null>(null);
@@ -61,7 +62,11 @@ export default function FunilGerarPage() {
   }, []);
 
   // ── Load existing images + clips ──────────────────────────────────────
+  // Este endpoint faz ~100+ list-calls ao Supabase (1 por cada subpasta de
+  // prompt × 2 orientações) — pode demorar 5-15s. loadingAssets permite à UI
+  // mostrar "a carregar" em vez de "sem imagens" nesse período.
   const reloadAssets = useCallback(async () => {
+    setLoadingAssets(true);
     try {
       const [imgRes, clipRes] = await Promise.all([
         fetch("/api/admin/thinkdiffusion/list-images").then((r) => r.json()),
@@ -84,6 +89,8 @@ export default function FunilGerarPage() {
       }
     } catch {
       /* silent */
+    } finally {
+      setLoadingAssets(false);
     }
   }, []);
 
@@ -404,6 +411,15 @@ export default function FunilGerarPage() {
                 uploading={uploading === p.id}
                 onFiles={(files) => uploadForPrompt(p.id, files)}
               />
+
+              {/* Loading state: evita impressao de "vazio" enquanto Supabase
+                  responde (o endpoint list-images demora 5-15s). */}
+              {loadingAssets && imgs.length === 0 && (
+                <div className="mt-3 flex items-center justify-center gap-2 rounded border border-dashed border-escola-border py-4 text-[11px] text-escola-creme-50">
+                  <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-escola-dourado" />
+                  A carregar imagens já guardadas em Supabase...
+                </div>
+              )}
 
               {/* Images */}
               {imgs.length > 0 && (
