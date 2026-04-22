@@ -23,7 +23,8 @@ export async function GET() {
   const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
   const pageSize = 1000;
-  const allFiles: { name: string; created_at?: string; updated_at?: string }[] = [];
+  // Supabase FileObject usa string | null, não string | undefined.
+  const allFiles: { name: string; created_at?: string | null; updated_at?: string | null }[] = [];
   let offset = 0;
   while (true) {
     const { data, error } = await supabase.storage
