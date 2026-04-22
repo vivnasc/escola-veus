@@ -10,7 +10,8 @@ const TABS: Tab[] = [
   { href: "/admin/producao/funil", label: "Funil" },
   { href: "/admin/producao/ancient-ground", label: "Ancient Ground", exact: true },
   { href: "/admin/producao/ancient-ground/montagem", label: "AG — Montagem" },
-  { href: "/admin/producao/shorts", label: "Shorts" },
+  { href: "/admin/producao/shorts/nomear", label: "Shorts Nomear" },
+  { href: "/admin/producao/shorts", label: "Shorts (manual)", exact: true },
   { href: "/admin/producao/audios", label: "Audios" },
 ];
 

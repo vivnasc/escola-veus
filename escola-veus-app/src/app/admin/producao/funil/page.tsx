@@ -91,6 +91,12 @@ export default function FunilPage() {
           → Montar vídeo final
         </Link>
         <Link
+          href="/admin/producao/shorts/nomear"
+          className="rounded-lg border border-escola-coral bg-escola-coral/10 px-3 py-1.5 font-semibold text-escola-coral hover:bg-escola-coral/20"
+        >
+          → Gerar Short 9:16 (TikTok/Reels/YT)
+        </Link>
+        <Link
           href="/admin/producao/audios"
           className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
         >
