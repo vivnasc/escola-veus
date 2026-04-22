@@ -243,7 +243,10 @@ async function main() {
         `:fontcolor=white@0.92` +
         `:x=(w-text_w)/2` +
         `:y=h*0.82` +
-        `:enable='between(t\\,${showFrom}\\,${showUntil})'`;
+        // Aspas simples agrupam o valor de `enable`, pelo que vírgulas dentro
+        // delas SÃO literais. Escapá-las com `\,` parte o expression parser
+        // do FFmpeg e faz o drawtext cair no fallback sem texto.
+        `:enable='between(t,${showFrom},${showUntil})'`;
     }
 
     try {
