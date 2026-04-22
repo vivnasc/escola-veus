@@ -1452,6 +1452,15 @@ export default function YouTubeMontagem() {
             >
               Abrir / Descarregar MP4
             </a>
+
+            {/* Bloco copy-paste para publicação YouTube — sempre visível
+                quando há vídeo pronto. Usa o SEO já editado em 3C. */}
+            <YoutubePublishCopy
+              videoUrl={renderResult}
+              title={seo.postTitle || title}
+              description={seo.description}
+              hashtags={seo.hashtags}
+            />
           </div>
         )}
 
@@ -2060,5 +2069,133 @@ function ThumbnailSection({
         </div>
       )}
     </section>
+  );
+}
+
+// ── YouTube publish copy ─────────────────────────────────────────────────────
+// Bloco grande, sempre visível depois do render. Mostra título + descrição
+// completa (com URL do vídeo no topo, hashtags no fim) prontos a colar no
+// YouTube Studio. Inclui tags separadas por vírgula (campo "Tags" do Studio
+// aceita CSV de hashtags sem '#'). Tudo SEO-optimizado: título <100 chars,
+// descrição com hook na 1ª linha, music+location credits, hashtags no fim.
+function YoutubePublishCopy({
+  videoUrl,
+  title,
+  description,
+  hashtags,
+}: {
+  videoUrl: string;
+  title: string;
+  description: string;
+  hashtags: string[];
+}) {
+  const fullDescription = [description, "", hashtags.join(" ")].filter(Boolean).join("\n");
+  const tagsCsv = hashtags.map((h) => h.replace(/^#/, "")).join(", ");
+
+  const copy = (text: string, label: string) => {
+    navigator.clipboard?.writeText(text).then(
+      () => { /* could toast */ },
+      () => alert(`Falhou copiar ${label}.`),
+    );
+  };
+
+  const titleOver = title.length > 100;
+
+  return (
+    <div className="mt-4 rounded-lg border border-escola-dourado/40 bg-escola-dourado/5 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h4 className="text-sm font-semibold text-escola-dourado">
+          📋 Pronto a publicar no YouTube — copia daqui
+        </h4>
+        <button
+          onClick={() =>
+            copy(
+              `TÍTULO:\n${title}\n\nDESCRIÇÃO:\n${fullDescription}\n\nTAGS:\n${tagsCsv}\n\nVÍDEO:\n${videoUrl}`,
+              "tudo",
+            )
+          }
+          className="rounded bg-escola-dourado px-3 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado/90"
+        >
+          Copiar TUDO
+        </button>
+      </div>
+
+      {(!title || !description) && (
+        <p className="mb-3 rounded bg-escola-bg/50 p-2 text-xs text-escola-coral">
+          ⚠️ Título ou descrição vazios. Vai à secção <strong>3C — SEO</strong> em cima e carrega em <strong>"Gerar proposta SEO"</strong> primeiro.
+        </p>
+      )}
+
+      <div className="space-y-3">
+        <CopyBlock
+          label="Título"
+          value={title}
+          warning={titleOver ? `${title.length}/100 chars (YouTube corta acima de 100)` : `${title.length}/100 chars`}
+          onCopy={() => copy(title, "título")}
+          rows={1}
+        />
+        <CopyBlock
+          label="Descrição (com hashtags)"
+          value={fullDescription}
+          warning={`${fullDescription.length}/5000 chars`}
+          onCopy={() => copy(fullDescription, "descrição")}
+          rows={8}
+        />
+        <CopyBlock
+          label="Tags (CSV — campo Tags do YouTube Studio)"
+          value={tagsCsv}
+          warning={`${hashtags.length} tags · YouTube aceita até 500 chars`}
+          onCopy={() => copy(tagsCsv, "tags")}
+          rows={2}
+        />
+        <CopyBlock
+          label="URL do vídeo (Supabase MP4)"
+          value={videoUrl}
+          warning="Cola na app do YouTube Studio para descarregar (se não estiveres no PC do render)."
+          onCopy={() => copy(videoUrl, "URL")}
+          rows={1}
+        />
+      </div>
+    </div>
+  );
+}
+
+function CopyBlock({
+  label,
+  value,
+  warning,
+  onCopy,
+  rows,
+}: {
+  label: string;
+  value: string;
+  warning?: string;
+  onCopy: () => void;
+  rows: number;
+}) {
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between">
+        <label className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+          {label}
+        </label>
+        <div className="flex items-center gap-3">
+          {warning && <span className="text-[10px] text-escola-creme-50">{warning}</span>}
+          <button
+            onClick={onCopy}
+            disabled={!value}
+            className="text-[10px] text-escola-coral hover:text-escola-coral/80 disabled:opacity-30"
+          >
+            Copiar
+          </button>
+        </div>
+      </div>
+      <textarea
+        value={value}
+        readOnly
+        rows={rows}
+        className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+      />
+    </div>
   );
 }

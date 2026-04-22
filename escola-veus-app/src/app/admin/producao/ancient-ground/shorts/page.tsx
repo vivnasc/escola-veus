@@ -29,7 +29,36 @@ const CLIP_DURATION = 10;
 const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
 const AG_MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
 const AG_TOTAL_TRACKS = 100;
-const DEFAULT_HASHTAGS = "#AncientGround #nature #meditation #ambient";
+// SEO: o YouTube Shorts ranqueia muito por hashtag + 1ª linha da descrição.
+// #Shorts é obrigatório para entrar no feed Shorts. As primeiras 4-5 hashtags
+// são as mais valorizadas pelo algoritmo. Mistura broad (alto volume) + nicho
+// (menos competitivo, intenção alta).
+const SEO_HASHTAGS = [
+  "#Shorts",
+  "#AncientGround",
+  "#NatureSounds",
+  "#RelaxingMusic",
+  "#Meditation",
+  "#AmbientMusic",
+  "#NaturePoetry",
+  "#Mozambique",
+  "#AfricanNature",
+  "#Mindfulness",
+];
+
+// Tags YouTube (sem '#', CSV) para o campo Tags do Studio.
+const SEO_TAGS = [
+  "ancient ground",
+  "nature short",
+  "relaxing nature",
+  "ambient music",
+  "meditation short",
+  "nature poetry",
+  "mozambique nature",
+  "african ambience",
+  "mindfulness short",
+  "calm nature",
+];
 
 function agTrackUrl(n: number): string {
   return `${AG_MUSIC_BASE}/faixa-${String(n).padStart(2, "0")}.mp3`;
@@ -105,23 +134,39 @@ export default function AncientGroundShortsPage() {
   }, []);
 
   // Legendas geradas automaticamente a partir dos versos+faixa. O operador pode
-  // sempre editar à mão — os textareas são livres.
+  // sempre editar à mão — os textareas são livres. Foco em SEO:
+  // - TikTok: hook na 1ª linha (verso), hashtags no fim. Cap 150 chars.
+  // - YouTube title: até 70 chars, com #Shorts no fim para entrar no feed Shorts.
+  // - YouTube description: 1ª linha = hook (1º verso) — é o que aparece no
+  //   preview. Depois 2º verso + créditos música + canal + 10 hashtags.
   useEffect(() => {
-    const base = [verse1, verse2].filter((s) => s.trim()).join(" / ");
-    const core = base.length > 100 ? base.slice(0, 97) + "..." : base;
-    const tiktok = `${core}\n\n${DEFAULT_HASHTAGS}`.trim();
+    const hashtagsLine = SEO_HASHTAGS.join(" ");
+
+    // TikTok caption: limite 150 chars (cap atual da plataforma para descobrir).
+    const tiktokCore = [verse1, verse2].filter((s) => s.trim()).join(" / ");
+    const tiktokTrimmed = tiktokCore.length > 90 ? tiktokCore.slice(0, 87) + "..." : tiktokCore;
+    const tiktok = `${tiktokTrimmed}\n\n${SEO_HASHTAGS.slice(0, 6).join(" ")}`;
     setTiktokCaption(tiktok.length > 150 ? tiktok.slice(0, 147) + "..." : tiktok);
 
-    const yTitle = title || verse1 || "Ancient Ground · Short";
-    setYoutubeTitle(yTitle.length > 70 ? yTitle.slice(0, 67) + "..." : yTitle);
+    // YouTube title: prioridade ao verso 1 (mais "frase poética" que "Ancient
+    // Ground · Short"), com #Shorts no fim para garantir feed Shorts. 70 chars.
+    const yTitleBase = (title || verse1 || "Ancient Ground").trim();
+    const yTitleWithTag = `${yTitleBase} #Shorts`;
+    setYoutubeTitle(yTitleWithTag.length > 70 ? yTitleBase.slice(0, 60) + "... #Shorts" : yTitleWithTag);
 
+    // YouTube description: 1ª linha = hook (aparece no preview), depois corpo
+    // + créditos + canal + hashtags. Limite YouTube: 5000 chars (folga grande).
     const yDesc = [
       verse1,
+      "",
       verse2,
       "",
-      `Ancient Ground · faixa ${String(trackNumber).padStart(2, "0")}`,
+      "🎵 Ancient Ground — música original ambient inspirada em Moçambique.",
+      `Faixa ${String(trackNumber).padStart(2, "0")} · music.seteveus.space`,
       "",
-      DEFAULT_HASHTAGS,
+      "🌍 Cada short é uma respiração curta — paisagem + verso + som — para te lembrares.",
+      "",
+      hashtagsLine,
     ].join("\n");
     setYoutubeDescription(yDesc);
   }, [verse1, verse2, title, trackNumber]);
@@ -451,31 +496,65 @@ export default function AncientGroundShortsPage() {
         </button>
       </section>
 
-      {/* 5. LEGENDAS */}
-      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          5. Legendas para publicar
-        </h3>
+      {/* 5. SEO + LEGENDAS — copy-paste para publicar */}
+      <section className="rounded-lg border border-escola-dourado/40 bg-escola-dourado/5 p-4">
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-dourado">
+            5. 📋 Pronto a publicar — copia daqui
+          </h3>
+          <button
+            onClick={() => {
+              const tags = SEO_TAGS.join(", ");
+              const all = `TÍTULO YOUTUBE:\n${youtubeTitle}\n\nDESCRIÇÃO YOUTUBE:\n${youtubeDescription}\n\nTAGS YOUTUBE (CSV):\n${tags}\n\nTIKTOK / INSTAGRAM:\n${tiktokCaption}${renderResult ? `\n\nVÍDEO:\n${renderResult}` : ""}`;
+              navigator.clipboard?.writeText(all).catch(() => {});
+            }}
+            className="rounded bg-escola-dourado px-3 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado/90"
+          >
+            Copiar TUDO
+          </button>
+        </div>
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Tudo SEO-optimizado para YouTube Shorts e TikTok. <strong>#Shorts</strong> no título garante feed Shorts. 1ª linha da descrição é o que aparece no preview.
+        </p>
         <div className="space-y-3">
           <CopyField
-            label="TikTok / Instagram caption"
-            value={tiktokCaption}
-            onChange={setTiktokCaption}
-            rows={3}
-            maxChars={150}
-          />
-          <CopyField
-            label="YouTube title"
+            label="YouTube title (com #Shorts)"
             value={youtubeTitle}
             onChange={setYoutubeTitle}
             rows={1}
             maxChars={70}
           />
           <CopyField
-            label="YouTube description"
+            label="YouTube description (com hashtags no fim)"
             value={youtubeDescription}
             onChange={setYoutubeDescription}
-            rows={6}
+            rows={9}
+          />
+          <div>
+            <div className="mb-1 flex items-center justify-between">
+              <label className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+                YouTube tags (CSV — campo Tags do Studio)
+              </label>
+              <button
+                onClick={() => navigator.clipboard?.writeText(SEO_TAGS.join(", ")).catch(() => {})}
+                className="text-[10px] text-escola-coral hover:text-escola-coral/80"
+              >
+                Copiar
+              </button>
+            </div>
+            <textarea
+              value={SEO_TAGS.join(", ")}
+              readOnly
+              rows={2}
+              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+            />
+          </div>
+          <CopyField
+            label="TikTok / Instagram caption"
+            value={tiktokCaption}
+            onChange={setTiktokCaption}
+            rows={3}
+            maxChars={150}
           />
         </div>
       </section>
