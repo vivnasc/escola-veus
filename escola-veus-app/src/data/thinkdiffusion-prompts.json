@@ -5,9 +5,10 @@
     "height": 1080,
     "cfg_scale": 6,
     "steps": 35,
-    "sampler_name": "DPM++ 2M Karras",
+    "sampler_name": "DPM++ 2M",
     "batch_size": 4,
-    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns, limestone cliffs, karst formations, towering sea cliffs, Halong Bay, Asian tropical karst, mountainous coastline, vertical rock walls, Mediterranean, Santorini, Portuguese village, European buildings, red tiled roofs, stone church, cathedral, castle, fort, bandstand, gazebo, ornate ironwork, cobblestone street, calcada, colonial buildings, townscape, painterly, fine art, concept art, digital painting, airbrushed, fantasy illustration, art print, matte painting, stylized rendering, atmospheric art"
+    "negative_prompt": "cartoon, illustration, painting, drawing, anime, 3d render, CGI, artificial, plastic, oversaturated, text, watermark, logo, signature, frame, border, low quality, blurry, out of focus, deformed, ugly, multiple moons, duplicate moon, multiple suns, duplicate sun, two moons, two suns, limestone cliffs, karst formations, towering sea cliffs, Halong Bay, Asian tropical karst, mountainous coastline, vertical rock walls, Mediterranean, Santorini, Portuguese village, European buildings, red tiled roofs, stone church, cathedral, castle, fort, bandstand, gazebo, ornate ironwork, cobblestone street, calcada, colonial buildings, townscape, painterly, fine art, concept art, digital painting, airbrushed, fantasy illustration, art print, matte painting, stylized rendering, atmospheric art",
+    "schedule_type": "Automatic"
   },
   "prompts": [
     {
