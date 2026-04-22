@@ -192,12 +192,31 @@ async function main() {
   const outroIdx = clips.length + 1;
   const lastIdx = outroIdx;
 
+  // xfade exige que ambos os inputs tenham exactamente o mesmo size/sar/fps.
+  // Intro/outro brand é 832x464 enquanto os clips Runway são 1280x720 — sem
+  // normalizar, o xfade explode com "main parameters do not match".
+  // Escalar tudo para 1280x720, manter aspect-ratio (letterbox se preciso),
+  // SAR=1, fps=30. Target fixo = Runway output (os clips ficam 1:1).
+  const TARGET_W = 1280;
+  const TARGET_H = 720;
+  const TARGET_FPS = 30;
+  const normalize = (label) =>
+    `scale=${TARGET_W}:${TARGET_H}:force_original_aspect_ratio=decrease,` +
+    `pad=${TARGET_W}:${TARGET_H}:(ow-iw)/2:(oh-ih)/2:color=black,` +
+    `setsar=1,fps=${TARGET_FPS},format=yuv420p[${label}]`;
+
   const videoFilters = [];
-  let prev = `${introIdx}:v`;
+  videoFilters.push(`[${introIdx}:v]${normalize("vin")}`);
+  for (let i = 0; i < clips.length; i++) {
+    videoFilters.push(`[${clipStartIdx + i}:v]${normalize(`vc${i}`)}`);
+  }
+  videoFilters.push(`[${outroIdx}:v]${normalize("vout0")}`);
+
+  let prev = "vin";
 
   // intro → clip0
   videoFilters.push(
-    `[${prev}][${clipStartIdx}:v]xfade=transition=fade:duration=${crossfade}:offset=${introStride.toFixed(2)}[vx0]`
+    `[${prev}][vc0]xfade=transition=fade:duration=${crossfade}:offset=${introStride.toFixed(2)}[vx0]`
   );
   prev = "vx0";
 
@@ -206,7 +225,7 @@ async function main() {
     const out = `vx${i}`;
     const offset = introStride + i * stride;
     videoFilters.push(
-      `[${prev}][${clipStartIdx + i}:v]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(2)}[${out}]`
+      `[${prev}][vc${i}]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(2)}[${out}]`
     );
     prev = out;
   }
@@ -214,7 +233,7 @@ async function main() {
   // clipN-1 → outro
   const outroOffset = introStride + clipsDuration - crossfade;
   videoFilters.push(
-    `[${prev}][${outroIdx}:v]xfade=transition=fade:duration=${crossfade}:offset=${outroOffset.toFixed(2)}[vchain]`
+    `[${prev}][vout0]xfade=transition=fade:duration=${crossfade}:offset=${outroOffset.toFixed(2)}[vchain]`
   );
 
   // Freeze frame extra se narração for maior que body
