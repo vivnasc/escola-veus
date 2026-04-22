@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import videoPlan from "@/data/video-plan.json";
 import youtubeMetadata from "@/data/youtube-metadata.json";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
+import { RecentRenders } from "@/components/admin/RecentRenders";
 
 type SeoMeta = {
   thumbnailTitle: string;
@@ -1021,6 +1022,13 @@ export default function YouTubeMontagem() {
           </button>
         </div>
       </div>
+
+      {/* Últimos vídeos longos AG (do Supabase, cross-device) */}
+      <RecentRenders
+        kind="long"
+        title="📂 Últimos vídeos AG gerados"
+        subtitle="Aparece em qualquer dispositivo — clica num para ver, partilhar ou copiar título/descrição."
+      />
 
       {/* ── 1. TITULO ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">

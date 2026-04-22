@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import * as htmlToImage from "html-to-image";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
+import { RecentRenders } from "@/components/admin/RecentRenders";
 
 // Shorts AG — reaproveitam clips Runway já pagos (listados em escola-shorts/clips/*
 // via list-clips-ag), música do álbum ancient-ground (100 faixas) e 2 versos
@@ -284,6 +285,13 @@ export default function AncientGroundShortsPage() {
           Limpar
         </button>
       </div>
+
+      {/* Últimos shorts AG gerados (do Supabase, cross-device) */}
+      <RecentRenders
+        kind="short"
+        title="📂 Últimos shorts AG gerados"
+        subtitle="Aparece em qualquer dispositivo — clica num para partilhar ou copiar SEO."
+      />
 
       {/* 1. CLIPS */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
