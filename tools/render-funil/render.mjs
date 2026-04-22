@@ -16,7 +16,7 @@
 
 import { spawn } from "node:child_process";
 import { createWriteStream } from "node:fs";
-import { mkdir, readFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import path from "node:path";
@@ -39,6 +39,24 @@ const CTA_TEXT = "seteveus.space";
 const TEXT_COLOR = "0xF5F0E6";
 // Use fontconfig (Ubuntu GitHub Actions runners include libfontconfig + DejaVu Serif).
 const TEXT_FONT = "Serif";
+
+// Estilo das legendas (libass force_style).
+//   PrimaryColour é BGR (não RGB!). #F5F0E6 (cream) -> &H00E6F0F5
+//   BorderStyle=1 (outline + shadow), 3 (caixa opaca). 1 fica mais limpo.
+//   MarginV: distância em pixels do fundo (em 720p, 60 dá uma faixa segura).
+//   Alignment=2 = bottom-center.
+//   Override via manifest.subtitleStyle (string libass válida).
+const DEFAULT_SUBTITLE_STYLE =
+  "FontName=DejaVu Serif," +
+  "FontSize=24," +
+  "PrimaryColour=&H00E6F0F5," +
+  "OutlineColour=&H00000000," +
+  "BackColour=&H80000000," +
+  "BorderStyle=1," +
+  "Outline=2," +
+  "Shadow=0," +
+  "MarginV=60," +
+  "Alignment=2";
 
 function requireEnv(name) {
   const v = process.env[name];
@@ -90,6 +108,26 @@ async function writeResult(jobId, payload) {
   await uploadToSupabase(`${JOB_DIR}/${jobId}-result.json`, body, "application/json");
 }
 
+// Aplica offset (segundos) a todos os timestamps SRT no formato HH:MM:SS,mmm.
+// Usado porque a SRT é gerada a partir do áudio cru (timestamps a partir de 0)
+// mas no vídeo final a narração arranca em narrationStartAt (= introStride).
+function shiftSrtTimestamps(srtText, offsetSec) {
+  return srtText.replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, (_, h, m, s, ms) => {
+    const total = (+h) * 3600 + (+m) * 60 + (+s) + (+ms) / 1000 + offsetSec;
+    if (total < 0) return "00:00:00,000";
+    const H = Math.floor(total / 3600);
+    const M = Math.floor((total % 3600) / 60);
+    const S = Math.floor(total % 60);
+    const MS = Math.round((total - Math.floor(total)) * 1000);
+    return (
+      String(H).padStart(2, "0") + ":" +
+      String(M).padStart(2, "0") + ":" +
+      String(S).padStart(2, "0") + "," +
+      String(MS).padStart(3, "0")
+    );
+  });
+}
+
 async function main() {
   const jobId = process.argv[2];
   if (!jobId) throw new Error("Uso: render.mjs <jobId>");
@@ -106,13 +144,15 @@ async function main() {
     title = "funil-video",
     slug: rawSlug,
     clips,
-    clipDuration = 10,
+    clipDuration: rawClipDuration = 10,
     narrationUrl,
     musicUrls,
     musicVolume = 0.2,
     narrationVolume = 1.2,
     crossfade = 0.5,
     thumbnailUrl,
+    subtitlesUrl,
+    subtitleStyle,
     seo,
   } = manifest;
 
@@ -139,6 +179,25 @@ async function main() {
     ...musicUrls.map((url, i) => downloadTo(url, musicPaths[i])),
   ]);
 
+  // Subtitles (opcional). Geradas pelo ElevenLabs Scribe a partir do áudio
+  // raw da narração — timestamps começam em 0. Como a narração arranca em
+  // narrationStartAt (= introStride, ~4.5s) no vídeo final, fazemos shift
+  // de todos os timestamps por esse offset antes de queimar.
+  let subtitlesPath = null;
+  if (subtitlesUrl) {
+    try {
+      const sres = await fetch(subtitlesUrl);
+      if (!sres.ok) throw new Error(`Download SRT ${sres.status}`);
+      const srtRaw = await sres.text();
+      // O shift é aplicado mais abaixo, depois de calcularmos introStride.
+      subtitlesPath = path.join(WORK_DIR, "sub.srt");
+      await writeFile(subtitlesPath, srtRaw); // shifted in-place after we know offset
+    } catch (e) {
+      console.warn(`Subtitles falhou (${e?.message || e}); a continuar SEM legendas.`);
+      subtitlesPath = null;
+    }
+  }
+
   await writeResult(jobId, { status: "running", phase: "render", progress: 25 });
 
   // ── Audio duration probe ─────────────────────────────────────────────────
@@ -158,6 +217,40 @@ async function main() {
     });
   }
   const narrSec = await probeSeconds(narrationPath);
+
+  // ── Sync dos clips à narração ───────────────────────────────────────────
+  // Problema: clips Runway vêm todos em 10s fixos, mas a narração de cada
+  // episódio tem duração própria (80s, 95s, 110s…). Se mantivermos 10s por
+  // clip, o vídeo fica mais longo que a voz → as imagens continuam depois
+  // da voz acabar (parece que "a voz é mais rápida").
+  //
+  // Fix: calcular clipDuration de forma proporcional à narração para que
+  // soma-dos-clips ≈ duração-da-narração + pequeno tail. Se narração é
+  // muito longa (>N*10s), cap em 10s (Runway max) e deixa o tpad esticar
+  // o outro no fim. Clamp mínimo 4s para não ficar demasiado corto.
+  //
+  // Passado via body do manifest: `syncToNarration` (default true).
+  const sync = manifest.syncToNarration !== false;
+  let clipDuration = rawClipDuration;
+  if (sync && narrSec > 0 && clips.length > 0) {
+    const targetClipsBlock = narrSec + 1.0; // pequena folga para fade-out voz
+    const n = clips.length;
+    // clipsDuration = (n-1)*stride + clipDuration, stride = clipDuration - crossfade
+    // Queremos clipsDuration = target → resolver para clipDuration:
+    //   (n-1)*(clipDuration - crossfade) + clipDuration = target
+    //   n*clipDuration - (n-1)*crossfade = target
+    //   clipDuration = (target + (n-1)*crossfade) / n
+    const computed = (targetClipsBlock + (n - 1) * crossfade) / n;
+    const clamped = Math.max(4, Math.min(10, computed));
+    if (Math.abs(clamped - rawClipDuration) > 0.1) {
+      console.log(
+        `[sync] narrSec=${narrSec.toFixed(1)}s · clips=${n} · ` +
+        `clipDuration ajustado de ${rawClipDuration} → ${clamped.toFixed(2)}s ` +
+        `(target video body ${(clamped * n - (n - 1) * crossfade).toFixed(1)}s)`,
+      );
+    }
+    clipDuration = clamped;
+  }
 
   // ── Filter graph ──────────────────────────────────────────────────────────
   // Inputs ordered as: [intro][clip0]..[clipN-1][outro][narration][music0]..[musicM-1]
@@ -186,18 +279,50 @@ async function main() {
   const FADE_IN = 1.0;
   const FADE_OUT = 2.0;
 
+  // Aplica shift à SRT (timestamps eram relativos à narração crua).
+  if (subtitlesPath) {
+    try {
+      const raw = await readFile(subtitlesPath, "utf8");
+      const shifted = shiftSrtTimestamps(raw, narrationStartAt);
+      await writeFile(subtitlesPath, shifted);
+      console.log(`SRT shifted +${narrationStartAt.toFixed(2)}s e gravada em ${subtitlesPath}`);
+    } catch (e) {
+      console.warn(`SRT shift falhou (${e?.message || e}); a continuar SEM legendas.`);
+      subtitlesPath = null;
+    }
+  }
+
   // Video inputs: 0 = intro, 1..N = clips, N+1 = outro
   const introIdx = 0;
   const clipStartIdx = 1;
   const outroIdx = clips.length + 1;
   const lastIdx = outroIdx;
 
+  // xfade exige que ambos os inputs tenham exactamente o mesmo size/sar/fps.
+  // Intro/outro brand é 832x464 enquanto os clips Runway são 1280x720 — sem
+  // normalizar, o xfade explode com "main parameters do not match".
+  // Escalar tudo para 1280x720, manter aspect-ratio (letterbox se preciso),
+  // SAR=1, fps=30. Target fixo = Runway output (os clips ficam 1:1).
+  const TARGET_W = 1280;
+  const TARGET_H = 720;
+  const TARGET_FPS = 30;
+  const normalize = (label) =>
+    `scale=${TARGET_W}:${TARGET_H}:force_original_aspect_ratio=decrease,` +
+    `pad=${TARGET_W}:${TARGET_H}:(ow-iw)/2:(oh-ih)/2:color=black,` +
+    `setsar=1,fps=${TARGET_FPS},format=yuv420p[${label}]`;
+
   const videoFilters = [];
-  let prev = `${introIdx}:v`;
+  videoFilters.push(`[${introIdx}:v]${normalize("vin")}`);
+  for (let i = 0; i < clips.length; i++) {
+    videoFilters.push(`[${clipStartIdx + i}:v]${normalize(`vc${i}`)}`);
+  }
+  videoFilters.push(`[${outroIdx}:v]${normalize("vout0")}`);
+
+  let prev = "vin";
 
   // intro → clip0
   videoFilters.push(
-    `[${prev}][${clipStartIdx}:v]xfade=transition=fade:duration=${crossfade}:offset=${introStride.toFixed(2)}[vx0]`
+    `[${prev}][vc0]xfade=transition=fade:duration=${crossfade}:offset=${introStride.toFixed(2)}[vx0]`
   );
   prev = "vx0";
 
@@ -206,7 +331,7 @@ async function main() {
     const out = `vx${i}`;
     const offset = introStride + i * stride;
     videoFilters.push(
-      `[${prev}][${clipStartIdx + i}:v]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(2)}[${out}]`
+      `[${prev}][vc${i}]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(2)}[${out}]`
     );
     prev = out;
   }
@@ -214,7 +339,7 @@ async function main() {
   // clipN-1 → outro
   const outroOffset = introStride + clipsDuration - crossfade;
   videoFilters.push(
-    `[${prev}][${outroIdx}:v]xfade=transition=fade:duration=${crossfade}:offset=${outroOffset.toFixed(2)}[vchain]`
+    `[${prev}][vout0]xfade=transition=fade:duration=${crossfade}:offset=${outroOffset.toFixed(2)}[vchain]`
   );
 
   // Freeze frame extra se narração for maior que body
@@ -233,24 +358,39 @@ async function main() {
   const outroTextStart = outroVideoStart + 0.5;
   const outroTextEnd = totalDuration - 0.3;
 
-  // Escape de caracteres especiais do drawtext não necessário aqui (sem : ou ').
+  // Separate filters with semicolons + intermediate labels — mais legível e
+  // evita ambiguidades do parser do ffmpeg com vírgulas dentro de enable='between(t,X,Y)'.
+  //
+  // Nota sobre quoting: drawtext só remove aspas SIMPLES do valor de text=.
+  // JSON.stringify envolvia o texto em aspas duplas literais — o ffmpeg não
+  // as strippava e vinham renderizadas na intro/outro ("A ESCOLA DOS VÉUS").
+  // Usar single quotes (BRAND_TEXT/CTA_TEXT não contêm apóstrofos).
   videoFilters.push(
-    `[vcat]` +
-      `drawtext=font='${TEXT_FONT}':text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:` +
-      `x=(w-text_w)/2:y=h*0.82:` +
-      `enable='between(t,${introTextStart},${introTextEnd})',` +
-      `drawtext=font='${TEXT_FONT}':text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:` +
-      `x=(w-text_w)/2:y=h*0.72:` +
-      `enable='between(t,${outroTextStart.toFixed(2)},${outroTextEnd.toFixed(2)})',` +
-      `drawtext=font='${TEXT_FONT}':text='${CTA_TEXT}':fontsize=40:fontcolor=${TEXT_COLOR}:` +
-      `x=(w-text_w)/2:y=h*0.82:` +
-      `enable='between(t,${(outroTextStart + 0.5).toFixed(2)},${outroTextEnd.toFixed(2)})'` +
-      `[vtext]`
+    `[vcat]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.82:enable='between(t\\,${introTextStart}\\,${introTextEnd})'[v1]`,
   );
+  videoFilters.push(
+    `[v1]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text='${BRAND_TEXT}':fontsize=72:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.72:enable='between(t\\,${outroTextStart.toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[v2]`,
+  );
+  videoFilters.push(
+    `[v2]drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text='${CTA_TEXT}':fontsize=40:fontcolor=${TEXT_COLOR}:x=(w-text_w)/2:y=h*0.82:enable='between(t\\,${(outroTextStart + 0.5).toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[vtext]`,
+  );
+
+  // Subtitles burn-in (opcional). Se não houver SRT, [vtext] segue directo
+  // para o fade. O ficheiro SRT já tem timestamps shiftados (+narrationStartAt).
+  // Escapar `:` no path porque é o separador de opções do filtro libass.
+  if (subtitlesPath) {
+    const escapedPath = subtitlesPath.replace(/\\/g, "\\\\").replace(/:/g, "\\:");
+    const style = (subtitleStyle || DEFAULT_SUBTITLE_STYLE).replace(/'/g, "");
+    videoFilters.push(
+      `[vtext]subtitles=${escapedPath}:force_style='${style}'[vsub]`
+    );
+  } else {
+    videoFilters.push(`[vtext]copy[vsub]`);
+  }
 
   // Fade in/out final
   videoFilters.push(
-    `[vtext]fade=t=in:st=0:d=${FADE_IN},fade=t=out:st=${(totalDuration - FADE_OUT).toFixed(2)}:d=${FADE_OUT}[vout]`
+    `[vsub]fade=t=in:st=0:d=${FADE_IN}[vfi];[vfi]fade=t=out:st=${(totalDuration - FADE_OUT).toFixed(2)}:d=${FADE_OUT}[vout]`
   );
 
   // Audio indices: narration = outroIdx+1, music[0..] = narrIdx+1..

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import funilSeed from "@/data/funil-prompts.seed.json";
+import ancientGroundSeed from "@/data/thinkdiffusion-prompts.json";
 
 export const maxDuration = 30;
 export const dynamic = "force-dynamic";
@@ -18,6 +19,7 @@ type PromptConfig = {
   cfg_scale?: number;
   steps?: number;
   sampler_name?: string;
+  schedule_type?: string;
   batch_size?: number;
   negative_prompt?: string;
 };
@@ -27,6 +29,7 @@ type PromptFile = { config: PromptConfig; prompts: PromptItem[] };
 const SEEDS: Record<string, PromptFile> = {
   funil: funilSeed as PromptFile,
   aulas: { config: (funilSeed as PromptFile).config, prompts: [] },
+  "ancient-ground": ancientGroundSeed as PromptFile,
 };
 
 function pathFor(collection: string) {

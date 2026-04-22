@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 
@@ -16,10 +16,10 @@ function titleToSlug(title: string): string {
     .slice(0, 60);
 }
 
-function findScriptById(id: string): { titulo: string } | null {
+function findScriptById(id: string): { titulo: string; texto?: string } | null {
   for (const preset of NOMEAR_PRESETS) {
     const hit = preset.scripts.find((s) => s.id === id);
-    if (hit) return hit;
+    if (hit) return hit as { titulo: string; texto?: string };
   }
   return null;
 }
@@ -52,6 +52,9 @@ export default function FunilMontarPage() {
 
   const [allClips, setAllClips] = useState<Clip[]>([]);
   const [allAudios, setAllAudios] = useState<Audio[]>([]);
+  const [allSrts, setAllSrts] = useState<Audio[]>([]);
+  const [allVideos, setAllVideos] = useState<Audio[]>([]);
+  const [allThumbs, setAllThumbs] = useState<Audio[]>([]);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -73,14 +76,22 @@ export default function FunilMontarPage() {
   const [thumbErr, setThumbErr] = useState<string | null>(null);
 
   // ── Load assets on mount ──────────────────────────────────────────────
+  // Todos os assets são carregados de Supabase → muda de dispositivo, abre
+  // a página, os vídeos/SRT/thumbs renderizados antes aparecem prontos.
   useEffect(() => {
     setLoading(true);
     Promise.all([
       fetch("/api/admin/thinkdiffusion/list-clips").then((r) => r.json()),
       fetch("/api/admin/biblioteca/list?folder=youtube&limit=500").then((r) => r.json()),
       fetch("/api/admin/music/list-album?album=ancient-ground").then((r) => r.json()),
+      // SRTs em cache (geradas previamente via "Gerar legenda SRT").
+      fetch("/api/admin/biblioteca/list?folder=youtube/subtitles&limit=500").then((r) => r.json()),
+      // Vídeos MP4 finais já renderizados.
+      fetch("/api/admin/biblioteca/list?folder=youtube/funil-videos&limit=500").then((r) => r.json()),
+      // Thumbnails PNG já geradas.
+      fetch("/api/admin/biblioteca/list?folder=youtube/thumbnails&limit=500").then((r) => r.json()),
     ])
-      .then(([clipsD, audiosD, musicD]) => {
+      .then(([clipsD, audiosD, musicD, srtsD, videosD, thumbsD]) => {
         setAllClips(Array.isArray(clipsD.clips) ? clipsD.clips : []);
         setAllAudios(
           (Array.isArray(audiosD.files) ? audiosD.files : []).filter((f: Audio) =>
@@ -88,10 +99,57 @@ export default function FunilMontarPage() {
           ),
         );
         setTracks(Array.isArray(musicD.tracks) ? musicD.tracks : []);
+        setAllSrts(
+          (Array.isArray(srtsD.files) ? srtsD.files : []).filter((f: Audio) =>
+            f.name.endsWith(".srt"),
+          ),
+        );
+        setAllVideos(
+          (Array.isArray(videosD.files) ? videosD.files : []).filter((f: Audio) =>
+            f.name.endsWith(".mp4"),
+          ),
+        );
+        setAllThumbs(
+          (Array.isArray(thumbsD.files) ? thumbsD.files : []).filter((f: Audio) =>
+            /\.(png|jpe?g)$/i.test(f.name),
+          ),
+        );
       })
       .catch((e) => setErr(String(e)))
       .finally(() => setLoading(false));
   }, []);
+
+  // SRT cached para o episódio actual. Se existir, render usa-o sem custo
+  // ElevenLabs Scribe. Se não existir, o user clica "Gerar SRT" (custo único
+  // por episódio: ~$0.04 trailer / ~$0.30 ep completo).
+  const epCachedSrt = useMemo(() => {
+    const prefix = `${epKey}-`;
+    const matches = allSrts.filter((s) => s.name.startsWith(prefix));
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allSrts, epKey]);
+
+  // Vídeo final renderizado em cache. Match por slug do título OU epKey
+  // (convenção actual do render-funil.mjs gera `<slug>-<ts>.mp4` onde
+  // slug é derivado de ep.label). Fallback para epKey.
+  const epCachedVideo = useMemo(() => {
+    const script = findScriptById(ep.slug);
+    const slug = script ? titleToSlug(script.titulo) : "";
+    const matches = allVideos.filter(
+      (v) =>
+        (slug && v.name.startsWith(`${slug}-`)) ||
+        v.name.startsWith(`${epKey}-`) ||
+        // fallback: ep.label lowercase slug
+        v.name.startsWith(`${ep.label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}-`),
+    );
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allVideos, ep.slug, ep.label, epKey]);
+
+  // Thumbnail em cache. Convenção: `<epKey>-<ts>.png` (filename=ep.key).
+  const epCachedThumb = useMemo(() => {
+    const prefix = `${epKey}-`;
+    const matches = allThumbs.filter((t) => t.name.startsWith(prefix));
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allThumbs, epKey]);
 
   // ── Filter assets by episode ──────────────────────────────────────────
   const epClips = useMemo(() => {
@@ -114,16 +172,18 @@ export default function FunilMontarPage() {
   }, [allAudios, ep.slug]);
 
   // Auto-set default narration + clip order when ep changes
+  // Todos os artefactos (vídeo, SRT, thumb) são lidos de Supabase →
+  // muda-se de dispositivo e aparecem prontos sem re-render nem re-gerar.
   useEffect(() => {
     setSelectedNarration(epNarration?.url ?? "");
     setClipOrder(epClips.map((c) => c.url));
-    setVideoUrl(null);
+    setVideoUrl(epCachedVideo?.url ?? null);
     setProgress(null);
-    setSrtUrl(null);
+    setSrtUrl(epCachedSrt?.url ?? null);
     setSrtErr(null);
-    setThumbUrl(null);
+    setThumbUrl(epCachedThumb?.url ?? null);
     setThumbErr(null);
-  }, [epNarration, epClips]);
+  }, [epNarration, epClips, epCachedSrt, epCachedVideo, epCachedThumb]);
 
   // Auto-pick single first track (one track covers full funnel video duration)
   useEffect(() => {
@@ -167,6 +227,9 @@ export default function FunilMontarPage() {
             narrationUrl: selectedNarration,
             musicUrls: selectedMusic,
             musicVolume,
+            // SRT (opcional). Se vazio, render passa sem legendas. Se já
+            // existia em cache para o epKey, foi pré-preenchido pelo useEffect.
+            subtitlesUrl: srtUrl || undefined,
           }),
         });
         const submitData = await submitRes.json();
@@ -311,7 +374,6 @@ export default function FunilMontarPage() {
                 onClick={async () => {
                   setSrtGenerating(true);
                   setSrtErr(null);
-                  setSrtUrl(null);
                   try {
                     const r = await fetch("/api/admin/funil/generate-srt", {
                       method: "POST",
@@ -325,6 +387,11 @@ export default function FunilMontarPage() {
                     const d = await r.json();
                     if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
                     setSrtUrl(d.url);
+                    // Push para a lista local para futuros mounts/eps
+                    if (d.url) {
+                      const name = d.url.split("/").pop() || `${ep.key}-${Date.now()}.srt`;
+                      setAllSrts((prev) => [{ name, url: d.url }, ...prev]);
+                    }
                   } catch (e) {
                     setSrtErr(e instanceof Error ? e.message : String(e));
                   } finally {
@@ -334,22 +401,38 @@ export default function FunilMontarPage() {
                 disabled={srtGenerating || !selectedNarration}
                 className="rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40 disabled:opacity-50"
               >
-                {srtGenerating ? "A gerar SRT..." : "Gerar legenda SRT (Whisper)"}
+                {srtGenerating
+                  ? "A gerar SRT..."
+                  : srtUrl
+                    ? "↻ Regenerar SRT (paga ElevenLabs outra vez)"
+                    : `Gerar SRT (ElevenLabs Scribe · ~$0.04 trailer / ~$0.30 ep)`}
               </button>
               {srtUrl && (
-                <a
-                  href={srtUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado hover:bg-escola-dourado/20"
-                >
-                  ✓ abrir / descarregar SRT
-                </a>
+                <>
+                  <span className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado">
+                    ✓ SRT em cache · será queimada no vídeo
+                  </span>
+                  <a
+                    href={srtUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-escola-creme-50 underline hover:text-escola-creme"
+                  >
+                    abrir SRT
+                  </a>
+                </>
+              )}
+              {!srtUrl && !srtGenerating && (
+                <span className="text-escola-creme-50">
+                  Sem SRT — render passa sem legendas. Clica para gerar uma vez (cache).
+                </span>
               )}
               {srtErr && <span className="text-escola-terracota">{srtErr}</span>}
             </div>
             <p className="mt-1 text-[10px] text-escola-creme-50">
-              Upload do SRT no YouTube Studio → Subtitles → Add language → Upload file.
+              SRT gerada uma vez e cacheada em Supabase — re-renders deste episódio
+              não voltam a pagar Scribe. Para upload manual no YouTube Studio,
+              clica &quot;abrir SRT&quot;.
             </p>
           </>
         ) : (
@@ -528,57 +611,533 @@ export default function FunilMontarPage() {
       </section>
 
       {/* ── 6. Thumbnail YouTube ─────────────────────────────────── */}
-      <section className="mt-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">6. Thumbnail YouTube</h3>
-        <p className="mb-3 text-xs text-escola-creme-50">
-          Composta a partir da mandala + título do episódio. Upload depois no YouTube Studio.
+      <ThumbnailSection
+        videoUrl={videoUrl}
+        epLabel={ep.label}
+        epKey={ep.key}
+        thumbUrl={thumbUrl}
+        setThumbUrl={setThumbUrl}
+        thumbGenerating={thumbGenerating}
+        setThumbGenerating={setThumbGenerating}
+        thumbErr={thumbErr}
+        setThumbErr={setThumbErr}
+        onGenerated={(url, name) => setAllThumbs((prev) => [{ name, url }, ...prev])}
+      />
+
+      {/* ── 7. Publicar no YouTube ────────────────────────────────── */}
+      {videoUrl && (
+        <PublishSection
+          videoUrl={videoUrl}
+          srtUrl={srtUrl}
+          thumbUrl={thumbUrl}
+          epLabel={ep.label}
+          epKey={ep.key}
+          episodeText={findScriptById(ep.slug)?.texto ?? ""}
+        />
+      )}
+    </div>
+  );
+}
+
+// ─── Publish Section ────────────────────────────────────────────────────────
+// Organiza TUDO num sítio: download + partilhar (mobile) + campos
+// pré-preenchidos copy-to-clipboard + link direto para YouTube Studio.
+// Desenhado para minimizar cliques: 3 passos, visíveis, numerados.
+
+function buildYoutubeMetadata(epLabel: string, episodeText: string) {
+  // Título: "ep01 — A culpa | Nomear · A Escola dos Véus" (máx 100 chars)
+  const cleanLabel = epLabel.replace(/^(\w+)\s*—\s*/, (_m, pref) => `${pref} · `);
+  const title = `${cleanLabel} | Nomear · A Escola dos Véus`.slice(0, 100);
+
+  // Descrição: texto do episódio + CTA + hashtags
+  const cta = [
+    "",
+    "━━━━━━━━━━━━━━━━",
+    "A Escola dos Véus é um espaço para mulheres que querem nomear o que nunca teve nome.",
+    "",
+    "→ Subscreve para receberes novos episódios da série Nomear.",
+    "→ Junta-te à escola: https://seteveus.space",
+    "",
+    "#EscolaDosVéus #Nomear #Mulheres #Consciência #Herança",
+  ].join("\n");
+
+  // Remove marcações [long pause] / [pause] / CTA duplicado do script
+  const body = episodeText
+    .replace(/\[(long pause|pause)\]/gi, "")
+    .replace(/Escola dos Véus\.\s*seteveus\.space\.?/gi, "")
+    .replace(/Se isto te nomeou alguma coisa[^.]*\./gi, "")
+    .trim();
+
+  const description = `${body}\n${cta}`.slice(0, 5000);
+
+  // Tags
+  const tags = [
+    "escola dos véus",
+    "nomear",
+    "mulheres",
+    "consciência",
+    "herança",
+    "dinheiro",
+    "culpa",
+    "vergonha",
+    "autoconhecimento",
+    "vivianne nascimento",
+  ];
+
+  return { title, description, tags };
+}
+
+async function downloadBlob(url: string, filename: string) {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  const blobUrl = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = blobUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+}
+
+async function nativeShareFile(url: string, filename: string, title: string) {
+  const nav = navigator as Navigator & {
+    share?: (d: { title?: string; files?: File[]; url?: string }) => Promise<void>;
+    canShare?: (d: { files?: File[] }) => boolean;
+  };
+  const res = await fetch(url);
+  const blob = await res.blob();
+  const file = new File([blob], filename, { type: blob.type || "video/mp4" });
+  if (nav.canShare?.({ files: [file] })) {
+    await nav.share?.({ title, files: [file] });
+    return true;
+  }
+  if (nav.share) {
+    await nav.share({ title, url });
+    return true;
+  }
+  return false;
+}
+
+function PublishSection({
+  videoUrl,
+  srtUrl,
+  thumbUrl,
+  epLabel,
+  epKey,
+  episodeText,
+}: {
+  videoUrl: string;
+  srtUrl: string | null;
+  thumbUrl: string | null;
+  epLabel: string;
+  epKey: string;
+  episodeText: string;
+}) {
+  const meta = useMemo(
+    () => buildYoutubeMetadata(epLabel, episodeText),
+    [epLabel, episodeText],
+  );
+  const [copied, setCopied] = useState<string | null>(null);
+  const [shareMsg, setShareMsg] = useState<string | null>(null);
+  const canShare =
+    typeof navigator !== "undefined" &&
+    !!(navigator as Navigator & { share?: unknown }).share;
+
+  const doCopy = async (key: string, value: string) => {
+    await navigator.clipboard.writeText(value);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 1200);
+  };
+
+  const baseFilename = `${epKey}-escola-veus`;
+
+  return (
+    <section className="mt-4 rounded-xl border border-escola-dourado/40 bg-escola-card p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-escola-dourado">
+          7. Publicar no YouTube
+        </h3>
+        <span className="rounded-full bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado">
+          manual · 3 passos
+        </span>
+      </div>
+
+      {/* Passo 1: Descarregar / Partilhar ficheiros */}
+      <div className="mb-4 rounded-lg border border-escola-border bg-escola-bg p-3">
+        <p className="mb-2 text-xs font-semibold text-escola-creme">
+          <span className="mr-2 rounded-full bg-escola-dourado/20 px-2 text-escola-dourado">
+            1
+          </span>
+          Guardar ficheiros no teu dispositivo
         </p>
-        <div className="flex flex-wrap items-center gap-2 text-xs">
+        <div className="flex flex-wrap gap-2 text-xs">
           <button
-            onClick={async () => {
-              setThumbGenerating(true);
-              setThumbErr(null);
-              setThumbUrl(null);
-              try {
-                const titulo = ep.label.includes("—") ? ep.label.split("—").slice(1).join("—").trim() : ep.label;
-                const r = await fetch("/api/admin/funil/generate-thumbnail", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ titulo, epKey: ep.key, filename: ep.key }),
-                });
-                const d = await r.json();
-                if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
-                setThumbUrl(d.url);
-              } catch (e) {
-                setThumbErr(e instanceof Error ? e.message : String(e));
-              } finally {
-                setThumbGenerating(false);
-              }
-            }}
-            disabled={thumbGenerating}
-            className="rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40 disabled:opacity-50"
+            onClick={() => downloadBlob(videoUrl, `${baseFilename}.mp4`)}
+            className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg"
           >
-            {thumbGenerating ? "A gerar..." : "Gerar thumbnail"}
+            ⬇ MP4 (vídeo)
           </button>
+          {canShare && (
+            <button
+              onClick={async () => {
+                try {
+                  setShareMsg("A abrir partilha...");
+                  const ok = await nativeShareFile(
+                    videoUrl,
+                    `${baseFilename}.mp4`,
+                    meta.title,
+                  );
+                  setShareMsg(ok ? "Partilha aberta" : "Sem suporte neste dispositivo");
+                } catch {
+                  setShareMsg("Cancelado");
+                } finally {
+                  setTimeout(() => setShareMsg(null), 2000);
+                }
+              }}
+              className="rounded border border-escola-dourado px-3 py-2 font-semibold text-escola-dourado"
+              title="No mobile abre o sheet de partilha (YouTube Studio, TikTok, IG)"
+            >
+              ↗ Partilhar MP4
+            </button>
+          )}
+          {srtUrl && (
+            <button
+              onClick={() => downloadBlob(srtUrl, `${baseFilename}.srt`)}
+              className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40"
+            >
+              ⬇ SRT (legendas)
+            </button>
+          )}
           {thumbUrl && (
+            <button
+              onClick={() => downloadBlob(thumbUrl, `${baseFilename}-thumb.png`)}
+              className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40"
+            >
+              ⬇ Thumbnail
+            </button>
+          )}
+        </div>
+        {shareMsg && (
+          <p className="mt-2 text-[10px] text-escola-creme-50">{shareMsg}</p>
+        )}
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          📱 Mobile: &quot;Partilhar MP4&quot; abre o sheet nativo → escolhe YouTube Studio,
+          TikTok ou Instagram. 💻 Desktop: usa &quot;⬇ MP4&quot; e arrasta para o Studio.
+        </p>
+      </div>
+
+      {/* Passo 2: Abrir YouTube Studio */}
+      <div className="mb-4 rounded-lg border border-escola-border bg-escola-bg p-3">
+        <p className="mb-2 text-xs font-semibold text-escola-creme">
+          <span className="mr-2 rounded-full bg-escola-dourado/20 px-2 text-escola-dourado">
+            2
+          </span>
+          Abrir YouTube Studio e fazer upload
+        </p>
+        <div className="flex flex-wrap gap-2 text-xs">
+          <a
+            href="https://studio.youtube.com/channel/UC/videos/upload"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg"
+          >
+            → Abrir YouTube Studio Upload
+          </a>
+        </div>
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          Arrasta o MP4 para a janela. Depois: Subtitles → Upload file → escolhe o
+          .srt. Thumbnail → sobe o PNG. Visibility → Scheduled → sexta 18h Maputo.
+        </p>
+      </div>
+
+      {/* Passo 3: Copy fields (título / descrição / tags) */}
+      <div className="rounded-lg border border-escola-border bg-escola-bg p-3">
+        <p className="mb-2 text-xs font-semibold text-escola-creme">
+          <span className="mr-2 rounded-full bg-escola-dourado/20 px-2 text-escola-dourado">
+            3
+          </span>
+          Copiar campos e colar no Studio
+        </p>
+        <div className="space-y-2 text-xs">
+          <CopyRow
+            label={`Título (${meta.title.length}/100)`}
+            value={meta.title}
+            copied={copied === "title"}
+            onCopy={() => doCopy("title", meta.title)}
+            rows={1}
+            warn={meta.title.length > 100}
+          />
+          <CopyRow
+            label={`Descrição (${meta.description.length}/5000)`}
+            value={meta.description}
+            copied={copied === "desc"}
+            onCopy={() => doCopy("desc", meta.description)}
+            rows={6}
+            warn={meta.description.length > 5000}
+          />
+          <CopyRow
+            label="Tags (separadas por vírgula)"
+            value={meta.tags.join(", ")}
+            copied={copied === "tags"}
+            onCopy={() => doCopy("tags", meta.tags.join(", "))}
+            rows={2}
+          />
+        </div>
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          💡 Edita livremente antes de copiar — o título/descrição são só sugestões
+          derivadas do script.
+        </p>
+      </div>
+
+      <details className="mt-4 rounded-lg border border-escola-border bg-escola-bg/50 p-3">
+        <summary className="cursor-pointer text-xs text-escola-creme-50 hover:text-escola-creme">
+          📱 Partilhar também em TikTok e Instagram Reels (para o shorts, depois)
+        </summary>
+        <div className="mt-2 space-y-1 text-[11px] text-escola-creme-50">
+          <p>
+            <b>TikTok</b>: App → + → Upload → seleciona MP4 vertical → caption +
+            hashtags → agenda até 10 dias à frente dentro da app.
+          </p>
+          <p>
+            <b>Instagram Reels</b>: App → + → Reel → MP4 → Caption. Agendamento em
             <a
-              href={thumbUrl}
+              href="https://business.facebook.com/latest/content_planner"
               target="_blank"
               rel="noreferrer"
-              className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado hover:bg-escola-dourado/20"
+              className="ml-1 text-escola-dourado underline"
             >
-              ✓ abrir / descarregar PNG
-            </a>
-          )}
-          {thumbErr && <span className="text-escola-terracota">{thumbErr}</span>}
+              Meta Business Suite
+            </a>{" "}
+            (grátis).
+          </p>
+          <p>
+            As legendas já estão queimadas no MP4 → funcionam automaticamente em
+            TikTok e Reels (que não têm CC nativo).
+          </p>
         </div>
-        {thumbUrl && (
-          <div className="mt-3">
-            <img src={thumbUrl} alt="Thumbnail" className="w-full max-w-2xl rounded border border-escola-border" />
-          </div>
-        )}
-      </section>
+      </details>
+
+      <p className="mt-3 text-[10px] text-escola-creme-50">
+        ⚙️ Quando configurares o Google OAuth, aparece aqui o botão
+        &quot;Publicar &amp; agendar automaticamente&quot; — um click faz tudo
+        (upload + thumbnail + captions + schedule).
+      </p>
+    </section>
+  );
+}
+
+function CopyRow({
+  label,
+  value,
+  copied,
+  onCopy,
+  rows,
+  warn,
+}: {
+  label: string;
+  value: string;
+  copied: boolean;
+  onCopy: () => void;
+  rows: number;
+  warn?: boolean;
+}) {
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between">
+        <label
+          className={`text-[10px] uppercase tracking-wider ${warn ? "text-escola-terracota" : "text-escola-creme-50"}`}
+        >
+          {label}
+        </label>
+        <button
+          onClick={onCopy}
+          className="rounded bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado hover:bg-escola-dourado/20"
+        >
+          {copied ? "✓ copiado" : "copiar"}
+        </button>
+      </div>
+      <textarea
+        value={value}
+        readOnly
+        rows={rows}
+        className="w-full rounded border border-escola-border bg-escola-card px-2 py-1.5 text-[11px] text-escola-creme"
+        onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+      />
     </div>
+  );
+}
+
+// ─── Thumbnail Section ──────────────────────────────────────────────────────
+// Extrai um frame do VÍDEO FINAL do episódio (não do intro brand — senão
+// todas as thumbnails ficavam iguais). Slider permite escolher o segundo.
+// Preview do frame actual antes de queimar o texto (para o user validar a
+// escolha). Se ainda não há vídeo final, usa intro.mp4 como fallback.
+
+function ThumbnailSection({
+  videoUrl,
+  epLabel,
+  epKey,
+  thumbUrl,
+  setThumbUrl,
+  thumbGenerating,
+  setThumbGenerating,
+  thumbErr,
+  setThumbErr,
+  onGenerated,
+}: {
+  videoUrl: string | null;
+  epLabel: string;
+  epKey: string;
+  thumbUrl: string | null;
+  setThumbUrl: (u: string | null) => void;
+  thumbGenerating: boolean;
+  setThumbGenerating: (b: boolean) => void;
+  thumbErr: string | null;
+  setThumbErr: (s: string | null) => void;
+  onGenerated: (url: string, name: string) => void;
+}) {
+  // Tempo default: 10s se há vídeo final (após intro 5s + crossfade, já no 1º
+  // clip Runway do ep). 2.5s se fallback intro.mp4 (pico de brilho mandala).
+  const defaultFrameT = videoUrl ? 10 : 2.5;
+  const [frameT, setFrameT] = useState(defaultFrameT);
+  const previewRef = useRef<HTMLVideoElement>(null);
+
+  // Ajusta default quando videoUrl aparece (depois de render)
+  useEffect(() => {
+    setFrameT(videoUrl ? 10 : 2.5);
+  }, [videoUrl]);
+
+  // Seek no preview video para o frame escolhido
+  useEffect(() => {
+    const v = previewRef.current;
+    if (v && videoUrl) {
+      try { v.currentTime = frameT; } catch { /* ignore */ }
+    }
+  }, [frameT, videoUrl]);
+
+  const duration = previewRef.current?.duration ?? 0;
+  const maxFrameT = duration > 0 ? Math.max(1, Math.floor(duration - 0.5)) : 120;
+
+  return (
+    <section className="mt-4 rounded-xl border border-escola-border bg-escola-card p-4">
+      <h3 className="mb-2 text-sm text-escola-creme">6. Thumbnail YouTube</h3>
+      <p className="mb-3 text-xs text-escola-creme-50">
+        {videoUrl
+          ? "Frame extraído do TEU vídeo final do episódio. Usa o slider para escolher o momento que melhor representa o ep."
+          : "Ainda não há vídeo final renderizado — vai ser usada a mandala brand como fallback. Monta o vídeo primeiro (secção 5) para uma thumbnail única."}
+      </p>
+
+      {/* Preview do frame escolhido (antes de queimar o texto) */}
+      {videoUrl && (
+        <div className="mb-3">
+          <video
+            ref={previewRef}
+            src={videoUrl}
+            className="w-full max-w-2xl rounded border border-escola-border"
+            muted
+            playsInline
+            preload="auto"
+          />
+          <div className="mt-2 flex items-center gap-3 text-xs">
+            <span className="text-escola-creme-50 whitespace-nowrap">
+              Frame: <b className="text-escola-creme">{frameT.toFixed(1)}s</b>
+            </span>
+            <input
+              type="range"
+              min="0"
+              max={maxFrameT}
+              step="0.5"
+              value={frameT}
+              onChange={(e) => setFrameT(parseFloat(e.target.value))}
+              className="flex-1"
+            />
+            <button
+              onClick={() => {
+                const cur = previewRef.current?.currentTime;
+                if (typeof cur === "number") setFrameT(+cur.toFixed(1));
+              }}
+              className="whitespace-nowrap rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
+              title="Usa o tempo actual do leitor"
+            >
+              📍 daqui
+            </button>
+          </div>
+          <p className="mt-1 text-[10px] text-escola-creme-50">
+            💡 Reproduz o vídeo, pausa no momento que quiseres e clica &quot;📍 daqui&quot;. Ou arrasta o slider.
+          </p>
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center gap-2 text-xs">
+        <button
+          onClick={async () => {
+            setThumbGenerating(true);
+            setThumbErr(null);
+            try {
+              const titulo = epLabel.includes("—")
+                ? epLabel.split("—").slice(1).join("—").trim()
+                : epLabel;
+              const r = await fetch("/api/admin/funil/generate-thumbnail", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  titulo,
+                  epKey,
+                  filename: epKey,
+                  videoUrl: videoUrl || undefined,
+                  frameTimeSec: frameT,
+                }),
+              });
+              const d = await r.json();
+              if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+              setThumbUrl(d.url);
+              if (d.url) {
+                const name = d.url.split("/").pop() || `${epKey}-${Date.now()}.png`;
+                onGenerated(d.url, name);
+              }
+            } catch (e) {
+              setThumbErr(e instanceof Error ? e.message : String(e));
+            } finally {
+              setThumbGenerating(false);
+            }
+          }}
+          disabled={thumbGenerating}
+          className="rounded bg-escola-dourado px-4 py-2 font-semibold text-escola-bg disabled:opacity-50"
+        >
+          {thumbGenerating
+            ? "A gerar..."
+            : thumbUrl
+              ? "↻ Regenerar com este frame"
+              : "Gerar thumbnail deste frame"}
+        </button>
+        {thumbUrl && (
+          <a
+            href={thumbUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado hover:bg-escola-dourado/20"
+          >
+            ✓ abrir / descarregar PNG
+          </a>
+        )}
+        {thumbErr && <span className="text-escola-terracota">{thumbErr}</span>}
+      </div>
+
+      {thumbUrl && (
+        <div className="mt-3">
+          <p className="mb-1 text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Thumbnail gerada (1280×720)
+          </p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={thumbUrl}
+            alt="Thumbnail"
+            className="w-full max-w-2xl rounded border border-escola-border"
+          />
+        </div>
+      )}
+    </section>
   );
 }
 

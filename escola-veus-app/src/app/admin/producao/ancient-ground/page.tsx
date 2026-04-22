@@ -160,10 +160,23 @@ export default function ThinkDiffusionPage() {
   // Editable motion prompts per image
   const [editedMotion, setEditedMotion] = useState<Record<string, string>>({});
 
+  // Camera variations por variante (01-04) — evita 4 clips iguais
+  const CAMERA_VARIATIONS: Record<number, string> = {
+    1: ", slow cinematic camera push in toward subject",
+    2: ", slow cinematic camera drift left to right across scene",
+    3: ", static camera with natural subject motion",
+    4: ", slow cinematic camera orbit around subject",
+  };
+
   const getMotionPrompt = (imageName: string) => {
     if (editedMotion[imageName]) return editedMotion[imageName];
     const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
-    return (motionPrompts as Record<string, string>)[promptId] || (motionPrompts as Record<string, string>)["_default"];
+    const base = (motionPrompts as Record<string, string>)[promptId] || (motionPrompts as Record<string, string>)["_default"];
+    // Extrai o numero da variante (ex: mar-01-h-02.png -> 2)
+    const variantMatch = imageName.match(/-[hv]-(\d+)\.\w+$/);
+    const variant = variantMatch ? parseInt(variantMatch[1], 10) : 0;
+    const cameraMove = CAMERA_VARIATIONS[((variant - 1) % 4) + 1] || "";
+    return base + cameraMove;
   };
 
   // Runway clips
@@ -610,9 +623,6 @@ export default function ThinkDiffusionPage() {
           {images.length} geradas · {savedCount} guardadas no Supabase
         </span>
       </div>
-
-      {/* ── DASHBOARD ESTADO DOS VIDEOS ── */}
-      <AgStatusDashboard />
 
       {/* ── THINKDIFFUSION SETTINGS (collapsible) ── */}
       <section className="rounded-lg border border-escola-coral/40 bg-escola-bg-card p-4">
