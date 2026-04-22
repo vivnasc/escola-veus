@@ -139,7 +139,7 @@ export function ShareVideoActions({
       )}
       {mode === "long" && (
         <p className="text-xs text-escola-creme-50">
-          Vídeo longo (GB) — partilhamos o link do Supabase. No YouTube Studio (telemóvel) cola o link para descarregar e publicar.
+          Vídeo longo (GB) — partilhar o link só envia o URL (WhatsApp, email, etc.). Para publicar no YouTube tens de <strong>descarregar o MP4 para o telemóvel</strong> (botão ⬇️) e depois subir via app YouTube/Studio da galeria. Ou configurar OAuth do canal AG para upload automático via API.
         </p>
       )}
     </div>
