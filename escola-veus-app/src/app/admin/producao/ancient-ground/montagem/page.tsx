@@ -351,6 +351,21 @@ export default function YouTubeMontagem() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loopSingleClip, orderedClipUrls.join("|")]);
 
+  // Key do localStorage por vídeo: cada vídeo guarda a sua própria organização
+  // (grupos, ordens, música, thumbnail, SEO). Trocar de vídeo no dropdown
+  // não destrói o trabalho do anterior — volta-se e tudo está como estava.
+  const stateKeyFor = (vid: string) => (vid ? `yt-montagem-state-${vid}` : "yt-montagem-state");
+
+  // Retorna os prefixos de categorias válidos para o vídeo (ex: ["flora-"]),
+  // usados para filtrar clips por tema ao sincronizar com Supabase.
+  const categoryPrefixesFor = (vid: string): string[] => {
+    if (!vid) return [];
+    const plan = (videoPlan as Array<{ id: string; categorias: string[] }>).find(
+      (v) => v.id === vid,
+    );
+    return (plan?.categorias || []).map((c) => `${c}-`);
+  };
+
   // Auto-load clips from Supabase on mount (only if no saved state yet).
   useEffect(() => {
     const saved = localStorage.getItem("yt-montagem-state");
@@ -400,7 +415,9 @@ export default function YouTubeMontagem() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Load from localStorage
+  // Load from localStorage. Primeiro tenta o legacy "yt-montagem-state"
+  // (sessão anterior sem chaves por vídeo). Se tiver videoId definido,
+  // passa a usar a chave por-vídeo nos saves seguintes.
   useEffect(() => {
     try {
       const saved = localStorage.getItem("yt-montagem-state");
@@ -431,6 +448,10 @@ export default function YouTubeMontagem() {
       title, clips: [], musicPair, groupOrder, groupClips,
       thumbnailUrl, composedThumbnailDataUrl, videoId, seo,
     };
+    // Guarda com chave por-vídeo (ex: yt-montagem-state-video-07). Mantém
+    // também o "yt-montagem-state" (sem sufixo) como fallback/legacy para
+    // que sessões antigas continuem a carregar o último vídeo editado.
+    localStorage.setItem(stateKeyFor(videoId), JSON.stringify(state));
     localStorage.setItem("yt-montagem-state", JSON.stringify(state));
   }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo]);
 
@@ -459,13 +480,19 @@ export default function YouTubeMontagem() {
   }, [videoId, seo.postTitle, seo.description]);
 
   // Sync with Supabase — re-fetch and merge (keeps user ordering, adds new clips).
+  // Filtra pelos prefixos das categorias do vídeo escolhido (ex: video-07 →
+  // só clips que começam por "flora-"). Se não há videoId, traz todos (legacy).
   const syncClipsFromSupabase = useCallback(async () => {
     try {
       const r = await fetch("/api/admin/thinkdiffusion/list-clips");
       const data = await r.json();
       if (!data.clips) return;
+      const prefixes = categoryPrefixesFor(videoId);
       const horizontal = data.clips
         .filter((c: { name: string }) => c.name.includes("-h-"))
+        .filter((c: { name: string }) =>
+          prefixes.length === 0 || prefixes.some((p) => c.name.startsWith(p)),
+        )
         .map((c: { url: string }) => c.url);
       const fresh = buildGroups(horizontal);
       const freshIds = fresh.map((g) => g.promptId);
@@ -1005,13 +1032,56 @@ export default function YouTubeMontagem() {
           onChange={(e) => {
             const id = e.target.value;
             const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === id);
-            setVideoId(id);
-            setTitle(plan?.titulo || "");
-            // Auto-fill SEO (hand-written metadata OR generated template).
-            if (id && plan) {
-              const durationMin = Math.round(videoDuration / 60);
-              setSeo(seoFromMetadata(id, plan.titulo, plan.categorias, durationMin));
+
+            // 1. Guarda explicitamente o state actual no key do vídeo anterior
+            //    (antes de mudar videoId, para não fazer overwrite cruzado).
+            if (videoId) {
+              try {
+                const currentState: ProjectState = {
+                  title, clips: [], musicPair, groupOrder, groupClips,
+                  thumbnailUrl, composedThumbnailDataUrl, videoId, seo,
+                };
+                localStorage.setItem(stateKeyFor(videoId), JSON.stringify(currentState));
+              } catch { /* ignore */ }
             }
+
+            // 2. Tenta carregar state guardado para o novo vídeo.
+            let restored = false;
+            if (id) {
+              try {
+                const saved = localStorage.getItem(stateKeyFor(id));
+                if (saved) {
+                  const state: ProjectState = JSON.parse(saved);
+                  setTitle(state.title || plan?.titulo || "");
+                  if (state.musicPair) setMusicPair(state.musicPair);
+                  if (state.thumbnailUrl) setThumbnailUrl(state.thumbnailUrl);
+                  if (state.composedThumbnailDataUrl) setComposedThumbnailDataUrl(state.composedThumbnailDataUrl);
+                  if (state.seo) setSeo(state.seo);
+                  if (state.groupOrder && state.groupClips) {
+                    setGroupOrder(state.groupOrder);
+                    setGroupClips(state.groupClips);
+                  } else {
+                    setGroupOrder([]);
+                    setGroupClips({});
+                  }
+                  restored = true;
+                }
+              } catch { /* ignore */ }
+            }
+
+            // 3. Se não havia state guardado para este vídeo, começa em branco:
+            //    limpa grupos, põe título do plan e gera SEO proposto.
+            if (!restored) {
+              setGroupOrder([]);
+              setGroupClips({});
+              setTitle(plan?.titulo || "");
+              if (id && plan) {
+                const durationMin = Math.round(videoDuration / 60);
+                setSeo(seoFromMetadata(id, plan.titulo, plan.categorias, durationMin));
+              }
+            }
+
+            setVideoId(id);
           }}
           className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
         >
