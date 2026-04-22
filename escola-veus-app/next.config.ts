@@ -10,9 +10,11 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@ffmpeg-installer/ffmpeg"],
 
   outputFileTracingIncludes: {
+    // generate-thumbnail agora usa sharp + SVG com fonte embebida (TTF),
+    // não mais ffmpeg/drawtext. Precisa apenas da mandala + fontes bundled.
     "/api/admin/funil/generate-thumbnail": [
-      "./node_modules/@ffmpeg-installer/**/*",
-      "./node_modules/@ffmpeg-installer/linux-x64/**/*",
+      "./public/hero-mandala.png",
+      "./assets/fonts/*.ttf",
     ],
     "/api/admin/funil/render-ffmpeg": [
       "./node_modules/@ffmpeg-installer/**/*",
