@@ -10,6 +10,7 @@ import {
 } from "@/data/youtube-calendar";
 import { allWeeks } from "@/data/content-calendar-weeks";
 import { useUniverse } from "@/contexts/UniverseContext";
+import { RecentRenders } from "@/components/admin/RecentRenders";
 
 // Tabs disponíveis por universo.
 // - Cursos: YouTube (plano), Social (Instagram/WhatsApp), Upload (canal Cursos)
@@ -233,54 +234,80 @@ function nextWeeksAgSlots(weeks = 8): { weekLabel: string; start: Date; slots: A
 function PlanoAgTab() {
   const weeks = useMemo(() => nextWeeksAgSlots(8), []);
   return (
-    <div>
-      <div className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4 text-xs text-escola-creme-50">
-        <p>
+    <div className="space-y-6">
+      {/* 1. Vídeos prontos para publicar (do Supabase, cross-device) — é o
+          ponto principal desta aba: aqui escolhes o vídeo, copias título +
+          descrição + hashtags, partilhas ou abres YouTube Studio. */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          🎬 Vídeos longos AG prontos a publicar
+        </h3>
+        <RecentRenders
+          kind="long"
+          title="Vídeo longo (60 min) · Sextas"
+          subtitle="Gerados e guardados no Supabase. Copia título/descrição/tags ou partilha directo. Disponível em qualquer dispositivo."
+        />
+      </div>
+      <div>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          🎬 Shorts AG prontos a publicar
+        </h3>
+        <RecentRenders
+          kind="short"
+          title="Shorts (30s vertical) · Segundas + Quartas"
+          subtitle="Toca num card no telemóvel para partilhar directo a TikTok / IG / YouTube Shorts."
+        />
+      </div>
+
+      {/* 2. Plano das próximas publicações — ritmo e datas-alvo.
+          Ainda não liga ao estado real (scheduled / published) — isso vem
+          com integração OAuth ou ficheiro ag-schedule.json em Supabase. */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
+          🗓️ Plano das próximas {weeks.length} semanas
+        </h3>
+        <div className="mb-3 rounded-xl border border-escola-border bg-escola-card p-4 text-xs text-escola-creme-50">
           Ritmo:{" "}
           <span className="text-escola-creme">Seg · Qua (shorts 30s)</span> +{" "}
           <span className="text-escola-creme">Sex (longo 60 min)</span>
-          {" · "}
-          {weeks.length} semanas visíveis
-        </p>
-        <p className="mt-1">
-          Cada slot abaixo é um alvo de publicação. Para já lista só datas — a seguir ligamos ao estado (rendered / scheduled / published) puxando do Supabase.
-        </p>
-      </div>
-      <div className="space-y-2">
-        {weeks.map((w) => (
-          <div key={w.start.toISOString()} className="overflow-hidden rounded-xl border border-escola-border bg-escola-card">
-            <div className="border-b border-escola-border px-4 py-2 text-sm text-escola-creme">
-              {w.weekLabel}
+          . Publicação às <span className="text-escola-creme">10:00</span>.
+        </div>
+        <div className="space-y-2">
+          {weeks.map((w) => (
+            <div key={w.start.toISOString()} className="overflow-hidden rounded-xl border border-escola-border bg-escola-card">
+              <div className="border-b border-escola-border px-4 py-2 text-sm text-escola-creme">
+                {w.weekLabel}
+              </div>
+              <ul className="divide-y divide-escola-border">
+                {w.slots.map((s) => (
+                  <li key={s.dateISO} className="flex items-center justify-between px-4 py-2 text-xs">
+                    <div>
+                      <p className="text-escola-creme">{s.label}</p>
+                      <p className="text-escola-creme-50">
+                        {new Date(s.dateISO).toLocaleDateString("pt-PT", {
+                          weekday: "long",
+                          day: "2-digit",
+                          month: "short",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    </div>
+                    <span
+                      className={`ml-3 shrink-0 rounded-full px-2 py-0.5 text-[10px] ${
+                        s.type === "longo"
+                          ? "bg-escola-coral/20 text-escola-coral"
+                          : "bg-escola-border text-escola-creme-50"
+                      }`}
+                    >
+                      {s.type === "longo" ? "60 min" : "30s vertical"}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="divide-y divide-escola-border">
-              {w.slots.map((s) => (
-                <li key={s.dateISO} className="flex items-center justify-between px-4 py-2 text-xs">
-                  <div>
-                    <p className="text-escola-creme">{s.label}</p>
-                    <p className="text-escola-creme-50">
-                      {new Date(s.dateISO).toLocaleDateString("pt-PT", {
-                        weekday: "long",
-                        day: "2-digit",
-                        month: "short",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                  </div>
-                  <span
-                    className={`ml-3 shrink-0 rounded-full px-2 py-0.5 text-[10px] ${
-                      s.type === "longo"
-                        ? "bg-escola-coral/20 text-escola-coral"
-                        : "bg-escola-border text-escola-creme-50"
-                    }`}
-                  >
-                    {s.type === "longo" ? "60 min" : "30s vertical"}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import * as htmlToImage from "html-to-image";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
-import { RecentRenders } from "@/components/admin/RecentRenders";
 
 // Shorts AG — reaproveitam clips Runway já pagos (listados em escola-shorts/clips/*
 // via list-clips-ag), música do álbum ancient-ground (100 faixas) e 2 versos
@@ -87,8 +86,6 @@ export default function AncientGroundShortsPage() {
   const [renderLabel, setRenderLabel] = useState("");
   const [renderResult, setRenderResult] = useState<string | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
-  // Incrementado sempre que um short termina — refresca a lista em cima.
-  const [recentReloadKey, setRecentReloadKey] = useState(0);
 
   const overlay1Ref = useRef<HTMLDivElement>(null);
   const overlay2Ref = useRef<HTMLDivElement>(null);
@@ -258,7 +255,6 @@ export default function AncientGroundShortsPage() {
           setRenderResult(data.videoUrl);
           setRenderProgress(100);
           setRenderLabel("Short pronto!");
-          setRecentReloadKey((k) => k + 1);
           break;
         }
       }
@@ -288,15 +284,6 @@ export default function AncientGroundShortsPage() {
           Limpar
         </button>
       </div>
-
-      {/* Últimos shorts AG gerados (do Supabase, cross-device).
-          reloadKey refresca automaticamente quando um novo short termina. */}
-      <RecentRenders
-        kind="short"
-        title="📂 Últimos shorts AG gerados"
-        subtitle="Aparece em qualquer dispositivo — clica num para partilhar ou copiar SEO."
-        reloadKey={recentReloadKey}
-      />
 
       {/* 1. CLIPS */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
@@ -486,14 +473,18 @@ export default function AncientGroundShortsPage() {
         )}
         {renderResult && (
           <div className="mb-3 space-y-3">
-            <div className="rounded bg-green-950/50 p-2 text-xs text-green-300">Short pronto!</div>
             <video src={renderResult} controls className="w-full max-w-sm rounded" />
-            <ShareVideoActions
-              videoUrl={renderResult}
-              title={youtubeTitle || "Ancient Ground Short"}
-              text={tiktokCaption}
-              mode="short"
-            />
+            <a
+              href="/admin/calendario"
+              className="block rounded-lg border border-escola-dourado/40 bg-escola-dourado/10 p-4 text-center hover:bg-escola-dourado/20"
+            >
+              <p className="text-sm font-semibold text-escola-dourado">
+                ✓ Short pronto — Publica no Calendário AG →
+              </p>
+              <p className="mt-1 text-xs text-escola-creme-50">
+                Lá escolhes o dia (seg / qua) e tens tudo pronto: legenda, hashtags, partilha rápida.
+              </p>
+            </a>
           </div>
         )}
 
@@ -506,68 +497,6 @@ export default function AncientGroundShortsPage() {
         </button>
       </section>
 
-      {/* 5. SEO + LEGENDAS — copy-paste para publicar */}
-      <section className="rounded-lg border border-escola-dourado/40 bg-escola-dourado/5 p-4">
-        <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-dourado">
-            5. 📋 Pronto a publicar — copia daqui
-          </h3>
-          <button
-            onClick={() => {
-              const tags = SEO_TAGS.join(", ");
-              const all = `TÍTULO YOUTUBE:\n${youtubeTitle}\n\nDESCRIÇÃO YOUTUBE:\n${youtubeDescription}\n\nTAGS YOUTUBE (CSV):\n${tags}\n\nTIKTOK / INSTAGRAM:\n${tiktokCaption}${renderResult ? `\n\nVÍDEO:\n${renderResult}` : ""}`;
-              navigator.clipboard?.writeText(all).catch(() => {});
-            }}
-            className="rounded bg-escola-dourado px-3 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado/90"
-          >
-            Copiar TUDO
-          </button>
-        </div>
-        <p className="mb-3 text-xs text-escola-creme-50">
-          Tudo SEO-optimizado para YouTube Shorts e TikTok. <strong>#Shorts</strong> no título garante feed Shorts. 1ª linha da descrição é o que aparece no preview.
-        </p>
-        <div className="space-y-3">
-          <CopyField
-            label="YouTube title (com #Shorts)"
-            value={youtubeTitle}
-            onChange={setYoutubeTitle}
-            rows={1}
-            maxChars={70}
-          />
-          <CopyField
-            label="YouTube description (com hashtags no fim)"
-            value={youtubeDescription}
-            onChange={setYoutubeDescription}
-            rows={9}
-          />
-          <div>
-            <div className="mb-1 flex items-center justify-between">
-              <label className="text-[10px] uppercase tracking-wider text-escola-creme-50">
-                YouTube tags (CSV — campo Tags do Studio)
-              </label>
-              <button
-                onClick={() => navigator.clipboard?.writeText(SEO_TAGS.join(", ")).catch(() => {})}
-                className="text-[10px] text-escola-coral hover:text-escola-coral/80"
-              >
-                Copiar
-              </button>
-            </div>
-            <textarea
-              value={SEO_TAGS.join(", ")}
-              readOnly
-              rows={2}
-              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
-            />
-          </div>
-          <CopyField
-            label="TikTok / Instagram caption"
-            value={tiktokCaption}
-            onChange={setTiktokCaption}
-            rows={3}
-            maxChars={150}
-          />
-        </div>
-      </section>
 
       {/* Overlays 1080×1920 escondidos — renderizados para PNG antes do submit. */}
       <div
