@@ -97,6 +97,12 @@ export default function FunilPage() {
           → Gerar Short 9:16 (TikTok/Reels/YT)
         </Link>
         <Link
+          href="/admin/producao/funil/motions"
+          className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
+        >
+          → Editar motion prompts Runway
+        </Link>
+        <Link
           href="/admin/producao/audios"
           className="rounded-lg border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
         >

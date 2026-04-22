@@ -48,6 +48,21 @@ export default function FunilGerarPage() {
   const [generatingFal, setGeneratingFal] = useState<string | null>(null);
   const [falProgress, setFalProgress] = useState<{ promptId: string; done: number; total: number } | null>(null);
   const [clips, setClips] = useState<Record<string, ClipState>>({});
+  // Motion prompts override em Supabase (editados via /admin/producao/funil/motions).
+  // Se Supabase tiver a versão guardada, usa essa; senão cai no JSON bundled.
+  const [motionOverride, setMotionOverride] = useState<Record<string, string> | null>(null);
+
+  // ── Load motion prompts editados em Supabase (fallback: JSON bundled) ──
+  useEffect(() => {
+    fetch("/api/admin/prompts/runway-motion/load", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.prompts && typeof d.prompts === "object") {
+          setMotionOverride(d.prompts);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // ── Load prompts from Supabase Storage (with seed fallback) ────────────
   useEffect(() => {
@@ -121,13 +136,22 @@ export default function FunilGerarPage() {
     return map;
   }, [images]);
 
-  const getMotionPrompt = useCallback((imageName: string) => {
-    const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
-    return (
-      (motionPrompts as Record<string, string>)[promptId] ||
-      (motionPrompts as Record<string, string>)["_default"]
-    );
-  }, []);
+  const getMotionPrompt = useCallback(
+    (imageName: string) => {
+      const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
+      // Prioridade: override em Supabase (editado em /funil/motions) → bundle
+      // JSON → _default. motionOverride pode ser null se Supabase vazio.
+      const override = motionOverride || {};
+      const bundle = motionPrompts as Record<string, string>;
+      return (
+        override[promptId] ||
+        bundle[promptId] ||
+        override["_default"] ||
+        bundle["_default"]
+      );
+    },
+    [motionOverride],
+  );
 
   // ── Actions ────────────────────────────────────────────────────────────
   const copy = (text: string, tag: string) => {
