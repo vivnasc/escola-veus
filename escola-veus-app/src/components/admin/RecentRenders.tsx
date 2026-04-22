@@ -194,7 +194,7 @@ function VideoCard({
       <button
         onClick={onToggle}
         className={`relative block w-full ${aspectClass} bg-black`}
-        title={title}
+        title="Clica para ver / esconder o player"
       >
         {video.thumbnailUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -215,30 +215,49 @@ function VideoCard({
         <span className="absolute bottom-1 right-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] text-white">
           {duration || (kind === "short" ? "30s" : "")}
         </span>
+        <span className="absolute left-1 top-1 rounded bg-black/70 px-1.5 py-0.5 text-[10px] text-white">
+          {open ? "▼" : "▶"}
+        </span>
       </button>
 
-      <div className="p-2 text-xs">
-        <p className="line-clamp-2 text-escola-creme" title={title}>
+      <div className="space-y-2 p-3 text-xs">
+        <p className="line-clamp-2 font-medium text-escola-creme" title={title}>
           {title}
         </p>
-        <p className="mt-1 flex flex-wrap gap-x-2 text-[10px] text-escola-creme-50">
+        <p className="flex flex-wrap gap-x-2 text-[10px] text-escola-creme-50">
           {date && <span>{date}</span>}
           {size && <span>{size}</span>}
         </p>
+
+        {/* Botões SEMPRE visíveis: é o ponto de toda a secção — copiar SEO
+            e partilhar não deve exigir clique extra. O player em si fica
+            atrás do thumbnail (clicar expande, mas já não é necessário). */}
+        <div className="space-y-2">
+          <p className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Para publicar no YouTube:
+          </p>
+          <QuickCopyButtons video={video} />
+        </div>
+
+        <div className="space-y-2 border-t border-escola-border/50 pt-2">
+          <p className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Partilhar / baixar:
+          </p>
+          <ShareVideoActions
+            videoUrl={video.url}
+            title={title}
+            text={
+              (video.seo?.description as string | undefined) ||
+              (video.seo?.youtubeDescription as string | undefined) ||
+              ""
+            }
+            mode={kind}
+          />
+        </div>
+
         {open && (
-          <div className="mt-2 space-y-2">
+          <div className="border-t border-escola-border/50 pt-2">
             <video src={video.url} controls className="w-full rounded" />
-            <ShareVideoActions
-              videoUrl={video.url}
-              title={title}
-              text={
-                (video.seo?.description as string | undefined) ||
-                (video.seo?.youtubeDescription as string | undefined) ||
-                ""
-              }
-              mode={kind}
-            />
-            <QuickCopyButtons video={video} />
           </div>
         )}
       </div>
@@ -260,33 +279,46 @@ function QuickCopyButtons({ video }: { video: VideoItem }) {
     (Array.isArray(video.seo?.hashtags) && (video.seo!.hashtags as string[]).join(" ")) || "";
   const descPlusTags = [description, hashtags].filter(Boolean).join("\n\n");
 
-  const copy = (text: string) => navigator.clipboard?.writeText(text).catch(() => {});
+  const [copied, setCopied] = useState<string | null>(null);
+  const copy = (text: string, label: string) => {
+    navigator.clipboard?.writeText(text).then(
+      () => {
+        setCopied(label);
+        setTimeout(() => setCopied(null), 1800);
+      },
+      () => setCopied(null),
+    );
+  };
+
+  // Feedback visível: o nome do botão muda para "✓ Copiado!" durante 1.8s.
+  const btn = (label: string) => (copied === label ? "✓ Copiado!" : label);
 
   return (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-2">
       <button
-        onClick={() => copy(title)}
+        onClick={() => copy(title, "title")}
         disabled={!title}
-        className="rounded border border-escola-border px-2 py-1 text-[11px] text-escola-creme hover:bg-escola-border/20 disabled:opacity-30"
+        className="flex-1 min-w-[100px] rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme hover:bg-escola-border/30 disabled:opacity-30"
       >
-        📋 Título
+        {copied === "title" ? "✓ Copiado!" : "📋 Título"}
       </button>
       <button
-        onClick={() => copy(descPlusTags)}
+        onClick={() => copy(descPlusTags, "desc")}
         disabled={!descPlusTags}
-        className="rounded border border-escola-border px-2 py-1 text-[11px] text-escola-creme hover:bg-escola-border/20 disabled:opacity-30"
+        className="flex-1 min-w-[140px] rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme hover:bg-escola-border/30 disabled:opacity-30"
       >
-        📋 Descrição + hashtags
+        {copied === "desc" ? "✓ Copiado!" : "📋 Descrição"}
       </button>
       <button
         onClick={() =>
           copy(
             `TÍTULO:\n${title}\n\nDESCRIÇÃO:\n${descPlusTags}\n\nVÍDEO:\n${video.url}`,
+            "all",
           )
         }
-        className="rounded bg-escola-dourado/20 px-2 py-1 text-[11px] font-semibold text-escola-dourado hover:bg-escola-dourado/30"
+        className="flex-1 min-w-[100px] rounded bg-escola-dourado px-3 py-2 text-xs font-semibold text-escola-bg hover:bg-escola-dourado/90"
       >
-        📋 TUDO
+        {copied === "all" ? "✓ Copiado!" : "📋 TUDO"}
       </button>
     </div>
   );
