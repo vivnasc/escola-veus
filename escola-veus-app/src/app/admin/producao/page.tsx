@@ -1,8 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useUniverse } from "@/contexts/UniverseContext";
 
-const TRACKS = [
+type Track = { href: string; label: string; desc: string };
+
+// Shorts Loranne é pólo independente; o acesso está no dashboard admin,
+// fora dos universos Cursos/AG.
+const TRACKS_CURSOS: Track[] = [
   {
     href: "/admin/producao/aulas",
     label: "Aulas",
@@ -14,37 +19,46 @@ const TRACKS = [
     desc: "122 vídeos Nomear (Colecção B): áudio + imagens abstractas + clips + texto + render.",
   },
   {
+    href: "/admin/producao/audios",
+    label: "Áudios",
+    desc: "Geração ElevenLabs em massa para Funil (Nomear) e Aulas (cursos).",
+  },
+];
+
+const TRACKS_AG: Track[] = [
+  {
     href: "/admin/producao/ancient-ground",
-    label: "Ancient Ground",
+    label: "Prompts + Clips",
     desc: "Vídeos natureza Moçambique: prompts ThinkDiffusion + clips Runway.",
   },
   {
     href: "/admin/producao/ancient-ground/montagem",
-    label: "AG — Montagem",
-    desc: "Junta clips em vídeo de ~60min com música Loranne (ancient-ground).",
+    label: "Vídeo longo (60 min)",
+    desc: "Junta os clips num vídeo de ~60min com música ancient-ground, intro e fades.",
   },
   {
-    href: "/admin/producao/shorts",
-    label: "Shorts",
-    desc: "30s verticais (TikTok / IG Reels / YouTube Shorts) com Loranne + versos.",
+    href: "/admin/producao/ancient-ground/shorts",
+    label: "Shorts AG",
+    desc: "30s verticais para o canal AG: reusa clips Runway, música ancient-ground, texto próprio.",
   },
-  {
-    href: "/admin/producao/audios",
-    label: "Audios",
-    desc: "Geração ElevenLabs em massa para Funil (Nomear) e Aulas (cursos).",
-  },
-] as const;
+];
 
 export default function ProducaoIndex() {
+  const { universe } = useUniverse();
+  const isAg = universe === "ag";
+  const tracks = isAg ? TRACKS_AG : TRACKS_CURSOS;
+
   return (
     <div>
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
           <h2 className="mb-2 font-serif text-2xl font-semibold text-escola-creme">
-            Producao
+            Produção {isAg ? "· Ancient Ground" : "· Cursos"}
           </h2>
           <p className="text-sm text-escola-creme-50">
-            Quatro tracks de produção + audios + montagem.
+            {isAg
+              ? "Pipeline AG: imagens → clips motion → vídeo longo ou shorts → upload canal AG."
+              : "Aulas · funil · shorts · áudios da Escola dos Véus."}
           </p>
         </div>
         <Link
@@ -56,7 +70,7 @@ export default function ProducaoIndex() {
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {TRACKS.map((t) => (
+        {tracks.map((t) => (
           <Link
             key={t.href}
             href={t.href}

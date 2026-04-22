@@ -81,7 +81,7 @@ const EMPTY_STATE: ShortsState = {
   trackUrl: "",
   trackName: "",
   musicStartSec: 0,
-  includeMusic: false,
+  includeMusic: true,
   theme: "",
   verses: ["", ""],
   candidates: [],
@@ -905,11 +905,11 @@ export default function ShortsPage() {
 
         <div className="space-y-3">
           <CopyField
-            label="TikTok · legenda"
+            label="TikTok / Instagram · legenda"
             value={state.tiktokCaption}
             onChange={(v) => updateState({ tiktokCaption: v })}
-            rows={3}
-            maxChars={150}
+            rows={8}
+            maxChars={2200}
           />
           <CopyField
             label="YouTube · título (≤70)"
@@ -976,7 +976,7 @@ export default function ShortsPage() {
             <span className="text-escola-creme">
               Incluir música{" "}
               <span className="text-escola-creme-50">
-                (default OFF · TikTok/IG têm música própria)
+                (formato validado: música Loranne liga ao Apple Music via DistroKid)
               </span>
             </span>
           </label>

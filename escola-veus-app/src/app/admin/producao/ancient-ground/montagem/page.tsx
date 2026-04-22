@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import videoPlan from "@/data/video-plan.json";
 import youtubeMetadata from "@/data/youtube-metadata.json";
+import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
 
 type SeoMeta = {
   thumbnailTitle: string;
@@ -267,6 +268,23 @@ function fileNameFromUrl(url: string): string {
   return last.split("?")[0];
 }
 
+function formatDuration(totalSec: number): string {
+  const s = Math.round(totalSec);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return `${h}h ${String(m).padStart(2, "0")}m ${String(sec).padStart(2, "0")}s`;
+  if (m > 0) return `${m}m ${String(sec).padStart(2, "0")}s`;
+  return `${sec}s`;
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+}
+
 function buildGroups(clipUrls: string[]): ClipGroup[] {
   const map = new Map<string, string[]>();
   for (const url of clipUrls) {
@@ -357,6 +375,16 @@ export default function YouTubeMontagem() {
   const [renderLabel, setRenderLabel] = useState("");
   const [renderResult, setRenderResult] = useState<string | null>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
+  // Métricas do MP4 final reportadas por ffprobe no runner (duração real,
+  // tamanho em bytes, resolução, bitrate). Chegam no result.json do job FFmpeg
+  // quando status=done. Usadas para mostrar "1h 00m · 1.87 GB" ao lado do link.
+  const [renderMetrics, setRenderMetrics] = useState<{
+    durationSec?: number | null;
+    sizeBytes?: number | null;
+    width?: number | null;
+    height?: number | null;
+    bitrateBps?: number | null;
+  } | null>(null);
   // "ffmpeg" = GitHub Actions + FFmpeg (grátis, mais controlo). "shotstack" =
   // serviço pago, mantido como fallback até validarmos o FFmpeg em produção.
   const [renderEngine, setRenderEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
@@ -744,6 +772,11 @@ export default function YouTubeMontagem() {
         videoUrl?: string;
         error?: string;
         erro?: string;
+        durationSec?: number | null;
+        sizeBytes?: number | null;
+        width?: number | null;
+        height?: number | null;
+        bitrateBps?: number | null;
       };
       try {
         const r = await fetch(`/api/admin/youtube/render-ffmpeg-status?jobId=${encodeURIComponent(jobId)}`);
@@ -767,12 +800,21 @@ export default function YouTubeMontagem() {
         setRenderResult(data.videoUrl);
         setRenderProgress(100);
         setRenderLabel("Video pronto!");
+        const metrics = {
+          durationSec: data.durationSec ?? null,
+          sizeBytes: data.sizeBytes ?? null,
+          width: data.width ?? null,
+          height: data.height ?? null,
+          bitrateBps: data.bitrateBps ?? null,
+        };
+        setRenderMetrics(metrics);
         setRendering(false);
         localStorage.removeItem("yt-pending-ffmpeg-render");
         // Persist o último render completado para sobreviver a reloads.
         localStorage.setItem("yt-last-ffmpeg-render", JSON.stringify({
           videoUrl: data.videoUrl,
           completedAt: Date.now(),
+          ...metrics,
         }));
         return;
       }
@@ -788,6 +830,7 @@ export default function YouTubeMontagem() {
     setRenderLabel("A despachar GitHub Actions...");
     setRenderResult(null);
     setRenderError(null);
+    setRenderMetrics(null);
 
     try {
       const res = await fetch("/api/admin/youtube/render-ffmpeg-submit", {
@@ -833,13 +876,14 @@ export default function YouTubeMontagem() {
   };
 
   // Resume any pending render if the user reloads the page.
-  // Se não houver pending, restaura o último render completado (para que a
-  // Vivianne veja o link do vídeo mesmo depois de recarregar a página).
+  // Se houver render pending ao reload, retoma o polling. Não restauramos
+  // "último vídeo" do localStorage — a fonte oficial agora é a secção
+  // "📂 Últimos vídeos AG gerados" (vem do Supabase, funciona em qualquer
+  // dispositivo).
   useEffect(() => {
     try {
       const raw = localStorage.getItem("yt-pending-render");
       const rawF = localStorage.getItem("yt-pending-ffmpeg-render");
-      const hasPending = !!(raw || rawF);
 
       if (raw) {
         const pending: { renderId?: string } = JSON.parse(raw);
@@ -848,18 +892,6 @@ export default function YouTubeMontagem() {
       if (rawF) {
         const pf: { jobId?: string } = JSON.parse(rawF);
         if (pf.jobId) pollFfmpegStatus(pf.jobId);
-      }
-
-      // Nenhum render em curso → mostra o último vídeo gerado (se houver).
-      if (!hasPending) {
-        const last = localStorage.getItem("yt-last-ffmpeg-render");
-        if (last) {
-          const parsed: { videoUrl?: string } = JSON.parse(last);
-          if (parsed.videoUrl) {
-            setRenderResult(parsed.videoUrl);
-            setRenderLabel("Último vídeo gerado nesta página");
-          }
-        }
       }
     } catch { /* ignore */ }
     // Only on mount — callbacks read the latest state via closures.
@@ -1332,6 +1364,7 @@ export default function YouTubeMontagem() {
                 setRenderProgress(0);
                 setRenderLabel("");
                 setRenderError(null);
+                setRenderMetrics(null);
               }}
               className="mt-2 text-xs text-escola-creme-50 hover:text-red-300 underline decoration-dotted"
               title="Limpa o estado local. Usa só se o render travou ou foi cancelado no GitHub."
@@ -1356,6 +1389,7 @@ export default function YouTubeMontagem() {
                   localStorage.removeItem("yt-last-ffmpeg-render");
                   setRenderResult(null);
                   setRenderLabel("");
+                  setRenderMetrics(null);
                 }}
                 className="text-green-400/60 hover:text-green-200"
                 title="Esconder (não apaga o ficheiro do Supabase)"
@@ -1368,13 +1402,34 @@ export default function YouTubeMontagem() {
               controls
               className="w-full rounded"
             />
+            {renderMetrics && (renderMetrics.durationSec != null || renderMetrics.sizeBytes != null) && (
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-escola-creme-50">
+                {renderMetrics.durationSec != null && (
+                  <span>Duração: <strong className="text-escola-creme">{formatDuration(renderMetrics.durationSec)}</strong></span>
+                )}
+                {renderMetrics.sizeBytes != null && (
+                  <span>Tamanho: <strong className="text-escola-creme">{formatBytes(renderMetrics.sizeBytes)}</strong></span>
+                )}
+                {renderMetrics.width != null && renderMetrics.height != null && (
+                  <span>Resolução: <strong className="text-escola-creme">{renderMetrics.width}×{renderMetrics.height}</strong></span>
+                )}
+                {renderMetrics.bitrateBps != null && (
+                  <span>Bitrate: <strong className="text-escola-creme">{(renderMetrics.bitrateBps / 1_000_000).toFixed(2)} Mbps</strong></span>
+                )}
+              </div>
+            )}
+            {/* Banner: encaminha para Calendário AG para publicar.
+                A produção trata de FAZER o vídeo; publicar é no calendário. */}
             <a
-              href={renderResult}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white"
+              href="/admin/calendario"
+              className="block rounded-lg border border-escola-dourado/40 bg-escola-dourado/10 p-4 text-center hover:bg-escola-dourado/20"
             >
-              Abrir / Descarregar MP4
+              <p className="text-sm font-semibold text-escola-dourado">
+                ✓ Vídeo pronto — Publica no Calendário AG →
+              </p>
+              <p className="mt-1 text-xs text-escola-creme-50">
+                Lá tens título, descrição, tags e partilha directa para o canal AG.
+              </p>
             </a>
           </div>
         )}
@@ -1986,3 +2041,4 @@ function ThumbnailSection({
     </section>
   );
 }
+
