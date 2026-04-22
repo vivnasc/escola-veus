@@ -3,6 +3,8 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import videoPlan from "@/data/video-plan.json";
 import youtubeMetadata from "@/data/youtube-metadata.json";
+import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
+import { RecentRenders } from "@/components/admin/RecentRenders";
 
 type SeoMeta = {
   thumbnailTitle: string;
@@ -1021,6 +1023,13 @@ export default function YouTubeMontagem() {
         </div>
       </div>
 
+      {/* Últimos vídeos longos AG (do Supabase, cross-device) */}
+      <RecentRenders
+        kind="long"
+        title="📂 Últimos vídeos AG gerados"
+        subtitle="Aparece em qualquer dispositivo — clica num para ver, partilhar ou copiar título/descrição."
+      />
+
       {/* ── 1. TITULO ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
@@ -1444,14 +1453,12 @@ export default function YouTubeMontagem() {
                 )}
               </div>
             )}
-            <a
-              href={renderResult}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded bg-escola-coral px-4 py-2 text-sm font-semibold text-white"
-            >
-              Abrir / Descarregar MP4
-            </a>
+            <ShareVideoActions
+              videoUrl={renderResult}
+              title={seo.postTitle || title || "Ancient Ground"}
+              text={seo.description}
+              mode="long"
+            />
 
             {/* Bloco copy-paste para publicação YouTube — sempre visível
                 quando há vídeo pronto. Usa o SEO já editado em 3C. */}
