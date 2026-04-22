@@ -6,31 +6,37 @@ export const runtime = "nodejs";
 /**
  * POST /api/admin/youtube/upload
  *
- * Faz upload de um MP4 para o canal YouTube da Vivianne via YouTube Data API v3.
- * Suporta agendamento via publishAt (ISO 8601).
+ * Faz upload de um MP4 para YouTube via Data API v3. Suporta 2 canais:
+ * - "cursos" (default): Escola dos Véus   — envs GOOGLE_OAUTH_*
+ * - "ag":     Ancient Ground canal próprio — envs YT_AG_*
  *
- * Env obrigatorias:
+ * Env obrigatorias (para canal "cursos"):
  *   GOOGLE_OAUTH_CLIENT_ID
  *   GOOGLE_OAUTH_CLIENT_SECRET
- *   GOOGLE_OAUTH_REFRESH_TOKEN  (scope youtube.upload, obtido via OAuth playground)
+ *   GOOGLE_OAUTH_REFRESH_TOKEN  (scope youtube.upload, OAuth playground)
+ *
+ * Env obrigatorias (para canal "ag"):
+ *   YT_AG_CLIENT_ID
+ *   YT_AG_CLIENT_SECRET
+ *   YT_AG_REFRESH_TOKEN
  *
  * Body: {
- *   videoUrl: string,           // URL do MP4 no Supabase
+ *   channel?: "cursos" | "ag",  // default "cursos"
+ *   videoUrl: string,
  *   title: string,
  *   description?: string,
  *   tags?: string[],
- *   thumbnailUrl?: string,       // opcional
- *   srtUrl?: string,             // opcional (adiciona como caption)
- *   publishAt?: string,          // ISO 8601; se presente → scheduled
- *   madeForKids?: boolean,       // default false
- *   categoryId?: string,         // default "22" (People & Blogs)
- *   privacyStatus?: "public" | "unlisted" | "private",  // default private se publishAt
+ *   thumbnailUrl?: string,
+ *   srtUrl?: string,
+ *   publishAt?: string,
+ *   madeForKids?: boolean,
+ *   categoryId?: string,
+ *   privacyStatus?: "public" | "unlisted" | "private",
  * }
- *
- * Retorna: { videoId, watchUrl }
  */
 
 type Body = {
+  channel?: "cursos" | "ag";
   videoUrl?: string;
   title?: string;
   description?: string;
@@ -43,9 +49,29 @@ type Body = {
   privacyStatus?: "public" | "unlisted" | "private";
 };
 
+function credsForChannel(channel: "cursos" | "ag") {
+  if (channel === "ag") {
+    return {
+      clientId: process.env.YT_AG_CLIENT_ID,
+      clientSecret: process.env.YT_AG_CLIENT_SECRET,
+      refreshToken: process.env.YT_AG_REFRESH_TOKEN,
+      envNames: ["YT_AG_CLIENT_ID", "YT_AG_CLIENT_SECRET", "YT_AG_REFRESH_TOKEN"] as const,
+      label: "Ancient Ground",
+    };
+  }
+  return {
+    clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    refreshToken: process.env.GOOGLE_OAUTH_REFRESH_TOKEN,
+    envNames: ["GOOGLE_OAUTH_CLIENT_ID", "GOOGLE_OAUTH_CLIENT_SECRET", "GOOGLE_OAUTH_REFRESH_TOKEN"] as const,
+    label: "Escola dos Véus",
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const {
+      channel = "cursos",
       videoUrl,
       title,
       description = "",
@@ -62,15 +88,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ erro: "videoUrl e title obrigatorios." }, { status: 400 });
     }
 
-    const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID;
-    const clientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
-    const refreshToken = process.env.GOOGLE_OAUTH_REFRESH_TOKEN;
+    const { clientId, clientSecret, refreshToken, envNames, label } = credsForChannel(channel);
 
     if (!clientId || !clientSecret || !refreshToken) {
       return NextResponse.json(
         {
-          erro:
-            "Falta config OAuth Google. Env vars necessarias: GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_OAUTH_REFRESH_TOKEN. Ver docs de setup em /CURSOS/MANUAL-PRODUCAO-FUNIL.md (passo 8).",
+          erro: `Falta config OAuth para canal ${label}. Env vars necessarias: ${envNames.join(", ")}.`,
         },
         { status: 500 },
       );
