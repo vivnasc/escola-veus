@@ -118,12 +118,57 @@ function pickTwoVerses(candidates: string[], allLines: string[]): [string, strin
   return i1 <= i2 ? [first, second] : [second, first];
 }
 
-function makeTikTokCaption(v1: string, v2: string, theme?: string): string {
-  const verseLine = [v1, v2].filter(Boolean).join(" / ");
-  const core = verseLine.length > 100 ? verseLine.slice(0, 97) + "..." : verseLine;
-  const tags = ["#Loranne", "#poesia", theme ? `#${theme.replace(/\s+/g, "")}` : "#frasesinspiradoras"];
-  const full = `${core}\n\n${tags.join(" ")}`;
-  return full.length > 150 ? full.slice(0, 147) + "..." : full;
+// ── CTA + perguntas emocionais ──────────────────────────────────────────────
+//
+// Decisões Loranne (Abril 2026):
+//  - CTA fixo: "Ouve no Apple Music → music.seteveus.space"
+//  - Captions trazem 1 pergunta emocional para puxar comentários (97% do
+//    tráfego TikTok vem do Para Ti, sem audiência própria → precisamos de
+//    interacção)
+//  - Hashtags incluem #natureza + #despertar (formato validado: natureza +
+//    versos PT)
+
+const APPLE_MUSIC_CTA = "Ouve no Apple Music → music.seteveus.space";
+
+const EMOTIONAL_QUESTIONS = [
+  "E tu, o que sentes ao ler isto?",
+  "Já te aconteceu?",
+  "Lembras-te de quando?",
+  "O que te toca aqui?",
+  "Onde estavas quando isto te encontrou?",
+  "O que te traz a esta verdade?",
+  "Reconheces-te?",
+  "Que parte de ti reconhece esta voz?",
+  "Que palavra ficou em ti?",
+  "O que abre em ti agora?",
+];
+
+function pickQuestion(seed: string): string {
+  if (!seed) return EMOTIONAL_QUESTIONS[0];
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
+  return EMOTIONAL_QUESTIONS[Math.abs(h) % EMOTIONAL_QUESTIONS.length];
+}
+
+function buildHashtags(theme?: string): string {
+  const tags = [
+    "#Loranne",
+    theme ? `#${theme.replace(/\s+/g, "").toLowerCase()}` : "",
+    "#poesia",
+    "#natureza",
+    "#despertar",
+    "#portugal",
+  ].filter(Boolean);
+  return tags.join(" ");
+}
+
+function makeTikTokCaption(v1: string, v2: string, theme: string | undefined, seed: string): string {
+  const verseBlock = [v1, v2].filter(Boolean).join("\n");
+  const question = pickQuestion(seed);
+  const hashtags = buildHashtags(theme);
+  return [verseBlock, "", question, "", APPLE_MUSIC_CTA, "", hashtags]
+    .filter((l) => l !== undefined)
+    .join("\n");
 }
 
 function makeYouTubeTitle(trackTitle: string, albumTitle: string, v1: string): string {
@@ -137,16 +182,22 @@ function makeYouTubeDescription(
   albumTitle: string,
   v1: string,
   v2: string,
-  theme?: string,
+  theme: string | undefined,
+  seed: string,
 ): string {
   const verses = [v1, v2].filter(Boolean).join("\n");
+  const question = pickQuestion(seed);
   const themeLine = theme ? `\n${theme}\n` : "";
   return [
     verses,
     themeLine,
+    question,
+    "",
+    `🎵 ${APPLE_MUSIC_CTA}`,
+    "",
     `Música: Loranne · ${albumTitle} · ${trackTitle}`,
     "",
-    "#Loranne #poesia #frasesinspiradoras",
+    buildHashtags(theme),
   ].join("\n");
 }
 
@@ -207,6 +258,7 @@ export async function POST(req: NextRequest) {
     const candidates = pickCandidates(lyrics, 6);
     const [v1, v2] = pickTwoVerses(candidates, allLines);
 
+    const seed = `${albumSlug || ""}/${finalTrackNumber || ""}`;
     return NextResponse.json({
       albumSlug,
       albumTitle,
@@ -214,7 +266,7 @@ export async function POST(req: NextRequest) {
       trackTitle,
       verses: [v1, v2],
       candidates,
-      tiktokCaption: makeTikTokCaption(v1, v2, theme),
+      tiktokCaption: makeTikTokCaption(v1, v2, theme, seed),
       youtubeTitle: makeYouTubeTitle(trackTitle || "Loranne", albumTitle || "", v1),
       youtubeDescription: makeYouTubeDescription(
         trackTitle || "Loranne",
@@ -222,6 +274,7 @@ export async function POST(req: NextRequest) {
         v1,
         v2,
         theme,
+        seed,
       ),
     });
   } catch (err) {
