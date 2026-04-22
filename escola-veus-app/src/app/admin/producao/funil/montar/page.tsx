@@ -52,6 +52,7 @@ export default function FunilMontarPage() {
 
   const [allClips, setAllClips] = useState<Clip[]>([]);
   const [allAudios, setAllAudios] = useState<Audio[]>([]);
+  const [allSrts, setAllSrts] = useState<Audio[]>([]);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -79,8 +80,11 @@ export default function FunilMontarPage() {
       fetch("/api/admin/thinkdiffusion/list-clips").then((r) => r.json()),
       fetch("/api/admin/biblioteca/list?folder=youtube&limit=500").then((r) => r.json()),
       fetch("/api/admin/music/list-album?album=ancient-ground").then((r) => r.json()),
+      // SRTs em cache (geradas previamente via "Gerar legenda SRT").
+      // O nome é `${epKey}-${ts}.srt` por convenção do generate-srt route.
+      fetch("/api/admin/biblioteca/list?folder=youtube/subtitles&limit=500").then((r) => r.json()),
     ])
-      .then(([clipsD, audiosD, musicD]) => {
+      .then(([clipsD, audiosD, musicD, srtsD]) => {
         setAllClips(Array.isArray(clipsD.clips) ? clipsD.clips : []);
         setAllAudios(
           (Array.isArray(audiosD.files) ? audiosD.files : []).filter((f: Audio) =>
@@ -88,10 +92,24 @@ export default function FunilMontarPage() {
           ),
         );
         setTracks(Array.isArray(musicD.tracks) ? musicD.tracks : []);
+        setAllSrts(
+          (Array.isArray(srtsD.files) ? srtsD.files : []).filter((f: Audio) =>
+            f.name.endsWith(".srt"),
+          ),
+        );
       })
       .catch((e) => setErr(String(e)))
       .finally(() => setLoading(false));
   }, []);
+
+  // SRT cached para o episódio actual. Se existir, render usa-o sem custo
+  // ElevenLabs Scribe. Se não existir, o user clica "Gerar SRT" (custo único
+  // por episódio: ~$0.04 trailer / ~$0.30 ep completo).
+  const epCachedSrt = useMemo(() => {
+    const prefix = `${epKey}-`;
+    const matches = allSrts.filter((s) => s.name.startsWith(prefix));
+    return matches.sort((a, b) => b.name.localeCompare(a.name))[0] ?? null;
+  }, [allSrts, epKey]);
 
   // ── Filter assets by episode ──────────────────────────────────────────
   const epClips = useMemo(() => {
@@ -119,11 +137,13 @@ export default function FunilMontarPage() {
     setClipOrder(epClips.map((c) => c.url));
     setVideoUrl(null);
     setProgress(null);
-    setSrtUrl(null);
+    // Pré-preencher com SRT em cache (zero custo Scribe). Se não houver, vazio
+    // → user pode clicar "Gerar SRT" se quiser legendas neste render.
+    setSrtUrl(epCachedSrt?.url ?? null);
     setSrtErr(null);
     setThumbUrl(null);
     setThumbErr(null);
-  }, [epNarration, epClips]);
+  }, [epNarration, epClips, epCachedSrt]);
 
   // Auto-pick single first track (one track covers full funnel video duration)
   useEffect(() => {
@@ -167,6 +187,9 @@ export default function FunilMontarPage() {
             narrationUrl: selectedNarration,
             musicUrls: selectedMusic,
             musicVolume,
+            // SRT (opcional). Se vazio, render passa sem legendas. Se já
+            // existia em cache para o epKey, foi pré-preenchido pelo useEffect.
+            subtitlesUrl: srtUrl || undefined,
           }),
         });
         const submitData = await submitRes.json();
@@ -311,7 +334,6 @@ export default function FunilMontarPage() {
                 onClick={async () => {
                   setSrtGenerating(true);
                   setSrtErr(null);
-                  setSrtUrl(null);
                   try {
                     const r = await fetch("/api/admin/funil/generate-srt", {
                       method: "POST",
@@ -325,6 +347,11 @@ export default function FunilMontarPage() {
                     const d = await r.json();
                     if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
                     setSrtUrl(d.url);
+                    // Push para a lista local para futuros mounts/eps
+                    if (d.url) {
+                      const name = d.url.split("/").pop() || `${ep.key}-${Date.now()}.srt`;
+                      setAllSrts((prev) => [{ name, url: d.url }, ...prev]);
+                    }
                   } catch (e) {
                     setSrtErr(e instanceof Error ? e.message : String(e));
                   } finally {
@@ -334,22 +361,38 @@ export default function FunilMontarPage() {
                 disabled={srtGenerating || !selectedNarration}
                 className="rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40 disabled:opacity-50"
               >
-                {srtGenerating ? "A gerar SRT..." : "Gerar legenda SRT (Whisper)"}
+                {srtGenerating
+                  ? "A gerar SRT..."
+                  : srtUrl
+                    ? "↻ Regenerar SRT (paga ElevenLabs outra vez)"
+                    : `Gerar SRT (ElevenLabs Scribe · ~$0.04 trailer / ~$0.30 ep)`}
               </button>
               {srtUrl && (
-                <a
-                  href={srtUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado hover:bg-escola-dourado/20"
-                >
-                  ✓ abrir / descarregar SRT
-                </a>
+                <>
+                  <span className="rounded bg-escola-dourado/10 px-3 py-1.5 text-escola-dourado">
+                    ✓ SRT em cache · será queimada no vídeo
+                  </span>
+                  <a
+                    href={srtUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-escola-creme-50 underline hover:text-escola-creme"
+                  >
+                    abrir SRT
+                  </a>
+                </>
+              )}
+              {!srtUrl && !srtGenerating && (
+                <span className="text-escola-creme-50">
+                  Sem SRT — render passa sem legendas. Clica para gerar uma vez (cache).
+                </span>
               )}
               {srtErr && <span className="text-escola-terracota">{srtErr}</span>}
             </div>
             <p className="mt-1 text-[10px] text-escola-creme-50">
-              Upload do SRT no YouTube Studio → Subtitles → Add language → Upload file.
+              SRT gerada uma vez e cacheada em Supabase — re-renders deste episódio
+              não voltam a pagar Scribe. Para upload manual no YouTube Studio,
+              clica &quot;abrir SRT&quot;.
             </p>
           </>
         ) : (
