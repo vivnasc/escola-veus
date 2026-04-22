@@ -351,19 +351,42 @@ export default function YouTubeMontagem() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loopSingleClip, orderedClipUrls.join("|")]);
 
-  // Key do localStorage por vídeo: cada vídeo guarda a sua própria organização
-  // (grupos, ordens, música, thumbnail, SEO). Trocar de vídeo no dropdown
-  // não destrói o trabalho do anterior — volta-se e tudo está como estava.
+  // Key do localStorage por vídeo. Cada vídeo guarda o seu próprio estado
+  // (grupos, ordens, música, SEO), evitando que trocar de vídeo perca tudo.
   const stateKeyFor = (vid: string) => (vid ? `yt-montagem-state-${vid}` : "yt-montagem-state");
 
-  // Retorna os prefixos de categorias válidos para o vídeo (ex: ["flora-"]),
-  // usados para filtrar clips por tema ao sincronizar com Supabase.
+  // Prefixos das categorias do vídeo (ex: ["flora-"]) para filtrar clips.
   const categoryPrefixesFor = (vid: string): string[] => {
     if (!vid) return [];
     const plan = (videoPlan as Array<{ id: string; categorias: string[] }>).find(
       (v) => v.id === vid,
     );
     return (plan?.categorias || []).map((c) => `${c}-`);
+  };
+
+  // Constrói um payload "leve" do estado — SEM composedThumbnailDataUrl,
+  // que é um dataURL base64 de ~1-2MB (thumbnail composta) e facilmente
+  // estoura a quota do localStorage (5MB) quando guardado por vídeo.
+  // A thumbnail composta é recalculada do thumbnailUrl + seo.thumbnailTitle.
+  const buildLightState = (overrides?: { videoIdOverride?: string }): ProjectState => ({
+    title,
+    clips: [],
+    musicPair,
+    groupOrder,
+    groupClips,
+    thumbnailUrl,
+    videoId: overrides?.videoIdOverride ?? videoId,
+    seo,
+    // composedThumbnailDataUrl propositadamente omitido.
+  });
+
+  const safeSetItem = (key: string, value: string) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      // QuotaExceededError — não crasha a UI. O estado não foi guardado;
+      // na pior das hipóteses perde-se entre reloads para este vídeo.
+    }
   };
 
   // Auto-load clips from Supabase on mount (only if no saved state yet).
@@ -415,9 +438,7 @@ export default function YouTubeMontagem() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Load from localStorage. Primeiro tenta o legacy "yt-montagem-state"
-  // (sessão anterior sem chaves por vídeo). Se tiver videoId definido,
-  // passa a usar a chave por-vídeo nos saves seguintes.
+  // Load from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem("yt-montagem-state");
@@ -444,20 +465,31 @@ export default function YouTubeMontagem() {
   }, []);
 
   const saveState = useCallback(() => {
+    // Grava APENAS na chave por-vídeo (ou no legacy se não há videoId ainda).
+    // Sem composedThumbnailDataUrl → payload ~KB em vez de MB. Com try/catch
+    // silencioso para nunca crashar a UI se a quota estoirar.
+    const key = videoId ? `yt-montagem-state-${videoId}` : "yt-montagem-state";
     const state: ProjectState = {
-      title, clips: [], musicPair, groupOrder, groupClips,
-      thumbnailUrl, composedThumbnailDataUrl, videoId, seo,
+      title,
+      clips: [],
+      musicPair,
+      groupOrder,
+      groupClips,
+      thumbnailUrl,
+      videoId,
+      seo,
     };
-    // Guarda com chave por-vídeo (ex: yt-montagem-state-video-07). Mantém
-    // também o "yt-montagem-state" (sem sufixo) como fallback/legacy para
-    // que sessões antigas continuem a carregar o último vídeo editado.
-    localStorage.setItem(stateKeyFor(videoId), JSON.stringify(state));
-    localStorage.setItem("yt-montagem-state", JSON.stringify(state));
-  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo]);
+    try {
+      localStorage.setItem(key, JSON.stringify(state));
+    } catch { /* ignore quota */ }
+  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, videoId, seo]);
 
   useEffect(() => {
     saveState();
-  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, composedThumbnailDataUrl, videoId, seo, saveState]);
+    // composedThumbnailDataUrl propositadamente excluído das deps — não é
+    // guardado no state (é gigante) e muda frequentemente ao editar texto
+    // da thumbnail, o que provocaria saves desnecessários.
+  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, videoId, seo, saveState]);
 
   // Legacy migration: older localStorage only kept `title` (the human titulo),
   // never `videoId`. If title matches a plan entry, restore the videoId.
@@ -480,8 +512,9 @@ export default function YouTubeMontagem() {
   }, [videoId, seo.postTitle, seo.description]);
 
   // Sync with Supabase — re-fetch and merge (keeps user ordering, adds new clips).
-  // Filtra pelos prefixos das categorias do vídeo escolhido (ex: video-07 →
-  // só clips que começam por "flora-"). Se não há videoId, traz todos (legacy).
+  // Filtra por categorias do vídeo actual: ex. video-07 "flora" → só inclui
+  // clips cujo nome começa por "flora-". Sem videoId (estado inicial), traz
+  // tudo (compat legacy).
   const syncClipsFromSupabase = useCallback(async () => {
     try {
       const r = await fetch("/api/admin/thinkdiffusion/list-clips");
@@ -514,7 +547,8 @@ export default function YouTubeMontagem() {
       setGroupOrder(mergedOrder);
       setGroupClips(mergedClips);
     } catch { /* ignore */ }
-  }, [groupOrder, groupClips]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupOrder, groupClips, videoId]);
 
   // Music pair URLs
   const [musicUrlA, musicUrlB] = getMusicPairUrls(musicPair);
@@ -1033,16 +1067,12 @@ export default function YouTubeMontagem() {
             const id = e.target.value;
             const plan = (videoPlan as Array<{id: string; titulo: string; categorias: string[]}>).find((v) => v.id === id);
 
-            // 1. Guarda explicitamente o state actual no key do vídeo anterior
-            //    (antes de mudar videoId, para não fazer overwrite cruzado).
+            // 1. Guarda o state actual no key do vídeo ANTERIOR (se existir),
+            //    antes de fazer setVideoId. Usa safeSetItem — se estourar
+            //    quota, a troca prossegue na mesma em vez de crashar.
             if (videoId) {
-              try {
-                const currentState: ProjectState = {
-                  title, clips: [], musicPair, groupOrder, groupClips,
-                  thumbnailUrl, composedThumbnailDataUrl, videoId, seo,
-                };
-                localStorage.setItem(stateKeyFor(videoId), JSON.stringify(currentState));
-              } catch { /* ignore */ }
+              const currentLight = buildLightState();
+              safeSetItem(stateKeyFor(videoId), JSON.stringify(currentLight));
             }
 
             // 2. Tenta carregar state guardado para o novo vídeo.
@@ -1055,7 +1085,6 @@ export default function YouTubeMontagem() {
                   setTitle(state.title || plan?.titulo || "");
                   if (state.musicPair) setMusicPair(state.musicPair);
                   if (state.thumbnailUrl) setThumbnailUrl(state.thumbnailUrl);
-                  if (state.composedThumbnailDataUrl) setComposedThumbnailDataUrl(state.composedThumbnailDataUrl);
                   if (state.seo) setSeo(state.seo);
                   if (state.groupOrder && state.groupClips) {
                     setGroupOrder(state.groupOrder);
@@ -1069,8 +1098,7 @@ export default function YouTubeMontagem() {
               } catch { /* ignore */ }
             }
 
-            // 3. Se não havia state guardado para este vídeo, começa em branco:
-            //    limpa grupos, põe título do plan e gera SEO proposto.
+            // 3. Sem state guardado → estado em branco para este vídeo.
             if (!restored) {
               setGroupOrder([]);
               setGroupClips({});
@@ -1874,10 +1902,22 @@ function SeoComposerSection({
 
   const updateSeo = (patch: Partial<SeoMeta>) => onSeoChange({ ...seo, ...patch });
 
+  // Prefixos de categorias para filtrar as imagens da biblioteca (só as do
+  // vídeo escolhido, ex: video-07 Flora → só "flora-*"). Permite também no
+  // vídeo-01 Mar → só "mar-*".
+  const plansAll = videoPlan as Array<{ id: string; titulo: string; categorias: string[] }>;
+  const planMatch =
+    plansAll.find((v) => v.id === videoId) || plansAll.find((v) => v.titulo === title);
+  const thumbnailCategoryPrefixes = (planMatch?.categorias || []).map((c) => `${c}-`);
+
   return (
     <>
       {/* 3B — Picker da imagem base */}
-      <ThumbnailSection thumbnailUrl={thumbnailUrl} onSelect={onSelect} />
+      <ThumbnailSection
+        thumbnailUrl={thumbnailUrl}
+        onSelect={onSelect}
+        categoryPrefixes={thumbnailCategoryPrefixes}
+      />
 
       {/* 3C — SEO + Thumbnail composer */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
@@ -2005,9 +2045,11 @@ function SeoComposerSection({
 function ThumbnailSection({
   thumbnailUrl,
   onSelect,
+  categoryPrefixes,
 }: {
   thumbnailUrl: string;
   onSelect: (url: string) => void;
+  categoryPrefixes?: string[];
 }) {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -2032,8 +2074,14 @@ function ThumbnailSection({
     if (expanded && images.length === 0) loadImages();
   }, [expanded, images.length, loadImages]);
 
-  const uniquePromptIds = Array.from(new Set(images.map((i) => i.promptId))).sort();
-  const filtered = filter ? images.filter((i) => i.promptId === filter) : images;
+  // Filtra por categoria(s) do vídeo escolhido (ex: ["flora-"] → só imagens
+  // cujo nome começa por "flora-"). Se vazio, mostra todas (legacy).
+  const imagesForVideo =
+    categoryPrefixes && categoryPrefixes.length > 0
+      ? images.filter((i) => categoryPrefixes.some((p) => i.name.startsWith(p)))
+      : images;
+  const uniquePromptIds = Array.from(new Set(imagesForVideo.map((i) => i.promptId))).sort();
+  const filtered = filter ? imagesForVideo.filter((i) => i.promptId === filter) : imagesForVideo;
 
   return (
     <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
