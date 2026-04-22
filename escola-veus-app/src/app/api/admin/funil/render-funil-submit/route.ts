@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
     musicVolume = 0.15,
     crossfade = 0.5,
     thumbnailUrl,
+    subtitlesUrl,
+    subtitleStyle,
     seo,
   } = body || {};
 
@@ -63,6 +65,8 @@ export async function POST(req: NextRequest) {
     musicVolume,
     crossfade,
     thumbnailUrl: thumbnailUrl || null,
+    subtitlesUrl: subtitlesUrl || null,
+    subtitleStyle: subtitleStyle || null,
     seo: seo || null,
     createdAt: new Date().toISOString(),
   };
