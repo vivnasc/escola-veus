@@ -331,14 +331,20 @@ async function main() {
   await runFfmpeg([
     "-y",
     ...inputs,
+    // Thread limit GLOBAL: runner free tem 4 vCPU + 7GB RAM. O xfade
+    // encadeado de 60 clips com 4 threads concorrentes satura RAM e o
+    // runner perde comunicação com o server ("lost communication").
+    // 2 threads é mais lento por frame mas nao estoira.
+    "-threads", "2",
     "-filter_complex", filters.join(";"),
+    "-filter_complex_threads", "2",
     "-map", `[${baseMap}]`,
     "-c:v", "libx264",
-    // veryfast em vez de medium: ~3x mais rápido no runner GitHub Actions
-    // (4 vCPU), qualidade visualmente equivalente para nature ambient com
-    // xfade pesado. Sem isto, 60 clips × CRF 23 medium = encode a 0.8x que
-    // estoura o timeout de 240min em renders de 1h.
-    "-preset", "veryfast",
+    // ultrafast: o encode mais leve em CPU e RAM. Para nature ambient
+    // (baixa variancia entre frames), a qualidade visual fica muito
+    // proxima de veryfast. Prioritario estar dentro dos recursos do
+    // runner — se der OOM nao sai nada.
+    "-preset", "ultrafast",
     // CRF 23 + cap de bitrate evita que 1h a 1080p estoure os ~1.95GB do bucket.
     // Nature ambient comprime muito bem a este CRF — visualmente equivalente a CRF 20.
     "-crf", "23",
@@ -463,7 +469,10 @@ async function main() {
     await runFfmpeg([
       "-y",
       ...inputsFinal,
+      // Limita threads globais e do filter_complex — evita OOM do runner.
+      "-threads", "2",
       "-filter_complex", filterComplex,
+      "-filter_complex_threads", "2",
       "-map", "[vout]",
       "-map", "[music]",
       "-t", String(targetDuration),
