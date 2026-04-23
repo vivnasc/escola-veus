@@ -334,7 +334,11 @@ async function main() {
     "-filter_complex", filters.join(";"),
     "-map", `[${baseMap}]`,
     "-c:v", "libx264",
-    "-preset", "medium",
+    // veryfast em vez de medium: ~3x mais rápido no runner GitHub Actions
+    // (4 vCPU), qualidade visualmente equivalente para nature ambient com
+    // xfade pesado. Sem isto, 60 clips × CRF 23 medium = encode a 0.8x que
+    // estoura o timeout de 240min em renders de 1h.
+    "-preset", "veryfast",
     // CRF 23 + cap de bitrate evita que 1h a 1080p estoure os ~1.95GB do bucket.
     // Nature ambient comprime muito bem a este CRF — visualmente equivalente a CRF 20.
     "-crf", "23",
