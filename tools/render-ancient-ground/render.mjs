@@ -366,6 +366,8 @@ async function main() {
   };
 
   let lastProgressWriteBase = 0;
+  let currentBatchIdx = 0;
+  let currentBatchCount = 1;
   const reportBaseProgress = async (cumulativeSec) => {
     const now = Date.now();
     if (now - lastProgressWriteBase < 5000) return;
@@ -375,6 +377,8 @@ async function main() {
       status: "running",
       phase: "base-sequence",
       progress: 25 + Math.round(pct * 25), // 25 → 50
+      batchIdx: currentBatchIdx,
+      batchCount: currentBatchCount,
     }).catch(() => {});
   };
 
@@ -388,6 +392,7 @@ async function main() {
     // Muitos clips → batches. Calcula BATCH_SIZE ideal para ter batches
     // equilibrados: BATCH_SIZE=10 para 120 clips = 12 batches.
     const totalBatches = Math.ceil(clipPaths.length / BATCH_SIZE);
+    currentBatchCount = totalBatches;
     console.log(`Batching: ${totalBatches} batches × até ${BATCH_SIZE} clips`);
     const subPaths = [];
     // Duração útil estimada por batch (para mapear progresso cumulativo).
@@ -397,6 +402,7 @@ async function main() {
     };
     let cumulative = 0;
     for (let i = 0; i < totalBatches; i++) {
+      currentBatchIdx = i + 1; // 1-based para a UI
       const start = i * BATCH_SIZE;
       const batch = clipPaths.slice(start, start + BATCH_SIZE);
       const subPath = path.join(WORK_DIR, `sub-${String(i).padStart(3, "0")}.mp4`);
@@ -485,6 +491,7 @@ async function main() {
     : `[${musicIdx}:a]volume=${musicVolume},afade=t=in:ss=0:d=2${afadeOutFragment}[music]`;
 
   // Progresso em tempo real durante o loop/final encode: mapeia entre 65% e 85%.
+  // Escreve também elapsedSec/targetSec para a UI mostrar "40 min de 60 min".
   let lastProgressWriteLoop = 0;
   const onLoopProgress = async (line) => {
     const t = parseFfmpegTime(line);
@@ -497,6 +504,8 @@ async function main() {
       status: "running",
       phase: "loop",
       progress: 65 + Math.round(pct * 20), // 65 → 85
+      elapsedSec: Math.round(t),
+      targetSec: targetDuration,
     }).catch(() => {});
   };
 

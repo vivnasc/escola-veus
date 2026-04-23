@@ -862,6 +862,10 @@ export default function YouTubeMontagem() {
         width?: number | null;
         height?: number | null;
         bitrateBps?: number | null;
+        batchIdx?: number;
+        batchCount?: number;
+        elapsedSec?: number;
+        targetSec?: number;
       };
       try {
         const r = await fetch(`/api/admin/youtube/render-ffmpeg-status?jobId=${encodeURIComponent(jobId)}`);
@@ -872,8 +876,30 @@ export default function YouTubeMontagem() {
       }
       if (data.erro) { setRenderError(data.erro); setRendering(false); return; }
       const status = data.status || "...";
-      const phase = data.phase ? ` (${data.phase})` : "";
-      setRenderLabel(`${status}${phase}`);
+      // Label amigável por fase — mostra info concreta em vez de "running (loop)".
+      let friendly = status;
+      if (status === "queued") {
+        friendly = "A arrancar no GitHub Actions...";
+      } else if (data.phase === "download") {
+        friendly = "A descarregar clips + música...";
+      } else if (data.phase === "base-sequence") {
+        friendly = data.batchCount && data.batchCount > 1
+          ? `A montar base · batch ${data.batchIdx}/${data.batchCount}`
+          : "A montar base sequence...";
+      } else if (data.phase === "music") {
+        friendly = "A preparar música...";
+      } else if (data.phase === "loop") {
+        if (typeof data.elapsedSec === "number" && typeof data.targetSec === "number") {
+          const elapsedMin = Math.round(data.elapsedSec / 60);
+          const targetMin = Math.round(data.targetSec / 60);
+          friendly = `A fazer loop + música · ${elapsedMin} min de ${targetMin} min`;
+        } else {
+          friendly = "A fazer loop + música...";
+        }
+      } else if (data.phase === "upload") {
+        friendly = "A enviar para Supabase (pode demorar alguns min)...";
+      }
+      setRenderLabel(friendly);
       if (typeof data.progress === "number") setRenderProgress(data.progress);
       if (status === "failed") {
         setRenderError(data.error || "FFmpeg render failed. Ver logs em GitHub Actions.");
