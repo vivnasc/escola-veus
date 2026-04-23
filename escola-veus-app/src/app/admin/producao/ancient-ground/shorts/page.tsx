@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef, forwardRef } from "react";
+import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
-import { ClipUploader, type UploadedClip } from "@/components/admin/ClipUploader";
 
 // Shorts AG — reaproveitam clips Runway já pagos (listados em escola-shorts/clips/*
 // via list-clips-ag), música do álbum ancient-ground (100 faixas) e 2 versos
@@ -189,27 +189,6 @@ export default function AncientGroundShortsPage() {
     setSlots((prev) => prev.map((s, j) => (j === i ? { clipUrl: "", clipName: "" } : s)));
   };
 
-  // Depois de fazer upload de clips Runway externos: junta à lista visível (no
-  // topo) e preenche os próximos slots livres. Pool é partilhada com Loranne —
-  // estes clips também aparecem lá.
-  const handleUploaded = (uploads: UploadedClip[]) => {
-    const newClips: AgClip[] = uploads.map((u) => ({
-      name: u.name.replace(/\.mp4$/i, ""),
-      url: u.clipUrl,
-      createdAt: new Date().toISOString(),
-    }));
-    setClips((prev) => [...newClips, ...prev]);
-    setSlots((prev) => {
-      const next = [...prev];
-      for (const c of newClips) {
-        const idx = next.findIndex((s) => !s.clipUrl);
-        if (idx === -1) break;
-        next[idx] = { clipUrl: c.url, clipName: c.name };
-      }
-      return next;
-    });
-  };
-
   const startRender = async () => {
     if (!allClipsReady) {
       alert("Escolhe 3 clips primeiro.");
@@ -312,15 +291,16 @@ export default function AncientGroundShortsPage() {
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
           1. Escolhe 3 clips da biblioteca motion
         </h3>
-        <p className="mb-2 text-xs text-escola-creme-50">
-          Clips já gerados via Runway (bucket escola-shorts/clips). Reaproveitamos sem pagar créditos novos.
-        </p>
-        <div className="mb-3">
-          <ClipUploader
-            label="ag"
-            onUploaded={handleUploaded}
-            compact
-          />
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs text-escola-creme-50">
+            Clips já gerados via Runway (bucket escola-shorts/clips). Reaproveitamos sem pagar créditos novos.
+          </p>
+          <Link
+            href="/admin/producao/shorts/biblioteca"
+            className="text-[10px] text-escola-coral hover:text-escola-coral/80"
+          >
+            → Upload na biblioteca
+          </Link>
         </div>
         <input
           type="text"
