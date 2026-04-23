@@ -160,10 +160,23 @@ export default function ThinkDiffusionPage() {
   // Editable motion prompts per image
   const [editedMotion, setEditedMotion] = useState<Record<string, string>>({});
 
+  // Camera variations por variante (01-04) — evita 4 clips iguais
+  const CAMERA_VARIATIONS: Record<number, string> = {
+    1: ", slow cinematic camera push in toward subject",
+    2: ", slow cinematic camera drift left to right across scene",
+    3: ", static camera with natural subject motion",
+    4: ", slow cinematic camera orbit around subject",
+  };
+
   const getMotionPrompt = (imageName: string) => {
     if (editedMotion[imageName]) return editedMotion[imageName];
     const promptId = imageName.replace(/-[hv]-\d+\.\w+$/, "");
-    return (motionPrompts as Record<string, string>)[promptId] || (motionPrompts as Record<string, string>)["_default"];
+    const base = (motionPrompts as Record<string, string>)[promptId] || (motionPrompts as Record<string, string>)["_default"];
+    // Extrai o numero da variante (ex: mar-01-h-02.png -> 2)
+    const variantMatch = imageName.match(/-[hv]-(\d+)\.\w+$/);
+    const variant = variantMatch ? parseInt(variantMatch[1], 10) : 0;
+    const cameraMove = CAMERA_VARIATIONS[((variant - 1) % 4) + 1] || "";
+    return base + cameraMove;
   };
 
   // Runway clips
@@ -301,6 +314,68 @@ export default function ThinkDiffusionPage() {
         }
       })
       .catch(() => {});
+  }, []);
+
+  // Auto-recover em tempo real: corre ao mount E a cada 60s enquanto houver
+  // tasks pendentes. Assim os clips aparecem na UI automaticamente à medida
+  // que o Runway termina, sem a Vivianne ter de clicar ou recarregar.
+  // Pára o polling quando tasksCount chega a 0 (nada mais a fazer).
+  useEffect(() => {
+    let cancelled = false;
+    let pendingRounds = 0;
+    const MAX_ROUNDS = 30; // 30 × 60s = 30 min cap por sessão
+
+    const reloadClipsList = async () => {
+      try {
+        const r = await fetch("/api/admin/thinkdiffusion/list-clips", { cache: "no-store" });
+        const data = await r.json();
+        if (!data.clips) return;
+        const clipState: Record<string, ClipState> = {};
+        for (const clip of data.clips) {
+          const baseName = clip.name;
+          for (const ext of [".png", ".jpg", ".jpeg"]) {
+            clipState[baseName + ext] = {
+              imageUrl: "",
+              imageName: baseName + ext,
+              status: "done",
+              clipUrl: clip.url,
+            };
+          }
+        }
+        if (!cancelled) setClips(clipState);
+      } catch { /* ignore */ }
+    };
+
+    const tick = async () => {
+      if (cancelled) return;
+      try {
+        const r = await fetch("/api/admin/thinkdiffusion/recover-all", { cache: "no-store" });
+        const d = await r.json();
+        if (cancelled || d.erro) return;
+
+        if (d.recovered > 0) {
+          setCurrentPrompt(`✨ ${d.recovered} clip${d.recovered === 1 ? "" : "s"} recuperado${d.recovered === 1 ? "" : "s"}!${d.pending > 0 ? ` (${d.pending} ainda a gerar)` : ""}`);
+          setTimeout(() => { if (!cancelled) setCurrentPrompt(""); }, 8000);
+          await reloadClipsList();
+        } else if (d.pending > 0 && pendingRounds === 0) {
+          // Primeira ronda com pending: avisa, depois fica silencioso.
+          setCurrentPrompt(`⏳ ${d.pending} clip${d.pending === 1 ? "" : "s"} a gerar no Runway — vou verificar a cada 60s`);
+          setTimeout(() => { if (!cancelled) setCurrentPrompt(""); }, 6000);
+        }
+
+        pendingRounds++;
+        if (d.pending > 0 && pendingRounds < MAX_ROUNDS && !cancelled) {
+          setTimeout(tick, 60_000);
+        }
+      } catch { /* ignore — tenta outra vez se ainda pending */
+        if (pendingRounds < MAX_ROUNDS && !cancelled) {
+          setTimeout(tick, 60_000);
+        }
+      }
+    };
+
+    tick();
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {
@@ -548,9 +623,6 @@ export default function ThinkDiffusionPage() {
           {images.length} geradas · {savedCount} guardadas no Supabase
         </span>
       </div>
-
-      {/* ── DASHBOARD ESTADO DOS VIDEOS ── */}
-      <AgStatusDashboard />
 
       {/* ── THINKDIFFUSION SETTINGS (collapsible) ── */}
       <section className="rounded-lg border border-escola-coral/40 bg-escola-bg-card p-4">
@@ -958,9 +1030,49 @@ export default function ThinkDiffusionPage() {
           </div>
         )}
 
-        {/* Recover clips by taskId */}
+        {/* Widget de estado — visibilidade do que há/não há em Supabase e
+            no Runway. Primeira coisa que a Vivianne vê se "nada aparece". */}
+        <RecoveryStatusWidget />
+
+        {/* Recuperação automática — usa os taskIds guardados em Supabase
+            no momento do submit (youtube/tasks/*.json). Um clique recupera
+            tudo o que deu timeout ou foi abandonado. Créditos Runway não
+            se perdem: o task fica acessível por tempo no dev.runwayml.com. */}
+        <div className="mb-4 rounded-lg border border-green-700/50 bg-green-950/10 p-4">
+          <h4 className="mb-2 text-sm font-semibold text-green-400">
+            ✨ Recuperar clips automaticamente (zero input)
+          </h4>
+          <p className="mb-2 text-xs text-escola-creme-50">
+            Lê todos os taskIds pendentes em Supabase, consulta o Runway e
+            guarda os clips que já terminaram. Usa isto se deu timeout e
+            tens medo de ter perdido créditos — os clips estão lá.
+          </p>
+          <button
+            onClick={async () => {
+              setCurrentPrompt("A consultar taskIds pendentes...");
+              try {
+                const res = await fetch("/api/admin/thinkdiffusion/recover-all");
+                const d = await res.json();
+                if (d.erro) throw new Error(d.erro);
+                const msg = `✓ ${d.recovered} recuperados · ${d.alreadySaved} já tinhas · ${d.failed} falharam · ${d.pending} ainda a gerar (${d.total} total)`;
+                setCurrentPrompt(msg);
+                setTimeout(() => setCurrentPrompt(""), 8000);
+                // Força reload da lista de clips na biblioteca.
+                window.dispatchEvent(new Event("focus"));
+              } catch (e) {
+                setError(e instanceof Error ? e.message : String(e));
+                setCurrentPrompt("");
+              }
+            }}
+            className="w-full rounded bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-500"
+          >
+            RECUPERAR TUDO AUTOMATICAMENTE
+          </button>
+        </div>
+
+        {/* Recover clips by taskId (manual fallback) */}
         <div className="mb-4 rounded-lg border border-yellow-800/50 bg-yellow-950/10 p-4">
-          <h4 className="mb-2 text-sm font-semibold text-yellow-400">Recuperar clips perdidos</h4>
+          <h4 className="mb-2 text-sm font-semibold text-yellow-400">Recuperar clips perdidos (manual)</h4>
           <p className="mb-2 text-xs text-escola-creme-50">
             Vai a dev.runwayml.com → Request History → copia os taskIds dos URLs (ex: /v1/tasks/<strong>abc123-def456</strong>). Cola aqui, um por linha.
           </p>
@@ -1362,5 +1474,118 @@ function AgPill({
       <span className="text-[9px] uppercase tracking-wider opacity-70">{label}</span>
       <span className="font-semibold">{value}</span>
     </span>
+  );
+}
+
+// ── Widget de estado de recuperação Runway ─────────────────────────────────
+// Mostra clips guardados vs tasks pendentes. Ajuda a Vivianne a perceber se
+// "nada aparece" porque:
+//   (a) os taskIds foram guardados mas o Runway ainda os está a gerar ou
+//       os outputs já expiraram → tenta recover-all.
+//   (b) NADA foi guardado (save-task falhou silenciosamente) → única via
+//       é dev.runwayml.com > Request History + fallback manual.
+
+function RecoveryStatusWidget() {
+  const [status, setStatus] = useState<{
+    clipsCount: number;
+    tasksCount: number;
+    tasksRecent: Array<{ taskId: string; imageName?: string; ageMinutes?: number }>;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/admin/thinkdiffusion/status", { cache: "no-store" });
+      const d = await r.json();
+      setStatus(d);
+    } catch {
+      // keep null
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  if (loading && !status) {
+    return (
+      <div className="mb-4 rounded-lg border border-escola-border bg-escola-bg-card p-4 text-xs text-escola-creme-50">
+        A verificar estado da biblioteca...
+      </div>
+    );
+  }
+  if (!status) return null;
+
+  const noTasks = status.tasksCount === 0;
+  const manyPending = status.tasksCount > 0;
+
+  return (
+    <div
+      className={`mb-4 rounded-lg border p-4 text-xs ${
+        noTasks
+          ? "border-red-700/50 bg-red-950/10"
+          : manyPending
+            ? "border-yellow-700/50 bg-yellow-950/10"
+            : "border-escola-border bg-escola-bg-card"
+      }`}
+    >
+      <div className="mb-2 flex items-center justify-between">
+        <h4 className="text-sm font-semibold text-escola-creme">📊 Estado da biblioteca</h4>
+        <button
+          onClick={load}
+          className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+        >
+          🔄 Refrescar
+        </button>
+      </div>
+      <div className="mb-2 flex flex-wrap gap-3 text-escola-creme-50">
+        <span>
+          Clips guardados: <strong className="text-escola-creme">{status.clipsCount}</strong>
+        </span>
+        <span>
+          Tasks pendentes: <strong className={status.tasksCount > 0 ? "text-yellow-300" : "text-escola-creme"}>{status.tasksCount}</strong>
+        </span>
+      </div>
+
+      {noTasks && status.clipsCount === 0 && (
+        <p className="text-red-300">
+          Nenhum clip e nenhuma task pendente. Se submeteste clips e deu timeout, os taskIds
+          não foram guardados em Supabase (erro silencioso do save-task). Tens duas opções:
+          <br />1) Voltar a gerar (custo novo).
+          <br />2) Ir a <a className="underline" href="https://dev.runwayml.com" target="_blank" rel="noopener">dev.runwayml.com</a> → Request History → copiar taskIds e colar no fallback manual em baixo.
+        </p>
+      )}
+      {noTasks && status.clipsCount > 0 && (
+        <p className="text-escola-creme-50">
+          Biblioteca OK, sem tasks pendentes. Se falta algum clip, provavelmente o submit foi feito sem passar pelo save-task — vê dev.runwayml.com para os mais recentes.
+        </p>
+      )}
+      {manyPending && (
+        <>
+          <p className="mb-2 text-yellow-300">
+            {status.tasksCount} task{status.tasksCount === 1 ? "" : "s"} pendente{status.tasksCount === 1 ? "" : "s"} — cliquem em <strong>RECUPERAR TUDO</strong> em baixo para consultar o Runway.
+          </p>
+          {status.tasksRecent.length > 0 && (
+            <details className="mt-2">
+              <summary className="cursor-pointer text-[10px] text-escola-creme-50">
+                Ver {status.tasksRecent.length} mais recentes
+              </summary>
+              <ul className="mt-1 space-y-0.5 pl-4 text-[10px] text-escola-creme-50">
+                {status.tasksRecent.map((t) => (
+                  <li key={t.taskId}>
+                    <code className="text-escola-creme">{t.taskId.slice(0, 8)}</code>
+                    {t.imageName && <> · {t.imageName}</>}
+                    {typeof t.ageMinutes === "number" && <> · há {t.ageMinutes}min</>}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </>
+      )}
+    </div>
   );
 }

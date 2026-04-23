@@ -38,6 +38,13 @@ export async function POST(req: NextRequest) {
     // para a fórmula. Pode ser desligado com false se o user quiser manter
     // clipDuration fixo (10s).
     syncToNarration = true,
+    // Audio stretching (opcional): alonga o vídeo sem re-gravar o áudio.
+    //   narrationLeadIn: pausa música-só depois do intro brand, antes da voz.
+    //   outroHold:       pausa música-só depois da voz, antes do outro brand.
+    //   narrationAtempo: abranda a narração (0.88-1.0, preserva pitch).
+    narrationLeadIn = 0,
+    outroHold = 0,
+    narrationAtempo = 1,
     seo,
   } = body || {};
 
@@ -59,6 +66,11 @@ export async function POST(req: NextRequest) {
   const slug = sanitiseSlug(rawSlug || title || "funil");
   const jobId = `funil-${slug}-${Date.now()}`;
 
+  // Clamp dos valores de stretching (defensivo — UI já limita).
+  const safeLeadIn = Math.max(0, Math.min(30, Number(narrationLeadIn) || 0));
+  const safeOutroHold = Math.max(0, Math.min(30, Number(outroHold) || 0));
+  const safeAtempo = Math.max(0.5, Math.min(1, Number(narrationAtempo) || 1));
+
   const manifest = {
     jobId,
     title: title || "",
@@ -73,6 +85,9 @@ export async function POST(req: NextRequest) {
     subtitlesUrl: subtitlesUrl || null,
     subtitleStyle: subtitleStyle || null,
     syncToNarration: syncToNarration !== false,
+    narrationLeadIn: safeLeadIn,
+    outroHold: safeOutroHold,
+    narrationAtempo: safeAtempo,
     seo: seo || null,
     createdAt: new Date().toISOString(),
   };

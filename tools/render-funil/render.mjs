@@ -108,12 +108,16 @@ async function writeResult(jobId, payload) {
   await uploadToSupabase(`${JOB_DIR}/${jobId}-result.json`, body, "application/json");
 }
 
-// Aplica offset (segundos) a todos os timestamps SRT no formato HH:MM:SS,mmm.
-// Usado porque a SRT é gerada a partir do áudio cru (timestamps a partir de 0)
-// mas no vídeo final a narração arranca em narrationStartAt (= introStride).
-function shiftSrtTimestamps(srtText, offsetSec) {
+// Aplica offset + escala atempo aos timestamps SRT no formato HH:MM:SS,mmm.
+// - offsetSec: tempo antes da voz entrar no vídeo final (narrationStartAt).
+// - atempo: factor de abrandamento da voz (atempo<1 → timestamps dilatam).
+// A SRT original é gerada sobre o áudio cru (atempo=1, start=0). Aplicamos:
+//   t_final = (t_orig / atempo) + offsetSec
+function shiftSrtTimestamps(srtText, offsetSec, atempo = 1) {
+  const speed = atempo > 0 ? atempo : 1;
   return srtText.replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, (_, h, m, s, ms) => {
-    const total = (+h) * 3600 + (+m) * 60 + (+s) + (+ms) / 1000 + offsetSec;
+    const orig = (+h) * 3600 + (+m) * 60 + (+s) + (+ms) / 1000;
+    const total = orig / speed + offsetSec;
     if (total < 0) return "00:00:00,000";
     const H = Math.floor(total / 3600);
     const M = Math.floor((total % 3600) / 60);
@@ -153,8 +157,20 @@ async function main() {
     thumbnailUrl,
     subtitlesUrl,
     subtitleStyle,
+    // Audio stretching (pipeline default = no-op, todos os valores neutros).
+    //   narrationLeadIn: música-só entre intro brand e voz (s).
+    //   outroHold:       música-só entre voz e outro brand (s).
+    //   narrationAtempo: factor ffmpeg atempo sobre a voz (0.88-1.0, <1 abranda).
+    // Ver /admin/producao/funil/montar "4c. Esticar duração" para controlo.
+    narrationLeadIn: rawLeadIn = 0,
+    outroHold: rawOutroHold = 0,
+    narrationAtempo: rawAtempo = 1,
     seo,
   } = manifest;
+
+  const narrationLeadIn = Math.max(0, Math.min(30, Number(rawLeadIn) || 0));
+  const outroHold = Math.max(0, Math.min(30, Number(rawOutroHold) || 0));
+  const narrationAtempo = Math.max(0.5, Math.min(1, Number(rawAtempo) || 1));
 
   if (!Array.isArray(clips) || clips.length === 0) throw new Error("clips[] vazio");
   if (!narrationUrl) throw new Error("narrationUrl vazio");
@@ -218,6 +234,9 @@ async function main() {
   }
   const narrSec = await probeSeconds(narrationPath);
 
+  // Duração efectiva da voz depois de atempo (atempo<1 estica a voz).
+  const narrSecEffective = narrSec / narrationAtempo;
+
   // ── Sync dos clips à narração ───────────────────────────────────────────
   // Problema: clips Runway vêm todos em 10s fixos, mas a narração de cada
   // episódio tem duração própria (80s, 95s, 110s…). Se mantivermos 10s por
@@ -225,15 +244,18 @@ async function main() {
   // da voz acabar (parece que "a voz é mais rápida").
   //
   // Fix: calcular clipDuration de forma proporcional à narração para que
-  // soma-dos-clips ≈ duração-da-narração + pequeno tail. Se narração é
-  // muito longa (>N*10s), cap em 10s (Runway max) e deixa o tpad esticar
-  // o outro no fim. Clamp mínimo 4s para não ficar demasiado corto.
+  // soma-dos-clips ≈ duração-da-narração + lead-in + outro-hold + pequeno
+  // tail. Se narração é muito longa (>N*10s), cap em 10s (Runway max) e
+  // deixa o tpad esticar o outro no fim. Clamp mínimo 4s para não ficar
+  // demasiado corto.
   //
   // Passado via body do manifest: `syncToNarration` (default true).
   const sync = manifest.syncToNarration !== false;
   let clipDuration = rawClipDuration;
   if (sync && narrSec > 0 && clips.length > 0) {
-    const targetClipsBlock = narrSec + 1.0; // pequena folga para fade-out voz
+    // Block alvo = lead-in + voz esticada + outro-hold + folga p/ fade
+    const targetClipsBlock =
+      narrationLeadIn + narrSecEffective + outroHold + 1.0;
     const n = clips.length;
     // clipsDuration = (n-1)*stride + clipDuration, stride = clipDuration - crossfade
     // Queremos clipsDuration = target → resolver para clipDuration:
@@ -272,20 +294,37 @@ async function main() {
   const outroStride = OUTRO_DURATION - crossfade;
   const TAIL_PAD = 1.5;
   const bodyDuration = introStride + clipsDuration + outroStride; // tempo total de reprodução
-  // Se narração for maior que o body, alargamos o outro via tpad no último xfade.
-  const narrationStartAt = introStride; // quando a voz entra
-  const totalDuration = Math.max(bodyDuration, narrationStartAt + narrSec + TAIL_PAD);
+  // Se narração for maior que o body (ou lead-in/outro-hold pedem mais tempo),
+  // alargamos o outro via tpad no último xfade.
+  //
+  // narrationStartAt = intro stride + pausa música-só pedida pelo user.
+  // totalDuration tem de cobrir: intro + lead-in + voz + outro-hold + outro + tail.
+  const narrationStartAt = introStride + narrationLeadIn;
+  const totalDuration = Math.max(
+    bodyDuration + narrationLeadIn + outroHold,
+    narrationStartAt + narrSecEffective + outroHold + TAIL_PAD,
+  );
   const tailExtra = Math.max(0, totalDuration - bodyDuration);
+  if (narrationLeadIn > 0 || outroHold > 0 || narrationAtempo < 1) {
+    console.log(
+      `[stretch] leadIn=${narrationLeadIn}s · outroHold=${outroHold}s · ` +
+      `atempo=${narrationAtempo} (voz ${narrSec.toFixed(1)}s → ${narrSecEffective.toFixed(1)}s) · ` +
+      `totalDuration=${totalDuration.toFixed(1)}s (body=${bodyDuration.toFixed(1)}s)`,
+    );
+  }
   const FADE_IN = 1.0;
   const FADE_OUT = 2.0;
 
-  // Aplica shift à SRT (timestamps eram relativos à narração crua).
+  // Aplica shift + escala atempo à SRT (timestamps eram relativos à
+  // narração crua a 1x). Com atempo<1 a voz dura mais → timestamps dilatam.
   if (subtitlesPath) {
     try {
       const raw = await readFile(subtitlesPath, "utf8");
-      const shifted = shiftSrtTimestamps(raw, narrationStartAt);
+      const shifted = shiftSrtTimestamps(raw, narrationStartAt, narrationAtempo);
       await writeFile(subtitlesPath, shifted);
-      console.log(`SRT shifted +${narrationStartAt.toFixed(2)}s e gravada em ${subtitlesPath}`);
+      console.log(
+        `SRT shifted +${narrationStartAt.toFixed(2)}s · atempo=${narrationAtempo} e gravada em ${subtitlesPath}`,
+      );
     } catch (e) {
       console.warn(`SRT shift falhou (${e?.message || e}); a continuar SEM legendas.`);
       subtitlesPath = null;
@@ -408,10 +447,16 @@ async function main() {
   const NARR_FADE_OUT = 0.8;
   const narrDelayMs = Math.round(narrationStartAt * 1000);
 
+  // Atempo aplicado primeiro (antes dos fades, volume e delay) para que os
+  // timestamps subsequentes sejam relativos à voz já esticada.
+  //   atempo=1 é no-op, mas inclui-se só quando <1 para evitar filtro desnecessário.
+  const atempoStep = narrationAtempo < 1 ? `atempo=${narrationAtempo},` : "";
+  const narrFadeOutAt = Math.max(0, narrSecEffective - NARR_FADE_OUT);
+
   const audioFilter = [
     musicConcat,
     `[musicraw]aloop=loop=-1:size=2e+09,atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=${MUSIC_FADE_IN},afade=t=out:st=${(totalDuration - MUSIC_FADE_OUT).toFixed(2)}:d=${MUSIC_FADE_OUT}[musicvol]`,
-    `[${narrationIdx}:a]volume=${narrationVolume},afade=t=in:st=0:d=${NARR_FADE_IN},afade=t=out:st=${Math.max(0, narrSec - NARR_FADE_OUT).toFixed(2)}:d=${NARR_FADE_OUT},adelay=${narrDelayMs}|${narrDelayMs}[narrproc]`,
+    `[${narrationIdx}:a]${atempoStep}volume=${narrationVolume},afade=t=in:st=0:d=${NARR_FADE_IN},afade=t=out:st=${narrFadeOutAt.toFixed(2)}:d=${NARR_FADE_OUT},adelay=${narrDelayMs}|${narrDelayMs}[narrproc]`,
     `[narrproc]asplit=2[narr1][narr2]`,
     `[musicvol][narr1]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[musicduck]`,
     `[narr2][musicduck]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[aout]`,
