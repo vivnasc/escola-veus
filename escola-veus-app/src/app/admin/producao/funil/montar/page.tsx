@@ -43,25 +43,36 @@ type PoolClip = {
   usageCount: number;
 };
 
-const EPISODES = [
-  { key: "trailer", slug: "nomear-trailer-00", label: "Trailer" },
-  { key: "ep01", slug: "nomear-ep01", label: "ep01 — A culpa" },
-  { key: "ep02", slug: "nomear-ep02", label: "ep02 — O extracto" },
-  { key: "ep03", slug: "nomear-ep03", label: "ep03 — A vergonha" },
-  { key: "ep04", slug: "nomear-ep04", label: "ep04 — O desconto" },
-  { key: "ep05", slug: "nomear-ep05", label: "ep05 — Matemática" },
-  { key: "ep06", slug: "nomear-ep06", label: "ep06 — A fome" },
-  { key: "ep07", slug: "nomear-ep07", label: "ep07 — O sim" },
-  { key: "ep08", slug: "nomear-ep08", label: "ep08 — O silêncio" },
-  { key: "ep09", slug: "nomear-ep09", label: "ep09 — As frases" },
-  { key: "ep10", slug: "nomear-ep10", label: "ep10 — A liberdade" },
-] as const;
+// Computed from NOMEAR_PRESETS (cobre os 122 episódios + trailer) em vez de
+// hard-coded. Permite usar o /montar para qualquer ep, não só ep01-10.
+//
+// epKey: "trailer" | "ep01" | "ep02" | ... (prefixo usado nos ids dos prompts
+//        e nos nomes de ficheiros em youtube/clips/).
+type Episode = { key: string; slug: string; label: string };
+
+const EPISODES: Episode[] = (() => {
+  const list: Episode[] = [];
+  for (const preset of NOMEAR_PRESETS) {
+    for (const script of preset.scripts) {
+      // id patterns: "nomear-trailer-00", "nomear-ep11", ...
+      const parts = script.id.split("-");
+      const epKey = parts[1] ?? ""; // "trailer" | "ep11"
+      if (!epKey) continue;
+      const label =
+        epKey === "trailer"
+          ? `Trailer — ${script.titulo}`
+          : `${epKey} — ${script.titulo}`;
+      list.push({ key: epKey, slug: script.id, label });
+    }
+  }
+  return list;
+})();
 
 const supabasePublicUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 
 export default function FunilMontarPage() {
-  const [epKey, setEpKey] = useState<(typeof EPISODES)[number]["key"]>("trailer");
-  const ep = EPISODES.find((e) => e.key === epKey)!;
+  const [epKey, setEpKey] = useState<string>("trailer");
+  const ep = EPISODES.find((e) => e.key === epKey) ?? EPISODES[0];
 
   const [allClips, setAllClips] = useState<Clip[]>([]);
   const [allAudios, setAllAudios] = useState<Audio[]>([]);
@@ -101,6 +112,20 @@ export default function FunilMontarPage() {
   const [reuseExists, setReuseExists] = useState(false);
   const [savingReuse, setSavingReuse] = useState(false);
   const [reuseInfo, setReuseInfo] = useState<string | null>(null);
+
+  // Prompts do funil (para sobrepôr reuseClipId ao default clipOrder).
+  // Quando um prompt para ep11 tem reuseClipId apontado para ep03, o clip
+  // do ep03 é incluído automaticamente na ordem do ep11 (antes de o user
+  // ter de abrir a pool).
+  type FunilPrompt = {
+    id: string;
+    category: string;
+    mood: string[];
+    prompt: string;
+    reuseClipId?: string;
+    reuseClipUrl?: string;
+  };
+  const [funilPrompts, setFunilPrompts] = useState<FunilPrompt[]>([]);
 
   // ── Audio stretching ──────────────────────────────────────────────────
   // Três alavancas para alongar vídeos curtos (áudios <2min) sem re-gravar:
@@ -189,12 +214,48 @@ export default function FunilMontarPage() {
   }, [allThumbs, epKey]);
 
   // ── Filter assets by episode ──────────────────────────────────────────
+  //
+  // Default clipOrder para o episódio, montado em 3 camadas:
+  //   1. Prompts deste ep (id-sorted) — para cada prompt:
+  //      - tem reuseClipId → usa o clipUrl reciclado (de outro ep)
+  //      - caso contrário  → procura `nomear-<ep>-<slot>-<slug>.mp4` em allClips
+  //   2. Se não houver prompts para este ep, cai para filtro por prefixo
+  //      (comportamento legado: simplesmente lista todos os clips do ep).
+  //   3. O reuse map manual (secção "4. Clips" em Supabase) sobrescreve isto
+  //      depois via /reuse/load (ver useEffect abaixo).
   const epClips = useMemo(() => {
     const prefix = epKey === "trailer" ? "nomear-trailer-" : `nomear-${epKey}-`;
+    const epPromptList = funilPrompts
+      .filter((p) => p.id.startsWith(prefix))
+      .sort((a, b) => a.id.localeCompare(b.id));
+
+    if (epPromptList.length > 0) {
+      // Montar clipOrder baseado nos prompts, respeitando reuseClipId.
+      const byBaseName = new Map(
+        allClips.map((c) => [c.name.replace(/\.mp4$/i, ""), c] as const),
+      );
+      const order: Clip[] = [];
+      for (const prompt of epPromptList) {
+        if (prompt.reuseClipId && prompt.reuseClipUrl) {
+          // Clip reciclado de outro ep. Nome extraído do id do prompt-fonte.
+          order.push({
+            name: `${prompt.reuseClipId}.mp4`,
+            url: prompt.reuseClipUrl,
+          });
+        } else {
+          // Clip gerado localmente. Só incluir se já existir.
+          const hit = byBaseName.get(prompt.id);
+          if (hit) order.push(hit);
+        }
+      }
+      return order;
+    }
+
+    // Fallback legado: prompts ainda não carregados OU ep sem prompts.
     return allClips
       .filter((c) => c.name.startsWith(prefix))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [allClips, epKey]);
+  }, [allClips, epKey, funilPrompts]);
 
   const epNarration = useMemo(() => {
     // audio-bulk saves with filename = `${slug-of-title}-${timestamp}.mp3`
@@ -233,6 +294,16 @@ export default function FunilMontarPage() {
       .then((r) => r.json())
       .then((d) => {
         if (Array.isArray(d.clips)) setPool(d.clips);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Carregar prompts do funil (para aplicar reuseClipId ao default clipOrder).
+  useEffect(() => {
+    fetch("/api/admin/prompts/funil/load", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.prompts)) setFunilPrompts(d.prompts);
       })
       .catch(() => {});
   }, []);
@@ -477,28 +548,13 @@ export default function FunilMontarPage() {
       {err && <p className="mb-3 text-xs text-escola-terracota">{err}</p>}
 
       {/* ── 1. Episode ───────────────────────────────────────────── */}
-      <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">1. Episódio</h3>
-        <div className="flex flex-wrap gap-1">
-          {EPISODES.map((e) => {
-            const prefix = e.key === "trailer" ? "nomear-trailer-" : `nomear-${e.key}-`;
-            const nClips = allClips.filter((c) => c.name.startsWith(prefix)).length;
-            return (
-              <button
-                key={e.key}
-                onClick={() => setEpKey(e.key)}
-                className={`rounded border px-2.5 py-1 text-xs transition-colors ${
-                  epKey === e.key
-                    ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
-                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
-                }`}
-              >
-                {e.label} · {nClips}
-              </button>
-            );
-          })}
-        </div>
-      </section>
+      <EpisodePicker
+        episodes={EPISODES}
+        epKey={epKey}
+        setEpKey={setEpKey}
+        allClips={allClips}
+        funilPrompts={funilPrompts}
+      />
 
       {/* ── 2. Narration ─────────────────────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
@@ -1418,6 +1474,115 @@ function BrandCard({
         <p className="truncate text-[8px] text-escola-creme-50">{sublabel}</p>
       </div>
     </div>
+  );
+}
+
+// ─── Episode Picker ──────────────────────────────────────────────────────────
+// Suporta 124 eps (trailer + ep01..ep123). Mostra contagem de clips disponíveis
+// e "prontidão" do ep (quantos prompts estão reciclados + quantos têm clip
+// gerado). Pesquisa + filtro rápido por estado.
+
+function EpisodePicker({
+  episodes,
+  epKey,
+  setEpKey,
+  allClips,
+  funilPrompts,
+}: {
+  episodes: Episode[];
+  epKey: string;
+  setEpKey: (k: string) => void;
+  allClips: Clip[];
+  funilPrompts: {
+    id: string;
+    reuseClipId?: string;
+  }[];
+}) {
+  const [query, setQuery] = useState("");
+
+  // Contagens por ep (memo para ser rápido).
+  const epStats = useMemo(() => {
+    const byEp = new Map<
+      string,
+      { clips: number; prompts: number; reused: number }
+    >();
+    for (const ep of episodes) {
+      const prefix = ep.key === "trailer" ? "nomear-trailer-" : `nomear-${ep.key}-`;
+      const nClips = allClips.filter((c) => c.name.startsWith(prefix)).length;
+      const epPrompts = funilPrompts.filter((p) => p.id.startsWith(prefix));
+      const nReused = epPrompts.filter((p) => !!p.reuseClipId).length;
+      byEp.set(ep.key, {
+        clips: nClips,
+        prompts: epPrompts.length,
+        reused: nReused,
+      });
+    }
+    return byEp;
+  }, [episodes, allClips, funilPrompts]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return episodes;
+    return episodes.filter(
+      (e) => e.key.includes(q) || e.label.toLowerCase().includes(q),
+    );
+  }, [episodes, query]);
+
+  return (
+    <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <h3 className="text-sm text-escola-creme">
+          1. Episódio ({episodes.length} disponíveis)
+        </h3>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="pesquisar ep (ep11, fome, vergonha…)"
+          className="w-60 rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+        />
+      </div>
+      <div className="max-h-56 overflow-y-auto rounded border border-escola-border bg-escola-bg/40 p-2">
+        <div className="flex flex-wrap gap-1">
+          {filtered.map((e) => {
+            const st = epStats.get(e.key);
+            const active = epKey === e.key;
+            return (
+              <button
+                key={e.key}
+                onClick={() => setEpKey(e.key)}
+                className={`rounded border px-2 py-1 text-[11px] transition-colors ${
+                  active
+                    ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+                title={e.label}
+              >
+                <span className="font-semibold">{e.key}</span>
+                {st && st.clips > 0 && (
+                  <span className="ml-1 text-[9px] text-escola-creme-50">
+                    · {st.clips}
+                  </span>
+                )}
+                {st && st.reused > 0 && (
+                  <span
+                    className="ml-1 text-[9px] text-escola-dourado"
+                    title={`${st.reused} prompts reciclados`}
+                  >
+                    ♻{st.reused}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+          {filtered.length === 0 && (
+            <p className="p-2 text-[10px] text-escola-creme-50">
+              Nenhum ep bate com &quot;{query}&quot;.
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
 
