@@ -350,7 +350,10 @@ async function main() {
       "-filter_complex_threads", "2",
       "-map", `[${mapLabel}]`,
       "-c:v", "libx264",
-      "-preset", "ultrafast",
+      // veryfast é seguro com batching (10 clips por processo = RAM limpa
+      // entre batches) e comprime significativamente melhor que ultrafast.
+      // Evita ficheiros acima dos 2 GiB do Supabase.
+      "-preset", "veryfast",
       "-crf", "23",
       "-maxrate", "4M",
       "-bufsize", "8M",
@@ -534,9 +537,13 @@ async function main() {
       "-t", String(targetDuration),
       "-c:v", "libx264",
       "-preset", "veryfast",
-      "-crf", "21",
-      "-maxrate", "5M",
-      "-bufsize", "10M",
+      // CRF 23 + maxrate 4M: para 1h a 1080p, teto teórico = 4M × 3600 = 1.8 GB.
+      // Deixa margem segura abaixo do limite 2 GiB do Supabase. Antes, com
+      // CRF 21 + maxrate 5M, vídeos com mais variância (ex: plantas) chegavam
+      // a 2.26 GB e eram rejeitados no upload.
+      "-crf", "23",
+      "-maxrate", "4M",
+      "-bufsize", "8M",
       "-pix_fmt", "yuv420p",
       "-r", String(fps),
       "-c:a", "aac",
