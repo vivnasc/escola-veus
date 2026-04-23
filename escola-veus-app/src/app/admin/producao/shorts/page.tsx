@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef, forwardRef } from "react";
 import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import runwayMotionPrompts from "@/data/runway-motion-prompts.json";
+import { ClipUploader, type UploadedClip } from "@/components/admin/ClipUploader";
 
 const MOTION_PROMPTS = runwayMotionPrompts as Record<string, string>;
 
@@ -267,6 +268,34 @@ export default function ShortsPage() {
 
   const clearSlot = (slotIdx: number) => {
     updateSlot(slotIdx, { ...EMPTY_SLOT });
+  };
+
+  // ── Upload de clips Runway gerados por fora ────────────────────────────────
+  // Preenche os próximos slots livres com {imageUrl: thumb, clipUrl: mp4},
+  // saltando o passo 1+2 (imagem + animate Runway via API paga). O thumb vem
+  // do 1º frame do vídeo, para a geração da YouTube thumbnail continuar a
+  // funcionar (usa imageUrl como base).
+  const fillSlotsWithUploads = (uploads: UploadedClip[]) => {
+    setState((prev) => {
+      let next = { ...prev, slots: [...prev.slots] };
+      for (const up of uploads) {
+        const idx = next.slots.findIndex((s) => !s.clipUrl);
+        if (idx === -1) break;
+        const baseName = up.name.replace(/\.[^.]+$/, "");
+        next.slots[idx] = {
+          imageUrl: up.thumbUrl,
+          promptId: baseName,
+          motionPrompt: "",
+          clipUrl: up.clipUrl,
+          generating: false,
+          error: "",
+        };
+      }
+      try {
+        localStorage.setItem("shorts-state", JSON.stringify(next));
+      } catch { /* ignore */ }
+      return next;
+    });
   };
 
   // ── Animate ONE slot (Runway) ───────────────────────────────────────────────
@@ -640,6 +669,23 @@ export default function ShortsPage() {
             )}
           </div>
         )}
+      </section>
+
+      {/* ── 1b. UPLOAD CLIPS RUNWAY EXTERNOS (ALTERNATIVA) ── */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-escola-dourado">
+          1b. (alternativa) Upload clips Runway já gerados
+        </h3>
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Se geraste os clips por fora (conta Runway ilimitada, sem queimar créditos
+          da API), faz upload aqui — preenche os próximos slots livres directamente e
+          salta a secção 2. Vão para <code>escola-shorts/clips/</code> e ficam
+          disponíveis também para shorts AG.
+        </p>
+        <ClipUploader
+          label="loranne"
+          onUploaded={fillSlotsWithUploads}
+        />
       </section>
 
       {/* ── 2. MOTION RUNWAY — 1 A 1 ── */}
