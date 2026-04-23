@@ -52,10 +52,14 @@ export default function NomearShortsPage() {
   const ep = EPISODES.find((e) => e.key === epKey)!;
 
   const [allAudios, setAllAudios] = useState<Audio[]>([]);
+  const [allClips, setAllClips] = useState<Audio[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [startSec, setStartSec] = useState(0);
   const [endSec, setEndSec] = useState(20);
+  // Modo: "clips" (usa clips Runway do ep - default) OU "image" (imagem estática)
+  const [mode, setMode] = useState<"clips" | "image">("clips");
+  const [selectedClipUrls, setSelectedClipUrls] = useState<string[]>([]);
   const [imagePromptId, setImagePromptId] = useState("");
   const [overlayText, setOverlayText] = useState("");
   const [includeBranding, setIncludeBranding] = useState(true);
@@ -64,22 +68,34 @@ export default function NomearShortsPage() {
   const [result, setResult] = useState<{
     videoUrl: string;
     audioUrl: string;
-    imageUrl: string;
+    imageUrl?: string;
     durationSec: number;
+    mode?: string;
+    clipCount?: number;
   } | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Load audio files on mount
+  // Load audio files + clips list on mount
   useEffect(() => {
-    fetch("/api/admin/biblioteca/list?folder=youtube&limit=500")
-      .then((r) => r.json())
-      .then((d) => {
-        const files = (Array.isArray(d.files) ? d.files : []).filter((f: Audio) =>
-          f.name.endsWith(".mp3"),
+    Promise.all([
+      fetch("/api/admin/biblioteca/list?folder=youtube&limit=500").then((r) =>
+        r.json(),
+      ),
+      fetch("/api/admin/biblioteca/list?folder=youtube/clips&limit=1000").then(
+        (r) => r.json(),
+      ),
+    ])
+      .then(([audiosD, clipsD]) => {
+        const audios = (Array.isArray(audiosD.files) ? audiosD.files : []).filter(
+          (f: Audio) => f.name.endsWith(".mp3"),
         );
-        setAllAudios(files);
+        setAllAudios(audios);
+        const clips = (Array.isArray(clipsD.files) ? clipsD.files : []).filter(
+          (f: Audio) => f.name.endsWith(".mp4"),
+        );
+        setAllClips(clips);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -103,11 +119,20 @@ export default function NomearShortsPage() {
       .sort((a, b) => a.id.localeCompare(b.id));
   }, [epKey]);
 
-  // Auto-pick first prompt on episode change
+  // Clips Runway do episódio (ordenados por nome para sequencia natural)
+  const epClips = useMemo(() => {
+    const prefix = epKey === "trailer" ? "nomear-trailer-" : `nomear-${epKey}-`;
+    return allClips
+      .filter((c) => c.name.startsWith(prefix))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allClips, epKey]);
+
+  // Auto-pick first prompt + reset clips on episode change
   useEffect(() => {
     if (epPrompts.length > 0 && (!imagePromptId || !epPrompts.some((p) => p.id === imagePromptId))) {
       setImagePromptId(epPrompts[0].id);
     }
+    setSelectedClipUrls([]);
     setResult(null);
     setErr(null);
   }, [epKey, epPrompts, imagePromptId]);
@@ -144,7 +169,9 @@ export default function NomearShortsPage() {
           epKey,
           startSec,
           endSec,
-          imagePromptId,
+          ...(mode === "clips"
+            ? { clipUrls: selectedClipUrls }
+            : { imagePromptId }),
           overlayText: overlayText.trim() || undefined,
           includeBranding,
         }),
@@ -283,12 +310,115 @@ export default function NomearShortsPage() {
         )}
       </section>
 
-      {/* ── 3. Imagem de fundo ────────────────────────────────────── */}
+      {/* ── 3. Fundo do vídeo (clips Runway ou imagem) ────────────── */}
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">3. Imagem de fundo (9:16 cropada)</h3>
-        {epPrompts.length === 0 ? (
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm text-escola-creme">3. Fundo do vídeo</h3>
+          <div className="flex gap-1 text-xs">
+            <button
+              onClick={() => setMode("clips")}
+              className={`rounded border px-2 py-1 ${
+                mode === "clips"
+                  ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                  : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+              }`}
+            >
+              🎬 Clips Runway (animados)
+            </button>
+            <button
+              onClick={() => setMode("image")}
+              className={`rounded border px-2 py-1 ${
+                mode === "image"
+                  ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                  : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+              }`}
+            >
+              🖼 Imagem estática
+            </button>
+          </div>
+        </div>
+
+        {mode === "clips" ? (
+          epClips.length === 0 ? (
+            <p className="text-xs text-escola-terracota">
+              Sem clips Runway gerados para este episódio. Vai a{" "}
+              <code>/admin/producao/funil/gerar</code> e gera os clips primeiro.
+            </p>
+          ) : (
+            <>
+              <p className="mb-2 text-xs text-escola-creme-50">
+                Escolhe <b>2-4 clips</b> na ordem em que apareçam no short. 3
+                clips × ~10s = 30s ideal. Os clips horizontais são cropados ao
+                centro para 9:16.
+              </p>
+              <div className="mb-2 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                {epClips.map((c) => {
+                  const selected = selectedClipUrls.includes(c.url);
+                  const order = selectedClipUrls.indexOf(c.url) + 1;
+                  return (
+                    <button
+                      key={c.url}
+                      onClick={() => {
+                        setSelectedClipUrls((prev) =>
+                          prev.includes(c.url)
+                            ? prev.filter((u) => u !== c.url)
+                            : [...prev, c.url],
+                        );
+                      }}
+                      className={`relative aspect-video overflow-hidden rounded border ${
+                        selected
+                          ? "border-escola-dourado ring-2 ring-escola-dourado"
+                          : "border-escola-border hover:border-escola-dourado/40"
+                      }`}
+                      title={c.name}
+                    >
+                      <video
+                        src={c.url}
+                        className="h-full w-full object-cover"
+                        muted
+                        preload="metadata"
+                      />
+                      {selected && (
+                        <span className="absolute left-1 top-1 rounded bg-escola-dourado px-1.5 text-[10px] font-bold text-escola-bg">
+                          {order}
+                        </span>
+                      )}
+                      <span className="absolute inset-x-0 bottom-0 truncate bg-black/70 px-1 text-[9px] text-white">
+                        {c.name
+                          .replace(`nomear-${epKey}-`, "")
+                          .replace(/-h-\d+\.mp4$/, "")}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span
+                  className={
+                    selectedClipUrls.length >= 1 && selectedClipUrls.length <= 4
+                      ? "text-escola-dourado"
+                      : "text-escola-terracota"
+                  }
+                >
+                  {selectedClipUrls.length} seleccionado
+                  {selectedClipUrls.length === 1 ? "" : "s"}
+                  {selectedClipUrls.length === 0 && " — escolhe pelo menos 1"}
+                  {selectedClipUrls.length > 4 && " — máximo 4"}
+                </span>
+                {selectedClipUrls.length > 0 && (
+                  <button
+                    onClick={() => setSelectedClipUrls([])}
+                    className="text-escola-creme-50 hover:text-escola-creme"
+                  >
+                    limpar
+                  </button>
+                )}
+              </div>
+            </>
+          )
+        ) : epPrompts.length === 0 ? (
           <p className="text-xs text-escola-terracota">
-            Sem prompts registados para este episódio. Adiciona em /admin/producao/funil (tab Prompts).
+            Sem prompts registados para este episódio.
           </p>
         ) : (
           <>
@@ -303,9 +433,7 @@ export default function NomearShortsPage() {
                 </option>
               ))}
             </select>
-            {imagePromptId && (
-              <ImagePreview promptId={imagePromptId} />
-            )}
+            {imagePromptId && <ImagePreview promptId={imagePromptId} />}
           </>
         )}
       </section>
@@ -334,7 +462,14 @@ export default function NomearShortsPage() {
       <section className="mb-4 rounded-xl border border-escola-dourado/40 bg-escola-card p-4">
         <button
           onClick={generate}
-          disabled={!epAudio || !snippetValid || !imagePromptId || generating}
+          disabled={
+            !epAudio ||
+            !snippetValid ||
+            generating ||
+            (mode === "clips"
+              ? selectedClipUrls.length < 1 || selectedClipUrls.length > 4
+              : !imagePromptId)
+          }
           className="w-full rounded bg-escola-dourado px-6 py-3 text-sm font-semibold text-escola-bg disabled:opacity-30"
         >
           {generating ? "A gerar short..." : "Gerar Short MP4 9:16"}
