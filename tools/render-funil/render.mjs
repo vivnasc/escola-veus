@@ -482,9 +482,37 @@ async function main() {
     "-c:a", "aac",
     "-b:a", "192k",
     "-movflags", "+faststart",
+    // Fix: encadeamento atempo + adelay + sidechaincompress + tpad pode
+    // produzir timestamps negativos ou absurdos no moov atom (Windows Media
+    // Player via duração 596523:14:07, codec não suportado). Estas flags
+    // regeneram pts e normalizam timestamps negativos → duração correcta.
+    "-fflags", "+genpts",
+    "-avoid_negative_ts", "make_zero",
     "-t", totalDuration.toFixed(2),
     outPath,
   ], "render");
+
+  // Remux defensivo: lê o out.mp4 e reescreve o container com -c copy +
+  // +faststart. Isto força recalcular a duração no moov atom a partir dos
+  // pts reais dos frames (em vez de confiar na estimativa do encoder).
+  const outFixedPath = path.join(WORK_DIR, "out-fixed.mp4");
+  try {
+    await runFfmpeg([
+      "-y",
+      "-i", outPath,
+      "-c", "copy",
+      "-movflags", "+faststart",
+      "-fflags", "+genpts",
+      outFixedPath,
+    ], "remux");
+    // Se o remux correr OK, usa a versão corrigida
+    await import("node:fs/promises").then(async (fs) => {
+      await fs.rename(outFixedPath, outPath);
+    });
+    console.log("[remux] container reescrito — duração normalizada");
+  } catch (e) {
+    console.warn(`[remux] falhou (${e?.message || e}); a usar out.mp4 original`);
+  }
 
   await writeResult(jobId, { status: "running", phase: "upload", progress: 85 });
 

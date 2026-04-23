@@ -927,14 +927,20 @@ export default function FunilMontarPage() {
               <VideoStamp url={videoUrl} />
             </div>
             <video src={videoUrl} className="w-full rounded" controls />
-            <a
-              href={videoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-2 inline-block text-xs text-escola-creme-50 hover:text-escola-creme"
-            >
-              abrir URL ↗
-            </a>
+            <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
+              <a
+                href={videoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-escola-creme-50 hover:text-escola-creme"
+              >
+                abrir URL ↗
+              </a>
+              <FixVideoButton
+                videoUrl={videoUrl}
+                onFixed={(newUrl) => setVideoUrl(newUrl)}
+              />
+            </div>
           </div>
         )}
       </section>
@@ -1375,6 +1381,12 @@ function ThumbnailSection({
   setThumbErr: (s: string | null) => void;
   onGenerated: (url: string, name: string) => void;
 }) {
+  // Source do preview: vídeo final do ep (se renderizado) OU mandala brand
+  // como fallback. Em ambos os casos, user pode escolher frame via slider.
+  const brandIntroUrl = supabasePublicUrl
+    ? `${supabasePublicUrl}/storage/v1/object/public/course-assets/youtube/brand/intro.mp4`
+    : "";
+  const effectiveVideoUrl = videoUrl || brandIntroUrl;
   // Tempo default: 10s se há vídeo final (após intro 5s + crossfade, já no 1º
   // clip Runway do ep). 2.5s se fallback intro.mp4 (pico de brilho mandala).
   const defaultFrameT = videoUrl ? 10 : 2.5;
@@ -1389,10 +1401,10 @@ function ThumbnailSection({
   // Seek no preview video para o frame escolhido
   useEffect(() => {
     const v = previewRef.current;
-    if (v && videoUrl) {
+    if (v && effectiveVideoUrl) {
       try { v.currentTime = frameT; } catch { /* ignore */ }
     }
-  }, [frameT, videoUrl]);
+  }, [frameT, effectiveVideoUrl]);
 
   const duration = previewRef.current?.duration ?? 0;
   const maxFrameT = duration > 0 ? Math.max(1, Math.floor(duration - 0.5)) : 120;
@@ -1403,15 +1415,15 @@ function ThumbnailSection({
       <p className="mb-3 text-xs text-escola-creme-50">
         {videoUrl
           ? "Frame extraído do TEU vídeo final do episódio. Usa o slider para escolher o momento que melhor representa o ep."
-          : "Ainda não há vídeo final renderizado — vai ser usada a mandala brand como fallback. Monta o vídeo primeiro (secção 5) para uma thumbnail única."}
+          : "Sem vídeo final ainda — mandala brand é usada como fundo. Podes escolher qualquer frame da mandala abaixo (ou monta o vídeo primeiro na secção 5 para opções melhores)."}
       </p>
 
       {/* Preview do frame escolhido (antes de queimar o texto) */}
-      {videoUrl && (
+      {effectiveVideoUrl && (
         <div className="mb-3">
           <video
             ref={previewRef}
-            src={videoUrl}
+            src={effectiveVideoUrl}
             className="w-full max-w-2xl rounded border border-escola-border"
             muted
             playsInline
@@ -1420,12 +1432,13 @@ function ThumbnailSection({
           <div className="mt-2 flex items-center gap-3 text-xs">
             <span className="text-escola-creme-50 whitespace-nowrap">
               Frame: <b className="text-escola-creme">{frameT.toFixed(1)}s</b>
+              {!videoUrl && <span className="ml-1 text-escola-creme-50/70">(mandala)</span>}
             </span>
             <input
               type="range"
               min="0"
               max={maxFrameT}
-              step="0.5"
+              step="0.1"
               value={frameT}
               onChange={(e) => setFrameT(parseFloat(e.target.value))}
               className="flex-1"
@@ -2039,5 +2052,60 @@ function StretchControls({
         </div>
       </div>
     </section>
+  );
+}
+
+// ─── FixVideoButton ───────────────────────────────────────────────────────
+// Repara metadata de MP4 corrompido (duração tipo 596523:14:07, codec nao
+// suportado). Chama /api/admin/funil/fix-video que faz ffmpeg -c copy
+// in-place em Supabase. Rapido (~5s) porque nao re-encoda.
+
+function FixVideoButton({
+  videoUrl,
+  onFixed,
+}: {
+  videoUrl: string;
+  onFixed: (newUrl: string) => void;
+}) {
+  const [fixing, setFixing] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+
+  const fix = async () => {
+    if (!confirm("Reparar metadata deste MP4?\n\nReescreve o container (sem re-encodar) para corrigir duração errada ou codec não reconhecido. Demora ~10s. Sobrepõe o ficheiro em Supabase.")) return;
+    setFixing(true);
+    setErr(null);
+    setMsg(null);
+    try {
+      const r = await fetch("/api/admin/funil/fix-video", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ videoUrl }),
+      });
+      const d = await r.json();
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      setMsg(`✓ reparado (${(d.sizeAfter / 1024 / 1024).toFixed(1)} MB)`);
+      if (d.videoUrl) onFixed(d.videoUrl);
+      setTimeout(() => setMsg(null), 4000);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setFixing(false);
+    }
+  };
+
+  return (
+    <>
+      <button
+        onClick={fix}
+        disabled={fixing}
+        className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme disabled:opacity-50"
+        title="Repara metadata se o player mostrar duração errada ou codec não suportado"
+      >
+        {fixing ? "a reparar..." : "⚙ reparar metadata"}
+      </button>
+      {msg && <span className="text-escola-dourado">{msg}</span>}
+      {err && <span className="text-escola-terracota">erro: {err}</span>}
+    </>
   );
 }
