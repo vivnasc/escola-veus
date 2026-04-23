@@ -485,9 +485,13 @@ async function main() {
     // Fix: encadeamento atempo + adelay + sidechaincompress + tpad pode
     // produzir timestamps negativos ou absurdos no moov atom (Windows Media
     // Player via duração 596523:14:07, codec não suportado). Estas flags
-    // regeneram pts e normalizam timestamps negativos → duração correcta.
+    // regeneram pts, normalizam timestamps negativos, forçam constant fps
+    // e muxing sem buffering intermédio → duração correcta e streams
+    // interleaved sem overflow.
     "-fflags", "+genpts",
     "-avoid_negative_ts", "make_zero",
+    "-vsync", "cfr",
+    "-max_interleave_delta", "0",
     "-t", totalDuration.toFixed(2),
     outPath,
   ], "render");
@@ -495,6 +499,8 @@ async function main() {
   // Remux defensivo: lê o out.mp4 e reescreve o container com -c copy +
   // +faststart. Isto força recalcular a duração no moov atom a partir dos
   // pts reais dos frames (em vez de confiar na estimativa do encoder).
+  // Defensiva extra: -max_interleave_delta 0 + avoid_negative_ts garante
+  // que muxing final não introduz pts weird mesmo se input tiver issues.
   const outFixedPath = path.join(WORK_DIR, "out-fixed.mp4");
   try {
     await runFfmpeg([
@@ -503,6 +509,8 @@ async function main() {
       "-c", "copy",
       "-movflags", "+faststart",
       "-fflags", "+genpts",
+      "-avoid_negative_ts", "make_zero",
+      "-max_interleave_delta", "0",
       outFixedPath,
     ], "remux");
     // Se o remux correr OK, usa a versão corrigida
