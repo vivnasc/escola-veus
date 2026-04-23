@@ -56,13 +56,19 @@ export default function NomearShortsPage() {
   const [loading, setLoading] = useState(true);
 
   const [startSec, setStartSec] = useState(0);
-  const [endSec, setEndSec] = useState(20);
-  // Modo: "clips" (usa clips Runway do ep - default) OU "image" (imagem estática)
-  const [mode, setMode] = useState<"clips" | "image">("clips");
+  const [endSec, setEndSec] = useState(30);
+  // Modo default: "crop-video" (recorta do video final renderizado do ep).
+  // Legacy: "clips" (escolher clips manualmente) e "image" (imagem estatica)
+  // disponiveis em modo avancado para casos onde ainda nao ha video final.
+  const [mode, setMode] = useState<"crop-video" | "clips" | "image">("crop-video");
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [selectedClipUrls, setSelectedClipUrls] = useState<string[]>([]);
   const [imagePromptId, setImagePromptId] = useState("");
   const [overlayText, setOverlayText] = useState("");
   const [includeBranding, setIncludeBranding] = useState(true);
+  // Video final do ep (procurado em youtube/funil-videos/). Timeline do cropper
+  // usa isto em vez do audio raw — assim o user ve o video real com legendas.
+  const [epFinalVideoUrl, setEpFinalVideoUrl] = useState<string | null>(null);
 
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<{
@@ -77,7 +83,9 @@ export default function NomearShortsPage() {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Load audio files + clips list on mount
+  const [allFinalVideos, setAllFinalVideos] = useState<Audio[]>([]);
+
+  // Load audio + clips + final videos list on mount
   useEffect(() => {
     Promise.all([
       fetch("/api/admin/biblioteca/list?folder=youtube&limit=500").then((r) =>
@@ -86,19 +94,43 @@ export default function NomearShortsPage() {
       fetch("/api/admin/biblioteca/list?folder=youtube/clips&limit=1000").then(
         (r) => r.json(),
       ),
+      fetch(
+        "/api/admin/biblioteca/list?folder=youtube/funil-videos&limit=500",
+      ).then((r) => r.json()),
     ])
-      .then(([audiosD, clipsD]) => {
-        const audios = (Array.isArray(audiosD.files) ? audiosD.files : []).filter(
-          (f: Audio) => f.name.endsWith(".mp3"),
+      .then(([audiosD, clipsD, videosD]) => {
+        setAllAudios(
+          (Array.isArray(audiosD.files) ? audiosD.files : []).filter(
+            (f: Audio) => f.name.endsWith(".mp3"),
+          ),
         );
-        setAllAudios(audios);
-        const clips = (Array.isArray(clipsD.files) ? clipsD.files : []).filter(
-          (f: Audio) => f.name.endsWith(".mp4"),
+        setAllClips(
+          (Array.isArray(clipsD.files) ? clipsD.files : []).filter(
+            (f: Audio) => f.name.endsWith(".mp4"),
+          ),
         );
-        setAllClips(clips);
+        setAllFinalVideos(
+          (Array.isArray(videosD.files) ? videosD.files : []).filter(
+            (f: Audio) => f.name.endsWith(".mp4"),
+          ),
+        );
       })
       .finally(() => setLoading(false));
   }, []);
+
+  // Video final renderizado do ep actual (procura por slug OU epKey prefix)
+  useEffect(() => {
+    const script = findScript(ep.slug);
+    const slug = script ? titleToSlug(script.titulo) : "";
+    const match = allFinalVideos
+      .filter(
+        (v) =>
+          (slug && v.name.startsWith(`${slug}-`)) ||
+          v.name.startsWith(`${epKey}-`),
+      )
+      .sort((a, b) => b.name.localeCompare(a.name))[0];
+    setEpFinalVideoUrl(match?.url ?? null);
+  }, [allFinalVideos, ep.slug, epKey]);
 
   // Find audio for current episode
   const epAudio = useMemo(() => {
@@ -162,6 +194,30 @@ export default function NomearShortsPage() {
     setErr(null);
     setResult(null);
     try {
+      // Modo "crop-video" (default): recorta do MP4 final do ep.
+      // Endpoint distinto porque o fluxo é muito mais simples (só ffmpeg trim+crop).
+      if (mode === "crop-video") {
+        const r = await fetch("/api/admin/shorts/crop-funil-video", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            epKey,
+            startSec,
+            endSec,
+            videoUrl: epFinalVideoUrl || undefined,
+          }),
+        });
+        const d = await r.json();
+        if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+        setResult({
+          videoUrl: d.videoUrl,
+          audioUrl: "",
+          durationSec: d.durationSec,
+          mode: "crop-video",
+        });
+        return;
+      }
+
       const r = await fetch("/api/admin/shorts/short-from-nomear", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -321,11 +377,62 @@ export default function NomearShortsPage() {
         )}
       </section>
 
-      {/* ── 3. Fundo do vídeo (clips Runway ou imagem) ────────────── */}
+      {/* ── Modo crop-video: nada mais a escolher, salta para Gerar ── */}
+      {mode === "crop-video" ? (
+        <section className="mb-4 rounded-xl border border-escola-dourado/40 bg-escola-dourado/5 p-4 text-xs">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-escola-dourado">
+              ✨ Recortando do vídeo final — legendas, áudio, imagens já
+              sincronizados.
+            </span>
+            <button
+              onClick={() => setShowAdvanced((v) => !v)}
+              className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              {showAdvanced ? "ocultar" : "modo avançado"}
+            </button>
+          </div>
+          {!epFinalVideoUrl && (
+            <p className="text-escola-terracota">
+              ⚠ Sem vídeo final renderizado para {epKey}. Monta o vídeo primeiro
+              em <code>/admin/producao/funil/montar</code>, ou muda para modo
+              avançado (clips / imagem).
+            </p>
+          )}
+          {epFinalVideoUrl && (
+            <p className="text-escola-creme-50">
+              Total com intro+outro brand: <b className="text-escola-creme">{(snippetDur + 10).toFixed(1)}s</b>
+              {" "}(sem brand: {snippetDur.toFixed(1)}s). Máx 60s.
+            </p>
+          )}
+          {showAdvanced && (
+            <div className="mt-3 flex gap-1 border-t border-escola-dourado/20 pt-3">
+              <button
+                onClick={() => setMode("clips")}
+                className="rounded border border-escola-border px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
+              >
+                🎬 escolher clips manualmente
+              </button>
+              <button
+                onClick={() => setMode("image")}
+                className="rounded border border-escola-border px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
+              >
+                🖼 usar imagem estática
+              </button>
+            </div>
+          )}
+        </section>
+      ) : (
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-sm text-escola-creme">3. Fundo do vídeo</h3>
           <div className="flex gap-1 text-xs">
+            <button
+              onClick={() => setMode("crop-video")}
+              className="rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-1 text-escola-dourado"
+            >
+              ← voltar ao modo simples
+            </button>
             <button
               onClick={() => setMode("clips")}
               className={`rounded border px-2 py-1 ${
@@ -448,8 +555,10 @@ export default function NomearShortsPage() {
           </>
         )}
       </section>
+      )}
 
-      {/* ── 4. Texto overlay (opcional) ───────────────────────────── */}
+      {/* ── 4. Texto overlay (so relevante para modos clips/image) ── */}
+      {mode !== "crop-video" && (
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
         <h3 className="mb-2 text-sm text-escola-creme">4. Texto em destaque (opcional)</h3>
         <textarea
@@ -468,22 +577,47 @@ export default function NomearShortsPage() {
           Mostrar &quot;A ESCOLA DOS VÉUS&quot; no topo (cream dourado)
         </label>
       </section>
+      )}
+
+      {/* Toggle brand intro/outro (apenas no modo crop-video) */}
+      {mode === "crop-video" && epFinalVideoUrl && (
+        <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+          <label className="flex cursor-pointer items-center gap-2 text-xs text-escola-creme">
+            <input
+              type="checkbox"
+              checked={includeBranding}
+              onChange={(e) => setIncludeBranding(e.target.checked)}
+            />
+            Incluir mandala brand intro (5s) + outro (5s) — total{" "}
+            <b className="text-escola-dourado">
+              {(snippetDur + (includeBranding ? 10 : 0)).toFixed(1)}s
+            </b>
+          </label>
+        </section>
+      )}
 
       {/* ── 5. Gerar ──────────────────────────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-dourado/40 bg-escola-card p-4">
         <button
           onClick={generate}
           disabled={
-            !epAudio ||
             !snippetValid ||
             generating ||
-            (mode === "clips"
-              ? selectedClipUrls.length < 1 || selectedClipUrls.length > 4
-              : !imagePromptId)
+            (mode === "crop-video"
+              ? !epFinalVideoUrl ||
+                snippetDur + (includeBranding ? 10 : 0) > 60
+              : !epAudio ||
+                (mode === "clips"
+                  ? selectedClipUrls.length < 1 || selectedClipUrls.length > 4
+                  : !imagePromptId))
           }
           className="w-full rounded bg-escola-dourado px-6 py-3 text-sm font-semibold text-escola-bg disabled:opacity-30"
         >
-          {generating ? "A gerar short..." : "Gerar Short MP4 9:16"}
+          {generating
+            ? "A gerar short..."
+            : mode === "crop-video"
+              ? `Recortar Short MP4 9:16 (${(snippetDur + (includeBranding ? 10 : 0)).toFixed(1)}s)`
+              : "Gerar Short MP4 9:16"}
         </button>
         {err && (
           <p className="mt-2 rounded bg-red-950/50 p-2 text-xs text-red-300">Erro: {err}</p>
