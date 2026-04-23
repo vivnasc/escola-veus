@@ -511,11 +511,38 @@ export default function FunilMontarPage() {
 
       {/* ── 4. Clips ─────────────────────────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">4. Clips ({clipOrder.length})</h3>
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="text-sm text-escola-creme">4. Clips ({clipOrder.length})</h3>
+          <span className="text-[10px] text-escola-creme-50">
+            {allClips.length} clips em Supabase · {epClips.length} batem com{" "}
+            <code>{epKey === "trailer" ? "nomear-trailer-" : `nomear-${epKey}-`}</code>
+            {loading && " · a carregar..."}
+          </span>
+        </div>
         {clipOrder.length === 0 ? (
-          <p className="text-xs text-escola-terracota">
-            Sem clips para <code>{ep.slug}</code>. Gera em /admin/producao/funil/gerar.
-          </p>
+          <div className="space-y-1 text-xs text-escola-terracota">
+            <p>
+              Sem clips para <code>{ep.slug}</code>. Gera em{" "}
+              <code>/admin/producao/funil/gerar</code>.
+            </p>
+            {allClips.length === 0 && !loading && (
+              <p className="text-escola-creme-50">
+                ⚠ Nenhum clip em Supabase — o endpoint list-clips pode estar
+                lento ou bloqueado. Recarrega a página.
+              </p>
+            )}
+            {allClips.length > 0 && epClips.length === 0 && (
+              <p className="text-escola-creme-50">
+                ⚠ Há {allClips.length} clips em Supabase mas nenhum começa com{" "}
+                <code>nomear-{epKey}-</code>. Verifica os nomes:{" "}
+                {allClips
+                  .slice(0, 3)
+                  .map((c) => c.name)
+                  .join(", ")}
+                {allClips.length > 3 && "..."}
+              </p>
+            )}
+          </div>
         ) : (
           <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {clipOrder.map((url, i) => {
