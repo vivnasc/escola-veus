@@ -19,7 +19,7 @@
 
 import { spawn } from "node:child_process";
 import { createWriteStream } from "node:fs";
-import { mkdir, readFile, writeFile, stat } from "node:fs/promises";
+import { mkdir, readFile, writeFile, stat, open } from "node:fs/promises";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
@@ -63,6 +63,91 @@ async function uploadToSupabase(pathInBucket, data, contentType) {
     const txt = await res.text();
     throw new Error(`Upload ${pathInBucket} falhou ${res.status}: ${txt.slice(0, 300)}`);
   }
+}
+
+// Upload de ficheiros grandes (>50MB) via TUS resumable protocol — obrigatório
+// para MP4 de 1h (~1.4GB) que estouram o gateway do Supabase em POST simples
+// com 502 ("falhou 502 <!DOCTYPE html>..."). Faz upload em chunks de 6MB; se
+// algum chunk falhar, tenta novamente. Sem dependências externas.
+async function uploadLargeToSupabase(pathInBucket, filePath, contentType) {
+  const info = await stat(filePath);
+  const fileSize = info.size;
+  const CHUNK_SIZE = 6 * 1024 * 1024; // 6MB — recomendado pela Supabase
+
+  // Metadata format do TUS: "key base64value,key base64value" (keys ASCII).
+  const b64 = (s) => Buffer.from(s, "utf-8").toString("base64");
+  const metadata = [
+    `bucketName ${b64(BUCKET)}`,
+    `objectName ${b64(pathInBucket)}`,
+    `contentType ${b64(contentType)}`,
+    `cacheControl ${b64("3600")}`,
+  ].join(",");
+
+  // 1. Create upload — recebe Location para enviar chunks.
+  const createRes = await fetch(`${SUPABASE_URL}/storage/v1/upload/resumable`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${SERVICE_KEY}`,
+      "Tus-Resumable": "1.0.0",
+      "Upload-Length": String(fileSize),
+      "Upload-Metadata": metadata,
+      "x-upsert": "true",
+    },
+  });
+  if (!createRes.ok && createRes.status !== 201) {
+    const txt = await createRes.text();
+    throw new Error(`TUS create ${createRes.status}: ${txt.slice(0, 300)}`);
+  }
+  const location = createRes.headers.get("location");
+  if (!location) throw new Error("TUS create: sem Location header");
+
+  // 2. Envia chunks sequencialmente com retry simples.
+  const fd = await open(filePath, "r");
+  try {
+    let offset = 0;
+    let lastLog = 0;
+    while (offset < fileSize) {
+      const thisChunk = Math.min(CHUNK_SIZE, fileSize - offset);
+      const buf = Buffer.alloc(thisChunk);
+      await fd.read(buf, 0, thisChunk, offset);
+
+      let attempt = 0;
+      let uploaded = false;
+      while (!uploaded && attempt < 3) {
+        attempt++;
+        try {
+          const patchRes = await fetch(location, {
+            method: "PATCH",
+            headers: {
+              Authorization: `Bearer ${SERVICE_KEY}`,
+              "Tus-Resumable": "1.0.0",
+              "Upload-Offset": String(offset),
+              "Content-Type": "application/offset+octet-stream",
+            },
+            body: buf,
+          });
+          if (patchRes.ok || patchRes.status === 204) {
+            uploaded = true;
+            break;
+          }
+          const txt = await patchRes.text();
+          throw new Error(`patch ${patchRes.status}: ${txt.slice(0, 200)}`);
+        } catch (err) {
+          if (attempt >= 3) throw err;
+          console.warn(`  chunk @${offset} falhou (tentativa ${attempt}/3): ${err?.message || err}`);
+          await new Promise((r) => setTimeout(r, 2000 * attempt));
+        }
+      }
+      offset += thisChunk;
+      if (Date.now() - lastLog > 3000) {
+        lastLog = Date.now();
+        console.log(`  upload ${(offset / 1e6).toFixed(0)} / ${(fileSize / 1e6).toFixed(0)} MB (${Math.round((offset / fileSize) * 100)}%)`);
+      }
+    }
+  } finally {
+    await fd.close();
+  }
+  console.log(`  upload ${(fileSize / 1e6).toFixed(0)} MB COMPLETO`);
 }
 
 // Corre ffprobe -show_format -show_streams e devolve duração/tamanho/bitrate
@@ -593,11 +678,12 @@ async function main() {
   await writeResult(jobId, { status: "running", phase: "upload", progress: 85 });
 
   // ── PASSO 3: Upload ───────────────────────────────────────────────────────
-  console.log(`[6/7] Upload MP4 para Supabase`);
+  console.log(`[6/7] Upload MP4 para Supabase (TUS resumable)`);
   const stamp = Date.now();
   const mp4Name = `${slug || "video"}-${stamp}.mp4`;
-  const mp4Buf = await readFile(outPath);
-  await uploadToSupabase(`${VIDEO_DIR}/${mp4Name}`, mp4Buf, "video/mp4");
+  // Usa upload resumable em chunks de 6MB — evita o 502 do gateway em
+  // POST simples com 1.4GB. Lê do disco em blocos, sem carregar tudo em RAM.
+  await uploadLargeToSupabase(`${VIDEO_DIR}/${mp4Name}`, outPath, "video/mp4");
   const videoUrl = supabasePublicUrl(`${VIDEO_DIR}/${mp4Name}`);
 
   // Thumbnail (prioridade: dataURL composto > URL externa)
