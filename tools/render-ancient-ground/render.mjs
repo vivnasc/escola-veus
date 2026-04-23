@@ -294,70 +294,136 @@ async function main() {
   // ── PASSO 1: Base sequence ────────────────────────────────────────────────
   // Cada clip é recortado (trim nas pontas), normalizado (fps, resolução),
   // e encadeado com xfade(fade) de `crossfade` segundos entre clips.
-  // Timeline cumulativa: clip N entra no offset = sum(effective lengths) - crossfade*N.
+  //
+  // Para muitos clips (≥15) dividimos em batches de BATCH_SIZE processados
+  // por ffmpeg separados. Cada processo tem filter_complex pequeno (10
+  // inputs + 9 xfades em vez de 120+119), memória limpa entre batches, e
+  // evita o "runner lost communication with the server" (OOM) que aconteceu
+  // em renders de 120 clips. No fim, concat -c copy junta os sub-MP4s sem
+  // re-encoding (stream copy, instantâneo).
+  //
+  // Nota: nos boundaries entre batches não há xfade — há um corte duro. Para
+  // nature ambient (baixa variancia entre frames e movimento suave) isto é
+  // visualmente imperceptível; o benefício (não morrer) justifica.
   console.log(`[3/7] Construir base sequence: ${clipPaths.length} clips, trim=${trimEdge}s, xfade=${crossfade}s`);
-  const effective = clipDuration - 2 * trimEdge; // duração útil de cada clip após trim
+  const effective = clipDuration - 2 * trimEdge;
   const stride = effective - crossfade;
   if (stride <= 0) throw new Error(`stride <= 0: crossfade ${crossfade} >= effective ${effective}`);
 
-  const filters = [];
-  const inputs = [];
-  clipPaths.forEach((p, i) => {
-    inputs.push("-i", p);
-    filters.push(
-      `[${i}:v]trim=${trimEdge}:${clipDuration - trimEdge},setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=${fps},format=yuv420p[v${i}]`
-    );
-  });
-
-  // Cadeia xfade: [v0][v1]xfade=offset=stride[x1]; [x1][v2]xfade=offset=stride*2[x2]; ...
-  let prev = "v0";
-  for (let i = 1; i < clipPaths.length; i++) {
-    const out = i === clipPaths.length - 1 ? "vbase" : `x${i}`;
-    const offset = stride * i;
-    filters.push(`[${prev}][v${i}]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(3)}[${out}]`);
-    prev = out;
-  }
-  // Se só existe 1 clip, o "prev" é v0 — mapeia directamente.
-  const baseMap = clipPaths.length === 1 ? "v0" : "vbase";
-
+  const BATCH_SIZE = 10;
+  const needsBatching = clipPaths.length > 15;
   const baseOut = path.join(WORK_DIR, "base.mp4");
+
+  // Duração esperada da base: mesmo com batches é (aproximadamente) a mesma
+  // porque concat preserva a soma das durações dos sub-MP4s. (Nos boundaries
+  // entre batches não se subtrai crossfade — ligeiramente mais longo.)
   const baseDuration = clipPaths.length === 1
     ? effective
     : stride * (clipPaths.length - 1) + effective;
   console.log(`Base duration esperada: ${baseDuration.toFixed(2)}s`);
 
-  // Progresso em tempo real durante a base sequence: mapeia entre 25% e 50%.
+  // Helper: faz encode de UM batch (ou do input todo se poucos clips).
+  const encodeBatch = async (clips, outPath, progressLabel, onStderrLine) => {
+    const filters = [];
+    const inputs = [];
+    clips.forEach((p, i) => {
+      inputs.push("-i", p);
+      filters.push(
+        `[${i}:v]trim=${trimEdge}:${clipDuration - trimEdge},setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=${fps},format=yuv420p[v${i}]`
+      );
+    });
+    let prev = "v0";
+    for (let i = 1; i < clips.length; i++) {
+      const out = i === clips.length - 1 ? "vbase" : `x${i}`;
+      const offset = stride * i;
+      filters.push(`[${prev}][v${i}]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(3)}[${out}]`);
+      prev = out;
+    }
+    const mapLabel = clips.length === 1 ? "v0" : "vbase";
+    await runFfmpeg([
+      "-y",
+      ...inputs,
+      // -threads 2 + -filter_complex_threads 2: limita paralelismo para
+      // caber em RAM do runner (~7GB) mesmo com xfade pesado.
+      "-threads", "2",
+      "-filter_complex", filters.join(";"),
+      "-filter_complex_threads", "2",
+      "-map", `[${mapLabel}]`,
+      "-c:v", "libx264",
+      "-preset", "ultrafast",
+      "-crf", "23",
+      "-maxrate", "4M",
+      "-bufsize", "8M",
+      "-pix_fmt", "yuv420p",
+      "-r", String(fps),
+      "-an",
+      "-movflags", "+faststart",
+      outPath,
+    ], progressLabel, onStderrLine);
+  };
+
   let lastProgressWriteBase = 0;
-  await runFfmpeg([
-    "-y",
-    ...inputs,
-    "-filter_complex", filters.join(";"),
-    "-map", `[${baseMap}]`,
-    "-c:v", "libx264",
-    "-preset", "medium",
-    // CRF 23 + cap de bitrate evita que 1h a 1080p estoure os ~1.95GB do bucket.
-    // Nature ambient comprime muito bem a este CRF — visualmente equivalente a CRF 20.
-    "-crf", "23",
-    "-maxrate", "4M",
-    "-bufsize", "8M",
-    "-pix_fmt", "yuv420p",
-    "-r", String(fps),
-    "-an",
-    "-movflags", "+faststart",
-    baseOut,
-  ], "base", async (line) => {
-    const t = parseFfmpegTime(line);
-    if (t == null) return;
+  const reportBaseProgress = async (cumulativeSec) => {
     const now = Date.now();
-    if (now - lastProgressWriteBase < 5000) return; // max 1x/5s
+    if (now - lastProgressWriteBase < 5000) return;
     lastProgressWriteBase = now;
-    const pct = Math.min(1, t / baseDuration);
+    const pct = Math.min(1, cumulativeSec / baseDuration);
     await writeResult(jobId, {
       status: "running",
       phase: "base-sequence",
       progress: 25 + Math.round(pct * 25), // 25 → 50
     }).catch(() => {});
-  });
+  };
+
+  if (!needsBatching) {
+    // Poucos clips → tudo num só processo (comportamento anterior).
+    await encodeBatch(clipPaths, baseOut, "base", async (line) => {
+      const t = parseFfmpegTime(line);
+      if (t != null) await reportBaseProgress(t);
+    });
+  } else {
+    // Muitos clips → batches. Calcula BATCH_SIZE ideal para ter batches
+    // equilibrados: BATCH_SIZE=10 para 120 clips = 12 batches.
+    const totalBatches = Math.ceil(clipPaths.length / BATCH_SIZE);
+    console.log(`Batching: ${totalBatches} batches × até ${BATCH_SIZE} clips`);
+    const subPaths = [];
+    // Duração útil estimada por batch (para mapear progresso cumulativo).
+    const batchEstDuration = (b) => {
+      if (b.length === 1) return effective;
+      return stride * (b.length - 1) + effective;
+    };
+    let cumulative = 0;
+    for (let i = 0; i < totalBatches; i++) {
+      const start = i * BATCH_SIZE;
+      const batch = clipPaths.slice(start, start + BATCH_SIZE);
+      const subPath = path.join(WORK_DIR, `sub-${String(i).padStart(3, "0")}.mp4`);
+      const estThisBatch = batchEstDuration(batch);
+      const baselineBefore = cumulative;
+      console.log(`  Batch ${i + 1}/${totalBatches} (${batch.length} clips, ~${estThisBatch.toFixed(1)}s)`);
+      await encodeBatch(batch, subPath, `base-batch-${i + 1}`, async (line) => {
+        const t = parseFfmpegTime(line);
+        if (t != null) await reportBaseProgress(baselineBefore + t);
+      });
+      cumulative += estThisBatch;
+      subPaths.push(subPath);
+    }
+    // Concat sem re-encoding — todos os sub-MP4s têm os mesmos params.
+    const listFile = path.join(WORK_DIR, "concat-list.txt");
+    await writeFile(
+      listFile,
+      subPaths.map((p) => `file '${p}'`).join("\n"),
+    );
+    console.log(`Concat final de ${subPaths.length} sub-bases (stream copy)`);
+    await runFfmpeg([
+      "-y",
+      "-f", "concat",
+      "-safe", "0",
+      "-i", listFile,
+      "-c", "copy",
+      "-movflags", "+faststart",
+      baseOut,
+    ], "concat-base");
+  }
 
   await writeResult(jobId, { status: "running", phase: "music", progress: 50 });
 
@@ -459,7 +525,10 @@ async function main() {
     await runFfmpeg([
       "-y",
       ...inputsFinal,
+      // Limita threads globais e do filter_complex — evita OOM do runner.
+      "-threads", "2",
       "-filter_complex", filterComplex,
+      "-filter_complex_threads", "2",
       "-map", "[vout]",
       "-map", "[music]",
       "-t", String(targetDuration),
