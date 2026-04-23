@@ -228,7 +228,7 @@ export default function NomearShortsPage() {
 
       {/* ── 2. Áudio + escolher snippet ───────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">2. Snippet (15-30s recomendado)</h3>
+        <h3 className="mb-2 text-sm text-escola-creme">2. Snippet (até 60s)</h3>
         {loading ? (
           <p className="text-xs text-escola-creme-50">A carregar áudios...</p>
         ) : !epAudio ? (
@@ -244,7 +244,18 @@ export default function NomearShortsPage() {
               className="mb-3 w-full"
               preload="auto"
             />
-            <div className="mb-3 grid grid-cols-2 gap-3 text-xs">
+
+            {/* Range selector visual — arrasta pegas para escolher região */}
+            <AudioRegionSelector
+              audioRef={audioRef}
+              startSec={startSec}
+              endSec={endSec}
+              onStartChange={setStartSec}
+              onEndChange={setEndSec}
+              maxDur={60}
+            />
+
+            <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
               <div>
                 <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
                   Início ({fmtTime(startSec)})
@@ -303,8 +314,8 @@ export default function NomearShortsPage() {
               </button>
             </div>
             <p className="mt-2 text-[10px] text-escola-creme-50">
-              💡 Ouve o áudio, pausa no início da frase, clica 📍 em &quot;Início&quot;.
-              Continua a ouvir, pausa no fim, clica 📍 em &quot;Fim&quot;.
+              💡 Arrasta as pegas 🟡 na timeline acima para escolher a região.
+              Ou usa 📍 para capturar do leitor.
             </p>
           </>
         )}
@@ -603,5 +614,198 @@ function ShareButton({
     >
       ↗ Partilhar
     </button>
+  );
+}
+
+// ─── AudioRegionSelector ──────────────────────────────────────────────────
+// Timeline visual com 2 pegas arrastaveis para escolher start/end do snippet.
+// Renderiza uma barra representando a duracao total do audio + regiao
+// amarela destacada entre as pegas. Suporta mouse + touch (mobile).
+
+function AudioRegionSelector({
+  audioRef,
+  startSec,
+  endSec,
+  onStartChange,
+  onEndChange,
+  maxDur,
+}: {
+  audioRef: React.RefObject<HTMLAudioElement | null>;
+  startSec: number;
+  endSec: number;
+  onStartChange: (v: number) => void;
+  onEndChange: (v: number) => void;
+  maxDur: number;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [duration, setDuration] = useState(0);
+  const [playheadSec, setPlayheadSec] = useState(0);
+  const [dragging, setDragging] = useState<"start" | "end" | null>(null);
+
+  // Actualiza duracao quando o audio carrega
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    const updateDur = () => {
+      if (a.duration && !isNaN(a.duration) && isFinite(a.duration)) {
+        setDuration(a.duration);
+      }
+    };
+    updateDur();
+    a.addEventListener("loadedmetadata", updateDur);
+    a.addEventListener("durationchange", updateDur);
+    return () => {
+      a.removeEventListener("loadedmetadata", updateDur);
+      a.removeEventListener("durationchange", updateDur);
+    };
+  }, [audioRef]);
+
+  // Actualiza playhead em tempo real
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    const tick = () => setPlayheadSec(a.currentTime);
+    a.addEventListener("timeupdate", tick);
+    return () => a.removeEventListener("timeupdate", tick);
+  }, [audioRef]);
+
+  // Calcula segundo a partir de uma posicao X (mouse/touch) no track
+  const secFromX = useCallback(
+    (clientX: number) => {
+      const el = trackRef.current;
+      if (!el || !duration) return 0;
+      const rect = el.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      return (x / rect.width) * duration;
+    },
+    [duration],
+  );
+
+  // Durante o arrasto, ouve eventos globais
+  useEffect(() => {
+    if (!dragging) return;
+    const onMove = (e: MouseEvent | TouchEvent) => {
+      const clientX =
+        e instanceof MouseEvent
+          ? e.clientX
+          : e.touches[0]?.clientX ?? 0;
+      const s = secFromX(clientX);
+      if (dragging === "start") {
+        // Start nao pode passar o end, nem criar snippet > maxDur
+        const newStart = Math.max(0, Math.min(s, endSec - 0.5));
+        const clampedByMax = Math.max(newStart, endSec - maxDur);
+        onStartChange(+clampedByMax.toFixed(1));
+      } else {
+        const newEnd = Math.max(startSec + 0.5, Math.min(s, duration));
+        const clampedByMax = Math.min(newEnd, startSec + maxDur);
+        onEndChange(+clampedByMax.toFixed(1));
+      }
+    };
+    const onUp = () => setDragging(null);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onUp);
+    };
+  }, [dragging, startSec, endSec, duration, maxDur, onStartChange, onEndChange, secFromX]);
+
+  // Click na barra fora das pegas → move a mais próxima
+  const handleTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (dragging) return;
+    const s = secFromX(e.clientX);
+    const distToStart = Math.abs(s - startSec);
+    const distToEnd = Math.abs(s - endSec);
+    if (distToStart < distToEnd) {
+      onStartChange(+Math.max(0, Math.min(s, endSec - 0.5)).toFixed(1));
+    } else {
+      onEndChange(+Math.max(startSec + 0.5, Math.min(s, duration)).toFixed(1));
+    }
+  };
+
+  if (!duration) {
+    return (
+      <div className="rounded border border-dashed border-escola-border p-3 text-center text-[10px] text-escola-creme-50">
+        A carregar duração do áudio...
+      </div>
+    );
+  }
+
+  const startPct = (startSec / duration) * 100;
+  const endPct = (endSec / duration) * 100;
+  const playheadPct = (playheadSec / duration) * 100;
+
+  return (
+    <div className="select-none">
+      <div className="mb-1 flex items-center justify-between text-[10px] text-escola-creme-50">
+        <span>0:00</span>
+        <span className="text-escola-creme">
+          {fmtTime(startSec)} → {fmtTime(endSec)} ({(endSec - startSec).toFixed(1)}s)
+        </span>
+        <span>{fmtTime(duration)}</span>
+      </div>
+      <div
+        ref={trackRef}
+        onClick={handleTrackClick}
+        className="relative h-10 cursor-pointer rounded border border-escola-border bg-escola-bg"
+      >
+        {/* Regiao seleccionada (amarela translucida) */}
+        <div
+          className="absolute bottom-0 top-0 rounded bg-escola-dourado/25 border-y-2 border-escola-dourado"
+          style={{
+            left: `${startPct}%`,
+            width: `${Math.max(0, endPct - startPct)}%`,
+          }}
+        />
+        {/* Playhead (onde o audio esta a tocar) */}
+        {playheadSec > 0 && playheadSec < duration && (
+          <div
+            className="pointer-events-none absolute bottom-0 top-0 w-px bg-escola-coral"
+            style={{ left: `${playheadPct}%` }}
+            title={`playhead: ${fmtTime(playheadSec)}`}
+          />
+        )}
+        {/* Pega INICIO (🟡) */}
+        <div
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setDragging("start");
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation();
+            setDragging("start");
+          }}
+          className="absolute bottom-0 top-0 flex w-4 cursor-ew-resize items-center justify-center rounded-l bg-escola-dourado hover:bg-escola-dourado/80"
+          style={{ left: `calc(${startPct}% - 8px)` }}
+          title={`Início: ${fmtTime(startSec)} — arrasta para mover`}
+        >
+          <span className="text-[8px] font-bold text-escola-bg">‖</span>
+        </div>
+        {/* Pega FIM (🟡) */}
+        <div
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setDragging("end");
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation();
+            setDragging("end");
+          }}
+          className="absolute bottom-0 top-0 flex w-4 cursor-ew-resize items-center justify-center rounded-r bg-escola-dourado hover:bg-escola-dourado/80"
+          style={{ left: `calc(${endPct}% - 8px)` }}
+          title={`Fim: ${fmtTime(endSec)} — arrasta para mover`}
+        >
+          <span className="text-[8px] font-bold text-escola-bg">‖</span>
+        </div>
+      </div>
+      <div className="mt-1 text-[10px] text-escola-creme-50">
+        Arrasta as pegas ‖ (ou clica na barra perto da pega que queres mover).
+        Máx {maxDur}s.
+      </div>
+    </div>
   );
 }
