@@ -42,11 +42,18 @@ export async function GET() {
 
   const clips = allFiles
     .filter((f) => f.name.match(/\.mp4$/i))
-    .map((f) => ({
-      name: f.name.replace(/\.mp4$/, ""),
-      url: `${supabaseUrl}/storage/v1/object/public/escola-shorts/clips/${f.name}`,
-      createdAt: f.created_at || null,
-    }));
+    .map((f) => {
+      const base = f.name.replace(/\.mp4$/, "");
+      return {
+        name: base,
+        url: `${supabaseUrl}/storage/v1/object/public/escola-shorts/clips/${f.name}`,
+        // thumbUrl só existe para clips carregados via biblioteca (upload-clips
+        // extrai o 1º frame). Clips legados do animate-one não têm — o consumer
+        // faz fallback para <video poster> ou o próprio <video>.
+        thumbUrl: `${supabaseUrl}/storage/v1/object/public/escola-shorts/thumbs/${base}.png`,
+        createdAt: f.created_at || null,
+      };
+    });
 
   return NextResponse.json({ clips, total: clips.length });
 }
