@@ -324,20 +324,26 @@ export default function FunilGerarPage() {
   // ── UI ─────────────────────────────────────────────────────────────────
   if (loading) return <p className="text-xs text-escola-creme-50">A carregar...</p>;
 
-  // Episódios dinâmicos: trailer + ep01..ep123 computados de NOMEAR_PRESETS.
-  // Permite trabalhar em qualquer ep da colecção, não só ep01-10.
+  // Episódios dinâmicos: trailer + ep01..epNN do Funil Nomear.
+  // Exclui categorias de aulas ("sagrado", "silencio", "nua", "fome", "chama",
+  // "proprio", "e") e placeholders "serie-X" que existem no NOMEAR_PRESETS
+  // mas NÃO são episódios do funil. Filtro: /^(trailer|ep\d+)$/.
+  // Ordenado: trailer primeiro, depois ep01, ep02, ... por número.
   const epOptions = ((): string[] => {
+    const EPISODE_RE = /^(trailer|ep\d+)$/;
     const seen = new Set<string>();
-    const out: string[] = [];
     for (const preset of NOMEAR_PRESETS) {
       for (const s of preset.scripts) {
         const key = s.id.split("-")[1];
-        if (!key || seen.has(key)) continue;
+        if (!key || !EPISODE_RE.test(key)) continue;
         seen.add(key);
-        out.push(key);
       }
     }
-    return out;
+    return Array.from(seen).sort((a, b) => {
+      if (a === "trailer") return -1;
+      if (b === "trailer") return 1;
+      return parseInt(a.replace("ep", ""), 10) - parseInt(b.replace("ep", ""), 10);
+    });
   })();
 
   return (
