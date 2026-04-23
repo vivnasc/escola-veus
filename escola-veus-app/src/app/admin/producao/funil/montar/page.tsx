@@ -896,14 +896,20 @@ export default function FunilMontarPage() {
               <VideoStamp url={videoUrl} />
             </div>
             <video src={videoUrl} className="w-full rounded" controls />
-            <a
-              href={videoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-2 inline-block text-xs text-escola-creme-50 hover:text-escola-creme"
-            >
-              abrir URL ↗
-            </a>
+            <div className="mt-2 flex flex-wrap items-center gap-3 text-xs">
+              <a
+                href={videoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-escola-creme-50 hover:text-escola-creme"
+              >
+                abrir URL ↗
+              </a>
+              <FixVideoButton
+                videoUrl={videoUrl}
+                onFixed={(newUrl) => setVideoUrl(newUrl)}
+              />
+            </div>
           </div>
         )}
       </section>
@@ -2015,5 +2021,60 @@ function StretchControls({
         </div>
       </div>
     </section>
+  );
+}
+
+// ─── FixVideoButton ───────────────────────────────────────────────────────
+// Repara metadata de MP4 corrompido (duração tipo 596523:14:07, codec nao
+// suportado). Chama /api/admin/funil/fix-video que faz ffmpeg -c copy
+// in-place em Supabase. Rapido (~5s) porque nao re-encoda.
+
+function FixVideoButton({
+  videoUrl,
+  onFixed,
+}: {
+  videoUrl: string;
+  onFixed: (newUrl: string) => void;
+}) {
+  const [fixing, setFixing] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+
+  const fix = async () => {
+    if (!confirm("Reparar metadata deste MP4?\n\nReescreve o container (sem re-encodar) para corrigir duração errada ou codec não reconhecido. Demora ~10s. Sobrepõe o ficheiro em Supabase.")) return;
+    setFixing(true);
+    setErr(null);
+    setMsg(null);
+    try {
+      const r = await fetch("/api/admin/funil/fix-video", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ videoUrl }),
+      });
+      const d = await r.json();
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      setMsg(`✓ reparado (${(d.sizeAfter / 1024 / 1024).toFixed(1)} MB)`);
+      if (d.videoUrl) onFixed(d.videoUrl);
+      setTimeout(() => setMsg(null), 4000);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setFixing(false);
+    }
+  };
+
+  return (
+    <>
+      <button
+        onClick={fix}
+        disabled={fixing}
+        className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme disabled:opacity-50"
+        title="Repara metadata se o player mostrar duração errada ou codec não suportado"
+      >
+        {fixing ? "a reparar..." : "⚙ reparar metadata"}
+      </button>
+      {msg && <span className="text-escola-dourado">{msg}</span>}
+      {err && <span className="text-escola-terracota">erro: {err}</span>}
+    </>
   );
 }

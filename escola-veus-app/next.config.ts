@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
       "./node_modules/@ffmpeg-installer/**/*",
       "./node_modules/@ffmpeg-installer/linux-x64/**/*",
     ],
+    "/api/admin/funil/fix-video": [
+      "./node_modules/@ffmpeg-installer/**/*",
+      "./node_modules/@ffmpeg-installer/linux-x64/**/*",
+    ],
     "/api/admin/shorts/render-ffmpeg": [
       "./node_modules/@ffmpeg-installer/**/*",
       "./node_modules/@ffmpeg-installer/linux-x64/**/*",
