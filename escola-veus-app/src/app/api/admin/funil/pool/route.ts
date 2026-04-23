@@ -129,9 +129,14 @@ export async function GET() {
   const imgById = new Map<string, ImgPrompt>();
   for (const p of SEED_IMAGE_PROMPTS) imgById.set(p.id, p);
 
-  // 5. Construir pool
+  // 5. Construir pool — SÓ clips do funil Nomear (nomear-trailer-*, nomear-epNN-*).
+  //    O bucket youtube/clips/ é partilhado com outros pipelines (Ancient
+  //    Ground: mar-*, praia-*, rio-*, flora-*, fogo-*, savana-*, etc.) —
+  //    esses NÃO devem aparecer no browser de reciclagem do funil porque
+  //    visualmente destoam da estética editorial escura do Nomear.
   const clips = allFiles
     .filter((f) => /\.mp4$/i.test(f.name))
+    .filter((f) => f.name.startsWith("nomear-"))
     .map((f) => {
       const clipId = f.name.replace(/\.mp4$/i, "");
       const img = imgById.get(clipId);

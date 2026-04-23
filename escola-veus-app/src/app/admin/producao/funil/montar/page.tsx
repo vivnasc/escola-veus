@@ -215,46 +215,77 @@ export default function FunilMontarPage() {
 
   // ── Filter assets by episode ──────────────────────────────────────────
   //
-  // Default clipOrder para o episódio, montado em 3 camadas:
-  //   1. Prompts deste ep (id-sorted) — para cada prompt:
-  //      - tem reuseClipId → usa o clipUrl reciclado (de outro ep)
-  //      - caso contrário  → procura `nomear-<ep>-<slot>-<slug>.mp4` em allClips
-  //   2. Se não houver prompts para este ep, cai para filtro por prefixo
-  //      (comportamento legado: simplesmente lista todos os clips do ep).
+  // Default clipOrder:
+  //   1. Base = todos os clips do ep (prefixo nomear-<ep>-, inclui variações
+  //      `-h-01`, `-h-02`, ...). Dedup por base-prompt-id (uma variação por
+  //      slot — a `-h-01` se existir, senão a primeira alfabética).
+  //   2. Se algum prompt deste ep tem reuseClipId, intercala os clips
+  //      reciclados na posição do prompt correspondente (id-sorted).
   //   3. O reuse map manual (secção "4. Clips" em Supabase) sobrescreve isto
   //      depois via /reuse/load (ver useEffect abaixo).
+  //
+  // Nome dos clips: gerados via save-clip com `<promptId>-<h|v>-<NN>.mp4`.
+  // Extrair base do prompt: strip `-h-\d+` ou `-v-\d+` do fim do nome.
   const epClips = useMemo(() => {
     const prefix = epKey === "trailer" ? "nomear-trailer-" : `nomear-${epKey}-`;
+
+    // Clips renderizados para este ep, agrupados por prompt base.
+    const stripVariation = (name: string) =>
+      name.replace(/\.mp4$/i, "").replace(/-[hv]-\d+$/i, "");
+    const byPromptId = new Map<string, Clip[]>();
+    for (const c of allClips) {
+      if (!c.name.startsWith(prefix)) continue;
+      const base = stripVariation(c.name);
+      const list = byPromptId.get(base) ?? [];
+      list.push(c);
+      byPromptId.set(base, list);
+    }
+    // Escolher uma variação por prompt: `-h-01` preferida, senão primeira alfabética.
+    const pickVariation = (variants: Clip[]) => {
+      const sorted = [...variants].sort((a, b) => a.name.localeCompare(b.name));
+      return sorted.find((c) => /-h-01\.mp4$/i.test(c.name)) ?? sorted[0];
+    };
+
     const epPromptList = funilPrompts
       .filter((p) => p.id.startsWith(prefix))
       .sort((a, b) => a.id.localeCompare(b.id));
 
+    // Se prompts existem, usa a ORDEM dos prompts (id-sorted); para cada prompt,
+    // aplica reuseClipId se presente, senão pega o clip renderizado.
     if (epPromptList.length > 0) {
-      // Montar clipOrder baseado nos prompts, respeitando reuseClipId.
-      const byBaseName = new Map(
-        allClips.map((c) => [c.name.replace(/\.mp4$/i, ""), c] as const),
-      );
       const order: Clip[] = [];
+      const usedPromptIds = new Set<string>();
       for (const prompt of epPromptList) {
+        usedPromptIds.add(prompt.id);
         if (prompt.reuseClipId && prompt.reuseClipUrl) {
-          // Clip reciclado de outro ep. Nome extraído do id do prompt-fonte.
           order.push({
             name: `${prompt.reuseClipId}.mp4`,
             url: prompt.reuseClipUrl,
           });
-        } else {
-          // Clip gerado localmente. Só incluir se já existir.
-          const hit = byBaseName.get(prompt.id);
-          if (hit) order.push(hit);
+          continue;
+        }
+        const variants = byPromptId.get(prompt.id);
+        if (variants && variants.length) {
+          order.push(pickVariation(variants));
+        }
+      }
+      // Se houver clips em Supabase para este ep que NÃO têm prompt associado
+      // (e.g. prompts foram apagados mas clips sobreviveram), inclui-os no fim
+      // para não ficarem perdidos.
+      for (const [base, variants] of byPromptId) {
+        if (!usedPromptIds.has(base)) {
+          order.push(pickVariation(variants));
         }
       }
       return order;
     }
 
-    // Fallback legado: prompts ainda não carregados OU ep sem prompts.
-    return allClips
-      .filter((c) => c.name.startsWith(prefix))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    // Fallback: sem prompts → uma variação por prompt base, sort por nome.
+    const fallback: Clip[] = [];
+    for (const variants of byPromptId.values()) {
+      fallback.push(pickVariation(variants));
+    }
+    return fallback.sort((a, b) => a.name.localeCompare(b.name));
   }, [allClips, epKey, funilPrompts]);
 
   const epNarration = useMemo(() => {
