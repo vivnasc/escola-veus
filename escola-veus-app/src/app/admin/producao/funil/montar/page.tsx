@@ -718,7 +718,7 @@ export default function FunilMontarPage() {
             const name = allClips.find((c) => c.url === url)?.name ?? "?";
             return (
               <div key={url} className="shrink-0 overflow-hidden rounded border border-escola-border">
-                <video src={url} className="h-[90px] w-40 object-cover" muted />
+                <video src={url} className="h-[90px] w-40 object-cover" muted preload="metadata" />
                 <p className="truncate border-t border-escola-border bg-escola-bg px-1.5 py-0.5 text-[9px] text-escola-creme-50">
                   {i + 1}. {name.replace(/\.mp4$/, "").replace(/^nomear-\w+-\d+-/, "")}
                 </p>
@@ -771,7 +771,7 @@ export default function FunilMontarPage() {
               return (
                 <li key={url} className="overflow-hidden rounded border border-escola-border">
                   <div className="relative">
-                    <video src={url} className="aspect-video w-full" muted />
+                    <video src={url} className="aspect-video w-full" muted preload="metadata" />
                     {isReused && (
                       <span className="absolute left-1 top-1 rounded bg-escola-dourado/90 px-1.5 py-0.5 text-[9px] font-semibold text-escola-bg">
                         ♻ {sourceEp}
@@ -1492,13 +1492,15 @@ function BrandCard({
 }) {
   return (
     <div className="shrink-0 overflow-hidden rounded border-2 border-escola-dourado/40 bg-escola-bg">
+      {/* preload=metadata + sem autoPlay — autoPlay+loop em 13 videos da timeline
+          bloqueava o main thread (>1s INP) e impedia scroll smooth em pages longas. */}
       <video
         src={src}
         className="h-[90px] w-40 object-cover"
         muted
         loop
-        autoPlay
         playsInline
+        preload="metadata"
       />
       <div className="border-t border-escola-dourado/40 bg-escola-dourado/5 px-1.5 py-0.5">
         <p className="truncate text-[9px] font-semibold text-escola-dourado">{label}</p>
@@ -1773,10 +1775,14 @@ function PoolBrowser({
                     className="overflow-hidden rounded border border-escola-border bg-escola-bg"
                   >
                     <div className="relative">
+                      {/* preload=none: 200+ videos na pool sem este hint faziam o browser
+                          carregar metadata de todos em paralelo ao scroll — bloqueava o
+                          main thread. Play só dispara no mouseenter, que carrega a pedido. */}
                       <video
                         src={c.clipUrl}
                         className="aspect-video w-full"
                         muted
+                        preload="none"
                         onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
                         onMouseLeave={(e) => {
                           const v = e.currentTarget as HTMLVideoElement;

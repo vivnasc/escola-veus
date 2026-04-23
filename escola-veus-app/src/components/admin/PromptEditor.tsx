@@ -847,6 +847,7 @@ function PoolSuggestions({
             src={prompt.reuseClipUrl}
             className="h-20 w-32 shrink-0 rounded border border-escola-border"
             muted
+            preload="none"
             onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
             onMouseLeave={(e) => {
               const v = e.currentTarget as HTMLVideoElement;
@@ -910,6 +911,7 @@ function PoolSuggestions({
                     src={c.clipUrl}
                     className="aspect-video w-full"
                     muted
+                    preload="none"
                     onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
                     onMouseLeave={(e) => {
                       const v = e.currentTarget as HTMLVideoElement;
