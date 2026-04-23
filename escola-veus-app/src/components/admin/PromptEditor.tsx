@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 
 type PromptItem = {
   id: string;
@@ -75,6 +76,20 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
   const [genLoading, setGenLoading] = useState(false);
   const [genPreview, setGenPreview] = useState<GenPreview | null>(null);
   const [genErr, setGenErr] = useState<string | null>(null);
+
+  // Bulk generation: percorre todos os eps em falta e gera prompts serialmente.
+  // Serial (não paralelo) porque: (a) cache do Claude aquece nos eps seguintes,
+  // (b) evita rate limits, (c) é interruptível.
+  const [bulkRunning, setBulkRunning] = useState(false);
+  const [bulkCancel, setBulkCancel] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState<{
+    currentEp: string;
+    done: number;
+    total: number;
+    promptsAdded: number;
+    costUsd: number;
+    errors: string[];
+  } | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -202,6 +217,108 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     });
     setGenPreview(null);
     setInfo(`+${picked.length} prompts inseridos. Guarda para persistir.`);
+  }
+
+  // Lista todos os eps da colecção (trailer + ep01..epN) que ainda NÃO têm
+  // prompts — candidatos ao bulk generate.
+  function missingEps(): string[] {
+    if (!data) return [];
+    const haveEp = new Set<string>();
+    for (const p of data.prompts) {
+      const k = p.id.split("-")[1];
+      if (k) haveEp.add(k);
+    }
+    const all: string[] = [];
+    const seen = new Set<string>();
+    for (const preset of NOMEAR_PRESETS) {
+      for (const s of preset.scripts) {
+        const k = s.id.split("-")[1];
+        if (!k || seen.has(k)) continue;
+        seen.add(k);
+        if (!haveEp.has(k)) all.push(k);
+      }
+    }
+    return all;
+  }
+
+  async function generateBulk() {
+    const eps = missingEps();
+    if (eps.length === 0) {
+      setGenErr("Sem eps em falta — a colecção já está completa.");
+      return;
+    }
+    const estimate = eps.length * 0.03;
+    if (
+      !confirm(
+        `Vais gerar ${genCount} prompts para ${eps.length} eps em falta (${eps.slice(0, 5).join(", ")}${eps.length > 5 ? "…" : ""}).\n\n` +
+          `Estimativa de custo: ~$${estimate.toFixed(2)} (Sonnet 4.6 com prompt caching).\n` +
+          `Tempo: ~${Math.round((eps.length * 20) / 60)} min a correr serialmente.\n\n` +
+          `Podes cancelar a meio — os eps já gerados ficam.\n\nContinuar?`,
+      )
+    ) {
+      return;
+    }
+
+    setBulkRunning(true);
+    setBulkCancel(false);
+    setGenErr(null);
+    setBulkProgress({
+      currentEp: eps[0],
+      done: 0,
+      total: eps.length,
+      promptsAdded: 0,
+      costUsd: 0,
+      errors: [],
+    });
+
+    let totalAdded = 0;
+    let totalCost = 0;
+    const errors: string[] = [];
+
+    for (let i = 0; i < eps.length; i++) {
+      if (bulkCancel) break;
+      const ep = eps[i];
+      setBulkProgress({
+        currentEp: ep,
+        done: i,
+        total: eps.length,
+        promptsAdded: totalAdded,
+        costUsd: totalCost,
+        errors,
+      });
+
+      try {
+        const r = await fetch("/api/admin/funil/gen-prompts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ episode: ep, count: genCount }),
+        });
+        const d = await r.json();
+        if (!r.ok || d.erro) {
+          errors.push(`${ep}: ${d.erro || `HTTP ${r.status}`}`);
+          continue;
+        }
+        const prompts = Array.isArray(d.prompts) ? (d.prompts as PromptItem[]) : [];
+        insertGenerated(prompts);
+        totalAdded += prompts.length;
+        totalCost += d.usage?.costUsd ?? 0;
+      } catch (e) {
+        errors.push(`${ep}: ${e instanceof Error ? e.message : String(e)}`);
+      }
+    }
+
+    setBulkProgress({
+      currentEp: "",
+      done: eps.length,
+      total: eps.length,
+      promptsAdded: totalAdded,
+      costUsd: totalCost,
+      errors,
+    });
+    setBulkRunning(false);
+    setInfo(
+      `Bulk: +${totalAdded} prompts em ${eps.length - errors.length}/${eps.length} eps · custo $${totalCost.toFixed(3)}. Guarda para persistir.`,
+    );
   }
 
   async function save() {
@@ -338,7 +455,8 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
                 value={genEp}
                 onChange={(e) => setGenEp(e.target.value.trim())}
                 placeholder="ep11"
-                className="w-20 rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                disabled={bulkRunning}
+                className="w-20 rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme disabled:opacity-40"
               />
               <label className="text-escola-creme-50">Quantos:</label>
               <input
@@ -347,19 +465,88 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
                 max={15}
                 value={genCount}
                 onChange={(e) => setGenCount(parseInt(e.target.value, 10) || 10)}
-                className="w-16 rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                disabled={bulkRunning}
+                className="w-16 rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme disabled:opacity-40"
               />
               <button
                 onClick={generate}
-                disabled={genLoading || !genEp}
+                disabled={genLoading || !genEp || bulkRunning}
                 className="rounded bg-escola-dourado px-3 py-1.5 text-[11px] font-semibold text-escola-bg disabled:opacity-40"
               >
-                {genLoading ? "A gerar (15-30s)..." : "✨ Gerar"}
+                {genLoading ? "A gerar (15-30s)..." : "✨ Gerar 1 ep"}
               </button>
+              {(() => {
+                const miss = missingEps();
+                return (
+                  <button
+                    onClick={generateBulk}
+                    disabled={bulkRunning || genLoading || miss.length === 0}
+                    className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1.5 text-[11px] font-semibold text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-40"
+                    title={
+                      miss.length === 0
+                        ? "Colecção completa — não há eps em falta"
+                        : `Gera ${genCount} prompts para cada um dos ${miss.length} eps em falta`
+                    }
+                  >
+                    ✨✨ Gerar TODOS os eps em falta ({miss.length})
+                  </button>
+                );
+              })()}
+              {bulkRunning && (
+                <button
+                  onClick={() => setBulkCancel(true)}
+                  className="rounded border border-escola-terracota px-3 py-1.5 text-[11px] text-escola-terracota hover:bg-escola-terracota/10"
+                >
+                  ⏹ cancelar
+                </button>
+              )}
               {genErr && (
                 <span className="text-escola-terracota">{genErr}</span>
               )}
             </div>
+
+            {bulkProgress && (
+              <div className="mt-2 rounded border border-escola-dourado/40 bg-escola-card p-2">
+                <div className="mb-1 flex items-center justify-between text-[10px]">
+                  <span className="text-escola-dourado">
+                    {bulkRunning
+                      ? `A gerar ${bulkProgress.currentEp}…`
+                      : `✓ Bulk terminado`}
+                  </span>
+                  <span className="text-escola-creme-50">
+                    {bulkProgress.done}/{bulkProgress.total} eps · +
+                    {bulkProgress.promptsAdded} prompts · $
+                    {bulkProgress.costUsd.toFixed(3)}
+                  </span>
+                </div>
+                <div className="h-1.5 overflow-hidden rounded bg-escola-bg">
+                  <div
+                    className="h-full bg-escola-dourado transition-all"
+                    style={{
+                      width: `${(bulkProgress.done / Math.max(1, bulkProgress.total)) * 100}%`,
+                    }}
+                  />
+                </div>
+                {bulkProgress.errors.length > 0 && (
+                  <details className="mt-1">
+                    <summary className="cursor-pointer text-[10px] text-escola-terracota">
+                      {bulkProgress.errors.length} erros (clica p/ ver)
+                    </summary>
+                    <ul className="mt-1 space-y-0.5 text-[10px] text-escola-terracota">
+                      {bulkProgress.errors.map((e, i) => (
+                        <li key={i}>• {e}</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
+                {!bulkRunning && bulkProgress.done > 0 && (
+                  <p className="mt-1 text-[10px] text-escola-dourado">
+                    💡 Clica <b>Guardar</b> (canto superior direito) para
+                    persistir em Supabase.
+                  </p>
+                )}
+              </div>
+            )}
 
             {genPreview && (
               <div className="mt-3 space-y-2 rounded border border-escola-dourado/40 bg-escola-card p-3">
