@@ -102,6 +102,7 @@ export async function POST(req: NextRequest) {
       "-movflags", "+faststart",
       "-fflags", "+genpts",
       "-avoid_negative_ts", "make_zero",
+      "-max_interleave_delta", "0",
       outPath,
     ]);
 
