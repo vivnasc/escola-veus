@@ -34,6 +34,10 @@ const nextConfig: NextConfig = {
       "./node_modules/@ffmpeg-installer/linux-x64/**/*",
       "./assets/fonts/*.ttf",
     ],
+    "/api/admin/shorts/crop-funil-video": [
+      "./node_modules/@ffmpeg-installer/**/*",
+      "./node_modules/@ffmpeg-installer/linux-x64/**/*",
+    ],
   },
 };
 
