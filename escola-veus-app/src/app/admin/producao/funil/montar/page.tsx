@@ -1344,6 +1344,12 @@ function ThumbnailSection({
   setThumbErr: (s: string | null) => void;
   onGenerated: (url: string, name: string) => void;
 }) {
+  // Source do preview: vídeo final do ep (se renderizado) OU mandala brand
+  // como fallback. Em ambos os casos, user pode escolher frame via slider.
+  const brandIntroUrl = supabasePublicUrl
+    ? `${supabasePublicUrl}/storage/v1/object/public/course-assets/youtube/brand/intro.mp4`
+    : "";
+  const effectiveVideoUrl = videoUrl || brandIntroUrl;
   // Tempo default: 10s se há vídeo final (após intro 5s + crossfade, já no 1º
   // clip Runway do ep). 2.5s se fallback intro.mp4 (pico de brilho mandala).
   const defaultFrameT = videoUrl ? 10 : 2.5;
@@ -1358,10 +1364,10 @@ function ThumbnailSection({
   // Seek no preview video para o frame escolhido
   useEffect(() => {
     const v = previewRef.current;
-    if (v && videoUrl) {
+    if (v && effectiveVideoUrl) {
       try { v.currentTime = frameT; } catch { /* ignore */ }
     }
-  }, [frameT, videoUrl]);
+  }, [frameT, effectiveVideoUrl]);
 
   const duration = previewRef.current?.duration ?? 0;
   const maxFrameT = duration > 0 ? Math.max(1, Math.floor(duration - 0.5)) : 120;
@@ -1372,15 +1378,15 @@ function ThumbnailSection({
       <p className="mb-3 text-xs text-escola-creme-50">
         {videoUrl
           ? "Frame extraído do TEU vídeo final do episódio. Usa o slider para escolher o momento que melhor representa o ep."
-          : "Ainda não há vídeo final renderizado — vai ser usada a mandala brand como fallback. Monta o vídeo primeiro (secção 5) para uma thumbnail única."}
+          : "Sem vídeo final ainda — mandala brand é usada como fundo. Podes escolher qualquer frame da mandala abaixo (ou monta o vídeo primeiro na secção 5 para opções melhores)."}
       </p>
 
       {/* Preview do frame escolhido (antes de queimar o texto) */}
-      {videoUrl && (
+      {effectiveVideoUrl && (
         <div className="mb-3">
           <video
             ref={previewRef}
-            src={videoUrl}
+            src={effectiveVideoUrl}
             className="w-full max-w-2xl rounded border border-escola-border"
             muted
             playsInline
@@ -1389,12 +1395,13 @@ function ThumbnailSection({
           <div className="mt-2 flex items-center gap-3 text-xs">
             <span className="text-escola-creme-50 whitespace-nowrap">
               Frame: <b className="text-escola-creme">{frameT.toFixed(1)}s</b>
+              {!videoUrl && <span className="ml-1 text-escola-creme-50/70">(mandala)</span>}
             </span>
             <input
               type="range"
               min="0"
               max={maxFrameT}
-              step="0.5"
+              step="0.1"
               value={frameT}
               onChange={(e) => setFrameT(parseFloat(e.target.value))}
               className="flex-1"
