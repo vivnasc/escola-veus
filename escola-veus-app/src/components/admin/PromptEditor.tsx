@@ -57,6 +57,25 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
   );
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
+  // Generator: gera ~10 prompts para um ep via Claude API com few-shot dos
+  // eps existentes. Ver /api/admin/funil/gen-prompts.
+  type GenPreview = {
+    prompts: PromptItem[];
+    usage: {
+      inputTokens: number;
+      outputTokens: number;
+      cacheReadTokens: number;
+      cacheCreationTokens: number;
+      costUsd: number;
+    };
+    episode: string;
+  };
+  const [genEp, setGenEp] = useState<string>("");
+  const [genCount, setGenCount] = useState<number>(10);
+  const [genLoading, setGenLoading] = useState(false);
+  const [genPreview, setGenPreview] = useState<GenPreview | null>(null);
+  const [genErr, setGenErr] = useState<string | null>(null);
+
   const load = useCallback(async () => {
     setLoading(true);
     setErr(null);
@@ -138,6 +157,51 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
         : d,
     );
     setExpandedId(base);
+  }
+
+  // ── Generator: Claude API → N image prompts para um ep ────────────────
+  async function generate() {
+    if (!genEp) {
+      setGenErr("Escolhe um episódio (ex: ep11)");
+      return;
+    }
+    setGenLoading(true);
+    setGenErr(null);
+    setGenPreview(null);
+    try {
+      const r = await fetch("/api/admin/funil/gen-prompts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ episode: genEp, count: genCount }),
+      });
+      const d = await r.json();
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      setGenPreview({
+        prompts: d.prompts as PromptItem[],
+        usage: d.usage,
+        episode: genEp,
+      });
+    } catch (e) {
+      setGenErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setGenLoading(false);
+    }
+  }
+
+  function insertGenerated(picked: PromptItem[]) {
+    setData((d) => {
+      if (!d) return d;
+      const existingIds = new Set(d.prompts.map((p) => p.id));
+      // Evita colisões de id — se já existe, append timestamp suffix
+      const deduped = picked.map((p) => {
+        if (!existingIds.has(p.id)) return p;
+        const suffix = Date.now().toString(36).slice(-4);
+        return { ...p, id: `${p.id}-${suffix}` };
+      });
+      return { ...d, prompts: [...d.prompts, ...deduped] };
+    });
+    setGenPreview(null);
+    setInfo(`+${picked.length} prompts inseridos. Guarda para persistir.`);
   }
 
   async function save() {
@@ -256,6 +320,107 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
 
       {info && <p className="text-xs text-escola-dourado">{info}</p>}
       {err && <p className="text-xs text-escola-terracota">{err}</p>}
+
+      {/* ── Gerador de prompts (Claude API) ───────────────────── */}
+      {collection === "funil" && (
+        <details className="rounded-xl border border-escola-dourado/40 bg-escola-dourado/5 p-3">
+          <summary className="cursor-pointer text-xs font-semibold text-escola-dourado">
+            ✨ Gerar prompts do script (Claude API)
+          </summary>
+          <div className="mt-3 space-y-2 text-xs">
+            <p className="text-[10px] text-escola-creme-50">
+              Claude lê o script ElevenLabs deste ep + 6 exemplos reais dos teus ep01-10, e
+              devolve {genCount} prompts no mesmo tom editorial. Sonnet 4.6 · ~$0.02-0.05/ep.
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <label className="text-escola-creme-50">Ep:</label>
+              <input
+                value={genEp}
+                onChange={(e) => setGenEp(e.target.value.trim())}
+                placeholder="ep11"
+                className="w-20 rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+              />
+              <label className="text-escola-creme-50">Quantos:</label>
+              <input
+                type="number"
+                min={3}
+                max={15}
+                value={genCount}
+                onChange={(e) => setGenCount(parseInt(e.target.value, 10) || 10)}
+                className="w-16 rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+              />
+              <button
+                onClick={generate}
+                disabled={genLoading || !genEp}
+                className="rounded bg-escola-dourado px-3 py-1.5 text-[11px] font-semibold text-escola-bg disabled:opacity-40"
+              >
+                {genLoading ? "A gerar (15-30s)..." : "✨ Gerar"}
+              </button>
+              {genErr && (
+                <span className="text-escola-terracota">{genErr}</span>
+              )}
+            </div>
+
+            {genPreview && (
+              <div className="mt-3 space-y-2 rounded border border-escola-dourado/40 bg-escola-card p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-[11px] text-escola-dourado">
+                    {genPreview.prompts.length} prompts gerados para{" "}
+                    <b>{genPreview.episode}</b> · custo{" "}
+                    <b>${genPreview.usage.costUsd.toFixed(4)}</b>
+                    {genPreview.usage.cacheReadTokens > 0 && (
+                      <span className="ml-2 text-escola-creme-50">
+                        (cache hit: {genPreview.usage.cacheReadTokens} tok)
+                      </span>
+                    )}
+                  </p>
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => insertGenerated(genPreview.prompts)}
+                      className="rounded bg-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-bg"
+                    >
+                      ✓ Inserir todos ({genPreview.prompts.length})
+                    </button>
+                    <button
+                      onClick={() => setGenPreview(null)}
+                      className="rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-terracota"
+                    >
+                      ✗ descartar
+                    </button>
+                  </div>
+                </div>
+                <ul className="max-h-96 space-y-1 overflow-y-auto">
+                  {genPreview.prompts.map((p, i) => (
+                    <li
+                      key={p.id + i}
+                      className="rounded border border-escola-border bg-escola-bg p-2 text-[10px]"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="truncate text-escola-creme" title={p.id}>
+                          <b>{p.id}</b>
+                        </span>
+                        <button
+                          onClick={() => insertGenerated([p])}
+                          className="shrink-0 rounded border border-escola-dourado/50 bg-escola-dourado/10 px-2 py-0.5 text-[9px] text-escola-dourado hover:bg-escola-dourado/20"
+                        >
+                          + só este
+                        </button>
+                      </div>
+                      <p className="text-escola-creme-50">
+                        mood: {p.mood.join(" · ")}
+                      </p>
+                      <p className="mt-1 text-escola-creme-50">{p.prompt}</p>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-[10px] text-escola-creme-50">
+                  💡 Lembra-te de clicar <b>Guardar</b> depois de inserires.
+                </p>
+              </div>
+            )}
+          </div>
+        </details>
+      )}
 
       {/* ── Lista ─────────────────────────────────────────── */}
       <ul className="space-y-2">
