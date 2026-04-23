@@ -3,12 +3,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import motionPrompts from "@/data/runway-motion-prompts.json";
+import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 
 type PromptItem = {
   id: string;
   category: string;
   mood: string[];
   prompt: string;
+  // Reciclagem (opcional). Se presente, este prompt usa um clip existente de
+  // outro ep em vez de gerar imagem MJ + motion Runway. Editado no tab
+  // "Prompts" em /admin/producao/funil (via PromptEditor · PoolSuggestions).
+  reuseClipId?: string;
+  reuseClipUrl?: string;
 };
 
 type PromptConfig = {
@@ -318,7 +324,21 @@ export default function FunilGerarPage() {
   // ── UI ─────────────────────────────────────────────────────────────────
   if (loading) return <p className="text-xs text-escola-creme-50">A carregar...</p>;
 
-  const epOptions = ["trailer", "ep01", "ep02", "ep03", "ep04", "ep05", "ep06", "ep07", "ep08", "ep09", "ep10"];
+  // Episódios dinâmicos: trailer + ep01..ep123 computados de NOMEAR_PRESETS.
+  // Permite trabalhar em qualquer ep da colecção, não só ep01-10.
+  const epOptions = ((): string[] => {
+    const seen = new Set<string>();
+    const out: string[] = [];
+    for (const preset of NOMEAR_PRESETS) {
+      for (const s of preset.scripts) {
+        const key = s.id.split("-")[1];
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        out.push(key);
+      }
+    }
+    return out;
+  })();
 
   return (
     <div>
@@ -376,65 +396,130 @@ export default function FunilGerarPage() {
       </details>
 
       {/* ── Filtro ─────────────────────────────────────────────────────── */}
-      <div className="mb-4 flex flex-wrap gap-1">
-        {epOptions.map((ep) => {
-          const count = funilPrompts.filter((p) =>
-            ep === "trailer" ? p.id.startsWith("nomear-trailer") : p.id.startsWith(`nomear-${ep}`),
-          ).length;
-          const active = filter === ep;
-          return (
-            <button
-              key={ep}
-              onClick={() => setFilter(ep)}
-              className={`rounded border px-2.5 py-1 text-xs transition-colors ${
-                active
-                  ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
-                  : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
-              }`}
-            >
-              {ep} · {count}
-            </button>
-          );
-        })}
+      <div className="mb-4 max-h-40 overflow-y-auto rounded border border-escola-border bg-escola-card/50 p-2">
+        <div className="flex flex-wrap gap-1">
+          {epOptions.map((ep) => {
+            const epPrompts = funilPrompts.filter((p) =>
+              ep === "trailer"
+                ? p.id.startsWith("nomear-trailer")
+                : p.id.startsWith(`nomear-${ep}`),
+            );
+            const reused = epPrompts.filter((p) => !!p.reuseClipId).length;
+            const active = filter === ep;
+            return (
+              <button
+                key={ep}
+                onClick={() => setFilter(ep)}
+                className={`rounded border px-2 py-1 text-[11px] transition-colors ${
+                  active
+                    ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+              >
+                <span className="font-semibold">{ep}</span>
+                <span className="ml-1 text-[9px] text-escola-creme-50">
+                  · {epPrompts.length}
+                </span>
+                {reused > 0 && (
+                  <span
+                    className="ml-1 text-[9px] text-escola-dourado"
+                    title={`${reused} prompts reciclados (sem geração necessária)`}
+                  >
+                    ♻{reused}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* ── Prompts ──────────────────────────────────────────────────── */}
       <ul className="space-y-3">
         {filtered.map((p) => {
           const imgs = imagesByPrompt.get(p.id) ?? [];
+          const isReused = !!p.reuseClipId;
           return (
-            <li key={p.id} className="rounded-xl border border-escola-border bg-escola-card p-4">
+            <li
+              key={p.id}
+              className={`rounded-xl border p-4 ${
+                isReused
+                  ? "border-escola-dourado/40 bg-escola-dourado/5"
+                  : "border-escola-border bg-escola-card"
+              }`}
+            >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs text-escola-dourado">{p.id}</p>
+                  <p className="text-xs text-escola-dourado">
+                    {p.id}
+                    {isReused && (
+                      <span className="ml-2 rounded bg-escola-dourado/20 px-1.5 py-0.5 text-[9px] font-semibold text-escola-dourado">
+                        ♻ reciclado de {p.reuseClipId?.split("-")[1] ?? "?"}
+                      </span>
+                    )}
+                  </p>
                   <p className="text-[10px] text-escola-creme-50">{p.mood.join(" · ")}</p>
                   <p className="mt-2 text-xs leading-relaxed text-escola-creme-50">{p.prompt}</p>
                 </div>
-                <div className="flex shrink-0 flex-col gap-1.5">
-                  <button
-                    onClick={() => copy(p.prompt, p.id)}
-                    className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40"
-                  >
-                    {copied === p.id ? "✓ copiado" : "copiar"}
-                  </button>
-                  <button
-                    onClick={() => generateFalFor(p, 4)}
-                    disabled={generatingFal !== null}
-                    className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
-                  >
-                    {generatingFal === p.id && falProgress
-                      ? `gerando ${falProgress.done}/${falProgress.total}…`
-                      : "gerar 4× fal.ai"}
-                  </button>
-                </div>
+                {!isReused && (
+                  <div className="flex shrink-0 flex-col gap-1.5">
+                    <button
+                      onClick={() => copy(p.prompt, p.id)}
+                      className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40"
+                    >
+                      {copied === p.id ? "✓ copiado" : "copiar"}
+                    </button>
+                    <button
+                      onClick={() => generateFalFor(p, 4)}
+                      disabled={generatingFal !== null}
+                      className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
+                    >
+                      {generatingFal === p.id && falProgress
+                        ? `gerando ${falProgress.done}/${falProgress.total}…`
+                        : "gerar 4× fal.ai"}
+                    </button>
+                  </div>
+                )}
               </div>
 
-              {/* Upload area */}
-              <UploadZone
-                promptId={p.id}
-                uploading={uploading === p.id}
-                onFiles={(files) => uploadForPrompt(p.id, files)}
-              />
+              {/* Prompt reciclado: mostra o clip reutilizado em vez de upload zone. */}
+              {isReused && p.reuseClipUrl && (
+                <div className="mt-3 flex items-start gap-3 rounded border border-escola-dourado/40 bg-escola-bg p-2">
+                  <video
+                    src={p.reuseClipUrl}
+                    className="h-24 w-40 shrink-0 rounded border border-escola-border"
+                    muted
+                    onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
+                    onMouseLeave={(e) => {
+                      const v = e.currentTarget as HTMLVideoElement;
+                      v.pause();
+                      v.currentTime = 0;
+                    }}
+                  />
+                  <div className="min-w-0 flex-1 text-[11px] text-escola-creme-50">
+                    <p className="text-escola-dourado">
+                      Sem geração necessária — poupa subscrição MJ + créditos Runway.
+                    </p>
+                    <p className="mt-1 truncate text-escola-creme" title={p.reuseClipId}>
+                      fonte: {p.reuseClipId}
+                    </p>
+                    <p className="mt-1">
+                      Para limpar esta reciclagem e voltar ao fluxo normal de geração, abre
+                      o tab &quot;Prompts&quot; em /admin/producao/funil e clica &quot;✗ limpar&quot;
+                      na secção de reciclagem deste prompt.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Upload area (só para prompts NÃO reciclados) */}
+              {!isReused && (
+                <UploadZone
+                  promptId={p.id}
+                  uploading={uploading === p.id}
+                  onFiles={(files) => uploadForPrompt(p.id, files)}
+                />
+              )}
 
               {/* Loading state: evita impressao de "vazio" enquanto Supabase
                   responde (o endpoint list-images demora 5-15s). */}

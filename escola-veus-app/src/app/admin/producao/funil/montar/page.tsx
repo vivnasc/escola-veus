@@ -30,25 +30,49 @@ type Audio = { name: string; url: string };
 
 type Progress = { percent: number; label: string };
 
-const EPISODES = [
-  { key: "trailer", slug: "nomear-trailer-00", label: "Trailer" },
-  { key: "ep01", slug: "nomear-ep01", label: "ep01 — A culpa" },
-  { key: "ep02", slug: "nomear-ep02", label: "ep02 — O extracto" },
-  { key: "ep03", slug: "nomear-ep03", label: "ep03 — A vergonha" },
-  { key: "ep04", slug: "nomear-ep04", label: "ep04 — O desconto" },
-  { key: "ep05", slug: "nomear-ep05", label: "ep05 — Matemática" },
-  { key: "ep06", slug: "nomear-ep06", label: "ep06 — A fome" },
-  { key: "ep07", slug: "nomear-ep07", label: "ep07 — O sim" },
-  { key: "ep08", slug: "nomear-ep08", label: "ep08 — O silêncio" },
-  { key: "ep09", slug: "nomear-ep09", label: "ep09 — As frases" },
-  { key: "ep10", slug: "nomear-ep10", label: "ep10 — A liberdade" },
-] as const;
+// Pool = todos os clips Runway já renderizados em Supabase, com metadata
+// (mood/prompt/episode) para o browser de reciclagem. Vem de /api/admin/funil/pool.
+type PoolClip = {
+  clipId: string;
+  clipUrl: string;
+  episode: string;
+  imagePrompt: string | null;
+  mood: string[];
+  category: string | null;
+  motionPrompt: string | null;
+  usageCount: number;
+};
+
+// Computed from NOMEAR_PRESETS (cobre os 122 episódios + trailer) em vez de
+// hard-coded. Permite usar o /montar para qualquer ep, não só ep01-10.
+//
+// epKey: "trailer" | "ep01" | "ep02" | ... (prefixo usado nos ids dos prompts
+//        e nos nomes de ficheiros em youtube/clips/).
+type Episode = { key: string; slug: string; label: string };
+
+const EPISODES: Episode[] = (() => {
+  const list: Episode[] = [];
+  for (const preset of NOMEAR_PRESETS) {
+    for (const script of preset.scripts) {
+      // id patterns: "nomear-trailer-00", "nomear-ep11", ...
+      const parts = script.id.split("-");
+      const epKey = parts[1] ?? ""; // "trailer" | "ep11"
+      if (!epKey) continue;
+      const label =
+        epKey === "trailer"
+          ? `Trailer — ${script.titulo}`
+          : `${epKey} — ${script.titulo}`;
+      list.push({ key: epKey, slug: script.id, label });
+    }
+  }
+  return list;
+})();
 
 const supabasePublicUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 
 export default function FunilMontarPage() {
-  const [epKey, setEpKey] = useState<(typeof EPISODES)[number]["key"]>("trailer");
-  const ep = EPISODES.find((e) => e.key === epKey)!;
+  const [epKey, setEpKey] = useState<string>("trailer");
+  const ep = EPISODES.find((e) => e.key === epKey) ?? EPISODES[0];
 
   const [allClips, setAllClips] = useState<Clip[]>([]);
   const [allAudios, setAllAudios] = useState<Audio[]>([]);
@@ -74,6 +98,44 @@ export default function FunilMontarPage() {
   const [thumbGenerating, setThumbGenerating] = useState(false);
   const [thumbUrl, setThumbUrl] = useState<string | null>(null);
   const [thumbErr, setThumbErr] = useState<string | null>(null);
+
+  // ── Pool & reuse ──────────────────────────────────────────────────────
+  // Pool = clips de todos os eps já renderizados (podem ser reutilizados em
+  // eps posteriores para não gastar subscrição Midjourney/Runway a regerar
+  // imagens semelhantes). `reuseExists` distingue clipOrder vindo da pool
+  // (fixado pelo user) de clipOrder default (auto-filtered pelo prefixo).
+  const [pool, setPool] = useState<PoolClip[]>([]);
+  const [poolOpen, setPoolOpen] = useState(false);
+  const [poolQuery, setPoolQuery] = useState("");
+  const [poolMoodFilter, setPoolMoodFilter] = useState<string>("");
+  const [poolEpFilter, setPoolEpFilter] = useState<string>("");
+  const [reuseExists, setReuseExists] = useState(false);
+  const [savingReuse, setSavingReuse] = useState(false);
+  const [reuseInfo, setReuseInfo] = useState<string | null>(null);
+
+  // Prompts do funil (para sobrepôr reuseClipId ao default clipOrder).
+  // Quando um prompt para ep11 tem reuseClipId apontado para ep03, o clip
+  // do ep03 é incluído automaticamente na ordem do ep11 (antes de o user
+  // ter de abrir a pool).
+  type FunilPrompt = {
+    id: string;
+    category: string;
+    mood: string[];
+    prompt: string;
+    reuseClipId?: string;
+    reuseClipUrl?: string;
+  };
+  const [funilPrompts, setFunilPrompts] = useState<FunilPrompt[]>([]);
+
+  // ── Audio stretching ──────────────────────────────────────────────────
+  // Três alavancas para alongar vídeos curtos (áudios <2min) sem re-gravar:
+  //   narrationLeadIn: música+imagem só, antes da voz entrar (após intro brand)
+  //   outroHold:       música+imagem só, depois da voz acabar (antes do outro)
+  //   narrationAtempo: abranda a narração (0.88-1.0) mantendo pitch
+  // Persistidos em Supabase para que re-render use os mesmos valores.
+  const [narrationLeadIn, setNarrationLeadIn] = useState(0);
+  const [outroHold, setOutroHold] = useState(0);
+  const [narrationAtempo, setNarrationAtempo] = useState(1);
 
   // ── Load assets on mount ──────────────────────────────────────────────
   // Todos os assets são carregados de Supabase → muda de dispositivo, abre
@@ -152,12 +214,48 @@ export default function FunilMontarPage() {
   }, [allThumbs, epKey]);
 
   // ── Filter assets by episode ──────────────────────────────────────────
+  //
+  // Default clipOrder para o episódio, montado em 3 camadas:
+  //   1. Prompts deste ep (id-sorted) — para cada prompt:
+  //      - tem reuseClipId → usa o clipUrl reciclado (de outro ep)
+  //      - caso contrário  → procura `nomear-<ep>-<slot>-<slug>.mp4` em allClips
+  //   2. Se não houver prompts para este ep, cai para filtro por prefixo
+  //      (comportamento legado: simplesmente lista todos os clips do ep).
+  //   3. O reuse map manual (secção "4. Clips" em Supabase) sobrescreve isto
+  //      depois via /reuse/load (ver useEffect abaixo).
   const epClips = useMemo(() => {
     const prefix = epKey === "trailer" ? "nomear-trailer-" : `nomear-${epKey}-`;
+    const epPromptList = funilPrompts
+      .filter((p) => p.id.startsWith(prefix))
+      .sort((a, b) => a.id.localeCompare(b.id));
+
+    if (epPromptList.length > 0) {
+      // Montar clipOrder baseado nos prompts, respeitando reuseClipId.
+      const byBaseName = new Map(
+        allClips.map((c) => [c.name.replace(/\.mp4$/i, ""), c] as const),
+      );
+      const order: Clip[] = [];
+      for (const prompt of epPromptList) {
+        if (prompt.reuseClipId && prompt.reuseClipUrl) {
+          // Clip reciclado de outro ep. Nome extraído do id do prompt-fonte.
+          order.push({
+            name: `${prompt.reuseClipId}.mp4`,
+            url: prompt.reuseClipUrl,
+          });
+        } else {
+          // Clip gerado localmente. Só incluir se já existir.
+          const hit = byBaseName.get(prompt.id);
+          if (hit) order.push(hit);
+        }
+      }
+      return order;
+    }
+
+    // Fallback legado: prompts ainda não carregados OU ep sem prompts.
     return allClips
       .filter((c) => c.name.startsWith(prefix))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [allClips, epKey]);
+  }, [allClips, epKey, funilPrompts]);
 
   const epNarration = useMemo(() => {
     // audio-bulk saves with filename = `${slug-of-title}-${timestamp}.mp3`
@@ -174,6 +272,10 @@ export default function FunilMontarPage() {
   // Auto-set default narration + clip order when ep changes
   // Todos os artefactos (vídeo, SRT, thumb) são lidos de Supabase →
   // muda-se de dispositivo e aparecem prontos sem re-render nem re-gerar.
+  //
+  // Se existir reuse map persistido para este ep (clips fixados/reutilizados
+  // pelo user), esse vence sobre o filtro default nomear-<ep>-*. Reuse map
+  // é carregado abaixo e, se presente, sobrescreve clipOrder.
   useEffect(() => {
     setSelectedNarration(epNarration?.url ?? "");
     setClipOrder(epClips.map((c) => c.url));
@@ -183,7 +285,76 @@ export default function FunilMontarPage() {
     setSrtErr(null);
     setThumbUrl(epCachedThumb?.url ?? null);
     setThumbErr(null);
+    setReuseInfo(null);
   }, [epNarration, epClips, epCachedSrt, epCachedVideo, epCachedThumb]);
+
+  // Carregar pool uma vez (shared across episodes).
+  useEffect(() => {
+    fetch("/api/admin/funil/pool", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.clips)) setPool(d.clips);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Carregar prompts do funil (para aplicar reuseClipId ao default clipOrder).
+  useEffect(() => {
+    fetch("/api/admin/prompts/funil/load", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.prompts)) setFunilPrompts(d.prompts);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Carregar reuse map do episódio actual. Se existir, sobrescreve clipOrder
+  // (user fixou ordem/reutilizações específicas para este ep).
+  useEffect(() => {
+    fetch(`/api/admin/funil/reuse/load?episode=${encodeURIComponent(epKey)}`, {
+      cache: "no-store",
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.exists && Array.isArray(d.clipOrder) && d.clipOrder.length > 0) {
+          setClipOrder(d.clipOrder);
+          setReuseExists(true);
+          setReuseInfo(`Ordem fixada (${d.clipOrder.length} clips)`);
+        } else {
+          setReuseExists(false);
+        }
+      })
+      .catch(() => setReuseExists(false));
+  }, [epKey]);
+
+  // Auto-guarda reuse map: sempre que clipOrder muda por acção do user
+  // (adicionar pool, reordenar, remover), persiste em Supabase para o
+  // próximo dispositivo / re-render.
+  const persistReuse = useCallback(
+    async (nextOrder: string[]) => {
+      setSavingReuse(true);
+      try {
+        const r = await fetch("/api/admin/funil/reuse/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ episode: epKey, clipOrder: nextOrder }),
+        });
+        const d = await r.json();
+        if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+        setReuseExists(nextOrder.length > 0);
+        setReuseInfo(
+          nextOrder.length === 0
+            ? "Ordem default restaurada"
+            : `${nextOrder.length} clips fixados`,
+        );
+      } catch (e) {
+        setReuseInfo(`Erro: ${e instanceof Error ? e.message : String(e)}`);
+      } finally {
+        setSavingReuse(false);
+      }
+    },
+    [epKey],
+  );
 
   // Auto-pick single first track (one track covers full funnel video duration)
   useEffect(() => {
@@ -192,15 +363,48 @@ export default function FunilMontarPage() {
     }
   }, [tracks, selectedMusic.length]);
 
-  const moveClip = useCallback((from: number, to: number) => {
-    setClipOrder((prev) => {
-      if (to < 0 || to >= prev.length) return prev;
-      const next = [...prev];
-      const [x] = next.splice(from, 1);
-      next.splice(to, 0, x);
-      return next;
-    });
-  }, []);
+  const moveClip = useCallback(
+    (from: number, to: number) => {
+      setClipOrder((prev) => {
+        if (to < 0 || to >= prev.length) return prev;
+        const next = [...prev];
+        const [x] = next.splice(from, 1);
+        next.splice(to, 0, x);
+        persistReuse(next);
+        return next;
+      });
+    },
+    [persistReuse],
+  );
+
+  const removeClip = useCallback(
+    (idx: number) => {
+      setClipOrder((prev) => {
+        const next = prev.filter((_, i) => i !== idx);
+        persistReuse(next);
+        return next;
+      });
+    },
+    [persistReuse],
+  );
+
+  const addFromPool = useCallback(
+    (url: string) => {
+      setClipOrder((prev) => {
+        if (prev.includes(url)) return prev;
+        const next = [...prev, url];
+        persistReuse(next);
+        return next;
+      });
+    },
+    [persistReuse],
+  );
+
+  const resetToDefault = useCallback(async () => {
+    // Apaga reuse map: clipOrder volta ao filtro default nomear-<ep>-*
+    setClipOrder(epClips.map((c) => c.url));
+    await persistReuse([]);
+  }, [epClips, persistReuse]);
 
   // ── Render ────────────────────────────────────────────────────────────
   const render = async () => {
@@ -230,6 +434,13 @@ export default function FunilMontarPage() {
             // SRT (opcional). Se vazio, render passa sem legendas. Se já
             // existia em cache para o epKey, foi pré-preenchido pelo useEffect.
             subtitlesUrl: srtUrl || undefined,
+            // Alongar duração sem re-gravar narração:
+            //   lead-in = música-só após intro brand e antes da voz entrar
+            //   outro hold = música-só após a voz acabar, antes do outro brand
+            //   atempo = abrandar narração (preserva pitch)
+            narrationLeadIn,
+            outroHold,
+            narrationAtempo,
           }),
         });
         const submitData = await submitRes.json();
@@ -337,28 +548,13 @@ export default function FunilMontarPage() {
       {err && <p className="mb-3 text-xs text-escola-terracota">{err}</p>}
 
       {/* ── 1. Episode ───────────────────────────────────────────── */}
-      <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">1. Episódio</h3>
-        <div className="flex flex-wrap gap-1">
-          {EPISODES.map((e) => {
-            const prefix = e.key === "trailer" ? "nomear-trailer-" : `nomear-${e.key}-`;
-            const nClips = allClips.filter((c) => c.name.startsWith(prefix)).length;
-            return (
-              <button
-                key={e.key}
-                onClick={() => setEpKey(e.key)}
-                className={`rounded border px-2.5 py-1 text-xs transition-colors ${
-                  epKey === e.key
-                    ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
-                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
-                }`}
-              >
-                {e.label} · {nClips}
-              </button>
-            );
-          })}
-        </div>
-      </section>
+      <EpisodePicker
+        episodes={EPISODES}
+        epKey={epKey}
+        setEpKey={setEpKey}
+        allClips={allClips}
+        funilPrompts={funilPrompts}
+      />
 
       {/* ── 2. Narration ─────────────────────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
@@ -511,20 +707,48 @@ export default function FunilMontarPage() {
 
       {/* ── 4. Clips ─────────────────────────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">4. Clips ({clipOrder.length})</h3>
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <h3 className="text-sm text-escola-creme">4. Clips ({clipOrder.length})</h3>
+          <div className="flex items-center gap-2 text-[10px]">
+            {savingReuse && <span className="text-escola-creme-50">a guardar…</span>}
+            {reuseInfo && !savingReuse && (
+              <span className="text-escola-dourado">{reuseInfo}</span>
+            )}
+            {reuseExists && (
+              <button
+                onClick={resetToDefault}
+                className="rounded border border-escola-border px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+                title="Apaga ordem fixada, volta ao filtro default nomear-<ep>-*"
+              >
+                ↺ default
+              </button>
+            )}
+          </div>
+        </div>
         {clipOrder.length === 0 ? (
           <p className="text-xs text-escola-terracota">
-            Sem clips para <code>{ep.slug}</code>. Gera em /admin/producao/funil/gerar.
+            Sem clips para <code>{ep.slug}</code>. Gera em /admin/producao/funil/gerar
+            <strong> ou adiciona da pool abaixo</strong>.
           </p>
         ) : (
           <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {clipOrder.map((url, i) => {
               const name = allClips.find((c) => c.url === url)?.name ?? "?";
+              const baseId = name.replace(/\.mp4$/, "");
+              const sourceEp = baseId.split("-")[1] ?? "";
+              const isReused = sourceEp && sourceEp !== epKey;
               return (
                 <li key={url} className="overflow-hidden rounded border border-escola-border">
-                  <video src={url} className="aspect-video w-full" muted />
+                  <div className="relative">
+                    <video src={url} className="aspect-video w-full" muted />
+                    {isReused && (
+                      <span className="absolute left-1 top-1 rounded bg-escola-dourado/90 px-1.5 py-0.5 text-[9px] font-semibold text-escola-bg">
+                        ♻ {sourceEp}
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center justify-between gap-1 border-t border-escola-border bg-escola-bg px-2 py-1 text-[10px]">
-                    <span className="truncate text-escola-creme-50">
+                    <span className="truncate text-escola-creme-50" title={name}>
                       {i + 1}. {name}
                     </span>
                     <div className="flex gap-0.5">
@@ -542,6 +766,13 @@ export default function FunilMontarPage() {
                       >
                         ↓
                       </button>
+                      <button
+                        onClick={() => removeClip(i)}
+                        title="Remover do episódio"
+                        className="rounded border border-escola-border px-1 text-escola-terracota hover:bg-escola-terracota/10"
+                      >
+                        ×
+                      </button>
                     </div>
                   </div>
                 </li>
@@ -550,6 +781,32 @@ export default function FunilMontarPage() {
           </ul>
         )}
       </section>
+
+      {/* ── 4b. Pool de clips reutilizáveis ─────────────────────── */}
+      <PoolBrowser
+        pool={pool}
+        currentEp={epKey}
+        clipOrder={clipOrder}
+        open={poolOpen}
+        setOpen={setPoolOpen}
+        query={poolQuery}
+        setQuery={setPoolQuery}
+        moodFilter={poolMoodFilter}
+        setMoodFilter={setPoolMoodFilter}
+        epFilter={poolEpFilter}
+        setEpFilter={setPoolEpFilter}
+        onAdd={addFromPool}
+      />
+
+      {/* ── 4c. Esticar duração ─────────────────────────────────── */}
+      <StretchControls
+        narrationLeadIn={narrationLeadIn}
+        setNarrationLeadIn={setNarrationLeadIn}
+        outroHold={outroHold}
+        setOutroHold={setOutroHold}
+        narrationAtempo={narrationAtempo}
+        setNarrationAtempo={setNarrationAtempo}
+      />
 
       {/* ── 5. Render ────────────────────────────────────────────── */}
       <section className="rounded-xl border border-escola-border bg-escola-card p-4">
@@ -1217,5 +1474,454 @@ function BrandCard({
         <p className="truncate text-[8px] text-escola-creme-50">{sublabel}</p>
       </div>
     </div>
+  );
+}
+
+// ─── Episode Picker ──────────────────────────────────────────────────────────
+// Suporta 124 eps (trailer + ep01..ep123). Mostra contagem de clips disponíveis
+// e "prontidão" do ep (quantos prompts estão reciclados + quantos têm clip
+// gerado). Pesquisa + filtro rápido por estado.
+
+function EpisodePicker({
+  episodes,
+  epKey,
+  setEpKey,
+  allClips,
+  funilPrompts,
+}: {
+  episodes: Episode[];
+  epKey: string;
+  setEpKey: (k: string) => void;
+  allClips: Clip[];
+  funilPrompts: {
+    id: string;
+    reuseClipId?: string;
+  }[];
+}) {
+  const [query, setQuery] = useState("");
+
+  // Contagens por ep (memo para ser rápido).
+  const epStats = useMemo(() => {
+    const byEp = new Map<
+      string,
+      { clips: number; prompts: number; reused: number }
+    >();
+    for (const ep of episodes) {
+      const prefix = ep.key === "trailer" ? "nomear-trailer-" : `nomear-${ep.key}-`;
+      const nClips = allClips.filter((c) => c.name.startsWith(prefix)).length;
+      const epPrompts = funilPrompts.filter((p) => p.id.startsWith(prefix));
+      const nReused = epPrompts.filter((p) => !!p.reuseClipId).length;
+      byEp.set(ep.key, {
+        clips: nClips,
+        prompts: epPrompts.length,
+        reused: nReused,
+      });
+    }
+    return byEp;
+  }, [episodes, allClips, funilPrompts]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return episodes;
+    return episodes.filter(
+      (e) => e.key.includes(q) || e.label.toLowerCase().includes(q),
+    );
+  }, [episodes, query]);
+
+  return (
+    <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <h3 className="text-sm text-escola-creme">
+          1. Episódio ({episodes.length} disponíveis)
+        </h3>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="pesquisar ep (ep11, fome, vergonha…)"
+          className="w-60 rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+        />
+      </div>
+      <div className="max-h-56 overflow-y-auto rounded border border-escola-border bg-escola-bg/40 p-2">
+        <div className="flex flex-wrap gap-1">
+          {filtered.map((e) => {
+            const st = epStats.get(e.key);
+            const active = epKey === e.key;
+            return (
+              <button
+                key={e.key}
+                onClick={() => setEpKey(e.key)}
+                className={`rounded border px-2 py-1 text-[11px] transition-colors ${
+                  active
+                    ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+                title={e.label}
+              >
+                <span className="font-semibold">{e.key}</span>
+                {st && st.clips > 0 && (
+                  <span className="ml-1 text-[9px] text-escola-creme-50">
+                    · {st.clips}
+                  </span>
+                )}
+                {st && st.reused > 0 && (
+                  <span
+                    className="ml-1 text-[9px] text-escola-dourado"
+                    title={`${st.reused} prompts reciclados`}
+                  >
+                    ♻{st.reused}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+          {filtered.length === 0 && (
+            <p className="p-2 text-[10px] text-escola-creme-50">
+              Nenhum ep bate com &quot;{query}&quot;.
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Pool Browser ────────────────────────────────────────────────────────────
+// Navegador da pool de clips existentes (todos os eps). Permite reutilizar
+// clips já renderizados em novos episódios em vez de gerar imagem MJ + motion
+// Runway novos — importante para ep11+ enquanto a subscrição MJ está activa.
+//
+// Scoring implícito: clips com usageCount alto aparecem com badge, user pode
+// evitar puxar o mesmo muitas vezes. Não força reciclagem — só sugere.
+
+function PoolBrowser({
+  pool,
+  currentEp,
+  clipOrder,
+  open,
+  setOpen,
+  query,
+  setQuery,
+  moodFilter,
+  setMoodFilter,
+  epFilter,
+  setEpFilter,
+  onAdd,
+}: {
+  pool: PoolClip[];
+  currentEp: string;
+  clipOrder: string[];
+  open: boolean;
+  setOpen: (b: boolean) => void;
+  query: string;
+  setQuery: (s: string) => void;
+  moodFilter: string;
+  setMoodFilter: (s: string) => void;
+  epFilter: string;
+  setEpFilter: (s: string) => void;
+  onAdd: (url: string) => void;
+}) {
+  // Todos os moods disponíveis na pool — dropdown.
+  const allMoods = useMemo(() => {
+    const s = new Set<string>();
+    for (const c of pool) for (const m of c.mood) s.add(m);
+    return [...s].sort();
+  }, [pool]);
+
+  // Todos os eps com clips — dropdown.
+  const allEps = useMemo(() => {
+    const s = new Set<string>();
+    for (const c of pool) if (c.episode) s.add(c.episode);
+    return [...s].sort((a, b) => {
+      const ord = (e: string) =>
+        e === "trailer" ? -1 : parseInt(e.replace(/\D/g, ""), 10) || 999;
+      return ord(a) - ord(b);
+    });
+  }, [pool]);
+
+  // Filtros aplicados
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return pool.filter((c) => {
+      // Excluir clips do próprio ep (são o default, não reuse)
+      if (c.episode === currentEp) return false;
+      if (epFilter && c.episode !== epFilter) return false;
+      if (moodFilter && !c.mood.includes(moodFilter)) return false;
+      if (q) {
+        const hay = `${c.clipId} ${c.imagePrompt ?? ""} ${c.mood.join(" ")}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [pool, currentEp, query, moodFilter, epFilter]);
+
+  const inOrder = new Set(clipOrder);
+
+  return (
+    <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between text-left"
+      >
+        <div>
+          <h3 className="text-sm text-escola-creme">
+            4b. Pool de clips reutilizáveis ({pool.length} na pool)
+          </h3>
+          <p className="text-[10px] text-escola-creme-50">
+            Evita regerar imagens MJ/Runway — reutiliza clips de episódios anteriores.
+          </p>
+        </div>
+        <span className="text-escola-creme-50">{open ? "−" : "+"}</span>
+      </button>
+
+      {open && (
+        <div className="mt-3 space-y-2">
+          <div className="flex flex-wrap gap-2 text-xs">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="pesquisar (gota, corda, vidro, cortina…)"
+              className="flex-1 min-w-[200px] rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
+            />
+            <select
+              value={moodFilter}
+              onChange={(e) => setMoodFilter(e.target.value)}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
+            >
+              <option value="">todos os moods</option>
+              {allMoods.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+            <select
+              value={epFilter}
+              onChange={(e) => setEpFilter(e.target.value)}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
+            >
+              <option value="">todos os eps</option>
+              {allEps.map((e) => (
+                <option key={e} value={e}>
+                  {e}
+                </option>
+              ))}
+            </select>
+            {(query || moodFilter || epFilter) && (
+              <button
+                onClick={() => {
+                  setQuery("");
+                  setMoodFilter("");
+                  setEpFilter("");
+                }}
+                className="rounded border border-escola-border px-2 py-1.5 text-escola-creme-50 hover:text-escola-creme"
+              >
+                limpar
+              </button>
+            )}
+          </div>
+
+          <p className="text-[10px] text-escola-creme-50">
+            {filtered.length} de {pool.length} clips · clips do próprio ep
+            <code className="mx-1">{currentEp}</code> ficam ocultos (não é reuse).
+          </p>
+
+          {filtered.length === 0 ? (
+            <p className="text-xs text-escola-creme-50">
+              Sem clips para mostrar com estes filtros.
+            </p>
+          ) : (
+            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {filtered.map((c) => {
+                const alreadyIn = inOrder.has(c.clipUrl);
+                const highUse = c.usageCount >= 2;
+                return (
+                  <li
+                    key={c.clipId}
+                    className="overflow-hidden rounded border border-escola-border bg-escola-bg"
+                  >
+                    <div className="relative">
+                      <video
+                        src={c.clipUrl}
+                        className="aspect-video w-full"
+                        muted
+                        onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
+                        onMouseLeave={(e) => {
+                          const v = e.currentTarget as HTMLVideoElement;
+                          v.pause();
+                          v.currentTime = 0;
+                        }}
+                      />
+                      <span className="absolute left-1 top-1 rounded bg-escola-bg/80 px-1.5 py-0.5 text-[9px] text-escola-creme-50">
+                        {c.episode}
+                      </span>
+                      {c.usageCount > 0 && (
+                        <span
+                          className={`absolute right-1 top-1 rounded px-1.5 py-0.5 text-[9px] font-semibold ${
+                            highUse
+                              ? "bg-escola-terracota/80 text-white"
+                              : "bg-escola-dourado/80 text-escola-bg"
+                          }`}
+                          title={`Já reutilizado ${c.usageCount}× noutros eps`}
+                        >
+                          ♻ {c.usageCount}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-1.5 text-[10px]">
+                      <p className="truncate text-escola-creme" title={c.clipId}>
+                        {c.clipId.replace(/^nomear-/, "")}
+                      </p>
+                      {c.mood.length > 0 && (
+                        <p className="truncate text-escola-creme-50">
+                          {c.mood.join(" · ")}
+                        </p>
+                      )}
+                      <button
+                        onClick={() => onAdd(c.clipUrl)}
+                        disabled={alreadyIn}
+                        className={`mt-1 w-full rounded px-2 py-1 text-[10px] font-semibold ${
+                          alreadyIn
+                            ? "cursor-not-allowed bg-escola-border text-escola-creme-50"
+                            : highUse
+                              ? "border border-escola-terracota/40 bg-escola-terracota/10 text-escola-terracota hover:bg-escola-terracota/20"
+                              : "bg-escola-dourado text-escola-bg hover:opacity-90"
+                        }`}
+                        title={
+                          highUse && !alreadyIn
+                            ? "Já foi usado 2× — evita repetição excessiva"
+                            : undefined
+                        }
+                      >
+                        {alreadyIn ? "✓ já adicionado" : "+ adicionar a este ep"}
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
+// ─── Stretch Controls ────────────────────────────────────────────────────────
+// Estica o vídeo final mantendo a mesma narração. 3 alavancas independentes —
+// user combina até chegar ao target. Típico: 1:40s → 3:00s com +10s lead-in,
+// +15s outro hold, atempo=0.93 (voz 7% mais lenta).
+//
+// Todas as alavancas são passadas ao render.mjs que faz o trabalho em ffmpeg.
+
+function StretchControls({
+  narrationLeadIn,
+  setNarrationLeadIn,
+  outroHold,
+  setOutroHold,
+  narrationAtempo,
+  setNarrationAtempo,
+}: {
+  narrationLeadIn: number;
+  setNarrationLeadIn: (n: number) => void;
+  outroHold: number;
+  setOutroHold: (n: number) => void;
+  narrationAtempo: number;
+  setNarrationAtempo: (n: number) => void;
+}) {
+  const activeCount =
+    (narrationLeadIn > 0 ? 1 : 0) +
+    (outroHold > 0 ? 1 : 0) +
+    (narrationAtempo < 1 ? 1 : 0);
+  const extraSeconds = narrationLeadIn + outroHold;
+  // Nota: atempo estica proporcionalmente à narração (não calculável aqui sem
+  // saber narrSec). Render.mjs sabe o valor real.
+
+  return (
+    <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+      <div className="mb-2 flex items-center justify-between">
+        <h3 className="text-sm text-escola-creme">
+          4c. Esticar duração{" "}
+          {activeCount > 0 && (
+            <span className="ml-2 rounded-full bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado">
+              {activeCount} activo{activeCount > 1 ? "s" : ""} · +
+              {extraSeconds.toFixed(0)}s música-só
+              {narrationAtempo < 1 && ` + voz ${(narrationAtempo * 100).toFixed(0)}%`}
+            </span>
+          )}
+        </h3>
+      </div>
+      <p className="mb-3 text-[10px] text-escola-creme-50">
+        Para quando o áudio ElevenLabs é curto (&lt;2min) e queres vídeo mais longo sem
+        re-gravar. Combina as alavancas até chegares ao alvo.
+      </p>
+
+      <div className="space-y-3">
+        {/* Lead-in */}
+        <div className="flex items-center gap-3 text-xs">
+          <label className="w-32 shrink-0 text-escola-creme-50">
+            Pausa pós-intro
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="30"
+            step="1"
+            value={narrationLeadIn}
+            onChange={(e) => setNarrationLeadIn(parseInt(e.target.value, 10))}
+            className="flex-1 max-w-xs"
+          />
+          <span className="w-12 text-right text-escola-creme">
+            {narrationLeadIn}s
+          </span>
+          <span className="flex-1 text-[10px] text-escola-creme-50">
+            música + 1º clip antes da voz entrar
+          </span>
+        </div>
+
+        {/* Outro hold */}
+        <div className="flex items-center gap-3 text-xs">
+          <label className="w-32 shrink-0 text-escola-creme-50">
+            Hold pós-narração
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="30"
+            step="1"
+            value={outroHold}
+            onChange={(e) => setOutroHold(parseInt(e.target.value, 10))}
+            className="flex-1 max-w-xs"
+          />
+          <span className="w-12 text-right text-escola-creme">{outroHold}s</span>
+          <span className="flex-1 text-[10px] text-escola-creme-50">
+            música + último clip depois de a voz acabar
+          </span>
+        </div>
+
+        {/* Atempo */}
+        <div className="flex items-center gap-3 text-xs">
+          <label className="w-32 shrink-0 text-escola-creme-50">
+            Narração (atempo)
+          </label>
+          <input
+            type="range"
+            min="0.88"
+            max="1"
+            step="0.01"
+            value={narrationAtempo}
+            onChange={(e) => setNarrationAtempo(parseFloat(e.target.value))}
+            className="flex-1 max-w-xs"
+          />
+          <span className="w-12 text-right text-escola-creme">
+            {(narrationAtempo * 100).toFixed(0)}%
+          </span>
+          <span className="flex-1 text-[10px] text-escola-creme-50">
+            abranda a voz (preserva pitch). Abaixo de 0.88 soa arrastado.
+          </span>
+        </div>
+      </div>
+    </section>
   );
 }
