@@ -405,6 +405,12 @@ export default function FunilGerarPage() {
                 : p.id.startsWith(`nomear-${ep}`),
             );
             const reused = epPrompts.filter((p) => !!p.reuseClipId).length;
+            // Contar imagens geradas (por ep, agregado de todos os prompts do ep).
+            const imgCount = epPrompts.reduce(
+              (sum, p) => sum + (imagesByPrompt.get(p.id)?.length ?? 0),
+              0,
+            );
+            const hasImages = imgCount > 0;
             const active = filter === ep;
             return (
               <button
@@ -413,13 +419,27 @@ export default function FunilGerarPage() {
                 className={`rounded border px-2 py-1 text-[11px] transition-colors ${
                   active
                     ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
-                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                    : hasImages
+                      ? "border-escola-dourado/40 bg-escola-dourado/5 text-escola-creme hover:border-escola-dourado"
+                      : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
                 }`}
+                title={
+                  `${ep} · ${epPrompts.length} prompts` +
+                  (hasImages ? ` · ${imgCount} imagens geradas` : "")
+                }
               >
                 <span className="font-semibold">{ep}</span>
                 <span className="ml-1 text-[9px] text-escola-creme-50">
                   · {epPrompts.length}
                 </span>
+                {hasImages && (
+                  <span
+                    className="ml-1 rounded bg-escola-dourado/20 px-1 text-[9px] font-bold text-escola-dourado"
+                    title={`${imgCount} imagens geradas`}
+                  >
+                    📷{imgCount}
+                  </span>
+                )}
                 {reused > 0 && (
                   <span
                     className="ml-1 text-[9px] text-escola-dourado"
