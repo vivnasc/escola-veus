@@ -50,22 +50,34 @@ type PoolClip = {
 //        e nos nomes de ficheiros em youtube/clips/).
 type Episode = { key: string; slug: string; label: string };
 
+// Funil Nomear = trailer + ep01..epNN (expande conforme a user adiciona eps).
+// Exclui placeholders "serie-X" e categorias soltas ("sagrado", "silencio",
+// "nua", "fome") que existem no NOMEAR_PRESETS mas NÃO são episódios.
+// Filtro: parts[1] tem de matchar /^(trailer|ep\d+)$/.
+const EPISODE_KEY_RE = /^(trailer|ep\d+)$/;
 const EPISODES: Episode[] = (() => {
-  const list: Episode[] = [];
+  const byKey = new Map<string, Episode>();
   for (const preset of NOMEAR_PRESETS) {
     for (const script of preset.scripts) {
-      // id patterns: "nomear-trailer-00", "nomear-ep11", ...
       const parts = script.id.split("-");
-      const epKey = parts[1] ?? ""; // "trailer" | "ep11"
-      if (!epKey) continue;
+      const epKey = parts[1] ?? "";
+      if (!EPISODE_KEY_RE.test(epKey)) continue;
+      if (byKey.has(epKey)) continue; // primeira ocorrência por chave
       const label =
         epKey === "trailer"
           ? `Trailer — ${script.titulo}`
           : `${epKey} — ${script.titulo}`;
-      list.push({ key: epKey, slug: script.id, label });
+      byKey.set(epKey, { key: epKey, slug: script.id, label });
     }
   }
-  return list;
+  // Ordem natural: trailer primeiro, depois ep01, ep02, ... pelo número
+  return Array.from(byKey.values()).sort((a, b) => {
+    if (a.key === "trailer") return -1;
+    if (b.key === "trailer") return 1;
+    const na = parseInt(a.key.replace("ep", ""), 10);
+    const nb = parseInt(b.key.replace("ep", ""), 10);
+    return na - nb;
+  });
 })();
 
 const supabasePublicUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
@@ -553,6 +565,7 @@ export default function FunilMontarPage() {
         epKey={epKey}
         setEpKey={setEpKey}
         allClips={allClips}
+        allVideos={allVideos}
         funilPrompts={funilPrompts}
       />
 
@@ -710,6 +723,11 @@ export default function FunilMontarPage() {
         <div className="mb-2 flex items-center justify-between gap-2">
           <h3 className="text-sm text-escola-creme">4. Clips ({clipOrder.length})</h3>
           <div className="flex items-center gap-2 text-[10px]">
+            <span className="text-escola-creme-50">
+              {allClips.length} em Supabase · {epClips.length} para{" "}
+              <code>nomear-{epKey}-</code>
+              {loading && " · a carregar..."}
+            </span>
             {savingReuse && <span className="text-escola-creme-50">a guardar…</span>}
             {reuseInfo && !savingReuse && (
               <span className="text-escola-dourado">{reuseInfo}</span>
@@ -726,10 +744,30 @@ export default function FunilMontarPage() {
           </div>
         </div>
         {clipOrder.length === 0 ? (
-          <p className="text-xs text-escola-terracota">
-            Sem clips para <code>{ep.slug}</code>. Gera em /admin/producao/funil/gerar
-            <strong> ou adiciona da pool abaixo</strong>.
-          </p>
+          <div className="space-y-1 text-xs text-escola-terracota">
+            <p>
+              Sem clips para <code>{ep.slug}</code>. Gera em{" "}
+              <code>/admin/producao/funil/gerar</code>
+              <strong> ou adiciona da pool abaixo</strong>.
+            </p>
+            {allClips.length === 0 && !loading && (
+              <p className="text-escola-creme-50">
+                ⚠ Nenhum clip em Supabase — o endpoint list-clips pode estar
+                lento ou bloqueado. Recarrega a página.
+              </p>
+            )}
+            {allClips.length > 0 && epClips.length === 0 && (
+              <p className="text-escola-creme-50">
+                ⚠ Há {allClips.length} clips em Supabase mas nenhum começa com{" "}
+                <code>nomear-{epKey}-</code>. Verifica os nomes:{" "}
+                {allClips
+                  .slice(0, 3)
+                  .map((c) => c.name)
+                  .join(", ")}
+                {allClips.length > 3 && "..."}
+              </p>
+            )}
+          </div>
         ) : (
           <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {clipOrder.map((url, i) => {
@@ -1487,66 +1525,102 @@ function EpisodePicker({
   epKey,
   setEpKey,
   allClips,
+  allVideos,
   funilPrompts,
 }: {
   episodes: Episode[];
   epKey: string;
   setEpKey: (k: string) => void;
   allClips: Clip[];
+  allVideos: Audio[];
   funilPrompts: {
     id: string;
     reuseClipId?: string;
   }[];
 }) {
   const [query, setQuery] = useState("");
+  const [showOnlyReady, setShowOnlyReady] = useState(false);
 
   // Contagens por ep (memo para ser rápido).
   const epStats = useMemo(() => {
     const byEp = new Map<
       string,
-      { clips: number; prompts: number; reused: number }
+      { clips: number; prompts: number; reused: number; rendered: boolean }
     >();
     for (const ep of episodes) {
       const prefix = ep.key === "trailer" ? "nomear-trailer-" : `nomear-${ep.key}-`;
       const nClips = allClips.filter((c) => c.name.startsWith(prefix)).length;
       const epPrompts = funilPrompts.filter((p) => p.id.startsWith(prefix));
       const nReused = epPrompts.filter((p) => !!p.reuseClipId).length;
+      // Vídeo renderizado = há MP4 em youtube/funil-videos/ que comece com
+      // o slug do titulo OU com o epKey (mesma lógica do epCachedVideo).
+      const rendered = allVideos.some(
+        (v) =>
+          v.name.startsWith(`${ep.key}-`) ||
+          v.name.startsWith(prefix.replace("nomear-", "")),
+      );
       byEp.set(ep.key, {
         clips: nClips,
         prompts: epPrompts.length,
         reused: nReused,
+        rendered,
       });
     }
     return byEp;
-  }, [episodes, allClips, funilPrompts]);
+  }, [episodes, allClips, allVideos, funilPrompts]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return episodes;
-    return episodes.filter(
-      (e) => e.key.includes(q) || e.label.toLowerCase().includes(q),
-    );
-  }, [episodes, query]);
+    let list = episodes;
+    if (q) {
+      list = list.filter(
+        (e) => e.key.includes(q) || e.label.toLowerCase().includes(q),
+      );
+    }
+    if (showOnlyReady) {
+      list = list.filter((e) => {
+        const st = epStats.get(e.key);
+        return st && st.rendered;
+      });
+    }
+    return list;
+  }, [episodes, query, showOnlyReady, epStats]);
+
+  const renderedCount = useMemo(() => {
+    return episodes.filter((e) => epStats.get(e.key)?.rendered).length;
+  }, [episodes, epStats]);
 
   return (
     <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
       <div className="mb-2 flex items-center justify-between gap-2">
         <h3 className="text-sm text-escola-creme">
-          1. Episódio ({episodes.length} disponíveis)
+          1. Episódio ({episodes.length} total ·{" "}
+          <span className="text-escola-dourado">{renderedCount} renderizados</span>)
         </h3>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="pesquisar ep (ep11, fome, vergonha…)"
-          className="w-60 rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
-        />
+        <div className="flex items-center gap-2">
+          <label className="flex items-center gap-1 text-[10px] text-escola-creme-50">
+            <input
+              type="checkbox"
+              checked={showOnlyReady}
+              onChange={(e) => setShowOnlyReady(e.target.checked)}
+            />
+            só renderizados
+          </label>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="pesquisar ep (ep11, vergonha…)"
+            className="w-48 rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme"
+          />
+        </div>
       </div>
       <div className="max-h-56 overflow-y-auto rounded border border-escola-border bg-escola-bg/40 p-2">
         <div className="flex flex-wrap gap-1">
           {filtered.map((e) => {
             const st = epStats.get(e.key);
             const active = epKey === e.key;
+            const rendered = st?.rendered ?? false;
             return (
               <button
                 key={e.key}
@@ -1554,10 +1628,21 @@ function EpisodePicker({
                 className={`rounded border px-2 py-1 text-[11px] transition-colors ${
                   active
                     ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
-                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                    : rendered
+                      ? "border-escola-dourado/40 bg-escola-dourado/5 text-escola-dourado/80 hover:border-escola-dourado"
+                      : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
                 }`}
-                title={e.label}
+                title={
+                  e.label +
+                  (rendered ? " · vídeo renderizado" : "") +
+                  (st ? ` · ${st.clips} clips` : "")
+                }
               >
+                {rendered && (
+                  <span className="mr-0.5 text-escola-dourado" title="vídeo já renderizado">
+                    ✓
+                  </span>
+                )}
                 <span className="font-semibold">{e.key}</span>
                 {st && st.clips > 0 && (
                   <span className="ml-1 text-[9px] text-escola-creme-50">
