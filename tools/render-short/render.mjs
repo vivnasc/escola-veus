@@ -108,18 +108,18 @@ async function main() {
   } = manifest;
 
   if (!Array.isArray(clips) || clips.length === 0) throw new Error("clips[] vazio");
-  if (!musicUrl) throw new Error("musicUrl vazio");
+  const hasMusic = !!musicUrl;
 
   const slug = rawSlug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "short";
 
   await writeResult(jobId, { status: "running", phase: "download", progress: 10 });
 
-  console.log(`[2/5] Download ${clips.length} clips + música`);
+  console.log(`[2/5] Download ${clips.length} clips${hasMusic ? " + música" : " (sem música)"}`);
   const clipPaths = clips.map((_, i) => path.join(WORK_DIR, `clip-${i}.mp4`));
-  const musicPath = path.join(WORK_DIR, "music.mp3");
+  const musicPath = hasMusic ? path.join(WORK_DIR, "music.mp3") : null;
   await Promise.all([
     ...clips.map((url, i) => downloadTo(url, clipPaths[i])),
-    downloadTo(musicUrl, musicPath),
+    ...(hasMusic && musicPath ? [downloadTo(musicUrl, musicPath)] : []),
   ]);
 
   // Decode overlay PNGs (opcionais)
@@ -142,8 +142,8 @@ async function main() {
   const concatInputs = clips.map((_, i) => `[v${i}]`).join("");
   const concatFilter = `${concatInputs}concat=n=${clips.length}:v=1:a=0[vconcat]`;
 
-  const musicIdx = clips.length;
-  let ovlIdxCounter = clips.length + 1;
+  const ovlBaseIdx = clips.length + (hasMusic ? 1 : 0);
+  let ovlIdxCounter = ovlBaseIdx;
   const ovlInputs = [];
   const ovlFilters = [];
   let lastVideoLabel = "vconcat";
@@ -166,25 +166,30 @@ async function main() {
     ovlFilters.push(`[vconcat]copy[vout]`);
   }
 
-  const audioFilter = `[${musicIdx}:a]atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=0.5,afade=t=out:st=${(totalDuration - 0.5).toFixed(2)}:d=0.5[aout]`;
+  const filterParts = [...scaleFilters, concatFilter, ...ovlFilters];
+  if (hasMusic) {
+    const musicIdx = clips.length;
+    filterParts.push(
+      `[${musicIdx}:a]atrim=0:${totalDuration.toFixed(2)},asetpts=N/SR/TB,volume=${musicVolume},afade=t=in:st=0:d=0.5,afade=t=out:st=${(totalDuration - 0.5).toFixed(2)}:d=0.5[aout]`,
+    );
+  }
 
-  const filterComplex = [...scaleFilters, concatFilter, ...ovlFilters, audioFilter].join(";");
+  const filterComplex = filterParts.join(";");
 
   const outPath = path.join(WORK_DIR, "out.mp4");
   await runFfmpeg([
     "-y",
     ...clipPaths.flatMap((p) => ["-i", p]),
-    "-i", musicPath,
+    ...(hasMusic && musicPath ? ["-i", musicPath] : []),
     ...ovlInputs.flatMap((p) => ["-i", p]),
     "-filter_complex", filterComplex,
     "-map", "[vout]",
-    "-map", "[aout]",
+    ...(hasMusic ? ["-map", "[aout]"] : []),
     "-c:v", "libx264",
     "-preset", "veryfast",
     "-crf", "20",
     "-pix_fmt", "yuv420p",
-    "-c:a", "aac",
-    "-b:a", "192k",
+    ...(hasMusic ? ["-c:a", "aac", "-b:a", "192k"] : []),
     "-movflags", "+faststart",
     "-t", totalDuration.toFixed(2),
     outPath,
