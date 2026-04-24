@@ -55,12 +55,19 @@ export function YouTubePublishSteps({
     } catch { /* ignore */ }
   };
 
-  // URL para download forçado. Em vez do ?download= do Supabase (que o
-  // Safari iOS ignora para video/mp4 — reproduz sempre inline), usamos um
-  // proxy nosso que re-serve com Content-Type: application/octet-stream.
-  // Assim o Safari não reconhece como vídeo e descarrega normalmente.
-  const downloadHref = (url: string, name: string) =>
-    `/api/admin/ancient-ground/download?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}`;
+  // URL para download forçado via proxy nosso (Content-Type: octet-stream
+  // + Content-Disposition: attachment). iOS Safari mesmo assim faz magic
+  // sniffing pela extensão .mp4 no filename e reproduz inline — para contornar
+  // isso, em iOS servimos com extensão .bin que não é reconhecida. O user
+  // renomeia .bin → .mp4 no Ficheiros app antes de upload (1 long-press +
+  // Rename). Em Android e desktop a extensão certa é servida.
+  const isIOS =
+    typeof navigator !== "undefined" &&
+    /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const downloadHref = (url: string, name: string) => {
+    const safeName = isIOS ? name.replace(/\.mp4$/i, ".bin") : name;
+    return `/api/admin/ancient-ground/download?url=${encodeURIComponent(url)}&name=${encodeURIComponent(safeName)}`;
+  };
 
   // Download agora usa anchor HTML directo no JSX (em vez de JS-triggered
   // click). Essencial para iOS/PWA: anchor com target="_blank" abre no

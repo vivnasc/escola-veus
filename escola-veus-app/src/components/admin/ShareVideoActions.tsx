@@ -123,12 +123,21 @@ export function ShareVideoActions({
           {copied ? "✓ Copiado" : "📋 Copiar link"}
         </button>
         <a
-          href={videoUrl}
+          // Passa pelo nosso proxy edge que serve octet-stream (iOS Safari
+          // continua a reproduzir inline com Content-Type: video/mp4 directo).
+          // Em iOS, força extensão .bin para o Safari não reconhecer como
+          // vídeo — a utilizadora renomeia para .mp4 no Files antes de upload.
+          href={(() => {
+            const filename = (videoUrl.split("/").pop() || "video.mp4").split("?")[0];
+            const isIOS = typeof navigator !== "undefined" && /iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const safeName = isIOS ? filename.replace(/\.mp4$/i, ".bin") : filename;
+            return `/api/admin/ancient-ground/download?url=${encodeURIComponent(videoUrl)}&name=${encodeURIComponent(safeName)}`;
+          })()}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded border border-escola-border px-4 py-3 text-sm text-escola-creme hover:bg-escola-border/20"
         >
-          ⬇️ Abrir MP4
+          ⬇️ Descarregar MP4
         </a>
       </div>
       {status && <p className="text-xs text-escola-creme-50">{status}</p>}
