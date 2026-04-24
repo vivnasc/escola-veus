@@ -95,10 +95,11 @@ const ACTOS: Array<{ acto: Acto; romano: string; label: string }> = [
   { acto: "frase", romano: "V", label: "FRASE" },
 ];
 
-// Ritmo contemplativo: ~1s por 5 chars. Min 6s, max 20s por bloco.
+// Ritmo contemplativo mas sem arrastar: ~1s por 7 chars. Min 4s, max 12s
+// por bloco. A Vivianne pode afinar em cima com o slider de ritmo global.
 function durationFor(text: string): number {
   const chars = text.length;
-  return Math.max(6, Math.min(20, Math.round(chars / 5)));
+  return Math.max(4, Math.min(12, Math.round(chars / 7)));
 }
 
 /**
@@ -199,12 +200,12 @@ export function buildSlideDeckFromConfig(
 
   const slides: Slide[] = [];
 
-  // 1. Titulo (~8s com multiplicador)
+  // 1. Titulo (~5s com multiplicador)
   slides.push({
     tipo: "title",
     texto: script.title,
     subtexto: `Modulo ${moduleNumber} · Aula ${subLetter.toUpperCase()}`,
-    duracao: Math.max(3, Math.round(8 * timingMul)),
+    duracao: Math.max(3, Math.round(5 * timingMul)),
   });
 
   const sectionTexts: Record<Acto, string> = {
@@ -231,7 +232,7 @@ export function buildSlideDeckFromConfig(
         : defaultBlocksForActo(acto, sectionTexts[acto]);
 
     for (const b of blocks) {
-      const base = acto === "frase" ? 12 : durationFor(b);
+      const base = acto === "frase" ? 8 : durationFor(b);
       slides.push({
         tipo: "conteudo",
         acto,
