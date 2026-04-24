@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 
-// Upload de clips verticais (9:16) gerados por fora (Runway ilimitado) para a
-// biblioteca partilhada Loranne+AG. Fluxo:
+// Upload de clips verticais 9:16 (paisagem/natureza) gerados por fora para a
+// pool partilhada Loranne+AG (página /admin/producao/clips-paisagem). Fluxo:
 //  1. Browser pede signed upload URLs ao servidor (/api/admin/shorts/upload-clips)
 //  2. Extrai um frame PNG de cada vídeo via <video>+canvas (serve de thumbnail
 //     e de imageUrl para o slot Loranne — quem precisa de uma imagem para a
@@ -289,6 +289,9 @@ export function ClipUploader({ onUploaded, className, compact }: Props) {
           <span className="text-[11px] text-escola-creme-50">
             9:16 · máx 150MB · todos os ficheiros escolhidos ganham o tema seleccionado
           </span>
+        )}
+        {compact && !theme && (
+          <span className="text-[11px] text-amber-300">escolhe um tema primeiro</span>
         )}
         {files.some((f) => f.stage === "done") && (
           <button

@@ -624,10 +624,10 @@ export default function ShortsPage() {
         </h2>
         <div className="flex gap-2">
           <Link
-            href="/admin/producao/shorts/biblioteca"
+            href="/admin/producao/clips-paisagem"
             className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-coral"
           >
-            Biblioteca de clips
+            → Clips de paisagem
           </Link>
           <Link
             href="/admin/producao/shorts/nomear"
@@ -728,23 +728,23 @@ export default function ShortsPage() {
         )}
       </section>
 
-      {/* ── 1b. PICKER DA BIBLIOTECA PARTILHADA (ALTERNATIVA) ── */}
+      {/* ── 1b. PICKER DE CLIPS DE PAISAGEM (ALTERNATIVA) ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-dourado">
-            1b. (alternativa) Escolher da biblioteca Runway
+            1b. (alternativa) Escolher clip de paisagem
           </h3>
           <Link
-            href="/admin/producao/shorts/biblioteca"
+            href="/admin/producao/clips-paisagem"
             className="text-[10px] text-escola-coral hover:text-escola-coral/80"
           >
-            → Upload / gerir biblioteca
+            → Gerir clips de paisagem
           </Link>
         </div>
         <p className="mb-3 text-xs text-escola-creme-50">
-          Clips Runway já gerados (teus ou partilhados com AG). Clica para
-          preencher o próximo slot — salta a geração paga (secção 2). Para
-          fazer upload de novos clips, usa a biblioteca.
+          Clips já existentes (partilhados com AG). Clica para preencher o
+          próximo slot e salta a geração paga da secção 2. Para fazer upload
+          de novos clips, vai a <strong>Clips de paisagem</strong>.
         </p>
         <div className="mb-3 flex flex-wrap gap-1">
           <button
