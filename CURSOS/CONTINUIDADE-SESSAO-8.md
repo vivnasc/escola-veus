@@ -49,14 +49,6 @@
 
 ### O que o aluno encontra na sub-aula (4 camadas)
 
-1. **Ver** — video-aula (slides + musica AG, sem voz).
-2. **Ouvir** — audio "podcast" ElevenLabs (entrega paralela, em
-   `course-assets/curso-<slug>/m<N>-<letter>-*.mp3`).
-3. **Escrever** — pausa para reflexao (ja existia, autosaved).
-4. **Perguntar** — Q&A com Claude API por modulo (cacheado 1h).
-
-### O que o aluno encontra na sub-aula (4 camadas)
-
 **Filosofia:** quatro modos de se relacionar com a mesma aula — ver (silencio),
 ouvir (movimento), escrever (solidao), perguntar (dialogo). Um curso pago
 digno oferece os quatro; um canal de YouTube oferece um.
