@@ -326,56 +326,15 @@ function PlanoAgTab() {
 
   return (
     <div className="space-y-6">
-      {/* 1. Plano — cada slot com estado e picker de vídeo. */}
+      {/* 1. Biblioteca dos vídeos prontos — primeira coisa visível. Caso de
+          uso dominante: ir ao calendário para publicar, e para isso precisas
+          de ver os vídeos, não de fazer scroll pelo plano inteiro. */}
       <div>
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          🗓️ Plano das próximas {weeks.length} semanas
-        </h3>
-        <div className="mb-3 rounded-xl border border-escola-border bg-escola-card p-4 text-xs text-escola-creme-50">
-          <p>
-            Ritmo:{" "}
-            <span className="text-escola-creme">Seg · Qua (shorts 30s)</span> +{" "}
-            <span className="text-escola-creme">Sex (longo 60 min)</span>
-            . Publicação às <span className="text-escola-creme">10:00</span>.
-          </p>
-          <p className="mt-1">
-            Para cada slot, escolhe um vídeo já gerado. Fica associado e visível em qualquer dispositivo — ao chegar a hora basta copiar título/descrição e publicar.
-          </p>
-        </div>
-        <div className="space-y-2">
-          {weeks.map((w) => (
-            <div
-              key={w.start.toISOString()}
-              className="overflow-hidden rounded-xl border border-escola-border bg-escola-card"
-            >
-              <div className="border-b border-escola-border px-4 py-2 text-sm text-escola-creme">
-                {w.weekLabel}
-              </div>
-              <div className="divide-y divide-escola-border">
-                {w.slots.map((s: AgSlot) => (
-                  <PlanoSlot
-                    key={s.slotId}
-                    slot={s}
-                    entry={schedule[s.slotId] || null}
-                    available={s.type === "longo" ? longVideos : shortVideos}
-                    scheduleLoaded={scheduleLoaded}
-                    saving={savingSlot === s.slotId}
-                    onChange={(entry) => setSlotEntry(s.slotId, entry)}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 2. Biblioteca completa — RecentRenders como referência. */}
-      <div>
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          📚 Biblioteca de vídeos AG
+          🎬 Vídeos AG prontos a publicar
         </h3>
         <p className="mb-3 text-xs text-escola-creme-50">
-          Todos os vídeos AG gerados. Usa para copiar SEO ou partilhar pontualmente (fora do calendário).
+          Clica num vídeo para abrir os 3 passos de publicação (⬇ MP4 / ↗ Partilhar / 📋 SEO). Não precisas de ir ao Supabase.
         </p>
         <div className="space-y-4">
           <RecentRenders
@@ -390,6 +349,52 @@ function PlanoAgTab() {
           />
         </div>
       </div>
+
+      {/* 2. Plano das próximas semanas — consulta secundária. Colapsado
+          por default para não empurrar a biblioteca para baixo. */}
+      <details className="rounded-xl border border-escola-border bg-escola-card">
+        <summary className="cursor-pointer px-4 py-3 text-sm font-semibold uppercase tracking-wider text-escola-coral hover:bg-escola-bg/40">
+          🗓️ Plano das próximas {weeks.length} semanas · associar vídeos a datas
+        </summary>
+        <div className="space-y-4 p-4">
+          <div className="rounded-xl border border-escola-border bg-escola-bg p-3 text-xs text-escola-creme-50">
+            <p>
+              Ritmo:{" "}
+              <span className="text-escola-creme">Seg · Qua (shorts 30s)</span> +{" "}
+              <span className="text-escola-creme">Sex (longo 60 min)</span>
+              . Publicação às <span className="text-escola-creme">10:00</span>.
+            </p>
+            <p className="mt-1">
+              Para cada slot, escolhe um vídeo já gerado. Fica associado e visível em qualquer dispositivo — ao chegar a hora basta copiar título/descrição e publicar.
+            </p>
+          </div>
+          <div className="space-y-2">
+            {weeks.map((w) => (
+              <div
+                key={w.start.toISOString()}
+                className="overflow-hidden rounded-xl border border-escola-border bg-escola-bg"
+              >
+                <div className="border-b border-escola-border px-4 py-2 text-sm text-escola-creme">
+                  {w.weekLabel}
+                </div>
+                <div className="divide-y divide-escola-border">
+                  {w.slots.map((s: AgSlot) => (
+                    <PlanoSlot
+                      key={s.slotId}
+                      slot={s}
+                      entry={schedule[s.slotId] || null}
+                      available={s.type === "longo" ? longVideos : shortVideos}
+                      scheduleLoaded={scheduleLoaded}
+                      saving={savingSlot === s.slotId}
+                      onChange={(entry) => setSlotEntry(s.slotId, entry)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </details>
     </div>
   );
 }
