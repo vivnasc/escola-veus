@@ -163,9 +163,13 @@ export default function AulasPage() {
                               key={sub.letter}
                               className="flex items-center gap-1 rounded border border-escola-border bg-escola-bg px-2 py-1"
                             >
-                              <span className="text-[10px] text-escola-creme">
+                              <Link
+                                href={`/admin/producao/aulas/preview/${c.slug}/${mod.number}/${sub.letter.toLowerCase()}`}
+                                className="text-[10px] text-escola-dourado hover:underline"
+                                title="Pre-visualizar slides"
+                              >
                                 {sub.letter}
-                              </span>
+                              </Link>
                               <Pill
                                 label="áudio"
                                 ok={!!aula?.status.audio}

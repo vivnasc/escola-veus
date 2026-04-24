@@ -6,6 +6,7 @@ import { getCourseBySlug } from "@/data/courses";
 import { getTerritoryStyle } from "@/data/territory-themes";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProgress } from "@/hooks/useProgress";
+import { ManualChapterCard } from "@/components/escola/ManualChapterCard";
 
 export default function ModuloPage() {
   const params = useParams();
@@ -163,6 +164,9 @@ export default function ModuloPage() {
               );
             })}
           </div>
+
+          {/* Capitulo do manual PDF */}
+          <ManualChapterCard courseSlug={slug} moduleNumber={moduloNum} />
 
           {/* Workbook */}
           {mod.workbook && (

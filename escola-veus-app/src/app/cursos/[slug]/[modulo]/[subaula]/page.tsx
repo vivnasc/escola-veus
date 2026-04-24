@@ -7,6 +7,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useProgress } from "@/hooks/useProgress";
 import { useJournal } from "@/hooks/useJournal";
 import { VideoPlayer } from "@/components/escola/VideoPlayer";
+import { AudioPlayer } from "@/components/escola/AudioPlayer";
+import { AskClaude } from "@/components/escola/AskClaude";
 import { getTerritoryStyle } from "@/data/territory-themes";
 import { useState } from "react";
 
@@ -131,6 +133,13 @@ export default function SubaulaPage() {
         fallbackDescription={sub.description}
       />
 
+      {/* Audio "podcast" — entrega paralela ao video */}
+      <AudioPlayer
+        courseSlug={slug}
+        moduleNumber={moduloNum}
+        sublessonLetter={subaulaLetter}
+      />
+
       {/* Content */}
       <div className="mb-8 rounded-xl border border-escola-border bg-escola-card p-5">
         <p className="text-sm leading-relaxed text-escola-creme-50">
@@ -144,6 +153,15 @@ export default function SubaulaPage() {
         moduleNumber={moduloNum}
         sublessonLetter={subaulaLetter}
       />
+
+      {/* Perguntar ao guia (Claude) */}
+      <div className="mt-4">
+        <AskClaude
+          courseSlug={slug}
+          moduleNumber={moduloNum}
+          sublessonLetter={subaulaLetter}
+        />
+      </div>
 
       {/* Complete button */}
       <div className="mt-8">
