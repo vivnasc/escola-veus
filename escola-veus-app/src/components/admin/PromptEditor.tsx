@@ -285,15 +285,41 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
   function purgeNonFunil() {
     const bad = nonFunilPrompts();
     if (bad.length === 0) return;
+
+    // Download backup primeiro — nunca apagar sem guardar localmente.
+    // Esses prompts custaram ~$0.02 cada a gerar; podem servir no futuro
+    // para marketing, thumbnails, reels, ou para adicionar imagery aos
+    // cursos se a estratégia mudar.
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 16);
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      count: bad.length,
+      note: "Prompts gerados a partir de scripts de cursos/aulas — não pertencem ao funil Nomear. Preservados aqui caso sejam úteis para marketing, thumbnails, ou futura adição de imagery aos cursos.",
+      prompts: bad,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `funil-prompts-fora-do-funil-${timestamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
     if (
       !confirm(
-        `Vais remover ${bad.length} prompts que NÃO pertencem ao funil Nomear (foram gerados por engano a partir de scripts de cursos).\n\n` +
-          `Exemplos: ${bad
-            .slice(0, 3)
-            .map((p) => p.id)
-            .join(", ")}${bad.length > 3 ? "…" : ""}\n\nContinuar?`,
+        `📥 Backup de ${bad.length} prompts descarregado para o teu computador.\n\n` +
+          `Agora podes removê-los da lista do funil (vão deixar de aparecer no /gerar e /montar do Nomear).\n\n` +
+          `Os prompts ficam no ficheiro JSON que acabaste de descarregar — podes re-inserir mais tarde se precisares.\n\n` +
+          `Remover da lista actual?`,
       )
     ) {
+      setInfo(
+        `📥 Backup descarregado (${bad.length} prompts). Remoção cancelada — prompts mantêm-se na lista.`,
+      );
       return;
     }
     setData((d) =>
@@ -301,7 +327,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     );
     setDirty(true);
     setInfo(
-      `Removidos ${bad.length} prompts fora do funil. Clica Guardar para persistir.`,
+      `📥 Backup JSON descarregado + ${bad.length} prompts removidos da lista. Clica Guardar para persistir.`,
     );
   }
 
@@ -614,9 +640,9 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
                     onClick={purgeNonFunil}
                     disabled={bulkRunning || genLoading}
                     className="rounded border border-escola-terracota bg-escola-terracota/10 px-3 py-1.5 text-[11px] font-semibold text-escola-terracota hover:bg-escola-terracota/20 disabled:opacity-40"
-                    title="Remove prompts que foram gerados a partir de scripts de cursos (aulas) — o funil Nomear só são os eps e o trailer."
+                    title="Descarrega JSON de backup com os prompts, depois pergunta se queres remover da lista do funil. Não apaga sem backup local."
                   >
-                    🗑 Purgar {bad.length} prompts fora do funil
+                    📥 Separar {bad.length} prompts fora do funil
                   </button>
                 );
               })()}
