@@ -148,6 +148,7 @@ export default function ShortsPage() {
   const [loadingTracks, setLoadingTracks] = useState(false);
 
   const [suggesting, setSuggesting] = useState(false);
+  const [suggestError, setSuggestError] = useState<string | null>(null);
 
   const [engine, setEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
   const overlay1Ref = useRef<HTMLDivElement>(null);
@@ -402,6 +403,7 @@ export default function ShortsPage() {
     suggestAbortRef.current = ac;
 
     setSuggesting(true);
+    setSuggestError(null);
     try {
       const res = await fetch("/api/admin/shorts/suggest", {
         method: "POST",
@@ -428,6 +430,17 @@ export default function ShortsPage() {
       });
     } catch (err) {
       if ((err as Error)?.name === "AbortError") return;
+      // Limpa TUDO para não ficar com legendas de uma faixa anterior
+      updateState({
+        verses: ["", ""],
+        candidates: [],
+        albumTitle: "",
+        trackTitle: "",
+        tiktokCaption: "",
+        youtubeTitle: "",
+        youtubeDescription: "",
+      });
+      setSuggestError(err instanceof Error ? err.message : String(err));
       if (!silent) alert(`Erro: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       // só desliga o spinner se este pedido é o actual — senão pode apagar
@@ -1040,8 +1053,17 @@ export default function ShortsPage() {
           </p>
         ) : (
           <p className="mb-3 text-xs text-escola-creme-50">
-            Clica em &quot;Sugerir&quot; para extrair da letra da faixa escolhida em #3.
+            Escolhe álbum + faixa em #3 e as frases aparecem aqui sozinhas.
           </p>
+        )}
+
+        {suggestError && (
+          <div className="mb-3 rounded border border-red-900 bg-red-950/40 p-2 text-xs text-red-300">
+            <strong>Sem letra para esta faixa:</strong> {suggestError}
+            <br />
+            Verifica se o nome da pasta Supabase coincide com o slug em{" "}
+            <code>loranne-lyrics/</code>. Escreve a frase à mão abaixo ou muda de faixa.
+          </div>
         )}
 
         <div className="mb-3 flex items-center gap-2">
@@ -1190,20 +1212,31 @@ export default function ShortsPage() {
           <ShortResult url={renderResult} title={state.title || state.trackName || "short"} />
         )}
 
-        <div className="mb-3 flex flex-wrap items-center gap-4 text-xs">
-          <label className="flex cursor-pointer items-center gap-1.5">
-            <input
-              type="checkbox"
-              checked={state.includeMusic}
-              onChange={(e) => updateState({ includeMusic: e.target.checked })}
+        <div className="mb-3 flex flex-wrap items-center gap-3 text-xs">
+          <button
+            type="button"
+            onClick={() => updateState({ includeMusic: !state.includeMusic })}
+            aria-pressed={state.includeMusic}
+            className={`flex min-h-[44px] items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-colors ${
+              state.includeMusic
+                ? "border-escola-coral bg-escola-coral/10 text-escola-coral"
+                : "border-escola-border bg-escola-bg text-escola-creme-50"
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 rounded-full border ${
+                state.includeMusic
+                  ? "border-escola-coral bg-escola-coral"
+                  : "border-escola-border"
+              }`}
             />
-            <span className="text-escola-creme">
-              Incluir música{" "}
-              <span className="text-escola-creme-50">
-                (formato validado: música Loranne liga ao Apple Music via DistroKid)
-              </span>
-            </span>
-          </label>
+            {state.includeMusic ? "Com música" : "Sem música"}
+          </button>
+          <span className="text-escola-creme-50">
+            {state.includeMusic
+              ? "música Loranne liga ao Apple Music via DistroKid"
+              : "vídeo silencioso — pões música no TikTok/IG"}
+          </span>
         </div>
 
         <div className="mb-3 flex items-center gap-4 text-xs">
