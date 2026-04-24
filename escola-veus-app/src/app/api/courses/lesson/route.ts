@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
 
   if (!slug || !moduleNum || !sub) {
     return NextResponse.json(
-      { error: "Parametros em falta" },
+      { error: "Parâmetros em falta" },
       { status: 400 }
     );
   }
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json(
-      { error: "Nao autenticado" },
+      { error: "Não autenticado" },
       { status: 401 }
     );
   }
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
 
     if (!enrollment) {
       return NextResponse.json(
-        { error: "Nao inscrito neste curso" },
+        { error: "Não inscrito neste curso" },
         { status: 403 }
       );
     }
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
 
   const admin = createSupabaseAdminClient();
   if (!admin) {
-    return NextResponse.json({ url: null, message: "Video em producao" });
+    return NextResponse.json({ url: null, message: "Vídeo em produção" });
   }
 
   const subLower = sub.toLowerCase();
@@ -96,7 +96,7 @@ export async function GET(request: NextRequest) {
     .createSignedUrl(legacyPath, 7200);
 
   if (error || !signedUrl) {
-    return NextResponse.json({ url: null, message: "Video em producao" });
+    return NextResponse.json({ url: null, message: "Vídeo em produção" });
   }
 
   return NextResponse.json({ url: signedUrl.signedUrl, source: "legacy" });

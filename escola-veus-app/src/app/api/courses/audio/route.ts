@@ -17,18 +17,18 @@ export async function GET(request: NextRequest) {
   const sub = searchParams.get("sub");
 
   if (!slug || !moduleNumRaw || !sub) {
-    return NextResponse.json({ error: "Parametros em falta" }, { status: 400 });
+    return NextResponse.json({ error: "Parâmetros em falta" }, { status: 400 });
   }
 
   const modNum = parseInt(moduleNumRaw, 10);
   if (Number.isNaN(modNum)) {
-    return NextResponse.json({ error: "module invalido" }, { status: 400 });
+    return NextResponse.json({ error: "module inválido" }, { status: 400 });
   }
 
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    return NextResponse.json({ error: "Nao autenticado" }, { status: 401 });
+    return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
 
   const { data: profile } = await supabase
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
       .maybeSingle();
     if (!enrollment) {
       return NextResponse.json(
-        { error: "Nao inscrito neste curso" },
+        { error: "Não inscrito neste curso" },
         { status: 403 },
       );
     }

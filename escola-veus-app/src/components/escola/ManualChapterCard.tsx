@@ -60,7 +60,7 @@ export function ManualChapterCard({
               className="text-xs uppercase tracking-wide"
               style={{ color: "var(--t-primary)" }}
             >
-              Capitulo do manual
+              Capítulo do manual
             </h3>
             <p className="mt-0.5 text-sm text-escola-creme">{chapter.title}</p>
           </div>

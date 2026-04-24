@@ -17,14 +17,14 @@ type WorkbookData = {
 };
 
 const STARTER_PHRASES = [
-  "O que me surpreendeu foi...",
-  "Reconheco que...",
-  "O que quero lembrar e...",
+  "O que me surpreendeu foi…",
+  "Reconheço que…",
+  "O que quero lembrar é…",
 ];
 
 const REFLECTION_PROMPTS = [
-  "O que descobri sobre mim neste modulo?",
-  "Que padrao reconheci que nao tinha visto antes?",
+  "O que descobri sobre mim neste módulo?",
+  "Que padrão reconheci que não tinha visto antes?",
   "O que mudou na forma como vejo isto?",
 ];
 
@@ -111,7 +111,7 @@ export function Workbook({ courseSlug, moduleNumber, workbookTitle }: WorkbookPr
     .filter(Boolean).length;
 
   const sections = [
-    { title: "Perguntas de reflexao", icon: "?" },
+    { title: "Perguntas de reflexão", icon: "?" },
     { title: "Registo", icon: "=" },
     { title: "Espaco livre", icon: "~" },
   ];

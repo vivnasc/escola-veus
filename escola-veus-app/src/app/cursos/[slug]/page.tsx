@@ -83,7 +83,7 @@ export default function CursoPage() {
         <div className="mb-6">
           <div className="mb-1 flex items-center justify-between">
             <span className="text-xs text-escola-creme-50">
-              {doneSubs} de {totalSubs} sub-aulas · {completedCount} de {totalModules} modulos
+              {doneSubs} de {totalSubs} sub-aulas · {completedCount} de {totalModules} módulos
             </span>
             <span className="text-xs font-medium" style={{ color: "var(--t-primary)" }}>
               {subPct}%
@@ -275,7 +275,7 @@ export default function CursoPage() {
               <div className="min-w-0 flex-1">
                 <p className="text-sm text-escola-creme">Manual do curso (PDF)</p>
                 <p className="mt-0.5 text-xs text-escola-creme-50">
-                  Companheiro de leitura dos 8 modulos, com o teu nome no rodape.
+                  Companheiro de leitura dos 8 módulos, com o teu nome no rodapé.
                 </p>
               </div>
             </a>
@@ -308,7 +308,7 @@ export default function CursoPage() {
               <div className="min-w-0 flex-1">
                 <p className="text-sm text-escola-creme">Cadernos preenchidos (PDF)</p>
                 <p className="mt-0.5 text-xs text-escola-creme-50">
-                  As tuas respostas e reflexoes ao longo dos modulos, juntas num
+                  As tuas respostas e reflexões ao longo dos módulos, juntas num
                   ficheiro.
                 </p>
               </div>

@@ -251,7 +251,7 @@ function MicroReflection({
             className="text-xs uppercase tracking-wide"
             style={{ color: "var(--t-primary, #C9A96E)" }}
           >
-            Pausa para reflexao
+            Pausa para reflexão
           </h3>
           <p className="mt-1 text-sm text-escola-creme-50">
             O que te ficou desta sub-aula?

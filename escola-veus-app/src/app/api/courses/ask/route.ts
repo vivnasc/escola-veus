@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
-      { erro: "ANTHROPIC_API_KEY nao configurada no servidor." },
+      { erro: "ANTHROPIC_API_KEY não configurada no servidor." },
       { status: 500 },
     );
   }
@@ -43,20 +43,20 @@ export async function POST(req: NextRequest) {
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    return NextResponse.json({ erro: "Nao autenticado." }, { status: 401 });
+    return NextResponse.json({ erro: "Não autenticado." }, { status: 401 });
   }
 
   let body: { courseSlug?: string; moduleNumber?: number; sublessonLetter?: string; question?: string };
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ erro: "JSON invalido." }, { status: 400 });
+    return NextResponse.json({ erro: "JSON inválido." }, { status: 400 });
   }
 
   const { courseSlug, moduleNumber, sublessonLetter, question } = body;
   if (!courseSlug || typeof moduleNumber !== "number" || !question) {
     return NextResponse.json(
-      { erro: "courseSlug, moduleNumber, question obrigatorios." },
+      { erro: "courseSlug, moduleNumber, question obrigatórios." },
       { status: 400 },
     );
   }
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
     const subbed = await isSubscribed(user.id);
     if (!subbed) {
       return NextResponse.json(
-        { erro: "Modulo fora do plano gratuito." },
+        { erro: "Módulo fora do plano gratuito." },
         { status: 403 },
       );
     }
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
   const ctx = buildCourseContext(courseSlug, moduleNumber);
   if (!ctx) {
     return NextResponse.json(
-      { erro: "Curso ou modulo sem conteudo disponivel." },
+      { erro: "Curso ou módulo sem conteúdo disponível." },
       { status: 404 },
     );
   }
@@ -164,7 +164,7 @@ export async function GET(req: NextRequest) {
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    return NextResponse.json({ erro: "Nao autenticado." }, { status: 401 });
+    return NextResponse.json({ erro: "Não autenticado." }, { status: 401 });
   }
 
   const { searchParams } = new URL(req.url);
@@ -172,14 +172,14 @@ export async function GET(req: NextRequest) {
   const moduleNumberRaw = searchParams.get("moduleNumber");
   if (!courseSlug || !moduleNumberRaw) {
     return NextResponse.json(
-      { erro: "courseSlug e moduleNumber obrigatorios." },
+      { erro: "courseSlug e moduleNumber obrigatórios." },
       { status: 400 },
     );
   }
 
   const moduleNumber = parseInt(moduleNumberRaw, 10);
   if (Number.isNaN(moduleNumber)) {
-    return NextResponse.json({ erro: "moduleNumber invalido." }, { status: 400 });
+    return NextResponse.json({ erro: "moduleNumber inválido." }, { status: 400 });
   }
 
   const { data, error } = await supabase
