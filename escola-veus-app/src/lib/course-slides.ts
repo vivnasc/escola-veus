@@ -134,14 +134,17 @@ function splitIntoBlocks(text: string, targetChars: number, maxChars: number): s
 }
 
 export function defaultBlocksForActo(acto: Acto, text: string): string[] {
+  // Blocos mais curtos: uma ou duas frases por slide. Os slides fluem mais
+  // depressa, o olho respira, o texto tem espaço. A Vivianne pode sempre
+  // juntar blocos à mão no editor contextual.
   switch (acto) {
     case "pergunta":
-      return splitIntoBlocks(text, 160, 220);
+      return splitIntoBlocks(text, 110, 150);
     case "situacao":
     case "revelacao":
-      return splitIntoBlocks(text, 220, 260);
+      return splitIntoBlocks(text, 140, 180);
     case "gesto":
-      return splitIntoBlocks(text, 260, 320);
+      return splitIntoBlocks(text, 160, 220);
     case "frase":
       return [text.trim()];
   }
