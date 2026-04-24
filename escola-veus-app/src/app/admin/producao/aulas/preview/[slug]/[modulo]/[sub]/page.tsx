@@ -1,7 +1,6 @@
 "use client";
 
 import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import {
   buildSlideDeckFromConfig,
   DEFAULT_VOLUMES,
@@ -11,15 +10,14 @@ import {
   type Slide,
 } from "@/lib/course-slides";
 import { SlidePreview } from "@/components/admin/SlidePreview";
+import { SubAulaNavigator } from "@/components/admin/SubAulaNavigator";
 import {
-  LessonConfigEditor,
-  type AgTrack,
-} from "@/components/admin/LessonConfigEditor";
+  CurrentSlideEditor,
+  computeBlockIndex,
+} from "@/components/admin/CurrentSlideEditor";
+import { SoundPanel, type AgTrack } from "@/components/admin/SoundPanel";
 
-type CourseDefaults = {
-  agTrack: string | null;
-  volumeDb: Record<Acto, number>;
-};
+type CourseDefaults = { agTrack: string | null; volumeDb: Record<Acto, number> };
 
 type RenderJob = {
   jobId: string;
@@ -51,15 +49,14 @@ export default function AulaPreviewPage({
   const [agTracksLoading, setAgTracksLoading] = useState(true);
   const [loaded, setLoaded] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
-  const [defaultsSaveState, setDefaultsSaveState] = useState<"idle" | "saving" | "saved" | "error">(
-    "idle",
-  );
+  const [defaultsSaveState, setDefaultsSaveState] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
   const [renderJob, setRenderJob] = useState<RenderJob | null>(null);
-
-  // Mix preview state
+  const [currentIdx, setCurrentIdx] = useState(0);
   const [mixEnabled, setMixEnabled] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState<Slide | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState<Slide | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const deck = useMemo(
@@ -67,25 +64,22 @@ export default function AulaPreviewPage({
     [slug, moduleNumber, sub, config],
   );
 
-  // Load config + defaults + ag tracks on mount
   useEffect(() => {
     let alive = true;
     (async () => {
       try {
-        const [configRes, defaultsRes, tracksRes] = await Promise.all([
+        const [c, d, a] = await Promise.all([
           fetch(`/api/admin/aulas/config?slug=${slug}&module=${moduleNumber}&sub=${sub}`),
           fetch(`/api/admin/aulas/course-defaults?slug=${slug}`),
           fetch("/api/admin/aulas/ag-tracks"),
         ]);
-        const configJson = await configRes.json();
-        const defaultsJson = await defaultsRes.json();
-        const tracksJson = await tracksRes.json();
+        const cj = await c.json();
+        const dj = await d.json();
+        const aj = await a.json();
         if (!alive) return;
-        setConfig(configJson.config ?? {});
-        setDefaults(defaultsJson.defaults ?? { agTrack: null, volumeDb: DEFAULT_VOLUMES });
-        setAgTracks(tracksJson.files ?? []);
-      } catch {
-        // Keep defaults
+        setConfig(cj.config ?? {});
+        setDefaults(dj.defaults ?? { agTrack: null, volumeDb: DEFAULT_VOLUMES });
+        setAgTracks(aj.files ?? []);
       } finally {
         if (alive) {
           setLoaded(true);
@@ -98,18 +92,17 @@ export default function AulaPreviewPage({
     };
   }, [slug, moduleNumber, sub]);
 
-  // Debounced save of config on change (800ms)
   useEffect(() => {
     if (!loaded) return;
     const t = setTimeout(async () => {
       setSaveState("saving");
       try {
-        const res = await fetch("/api/admin/aulas/config", {
+        const r = await fetch("/api/admin/aulas/config", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ slug, module: moduleNumber, sub, config }),
         });
-        if (!res.ok) throw new Error("save failed");
+        if (!r.ok) throw new Error();
         setSaveState("saved");
         setTimeout(() => setSaveState((s) => (s === "saved" ? "idle" : s)), 1500);
       } catch {
@@ -119,15 +112,14 @@ export default function AulaPreviewPage({
     return () => clearTimeout(t);
   }, [config, loaded, slug, moduleNumber, sub]);
 
-  // Mix audio: apenas AG em loop, volume modulado pelo slide actual.
-  // Render real faz a modulacao determinisiticamente; aqui so e sample audivel.
+  // Mix audio
   useEffect(() => {
-    const resolvedTrack = config.agTrack || defaults.agTrack;
-    if (!mixEnabled || !resolvedTrack) {
+    const track = config.agTrack || defaults.agTrack;
+    if (!mixEnabled || !track) {
       audioRef.current?.pause();
       return;
     }
-    const url = agTracks.find((t) => t.name === resolvedTrack)?.url;
+    const url = agTracks.find((t) => t.name === track)?.url;
     if (!url) return;
     if (!audioRef.current) {
       audioRef.current = new Audio();
@@ -135,23 +127,19 @@ export default function AulaPreviewPage({
     }
     const el = audioRef.current;
     if (el.src !== url) el.src = url;
-    if (isPlaying) {
-      el.play().catch(() => {});
-    } else {
-      el.pause();
-    }
+    if (isPlaying) el.play().catch(() => {});
+    else el.pause();
   }, [mixEnabled, isPlaying, config.agTrack, defaults.agTrack, agTracks]);
 
   useEffect(() => {
     const el = audioRef.current;
     if (!el || !currentSlide) return;
-    if (currentSlide.tipo === "title" || currentSlide.tipo === "fecho" || currentSlide.tipo === "end") {
-      el.volume = dbToLinear(-20);
-      return;
+    let db = -20;
+    if (currentSlide.tipo === "conteudo" && "acto" in currentSlide) {
+      db = config.volumeDb?.[currentSlide.acto] ?? defaults.volumeDb[currentSlide.acto] ?? DEFAULT_VOLUMES[currentSlide.acto];
+    } else if (currentSlide.tipo === "fecho") {
+      db = -60;
     }
-    const acto = "acto" in currentSlide ? currentSlide.acto : undefined;
-    if (!acto) return;
-    const db = config.volumeDb?.[acto] ?? defaults.volumeDb[acto] ?? DEFAULT_VOLUMES[acto];
     el.volume = Math.min(1, Math.max(0, dbToLinear(db)));
   }, [currentSlide, config.volumeDb, defaults.volumeDb]);
 
@@ -162,17 +150,17 @@ export default function AulaPreviewPage({
     };
   }, []);
 
-  // Save course defaults (AG track default for this course)
-  const saveDefaults = useCallback(
-    async (next: CourseDefaults) => {
+  const saveCourseDefault = useCallback(
+    async (trackName: string) => {
+      const next = { ...defaults, agTrack: trackName };
       setDefaultsSaveState("saving");
       try {
-        const res = await fetch("/api/admin/aulas/course-defaults", {
+        const r = await fetch("/api/admin/aulas/course-defaults", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ slug, defaults: next }),
         });
-        if (!res.ok) throw new Error("save failed");
+        if (!r.ok) throw new Error();
         setDefaults(next);
         setDefaultsSaveState("saved");
         setTimeout(() => setDefaultsSaveState((s) => (s === "saved" ? "idle" : s)), 1500);
@@ -180,28 +168,32 @@ export default function AulaPreviewPage({
         setDefaultsSaveState("error");
       }
     },
-    [slug],
+    [slug, defaults],
   );
 
   async function submitRender() {
     if (!deck) return;
-    if (!confirm(`Renderizar MP4 de ${deck.courseTitle} M${moduleNumber}·${deck.subLetter}?\n\n${deck.slides.length} slides · ${Math.floor(deck.totalDurationSec / 60)}:${String(deck.totalDurationSec % 60).padStart(2, "0")}`)) return;
+    const resolved = config.agTrack || defaults.agTrack;
+    if (!resolved) {
+      alert("Escolhe uma faixa Ancient Ground primeiro (painel Som).");
+      return;
+    }
+    if (
+      !confirm(
+        `Renderizar MP4 de ${deck.courseTitle} M${moduleNumber}·${deck.subLetter}?\n\n${deck.slides.length} slides · ${Math.floor(deck.totalDurationSec / 60)}:${String(deck.totalDurationSec % 60).padStart(2, "0")}\n\nFaixa: ${resolved}`,
+      )
+    )
+      return;
     try {
       setRenderJob({ jobId: "pending", status: "queued", submittedAt: Date.now() });
-      const res = await fetch("/api/admin/aulas/render-submit", {
+      const r = await fetch("/api/admin/aulas/render-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug,
-          module: moduleNumber,
-          sub,
-          config,
-          defaults,
-        }),
+        body: JSON.stringify({ slug, module: moduleNumber, sub, config, defaults }),
       });
-      const json = await res.json();
-      if (!res.ok || !json.jobId) throw new Error(json.erro ?? "render submit falhou");
-      setRenderJob({ jobId: json.jobId, status: "queued", submittedAt: Date.now() });
+      const j = await r.json();
+      if (!r.ok || !j.jobId) throw new Error(j.erro ?? "Falha a despachar");
+      setRenderJob({ jobId: j.jobId, status: "queued", submittedAt: Date.now() });
     } catch (err) {
       setRenderJob({
         jobId: "error",
@@ -212,7 +204,6 @@ export default function AulaPreviewPage({
     }
   }
 
-  // Poll render status
   useEffect(() => {
     if (!renderJob || renderJob.jobId === "pending" || renderJob.jobId === "error") return;
     if (renderJob.status === "done" || renderJob.status === "error") return;
@@ -222,21 +213,12 @@ export default function AulaPreviewPage({
         const j = await r.json();
         if (j.status === "done" || j.status === "error") {
           setRenderJob((rj) =>
-            rj
-              ? {
-                  ...rj,
-                  status: j.status,
-                  videoUrl: j.videoUrl ?? null,
-                  error: j.error ?? null,
-                }
-              : rj,
+            rj ? { ...rj, status: j.status, videoUrl: j.videoUrl ?? null, error: j.error ?? null } : rj,
           );
         } else if (j.status === "running" && renderJob.status !== "running") {
           setRenderJob((rj) => (rj ? { ...rj, status: "running" } : rj));
         }
-      } catch {
-        // keep polling
-      }
+      } catch {}
     }, 4000);
     return () => clearInterval(t);
   }, [renderJob]);
@@ -244,200 +226,247 @@ export default function AulaPreviewPage({
   if (!baseScript) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-12">
-        <Link href="/admin/producao/aulas" className="text-xs text-escola-creme-50 hover:text-escola-creme">
-          ← Aulas
-        </Link>
+        <SubAulaNavigator slug={slug} module={moduleNumber} sub={sub} />
         <p className="mt-6 text-sm text-escola-creme">
-          Script nao encontrado para {slug} M{modulo}·{sub.toUpperCase()}.
+          Script não encontrado para {slug} M{modulo}·{sub.toUpperCase()}.
         </p>
         <p className="mt-2 text-xs text-escola-creme-50">
-          So cursos com scripts completos em src/data/course-scripts/ aparecem aqui.
-          Actualmente: Ouro Proprio.
+          Só cursos com scripts em <code>src/data/course-scripts/</code> aparecem. Hoje: Ouro Próprio.
         </p>
       </div>
     );
   }
-
   if (!deck) return null;
 
   const resolvedAgTrack = config.agTrack || defaults.agTrack;
   const isConfigured = !!resolvedAgTrack;
-  const isAllEmpty =
-    !config.script &&
-    !config.blockSplits &&
-    !config.timingOverrides &&
-    !config.agTrack &&
-    !config.volumeDb &&
-    (config.globalTimingMultiplier == null || config.globalTimingMultiplier === 1);
+  const isRendering = renderJob?.status === "queued" || renderJob?.status === "running";
+  const hasCustomScript =
+    !!config.script || !!config.blockSplits || !!config.timingOverrides || !!config.volumeDb || !!config.agTrack;
 
   return (
-    <div className="mx-auto max-w-[1600px] px-4 py-6">
+    <div className="mx-auto max-w-[1280px] px-4 py-6">
+      {/* Navegador */}
+      <SubAulaNavigator slug={slug} module={moduleNumber} sub={sub} />
+
       {/* Header */}
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+      <div className="mt-4 mb-5 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <Link
-            href="/admin/producao/aulas"
-            className="text-xs text-escola-creme-50 hover:text-escola-creme"
-          >
-            ← Aulas
-          </Link>
-          <h1 className="mt-2 font-serif text-2xl text-escola-creme">
+          <h1 className="font-serif text-2xl text-escola-creme">
             {deck.courseTitle} — M{deck.moduleNumber}·{deck.subLetter}
           </h1>
           <p className="text-sm text-escola-creme-50">{deck.subTitle}</p>
         </div>
         <div className="text-right text-xs text-escola-creme-50">
           <p>
-            {deck.slides.length} slides · {Math.floor(deck.totalDurationSec / 60)}:
-            {String(deck.totalDurationSec % 60).padStart(2, "0")}
+            {deck.slides.length} slides ·{" "}
+            {Math.floor(deck.totalDurationSec / 60)}:{String(deck.totalDurationSec % 60).padStart(2, "0")}
           </p>
-          <p className="mt-1">Mock B · fundo preto · sem imagens</p>
           <p className="mt-1">
-            {saveState === "saving" && "A guardar..."}
-            {saveState === "saved" && "Guardado"}
+            {saveState === "saving" && "A guardar…"}
+            {saveState === "saved" && "✓ Guardado"}
             {saveState === "error" && <span className="text-red-400">Erro a guardar</span>}
-            {saveState === "idle" && !isAllEmpty && "Config guardada"}
-            {saveState === "idle" && isAllEmpty && "A usar valores default"}
+            {saveState === "idle" && hasCustomScript && "✓ Configuração guardada"}
+            {saveState === "idle" && !hasCustomScript && "A usar valores por defeito"}
           </p>
         </div>
       </div>
 
-      {/* Two columns: preview + editor */}
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_440px]">
-        <div className="space-y-4">
-          <SlidePreview
-            deck={deck}
-            onIndexChange={(_, s) => setCurrentSlide(s)}
-            onPlayingChange={setIsPlaying}
-          />
+      {/* Preview — grande, centrado */}
+      <div className="mb-4 overflow-hidden rounded-xl">
+        <SlidePreview
+          deck={deck}
+          controlledIndex={currentIdx}
+          onIndexChange={(i, s) => {
+            setCurrentIdx(i);
+            setCurrentSlide(s);
+          }}
+          onPlayingChange={setIsPlaying}
+        />
+      </div>
 
-          {/* Mix preview controls */}
-          <div className="rounded-xl border border-escola-border bg-escola-card p-4">
-            <div className="mb-2 flex items-center justify-between">
-              <h3 className="text-[10px] uppercase tracking-wider text-escola-dourado">
-                Preview do mix (browser)
-              </h3>
-              <label className="flex items-center gap-2 text-xs text-escola-creme-50">
-                <input
-                  type="checkbox"
-                  checked={mixEnabled}
-                  onChange={(e) => setMixEnabled(e.target.checked)}
-                />
-                Tocar AG por baixo dos slides
-              </label>
-            </div>
-            <p className="text-[10px] text-escola-creme-50">
+      {/* Tira de slides — clica para saltar */}
+      <div className="mb-6 flex gap-1 overflow-x-auto pb-2">
+        {deck.slides.map((s, i) => {
+          const active = i === currentIdx;
+          const label = stripLabel(s, i);
+          return (
+            <button
+              key={i}
+              onClick={() => setCurrentIdx(i)}
+              className={`shrink-0 whitespace-nowrap rounded px-2 py-1 text-[10px] transition-colors ${
+                active
+                  ? "bg-escola-dourado text-escola-bg"
+                  : "border border-escola-border bg-escola-card text-escola-creme-50 hover:text-escola-creme"
+              }`}
+              title={`Slide ${i + 1} · ${s.duracao}s`}
+            >
+              {i + 1}. {label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Editor contextual do slide actual */}
+      <div className="mb-6">
+        <CurrentSlideEditor
+          deck={deck}
+          slideIdx={currentIdx}
+          baseScript={baseScript}
+          config={config}
+          onConfigChange={setConfig}
+        />
+      </div>
+
+      {/* Mix preview (toggle) */}
+      <div className="mb-6 rounded-xl border border-escola-border bg-escola-card p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h3 className="text-[10px] uppercase tracking-wider text-escola-dourado">
+              🎧 Pré-visualização do som (browser)
+            </h3>
+            <p className="mt-1 text-[11px] text-escola-creme-50">
               {resolvedAgTrack ? (
                 <>
-                  Faixa: <span className="text-escola-creme">{resolvedAgTrack}</span>. Volume muda
-                  conforme o acto (lido dos sliders abaixo). Isto e so sample — o render real
-                  aplica os volumes determinisiticamente no FFmpeg.
+                  Toca <span className="text-escola-creme">{resolvedAgTrack}</span> em loop enquanto
+                  avanças pelos slides. Volume muda conforme o acto.
                 </>
               ) : (
-                <span>Escolhe uma faixa na tab &apos;Som&apos; para ouvires o mix.</span>
+                <>Escolhe uma faixa no painel Som para ouvires a mistura.</>
               )}
             </p>
           </div>
-
-          {/* Render controls */}
-          <div className="rounded-xl border border-escola-border bg-escola-card p-4">
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-[10px] uppercase tracking-wider text-escola-dourado">
-                Renderizar MP4
-              </h3>
-              {!isConfigured && (
-                <span className="text-[10px] text-red-400">
-                  Escolhe uma faixa AG antes (tab Som)
-                </span>
-              )}
-            </div>
-            <button
-              onClick={submitRender}
-              disabled={!isConfigured || (renderJob?.status === "queued" || renderJob?.status === "running")}
-              className="w-full rounded-lg bg-escola-dourado px-4 py-2.5 text-sm font-medium text-escola-bg transition-opacity hover:opacity-90 disabled:opacity-40"
-            >
-              {renderJob?.status === "queued" && "Em fila..."}
-              {renderJob?.status === "running" && "A renderizar..."}
-              {(!renderJob || renderJob.status === "done" || renderJob.status === "error") &&
-                "Render MP4 (GitHub Actions · FFmpeg)"}
-            </button>
-            {renderJob && (
-              <div className="mt-3 border-t border-escola-border pt-3 text-xs">
-                <p className="text-escola-creme-50">
-                  Job: <span className="font-mono text-escola-creme">{renderJob.jobId}</span> ·
-                  status: {renderJob.status}
-                </p>
-                {renderJob.status === "done" && renderJob.videoUrl && (
-                  <div className="mt-2">
-                    <a
-                      href={renderJob.videoUrl}
-                      target="_blank"
-                      rel="noopener"
-                      className="text-escola-dourado hover:underline"
-                    >
-                      Abrir MP4 renderizado ↗
-                    </a>
-                    <video
-                      src={renderJob.videoUrl}
-                      controls
-                      className="mt-2 aspect-video w-full rounded-lg bg-black"
-                    />
-                  </div>
-                )}
-                {renderJob.status === "error" && (
-                  <p className="mt-2 text-red-400">{renderJob.error ?? "Erro desconhecido"}</p>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Course defaults quick-set */}
-          <div className="rounded-xl border border-escola-border bg-escola-card p-4">
-            <div className="mb-2 flex items-center justify-between">
-              <h3 className="text-[10px] uppercase tracking-wider text-escola-dourado">
-                Default do curso
-              </h3>
-              <span className="text-[10px] text-escola-creme-50">
-                {defaultsSaveState === "saving" && "A guardar..."}
-                {defaultsSaveState === "saved" && "Guardado"}
-                {defaultsSaveState === "error" && <span className="text-red-400">Erro</span>}
-              </span>
-            </div>
-            <p className="mb-2 text-[10px] text-escola-creme-50">
-              Faixa AG default para todas as sub-aulas de {deck.courseTitle}:
-            </p>
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-escola-creme">
-                {defaults.agTrack ?? <em className="text-escola-creme-50">nenhuma</em>}
-              </span>
-              {resolvedAgTrack && resolvedAgTrack !== defaults.agTrack && (
-                <button
-                  onClick={() =>
-                    saveDefaults({ ...defaults, agTrack: resolvedAgTrack })
-                  }
-                  className="rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
-                >
-                  Usar &quot;{resolvedAgTrack}&quot; como default do curso
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div>
-          {loaded && (
-            <LessonConfigEditor
-              baseScript={baseScript}
-              defaults={defaults}
-              config={config}
-              onChange={setConfig}
-              agTracks={agTracks}
-              agTracksLoading={agTracksLoading}
-              deck={deck}
+          <label className="flex items-center gap-2 text-xs text-escola-creme-50">
+            <input
+              type="checkbox"
+              checked={mixEnabled}
+              onChange={(e) => setMixEnabled(e.target.checked)}
+              disabled={!resolvedAgTrack}
             />
+            Tocar AG por baixo
+          </label>
+        </div>
+      </div>
+
+      {/* SOM — sempre visível, sem tabs */}
+      <div className="mb-6">
+        {loaded && (
+          <SoundPanel
+            defaults={defaults}
+            config={config}
+            onConfigChange={setConfig}
+            agTracks={agTracks}
+            agTracksLoading={agTracksLoading}
+            onSaveAsCourseDefault={saveCourseDefault}
+          />
+        )}
+        {defaultsSaveState === "saving" && (
+          <p className="mt-1 text-[10px] text-escola-creme-50">A guardar por defeito do curso…</p>
+        )}
+        {defaultsSaveState === "saved" && (
+          <p className="mt-1 text-[10px] text-escola-creme-50">✓ Por defeito do curso guardado</p>
+        )}
+      </div>
+
+      {/* RITMO GLOBAL */}
+      <div className="mb-6 rounded-xl border border-escola-border bg-escola-card p-5">
+        <h3 className="mb-2 text-sm font-medium text-escola-creme">⏱ Ritmo global</h3>
+        <p className="mb-3 text-[11px] text-escola-creme-50">
+          Multiplicador em cima do pace automático (1 segundo por cada 5 caracteres).
+          0.5× = mais rápido, 2× = mais lento.
+        </p>
+        <div className="flex items-center gap-3">
+          <input
+            type="range"
+            min={0.5}
+            max={2.0}
+            step={0.05}
+            value={config.globalTimingMultiplier ?? 1}
+            onChange={(e) =>
+              setConfig({ ...config, globalTimingMultiplier: Number(e.target.value) })
+            }
+            className="flex-1"
+          />
+          <span className="w-20 text-right font-mono text-xs text-escola-creme">
+            {(config.globalTimingMultiplier ?? 1).toFixed(2)}×
+          </span>
+          {config.globalTimingMultiplier != null && config.globalTimingMultiplier !== 1 && (
+            <button
+              onClick={() => {
+                const { globalTimingMultiplier: _unused, ...rest } = config;
+                setConfig(rest);
+              }}
+              className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+              title="Repor 1×"
+            >
+              ↺
+            </button>
           )}
         </div>
       </div>
+
+      {/* RENDER */}
+      <div className="mb-6 rounded-xl border border-escola-dourado/40 bg-escola-card p-5">
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm font-medium text-escola-creme">🎬 Renderizar MP4</h3>
+          {!isConfigured && (
+            <span className="text-[10px] text-red-400">
+              Escolhe uma faixa no painel Som primeiro
+            </span>
+          )}
+        </div>
+        <button
+          onClick={submitRender}
+          disabled={!isConfigured || isRendering}
+          className="w-full rounded-lg bg-escola-dourado px-4 py-3 text-sm font-medium text-escola-bg transition-opacity hover:opacity-90 disabled:opacity-40"
+        >
+          {renderJob?.status === "queued" && "Em fila…"}
+          {renderJob?.status === "running" && "A renderizar…"}
+          {(!renderJob || renderJob.status === "done" || renderJob.status === "error") &&
+            "Renderizar MP4 (GitHub Actions · FFmpeg)"}
+        </button>
+        {renderJob && (
+          <div className="mt-4 border-t border-escola-border pt-3 text-xs">
+            <p className="text-escola-creme-50">
+              Job: <span className="font-mono text-escola-creme">{renderJob.jobId}</span> · estado:{" "}
+              {renderJob.status}
+            </p>
+            {renderJob.status === "done" && renderJob.videoUrl && (
+              <div className="mt-2">
+                <a
+                  href={renderJob.videoUrl}
+                  target="_blank"
+                  rel="noopener"
+                  className="text-escola-dourado hover:underline"
+                >
+                  Abrir MP4 renderizado ↗
+                </a>
+                <video
+                  src={renderJob.videoUrl}
+                  controls
+                  className="mt-2 aspect-video w-full rounded-lg bg-black"
+                />
+              </div>
+            )}
+            {renderJob.status === "error" && (
+              <p className="mt-2 text-red-400">{renderJob.error ?? "Erro desconhecido"}</p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
+}
+
+function stripLabel(s: Slide, _i: number): string {
+  if (s.tipo === "title") return "Título";
+  if (s.tipo === "acto-marker") return `${s.romano}·marker`;
+  if (s.tipo === "conteudo") return `${s.romano}·${actoShort(s.acto)}`;
+  if (s.tipo === "fecho") return "fecho";
+  if (s.tipo === "end") return "fim";
+  return "";
+}
+
+function actoShort(a: Acto): string {
+  return { pergunta: "P", situacao: "S", revelacao: "R", gesto: "G", frase: "F" }[a];
 }

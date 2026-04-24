@@ -36,10 +36,13 @@ export function SlidePreview({
   deck,
   onIndexChange,
   onPlayingChange,
+  controlledIndex,
 }: {
   deck: SlideDeck;
   onIndexChange?: (idx: number, slide: Slide) => void;
   onPlayingChange?: (playing: boolean) => void;
+  /** Se passado, sincroniza o index interno com este valor (modo controlado). */
+  controlledIndex?: number;
 }) {
   useSlideFonts();
   const [index, setIndex] = useState(0);
@@ -52,6 +55,14 @@ export function SlidePreview({
   useEffect(() => {
     if (index >= deck.slides.length) setIndex(Math.max(0, deck.slides.length - 1));
   }, [deck.slides.length, index]);
+
+  // Sincroniza com index controlado (clique na tira de slides).
+  useEffect(() => {
+    if (typeof controlledIndex === "number" && controlledIndex !== index) {
+      setIndex(Math.max(0, Math.min(deck.slides.length - 1, controlledIndex)));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [controlledIndex]);
 
   const slide = deck.slides[index];
 
@@ -274,7 +285,7 @@ export function SlidePreview({
             disabled={index === deck.slides.length - 1}
             className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40 disabled:opacity-40"
           >
-            Proximo →
+            Próximo →
           </button>
           <button
             onClick={() => setPlaying((p) => !p)}
@@ -290,13 +301,13 @@ export function SlidePreview({
             onClick={() => setFullscreen(true)}
             className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
           >
-            Ecra cheio
+            Ecrã cheio
           </button>
         </div>
       )}
 
       <p className="text-center text-[10px] text-escola-creme-50">
-        Teclas: ← → navegacao · F ecra cheio · P play · Esc sair · Total{" "}
+        Teclas: ← → navegação · F ecrã cheio · P play · Esc sair · Total{" "}
         {Math.floor(deck.totalDurationSec / 60)}:
         {String(deck.totalDurationSec % 60).padStart(2, "0")}
       </p>
