@@ -57,6 +57,53 @@ function deriveAlbumTitle(slug: string): string {
   return titleCase(slug);
 }
 
+function normalize(s: string): string {
+  return s.toLowerCase().replace(/[_\s]+/g, "-");
+}
+
+/**
+ * Tenta resolver um slug Supabase para o slug canonico usado em ALL_LYRICS.
+ * Estratégia:
+ *  1. match exacto
+ *  2. se o slug não começa com prefixo de produto, tenta todos os prefixos
+ *  3. sufixo match (key termina com o slug pedido)
+ *  4. fuzzy match pelos tokens "-"
+ */
+function resolveAlbumKey(supabaseSlug: string, trackNumber: number): string | null {
+  const slug = normalize(supabaseSlug);
+  const exact = `${slug}/${trackNumber}`;
+  if (ALL_LYRICS[exact]) return exact;
+
+  // Prefixos de produto
+  const hasKnownPrefix = PRODUCT_PREFIXES.some((p) => slug.startsWith(`${p}-`));
+  if (!hasKnownPrefix) {
+    for (const p of PRODUCT_PREFIXES) {
+      const k = `${p}-${slug}/${trackNumber}`;
+      if (ALL_LYRICS[k]) return k;
+    }
+  }
+
+  // Sufixo — qualquer key cujo album termine com o slug pedido
+  for (const key of Object.keys(ALL_LYRICS)) {
+    const [albumPart, nStr] = key.split("/");
+    if (parseInt(nStr, 10) !== trackNumber) continue;
+    if (albumPart.endsWith(`-${slug}`) || albumPart === slug) return key;
+  }
+
+  // Fuzzy — todas as palavras do slug pedido aparecem no key
+  const wanted = slug.split("-").filter((w) => w.length > 2);
+  if (wanted.length > 0) {
+    for (const key of Object.keys(ALL_LYRICS)) {
+      const [albumPart, nStr] = key.split("/");
+      if (parseInt(nStr, 10) !== trackNumber) continue;
+      const allMatch = wanted.every((w) => albumPart.includes(w));
+      if (allMatch) return key;
+    }
+  }
+
+  return null;
+}
+
 export type TrackLookup = {
   albumSlug: string;
   albumTitle: string;
@@ -69,15 +116,15 @@ export function getTrackLyrics(
   albumSlug: string,
   trackNumber: number,
 ): TrackLookup | null {
-  const key = `${albumSlug}/${trackNumber}`;
-  const lyrics = ALL_LYRICS[key];
-  if (!lyrics) return null;
+  const resolved = resolveAlbumKey(albumSlug, trackNumber);
+  if (!resolved) return null;
+  const [canonicalSlug] = resolved.split("/");
   return {
-    albumSlug,
-    albumTitle: deriveAlbumTitle(albumSlug),
+    albumSlug: canonicalSlug,
+    albumTitle: deriveAlbumTitle(canonicalSlug),
     trackNumber,
     trackTitle: `Faixa ${trackNumber}`,
-    lyrics,
+    lyrics: ALL_LYRICS[resolved],
   };
 }
 
