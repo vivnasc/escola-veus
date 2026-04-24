@@ -163,17 +163,15 @@ export default function AulasPage() {
                         {mod.subLessons.map((sub) => {
                           const aula = findAulaByKey(c.slug, mod.number, sub.letter);
                           return (
-                            <div
+                            <Link
                               key={sub.letter}
-                              className="flex items-center gap-1 rounded border border-escola-border bg-escola-bg px-2 py-1"
+                              href={`/admin/producao/aulas/preview/${c.slug}/${mod.number}/${sub.letter.toLowerCase()}`}
+                              className="group flex items-center gap-1.5 rounded border border-escola-border bg-escola-bg px-2 py-1 hover:border-escola-dourado/50"
+                              title={`Abrir preview de ${sub.letter} — ${sub.title}`}
                             >
-                              <Link
-                                href={`/admin/producao/aulas/preview/${c.slug}/${mod.number}/${sub.letter.toLowerCase()}`}
-                                className="text-[10px] text-escola-dourado hover:underline"
-                                title="Pre-visualizar slides"
-                              >
+                              <span className="flex h-5 w-5 items-center justify-center rounded bg-escola-dourado/10 font-serif text-[11px] font-semibold text-escola-dourado group-hover:bg-escola-dourado group-hover:text-escola-bg">
                                 {sub.letter}
-                              </Link>
+                              </span>
                               <Pill
                                 label="áudio"
                                 ok={!!aula?.status.audio}
@@ -185,7 +183,10 @@ export default function AulasPage() {
                                 ok={!!aula?.status.video}
                                 value={aula ? (aula.status.video ? "✓" : "×") : "—"}
                               />
-                            </div>
+                              <span className="ml-auto text-[10px] text-escola-creme-50 group-hover:text-escola-dourado">
+                                abrir →
+                              </span>
+                            </Link>
                           );
                         })}
                       </div>
