@@ -36,10 +36,13 @@ export function SlidePreview({
   deck,
   onIndexChange,
   onPlayingChange,
+  controlledIndex,
 }: {
   deck: SlideDeck;
   onIndexChange?: (idx: number, slide: Slide) => void;
   onPlayingChange?: (playing: boolean) => void;
+  /** Se passado, sincroniza o index interno com este valor (modo controlado). */
+  controlledIndex?: number;
 }) {
   useSlideFonts();
   const [index, setIndex] = useState(0);
@@ -52,6 +55,14 @@ export function SlidePreview({
   useEffect(() => {
     if (index >= deck.slides.length) setIndex(Math.max(0, deck.slides.length - 1));
   }, [deck.slides.length, index]);
+
+  // Sincroniza com index controlado (clique na tira de slides).
+  useEffect(() => {
+    if (typeof controlledIndex === "number" && controlledIndex !== index) {
+      setIndex(Math.max(0, Math.min(deck.slides.length - 1, controlledIndex)));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [controlledIndex]);
 
   const slide = deck.slides[index];
 
