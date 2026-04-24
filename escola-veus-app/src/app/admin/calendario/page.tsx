@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
+import { YouTubePublishSteps } from "@/components/admin/YouTubePublishSteps";
 import {
   YOUTUBE_WEEKS,
   YOUTUBE_SCHEDULE,
@@ -515,63 +516,78 @@ function PlanoSlot({
         {saving && <span className="shrink-0 text-[10px] text-escola-creme-50">A guardar...</span>}
       </div>
 
-      {/* Vídeo associado: player + SEO copy + partilha + marcar publicado. */}
+      {/* Vídeo associado: player + publicação em 3 passos (igual ao funil). */}
       {associated && entry && (
-        <div className="space-y-2 rounded border border-escola-border/60 bg-escola-bg p-2 text-xs">
-          {associated.thumbnailUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={associated.thumbnailUrl}
-              alt={title}
-              className={`w-full rounded ${slot.type === "longo" ? "aspect-video" : "aspect-[9/16] max-w-[180px]"} object-cover`}
-            />
-          ) : null}
-          {title && <p className="font-medium text-escola-creme">{title}</p>}
-          <ShareVideoActions
-            videoUrl={entry.videoUrl}
-            title={title}
-            text={description}
-            mode={slot.type === "longo" ? "long" : "short"}
-          />
-          <div className="flex flex-wrap gap-2 pt-1">
-            <button
-              onClick={copyAll}
-              className="flex-1 min-w-[120px] rounded bg-escola-dourado px-3 py-2 text-xs font-semibold text-escola-bg hover:bg-escola-dourado/90"
-            >
-              {copiedAll ? "✓ Copiado!" : "📋 Copiar TUDO (título + descrição + URL)"}
-            </button>
-            <button
-              onClick={markPublished}
-              className={`rounded border px-3 py-2 text-xs ${
-                published
-                  ? "border-green-700 bg-green-950/40 text-green-300"
-                  : "border-escola-border text-escola-creme hover:bg-escola-border/20"
-              }`}
-            >
-              {published ? "✓ Publicado (clica para reverter)" : "Marcar como publicado"}
-            </button>
-            <button
-              onClick={() => {
-                if (!confirm("Desassociar este vídeo do slot?")) return;
-                onChange(null);
-              }}
-              className="rounded border border-escola-border px-3 py-2 text-xs text-red-300 hover:bg-red-950/30"
-            >
-              Desassociar
-            </button>
+        <div className="space-y-3">
+          <div className="rounded border border-escola-border/60 bg-escola-bg p-2 text-xs">
+            {associated.thumbnailUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={associated.thumbnailUrl}
+                alt={title}
+                className={`w-full rounded ${slot.type === "longo" ? "aspect-video" : "aspect-[9/16] max-w-[180px]"} object-cover`}
+              />
+            ) : null}
+            {title && <p className="mt-2 font-medium text-escola-creme">{title}</p>}
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button
+                onClick={markPublished}
+                className={`rounded border px-3 py-2 text-xs ${
+                  published
+                    ? "border-green-700 bg-green-950/40 text-green-300"
+                    : "border-escola-border text-escola-creme hover:bg-escola-border/20"
+                }`}
+              >
+                {published ? "✓ Publicado (clica para reverter)" : "Marcar como publicado"}
+              </button>
+              <button
+                onClick={() => {
+                  if (!confirm("Desassociar este vídeo do slot?")) return;
+                  onChange(null);
+                }}
+                className="rounded border border-escola-border px-3 py-2 text-xs text-red-300 hover:bg-red-950/30"
+              >
+                Desassociar
+              </button>
+            </div>
+            {published && entry.publishedAt && (
+              <p className="mt-2 text-[10px] text-green-300">
+                Marcado publicado em{" "}
+                {new Date(entry.publishedAt).toLocaleString("pt-PT", {
+                  day: "2-digit",
+                  month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+            )}
           </div>
-          {published && entry.publishedAt && (
-            <p className="text-[10px] text-green-300">
-              Marcado publicado em{" "}
-              {new Date(entry.publishedAt).toLocaleString("pt-PT", {
-                day: "2-digit",
-                month: "short",
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
+
+          {/* 3 passos manuais até configurarmos o OAuth do canal AG. */}
+          {!published && (
+            <YouTubePublishSteps
+              videoUrl={entry.videoUrl}
+              title={title}
+              description={description + (hashtags ? `\n\n${hashtags}` : "")}
+              tags={Array.isArray(associated?.seo?.["hashtags"])
+                ? (associated!.seo!["hashtags"] as string[]).map((h) => h.replace(/^#/, ""))
+                : []}
+              thumbnailUrl={associated.thumbnailUrl}
+              channel="ag"
+              channelLabel="canal Ancient Ground · 3 passos"
+            />
           )}
         </div>
+      )}
+
+      {/* Copiar TUDO one-shot (atalho retrocompat). */}
+      {associated && entry && (
+        <button
+          onClick={copyAll}
+          className="mt-2 w-full rounded bg-escola-dourado/20 px-3 py-1.5 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/30"
+        >
+          {copiedAll ? "✓ Copiado atalho!" : "📋 Atalho: copiar título + descrição + URL num só texto"}
+        </button>
       )}
 
       {!associated && isPast && !entry && (
