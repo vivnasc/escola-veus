@@ -176,6 +176,30 @@ export function YouTubePublishSteps({
               ⬇ Thumbnail
             </a>
           )}
+          {/* Plano B: se iOS continuar a reproduzir inline mesmo com o
+              proxy octet-stream, a utilizadora envia o link a si própria
+              (email/WhatsApp/Messages) e faz o download no PC/outro
+              dispositivo onde o browser não seja Safari iOS. */}
+          {canShare && (
+            <button
+              onClick={async () => {
+                const href = typeof window !== "undefined"
+                  ? `${window.location.origin}${downloadHref(videoUrl, filename)}`
+                  : downloadHref(videoUrl, filename);
+                try {
+                  await navigator.share({
+                    title: `Link para descarregar: ${title}`,
+                    text: `Link de download do vídeo AG. Abre num PC/Mac se o iPhone só fizer preview.\n\n${href}`,
+                    url: href,
+                  });
+                } catch { /* user cancelled */ }
+              }}
+              className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40"
+              title="Envia o link a ti mesma (email/WhatsApp) para abrir noutro dispositivo se o iOS insistir em reproduzir."
+            >
+              ↗ Enviar link para mim
+            </button>
+          )}
         </div>
         {shareMsg && <p className="mt-2 text-[10px] text-escola-creme-50">{shareMsg}</p>}
         {kind === "long" ? (
