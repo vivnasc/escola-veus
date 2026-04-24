@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useProgress } from "@/hooks/useProgress";
 import { useJournal } from "@/hooks/useJournal";
 import { VideoPlayer } from "@/components/escola/VideoPlayer";
+import { AudioPlayer } from "@/components/escola/AudioPlayer";
 import { AskClaude } from "@/components/escola/AskClaude";
 import { getTerritoryStyle } from "@/data/territory-themes";
 import { useState } from "react";
@@ -130,6 +131,13 @@ export default function SubaulaPage() {
         moduleNumber={moduloNum}
         sublessonLetter={subaulaLetter}
         fallbackDescription={sub.description}
+      />
+
+      {/* Audio "podcast" — entrega paralela ao video */}
+      <AudioPlayer
+        courseSlug={slug}
+        moduleNumber={moduloNum}
+        sublessonLetter={subaulaLetter}
       />
 
       {/* Content */}
