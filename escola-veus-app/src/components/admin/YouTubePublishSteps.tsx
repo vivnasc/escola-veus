@@ -62,40 +62,12 @@ export function YouTubePublishSteps({
     return `${url}${sep}download=${encodeURIComponent(name)}`;
   };
 
-  // PWA iOS bloqueia downloads via anchor+download attribute — o Safari
-  // abre o MP4 inline e reproduz. A única forma que FUNCIONA em PWA mobile
-  // é `navigator.share({url})` que abre o share sheet nativo do iOS/Android
-  // onde o utilizador escolhe "Save to Files" (ou manda para outra app).
-  // Em desktop, anchor+download honra Content-Disposition e descarrega.
-  const isMobile =
-    typeof navigator !== "undefined" &&
-    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  const isIOS =
-    typeof navigator !== "undefined" &&
-    /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  const downloadSmart = async (url: string, name: string) => {
-    const href = downloadHref(url, name);
-    // iOS (Safari/PWA): ignora Content-Disposition + download attribute para
-    // video/mp4 — reproduz sempre inline. A única via que funciona é abrir
-    // o vídeo numa tab e o user fazer long-press → "Save Video" para Fotos.
-    if (isIOS) {
-      window.open(href, "_blank");
-      setShareMsg("iOS: long-press no vídeo → 'Save Video' → vai para Fotos");
-      setTimeout(() => setShareMsg(null), 8000);
-      return;
-    }
-    // Android + Desktop: anchor com download attribute + ?download
-    // (Content-Disposition) descarrega directamente.
-    const a = document.createElement("a");
-    a.href = href;
-    a.download = name;
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  };
+  // Download agora usa anchor HTML directo no JSX (em vez de JS-triggered
+  // click). Essencial para iOS/PWA: anchor com target="_blank" abre no
+  // Safari externo (sai da PWA), onde o long-press no vídeo funciona e
+  // permite "Save Video" para as Fotos. Em Android e desktop, o
+  // ?download=<nome> força Content-Disposition: attachment e descarrega
+  // directamente sem preview.
 
   const nativeShareFile = async () => {
     // Só faz sentido para shorts (<50MB). Longos não passam pelo Web Share.
@@ -162,12 +134,19 @@ export function YouTubePublishSteps({
           Guardar ficheiros no teu dispositivo
         </p>
         <div className="flex flex-wrap gap-2 text-xs">
-          <button
-            onClick={() => downloadSmart(videoUrl, filename)}
-            className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg"
+          {/* Anchor directo em vez de button — essencial para iOS/PWA. No
+              iOS o anchor com target="_blank" abre no Safari externo (sai
+              da PWA), onde o long-press funciona. O ?download forca
+              Content-Disposition no Android e desktop.  */}
+          <a
+            href={downloadHref(videoUrl, filename)}
+            download={filename}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg no-underline"
           >
             ⬇ MP4 (vídeo)
-          </button>
+          </a>
           {canShare && kind === "short" && (
             <button
               onClick={nativeShareFile}
@@ -187,12 +166,15 @@ export function YouTubePublishSteps({
             </button>
           )}
           {thumbnailUrl && (
-            <button
-              onClick={() => downloadSmart(thumbnailUrl, `${slug}-thumb.png`)}
-              className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40"
+            <a
+              href={downloadHref(thumbnailUrl, `${slug}-thumb.png`)}
+              download={`${slug}-thumb.png`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40 no-underline"
             >
               ⬇ Thumbnail
-            </button>
+            </a>
           )}
         </div>
         {shareMsg && <p className="mt-2 text-[10px] text-escola-creme-50">{shareMsg}</p>}
