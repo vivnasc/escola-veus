@@ -6,11 +6,16 @@
  *   IV · GESTO          (gestoConsciencia)
  *   V · FRASE           (fraseFinal)
  *
- * Cada slide tem: tipo, acto, texto, duracao, e metadados para o preview
- * seguir o design Mock B (tipografia por acto, label no topo, etc.).
+ * Aceita um `LessonConfig` opcional com overrides editaveis pelo admin
+ * (texto, quebra de blocos, timing por slide, volumes, faixa AG) — esses
+ * overrides vivem em Supabase e sao carregados pelo preview; nada vai
+ * hardcoded para o render.
  */
 
-import { OURO_PROPRIO_SCRIPTS, type LessonScript } from "@/data/course-scripts/ouro-proprio";
+import {
+  OURO_PROPRIO_SCRIPTS,
+  type LessonScript,
+} from "@/data/course-scripts/ouro-proprio";
 import { getCourseBySlug } from "@/data/courses";
 
 export type Acto = "pergunta" | "situacao" | "revelacao" | "gesto" | "frase";
@@ -45,6 +50,43 @@ export type SlideDeck = {
   slides: Slide[];
 };
 
+export type LessonConfig = {
+  // Overrides ao texto base dos 5 actos + titulo.
+  script?: Partial<
+    Pick<
+      LessonScript,
+      | "title"
+      | "perguntaInicial"
+      | "situacaoHumana"
+      | "revelacaoPadrao"
+      | "gestoConsciencia"
+      | "fraseFinal"
+    >
+  >;
+  // Quando presente, substitui a quebra automatica em blocos. Array de strings
+  // ja partidas. Permite que a Vivianne junte/divida blocos manualmente.
+  blockSplits?: Partial<Record<Acto, string[]>>;
+  // Override por slide: { "0": 10, "5": 15 } em segundos.
+  timingOverrides?: Record<string, number>;
+  // Multiplicador aplicado em cima do pace default 1s/5chars. 1.0 = default.
+  globalTimingMultiplier?: number;
+  // Faixa Ancient Ground (filename em audios/albums/ancient-ground/).
+  // Se vazio, o render usa o default do curso.
+  agTrack?: string;
+  // Volume por acto em dB. Defaults em DEFAULT_VOLUMES.
+  volumeDb?: Partial<Record<Acto, number>>;
+};
+
+export const DEFAULT_VOLUMES: Record<Acto, number> = {
+  pergunta: -18,
+  situacao: -18,
+  revelacao: -17,
+  gesto: -15,
+  frase: -14,
+};
+
+export const DEFAULT_GLOBAL_MULTIPLIER = 1.0;
+
 const ACTOS: Array<{ acto: Acto; romano: string; label: string }> = [
   { acto: "pergunta", romano: "I", label: "PERGUNTA" },
   { acto: "situacao", romano: "II", label: "SITUACAO" },
@@ -72,7 +114,6 @@ function splitIntoBlocks(text: string, targetChars: number, maxChars: number): s
   let remaining = clean;
   while (remaining.length > maxChars) {
     const slice = remaining.slice(0, maxChars + 1);
-    // Procura o ultimo ". " dentro de [targetChars-60, maxChars]
     let cut = -1;
     for (let i = maxChars; i > targetChars - 60; i--) {
       if (slice[i] === "." && slice[i + 1] === " ") {
@@ -81,7 +122,6 @@ function splitIntoBlocks(text: string, targetChars: number, maxChars: number): s
       }
     }
     if (cut === -1) {
-      // fallback: ultimo espaco
       cut = slice.lastIndexOf(" ", maxChars);
       if (cut <= targetChars / 2) cut = maxChars;
     }
@@ -92,11 +132,7 @@ function splitIntoBlocks(text: string, targetChars: number, maxChars: number): s
   return blocks;
 }
 
-function blocksForActo(acto: Acto, text: string): string[] {
-  // Pergunta: uma frase por slide se for curta; senao 1 bloco (~200)
-  // Situacao / Revelacao: cortar em blocos de ~220 chars (~50 palavras)
-  // Gesto: se tem frases numeradas/listadas, fica junto; senao 1 bloco
-  // Frase: sempre 1 slide
+export function defaultBlocksForActo(acto: Acto, text: string): string[] {
   switch (acto) {
     case "pergunta":
       return splitIntoBlocks(text, 160, 220);
@@ -110,34 +146,67 @@ function blocksForActo(acto: Acto, text: string): string[] {
   }
 }
 
-function getScript(courseSlug: string, moduleNumber: number, subLetter: string): LessonScript | null {
+export function getBaseScript(
+  courseSlug: string,
+  moduleNumber: number,
+  subLetter: string,
+): LessonScript | null {
   if (courseSlug !== "ouro-proprio") return null;
   const key = `m${moduleNumber}${subLetter.toLowerCase()}`;
   return OURO_PROPRIO_SCRIPTS[key] ?? null;
 }
 
-export function buildSlideDeck(
+/**
+ * Aplica o `script` override (strings vazias/undefined caem para o base).
+ */
+export function resolveScript(
   courseSlug: string,
   moduleNumber: number,
   subLetter: string,
+  scriptOverride?: LessonConfig["script"],
+): LessonScript | null {
+  const base = getBaseScript(courseSlug, moduleNumber, subLetter);
+  if (!base) return null;
+  if (!scriptOverride) return base;
+  const merged: LessonScript = {
+    ...base,
+    title: (scriptOverride.title ?? "").trim() || base.title,
+    perguntaInicial: (scriptOverride.perguntaInicial ?? "").trim() || base.perguntaInicial,
+    situacaoHumana: (scriptOverride.situacaoHumana ?? "").trim() || base.situacaoHumana,
+    revelacaoPadrao: (scriptOverride.revelacaoPadrao ?? "").trim() || base.revelacaoPadrao,
+    gestoConsciencia: (scriptOverride.gestoConsciencia ?? "").trim() || base.gestoConsciencia,
+    fraseFinal: (scriptOverride.fraseFinal ?? "").trim() || base.fraseFinal,
+  };
+  return merged;
+}
+
+export function buildSlideDeckFromConfig(
+  courseSlug: string,
+  moduleNumber: number,
+  subLetter: string,
+  config?: LessonConfig,
 ): SlideDeck | null {
-  const script = getScript(courseSlug, moduleNumber, subLetter);
+  const script = resolveScript(courseSlug, moduleNumber, subLetter, config?.script);
   if (!script) return null;
 
   const course = getCourseBySlug(courseSlug);
   if (!course) return null;
 
+  const timingMul =
+    typeof config?.globalTimingMultiplier === "number" && config.globalTimingMultiplier > 0
+      ? config.globalTimingMultiplier
+      : DEFAULT_GLOBAL_MULTIPLIER;
+
   const slides: Slide[] = [];
 
-  // 1. Titulo da aula (~8s)
+  // 1. Titulo (~8s com multiplicador)
   slides.push({
     tipo: "title",
     texto: script.title,
     subtexto: `Modulo ${moduleNumber} · Aula ${subLetter.toUpperCase()}`,
-    duracao: 8,
+    duracao: Math.max(3, Math.round(8 * timingMul)),
   });
 
-  // 2-6. Os cinco actos: marker + 1+ blocos de conteudo
   const sectionTexts: Record<Acto, string> = {
     pergunta: script.perguntaInicial,
     situacao: script.situacaoHumana,
@@ -147,7 +216,6 @@ export function buildSlideDeck(
   };
 
   for (const { acto, romano, label } of ACTOS) {
-    // Marker intersticial de 1.5s
     slides.push({
       tipo: "acto-marker",
       acto,
@@ -156,20 +224,25 @@ export function buildSlideDeck(
       duracao: 2,
     });
 
-    const blocks = blocksForActo(acto, sectionTexts[acto]);
+    const override = config?.blockSplits?.[acto];
+    const blocks =
+      override && override.length > 0
+        ? override.filter((b) => b && b.trim().length > 0).map((b) => b.trim())
+        : defaultBlocksForActo(acto, sectionTexts[acto]);
+
     for (const b of blocks) {
+      const base = acto === "frase" ? 12 : durationFor(b);
       slides.push({
         tipo: "conteudo",
         acto,
         romano,
         label,
         texto: b,
-        duracao: acto === "frase" ? 12 : durationFor(b),
+        duracao: Math.max(3, Math.round(base * timingMul)),
       });
     }
   }
 
-  // 7. Fecho (fundo liso 2s) + logo
   slides.push({ tipo: "fecho", duracao: 2 });
   slides.push({
     tipo: "end",
@@ -177,6 +250,16 @@ export function buildSlideDeck(
     subtexto: "seteveus.space",
     duracao: 5,
   });
+
+  // Overrides por slide (aplicados depois da construcao).
+  if (config?.timingOverrides) {
+    for (const [idxStr, dur] of Object.entries(config.timingOverrides)) {
+      const idx = Number(idxStr);
+      if (Number.isFinite(idx) && slides[idx] && typeof dur === "number" && dur > 0) {
+        slides[idx].duracao = dur;
+      }
+    }
+  }
 
   const totalDurationSec = slides.reduce((s, sl) => s + sl.duracao, 0);
 
@@ -189,4 +272,16 @@ export function buildSlideDeck(
     totalDurationSec,
     slides,
   };
+}
+
+/**
+ * Retro-compat: continua a funcionar sem config. Novas chamadas devem usar
+ * buildSlideDeckFromConfig directamente para beneficiar dos overrides.
+ */
+export function buildSlideDeck(
+  courseSlug: string,
+  moduleNumber: number,
+  subLetter: string,
+): SlideDeck | null {
+  return buildSlideDeckFromConfig(courseSlug, moduleNumber, subLetter);
 }

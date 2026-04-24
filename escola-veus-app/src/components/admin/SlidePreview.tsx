@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import type { SlideDeck } from "@/lib/course-slides";
+import type { Slide, SlideDeck } from "@/lib/course-slides";
 import { getTerritoryTheme } from "@/data/territory-themes";
 
 // Injecta DM Serif Display + Nunito uma unica vez (Cormorant ja esta global).
@@ -32,7 +32,15 @@ function useSlideFonts() {
  * Controlos: anterior / proximo / ecra cheio / play (auto-advance pela
  * duracao definida em cada slide).
  */
-export function SlidePreview({ deck }: { deck: SlideDeck }) {
+export function SlidePreview({
+  deck,
+  onIndexChange,
+  onPlayingChange,
+}: {
+  deck: SlideDeck;
+  onIndexChange?: (idx: number, slide: Slide) => void;
+  onPlayingChange?: (playing: boolean) => void;
+}) {
   useSlideFonts();
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -40,7 +48,20 @@ export function SlidePreview({ deck }: { deck: SlideDeck }) {
   const theme = getTerritoryTheme(deck.courseSlug);
   const accent = theme?.primary ?? "#C9A96E";
 
+  // Reset se o deck mudou (menos slides por exemplo).
+  useEffect(() => {
+    if (index >= deck.slides.length) setIndex(Math.max(0, deck.slides.length - 1));
+  }, [deck.slides.length, index]);
+
   const slide = deck.slides[index];
+
+  useEffect(() => {
+    onIndexChange?.(index, slide);
+  }, [index, slide, onIndexChange]);
+
+  useEffect(() => {
+    onPlayingChange?.(playing);
+  }, [playing, onPlayingChange]);
 
   const next = useCallback(() => {
     setIndex((i) => Math.min(deck.slides.length - 1, i + 1));

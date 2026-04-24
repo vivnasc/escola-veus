@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { buildCourseContext, renderSystemPrompt } from "@/lib/course-context";
+import { loadQaExtras } from "@/lib/qa-extras";
 
 /**
  * POST /api/courses/ask
@@ -79,7 +80,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const systemPrompt = renderSystemPrompt(ctx);
+  const extraInstructions = await loadQaExtras().catch(() => "");
+  const systemPrompt = renderSystemPrompt(ctx, { extraInstructions });
 
   const { data: history } = await supabase
     .from("escola_questions")

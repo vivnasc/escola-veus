@@ -7,6 +7,8 @@ import { getTerritoryStyle } from "@/data/territory-themes";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProgress } from "@/hooks/useProgress";
 import { ManualChapterCard } from "@/components/escola/ManualChapterCard";
+import { AskClaude } from "@/components/escola/AskClaude";
+import { getManualChapter } from "@/data/course-manuals";
 
 export default function ModuloPage() {
   const params = useParams();
@@ -27,6 +29,7 @@ export default function ModuloPage() {
   const hasAccess = isFreeTier || isSubscribed;
   const accessible = isModuleAccessible(moduloNum);
   const completed = isModuleCompleted(moduloNum);
+  const chapter = getManualChapter(slug, moduloNum);
 
   // Count completed sub-lessons for this module
   const completedSubs = mod.subLessons.filter((sl) =>
@@ -65,6 +68,13 @@ export default function ModuloPage() {
           {mod.title}
         </h1>
         <p className="mt-1 text-sm text-escola-creme-50">{mod.description}</p>
+
+        {/* Territorio: evocacao literaria (so texto, serif, italico) */}
+        {chapter?.territoryStage && (
+          <p className="mt-5 font-serif text-sm italic leading-relaxed text-escola-creme-50">
+            {chapter.territoryStage}
+          </p>
+        )}
       </header>
 
       {/* Access gate */}
@@ -201,6 +211,12 @@ export default function ModuloPage() {
               Ver conclusão do módulo
             </Link>
           )}
+
+          {/* Perguntar ao guia — ao nivel do modulo (conversa unica para
+              as 3 sub-aulas, cacheada 1h pela Claude). */}
+          <div className="mt-6">
+            <AskClaude courseSlug={slug} moduleNumber={moduloNum} />
+          </div>
         </>
       )}
 

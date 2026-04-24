@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import COURSES from "@/data/courses";
 import PromptEditor from "@/components/admin/PromptEditor";
+import { QaPromptEditor } from "@/components/admin/QaPromptEditor";
 
 type AulaStatus = { script: boolean; audio: boolean; video: boolean };
 type AulaEntry = {
@@ -17,7 +18,7 @@ type AulaEntry = {
 
 export default function AulasPage() {
   const [open, setOpen] = useState<string | null>(COURSES[0]?.slug ?? null);
-  const [tab, setTab] = useState<"cursos" | "prompts">("cursos");
+  const [tab, setTab] = useState<"cursos" | "prompts" | "qa">("cursos");
   const [aulasStatus, setAulasStatus] = useState<AulaEntry[] | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(false);
 
@@ -89,7 +90,7 @@ export default function AulasPage() {
       </div>
 
       <nav className="mb-6 flex gap-1 border-b border-escola-border">
-        {(["cursos", "prompts"] as const).map((t) => (
+        {(["cursos", "prompts", "qa"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -99,12 +100,15 @@ export default function AulasPage() {
                 : "border-transparent text-escola-creme-50 hover:text-escola-creme"
             }`}
           >
-            {t === "cursos" ? "Cursos" : "Prompts"}
+            {t === "cursos" && "Cursos"}
+            {t === "prompts" && "Prompts"}
+            {t === "qa" && "Q&A (tom)"}
           </button>
         ))}
       </nav>
 
       {tab === "prompts" && <PromptEditor collection="aulas" />}
+      {tab === "qa" && <QaPromptEditor />}
 
       {tab === "cursos" && (
       <div className="space-y-2">
