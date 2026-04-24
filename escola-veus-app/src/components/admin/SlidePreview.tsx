@@ -201,7 +201,7 @@ export function SlidePreview({
             {slide.tipo === "conteudo" && (
               <div className={slide.acto === "frase" ? "text-center" : "text-left"} style={{ maxWidth: "80%" }}>
                 <p
-                  style={contentStyleFor(slide.acto)}
+                  style={contentStyleFor(slide.acto, slide.texto.length)}
                   className="whitespace-pre-line"
                 >
                   {slide.texto}
@@ -322,13 +322,16 @@ export function SlidePreview({
   );
 }
 
-function contentStyleFor(acto: string): React.CSSProperties {
+function contentStyleFor(acto: string, charCount: number): React.CSSProperties {
+  // Escalar tipografia com a quantidade de texto — blocos longos baixam o
+  // font-size para não transbordar. Pergunta e frase mantêm mais presença.
+  const scale = charCount > 280 ? 0.78 : charCount > 200 ? 0.88 : 1;
   switch (acto) {
     case "pergunta":
       return {
         fontFamily: '"Cormorant Garamond", Georgia, serif',
         fontStyle: "italic",
-        fontSize: "clamp(26px, 4vw, 48px)",
+        fontSize: `clamp(${20 * scale}px, ${3 * scale}vw, ${36 * scale}px)`,
         fontWeight: 500,
         lineHeight: 1.35,
         textAlign: "center",
@@ -336,14 +339,14 @@ function contentStyleFor(acto: string): React.CSSProperties {
     case "situacao":
       return {
         fontFamily: '"Cormorant Garamond", Georgia, serif',
-        fontSize: "clamp(20px, 2.4vw, 32px)",
+        fontSize: `clamp(${16 * scale}px, ${2 * scale}vw, ${26 * scale}px)`,
         fontWeight: 400,
         lineHeight: 1.55,
       };
     case "revelacao":
       return {
         fontFamily: '"DM Serif Display", Georgia, serif',
-        fontSize: "clamp(22px, 2.8vw, 38px)",
+        fontSize: `clamp(${18 * scale}px, ${2.3 * scale}vw, ${30 * scale}px)`,
         fontWeight: 400,
         lineHeight: 1.4,
         textAlign: "center",
@@ -351,14 +354,14 @@ function contentStyleFor(acto: string): React.CSSProperties {
     case "gesto":
       return {
         fontFamily: '"Nunito", sans-serif',
-        fontSize: "clamp(18px, 2.2vw, 28px)",
+        fontSize: `clamp(${15 * scale}px, ${1.8 * scale}vw, ${24 * scale}px)`,
         fontWeight: 400,
         lineHeight: 1.7,
       };
     case "frase":
       return {
         fontFamily: '"DM Serif Display", Georgia, serif',
-        fontSize: "clamp(32px, 5vw, 64px)",
+        fontSize: `clamp(${26 * scale}px, ${4 * scale}vw, ${52 * scale}px)`,
         fontWeight: 400,
         lineHeight: 1.25,
         textAlign: "center",
