@@ -1174,6 +1174,26 @@ export default function YouTubeMontagem() {
             </option>
           ))}
         </select>
+
+        {/* Título editável — controla o slug do MP4 no Supabase e o title
+            do sidecar SEO. Trocar para "Parte 1", "Parte 2" etc evita
+            confundir renders do mesmo tema. Os ficheiros nunca se sobrepõem
+            (o timestamp é sempre diferente), mas o nome fica mais legível. */}
+        <div className="mt-3">
+          <label className="mb-1 block text-xs text-escola-creme-50">
+            Título do vídeo (usado no nome do ficheiro MP4 e SEO)
+          </label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Ex: Flora e Flores — Parte 1"
+            className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+          />
+          <p className="mt-1 text-[10px] text-escola-creme-50">
+            Cada render cria um MP4 novo com timestamp — nunca sobrepõe o anterior. Para distinguir partes do mesmo tema, acrescenta &quot;— Parte 1&quot;, &quot;— Parte 2&quot;.
+          </p>
+        </div>
       </section>
 
       {/* ── 2. MUSICA ── */}
