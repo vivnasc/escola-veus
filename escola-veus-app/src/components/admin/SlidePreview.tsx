@@ -274,7 +274,7 @@ export function SlidePreview({
             disabled={index === deck.slides.length - 1}
             className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40 disabled:opacity-40"
           >
-            Proximo →
+            Próximo →
           </button>
           <button
             onClick={() => setPlaying((p) => !p)}
@@ -290,13 +290,13 @@ export function SlidePreview({
             onClick={() => setFullscreen(true)}
             className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-escola-creme hover:border-escola-dourado/40"
           >
-            Ecra cheio
+            Ecrã cheio
           </button>
         </div>
       )}
 
       <p className="text-center text-[10px] text-escola-creme-50">
-        Teclas: ← → navegacao · F ecra cheio · P play · Esc sair · Total{" "}
+        Teclas: ← → navegação · F ecrã cheio · P play · Esc sair · Total{" "}
         {Math.floor(deck.totalDurationSec / 60)}:
         {String(deck.totalDurationSec % 60).padStart(2, "0")}
       </p>

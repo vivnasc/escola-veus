@@ -89,8 +89,8 @@ export const DEFAULT_GLOBAL_MULTIPLIER = 1.0;
 
 const ACTOS: Array<{ acto: Acto; romano: string; label: string }> = [
   { acto: "pergunta", romano: "I", label: "PERGUNTA" },
-  { acto: "situacao", romano: "II", label: "SITUACAO" },
-  { acto: "revelacao", romano: "III", label: "REVELACAO" },
+  { acto: "situacao", romano: "II", label: "SITUAÇÃO" },
+  { acto: "revelacao", romano: "III", label: "REVELAÇÃO" },
   { acto: "gesto", romano: "IV", label: "GESTO" },
   { acto: "frase", romano: "V", label: "FRASE" },
 ];
