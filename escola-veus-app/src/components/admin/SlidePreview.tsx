@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Slide, SlideDeck } from "@/lib/course-slides";
 import { getTerritoryTheme } from "@/data/territory-themes";
+import { parseEmphasis } from "@/lib/emphasis";
 
 // Injecta DM Serif Display + Nunito uma unica vez (Cormorant ja esta global).
 function useSlideFonts() {
@@ -204,7 +205,7 @@ export function SlidePreview({
                   style={contentStyleFor(slide.acto, slide.texto.length)}
                   className="whitespace-pre-line"
                 >
-                  {slide.texto}
+                  {parseEmphasis(slide.texto, accent)}
                 </p>
                 {slide.acto === "frase" && (
                   <div

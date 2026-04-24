@@ -35,9 +35,10 @@ export function renderSlideHtml({ slide, deck, accent }) {
     const align = slide.acto === "frase" ? "center" : (slide.acto === "pergunta" || slide.acto === "revelacao" ? "center" : "left");
     const len = (slide.texto ?? "").length;
     const sizeClass = len > 280 ? "vlong" : len > 200 ? "long" : "";
+    const html = emphasisToHtml(slide.texto, accent);
     body = `
       <div class="conteudo-wrap ${align === "center" ? "text-center" : "text-left"}">
-        <p class="acto-${slide.acto} ${sizeClass}">${esc(slide.texto)}</p>
+        <p class="acto-${slide.acto} ${sizeClass}">${html}</p>
         ${slide.acto === "frase" ? `<div class="accent-line" style="background:${accent};margin-top:24px"></div>` : ""}
       </div>
     `;
@@ -196,4 +197,15 @@ function esc(s) {
     '"': "&quot;",
     "'": "&#39;",
   }[c]));
+}
+
+/**
+ * `**palavra**` → <em> em dourado itálico. Mesmo comportamento que
+ * src/lib/emphasis.tsx no lado do preview React.
+ */
+function emphasisToHtml(text, accentColor) {
+  return esc(text ?? "").replace(
+    /\*\*([^*]+?)\*\*/g,
+    `<em style="color:${accentColor};font-style:italic;font-weight:500">$1</em>`,
+  );
 }
