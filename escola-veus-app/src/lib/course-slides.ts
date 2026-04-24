@@ -204,7 +204,7 @@ export function buildSlideDeckFromConfig(
   slides.push({
     tipo: "title",
     texto: script.title,
-    subtexto: `Modulo ${moduleNumber} · Aula ${subLetter.toUpperCase()}`,
+    subtexto: `Módulo ${moduleNumber} · Aula ${subLetter.toUpperCase()}`,
     duracao: Math.max(3, Math.round(5 * timingMul)),
   });
 
