@@ -1,6 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
+import {
+  CATEGORIAS_PAISAGEM,
+  CATEGORIA_LABELS,
+  parseCategoriaPaisagem,
+  type CategoriaPaisagem,
+} from "@/lib/paisagem-categorias";
 
 // Upload de clips verticais 9:16 (paisagem/natureza) gerados por fora para a
 // pool partilhada Loranne+AG (página /admin/producao/clips-paisagem). Fluxo:
@@ -10,52 +16,15 @@ import { useRef, useState } from "react";
 //     geração de YouTube thumbnail).
 //  3. PUT directo ao Supabase (contorna limite 4.5MB do Vercel).
 //
-// O tema (mar, rio, floresta…) vira prefixo do filename com separador "_"
-// (ex: "mar_onda-1734-0.mp4") para o picker de cada pólo filtrar por tema.
+// A categoria (mar, rio, savana…) vira prefixo do filename com separador "_"
+// (ex: "savana_leao-1734-0.mp4") para o picker de cada pólo filtrar.
 
-// Temas fixos da biblioteca Loranne+AG. O "outro" cobre clips legados (sem
-// prefixo "tema_") para ainda serem listáveis.
-export const CLIP_THEMES = [
-  "mar",
-  "rio",
-  "floresta",
-  "plantas",
-  "ceu",
-  "deserto",
-  "montanha",
-  "noite",
-  "cidade",
-  "abstracto",
-  "outro",
-] as const;
-
-export type ClipTheme = (typeof CLIP_THEMES)[number];
-
-export const CLIP_THEME_LABELS: Record<ClipTheme, string> = {
-  mar: "Mar",
-  rio: "Rio",
-  floresta: "Floresta",
-  plantas: "Plantas",
-  ceu: "Céu",
-  deserto: "Deserto",
-  montanha: "Montanha",
-  noite: "Noite",
-  cidade: "Cidade",
-  abstracto: "Abstracto",
-  outro: "Outro",
-};
-
-/** Extrai tema do nome de ficheiro. Formato novo: "{tema}_{slug}-{stamp}.mp4".
- *  Legado sem "_": cai em "outro". */
-export function parseClipTheme(name: string): ClipTheme {
-  const base = name.replace(/\.[^.]+$/, "");
-  const idx = base.indexOf("_");
-  if (idx === -1) return "outro";
-  const candidate = base.slice(0, idx).toLowerCase();
-  return (CLIP_THEMES as readonly string[]).includes(candidate)
-    ? (candidate as ClipTheme)
-    : "outro";
-}
+// Re-export para não partir imports de outros ficheiros (Loranne e AG pages
+// importavam ClipUploader para esta API). Migração incremental.
+export const CLIP_THEMES = CATEGORIAS_PAISAGEM;
+export const CLIP_THEME_LABELS = CATEGORIA_LABELS;
+export type ClipTheme = CategoriaPaisagem;
+export const parseClipTheme = parseCategoriaPaisagem;
 
 export type UploadedClip = {
   name: string;      // nome do ficheiro em clips/ sem pasta (ex: "mar_onda-17234-0.mp4")
