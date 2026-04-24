@@ -15,7 +15,7 @@
 
 import { spawn } from "node:child_process";
 import { createWriteStream } from "node:fs";
-import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, stat } from "node:fs/promises";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import path from "node:path";
@@ -61,19 +61,15 @@ async function main() {
     // 1) Puppeteer: gerar PNGs de todos os slides
     await renderPngs(deck, accentColor, pngDir);
 
-    // 2) FFmpeg: concat demuxer
-    const listPath = path.join(WORK_DIR, jobId, "concat.txt");
-    await writeConcatList(deck, pngDir, listPath);
-
-    // 3) Baixar AG track
+    // 2) Baixar AG track
     const agPath = path.join(WORK_DIR, jobId, "ag.mp3");
     console.log(`[render-course-slide] downloading AG: ${agTrackUrl}`);
     await downloadTo(agTrackUrl, agPath);
 
-    // 4) FFmpeg render
+    // 3) FFmpeg render com xfade entre slides
     const mp4Path = path.join(WORK_DIR, jobId, "out.mp4");
     await ffmpegRender({
-      listPath,
+      pngDir,
       agPath,
       deck,
       volumeDb,
@@ -153,34 +149,36 @@ async function renderPngs(deck, accent, pngDir) {
   await browser.close();
 }
 
-async function writeConcatList(deck, pngDir, listPath) {
-  const lines = [];
-  for (let i = 0; i < deck.slides.length; i++) {
-    const frame = path.join(pngDir, `slide-${String(i).padStart(4, "0")}.png`);
-    lines.push(`file '${frame.replace(/'/g, "'\\''")}'`);
-    lines.push(`duration ${deck.slides[i].duracao}`);
-  }
-  // O concat demuxer ignora a duracao do ultimo item; repetir a ultima frame
-  // garante que ela fica na duracao declarada.
-  const last = path.join(pngDir, `slide-${String(deck.slides.length - 1).padStart(4, "0")}.png`);
-  lines.push(`file '${last.replace(/'/g, "'\\''")}'`);
-  await writeFile(listPath, lines.join("\n"), "utf-8");
+// writeConcatList removido — passámos a alimentar N inputs directamente no
+// FFmpeg e chainar xfades entre slides consecutivos.
+
+// Duração do crossfade entre slides (segundos). 0.5s é suficiente para se
+// sentir a transição suave sem arrastar. Deve ser < duração mínima dos
+// slides (2s fecho/marker).
+const XFADE_DUR = 0.5;
+
+/** Tempo absoluto de início do slide i no vídeo final (após overlaps xfade). */
+function absoluteStart(deck, i) {
+  let t = 0;
+  for (let j = 0; j < i; j++) t += deck.slides[j].duracao;
+  return t - i * XFADE_DUR;
+}
+
+/** Duração efectiva do vídeo após overlaps. */
+function effectiveTotalDuration(deck) {
+  const sum = deck.slides.reduce((s, sl) => s + sl.duracao, 0);
+  return sum - Math.max(0, deck.slides.length - 1) * XFADE_DUR;
 }
 
 function buildVolumeFilterChain(deck, volumeDb) {
-  // Cadeia de filtros volume com enable=between(t,T0,T1):
-  //   0..8s:  -20dB (title)
-  //   8..10s: -20dB (marker)
-  //   10..N:  volume do acto
-  // Outside all windows, volume passa unchanged — garantir que todas as
-  // fatias estao cobertas.
+  // Cadeia de volume=volume=XdB:enable='between(t,T0,T1)' — fora da janela
+  // de cada slide, o volume passa unchanged. Os T0/T1 já contam com os
+  // overlaps xfade entre slides.
   const filters = [];
-  let t = 0;
   for (let i = 0; i < deck.slides.length; i++) {
     const s = deck.slides[i];
-    const t0 = t;
-    const t1 = t + s.duracao;
-    t = t1;
+    const t0 = absoluteStart(deck, i);
+    const t1 = t0 + s.duracao;
 
     let db;
     if (s.tipo === "title" || s.tipo === "end") db = -20;
@@ -193,37 +191,69 @@ function buildVolumeFilterChain(deck, volumeDb) {
       db = -20;
     }
 
-    filters.push(`volume=volume=${db}dB:enable='between(t,${t0},${t1})'`);
+    filters.push(`volume=volume=${db}dB:enable='between(t,${t0.toFixed(3)},${t1.toFixed(3)})'`);
   }
-  const total = deck.totalDurationSec;
-  // Fade-in 2s, fade-out 3s (no final do video).
+  const total = effectiveTotalDuration(deck);
   filters.push(`afade=t=in:st=0:d=2`);
-  filters.push(`afade=t=out:st=${Math.max(0, total - 3)}:d=3`);
+  filters.push(`afade=t=out:st=${Math.max(0, total - 3).toFixed(3)}:d=3`);
   return filters.join(",");
 }
 
-async function ffmpegRender({ listPath, agPath, deck, volumeDb, outPath }) {
-  const total = deck.totalDurationSec;
-  const volFilter = buildVolumeFilterChain(deck, volumeDb);
+/**
+ * Constrói a cadeia xfade entre os PNGs dos slides. Resulta num vídeo
+ * único com crossfades de XFADE_DUR entre cada par de slides consecutivos.
+ *
+ * Com N slides:
+ *   - N inputs ffmpeg (-loop 1 -t DUR -i slide-i.png)
+ *   - N-1 xfades em cadeia
+ *   - offset da xfade i = (soma dos dur 0..i-1) - i * XFADE
+ */
+function buildVideoXfadeFilter(deck) {
+  const n = deck.slides.length;
+  if (n === 0) return "";
+  if (n === 1) return `[0:v]format=yuv420p[vout]`;
 
-  // -stream_loop -1: loopa o AG ate cortar no -t total
-  // -shortest: corta pelo stream mais curto (= video)
-  // -pix_fmt yuv420p: compat YouTube/iOS
-  const args = [
-    "-y",
-    // input 0: video (concat demuxer com PNGs)
-    "-f", "concat",
-    "-safe", "0",
-    "-i", listPath,
-    // input 1: audio Ancient Ground (loop)
-    "-stream_loop", "-1",
-    "-i", agPath,
-    // filtros: aplica volume modulado + fades no audio
+  let filter = "";
+  let cumOffset = 0;
+  let lastLabel = "0:v";
+  for (let i = 1; i < n; i++) {
+    cumOffset += deck.slides[i - 1].duracao - XFADE_DUR;
+    const out = `v${i}`;
+    filter += `[${lastLabel}][${i}:v]xfade=transition=fade:duration=${XFADE_DUR}:offset=${cumOffset.toFixed(3)}[${out}];`;
+    lastLabel = out;
+  }
+  filter += `[${lastLabel}]format=yuv420p[vout]`;
+  return filter;
+}
+
+async function ffmpegRender({ pngDir, agPath, deck, volumeDb, outPath }) {
+  const total = effectiveTotalDuration(deck);
+  const volFilter = buildVolumeFilterChain(deck, volumeDb);
+  const videoFilter = buildVideoXfadeFilter(deck);
+  const n = deck.slides.length;
+
+  const args = ["-y"];
+
+  // N inputs: cada PNG em loop durante a sua duração nominal.
+  for (let i = 0; i < n; i++) {
+    const frame = path.join(pngDir, `slide-${String(i).padStart(4, "0")}.png`);
+    args.push("-loop", "1", "-t", String(deck.slides[i].duracao), "-i", frame);
+  }
+
+  // Input N: áudio Ancient Ground em loop.
+  args.push("-stream_loop", "-1", "-i", agPath);
+  const audioInputIdx = n;
+
+  // Filter graph: xfade entre vídeos + volumes no áudio.
+  args.push(
     "-filter_complex",
-    `[1:a]${volFilter}[a]`,
-    "-map", "0:v",
+    `${videoFilter};[${audioInputIdx}:a]${volFilter}[a]`,
+  );
+
+  args.push(
+    "-map", "[vout]",
     "-map", "[a]",
-    "-t", String(total),
+    "-t", String(total.toFixed(3)),
     "-r", "30",
     "-c:v", "libx264",
     "-preset", "medium",
@@ -233,8 +263,9 @@ async function ffmpegRender({ listPath, agPath, deck, volumeDb, outPath }) {
     "-b:a", "192k",
     "-shortest",
     outPath,
-  ];
-  console.log("[render-course-slide] ffmpeg", args.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(" "));
+  );
+
+  console.log("[render-course-slide] ffmpeg", args.length, "args");
   await run("ffmpeg", args);
 }
 
