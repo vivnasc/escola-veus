@@ -55,12 +55,12 @@ export function YouTubePublishSteps({
     } catch { /* ignore */ }
   };
 
-  // URL para download forçado: Supabase Storage com ?download=<nome>
-  // devolve Content-Disposition: attachment, impedindo preview inline.
-  const downloadHref = (url: string, name: string) => {
-    const sep = url.includes("?") ? "&" : "?";
-    return `${url}${sep}download=${encodeURIComponent(name)}`;
-  };
+  // URL para download forçado. Em vez do ?download= do Supabase (que o
+  // Safari iOS ignora para video/mp4 — reproduz sempre inline), usamos um
+  // proxy nosso que re-serve com Content-Type: application/octet-stream.
+  // Assim o Safari não reconhece como vídeo e descarrega normalmente.
+  const downloadHref = (url: string, name: string) =>
+    `/api/admin/ancient-ground/download?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}`;
 
   // Download agora usa anchor HTML directo no JSX (em vez de JS-triggered
   // click). Essencial para iOS/PWA: anchor com target="_blank" abre no
@@ -180,25 +180,20 @@ export function YouTubePublishSteps({
         {shareMsg && <p className="mt-2 text-[10px] text-escola-creme-50">{shareMsg}</p>}
         {kind === "long" ? (
           <div className="mt-2 space-y-2 rounded border border-escola-coral/30 bg-escola-coral/5 p-2 text-[11px] text-escola-creme-50">
-            <div>
-              <p className="mb-1 text-escola-coral">🍎 iPhone / iPad (Safari ou PWA)</p>
-              <ol className="list-decimal space-y-0.5 pl-4">
-                <li>Carrega <strong className="text-escola-creme">⬇ MP4</strong> — abre o vídeo numa nova tab (vai começar a reproduzir, é normal).</li>
-                <li><strong className="text-escola-creme">Mantém carregado (long-press) no vídeo 2-3 segundos</strong> → escolhe <strong className="text-escola-creme">&quot;Save Video&quot;</strong> → vai para Fotos. Demora 2-5 min.</li>
-                <li>Abre a app <strong className="text-escola-creme">YouTube</strong> → <strong className="text-escola-creme">+</strong> → <strong className="text-escola-creme">Upload a video</strong> → escolhe das Fotos.</li>
-                <li>Volta cá e copia título/descrição/tags dos passos 3 abaixo.</li>
-              </ol>
-              <p className="mt-1 text-escola-creme-50">
-                Safari iOS ignora download attributes para vídeos — &quot;Save Video&quot; no long-press é a única via que funciona.
-              </p>
-            </div>
-            <div>
-              <p className="mb-1 text-escola-coral">🤖 Android</p>
-              <ol className="list-decimal space-y-0.5 pl-4">
-                <li><strong className="text-escola-creme">⬇ MP4</strong> descarrega directamente para Transferências.</li>
-                <li>Abre YouTube → + → Upload → escolhe das Transferências ou Galeria.</li>
-              </ol>
-            </div>
+            <p>
+              Carrega <strong className="text-escola-creme">⬇ MP4</strong> — o ficheiro passa pelo nosso proxy que força download (evita o preview inline do Safari iOS). Guarda em:
+            </p>
+            <ul className="list-disc space-y-0.5 pl-4">
+              <li><strong className="text-escola-creme">iPhone/iPad:</strong> &quot;Save to Files&quot; (vai para a app Ficheiros). 2-5 min.</li>
+              <li><strong className="text-escola-creme">Android:</strong> pasta Transferências, automático.</li>
+              <li><strong className="text-escola-creme">Desktop:</strong> pasta Downloads.</li>
+            </ul>
+            <p>Depois:</p>
+            <ol className="list-decimal space-y-0.5 pl-4">
+              <li>Abre a app <strong className="text-escola-creme">YouTube</strong> (não Studio) → <strong className="text-escola-creme">+</strong> → <strong className="text-escola-creme">Upload a video</strong>.</li>
+              <li>Escolhe o MP4 dos Ficheiros / Transferências / Downloads.</li>
+              <li>Volta cá e copia título/descrição/tags dos passos 3 abaixo.</li>
+            </ol>
           </div>
         ) : (
           <p className="mt-2 text-[10px] text-escola-creme-50">
