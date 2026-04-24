@@ -307,11 +307,19 @@ export default function ShortsPage() {
 
   // ── Suggest verses + captions ───────────────────────────────────────────────
 
+  const suggestAbortRef = useRef<AbortController | null>(null);
+
   const runSuggest = useCallback(async (silent = false) => {
     if (!state.album || !state.trackName) {
       if (!silent) alert("Escolhe álbum e faixa primeiro.");
       return;
     }
+    // Cancela pedido anterior se ainda estiver em vôo (evita race: resposta
+    // da faixa antiga chegar depois da nova e sobrescrever as legendas).
+    suggestAbortRef.current?.abort();
+    const ac = new AbortController();
+    suggestAbortRef.current = ac;
+
     setSuggesting(true);
     try {
       const res = await fetch("/api/admin/shorts/suggest", {
@@ -322,8 +330,11 @@ export default function ShortsPage() {
           trackName: state.trackName,
           theme: state.theme,
         }),
+        signal: ac.signal,
       });
+      if (ac.signal.aborted) return;
       const data = await res.json();
+      if (ac.signal.aborted) return;
       if (data.erro) throw new Error(data.erro);
       updateState({
         verses: [data.verses?.[0] || "", data.verses?.[1] || ""],
@@ -335,9 +346,12 @@ export default function ShortsPage() {
         youtubeDescription: data.youtubeDescription || "",
       });
     } catch (err) {
+      if ((err as Error)?.name === "AbortError") return;
       if (!silent) alert(`Erro: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
-      setSuggesting(false);
+      // só desliga o spinner se este pedido é o actual — senão pode apagar
+      // o loading do pedido novo que acabou de arrancar
+      if (suggestAbortRef.current === ac) setSuggesting(false);
     }
   }, [state.album, state.trackName, state.theme, updateState]);
 
@@ -688,6 +702,14 @@ export default function ShortsPage() {
                   album: e.target.value,
                   trackUrl: "",
                   trackName: "",
+                  musicStartSec: 0,
+                  verses: ["", ""],
+                  candidates: [],
+                  albumTitle: "",
+                  trackTitle: "",
+                  tiktokCaption: "",
+                  youtubeTitle: "",
+                  youtubeDescription: "",
                 })
               }
               className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
@@ -728,6 +750,15 @@ export default function ShortsPage() {
                           trackUrl: t.url,
                           trackName: t.name,
                           musicStartSec: 0,
+                          // Limpa legendas antigas imediatamente para ver
+                          // regeneração em progresso em vez de texto stale
+                          verses: ["", ""],
+                          candidates: [],
+                          albumTitle: "",
+                          trackTitle: "",
+                          tiktokCaption: "",
+                          youtubeTitle: "",
+                          youtubeDescription: "",
                         })
                       }
                       showStartPicker={state.includeMusic}
