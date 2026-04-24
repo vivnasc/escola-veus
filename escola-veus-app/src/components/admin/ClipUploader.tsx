@@ -2,24 +2,69 @@
 
 import { useRef, useState } from "react";
 
-// Upload de clips verticais (9:16) gerados por fora (Runway ilimitado) para o
-// bucket `escola-shorts/clips/`. Fluxo:
+// Upload de clips verticais (9:16) gerados por fora (Runway ilimitado) para a
+// biblioteca partilhada Loranne+AG. Fluxo:
 //  1. Browser pede signed upload URLs ao servidor (/api/admin/shorts/upload-clips)
 //  2. Extrai um frame PNG de cada vídeo via <video>+canvas (serve de thumbnail
 //     e de imageUrl para o slot Loranne — quem precisa de uma imagem para a
 //     geração de YouTube thumbnail).
 //  3. PUT directo ao Supabase (contorna limite 4.5MB do Vercel).
 //
-// Usado em ambas as páginas de shorts (Loranne + AG) — a pool de clips é
-// partilhada entre os dois canais.
+// O tema (mar, rio, floresta…) vira prefixo do filename com separador "_"
+// (ex: "mar_onda-1734-0.mp4") para o picker de cada pólo filtrar por tema.
+
+// Temas fixos da biblioteca Loranne+AG. O "outro" cobre clips legados (sem
+// prefixo "tema_") para ainda serem listáveis.
+export const CLIP_THEMES = [
+  "mar",
+  "rio",
+  "floresta",
+  "plantas",
+  "ceu",
+  "deserto",
+  "montanha",
+  "noite",
+  "cidade",
+  "abstracto",
+  "outro",
+] as const;
+
+export type ClipTheme = (typeof CLIP_THEMES)[number];
+
+export const CLIP_THEME_LABELS: Record<ClipTheme, string> = {
+  mar: "Mar",
+  rio: "Rio",
+  floresta: "Floresta",
+  plantas: "Plantas",
+  ceu: "Céu",
+  deserto: "Deserto",
+  montanha: "Montanha",
+  noite: "Noite",
+  cidade: "Cidade",
+  abstracto: "Abstracto",
+  outro: "Outro",
+};
+
+/** Extrai tema do nome de ficheiro. Formato novo: "{tema}_{slug}-{stamp}.mp4".
+ *  Legado sem "_": cai em "outro". */
+export function parseClipTheme(name: string): ClipTheme {
+  const base = name.replace(/\.[^.]+$/, "");
+  const idx = base.indexOf("_");
+  if (idx === -1) return "outro";
+  const candidate = base.slice(0, idx).toLowerCase();
+  return (CLIP_THEMES as readonly string[]).includes(candidate)
+    ? (candidate as ClipTheme)
+    : "outro";
+}
 
 export type UploadedClip = {
-  name: string;      // nome do ficheiro em clips/ sem pasta (ex: "ag-deserto-17234…-0.mp4")
+  name: string;      // nome do ficheiro em clips/ sem pasta (ex: "mar_onda-17234-0.mp4")
   clipUrl: string;   // URL pública do MP4
   thumbUrl: string;  // URL pública do PNG (primeiro frame)
   width: number;
   height: number;
   durationSec: number;
+  theme: ClipTheme;
 };
 
 type FileStatus = {
@@ -32,7 +77,6 @@ type FileStatus = {
 };
 
 type Props = {
-  label?: string; // prefixo para nomear os ficheiros (ex: "loranne", "ag")
   onUploaded: (clips: UploadedClip[]) => void;
   className?: string;
   compact?: boolean; // versão mais pequena (para AG section já densa)
@@ -97,9 +141,10 @@ function putToSignedUrl(url: string, body: Blob, contentType: string, onProgress
   });
 }
 
-export function ClipUploader({ label, onUploaded, className, compact }: Props) {
+export function ClipUploader({ onUploaded, className, compact }: Props) {
   const [files, setFiles] = useState<FileStatus[]>([]);
   const [busy, setBusy] = useState(false);
+  const [theme, setTheme] = useState<ClipTheme | "">("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const updateStatus = (id: string, patch: Partial<FileStatus>) => {
@@ -108,6 +153,11 @@ export function ClipUploader({ label, onUploaded, className, compact }: Props) {
 
   const handleFiles = async (list: FileList | null) => {
     if (!list || list.length === 0) return;
+    if (!theme) {
+      alert("Escolhe um tema antes de fazer upload.");
+      return;
+    }
+    const chosenTheme: ClipTheme = theme;
 
     const initial: FileStatus[] = Array.from(list).map((f) => ({
       id: `${f.name}-${f.size}-${Math.random().toString(36).slice(2, 8)}`,
@@ -153,7 +203,7 @@ export function ClipUploader({ label, onUploaded, className, compact }: Props) {
         const signRes = await fetch("/api/admin/shorts/upload-clips", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ files: [{ name: file.name, label }] }),
+          body: JSON.stringify({ files: [{ name: file.name, theme: chosenTheme }] }),
         });
         const signData = await signRes.json();
         if (!signRes.ok || !signData.items?.[0]) {
@@ -177,6 +227,7 @@ export function ClipUploader({ label, onUploaded, className, compact }: Props) {
           width,
           height,
           durationSec,
+          theme: chosenTheme,
         };
         uploaded.push(result);
         updateStatus(status.id, { stage: "done", progress: 100, result });
@@ -199,12 +250,29 @@ export function ClipUploader({ label, onUploaded, className, compact }: Props) {
       className={`rounded border border-dashed border-escola-border bg-escola-bg/40 p-3 ${className || ""}`}
     >
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          onClick={() => inputRef.current?.click()}
+        <select
+          value={theme}
+          onChange={(e) => setTheme(e.target.value as ClipTheme | "")}
           disabled={busy}
+          className="rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-xs text-escola-creme"
+        >
+          <option value="">— tema —</option>
+          {CLIP_THEMES.map((t) => (
+            <option key={t} value={t}>{CLIP_THEME_LABELS[t]}</option>
+          ))}
+        </select>
+        <button
+          onClick={() => {
+            if (!theme) {
+              alert("Escolhe um tema primeiro.");
+              return;
+            }
+            inputRef.current?.click();
+          }}
+          disabled={busy || !theme}
           className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-30"
         >
-          {busy ? "A carregar..." : compact ? "+ Upload" : "+ Upload clips Runway (MP4)"}
+          {busy ? "A carregar..." : compact ? "+ Upload" : "+ Escolher MP4s"}
         </button>
         <input
           ref={inputRef}
@@ -219,7 +287,7 @@ export function ClipUploader({ label, onUploaded, className, compact }: Props) {
         />
         {!compact && (
           <span className="text-[11px] text-escola-creme-50">
-            9:16 · máx 150MB · vão para <code>escola-shorts/clips/</code>
+            9:16 · máx 150MB · todos os ficheiros escolhidos ganham o tema seleccionado
           </span>
         )}
         {files.some((f) => f.stage === "done") && (

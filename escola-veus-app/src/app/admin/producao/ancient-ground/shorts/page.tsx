@@ -4,8 +4,14 @@ import { useState, useEffect, useRef, forwardRef } from "react";
 import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
+import {
+  CLIP_THEMES,
+  CLIP_THEME_LABELS,
+  parseClipTheme,
+  type ClipTheme,
+} from "@/components/admin/ClipUploader";
 
-// Shorts AG — reaproveitam clips Runway já pagos (listados em escola-shorts/clips/*
+// Shorts AG — reaproveitam clips da biblioteca partilhada Loranne+AG (listados
 // via list-clips-ag), música do álbum ancient-ground (100 faixas) e 2 versos
 // próprios sobrepostos. O renderer (render-short-submit + workflow) é o mesmo
 // que os shorts Loranne, só muda o conteúdo do manifest.
@@ -13,7 +19,9 @@ import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
 type AgClip = {
   name: string;
   url: string;
+  thumbUrl?: string;
   createdAt: string | null;
+  theme: ClipTheme;
 };
 
 type SlotState = {
@@ -70,6 +78,7 @@ export default function AncientGroundShortsPage() {
   const [clips, setClips] = useState<AgClip[]>([]);
   const [loadingClips, setLoadingClips] = useState(false);
   const [clipQuery, setClipQuery] = useState("");
+  const [clipThemeFilter, setClipThemeFilter] = useState<ClipTheme | "all">("all");
 
   const [slots, setSlots] = useState<SlotState[]>(EMPTY_SLOTS);
   const [verse1, setVerse1] = useState("");
@@ -125,12 +134,18 @@ export default function AncientGroundShortsPage() {
     } catch { /* ignore */ }
   }, [slots, verse1, verse2, trackNumber, title]);
 
-  // Lista de clips já animados em Supabase.
+  // Lista de clips da biblioteca Loranne+AG (mesma pool que Loranne usa).
   useEffect(() => {
     setLoadingClips(true);
     fetch("/api/admin/shorts/list-clips-ag")
       .then((r) => r.json())
-      .then((d) => setClips(d.clips || []))
+      .then((d) => {
+        const rows: AgClip[] = (d.clips || []).map((c: Omit<AgClip, "theme">) => ({
+          ...c,
+          theme: parseClipTheme(c.name),
+        }));
+        setClips(rows);
+      })
       .catch(() => setClips([]))
       .finally(() => setLoadingClips(false));
   }, []);
@@ -173,9 +188,17 @@ export default function AncientGroundShortsPage() {
     setYoutubeDescription(yDesc);
   }, [verse1, verse2, title, trackNumber]);
 
-  const filteredClips = clipQuery.trim()
-    ? clips.filter((c) => c.name.toLowerCase().includes(clipQuery.toLowerCase()))
-    : clips.slice(0, 60);
+  const filteredClips = (() => {
+    const base = clips.filter((c) => {
+      if (clipThemeFilter !== "all" && c.theme !== clipThemeFilter) return false;
+      if (clipQuery.trim() && !c.name.toLowerCase().includes(clipQuery.toLowerCase())) return false;
+      return true;
+    });
+    return clipQuery.trim() || clipThemeFilter !== "all" ? base : base.slice(0, 60);
+  })();
+
+  const clipThemeCounts: Record<string, number> = {};
+  for (const c of clips) clipThemeCounts[c.theme] = (clipThemeCounts[c.theme] || 0) + 1;
 
   const allClipsReady = slots.every((s) => s.clipUrl);
 
@@ -293,7 +316,7 @@ export default function AncientGroundShortsPage() {
         </h3>
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs text-escola-creme-50">
-            Clips já gerados via Runway (bucket escola-shorts/clips). Reaproveitamos sem pagar créditos novos.
+            Biblioteca partilhada Loranne+AG. Reaproveitamos sem pagar créditos novos.
           </p>
           <Link
             href="/admin/producao/shorts/biblioteca"
@@ -302,11 +325,41 @@ export default function AncientGroundShortsPage() {
             → Upload na biblioteca
           </Link>
         </div>
+        <div className="mb-3 flex flex-wrap gap-1">
+          <button
+            onClick={() => setClipThemeFilter("all")}
+            className={`rounded border px-2 py-0.5 text-[10px] ${
+              clipThemeFilter === "all"
+                ? "border-escola-coral bg-escola-coral/20 text-escola-coral"
+                : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            Todos ({clips.length})
+          </button>
+          {CLIP_THEMES.map((t) => {
+            const n = clipThemeCounts[t] || 0;
+            if (n === 0) return null;
+            const active = clipThemeFilter === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setClipThemeFilter(t)}
+                className={`rounded border px-2 py-0.5 text-[10px] ${
+                  active
+                    ? "border-escola-coral bg-escola-coral/20 text-escola-coral"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+              >
+                {CLIP_THEME_LABELS[t]} ({n})
+              </button>
+            );
+          })}
+        </div>
         <input
           type="text"
           value={clipQuery}
           onChange={(e) => setClipQuery(e.target.value)}
-          placeholder="Filtrar por nome (ex: mar, praia, floresta...)"
+          placeholder="Pesquisa livre no nome"
           className="mb-3 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
         />
 
@@ -359,7 +412,15 @@ export default function AncientGroundShortsPage() {
                         : "border-escola-border hover:border-escola-coral"
                     }`}
                   >
-                    <video src={c.url} className="h-full w-full object-cover" muted />
+                    <video
+                      src={c.url}
+                      poster={c.thumbUrl}
+                      className="h-full w-full object-cover"
+                      muted
+                    />
+                    <span className="pointer-events-none absolute left-1 top-1 rounded bg-black/70 px-1 text-[9px] font-semibold text-escola-dourado">
+                      {CLIP_THEME_LABELS[c.theme]}
+                    </span>
                   </button>
                 );
               })}

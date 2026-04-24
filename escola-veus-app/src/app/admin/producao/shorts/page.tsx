@@ -4,6 +4,12 @@ import { useState, useEffect, useCallback, useRef, forwardRef } from "react";
 import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import runwayMotionPrompts from "@/data/runway-motion-prompts.json";
+import {
+  CLIP_THEMES,
+  CLIP_THEME_LABELS,
+  parseClipTheme,
+  type ClipTheme,
+} from "@/components/admin/ClipUploader";
 
 const MOTION_PROMPTS = runwayMotionPrompts as Record<string, string>;
 
@@ -20,6 +26,7 @@ type PoolClip = {
   url: string;
   thumbUrl: string;
   createdAt: string | null;
+  theme: ClipTheme;
 };
 
 type MusicTrack = {
@@ -130,6 +137,7 @@ export default function ShortsPage() {
   // fora (Runway ilimitado). Preenche imageUrl+clipUrl dum slot de uma só vez.
   const [poolClips, setPoolClips] = useState<PoolClip[]>([]);
   const [poolQuery, setPoolQuery] = useState("");
+  const [poolThemeFilter, setPoolThemeFilter] = useState<ClipTheme | "all">("all");
   const [loadingPool, setLoadingPool] = useState(false);
 
   const [albums, setAlbums] = useState<AlbumItem[]>([]);
@@ -210,12 +218,18 @@ export default function ShortsPage() {
       .finally(() => setLoadingImages(false));
   }, []);
 
-  // Load biblioteca partilhada de clips (mesma pool que AG consome)
+  // Load biblioteca partilhada de clips (Loranne+AG partilham a mesma pool)
   useEffect(() => {
     setLoadingPool(true);
     fetch("/api/admin/shorts/list-clips-ag", { cache: "no-store" })
       .then((r) => r.json())
-      .then((d) => setPoolClips(d.clips || []))
+      .then((d) => {
+        const rows: PoolClip[] = (d.clips || []).map((c: Omit<PoolClip, "theme">) => ({
+          ...c,
+          theme: parseClipTheme(c.name),
+        }));
+        setPoolClips(rows);
+      })
       .catch(() => setPoolClips([]))
       .finally(() => setLoadingPool(false));
   }, []);
@@ -260,9 +274,17 @@ export default function ShortsPage() {
       )
     : tracks;
 
-  const filteredPoolClips = poolQuery.trim()
-    ? poolClips.filter((c) => c.name.toLowerCase().includes(poolQuery.toLowerCase()))
-    : poolClips.slice(0, 60);
+  const filteredPoolClips = (() => {
+    const base = poolClips.filter((c) => {
+      if (poolThemeFilter !== "all" && c.theme !== poolThemeFilter) return false;
+      if (poolQuery.trim() && !c.name.toLowerCase().includes(poolQuery.toLowerCase())) return false;
+      return true;
+    });
+    return poolQuery.trim() || poolThemeFilter !== "all" ? base : base.slice(0, 60);
+  })();
+
+  const poolThemeCounts: Record<string, number> = {};
+  for (const c of poolClips) poolThemeCounts[c.theme] = (poolThemeCounts[c.theme] || 0) + 1;
 
   const updateSlot = (slotIdx: number, patch: Partial<SlotState>) => {
     setState((prev) => {
@@ -724,11 +746,41 @@ export default function ShortsPage() {
           preencher o próximo slot — salta a geração paga (secção 2). Para
           fazer upload de novos clips, usa a biblioteca.
         </p>
+        <div className="mb-3 flex flex-wrap gap-1">
+          <button
+            onClick={() => setPoolThemeFilter("all")}
+            className={`rounded border px-2 py-0.5 text-[10px] ${
+              poolThemeFilter === "all"
+                ? "border-escola-coral bg-escola-coral/20 text-escola-coral"
+                : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            Todos ({poolClips.length})
+          </button>
+          {CLIP_THEMES.map((t) => {
+            const n = poolThemeCounts[t] || 0;
+            if (n === 0) return null;
+            const active = poolThemeFilter === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setPoolThemeFilter(t)}
+                className={`rounded border px-2 py-0.5 text-[10px] ${
+                  active
+                    ? "border-escola-coral bg-escola-coral/20 text-escola-coral"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+              >
+                {CLIP_THEME_LABELS[t]} ({n})
+              </button>
+            );
+          })}
+        </div>
         <input
           type="text"
           value={poolQuery}
           onChange={(e) => setPoolQuery(e.target.value)}
-          placeholder="Filtrar (ex: loranne, ag, mar, floresta...)"
+          placeholder="Pesquisa livre no nome"
           className="mb-3 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
         />
         {loadingPool ? (
@@ -766,6 +818,9 @@ export default function ShortsPage() {
                       playsInline
                       className="h-full w-full object-cover"
                     />
+                    <span className="absolute left-1 top-1 rounded bg-black/70 px-1 text-[9px] font-semibold text-escola-dourado">
+                      {CLIP_THEME_LABELS[c.theme]}
+                    </span>
                     <span className="absolute inset-x-0 bottom-0 truncate bg-black/70 px-1 text-[9px] text-white">
                       {c.name}
                     </span>
@@ -1261,7 +1316,7 @@ export default function ShortsPage() {
               : "Gerar thumbnail"}
         </button>
         <p className="mt-2 text-xs text-escola-creme-50">
-          Render via Shotstack (~10–20s). 1080×1920 JPG guardado no bucket <code>escola-shorts/thumbs/</code>.
+          Render via Shotstack (~10–20s). 1080×1920 JPG guardado junto das thumbs da biblioteca.
         </p>
       </section>
 
