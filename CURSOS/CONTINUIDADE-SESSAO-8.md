@@ -55,6 +55,63 @@
 3. **Escrever** — pausa para reflexao (ja existia, autosaved).
 4. **Perguntar** — Q&A com Claude API por modulo (cacheado 1h).
 
+### O que o aluno encontra na sub-aula (4 camadas)
+
+**Filosofia:** quatro modos de se relacionar com a mesma aula — ver (silencio),
+ouvir (movimento), escrever (solidao), perguntar (dialogo). Um curso pago
+digno oferece os quatro; um canal de YouTube oferece um.
+
+1. **Ver** — video-aula (slides + musica AG, sem voz). 5-6 min. O "ponto de
+   encontro" com a ideia.
+2. **Ouvir** — audio "podcast" ElevenLabs (entrega paralela, em
+   `course-assets/curso-<slug>/m<N>-<letter>-*.mp3`). Botao por baixo do
+   video: "♪ Ouvir esta aula". Serve quem anda a caminhar, cozinhar, nao
+   pode ver. Nao mistura com o video.
+3. **Escrever** — pausa para reflexao (ja existia, autosaved em
+   `escola_journal`). Textarea pessoal.
+4. **Perguntar** — Q&A com Claude API por modulo (cacheado 1h). Tab
+   expansivel por baixo da reflexao.
+
+### Diagnostico inicial — o que existia antes desta sessao
+
+Na sub-aula (`/cursos/<slug>/<mod>/<sub>`):
+1. Breadcrumb de volta ao modulo
+2. Header "Modulo X de 8 · <titulo>"
+3. VideoPlayer (fetch `/api/courses/lesson`, fallback territorio)
+4. Card de descricao (1 linha)
+5. Pausa para reflexao (textarea autosaved)
+6. Botao "Completar e continuar"
+7. Nav ← A | B | C →
+
+Na pagina do modulo (`/cursos/<slug>/<mod>`): lista das 3 sub-aulas + link
+caderno + "Ver conclusao do modulo".
+
+**Faltava:**
+- **Manual PDF:** endpoint `/api/courses/manual` existia mas sem link na UI.
+- **Audio ElevenLabs:** ficheiros em Supabase mas nao entregues ao aluno.
+- **Q&A com Claude:** nao existia.
+
+### Pendente no nivel do modulo
+
+- `territoryStage` textual como evocacao literaria no topo — frase tipo
+  "Sala escura. Espelhos cobertos com panos dourados. Poeira no ar."
+  (apenas texto, nao imagem).
+- **Ja feito nesta sessao:** card do manual com summary + reflectionQuestions.
+
+### Pendente no nivel do curso (`/cursos/<slug>`)
+
+- Barra de progresso global (X/24 sub-aulas)
+- Certificado quando termina (endpoint existe: `/api/courses/certificate`)
+- Link destacado para manual completo PDF e ZIP de cadernos preenchidos
+
+### Ordem de prioridades (opiniao defendida e seguida nesta sessao)
+
+1. **Q&A com Claude** — e o que mais eleva a percepcao de "curso pago".
+2. **Audio no player** — pouco codigo, desbloqueia uma camada.
+3. **Card do manual no modulo** — torna visivel algo ja escrito.
+4. **So depois produzir videos a serio** — o sitio onde vao viver ja vai
+   fazer jus ao conteudo.
+
 ### Q&A com Claude
 
 - **Por modulo**, nao por sub-aula nem por curso. Conversa unica para as 3
