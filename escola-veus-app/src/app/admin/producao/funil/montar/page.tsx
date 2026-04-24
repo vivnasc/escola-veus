@@ -130,6 +130,9 @@ export default function FunilMontarPage() {
     reuseClipUrl?: string;
   };
   const [funilPrompts, setFunilPrompts] = useState<FunilPrompt[]>([]);
+  // Config do ficheiro de prompts (ThinkDiffusion settings). Preservado para
+  // que o save do "reciclar este" não apague as settings existentes.
+  const [funilConfig, setFunilConfig] = useState<Record<string, unknown>>({});
 
   // ── Audio stretching ──────────────────────────────────────────────────
   // Três alavancas para alongar vídeos curtos (áudios <2min) sem re-gravar:
@@ -339,6 +342,7 @@ export default function FunilMontarPage() {
       .then((r) => r.json())
       .then((d) => {
         if (Array.isArray(d.prompts)) setFunilPrompts(d.prompts);
+        if (d.config && typeof d.config === "object") setFunilConfig(d.config);
       })
       .catch(() => {});
   }, []);
@@ -433,6 +437,61 @@ export default function FunilMontarPage() {
       });
     },
     [persistReuse],
+  );
+
+  // Reciclar clip da pool para um prompt específico do ep actual.
+  // Escreve reuseClipId/reuseClipUrl no prompt e guarda em Supabase.
+  // O epClips useMemo re-computa e atribui o clip à posição correcta.
+  const reusePoolClipForPrompt = useCallback(
+    async (promptId: string, clipId: string, clipUrl: string) => {
+      const next = funilPrompts.map((p) =>
+        p.id === promptId ? { ...p, reuseClipId: clipId, reuseClipUrl: clipUrl } : p,
+      );
+      setFunilPrompts(next);
+      try {
+        const r = await fetch("/api/admin/prompts/funil/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ config: funilConfig, prompts: next }),
+        });
+        const d = await r.json();
+        if (!r.ok || d.erro) {
+          throw new Error(d.erro || `HTTP ${r.status}`);
+        }
+      } catch (e) {
+        setErr(
+          `Guardar reciclagem falhou: ${e instanceof Error ? e.message : String(e)} (prompts em memória — refresh pode perder)`,
+        );
+      }
+    },
+    [funilPrompts, funilConfig],
+  );
+
+  const clearReuseForPrompt = useCallback(
+    async (promptId: string) => {
+      const next = funilPrompts.map((p) =>
+        p.id === promptId
+          ? { ...p, reuseClipId: undefined, reuseClipUrl: undefined }
+          : p,
+      );
+      setFunilPrompts(next);
+      try {
+        const r = await fetch("/api/admin/prompts/funil/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ config: funilConfig, prompts: next }),
+        });
+        const d = await r.json();
+        if (!r.ok || d.erro) {
+          throw new Error(d.erro || `HTTP ${r.status}`);
+        }
+      } catch (e) {
+        setErr(
+          `Desfazer reciclagem falhou: ${e instanceof Error ? e.message : String(e)}`,
+        );
+      }
+    },
+    [funilPrompts, funilConfig],
   );
 
   const resetToDefault = useCallback(async () => {
@@ -817,11 +876,14 @@ export default function FunilMontarPage() {
         )}
       </section>
 
-      {/* ── 4b. Pool de clips reutilizáveis ─────────────────────── */}
+      {/* ── 4b. Reciclar da pool — sugestões por cena ───────────── */}
       <PoolBrowser
         pool={pool}
         currentEp={epKey}
         clipOrder={clipOrder}
+        funilPrompts={funilPrompts}
+        onReuse={reusePoolClipForPrompt}
+        onClearReuse={clearReuseForPrompt}
         open={poolOpen}
         setOpen={setPoolOpen}
         query={poolQuery}
@@ -1623,18 +1685,82 @@ function EpisodePicker({
   );
 }
 
+// ─── Matching utilities (client-side, mirrors /api/admin/funil/pool-match) ──
+// Evita 10 chamadas API para 10 slots — matching local usa pool + prompts já
+// carregados. Score = 2*moodInter + 1*keywordOverlap - 0.5*max(0, usage-1).
+
+const MATCHER_STOPWORDS = new Set([
+  "the", "a", "an", "and", "or", "of", "in", "on", "at", "to", "for", "with",
+  "from", "into", "as", "by", "is", "are", "was", "were", "be", "been",
+  "that", "this", "these", "those", "it", "its", "their", "there", "then",
+  "but", "not", "no", "so", "just", "up", "down", "out", "over", "under",
+  "very", "slow", "static", "camera", "soft", "warm", "light", "holds",
+  "steady", "gently", "slowly", "continuously", "almost", "imperceptibly",
+]);
+
+function matcherTokens(s: string): Set<string> {
+  return new Set(
+    s
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length >= 4 && !MATCHER_STOPWORDS.has(w)),
+  );
+}
+
+type MatchCandidate = PoolClip & {
+  score: number;
+  matchedMood: string[];
+  matchedKeywords: string[];
+};
+
+function rankPoolForPrompt(
+  pool: PoolClip[],
+  prompt: { mood: string[]; prompt: string; id: string },
+  currentEp: string,
+  limit = 3,
+): MatchCandidate[] {
+  const slotMoodSet = new Set(prompt.mood ?? []);
+  const slotTokens = matcherTokens(prompt.prompt ?? "");
+  const out: MatchCandidate[] = [];
+  for (const c of pool) {
+    if (c.episode === currentEp) continue; // clips do proprio ep nao sao reuse
+    const moodMatches = c.mood.filter((m) => slotMoodSet.has(m));
+    const promptTokens = matcherTokens(c.imagePrompt ?? "");
+    const kwMatches = [...slotTokens].filter((t) => promptTokens.has(t));
+    const usage = c.usageCount ?? 0;
+    const score =
+      2 * moodMatches.length + 1 * kwMatches.length - 0.5 * Math.max(0, usage - 1);
+    if (score <= 0) continue;
+    out.push({
+      ...c,
+      score: +score.toFixed(2),
+      matchedMood: moodMatches,
+      matchedKeywords: kwMatches,
+    });
+  }
+  out.sort((a, b) => b.score - a.score);
+  return out.slice(0, limit);
+}
+
 // ─── Pool Browser ────────────────────────────────────────────────────────────
-// Navegador da pool de clips existentes (todos os eps). Permite reutilizar
-// clips já renderizados em novos episódios em vez de gerar imagem MJ + motion
-// Runway novos — importante para ep11+ enquanto a subscrição MJ está activa.
+// Mostra os prompts deste ep com sugestoes AUTOMATICAS da pool por cena.
+// User nao precisa de escolher entre 200 clips — para cada cena do ep,
+// aparecem os top 3 candidatos com melhor score (mood + keywords). Um
+// clique recicla e atribui ao slot.
 //
-// Scoring implícito: clips com usageCount alto aparecem com badge, user pode
-// evitar puxar o mesmo muitas vezes. Não força reciclagem — só sugere.
+// Alternativa avancada: secçao colapsavel "Ver pool completa" para browse
+// livre (caso o matcher nao sugira nada util).
 
 function PoolBrowser({
   pool,
   currentEp,
   clipOrder,
+  funilPrompts,
+  onReuse,
+  onClearReuse,
   open,
   setOpen,
   query,
@@ -1648,6 +1774,15 @@ function PoolBrowser({
   pool: PoolClip[];
   currentEp: string;
   clipOrder: string[];
+  funilPrompts: {
+    id: string;
+    mood: string[];
+    prompt: string;
+    reuseClipId?: string;
+    reuseClipUrl?: string;
+  }[];
+  onReuse: (promptId: string, clipId: string, clipUrl: string) => Promise<void>;
+  onClearReuse: (promptId: string) => Promise<void>;
   open: boolean;
   setOpen: (b: boolean) => void;
   query: string;
@@ -1658,14 +1793,51 @@ function PoolBrowser({
   setEpFilter: (s: string) => void;
   onAdd: (url: string) => void;
 }) {
-  // Todos os moods disponíveis na pool — dropdown.
+  // Prompts do ep atual (id-sorted) para o per-slot matcher.
+  const epPrompts = useMemo(() => {
+    const prefix = currentEp === "trailer" ? "nomear-trailer-" : `nomear-${currentEp}-`;
+    return funilPrompts
+      .filter((p) => p.id.startsWith(prefix))
+      .sort((a, b) => a.id.localeCompare(b.id));
+  }, [funilPrompts, currentEp]);
+
+  // Para cada prompt, pre-compute os top 3 matches (memoizado).
+  const matchesByPromptId = useMemo(() => {
+    const map = new Map<string, MatchCandidate[]>();
+    for (const p of epPrompts) {
+      map.set(p.id, rankPoolForPrompt(pool, p, currentEp, 3));
+    }
+    return map;
+  }, [epPrompts, pool, currentEp]);
+
+  const [savingSlot, setSavingSlot] = useState<string | null>(null);
+
+  const handleReuse = async (
+    promptId: string,
+    clipId: string,
+    clipUrl: string,
+  ) => {
+    setSavingSlot(promptId);
+    try {
+      await onReuse(promptId, clipId, clipUrl);
+    } finally {
+      setSavingSlot(null);
+    }
+  };
+  const handleClear = async (promptId: string) => {
+    setSavingSlot(promptId);
+    try {
+      await onClearReuse(promptId);
+    } finally {
+      setSavingSlot(null);
+    }
+  };
+  // Filtros avançados (secção alternativa colapsável).
   const allMoods = useMemo(() => {
     const s = new Set<string>();
     for (const c of pool) for (const m of c.mood) s.add(m);
     return [...s].sort();
   }, [pool]);
-
-  // Todos os eps com clips — dropdown.
   const allEps = useMemo(() => {
     const s = new Set<string>();
     for (const c of pool) if (c.episode) s.add(c.episode);
@@ -1675,24 +1847,28 @@ function PoolBrowser({
       return ord(a) - ord(b);
     });
   }, [pool]);
-
-  // Filtros aplicados
-  const filtered = useMemo(() => {
+  const filteredFlat = useMemo(() => {
     const q = query.trim().toLowerCase();
     return pool.filter((c) => {
-      // Excluir clips do próprio ep (são o default, não reuse)
       if (c.episode === currentEp) return false;
       if (epFilter && c.episode !== epFilter) return false;
       if (moodFilter && !c.mood.includes(moodFilter)) return false;
       if (q) {
-        const hay = `${c.clipId} ${c.imagePrompt ?? ""} ${c.mood.join(" ")}`.toLowerCase();
+        const hay =
+          `${c.clipId} ${c.imagePrompt ?? ""} ${c.mood.join(" ")}`.toLowerCase();
         if (!hay.includes(q)) return false;
       }
       return true;
     });
   }, [pool, currentEp, query, moodFilter, epFilter]);
-
   const inOrder = new Set(clipOrder);
+
+  // Contagens para o header.
+  const totalSlots = epPrompts.length;
+  const recycledSlots = epPrompts.filter((p) => !!p.reuseClipId).length;
+  const suggestedSlots = epPrompts.filter(
+    (p) => !p.reuseClipId && (matchesByPromptId.get(p.id)?.length ?? 0) > 0,
+  ).length;
 
   return (
     <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
@@ -1702,147 +1878,314 @@ function PoolBrowser({
       >
         <div>
           <h3 className="text-sm text-escola-creme">
-            4b. Pool de clips reutilizáveis ({pool.length} na pool)
+            4b. Reciclar da pool — sugestões por cena do ep{" "}
+            <code className="text-escola-dourado">{currentEp}</code>
           </h3>
           <p className="text-[10px] text-escola-creme-50">
-            Evita regerar imagens MJ/Runway — reutiliza clips de episódios anteriores.
+            {totalSlots === 0
+              ? `Ep ${currentEp} ainda não tem prompts criados. Vai a /admin/producao/funil → Prompts para os criares.`
+              : `${totalSlots} cenas · ${recycledSlots} já reciclados · ${suggestedSlots} com sugestão automática. Para cada cena, top 3 candidatos da pool com melhor encaixe.`}
           </p>
         </div>
         <span className="text-escola-creme-50">{open ? "−" : "+"}</span>
       </button>
 
       {open && (
-        <div className="mt-3 space-y-2">
-          <div className="flex flex-wrap gap-2 text-xs">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="pesquisar (gota, corda, vidro, cortina…)"
-              className="flex-1 min-w-[200px] rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
-            />
-            <select
-              value={moodFilter}
-              onChange={(e) => setMoodFilter(e.target.value)}
-              className="rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
-            >
-              <option value="">todos os moods</option>
-              {allMoods.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
-            <select
-              value={epFilter}
-              onChange={(e) => setEpFilter(e.target.value)}
-              className="rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
-            >
-              <option value="">todos os eps</option>
-              {allEps.map((e) => (
-                <option key={e} value={e}>
-                  {e}
-                </option>
-              ))}
-            </select>
-            {(query || moodFilter || epFilter) && (
-              <button
-                onClick={() => {
-                  setQuery("");
-                  setMoodFilter("");
-                  setEpFilter("");
-                }}
-                className="rounded border border-escola-border px-2 py-1.5 text-escola-creme-50 hover:text-escola-creme"
+        <div className="mt-3 space-y-3">
+          {totalSlots === 0 && (
+            <p className="rounded border border-escola-terracota/40 bg-escola-terracota/5 p-2 text-[11px] text-escola-terracota">
+              Sem prompts para este ep. Cria-os primeiro em{" "}
+              <a
+                href="/admin/producao/funil"
+                className="underline"
               >
-                limpar
-              </button>
-            )}
-          </div>
-
-          <p className="text-[10px] text-escola-creme-50">
-            {filtered.length} de {pool.length} clips · clips do próprio ep
-            <code className="mx-1">{currentEp}</code> ficam ocultos (não é reuse).
-          </p>
-
-          {filtered.length === 0 ? (
-            <p className="text-xs text-escola-creme-50">
-              Sem clips para mostrar com estes filtros.
+                /admin/producao/funil → Prompts
+              </a>{" "}
+              (podes usar o ✨ Gerar para automatizar).
             </p>
-          ) : (
-            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-              {filtered.map((c) => {
-                const alreadyIn = inOrder.has(c.clipUrl);
-                const highUse = c.usageCount >= 2;
-                return (
-                  <li
-                    key={c.clipId}
-                    className="overflow-hidden rounded border border-escola-border bg-escola-bg"
-                  >
-                    <div className="relative">
-                      {/* preload=none: 200+ videos na pool sem este hint faziam o browser
-                          carregar metadata de todos em paralelo ao scroll — bloqueava o
-                          main thread. Play só dispara no mouseenter, que carrega a pedido. */}
+          )}
+
+          {/* ── Per-slot matcher ───────────────────────────────────── */}
+          <ul className="space-y-2">
+            {epPrompts.map((p) => {
+              const matches = matchesByPromptId.get(p.id) ?? [];
+              const isReused = !!p.reuseClipId && !!p.reuseClipUrl;
+              const saving = savingSlot === p.id;
+              return (
+                <li
+                  key={p.id}
+                  className={`rounded-lg border p-2 ${
+                    isReused
+                      ? "border-escola-dourado/40 bg-escola-dourado/5"
+                      : "border-escola-border bg-escola-bg/40"
+                  }`}
+                >
+                  <div className="mb-2 flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[11px] font-semibold text-escola-creme">
+                        {p.id.replace(/^nomear-/, "")}
+                        {isReused && (
+                          <span className="ml-2 rounded bg-escola-dourado/30 px-1.5 py-0.5 text-[9px] text-escola-dourado">
+                            ♻ {p.reuseClipId?.split("-")[1]}
+                          </span>
+                        )}
+                      </p>
+                      {p.mood.length > 0 && (
+                        <p className="text-[10px] text-escola-creme-50">
+                          mood: {p.mood.join(" · ")}
+                        </p>
+                      )}
+                      <details className="mt-1">
+                        <summary className="cursor-pointer text-[10px] text-escola-creme-50 hover:text-escola-creme">
+                          ver descrição da cena
+                        </summary>
+                        <p className="mt-1 text-[10px] leading-relaxed text-escola-creme-50">
+                          {p.prompt || "(sem descrição)"}
+                        </p>
+                      </details>
+                    </div>
+                    {saving && (
+                      <span className="text-[10px] text-escola-creme-50">
+                        a guardar…
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Estado reciclado */}
+                  {isReused && p.reuseClipUrl && (
+                    <div className="flex items-start gap-2">
                       <video
-                        src={c.clipUrl}
-                        className="aspect-video w-full"
+                        src={p.reuseClipUrl}
+                        className="h-16 w-28 shrink-0 rounded border border-escola-dourado/40"
                         muted
                         preload="none"
-                        onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget as HTMLVideoElement)
+                            .play()
+                            .catch(() => {})
+                        }
                         onMouseLeave={(e) => {
                           const v = e.currentTarget as HTMLVideoElement;
                           v.pause();
                           v.currentTime = 0;
                         }}
                       />
-                      <span className="absolute left-1 top-1 rounded bg-escola-bg/80 px-1.5 py-0.5 text-[9px] text-escola-creme-50">
-                        {c.episode}
-                      </span>
-                      {c.usageCount > 0 && (
-                        <span
-                          className={`absolute right-1 top-1 rounded px-1.5 py-0.5 text-[9px] font-semibold ${
-                            highUse
-                              ? "bg-escola-terracota/80 text-white"
-                              : "bg-escola-dourado/80 text-escola-bg"
-                          }`}
-                          title={`Já reutilizado ${c.usageCount}× noutros eps`}
-                        >
-                          ♻ {c.usageCount}
-                        </span>
-                      )}
-                    </div>
-                    <div className="p-1.5 text-[10px]">
-                      <p className="truncate text-escola-creme" title={c.clipId}>
-                        {c.clipId.replace(/^nomear-/, "")}
-                      </p>
-                      {c.mood.length > 0 && (
-                        <p className="truncate text-escola-creme-50">
-                          {c.mood.join(" · ")}
+                      <div className="flex-1 text-[10px] text-escola-creme-50">
+                        <p className="text-escola-dourado">
+                          Sem geração MJ/Runway necessária
                         </p>
-                      )}
-                      <button
-                        onClick={() => onAdd(c.clipUrl)}
-                        disabled={alreadyIn}
-                        className={`mt-1 w-full rounded px-2 py-1 text-[10px] font-semibold ${
-                          alreadyIn
-                            ? "cursor-not-allowed bg-escola-border text-escola-creme-50"
-                            : highUse
-                              ? "border border-escola-terracota/40 bg-escola-terracota/10 text-escola-terracota hover:bg-escola-terracota/20"
-                              : "bg-escola-dourado text-escola-bg hover:opacity-90"
-                        }`}
-                        title={
-                          highUse && !alreadyIn
-                            ? "Já foi usado 2× — evita repetição excessiva"
-                            : undefined
-                        }
-                      >
-                        {alreadyIn ? "✓ já adicionado" : "+ adicionar a este ep"}
-                      </button>
+                        <p className="truncate" title={p.reuseClipId}>
+                          fonte: {p.reuseClipId}
+                        </p>
+                        <button
+                          onClick={() => handleClear(p.id)}
+                          disabled={saving}
+                          className="mt-1 rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-terracota disabled:opacity-40"
+                        >
+                          ✗ desfazer — vou gerar em MJ
+                        </button>
+                      </div>
                     </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+                  )}
+
+                  {/* Estado: ainda não reciclado, mostrar sugestões */}
+                  {!isReused &&
+                    (matches.length === 0 ? (
+                      <p className="text-[10px] text-escola-creme-50">
+                        Nenhum clip da pool bate com esta cena. Gera em MJ/Runway
+                        normalmente (cria imagem na aba /gerar).
+                      </p>
+                    ) : (
+                      <div>
+                        <p className="mb-1 text-[9px] uppercase tracking-wider text-escola-creme-50">
+                          Top {matches.length} sugestões (score = mood + keywords)
+                        </p>
+                        <ul className="grid grid-cols-3 gap-1.5">
+                          {matches.map((m) => {
+                            const highUse = m.usageCount >= 2;
+                            return (
+                              <li
+                                key={m.clipId}
+                                className="overflow-hidden rounded border border-escola-border bg-escola-card"
+                              >
+                                <div className="relative">
+                                  <video
+                                    src={m.clipUrl}
+                                    className="aspect-video w-full"
+                                    muted
+                                    preload="none"
+                                    onMouseEnter={(e) =>
+                                      (e.currentTarget as HTMLVideoElement)
+                                        .play()
+                                        .catch(() => {})
+                                    }
+                                    onMouseLeave={(e) => {
+                                      const v = e.currentTarget as HTMLVideoElement;
+                                      v.pause();
+                                      v.currentTime = 0;
+                                    }}
+                                  />
+                                  <span className="absolute left-1 top-1 rounded bg-escola-bg/80 px-1 py-0.5 text-[8px] text-escola-creme-50">
+                                    {m.episode} · {m.score}
+                                  </span>
+                                  {m.usageCount > 0 && (
+                                    <span
+                                      className={`absolute right-1 top-1 rounded px-1 py-0.5 text-[8px] font-semibold ${
+                                        highUse
+                                          ? "bg-escola-terracota/80 text-white"
+                                          : "bg-escola-dourado/80 text-escola-bg"
+                                      }`}
+                                    >
+                                      ♻ {m.usageCount}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="p-1 text-[9px]">
+                                  <p
+                                    className="truncate text-escola-creme"
+                                    title={m.clipId}
+                                  >
+                                    {m.clipId.replace(/^nomear-/, "")}
+                                  </p>
+                                  {m.matchedMood.length > 0 && (
+                                    <p className="truncate text-escola-dourado">
+                                      mood: {m.matchedMood.join(", ")}
+                                    </p>
+                                  )}
+                                  <button
+                                    onClick={() =>
+                                      handleReuse(p.id, m.clipId, m.clipUrl)
+                                    }
+                                    disabled={saving}
+                                    className={`mt-1 w-full rounded px-1.5 py-0.5 text-[9px] font-semibold disabled:opacity-40 ${
+                                      highUse
+                                        ? "border border-escola-terracota/40 bg-escola-terracota/10 text-escola-terracota hover:bg-escola-terracota/20"
+                                        : "bg-escola-dourado text-escola-bg hover:opacity-90"
+                                    }`}
+                                    title={
+                                      highUse
+                                        ? "Já foi usado 2× — considera diversificar"
+                                        : undefined
+                                    }
+                                  >
+                                    ♻ reciclar este
+                                  </button>
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* ── Modo avançado: pool completa com filtros (raramente usado) ── */}
+          <details className="rounded border border-escola-border bg-escola-bg/40 p-2">
+            <summary className="cursor-pointer text-[10px] text-escola-creme-50 hover:text-escola-creme">
+              Avançado: ver pool completa ({pool.length} clips) e adicionar
+              manualmente ao ep
+            </summary>
+            <div className="mt-2 space-y-2">
+              <div className="flex flex-wrap gap-2 text-xs">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="pesquisar (gota, corda, vidro…)"
+                  className="flex-1 min-w-[200px] rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+                <select
+                  value={moodFilter}
+                  onChange={(e) => setMoodFilter(e.target.value)}
+                  className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                >
+                  <option value="">todos os moods</option>
+                  {allMoods.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={epFilter}
+                  onChange={(e) => setEpFilter(e.target.value)}
+                  className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                >
+                  <option value="">todos os eps</option>
+                  {allEps.map((e) => (
+                    <option key={e} value={e}>
+                      {e}
+                    </option>
+                  ))}
+                </select>
+                {(query || moodFilter || epFilter) && (
+                  <button
+                    onClick={() => {
+                      setQuery("");
+                      setMoodFilter("");
+                      setEpFilter("");
+                    }}
+                    className="rounded border border-escola-border px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
+                  >
+                    limpar
+                  </button>
+                )}
+              </div>
+              <p className="text-[10px] text-escola-creme-50">
+                {filteredFlat.length} de {pool.length} clips.
+              </p>
+              {filteredFlat.length > 0 && (
+                <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                  {filteredFlat.slice(0, 48).map((c) => {
+                    const alreadyIn = inOrder.has(c.clipUrl);
+                    return (
+                      <li
+                        key={c.clipId}
+                        className="overflow-hidden rounded border border-escola-border bg-escola-bg"
+                      >
+                        <video
+                          src={c.clipUrl}
+                          className="aspect-video w-full"
+                          muted
+                          preload="none"
+                          onMouseEnter={(e) =>
+                            (e.currentTarget as HTMLVideoElement)
+                              .play()
+                              .catch(() => {})
+                          }
+                          onMouseLeave={(e) => {
+                            const v = e.currentTarget as HTMLVideoElement;
+                            v.pause();
+                            v.currentTime = 0;
+                          }}
+                        />
+                        <div className="p-1 text-[9px]">
+                          <p className="truncate text-escola-creme" title={c.clipId}>
+                            {c.clipId.replace(/^nomear-/, "")}
+                          </p>
+                          <button
+                            onClick={() => onAdd(c.clipUrl)}
+                            disabled={alreadyIn}
+                            className="mt-1 w-full rounded bg-escola-border px-1 py-0.5 text-[9px] text-escola-creme-50 hover:bg-escola-dourado hover:text-escola-bg disabled:opacity-50"
+                          >
+                            {alreadyIn ? "✓ adicionado" : "+ adicionar ao ep"}
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+              {filteredFlat.length > 48 && (
+                <p className="text-[10px] text-escola-creme-50">
+                  Mostrando 48 de {filteredFlat.length}. Usa os filtros para reduzir.
+                </p>
+              )}
+            </div>
+          </details>
         </div>
       )}
     </section>
