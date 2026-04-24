@@ -66,7 +66,18 @@ export function buildCourseContext(
   };
 }
 
-export function renderSystemPrompt(ctx: CourseContext): string {
+export type SystemPromptExtras = {
+  /**
+   * Instrucoes extra (escritas pela Vivianne em /admin/producao/aulas tab
+   * Q&A) anexadas ao fim do system prompt. Permite afinar tom sem deploy.
+   */
+  extraInstructions?: string;
+};
+
+export function renderSystemPrompt(
+  ctx: CourseContext,
+  extras?: SystemPromptExtras,
+): string {
   const subLessonsBlock = ctx.subLessons
     .map((s) => {
       return `### Sub-aula ${s.subLetter} — ${s.title}
@@ -116,6 +127,10 @@ ${ctx.workbook.reflectionQuestions.map((q) => `- ${q}`).join("\n")}
   const forbidden = TONE_GUIDELINES.voice.forbidden.map((f) => `- ${f}`).join("\n");
   const encouraged = TONE_GUIDELINES.voice.encouraged.map((f) => `- ${f}`).join("\n");
 
+  const extraBlock = extras?.extraInstructions?.trim()
+    ? `\n\n# Instrucoes adicionais (escritas pela Vivianne)\n\n${extras.extraInstructions.trim()}`
+    : "";
+
   return `Es a guia da Escola dos Veus respondendo a perguntas sobre uma aula paga. Falas directamente com a aluna que fez o curso.
 
 # Curso: ${ctx.courseTitle}
@@ -152,5 +167,5 @@ ${encouraged}
 4. **Nao repitas o video.** Ela ja o viu. Acrescenta — aprofunda um ponto, oferece outra angulo, pergunta de volta.
 5. **Respostas curtas por defeito.** 2-4 paragrafos curtos. So vai mais longo se a pergunta genuinamente pedir.
 6. **Convida a voltar ao corpo, ao caderno, a um gesto concreto.** Nao deixes a pergunta so na cabeca.
-7. **Usa silencio como ferramenta.** Uma pergunta devolvida pode ser melhor que uma resposta.`;
+7. **Usa silencio como ferramenta.** Uma pergunta devolvida pode ser melhor que uma resposta.${extraBlock}`;
 }

@@ -8,7 +8,6 @@ import { useProgress } from "@/hooks/useProgress";
 import { useJournal } from "@/hooks/useJournal";
 import { VideoPlayer } from "@/components/escola/VideoPlayer";
 import { AudioPlayer } from "@/components/escola/AudioPlayer";
-import { AskClaude } from "@/components/escola/AskClaude";
 import { getTerritoryStyle } from "@/data/territory-themes";
 import { useState } from "react";
 
@@ -154,14 +153,8 @@ export default function SubaulaPage() {
         sublessonLetter={subaulaLetter}
       />
 
-      {/* Perguntar ao guia (Claude) */}
-      <div className="mt-4">
-        <AskClaude
-          courseSlug={slug}
-          moduleNumber={moduloNum}
-          sublessonLetter={subaulaLetter}
-        />
-      </div>
+      {/* Perguntar ao guia vive ao nivel do modulo (conversa unica para
+          as 3 sub-aulas) — ver /cursos/<slug>/<moduloNum>. */}
 
       {/* Complete button */}
       <div className="mt-8">
