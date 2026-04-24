@@ -1,0 +1,13 @@
+{
+  "name": "render-course-slide",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Render MP4 dos slides Mock B das aulas. Corre em GitHub Actions (FFmpeg + Puppeteer).",
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "puppeteer": "^23.11.1"
+  }
+}
