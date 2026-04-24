@@ -7,13 +7,15 @@ export const dynamic = "force-dynamic";
 // POST /api/admin/shorts/upload-clips
 // Cria signed upload URLs para MP4s gerados por fora (Runway ilimitado) +
 // thumbnail PNG extraída no browser. O browser faz PUT directo ao Supabase
-// (contorna o limite de 4.5MB do body do Vercel). Os clips caem no mesmo
-// bucket `escola-shorts/clips/` que o animate-one usa — aparecem automaticamente
-// em Loranne (list-clips) e AG (list-clips-ag).
+// (contorna o limite de 4.5MB do body do Vercel). Os clips caem na biblioteca
+// partilhada Loranne+AG (bucket legado `escola-shorts/clips/`) e aparecem
+// automaticamente nos pickers dos dois pólos (list-clips-ag).
 //
-// Body: { files: [{ name, label? }] }
+// Body: { files: [{ name, theme }] }
 //   - name:  nome original do ficheiro (para preservar extensão .mp4)
-//   - label: prefixo amigável (ex: "loranne-mar", "ag-deserto"); default = basename
+//   - theme: tema fixo (mar, rio, floresta, plantas, ceu, deserto, montanha,
+//            noite, cidade, abstracto, outro) — vira prefixo no filename com
+//            separador "_" para o picker filtrar (ex: "mar_onda-1234-0.mp4").
 //
 // Returns: { items: [{ name, clipPath, clipUploadUrl, clipToken, clipUrl,
 //                       thumbPath, thumbUploadUrl, thumbToken, thumbUrl }] }
@@ -22,11 +24,16 @@ export const dynamic = "force-dynamic";
 // Body: { name: string }  (nome do ficheiro em /clips/ sem pasta)
 //   Remove o MP4 e o PNG thumb (se existir) do bucket.
 
-const BUCKET = "escola-shorts";
+const BUCKET = "escola-shorts"; // legado — biblioteca Loranne+AG
+
+const VALID_THEMES = new Set([
+  "mar", "rio", "floresta", "plantas", "ceu",
+  "deserto", "montanha", "noite", "cidade", "abstracto", "outro",
+]);
 
 type SignItem = {
   name: string;
-  label?: string;
+  theme?: string;
 };
 
 function slugify(s: string): string {
@@ -64,10 +71,15 @@ export async function POST(req: NextRequest) {
 
     const items = await Promise.all(
       files.map(async (f, i) => {
-        const base = slugify(f.label || f.name);
+        const theme = f.theme && VALID_THEMES.has(f.theme) ? f.theme : "outro";
+        const base = slugify(f.name);
         const stamp = `${timestamp}-${i}`;
-        const clipPath = `clips/${base}-${stamp}.mp4`;
-        const thumbPath = `thumbs/${base}-${stamp}.png`;
+        // Formato: "{tema}_{base}-{stamp}.mp4". O separador "_" permite ao
+        // picker extrair o tema (parseClipTheme). slugify() remove underscores
+        // do base, mantendo o "_" único como separador de tema.
+        const fileStem = `${theme}_${base}-${stamp}`;
+        const clipPath = `clips/${fileStem}.mp4`;
+        const thumbPath = `thumbs/${fileStem}.png`;
 
         const [clipSign, thumbSign] = await Promise.all([
           supabase.storage.from(BUCKET).createSignedUploadUrl(clipPath),
