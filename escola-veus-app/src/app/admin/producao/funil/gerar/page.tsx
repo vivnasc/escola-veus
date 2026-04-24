@@ -324,20 +324,26 @@ export default function FunilGerarPage() {
   // ── UI ─────────────────────────────────────────────────────────────────
   if (loading) return <p className="text-xs text-escola-creme-50">A carregar...</p>;
 
-  // Episódios dinâmicos: trailer + ep01..ep123 computados de NOMEAR_PRESETS.
-  // Permite trabalhar em qualquer ep da colecção, não só ep01-10.
+  // Episódios dinâmicos: trailer + ep01..epNN do Funil Nomear.
+  // Exclui categorias de aulas ("sagrado", "silencio", "nua", "fome", "chama",
+  // "proprio", "e") e placeholders "serie-X" que existem no NOMEAR_PRESETS
+  // mas NÃO são episódios do funil. Filtro: /^(trailer|ep\d+)$/.
+  // Ordenado: trailer primeiro, depois ep01, ep02, ... por número.
   const epOptions = ((): string[] => {
+    const EPISODE_RE = /^(trailer|ep\d+)$/;
     const seen = new Set<string>();
-    const out: string[] = [];
     for (const preset of NOMEAR_PRESETS) {
       for (const s of preset.scripts) {
         const key = s.id.split("-")[1];
-        if (!key || seen.has(key)) continue;
+        if (!key || !EPISODE_RE.test(key)) continue;
         seen.add(key);
-        out.push(key);
       }
     }
-    return out;
+    return Array.from(seen).sort((a, b) => {
+      if (a === "trailer") return -1;
+      if (b === "trailer") return 1;
+      return parseInt(a.replace("ep", ""), 10) - parseInt(b.replace("ep", ""), 10);
+    });
   })();
 
   return (
@@ -405,6 +411,12 @@ export default function FunilGerarPage() {
                 : p.id.startsWith(`nomear-${ep}`),
             );
             const reused = epPrompts.filter((p) => !!p.reuseClipId).length;
+            // Contar imagens geradas (por ep, agregado de todos os prompts do ep).
+            const imgCount = epPrompts.reduce(
+              (sum, p) => sum + (imagesByPrompt.get(p.id)?.length ?? 0),
+              0,
+            );
+            const hasImages = imgCount > 0;
             const active = filter === ep;
             return (
               <button
@@ -413,13 +425,27 @@ export default function FunilGerarPage() {
                 className={`rounded border px-2 py-1 text-[11px] transition-colors ${
                   active
                     ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
-                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                    : hasImages
+                      ? "border-escola-dourado/40 bg-escola-dourado/5 text-escola-creme hover:border-escola-dourado"
+                      : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
                 }`}
+                title={
+                  `${ep} · ${epPrompts.length} prompts` +
+                  (hasImages ? ` · ${imgCount} imagens geradas` : "")
+                }
               >
                 <span className="font-semibold">{ep}</span>
                 <span className="ml-1 text-[9px] text-escola-creme-50">
                   · {epPrompts.length}
                 </span>
+                {hasImages && (
+                  <span
+                    className="ml-1 rounded bg-escola-dourado/20 px-1 text-[9px] font-bold text-escola-dourado"
+                    title={`${imgCount} imagens geradas`}
+                  >
+                    📷{imgCount}
+                  </span>
+                )}
                 {reused > 0 && (
                   <span
                     className="ml-1 text-[9px] text-escola-dourado"
@@ -533,9 +559,14 @@ export default function FunilGerarPage() {
 
               {/* Images */}
               {imgs.length > 0 && (
-                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {imgs.map((img) => {
                     const clip = clips[img.name];
+                    const promptId = img.name.replace(/-[hv]-\d+\.\w+$/, "");
+                    const currentMotion =
+                      (motionOverride && motionOverride[promptId]) ||
+                      (motionPrompts as Record<string, string>)[promptId] ||
+                      "";
                     return (
                       <div key={img.name} className="overflow-hidden rounded-lg border border-escola-border">
                         {clip?.status === "done" && clip.clipUrl ? (
@@ -561,7 +592,7 @@ export default function FunilGerarPage() {
                               <span className="text-escola-dourado">✓</span>
                               <button
                                 onClick={() => {
-                                  if (!confirm(`Regenerar clip para ${img.name}?\n\nPaga novos créditos Runway. Usa o motion prompt mais recente (edições em /funil/motions aplicam-se).`)) return;
+                                  if (!confirm(`Regenerar clip para ${img.name}?\n\nPaga novos créditos Runway. Usa o motion prompt actual (editável abaixo).`)) return;
                                   generateClip(img);
                                 }}
                                 className="rounded border border-escola-border px-1.5 py-0.5 text-escola-creme-50 hover:border-escola-terracota hover:text-escola-terracota"
@@ -574,6 +605,15 @@ export default function FunilGerarPage() {
                             <span className="text-escola-terracota">{clip.error ?? "erro"}</span>
                           )}
                         </div>
+                        {/* Motion prompt — visivel + editavel inline. Regeneracao
+                            usa a versao actual aqui (depois de Guardar). */}
+                        <MotionPromptInline
+                          promptId={promptId}
+                          currentMotion={currentMotion}
+                          onSaved={(val) =>
+                            setMotionOverride((prev) => ({ ...(prev ?? {}), [promptId]: val }))
+                          }
+                        />
                       </div>
                     );
                   })}
@@ -642,6 +682,125 @@ function UploadZone({
           void promptId;
         }}
       />
+    </div>
+  );
+}
+
+// ─── MotionPromptInline ───────────────────────────────────────────────────
+// Mostra o motion prompt actual de um promptId, editavel inline. Guarda em
+// Supabase via /api/admin/prompts/runway-motion/save — merge com o JSON
+// guardado (nao sobrepoe prompts dos outros promptIds).
+//
+// Desenhado para resolver "regenerar as cegas": o user ve o prompt que vai
+// ser usado no ↻, edita se quiser, guarda, e SÓ DEPOIS regenera.
+
+function MotionPromptInline({
+  promptId,
+  currentMotion,
+  onSaved,
+}: {
+  promptId: string;
+  currentMotion: string;
+  onSaved: (val: string) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(currentMotion);
+  const [saving, setSaving] = useState(false);
+  const [savedMsg, setSavedMsg] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+
+  // Reset draft se o motion actual muda por fora (outro save)
+  useEffect(() => {
+    if (!editing) setDraft(currentMotion);
+  }, [currentMotion, editing]);
+
+  const save = async () => {
+    setSaving(true);
+    setErr(null);
+    try {
+      // Load todos os prompts actuais primeiro, faz merge deste e save.
+      const r1 = await fetch("/api/admin/prompts/runway-motion/load", {
+        cache: "no-store",
+      });
+      const d1 = await r1.json();
+      const all = (d1?.prompts && typeof d1.prompts === "object") ? d1.prompts as Record<string, string> : {};
+      all[promptId] = draft;
+      const r2 = await fetch("/api/admin/prompts/runway-motion/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompts: all }),
+      });
+      const d2 = await r2.json();
+      if (!r2.ok || d2.erro) throw new Error(d2.erro || `HTTP ${r2.status}`);
+      onSaved(draft);
+      setEditing(false);
+      setSavedMsg("✓ guardado — regenerar usa esta versão");
+      setTimeout(() => setSavedMsg(null), 2500);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const isEmpty = !currentMotion.trim();
+
+  return (
+    <div className="border-t border-escola-border bg-escola-bg/50 px-2 py-1.5">
+      <div className="mb-1 flex items-center justify-between text-[9px]">
+        <span className="uppercase tracking-wider text-escola-creme-50">
+          motion prompt (Runway)
+          {isEmpty && (
+            <span className="ml-1 text-escola-terracota">⚠ sem motion — usa _default</span>
+          )}
+        </span>
+        {!editing ? (
+          <button
+            onClick={() => setEditing(true)}
+            className="rounded border border-escola-border px-1.5 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+          >
+            editar
+          </button>
+        ) : (
+          <div className="flex gap-1">
+            <button
+              onClick={() => {
+                setDraft(currentMotion);
+                setEditing(false);
+              }}
+              disabled={saving}
+              className="rounded border border-escola-border px-1.5 py-0.5 text-escola-creme-50 hover:text-escola-creme disabled:opacity-30"
+            >
+              cancelar
+            </button>
+            <button
+              onClick={save}
+              disabled={saving || draft === currentMotion}
+              className="rounded bg-escola-dourado px-1.5 py-0.5 font-semibold text-escola-bg disabled:opacity-30"
+            >
+              {saving ? "..." : "guardar"}
+            </button>
+          </div>
+        )}
+      </div>
+      {editing ? (
+        <textarea
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          rows={4}
+          className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[10px] text-escola-creme"
+        />
+      ) : (
+        <p className="whitespace-pre-wrap text-[10px] leading-relaxed text-escola-creme">
+          {currentMotion || "(vazio)"}
+        </p>
+      )}
+      {savedMsg && (
+        <p className="mt-1 text-[9px] text-escola-dourado">{savedMsg}</p>
+      )}
+      {err && (
+        <p className="mt-1 text-[9px] text-escola-terracota">erro: {err}</p>
+      )}
     </div>
   );
 }

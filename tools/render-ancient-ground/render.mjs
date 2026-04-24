@@ -19,7 +19,7 @@
 
 import { spawn } from "node:child_process";
 import { createWriteStream } from "node:fs";
-import { mkdir, readFile, writeFile, stat } from "node:fs/promises";
+import { mkdir, readFile, writeFile, stat, open } from "node:fs/promises";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
@@ -63,6 +63,91 @@ async function uploadToSupabase(pathInBucket, data, contentType) {
     const txt = await res.text();
     throw new Error(`Upload ${pathInBucket} falhou ${res.status}: ${txt.slice(0, 300)}`);
   }
+}
+
+// Upload de ficheiros grandes (>50MB) via TUS resumable protocol — obrigatório
+// para MP4 de 1h (~1.4GB) que estouram o gateway do Supabase em POST simples
+// com 502 ("falhou 502 <!DOCTYPE html>..."). Faz upload em chunks de 6MB; se
+// algum chunk falhar, tenta novamente. Sem dependências externas.
+async function uploadLargeToSupabase(pathInBucket, filePath, contentType) {
+  const info = await stat(filePath);
+  const fileSize = info.size;
+  const CHUNK_SIZE = 6 * 1024 * 1024; // 6MB — recomendado pela Supabase
+
+  // Metadata format do TUS: "key base64value,key base64value" (keys ASCII).
+  const b64 = (s) => Buffer.from(s, "utf-8").toString("base64");
+  const metadata = [
+    `bucketName ${b64(BUCKET)}`,
+    `objectName ${b64(pathInBucket)}`,
+    `contentType ${b64(contentType)}`,
+    `cacheControl ${b64("3600")}`,
+  ].join(",");
+
+  // 1. Create upload — recebe Location para enviar chunks.
+  const createRes = await fetch(`${SUPABASE_URL}/storage/v1/upload/resumable`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${SERVICE_KEY}`,
+      "Tus-Resumable": "1.0.0",
+      "Upload-Length": String(fileSize),
+      "Upload-Metadata": metadata,
+      "x-upsert": "true",
+    },
+  });
+  if (!createRes.ok && createRes.status !== 201) {
+    const txt = await createRes.text();
+    throw new Error(`TUS create ${createRes.status}: ${txt.slice(0, 300)}`);
+  }
+  const location = createRes.headers.get("location");
+  if (!location) throw new Error("TUS create: sem Location header");
+
+  // 2. Envia chunks sequencialmente com retry simples.
+  const fd = await open(filePath, "r");
+  try {
+    let offset = 0;
+    let lastLog = 0;
+    while (offset < fileSize) {
+      const thisChunk = Math.min(CHUNK_SIZE, fileSize - offset);
+      const buf = Buffer.alloc(thisChunk);
+      await fd.read(buf, 0, thisChunk, offset);
+
+      let attempt = 0;
+      let uploaded = false;
+      while (!uploaded && attempt < 3) {
+        attempt++;
+        try {
+          const patchRes = await fetch(location, {
+            method: "PATCH",
+            headers: {
+              Authorization: `Bearer ${SERVICE_KEY}`,
+              "Tus-Resumable": "1.0.0",
+              "Upload-Offset": String(offset),
+              "Content-Type": "application/offset+octet-stream",
+            },
+            body: buf,
+          });
+          if (patchRes.ok || patchRes.status === 204) {
+            uploaded = true;
+            break;
+          }
+          const txt = await patchRes.text();
+          throw new Error(`patch ${patchRes.status}: ${txt.slice(0, 200)}`);
+        } catch (err) {
+          if (attempt >= 3) throw err;
+          console.warn(`  chunk @${offset} falhou (tentativa ${attempt}/3): ${err?.message || err}`);
+          await new Promise((r) => setTimeout(r, 2000 * attempt));
+        }
+      }
+      offset += thisChunk;
+      if (Date.now() - lastLog > 3000) {
+        lastLog = Date.now();
+        console.log(`  upload ${(offset / 1e6).toFixed(0)} / ${(fileSize / 1e6).toFixed(0)} MB (${Math.round((offset / fileSize) * 100)}%)`);
+      }
+    }
+  } finally {
+    await fd.close();
+  }
+  console.log(`  upload ${(fileSize / 1e6).toFixed(0)} MB COMPLETO`);
 }
 
 // Corre ffprobe -show_format -show_streams e devolve duração/tamanho/bitrate
@@ -294,70 +379,145 @@ async function main() {
   // ── PASSO 1: Base sequence ────────────────────────────────────────────────
   // Cada clip é recortado (trim nas pontas), normalizado (fps, resolução),
   // e encadeado com xfade(fade) de `crossfade` segundos entre clips.
-  // Timeline cumulativa: clip N entra no offset = sum(effective lengths) - crossfade*N.
+  //
+  // Para muitos clips (≥15) dividimos em batches de BATCH_SIZE processados
+  // por ffmpeg separados. Cada processo tem filter_complex pequeno (10
+  // inputs + 9 xfades em vez de 120+119), memória limpa entre batches, e
+  // evita o "runner lost communication with the server" (OOM) que aconteceu
+  // em renders de 120 clips. No fim, concat -c copy junta os sub-MP4s sem
+  // re-encoding (stream copy, instantâneo).
+  //
+  // Nota: nos boundaries entre batches não há xfade — há um corte duro. Para
+  // nature ambient (baixa variancia entre frames e movimento suave) isto é
+  // visualmente imperceptível; o benefício (não morrer) justifica.
   console.log(`[3/7] Construir base sequence: ${clipPaths.length} clips, trim=${trimEdge}s, xfade=${crossfade}s`);
-  const effective = clipDuration - 2 * trimEdge; // duração útil de cada clip após trim
+  const effective = clipDuration - 2 * trimEdge;
   const stride = effective - crossfade;
   if (stride <= 0) throw new Error(`stride <= 0: crossfade ${crossfade} >= effective ${effective}`);
 
-  const filters = [];
-  const inputs = [];
-  clipPaths.forEach((p, i) => {
-    inputs.push("-i", p);
-    filters.push(
-      `[${i}:v]trim=${trimEdge}:${clipDuration - trimEdge},setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=${fps},format=yuv420p[v${i}]`
-    );
-  });
-
-  // Cadeia xfade: [v0][v1]xfade=offset=stride[x1]; [x1][v2]xfade=offset=stride*2[x2]; ...
-  let prev = "v0";
-  for (let i = 1; i < clipPaths.length; i++) {
-    const out = i === clipPaths.length - 1 ? "vbase" : `x${i}`;
-    const offset = stride * i;
-    filters.push(`[${prev}][v${i}]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(3)}[${out}]`);
-    prev = out;
-  }
-  // Se só existe 1 clip, o "prev" é v0 — mapeia directamente.
-  const baseMap = clipPaths.length === 1 ? "v0" : "vbase";
-
+  const BATCH_SIZE = 10;
+  const needsBatching = clipPaths.length > 15;
   const baseOut = path.join(WORK_DIR, "base.mp4");
+
+  // Duração esperada da base: mesmo com batches é (aproximadamente) a mesma
+  // porque concat preserva a soma das durações dos sub-MP4s. (Nos boundaries
+  // entre batches não se subtrai crossfade — ligeiramente mais longo.)
   const baseDuration = clipPaths.length === 1
     ? effective
     : stride * (clipPaths.length - 1) + effective;
   console.log(`Base duration esperada: ${baseDuration.toFixed(2)}s`);
 
-  // Progresso em tempo real durante a base sequence: mapeia entre 25% e 50%.
+  // Helper: faz encode de UM batch (ou do input todo se poucos clips).
+  const encodeBatch = async (clips, outPath, progressLabel, onStderrLine) => {
+    const filters = [];
+    const inputs = [];
+    clips.forEach((p, i) => {
+      inputs.push("-i", p);
+      filters.push(
+        `[${i}:v]trim=${trimEdge}:${clipDuration - trimEdge},setpts=PTS-STARTPTS,scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,fps=${fps},format=yuv420p[v${i}]`
+      );
+    });
+    let prev = "v0";
+    for (let i = 1; i < clips.length; i++) {
+      const out = i === clips.length - 1 ? "vbase" : `x${i}`;
+      const offset = stride * i;
+      filters.push(`[${prev}][v${i}]xfade=transition=fade:duration=${crossfade}:offset=${offset.toFixed(3)}[${out}]`);
+      prev = out;
+    }
+    const mapLabel = clips.length === 1 ? "v0" : "vbase";
+    await runFfmpeg([
+      "-y",
+      ...inputs,
+      // -threads 2 + -filter_complex_threads 2: limita paralelismo para
+      // caber em RAM do runner (~7GB) mesmo com xfade pesado.
+      "-threads", "2",
+      "-filter_complex", filters.join(";"),
+      "-filter_complex_threads", "2",
+      "-map", `[${mapLabel}]`,
+      "-c:v", "libx264",
+      // veryfast é seguro com batching (10 clips por processo = RAM limpa
+      // entre batches) e comprime significativamente melhor que ultrafast.
+      // Evita ficheiros acima dos 2 GiB do Supabase.
+      "-preset", "veryfast",
+      "-crf", "23",
+      "-maxrate", "4M",
+      "-bufsize", "8M",
+      "-pix_fmt", "yuv420p",
+      "-r", String(fps),
+      "-an",
+      "-movflags", "+faststart",
+      outPath,
+    ], progressLabel, onStderrLine);
+  };
+
   let lastProgressWriteBase = 0;
-  await runFfmpeg([
-    "-y",
-    ...inputs,
-    "-filter_complex", filters.join(";"),
-    "-map", `[${baseMap}]`,
-    "-c:v", "libx264",
-    "-preset", "medium",
-    // CRF 23 + cap de bitrate evita que 1h a 1080p estoure os ~1.95GB do bucket.
-    // Nature ambient comprime muito bem a este CRF — visualmente equivalente a CRF 20.
-    "-crf", "23",
-    "-maxrate", "4M",
-    "-bufsize", "8M",
-    "-pix_fmt", "yuv420p",
-    "-r", String(fps),
-    "-an",
-    "-movflags", "+faststart",
-    baseOut,
-  ], "base", async (line) => {
-    const t = parseFfmpegTime(line);
-    if (t == null) return;
+  let currentBatchIdx = 0;
+  let currentBatchCount = 1;
+  const reportBaseProgress = async (cumulativeSec) => {
     const now = Date.now();
-    if (now - lastProgressWriteBase < 5000) return; // max 1x/5s
+    if (now - lastProgressWriteBase < 5000) return;
     lastProgressWriteBase = now;
-    const pct = Math.min(1, t / baseDuration);
+    const pct = Math.min(1, cumulativeSec / baseDuration);
     await writeResult(jobId, {
       status: "running",
       phase: "base-sequence",
       progress: 25 + Math.round(pct * 25), // 25 → 50
+      batchIdx: currentBatchIdx,
+      batchCount: currentBatchCount,
     }).catch(() => {});
-  });
+  };
+
+  if (!needsBatching) {
+    // Poucos clips → tudo num só processo (comportamento anterior).
+    await encodeBatch(clipPaths, baseOut, "base", async (line) => {
+      const t = parseFfmpegTime(line);
+      if (t != null) await reportBaseProgress(t);
+    });
+  } else {
+    // Muitos clips → batches. Calcula BATCH_SIZE ideal para ter batches
+    // equilibrados: BATCH_SIZE=10 para 120 clips = 12 batches.
+    const totalBatches = Math.ceil(clipPaths.length / BATCH_SIZE);
+    currentBatchCount = totalBatches;
+    console.log(`Batching: ${totalBatches} batches × até ${BATCH_SIZE} clips`);
+    const subPaths = [];
+    // Duração útil estimada por batch (para mapear progresso cumulativo).
+    const batchEstDuration = (b) => {
+      if (b.length === 1) return effective;
+      return stride * (b.length - 1) + effective;
+    };
+    let cumulative = 0;
+    for (let i = 0; i < totalBatches; i++) {
+      currentBatchIdx = i + 1; // 1-based para a UI
+      const start = i * BATCH_SIZE;
+      const batch = clipPaths.slice(start, start + BATCH_SIZE);
+      const subPath = path.join(WORK_DIR, `sub-${String(i).padStart(3, "0")}.mp4`);
+      const estThisBatch = batchEstDuration(batch);
+      const baselineBefore = cumulative;
+      console.log(`  Batch ${i + 1}/${totalBatches} (${batch.length} clips, ~${estThisBatch.toFixed(1)}s)`);
+      await encodeBatch(batch, subPath, `base-batch-${i + 1}`, async (line) => {
+        const t = parseFfmpegTime(line);
+        if (t != null) await reportBaseProgress(baselineBefore + t);
+      });
+      cumulative += estThisBatch;
+      subPaths.push(subPath);
+    }
+    // Concat sem re-encoding — todos os sub-MP4s têm os mesmos params.
+    const listFile = path.join(WORK_DIR, "concat-list.txt");
+    await writeFile(
+      listFile,
+      subPaths.map((p) => `file '${p}'`).join("\n"),
+    );
+    console.log(`Concat final de ${subPaths.length} sub-bases (stream copy)`);
+    await runFfmpeg([
+      "-y",
+      "-f", "concat",
+      "-safe", "0",
+      "-i", listFile,
+      "-c", "copy",
+      "-movflags", "+faststart",
+      baseOut,
+    ], "concat-base");
+  }
 
   await writeResult(jobId, { status: "running", phase: "music", progress: 50 });
 
@@ -416,6 +576,7 @@ async function main() {
     : `[${musicIdx}:a]volume=${musicVolume},afade=t=in:ss=0:d=2${afadeOutFragment}[music]`;
 
   // Progresso em tempo real durante o loop/final encode: mapeia entre 65% e 85%.
+  // Escreve também elapsedSec/targetSec para a UI mostrar "40 min de 60 min".
   let lastProgressWriteLoop = 0;
   const onLoopProgress = async (line) => {
     const t = parseFfmpegTime(line);
@@ -428,6 +589,8 @@ async function main() {
       status: "running",
       phase: "loop",
       progress: 65 + Math.round(pct * 20), // 65 → 85
+      elapsedSec: Math.round(t),
+      targetSec: targetDuration,
     }).catch(() => {});
   };
 
@@ -459,15 +622,22 @@ async function main() {
     await runFfmpeg([
       "-y",
       ...inputsFinal,
+      // Limita threads globais e do filter_complex — evita OOM do runner.
+      "-threads", "2",
       "-filter_complex", filterComplex,
+      "-filter_complex_threads", "2",
       "-map", "[vout]",
       "-map", "[music]",
       "-t", String(targetDuration),
       "-c:v", "libx264",
       "-preset", "veryfast",
-      "-crf", "21",
-      "-maxrate", "5M",
-      "-bufsize", "10M",
+      // CRF 23 + maxrate 4M: para 1h a 1080p, teto teórico = 4M × 3600 = 1.8 GB.
+      // Deixa margem segura abaixo do limite 2 GiB do Supabase. Antes, com
+      // CRF 21 + maxrate 5M, vídeos com mais variância (ex: plantas) chegavam
+      // a 2.26 GB e eram rejeitados no upload.
+      "-crf", "23",
+      "-maxrate", "4M",
+      "-bufsize", "8M",
       "-pix_fmt", "yuv420p",
       "-r", String(fps),
       "-c:a", "aac",
@@ -508,11 +678,12 @@ async function main() {
   await writeResult(jobId, { status: "running", phase: "upload", progress: 85 });
 
   // ── PASSO 3: Upload ───────────────────────────────────────────────────────
-  console.log(`[6/7] Upload MP4 para Supabase`);
+  console.log(`[6/7] Upload MP4 para Supabase (TUS resumable)`);
   const stamp = Date.now();
   const mp4Name = `${slug || "video"}-${stamp}.mp4`;
-  const mp4Buf = await readFile(outPath);
-  await uploadToSupabase(`${VIDEO_DIR}/${mp4Name}`, mp4Buf, "video/mp4");
+  // Usa upload resumable em chunks de 6MB — evita o 502 do gateway em
+  // POST simples com 1.4GB. Lê do disco em blocos, sem carregar tudo em RAM.
+  await uploadLargeToSupabase(`${VIDEO_DIR}/${mp4Name}`, outPath, "video/mp4");
   const videoUrl = supabasePublicUrl(`${VIDEO_DIR}/${mp4Name}`);
 
   // Thumbnail (prioridade: dataURL composto > URL externa)

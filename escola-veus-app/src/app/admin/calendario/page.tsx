@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
+import { YouTubePublishSteps } from "@/components/admin/YouTubePublishSteps";
 import {
   YOUTUBE_WEEKS,
   YOUTUBE_SCHEDULE,
@@ -325,56 +326,15 @@ function PlanoAgTab() {
 
   return (
     <div className="space-y-6">
-      {/* 1. Plano — cada slot com estado e picker de vídeo. */}
+      {/* 1. Biblioteca dos vídeos prontos — primeira coisa visível. Caso de
+          uso dominante: ir ao calendário para publicar, e para isso precisas
+          de ver os vídeos, não de fazer scroll pelo plano inteiro. */}
       <div>
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          🗓️ Plano das próximas {weeks.length} semanas
-        </h3>
-        <div className="mb-3 rounded-xl border border-escola-border bg-escola-card p-4 text-xs text-escola-creme-50">
-          <p>
-            Ritmo:{" "}
-            <span className="text-escola-creme">Seg · Qua (shorts 30s)</span> +{" "}
-            <span className="text-escola-creme">Sex (longo 60 min)</span>
-            . Publicação às <span className="text-escola-creme">10:00</span>.
-          </p>
-          <p className="mt-1">
-            Para cada slot, escolhe um vídeo já gerado. Fica associado e visível em qualquer dispositivo — ao chegar a hora basta copiar título/descrição e publicar.
-          </p>
-        </div>
-        <div className="space-y-2">
-          {weeks.map((w) => (
-            <div
-              key={w.start.toISOString()}
-              className="overflow-hidden rounded-xl border border-escola-border bg-escola-card"
-            >
-              <div className="border-b border-escola-border px-4 py-2 text-sm text-escola-creme">
-                {w.weekLabel}
-              </div>
-              <div className="divide-y divide-escola-border">
-                {w.slots.map((s: AgSlot) => (
-                  <PlanoSlot
-                    key={s.slotId}
-                    slot={s}
-                    entry={schedule[s.slotId] || null}
-                    available={s.type === "longo" ? longVideos : shortVideos}
-                    scheduleLoaded={scheduleLoaded}
-                    saving={savingSlot === s.slotId}
-                    onChange={(entry) => setSlotEntry(s.slotId, entry)}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 2. Biblioteca completa — RecentRenders como referência. */}
-      <div>
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          📚 Biblioteca de vídeos AG
+          🎬 Vídeos AG prontos a publicar
         </h3>
         <p className="mb-3 text-xs text-escola-creme-50">
-          Todos os vídeos AG gerados. Usa para copiar SEO ou partilhar pontualmente (fora do calendário).
+          Clica num vídeo para abrir os 3 passos de publicação (⬇ MP4 / ↗ Partilhar / 📋 SEO). Não precisas de ir ao Supabase.
         </p>
         <div className="space-y-4">
           <RecentRenders
@@ -389,6 +349,52 @@ function PlanoAgTab() {
           />
         </div>
       </div>
+
+      {/* 2. Plano das próximas semanas — consulta secundária. Colapsado
+          por default para não empurrar a biblioteca para baixo. */}
+      <details className="rounded-xl border border-escola-border bg-escola-card">
+        <summary className="cursor-pointer px-4 py-3 text-sm font-semibold uppercase tracking-wider text-escola-coral hover:bg-escola-bg/40">
+          🗓️ Plano das próximas {weeks.length} semanas · associar vídeos a datas
+        </summary>
+        <div className="space-y-4 p-4">
+          <div className="rounded-xl border border-escola-border bg-escola-bg p-3 text-xs text-escola-creme-50">
+            <p>
+              Ritmo:{" "}
+              <span className="text-escola-creme">Seg · Qua (shorts 30s)</span> +{" "}
+              <span className="text-escola-creme">Sex (longo 60 min)</span>
+              . Publicação às <span className="text-escola-creme">10:00</span>.
+            </p>
+            <p className="mt-1">
+              Para cada slot, escolhe um vídeo já gerado. Fica associado e visível em qualquer dispositivo — ao chegar a hora basta copiar título/descrição e publicar.
+            </p>
+          </div>
+          <div className="space-y-2">
+            {weeks.map((w) => (
+              <div
+                key={w.start.toISOString()}
+                className="overflow-hidden rounded-xl border border-escola-border bg-escola-bg"
+              >
+                <div className="border-b border-escola-border px-4 py-2 text-sm text-escola-creme">
+                  {w.weekLabel}
+                </div>
+                <div className="divide-y divide-escola-border">
+                  {w.slots.map((s: AgSlot) => (
+                    <PlanoSlot
+                      key={s.slotId}
+                      slot={s}
+                      entry={schedule[s.slotId] || null}
+                      available={s.type === "longo" ? longVideos : shortVideos}
+                      scheduleLoaded={scheduleLoaded}
+                      saving={savingSlot === s.slotId}
+                      onChange={(entry) => setSlotEntry(s.slotId, entry)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </details>
     </div>
   );
 }
@@ -515,63 +521,78 @@ function PlanoSlot({
         {saving && <span className="shrink-0 text-[10px] text-escola-creme-50">A guardar...</span>}
       </div>
 
-      {/* Vídeo associado: player + SEO copy + partilha + marcar publicado. */}
+      {/* Vídeo associado: player + publicação em 3 passos (igual ao funil). */}
       {associated && entry && (
-        <div className="space-y-2 rounded border border-escola-border/60 bg-escola-bg p-2 text-xs">
-          {associated.thumbnailUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={associated.thumbnailUrl}
-              alt={title}
-              className={`w-full rounded ${slot.type === "longo" ? "aspect-video" : "aspect-[9/16] max-w-[180px]"} object-cover`}
-            />
-          ) : null}
-          {title && <p className="font-medium text-escola-creme">{title}</p>}
-          <ShareVideoActions
-            videoUrl={entry.videoUrl}
-            title={title}
-            text={description}
-            mode={slot.type === "longo" ? "long" : "short"}
-          />
-          <div className="flex flex-wrap gap-2 pt-1">
-            <button
-              onClick={copyAll}
-              className="flex-1 min-w-[120px] rounded bg-escola-dourado px-3 py-2 text-xs font-semibold text-escola-bg hover:bg-escola-dourado/90"
-            >
-              {copiedAll ? "✓ Copiado!" : "📋 Copiar TUDO (título + descrição + URL)"}
-            </button>
-            <button
-              onClick={markPublished}
-              className={`rounded border px-3 py-2 text-xs ${
-                published
-                  ? "border-green-700 bg-green-950/40 text-green-300"
-                  : "border-escola-border text-escola-creme hover:bg-escola-border/20"
-              }`}
-            >
-              {published ? "✓ Publicado (clica para reverter)" : "Marcar como publicado"}
-            </button>
-            <button
-              onClick={() => {
-                if (!confirm("Desassociar este vídeo do slot?")) return;
-                onChange(null);
-              }}
-              className="rounded border border-escola-border px-3 py-2 text-xs text-red-300 hover:bg-red-950/30"
-            >
-              Desassociar
-            </button>
+        <div className="space-y-3">
+          <div className="rounded border border-escola-border/60 bg-escola-bg p-2 text-xs">
+            {associated.thumbnailUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={associated.thumbnailUrl}
+                alt={title}
+                className={`w-full rounded ${slot.type === "longo" ? "aspect-video" : "aspect-[9/16] max-w-[180px]"} object-cover`}
+              />
+            ) : null}
+            {title && <p className="mt-2 font-medium text-escola-creme">{title}</p>}
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button
+                onClick={markPublished}
+                className={`rounded border px-3 py-2 text-xs ${
+                  published
+                    ? "border-green-700 bg-green-950/40 text-green-300"
+                    : "border-escola-border text-escola-creme hover:bg-escola-border/20"
+                }`}
+              >
+                {published ? "✓ Publicado (clica para reverter)" : "Marcar como publicado"}
+              </button>
+              <button
+                onClick={() => {
+                  if (!confirm("Desassociar este vídeo do slot?")) return;
+                  onChange(null);
+                }}
+                className="rounded border border-escola-border px-3 py-2 text-xs text-red-300 hover:bg-red-950/30"
+              >
+                Desassociar
+              </button>
+            </div>
+            {published && entry.publishedAt && (
+              <p className="mt-2 text-[10px] text-green-300">
+                Marcado publicado em{" "}
+                {new Date(entry.publishedAt).toLocaleString("pt-PT", {
+                  day: "2-digit",
+                  month: "short",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+            )}
           </div>
-          {published && entry.publishedAt && (
-            <p className="text-[10px] text-green-300">
-              Marcado publicado em{" "}
-              {new Date(entry.publishedAt).toLocaleString("pt-PT", {
-                day: "2-digit",
-                month: "short",
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
+
+          {/* 3 passos manuais até configurarmos o OAuth do canal AG. */}
+          {!published && (
+            <YouTubePublishSteps
+              videoUrl={entry.videoUrl}
+              title={title}
+              description={description + (hashtags ? `\n\n${hashtags}` : "")}
+              tags={Array.isArray(associated?.seo?.["hashtags"])
+                ? (associated!.seo!["hashtags"] as string[]).map((h) => h.replace(/^#/, ""))
+                : []}
+              thumbnailUrl={associated.thumbnailUrl}
+              channel="ag"
+              channelLabel="canal Ancient Ground · 3 passos"
+            />
           )}
         </div>
+      )}
+
+      {/* Copiar TUDO one-shot (atalho retrocompat). */}
+      {associated && entry && (
+        <button
+          onClick={copyAll}
+          className="mt-2 w-full rounded bg-escola-dourado/20 px-3 py-1.5 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/30"
+        >
+          {copiedAll ? "✓ Copiado atalho!" : "📋 Atalho: copiar título + descrição + URL num só texto"}
+        </button>
       )}
 
       {!associated && isPast && !entry && (

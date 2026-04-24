@@ -15,6 +15,13 @@ type ImageItem = {
   promptId: string;
 };
 
+type PoolClip = {
+  name: string;
+  url: string;
+  thumbUrl: string;
+  createdAt: string | null;
+};
+
 type MusicTrack = {
   name: string;
   url: string;
@@ -118,6 +125,13 @@ export default function ShortsPage() {
   const [imageQuery, setImageQuery] = useState("");
   const [loadingImages, setLoadingImages] = useState(false);
 
+  // Pool partilhada de clips Runway (biblioteca /admin/producao/shorts/biblioteca).
+  // Alternativa ao fluxo "imagem → animate-one" quando o clip já foi gerado
+  // fora (Runway ilimitado). Preenche imageUrl+clipUrl dum slot de uma só vez.
+  const [poolClips, setPoolClips] = useState<PoolClip[]>([]);
+  const [poolQuery, setPoolQuery] = useState("");
+  const [loadingPool, setLoadingPool] = useState(false);
+
   const [albums, setAlbums] = useState<AlbumItem[]>([]);
   const [loadingAlbums, setLoadingAlbums] = useState(false);
 
@@ -196,6 +210,16 @@ export default function ShortsPage() {
       .finally(() => setLoadingImages(false));
   }, []);
 
+  // Load biblioteca partilhada de clips (mesma pool que AG consome)
+  useEffect(() => {
+    setLoadingPool(true);
+    fetch("/api/admin/shorts/list-clips-ag", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => setPoolClips(d.clips || []))
+      .catch(() => setPoolClips([]))
+      .finally(() => setLoadingPool(false));
+  }, []);
+
   // Load albums
   useEffect(() => {
     setLoadingAlbums(true);
@@ -236,6 +260,10 @@ export default function ShortsPage() {
       )
     : tracks;
 
+  const filteredPoolClips = poolQuery.trim()
+    ? poolClips.filter((c) => c.name.toLowerCase().includes(poolQuery.toLowerCase()))
+    : poolClips.slice(0, 60);
+
   const updateSlot = (slotIdx: number, patch: Partial<SlotState>) => {
     setState((prev) => {
       const next = {
@@ -267,6 +295,36 @@ export default function ShortsPage() {
 
   const clearSlot = (slotIdx: number) => {
     updateSlot(slotIdx, { ...EMPTY_SLOT });
+  };
+
+  // ── Picker da pool partilhada (biblioteca) ──────────────────────────────────
+  // Preenche o próximo slot livre com {imageUrl: thumb, clipUrl: mp4}, saltando
+  // o fluxo imagem→animate-one (API Runway paga). A biblioteca é alimentada
+  // pela página /admin/producao/shorts/biblioteca (upload único para Loranne+AG).
+  const pickFromPool = (clip: PoolClip) => {
+    setState((prev) => {
+      const idx = prev.slots.findIndex((s) => !s.clipUrl);
+      if (idx === -1) return prev;
+      const next = {
+        ...prev,
+        slots: prev.slots.map((s, i) =>
+          i === idx
+            ? {
+                imageUrl: clip.thumbUrl,
+                promptId: clip.name,
+                motionPrompt: "",
+                clipUrl: clip.url,
+                generating: false,
+                error: "",
+              }
+            : s,
+        ),
+      };
+      try {
+        localStorage.setItem("shorts-state", JSON.stringify(next));
+      } catch { /* ignore */ }
+      return next;
+    });
   };
 
   // ── Animate ONE slot (Runway) ───────────────────────────────────────────────
@@ -544,6 +602,12 @@ export default function ShortsPage() {
         </h2>
         <div className="flex gap-2">
           <Link
+            href="/admin/producao/shorts/biblioteca"
+            className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-coral"
+          >
+            Biblioteca de clips
+          </Link>
+          <Link
             href="/admin/producao/shorts/nomear"
             className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1.5 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/20"
           >
@@ -639,6 +703,80 @@ export default function ShortsPage() {
               </p>
             )}
           </div>
+        )}
+      </section>
+
+      {/* ── 1b. PICKER DA BIBLIOTECA PARTILHADA (ALTERNATIVA) ── */}
+      <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-dourado">
+            1b. (alternativa) Escolher da biblioteca Runway
+          </h3>
+          <Link
+            href="/admin/producao/shorts/biblioteca"
+            className="text-[10px] text-escola-coral hover:text-escola-coral/80"
+          >
+            → Upload / gerir biblioteca
+          </Link>
+        </div>
+        <p className="mb-3 text-xs text-escola-creme-50">
+          Clips Runway já gerados (teus ou partilhados com AG). Clica para
+          preencher o próximo slot — salta a geração paga (secção 2). Para
+          fazer upload de novos clips, usa a biblioteca.
+        </p>
+        <input
+          type="text"
+          value={poolQuery}
+          onChange={(e) => setPoolQuery(e.target.value)}
+          placeholder="Filtrar (ex: loranne, ag, mar, floresta...)"
+          className="mb-3 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+        />
+        {loadingPool ? (
+          <p className="text-xs text-escola-creme-50">A carregar biblioteca...</p>
+        ) : filteredPoolClips.length === 0 ? (
+          <p className="text-xs text-escola-creme-50">
+            Nenhum clip na biblioteca.{" "}
+            <Link href="/admin/producao/shorts/biblioteca" className="text-escola-coral hover:underline">
+              Faz upload →
+            </Link>
+          </p>
+        ) : (
+          <>
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-8">
+              {filteredPoolClips.map((c) => {
+                const nextSlot = state.slots.findIndex((s) => !s.clipUrl);
+                const used = state.slots.some((s) => s.clipUrl === c.url);
+                const disabled = nextSlot === -1 || used;
+                return (
+                  <button
+                    key={c.url}
+                    onClick={() => !disabled && pickFromPool(c)}
+                    disabled={disabled}
+                    title={c.name}
+                    className={`group relative aspect-[9/16] overflow-hidden rounded border ${
+                      disabled
+                        ? "border-escola-border/30 opacity-30"
+                        : "border-escola-border hover:border-escola-coral"
+                    }`}
+                  >
+                    <video
+                      src={c.url}
+                      poster={c.thumbUrl}
+                      muted
+                      playsInline
+                      className="h-full w-full object-cover"
+                    />
+                    <span className="absolute inset-x-0 bottom-0 truncate bg-black/70 px-1 text-[9px] text-white">
+                      {c.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-2 text-[10px] text-escola-creme-50">
+              {poolClips.length} clips · a mostrar {filteredPoolClips.length}
+            </p>
+          </>
         )}
       </section>
 

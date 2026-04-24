@@ -231,6 +231,8 @@ type ProjectState = {
   musicPair: number;
   groupOrder?: string[]; // ordered promptIds
   groupClips?: Record<string, string[]>; // promptId → ordered clip URLs
+  excludedGroups?: string[]; // promptIds excluídos do render
+  excludedClips?: string[]; // URLs individuais excluídas do render
   thumbnailUrl?: string;
   composedThumbnailDataUrl?: string; // canvas-composed thumbnail (data: URL)
   seo?: SeoMeta;
@@ -311,6 +313,13 @@ export default function YouTubeMontagem() {
   // Group state: ordered promptIds + per-group ordered clip URLs.
   const [groupOrder, setGroupOrder] = useState<string[]>([]);
   const [groupClips, setGroupClips] = useState<Record<string, string[]>>({});
+  // Grupos excluídos do render (promptIds). Clicar no ✗ no cabeçalho do
+  // grupo exclui/inclui os 4 clips desse grupo com um toque. Persiste no
+  // state por-vídeo.
+  const [excludedGroups, setExcludedGroups] = useState<Set<string>>(new Set());
+  // Clips individuais excluídos (URLs). Permite granularidade: excluir 1 só
+  // clip de um grupo sem desactivar os outros 3.
+  const [excludedClips, setExcludedClips] = useState<Set<string>>(new Set());
   const [videoDuration, setVideoDuration] = useState<number>(DEFAULT_VIDEO_DURATION);
   // FadeOut em segundos. 0 = corte seco (rápido, -c:v copy). >0 = fade para
   // preto + silêncio no fim (mais ~15min de runner para 1h).
@@ -338,7 +347,12 @@ export default function YouTubeMontagem() {
   const TRIM = 0.3;
 
   // Derived: flat ordered clip URLs respecting groupOrder + per-group order.
-  const orderedClipUrls: string[] = groupOrder.flatMap((pid) => groupClips[pid] || []);
+  // Exclui grupos inteiros (excludedGroups) e clips individuais (excludedClips)
+  // — só entram no render os que NÃO estão excluídos. Permite à utilizadora
+  // tirar clips sem os apagar do Supabase.
+  const orderedClipUrls: string[] = groupOrder
+    .filter((pid) => !excludedGroups.has(pid))
+    .flatMap((pid) => (groupClips[pid] || []).filter((url) => !excludedClips.has(url)));
 
   // O preview pode tocar uma sequência diferente do render (ex: loop dum só clip
   // para diagnóstico). previewClipUrls é o que vai para o player; orderedClipUrls
@@ -374,6 +388,8 @@ export default function YouTubeMontagem() {
     musicPair,
     groupOrder,
     groupClips,
+    excludedGroups: Array.from(excludedGroups),
+    excludedClips: Array.from(excludedClips),
     thumbnailUrl,
     videoId: overrides?.videoIdOverride ?? videoId,
     seo,
@@ -460,6 +476,12 @@ export default function YouTubeMontagem() {
           setGroupOrder(groups.map((g) => g.promptId));
           setGroupClips(Object.fromEntries(groups.map((g) => [g.promptId, g.clips])));
         }
+        if (Array.isArray(state.excludedGroups)) {
+          setExcludedGroups(new Set(state.excludedGroups));
+        }
+        if (Array.isArray(state.excludedClips)) {
+          setExcludedClips(new Set(state.excludedClips));
+        }
       }
     } catch { /* ignore */ }
   }, []);
@@ -475,6 +497,8 @@ export default function YouTubeMontagem() {
       musicPair,
       groupOrder,
       groupClips,
+      excludedGroups: Array.from(excludedGroups),
+      excludedClips: Array.from(excludedClips),
       thumbnailUrl,
       videoId,
       seo,
@@ -482,14 +506,14 @@ export default function YouTubeMontagem() {
     try {
       localStorage.setItem(key, JSON.stringify(state));
     } catch { /* ignore quota */ }
-  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, videoId, seo]);
+  }, [title, musicPair, groupOrder, groupClips, excludedGroups, excludedClips, thumbnailUrl, videoId, seo]);
 
   useEffect(() => {
     saveState();
     // composedThumbnailDataUrl propositadamente excluído das deps — não é
     // guardado no state (é gigante) e muda frequentemente ao editar texto
     // da thumbnail, o que provocaria saves desnecessários.
-  }, [title, musicPair, groupOrder, groupClips, thumbnailUrl, videoId, seo, saveState]);
+  }, [title, musicPair, groupOrder, groupClips, excludedGroups, excludedClips, thumbnailUrl, videoId, seo, saveState]);
 
   // Legacy migration: older localStorage only kept `title` (the human titulo),
   // never `videoId`. If title matches a plan entry, restore the videoId.
@@ -838,6 +862,10 @@ export default function YouTubeMontagem() {
         width?: number | null;
         height?: number | null;
         bitrateBps?: number | null;
+        batchIdx?: number;
+        batchCount?: number;
+        elapsedSec?: number;
+        targetSec?: number;
       };
       try {
         const r = await fetch(`/api/admin/youtube/render-ffmpeg-status?jobId=${encodeURIComponent(jobId)}`);
@@ -848,8 +876,30 @@ export default function YouTubeMontagem() {
       }
       if (data.erro) { setRenderError(data.erro); setRendering(false); return; }
       const status = data.status || "...";
-      const phase = data.phase ? ` (${data.phase})` : "";
-      setRenderLabel(`${status}${phase}`);
+      // Label amigável por fase — mostra info concreta em vez de "running (loop)".
+      let friendly = status;
+      if (status === "queued") {
+        friendly = "A arrancar no GitHub Actions...";
+      } else if (data.phase === "download") {
+        friendly = "A descarregar clips + música...";
+      } else if (data.phase === "base-sequence") {
+        friendly = data.batchCount && data.batchCount > 1
+          ? `A montar base · batch ${data.batchIdx}/${data.batchCount}`
+          : "A montar base sequence...";
+      } else if (data.phase === "music") {
+        friendly = "A preparar música...";
+      } else if (data.phase === "loop") {
+        if (typeof data.elapsedSec === "number" && typeof data.targetSec === "number") {
+          const elapsedMin = Math.round(data.elapsedSec / 60);
+          const targetMin = Math.round(data.targetSec / 60);
+          friendly = `A fazer loop + música · ${elapsedMin} min de ${targetMin} min`;
+        } else {
+          friendly = "A fazer loop + música...";
+        }
+      } else if (data.phase === "upload") {
+        friendly = "A enviar para Supabase (pode demorar alguns min)...";
+      }
+      setRenderLabel(friendly);
       if (typeof data.progress === "number") setRenderProgress(data.progress);
       if (status === "failed") {
         setRenderError(data.error || "FFmpeg render failed. Ver logs em GitHub Actions.");
@@ -1093,6 +1143,8 @@ export default function YouTubeMontagem() {
                     setGroupOrder([]);
                     setGroupClips({});
                   }
+                  setExcludedGroups(new Set(state.excludedGroups || []));
+                  setExcludedClips(new Set(state.excludedClips || []));
                   restored = true;
                 }
               } catch { /* ignore */ }
@@ -1102,6 +1154,8 @@ export default function YouTubeMontagem() {
             if (!restored) {
               setGroupOrder([]);
               setGroupClips({});
+              setExcludedGroups(new Set());
+              setExcludedClips(new Set());
               setTitle(plan?.titulo || "");
               if (id && plan) {
                 const durationMin = Math.round(videoDuration / 60);
@@ -1120,6 +1174,26 @@ export default function YouTubeMontagem() {
             </option>
           ))}
         </select>
+
+        {/* Título editável — controla o slug do MP4 no Supabase e o title
+            do sidecar SEO. Trocar para "Parte 1", "Parte 2" etc evita
+            confundir renders do mesmo tema. Os ficheiros nunca se sobrepõem
+            (o timestamp é sempre diferente), mas o nome fica mais legível. */}
+        <div className="mt-3">
+          <label className="mb-1 block text-xs text-escola-creme-50">
+            Título do vídeo (usado no nome do ficheiro MP4 e SEO)
+          </label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Ex: Flora e Flores — Parte 1"
+            className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
+          />
+          <p className="mt-1 text-[10px] text-escola-creme-50">
+            Cada render cria um MP4 novo com timestamp — nunca sobrepõe o anterior. Para distinguir partes do mesmo tema, acrescenta &quot;— Parte 1&quot;, &quot;— Parte 2&quot;.
+          </p>
+        </div>
       </section>
 
       {/* ── 2. MUSICA ── */}
@@ -1175,7 +1249,7 @@ export default function YouTubeMontagem() {
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
-            3. Clips por grupo ({groupOrder.length} grupos · {filledClips} clips · {Math.floor(filledClips * CLIP_DURATION / 60)}:{String((filledClips * CLIP_DURATION) % 60).padStart(2, "0")})
+            3. Clips por grupo ({groupOrder.filter((pid) => !excludedGroups.has(pid)).length}/{groupOrder.length} grupos · {filledClips} clips · {Math.floor(filledClips * CLIP_DURATION / 60)}:{String((filledClips * CLIP_DURATION) % 60).padStart(2, "0")})
           </h3>
           <button
             onClick={syncClipsFromSupabase}
@@ -1193,28 +1267,72 @@ export default function YouTubeMontagem() {
         <div className="space-y-4">
           {groupOrder.map((promptId, gIdx) => {
             const clipsInGroup = groupClips[promptId] || [];
+            const groupExcluded = excludedGroups.has(promptId);
+            const activeInGroup = clipsInGroup.filter((u) => !excludedClips.has(u)).length;
+            const toggleGroup = () => {
+              setExcludedGroups((prev) => {
+                const next = new Set(prev);
+                if (next.has(promptId)) next.delete(promptId);
+                else next.add(promptId);
+                return next;
+              });
+            };
             return (
-              <div key={promptId} className="rounded border border-escola-border bg-escola-bg p-3">
+              <div
+                key={promptId}
+                className={`rounded border p-3 ${
+                  groupExcluded
+                    ? "border-escola-border/30 bg-escola-bg/40 opacity-50"
+                    : "border-escola-border bg-escola-bg"
+                }`}
+              >
                 <div className="mb-2 flex items-center gap-2">
+                  <button
+                    onClick={toggleGroup}
+                    title={groupExcluded ? "Incluir este grupo no render" : "Excluir este grupo do render"}
+                    className={`rounded px-2 py-0.5 text-xs font-bold border-none cursor-pointer ${
+                      groupExcluded
+                        ? "bg-escola-border text-escola-creme-50"
+                        : "bg-green-700 text-white hover:bg-green-600"
+                    }`}
+                  >
+                    {groupExcluded ? "✗ fora" : "✓ entra"}
+                  </button>
                   <select
                     value={gIdx}
                     onChange={(e) => moveGroup(promptId, Number(e.target.value))}
-                    className="rounded bg-escola-coral px-2 py-0.5 text-xs font-bold text-white border-none cursor-pointer"
+                    disabled={groupExcluded}
+                    className="rounded bg-escola-coral px-2 py-0.5 text-xs font-bold text-white border-none cursor-pointer disabled:opacity-40"
                   >
                     {groupOrder.map((_, n) => (
                       <option key={n} value={n}>Grupo {n + 1}</option>
                     ))}
                   </select>
                   <span className="text-xs font-semibold text-escola-creme">{promptId}</span>
-                  <span className="text-xs text-escola-creme-50">({clipsInGroup.length} clips)</span>
+                  <span className="text-xs text-escola-creme-50">
+                    ({activeInGroup}/{clipsInGroup.length} clips)
+                  </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {clipsInGroup.map((url, cIdx) => {
                     const fileName = fileNameFromUrl(url).replace(/\.mp4(\.mp4)?$/i, "");
+                    const clipExcluded = excludedClips.has(url) || groupExcluded;
+                    const toggleClip = () => {
+                      setExcludedClips((prev) => {
+                        const next = new Set(prev);
+                        if (next.has(url)) next.delete(url);
+                        else next.add(url);
+                        return next;
+                      });
+                    };
                     return (
                       <div key={url} className="space-y-1">
-                        <div className="relative aspect-video overflow-hidden rounded border border-green-800/50">
+                        <div
+                          className={`relative aspect-video overflow-hidden rounded border ${
+                            clipExcluded ? "border-red-900/50 opacity-40" : "border-green-800/50"
+                          }`}
+                        >
                           <video src={url} className="h-full w-full object-cover" muted playsInline
                             onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
                             onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
@@ -1222,14 +1340,29 @@ export default function YouTubeMontagem() {
                           <select
                             value={cIdx}
                             onChange={(e) => moveClipInGroup(promptId, url, Number(e.target.value))}
-                            className="absolute top-1 left-1 rounded bg-black/80 px-1 text-xs text-white border-none cursor-pointer"
+                            disabled={clipExcluded}
+                            className="absolute top-1 left-1 rounded bg-black/80 px-1 text-xs text-white border-none cursor-pointer disabled:opacity-40"
                           >
                             {clipsInGroup.map((_, n) => (
                               <option key={n} value={n}>{n + 1}</option>
                             ))}
                           </select>
+                          <button
+                            onClick={toggleClip}
+                            disabled={groupExcluded}
+                            title={excludedClips.has(url) ? "Incluir este clip" : "Excluir este clip"}
+                            className={`absolute top-1 right-1 rounded px-1.5 text-xs font-bold border-none cursor-pointer ${
+                              excludedClips.has(url)
+                                ? "bg-red-700 text-white"
+                                : "bg-black/80 text-white hover:bg-green-700"
+                            } disabled:opacity-30`}
+                          >
+                            {excludedClips.has(url) ? "✗" : "✓"}
+                          </button>
                         </div>
-                        <p className="text-xs text-green-300 truncate">{fileName}</p>
+                        <p className={`text-xs truncate ${clipExcluded ? "text-red-300/60" : "text-green-300"}`}>
+                          {fileName}
+                        </p>
                       </div>
                     );
                   })}

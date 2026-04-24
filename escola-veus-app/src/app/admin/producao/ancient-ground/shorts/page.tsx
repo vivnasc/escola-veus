@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, forwardRef } from "react";
+import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
 
@@ -290,9 +291,17 @@ export default function AncientGroundShortsPage() {
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
           1. Escolhe 3 clips da biblioteca motion
         </h3>
-        <p className="mb-2 text-xs text-escola-creme-50">
-          Clips já gerados via Runway (bucket escola-shorts/clips). Reaproveitamos sem pagar créditos novos.
-        </p>
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs text-escola-creme-50">
+            Clips já gerados via Runway (bucket escola-shorts/clips). Reaproveitamos sem pagar créditos novos.
+          </p>
+          <Link
+            href="/admin/producao/shorts/biblioteca"
+            className="text-[10px] text-escola-coral hover:text-escola-coral/80"
+          >
+            → Upload na biblioteca
+          </Link>
+        </div>
         <input
           type="text"
           value={clipQuery}

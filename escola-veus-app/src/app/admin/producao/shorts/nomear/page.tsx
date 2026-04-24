@@ -52,37 +52,85 @@ export default function NomearShortsPage() {
   const ep = EPISODES.find((e) => e.key === epKey)!;
 
   const [allAudios, setAllAudios] = useState<Audio[]>([]);
+  const [allClips, setAllClips] = useState<Audio[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [startSec, setStartSec] = useState(0);
-  const [endSec, setEndSec] = useState(20);
+  const [endSec, setEndSec] = useState(30);
+  // Modo default: "crop-video" (recorta do video final renderizado do ep).
+  // Legacy: "clips" (escolher clips manualmente) e "image" (imagem estatica)
+  // disponiveis em modo avancado para casos onde ainda nao ha video final.
+  const [mode, setMode] = useState<"crop-video" | "clips" | "image">("crop-video");
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [selectedClipUrls, setSelectedClipUrls] = useState<string[]>([]);
   const [imagePromptId, setImagePromptId] = useState("");
   const [overlayText, setOverlayText] = useState("");
   const [includeBranding, setIncludeBranding] = useState(true);
+  // Video final do ep (procurado em youtube/funil-videos/). Timeline do cropper
+  // usa isto em vez do audio raw — assim o user ve o video real com legendas.
+  const [epFinalVideoUrl, setEpFinalVideoUrl] = useState<string | null>(null);
 
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<{
     videoUrl: string;
     audioUrl: string;
-    imageUrl: string;
+    imageUrl?: string;
     durationSec: number;
+    mode?: string;
+    clipCount?: number;
   } | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Load audio files on mount
+  const [allFinalVideos, setAllFinalVideos] = useState<Audio[]>([]);
+
+  // Load audio + clips + final videos list on mount
   useEffect(() => {
-    fetch("/api/admin/biblioteca/list?folder=youtube&limit=500")
-      .then((r) => r.json())
-      .then((d) => {
-        const files = (Array.isArray(d.files) ? d.files : []).filter((f: Audio) =>
-          f.name.endsWith(".mp3"),
+    Promise.all([
+      fetch("/api/admin/biblioteca/list?folder=youtube&limit=500").then((r) =>
+        r.json(),
+      ),
+      fetch("/api/admin/biblioteca/list?folder=youtube/clips&limit=1000").then(
+        (r) => r.json(),
+      ),
+      fetch(
+        "/api/admin/biblioteca/list?folder=youtube/funil-videos&limit=500",
+      ).then((r) => r.json()),
+    ])
+      .then(([audiosD, clipsD, videosD]) => {
+        setAllAudios(
+          (Array.isArray(audiosD.files) ? audiosD.files : []).filter(
+            (f: Audio) => f.name.endsWith(".mp3"),
+          ),
         );
-        setAllAudios(files);
+        setAllClips(
+          (Array.isArray(clipsD.files) ? clipsD.files : []).filter(
+            (f: Audio) => f.name.endsWith(".mp4"),
+          ),
+        );
+        setAllFinalVideos(
+          (Array.isArray(videosD.files) ? videosD.files : []).filter(
+            (f: Audio) => f.name.endsWith(".mp4"),
+          ),
+        );
       })
       .finally(() => setLoading(false));
   }, []);
+
+  // Video final renderizado do ep actual (procura por slug OU epKey prefix)
+  useEffect(() => {
+    const script = findScript(ep.slug);
+    const slug = script ? titleToSlug(script.titulo) : "";
+    const match = allFinalVideos
+      .filter(
+        (v) =>
+          (slug && v.name.startsWith(`${slug}-`)) ||
+          v.name.startsWith(`${epKey}-`),
+      )
+      .sort((a, b) => b.name.localeCompare(a.name))[0];
+    setEpFinalVideoUrl(match?.url ?? null);
+  }, [allFinalVideos, ep.slug, epKey]);
 
   // Find audio for current episode
   const epAudio = useMemo(() => {
@@ -103,11 +151,20 @@ export default function NomearShortsPage() {
       .sort((a, b) => a.id.localeCompare(b.id));
   }, [epKey]);
 
-  // Auto-pick first prompt on episode change
+  // Clips Runway do episódio (ordenados por nome para sequencia natural)
+  const epClips = useMemo(() => {
+    const prefix = epKey === "trailer" ? "nomear-trailer-" : `nomear-${epKey}-`;
+    return allClips
+      .filter((c) => c.name.startsWith(prefix))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allClips, epKey]);
+
+  // Auto-pick first prompt + reset clips on episode change
   useEffect(() => {
     if (epPrompts.length > 0 && (!imagePromptId || !epPrompts.some((p) => p.id === imagePromptId))) {
       setImagePromptId(epPrompts[0].id);
     }
+    setSelectedClipUrls([]);
     setResult(null);
     setErr(null);
   }, [epKey, epPrompts, imagePromptId]);
@@ -137,6 +194,30 @@ export default function NomearShortsPage() {
     setErr(null);
     setResult(null);
     try {
+      // Modo "crop-video" (default): recorta do MP4 final do ep.
+      // Endpoint distinto porque o fluxo é muito mais simples (só ffmpeg trim+crop).
+      if (mode === "crop-video") {
+        const r = await fetch("/api/admin/shorts/crop-funil-video", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            epKey,
+            startSec,
+            endSec,
+            videoUrl: epFinalVideoUrl || undefined,
+          }),
+        });
+        const d = await r.json();
+        if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+        setResult({
+          videoUrl: d.videoUrl,
+          audioUrl: "",
+          durationSec: d.durationSec,
+          mode: "crop-video",
+        });
+        return;
+      }
+
       const r = await fetch("/api/admin/shorts/short-from-nomear", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -144,7 +225,9 @@ export default function NomearShortsPage() {
           epKey,
           startSec,
           endSec,
-          imagePromptId,
+          ...(mode === "clips"
+            ? { clipUrls: selectedClipUrls }
+            : { imagePromptId }),
           overlayText: overlayText.trim() || undefined,
           includeBranding,
         }),
@@ -201,7 +284,7 @@ export default function NomearShortsPage() {
 
       {/* ── 2. Áudio + escolher snippet ───────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">2. Snippet (15-30s recomendado)</h3>
+        <h3 className="mb-2 text-sm text-escola-creme">2. Snippet (até 60s)</h3>
         {loading ? (
           <p className="text-xs text-escola-creme-50">A carregar áudios...</p>
         ) : !epAudio ? (
@@ -217,7 +300,18 @@ export default function NomearShortsPage() {
               className="mb-3 w-full"
               preload="auto"
             />
-            <div className="mb-3 grid grid-cols-2 gap-3 text-xs">
+
+            {/* Range selector visual — arrasta pegas para escolher região */}
+            <AudioRegionSelector
+              audioRef={audioRef}
+              startSec={startSec}
+              endSec={endSec}
+              onStartChange={setStartSec}
+              onEndChange={setEndSec}
+              maxDur={60}
+            />
+
+            <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
               <div>
                 <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
                   Início ({fmtTime(startSec)})
@@ -276,19 +370,173 @@ export default function NomearShortsPage() {
               </button>
             </div>
             <p className="mt-2 text-[10px] text-escola-creme-50">
-              💡 Ouve o áudio, pausa no início da frase, clica 📍 em &quot;Início&quot;.
-              Continua a ouvir, pausa no fim, clica 📍 em &quot;Fim&quot;.
+              💡 Arrasta as pegas 🟡 na timeline acima para escolher a região.
+              Ou usa 📍 para capturar do leitor.
             </p>
           </>
         )}
       </section>
 
-      {/* ── 3. Imagem de fundo ────────────────────────────────────── */}
+      {/* ── Modo crop-video: nada mais a escolher, salta para Gerar ── */}
+      {mode === "crop-video" ? (
+        <section className="mb-4 rounded-xl border border-escola-dourado/40 bg-escola-dourado/5 p-4 text-xs">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-escola-dourado">
+              ✨ Recortando do vídeo final — legendas, áudio, imagens já
+              sincronizados.
+            </span>
+            <button
+              onClick={() => setShowAdvanced((v) => !v)}
+              className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              {showAdvanced ? "ocultar" : "modo avançado"}
+            </button>
+          </div>
+          {!epFinalVideoUrl && (
+            <p className="text-escola-terracota">
+              ⚠ Sem vídeo final renderizado para {epKey}. Monta o vídeo primeiro
+              em <code>/admin/producao/funil/montar</code>, ou muda para modo
+              avançado (clips / imagem).
+            </p>
+          )}
+          {epFinalVideoUrl && (
+            <p className="text-escola-creme-50">
+              Total com intro+outro brand: <b className="text-escola-creme">{(snippetDur + 10).toFixed(1)}s</b>
+              {" "}(sem brand: {snippetDur.toFixed(1)}s). Máx 60s.
+            </p>
+          )}
+          {showAdvanced && (
+            <div className="mt-3 flex gap-1 border-t border-escola-dourado/20 pt-3">
+              <button
+                onClick={() => setMode("clips")}
+                className="rounded border border-escola-border px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
+              >
+                🎬 escolher clips manualmente
+              </button>
+              <button
+                onClick={() => setMode("image")}
+                className="rounded border border-escola-border px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
+              >
+                🖼 usar imagem estática
+              </button>
+            </div>
+          )}
+        </section>
+      ) : (
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
-        <h3 className="mb-2 text-sm text-escola-creme">3. Imagem de fundo (9:16 cropada)</h3>
-        {epPrompts.length === 0 ? (
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm text-escola-creme">3. Fundo do vídeo</h3>
+          <div className="flex gap-1 text-xs">
+            <button
+              onClick={() => setMode("crop-video")}
+              className="rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-1 text-escola-dourado"
+            >
+              ← voltar ao modo simples
+            </button>
+            <button
+              onClick={() => setMode("clips")}
+              className={`rounded border px-2 py-1 ${
+                mode === "clips"
+                  ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                  : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+              }`}
+            >
+              🎬 Clips Runway (animados)
+            </button>
+            <button
+              onClick={() => setMode("image")}
+              className={`rounded border px-2 py-1 ${
+                mode === "image"
+                  ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                  : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+              }`}
+            >
+              🖼 Imagem estática
+            </button>
+          </div>
+        </div>
+
+        {mode === "clips" ? (
+          epClips.length === 0 ? (
+            <p className="text-xs text-escola-terracota">
+              Sem clips Runway gerados para este episódio. Vai a{" "}
+              <code>/admin/producao/funil/gerar</code> e gera os clips primeiro.
+            </p>
+          ) : (
+            <>
+              <p className="mb-2 text-xs text-escola-creme-50">
+                Escolhe <b>2-4 clips</b> na ordem em que apareçam no short. 3
+                clips × ~10s = 30s ideal. Os clips horizontais são cropados ao
+                centro para 9:16.
+              </p>
+              <div className="mb-2 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                {epClips.map((c) => {
+                  const selected = selectedClipUrls.includes(c.url);
+                  const order = selectedClipUrls.indexOf(c.url) + 1;
+                  return (
+                    <button
+                      key={c.url}
+                      onClick={() => {
+                        setSelectedClipUrls((prev) =>
+                          prev.includes(c.url)
+                            ? prev.filter((u) => u !== c.url)
+                            : [...prev, c.url],
+                        );
+                      }}
+                      className={`relative aspect-video overflow-hidden rounded border ${
+                        selected
+                          ? "border-escola-dourado ring-2 ring-escola-dourado"
+                          : "border-escola-border hover:border-escola-dourado/40"
+                      }`}
+                      title={c.name}
+                    >
+                      <video
+                        src={c.url}
+                        className="h-full w-full object-cover"
+                        muted
+                        preload="metadata"
+                      />
+                      {selected && (
+                        <span className="absolute left-1 top-1 rounded bg-escola-dourado px-1.5 text-[10px] font-bold text-escola-bg">
+                          {order}
+                        </span>
+                      )}
+                      <span className="absolute inset-x-0 bottom-0 truncate bg-black/70 px-1 text-[9px] text-white">
+                        {c.name
+                          .replace(`nomear-${epKey}-`, "")
+                          .replace(/-h-\d+\.mp4$/, "")}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span
+                  className={
+                    selectedClipUrls.length >= 1 && selectedClipUrls.length <= 4
+                      ? "text-escola-dourado"
+                      : "text-escola-terracota"
+                  }
+                >
+                  {selectedClipUrls.length} seleccionado
+                  {selectedClipUrls.length === 1 ? "" : "s"}
+                  {selectedClipUrls.length === 0 && " — escolhe pelo menos 1"}
+                  {selectedClipUrls.length > 4 && " — máximo 4"}
+                </span>
+                {selectedClipUrls.length > 0 && (
+                  <button
+                    onClick={() => setSelectedClipUrls([])}
+                    className="text-escola-creme-50 hover:text-escola-creme"
+                  >
+                    limpar
+                  </button>
+                )}
+              </div>
+            </>
+          )
+        ) : epPrompts.length === 0 ? (
           <p className="text-xs text-escola-terracota">
-            Sem prompts registados para este episódio. Adiciona em /admin/producao/funil (tab Prompts).
+            Sem prompts registados para este episódio.
           </p>
         ) : (
           <>
@@ -303,14 +551,14 @@ export default function NomearShortsPage() {
                 </option>
               ))}
             </select>
-            {imagePromptId && (
-              <ImagePreview promptId={imagePromptId} />
-            )}
+            {imagePromptId && <ImagePreview promptId={imagePromptId} />}
           </>
         )}
       </section>
+      )}
 
-      {/* ── 4. Texto overlay (opcional) ───────────────────────────── */}
+      {/* ── 4. Texto overlay (so relevante para modos clips/image) ── */}
+      {mode !== "crop-video" && (
       <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
         <h3 className="mb-2 text-sm text-escola-creme">4. Texto em destaque (opcional)</h3>
         <textarea
@@ -329,15 +577,47 @@ export default function NomearShortsPage() {
           Mostrar &quot;A ESCOLA DOS VÉUS&quot; no topo (cream dourado)
         </label>
       </section>
+      )}
+
+      {/* Toggle brand intro/outro (apenas no modo crop-video) */}
+      {mode === "crop-video" && epFinalVideoUrl && (
+        <section className="mb-4 rounded-xl border border-escola-border bg-escola-card p-4">
+          <label className="flex cursor-pointer items-center gap-2 text-xs text-escola-creme">
+            <input
+              type="checkbox"
+              checked={includeBranding}
+              onChange={(e) => setIncludeBranding(e.target.checked)}
+            />
+            Incluir mandala brand intro (5s) + outro (5s) — total{" "}
+            <b className="text-escola-dourado">
+              {(snippetDur + (includeBranding ? 10 : 0)).toFixed(1)}s
+            </b>
+          </label>
+        </section>
+      )}
 
       {/* ── 5. Gerar ──────────────────────────────────────────────── */}
       <section className="mb-4 rounded-xl border border-escola-dourado/40 bg-escola-card p-4">
         <button
           onClick={generate}
-          disabled={!epAudio || !snippetValid || !imagePromptId || generating}
+          disabled={
+            !snippetValid ||
+            generating ||
+            (mode === "crop-video"
+              ? !epFinalVideoUrl ||
+                snippetDur + (includeBranding ? 10 : 0) > 60
+              : !epAudio ||
+                (mode === "clips"
+                  ? selectedClipUrls.length < 1 || selectedClipUrls.length > 4
+                  : !imagePromptId))
+          }
           className="w-full rounded bg-escola-dourado px-6 py-3 text-sm font-semibold text-escola-bg disabled:opacity-30"
         >
-          {generating ? "A gerar short..." : "Gerar Short MP4 9:16"}
+          {generating
+            ? "A gerar short..."
+            : mode === "crop-video"
+              ? `Recortar Short MP4 9:16 (${(snippetDur + (includeBranding ? 10 : 0)).toFixed(1)}s)`
+              : "Gerar Short MP4 9:16"}
         </button>
         {err && (
           <p className="mt-2 rounded bg-red-950/50 p-2 text-xs text-red-300">Erro: {err}</p>
@@ -468,5 +748,198 @@ function ShareButton({
     >
       ↗ Partilhar
     </button>
+  );
+}
+
+// ─── AudioRegionSelector ──────────────────────────────────────────────────
+// Timeline visual com 2 pegas arrastaveis para escolher start/end do snippet.
+// Renderiza uma barra representando a duracao total do audio + regiao
+// amarela destacada entre as pegas. Suporta mouse + touch (mobile).
+
+function AudioRegionSelector({
+  audioRef,
+  startSec,
+  endSec,
+  onStartChange,
+  onEndChange,
+  maxDur,
+}: {
+  audioRef: React.RefObject<HTMLAudioElement | null>;
+  startSec: number;
+  endSec: number;
+  onStartChange: (v: number) => void;
+  onEndChange: (v: number) => void;
+  maxDur: number;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [duration, setDuration] = useState(0);
+  const [playheadSec, setPlayheadSec] = useState(0);
+  const [dragging, setDragging] = useState<"start" | "end" | null>(null);
+
+  // Actualiza duracao quando o audio carrega
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    const updateDur = () => {
+      if (a.duration && !isNaN(a.duration) && isFinite(a.duration)) {
+        setDuration(a.duration);
+      }
+    };
+    updateDur();
+    a.addEventListener("loadedmetadata", updateDur);
+    a.addEventListener("durationchange", updateDur);
+    return () => {
+      a.removeEventListener("loadedmetadata", updateDur);
+      a.removeEventListener("durationchange", updateDur);
+    };
+  }, [audioRef]);
+
+  // Actualiza playhead em tempo real
+  useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    const tick = () => setPlayheadSec(a.currentTime);
+    a.addEventListener("timeupdate", tick);
+    return () => a.removeEventListener("timeupdate", tick);
+  }, [audioRef]);
+
+  // Calcula segundo a partir de uma posicao X (mouse/touch) no track
+  const secFromX = useCallback(
+    (clientX: number) => {
+      const el = trackRef.current;
+      if (!el || !duration) return 0;
+      const rect = el.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      return (x / rect.width) * duration;
+    },
+    [duration],
+  );
+
+  // Durante o arrasto, ouve eventos globais
+  useEffect(() => {
+    if (!dragging) return;
+    const onMove = (e: MouseEvent | TouchEvent) => {
+      const clientX =
+        e instanceof MouseEvent
+          ? e.clientX
+          : e.touches[0]?.clientX ?? 0;
+      const s = secFromX(clientX);
+      if (dragging === "start") {
+        // Start nao pode passar o end, nem criar snippet > maxDur
+        const newStart = Math.max(0, Math.min(s, endSec - 0.5));
+        const clampedByMax = Math.max(newStart, endSec - maxDur);
+        onStartChange(+clampedByMax.toFixed(1));
+      } else {
+        const newEnd = Math.max(startSec + 0.5, Math.min(s, duration));
+        const clampedByMax = Math.min(newEnd, startSec + maxDur);
+        onEndChange(+clampedByMax.toFixed(1));
+      }
+    };
+    const onUp = () => setDragging(null);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onUp);
+    };
+  }, [dragging, startSec, endSec, duration, maxDur, onStartChange, onEndChange, secFromX]);
+
+  // Click na barra fora das pegas → move a mais próxima
+  const handleTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (dragging) return;
+    const s = secFromX(e.clientX);
+    const distToStart = Math.abs(s - startSec);
+    const distToEnd = Math.abs(s - endSec);
+    if (distToStart < distToEnd) {
+      onStartChange(+Math.max(0, Math.min(s, endSec - 0.5)).toFixed(1));
+    } else {
+      onEndChange(+Math.max(startSec + 0.5, Math.min(s, duration)).toFixed(1));
+    }
+  };
+
+  if (!duration) {
+    return (
+      <div className="rounded border border-dashed border-escola-border p-3 text-center text-[10px] text-escola-creme-50">
+        A carregar duração do áudio...
+      </div>
+    );
+  }
+
+  const startPct = (startSec / duration) * 100;
+  const endPct = (endSec / duration) * 100;
+  const playheadPct = (playheadSec / duration) * 100;
+
+  return (
+    <div className="select-none">
+      <div className="mb-1 flex items-center justify-between text-[10px] text-escola-creme-50">
+        <span>0:00</span>
+        <span className="text-escola-creme">
+          {fmtTime(startSec)} → {fmtTime(endSec)} ({(endSec - startSec).toFixed(1)}s)
+        </span>
+        <span>{fmtTime(duration)}</span>
+      </div>
+      <div
+        ref={trackRef}
+        onClick={handleTrackClick}
+        className="relative h-10 cursor-pointer rounded border border-escola-border bg-escola-bg"
+      >
+        {/* Regiao seleccionada (amarela translucida) */}
+        <div
+          className="absolute bottom-0 top-0 rounded bg-escola-dourado/25 border-y-2 border-escola-dourado"
+          style={{
+            left: `${startPct}%`,
+            width: `${Math.max(0, endPct - startPct)}%`,
+          }}
+        />
+        {/* Playhead (onde o audio esta a tocar) */}
+        {playheadSec > 0 && playheadSec < duration && (
+          <div
+            className="pointer-events-none absolute bottom-0 top-0 w-px bg-escola-coral"
+            style={{ left: `${playheadPct}%` }}
+            title={`playhead: ${fmtTime(playheadSec)}`}
+          />
+        )}
+        {/* Pega INICIO (🟡) */}
+        <div
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setDragging("start");
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation();
+            setDragging("start");
+          }}
+          className="absolute bottom-0 top-0 flex w-4 cursor-ew-resize items-center justify-center rounded-l bg-escola-dourado hover:bg-escola-dourado/80"
+          style={{ left: `calc(${startPct}% - 8px)` }}
+          title={`Início: ${fmtTime(startSec)} — arrasta para mover`}
+        >
+          <span className="text-[8px] font-bold text-escola-bg">‖</span>
+        </div>
+        {/* Pega FIM (🟡) */}
+        <div
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setDragging("end");
+          }}
+          onTouchStart={(e) => {
+            e.stopPropagation();
+            setDragging("end");
+          }}
+          className="absolute bottom-0 top-0 flex w-4 cursor-ew-resize items-center justify-center rounded-r bg-escola-dourado hover:bg-escola-dourado/80"
+          style={{ left: `calc(${endPct}% - 8px)` }}
+          title={`Fim: ${fmtTime(endSec)} — arrasta para mover`}
+        >
+          <span className="text-[8px] font-bold text-escola-bg">‖</span>
+        </div>
+      </div>
+      <div className="mt-1 text-[10px] text-escola-creme-50">
+        Arrasta as pegas ‖ (ou clica na barra perto da pega que queres mover).
+        Máx {maxDur}s.
+      </div>
+    </div>
   );
 }
