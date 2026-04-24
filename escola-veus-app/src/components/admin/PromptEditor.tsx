@@ -112,6 +112,21 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     load();
   }, [load]);
 
+  // ── Dirty tracking + beforeunload guard ────────────────────────────────
+  // Se o user gerou prompts (single-ep) ou editou manualmente e não clicou
+  // Guardar, beforeunload pergunta antes de fechar. O bulk NÃO precisa
+  // deste guard porque faz auto-save incremental (ver generateBulk).
+  const [dirty, setDirty] = useState(false);
+  useEffect(() => {
+    if (!dirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [dirty]);
+
   const categories = useMemo(() => {
     const set = new Set<string>(categorySuggestions);
     if (data) for (const p of data.prompts) set.add(p.category);
@@ -151,11 +166,13 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
         ? { ...d, prompts: d.prompts.map((p) => (p.id === id ? { ...p, ...patch } : p)) }
         : d,
     );
+    setDirty(true);
   }
 
   function deletePrompt(id: string) {
     if (!confirm(`Apagar prompt "${id}"?`)) return;
     setData((d) => (d ? { ...d, prompts: d.prompts.filter((p) => p.id !== id) } : d));
+    setDirty(true);
   }
 
   function addPrompt() {
@@ -216,15 +233,29 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
       return { ...d, prompts: [...d.prompts, ...deduped] };
     });
     setGenPreview(null);
+    setDirty(true);
     setInfo(`+${picked.length} prompts inseridos. Guarda para persistir.`);
   }
 
-  // Lista todos os eps da colecção (trailer + ep01..epN) que ainda NÃO têm
-  // prompts — candidatos ao bulk generate.
+  // Lista todos os eps do FUNIL Nomear (trailer + ep01..epN) que ainda NÃO
+  // têm prompts — candidatos ao bulk generate.
+  //
+  // IMPORTANTE: NOMEAR_PRESETS contém scripts para TUDO — funil Nomear
+  // (nomear-ep*, nomear-trailer-*) + cursos (a-chama-*, a-fome-*,
+  // curso-ouro-*, sangue-e-*, ...). As aulas seguem modelo de slides
+  // animados, NÃO precisam de image prompts MJ — filtrar.
+  //
+  // Também considera "havendo prompts" apenas os do funil — um prompt
+  // `nomear-ouro-01-*` (gerado por engano num bulk anterior) NÃO conta
+  // como cobrindo o ep "ouro" porque "ouro" não é um ep Nomear válido.
+  function isFunilScriptId(id: string): boolean {
+    return /^nomear-(ep\d+|trailer)(-|$)/.test(id);
+  }
   function missingEps(): string[] {
     if (!data) return [];
     const haveEp = new Set<string>();
     for (const p of data.prompts) {
+      if (!isFunilScriptId(p.id)) continue;
       const k = p.id.split("-")[1];
       if (k) haveEp.add(k);
     }
@@ -232,6 +263,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     const seen = new Set<string>();
     for (const preset of NOMEAR_PRESETS) {
       for (const s of preset.scripts) {
+        if (!isFunilScriptId(s.id)) continue; // skip aulas (curso-*, a-fome-*, etc)
         const k = s.id.split("-")[1];
         if (!k || seen.has(k)) continue;
         seen.add(k);
@@ -239,6 +271,64 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
       }
     }
     return all;
+  }
+
+  // Prompts já inseridos que NÃO são do funil Nomear — candidatos a purgar.
+  // Inclui: prompts gerados por bulks anteriores com ids tipo nomear-ouro-*,
+  // nomear-chama-* (derivados de scripts de cursos), que não servem nada
+  // porque aulas usam slides.
+  function nonFunilPrompts(): PromptItem[] {
+    if (!data) return [];
+    return data.prompts.filter((p) => !isFunilScriptId(p.id));
+  }
+
+  function purgeNonFunil() {
+    const bad = nonFunilPrompts();
+    if (bad.length === 0) return;
+
+    // Download backup primeiro — nunca apagar sem guardar localmente.
+    // Esses prompts custaram ~$0.02 cada a gerar; podem servir no futuro
+    // para marketing, thumbnails, reels, ou para adicionar imagery aos
+    // cursos se a estratégia mudar.
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 16);
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      count: bad.length,
+      note: "Prompts gerados a partir de scripts de cursos/aulas — não pertencem ao funil Nomear. Preservados aqui caso sejam úteis para marketing, thumbnails, ou futura adição de imagery aos cursos.",
+      prompts: bad,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `funil-prompts-fora-do-funil-${timestamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    if (
+      !confirm(
+        `📥 Backup de ${bad.length} prompts descarregado para o teu computador.\n\n` +
+          `Agora podes removê-los da lista do funil (vão deixar de aparecer no /gerar e /montar do Nomear).\n\n` +
+          `Os prompts ficam no ficheiro JSON que acabaste de descarregar — podes re-inserir mais tarde se precisares.\n\n` +
+          `Remover da lista actual?`,
+      )
+    ) {
+      setInfo(
+        `📥 Backup descarregado (${bad.length} prompts). Remoção cancelada — prompts mantêm-se na lista.`,
+      );
+      return;
+    }
+    setData((d) =>
+      d ? { ...d, prompts: d.prompts.filter((p) => isFunilScriptId(p.id)) } : d,
+    );
+    setDirty(true);
+    setInfo(
+      `📥 Backup JSON descarregado + ${bad.length} prompts removidos da lista. Clica Guardar para persistir.`,
+    );
   }
 
   async function generateBulk() {
@@ -253,11 +343,13 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
         `Vais gerar ${genCount} prompts para ${eps.length} eps em falta (${eps.slice(0, 5).join(", ")}${eps.length > 5 ? "…" : ""}).\n\n` +
           `Estimativa de custo: ~$${estimate.toFixed(2)} (Sonnet 4.6 com prompt caching).\n` +
           `Tempo: ~${Math.round((eps.length * 20) / 60)} min a correr serialmente.\n\n` +
-          `Podes cancelar a meio — os eps já gerados ficam.\n\nContinuar?`,
+          `⚙ Auto-save: a cada ep novo gravado, o estado é persistido em Supabase. Se o browser fechar a meio, o progresso fica. Podes cancelar a qualquer momento.\n\nContinuar?`,
       )
     ) {
       return;
     }
+
+    if (!data) return;
 
     setBulkRunning(true);
     setBulkCancel(false);
@@ -271,9 +363,30 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
       errors: [],
     });
 
+    // Accumulator local (snapshot dos prompts actuais) — evita races com
+    // state updates async do React. Cresce a cada ep gerado e é flushed
+    // para Supabase imediatamente. Se o tab morrer, o último flush-anterior
+    // está salvo e o próximo bulk pega a partir daí (missingEps re-avalia).
+    let runningPrompts: PromptItem[] = data.prompts.slice();
+    const runningConfig = data.config;
     let totalAdded = 0;
     let totalCost = 0;
     const errors: string[] = [];
+
+    // Helper: dedup contra ids já existentes.
+    const dedup = (existing: PromptItem[], picked: PromptItem[]) => {
+      const ids = new Set(existing.map((p) => p.id));
+      return picked.map((p) => {
+        if (!ids.has(p.id)) {
+          ids.add(p.id);
+          return p;
+        }
+        const suffix = Date.now().toString(36).slice(-4);
+        const next = { ...p, id: `${p.id}-${suffix}` };
+        ids.add(next.id);
+        return next;
+      });
+    };
 
     for (let i = 0; i < eps.length; i++) {
       if (bulkCancel) break;
@@ -284,7 +397,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
         total: eps.length,
         promptsAdded: totalAdded,
         costUsd: totalCost,
-        errors,
+        errors: [...errors],
       });
 
       try {
@@ -299,9 +412,35 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
           continue;
         }
         const prompts = Array.isArray(d.prompts) ? (d.prompts as PromptItem[]) : [];
-        insertGenerated(prompts);
-        totalAdded += prompts.length;
+        const newOnes = dedup(runningPrompts, prompts);
+        runningPrompts = [...runningPrompts, ...newOnes];
+        totalAdded += newOnes.length;
         totalCost += d.usage?.costUsd ?? 0;
+
+        // ── AUTO-SAVE incremental para Supabase ─────────────────────────
+        // Cada ep gravado é persistido imediatamente. Browser-crash friendly.
+        try {
+          const saveRes = await fetch(`/api/admin/prompts/${collection}/save`, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ config: runningConfig, prompts: runningPrompts }),
+          });
+          const saveData = await saveRes.json();
+          if (!saveRes.ok || saveData.erro) {
+            errors.push(
+              `${ep}: auto-save falhou — prompts em memória (${saveData.erro || saveRes.status})`,
+            );
+          }
+        } catch (saveErr) {
+          errors.push(
+            `${ep}: auto-save falhou — prompts em memória (${saveErr instanceof Error ? saveErr.message : String(saveErr)})`,
+          );
+        }
+
+        // Actualiza UI com o estado corrente (removido fromSeed pois já gravámos).
+        setData((prev) =>
+          prev ? { ...prev, prompts: runningPrompts, fromSeed: false } : prev,
+        );
       } catch (e) {
         errors.push(`${ep}: ${e instanceof Error ? e.message : String(e)}`);
       }
@@ -317,7 +456,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     });
     setBulkRunning(false);
     setInfo(
-      `Bulk: +${totalAdded} prompts em ${eps.length - errors.length}/${eps.length} eps · custo $${totalCost.toFixed(3)}. Guarda para persistir.`,
+      `Bulk: +${totalAdded} prompts em ${eps.length - errors.length}/${eps.length} eps · custo $${totalCost.toFixed(3)} · auto-guardado em Supabase após cada ep.`,
     );
   }
 
@@ -336,6 +475,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
       if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
       setInfo(`Guardado: ${d.count} prompts`);
       setData((prev) => (prev ? { ...prev, fromSeed: false } : prev));
+      setDirty(false);
     } catch (e) {
       setErr(e instanceof Error ? e.message : String(e));
     } finally {
@@ -489,6 +629,20 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
                     }
                   >
                     ✨✨ Gerar TODOS os eps em falta ({miss.length})
+                  </button>
+                );
+              })()}
+              {(() => {
+                const bad = nonFunilPrompts();
+                if (bad.length === 0) return null;
+                return (
+                  <button
+                    onClick={purgeNonFunil}
+                    disabled={bulkRunning || genLoading}
+                    className="rounded border border-escola-terracota bg-escola-terracota/10 px-3 py-1.5 text-[11px] font-semibold text-escola-terracota hover:bg-escola-terracota/20 disabled:opacity-40"
+                    title="Descarrega JSON de backup com os prompts, depois pergunta se queres remover da lista do funil. Não apaga sem backup local."
+                  >
+                    📥 Separar {bad.length} prompts fora do funil
                   </button>
                 );
               })()}
@@ -847,6 +1001,7 @@ function PoolSuggestions({
             src={prompt.reuseClipUrl}
             className="h-20 w-32 shrink-0 rounded border border-escola-border"
             muted
+            preload="none"
             onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
             onMouseLeave={(e) => {
               const v = e.currentTarget as HTMLVideoElement;
@@ -910,6 +1065,7 @@ function PoolSuggestions({
                     src={c.clipUrl}
                     className="aspect-video w-full"
                     muted
+                    preload="none"
                     onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
                     onMouseLeave={(e) => {
                       const v = e.currentTarget as HTMLVideoElement;

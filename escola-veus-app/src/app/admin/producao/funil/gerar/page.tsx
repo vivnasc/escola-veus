@@ -515,6 +515,7 @@ export default function FunilGerarPage() {
                     src={p.reuseClipUrl}
                     className="h-24 w-40 shrink-0 rounded border border-escola-border"
                     muted
+                    preload="none"
                     onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
                     onMouseLeave={(e) => {
                       const v = e.currentTarget as HTMLVideoElement;
