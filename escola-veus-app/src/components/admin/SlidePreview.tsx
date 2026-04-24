@@ -257,6 +257,27 @@ export function SlidePreview({
           )}
         </div>
 
+        {/* Setas de navegação sempre visíveis, dentro e fora do ecrã cheio */}
+        <button
+          onClick={prev}
+          disabled={index === 0}
+          aria-label="Slide anterior"
+          className="absolute left-3 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-xl text-white backdrop-blur transition-opacity hover:bg-black/50 disabled:cursor-not-allowed disabled:opacity-20"
+        >
+          ←
+        </button>
+        <button
+          onClick={next}
+          disabled={index >= deck.slides.length - 1}
+          aria-label="Próximo slide"
+          className="absolute right-3 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-xl text-white backdrop-blur transition-opacity hover:bg-black/50 disabled:cursor-not-allowed disabled:opacity-20"
+        >
+          →
+        </button>
+        <div className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/40 px-3 py-1 text-[11px] text-white backdrop-blur">
+          {index + 1} / {deck.slides.length} · {slide.duracao}s
+        </div>
+
         {fullscreen && (
           <button
             onClick={() => setFullscreen(false)}
