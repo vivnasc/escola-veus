@@ -316,13 +316,13 @@ export default function AncientGroundShortsPage() {
         </h3>
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs text-escola-creme-50">
-            Biblioteca partilhada Loranne+AG. Reaproveitamos sem pagar créditos novos.
+            Clips de paisagem partilhados com Loranne. Reaproveitamos sem pagar créditos novos.
           </p>
           <Link
-            href="/admin/producao/shorts/biblioteca"
+            href="/admin/producao/clips-paisagem"
             className="text-[10px] text-escola-coral hover:text-escola-coral/80"
           >
-            → Upload na biblioteca
+            → Upload / gerir clips
           </Link>
         </div>
         <div className="mb-3 flex flex-wrap gap-1">

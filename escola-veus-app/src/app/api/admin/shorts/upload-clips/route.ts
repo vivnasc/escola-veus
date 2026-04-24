@@ -5,11 +5,11 @@ export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 // POST /api/admin/shorts/upload-clips
-// Cria signed upload URLs para MP4s gerados por fora (Runway ilimitado) +
-// thumbnail PNG extraída no browser. O browser faz PUT directo ao Supabase
-// (contorna o limite de 4.5MB do body do Vercel). Os clips caem na biblioteca
-// partilhada Loranne+AG (bucket legado `escola-shorts/clips/`) e aparecem
-// automaticamente nos pickers dos dois pólos (list-clips-ag).
+// Cria signed upload URLs para MP4s gerados por fora + thumbnail PNG extraída
+// no browser. O browser faz PUT directo ao Supabase (contorna o limite de
+// 4.5MB do body do Vercel). Os clips caem na pool partilhada Loranne+AG
+// (página /admin/producao/clips-paisagem) e aparecem automaticamente nos
+// pickers dos dois pólos via list-clips-ag.
 //
 // Body: { files: [{ name, theme }] }
 //   - name:  nome original do ficheiro (para preservar extensão .mp4)
