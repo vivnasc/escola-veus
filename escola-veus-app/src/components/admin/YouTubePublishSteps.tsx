@@ -55,21 +55,43 @@ export function YouTubePublishSteps({
     } catch { /* ignore */ }
   };
 
-  // Para ficheiros grandes NÃO podemos fazer fetch+blob no browser (1GB+
-  // rebenta a memória do telemóvel e o Safari abre o MP4 inline em vez de
-  // descarregar). Usamos o parâmetro ?download=<filename> do Supabase
-  // Storage que devolve Content-Disposition: attachment, forçando o browser
-  // a guardar em Ficheiros/Downloads em vez de fazer preview.
-  const downloadDirect = (url: string, filename: string) => {
+  // URL para download forçado: Supabase Storage com ?download=<nome>
+  // devolve Content-Disposition: attachment, impedindo preview inline.
+  const downloadHref = (url: string, name: string) => {
     const sep = url.includes("?") ? "&" : "?";
-    const downloadUrl = `${url}${sep}download=${encodeURIComponent(filename)}`;
-    // Cria anchor e dispara click — no desktop descarrega, no iOS abre
-    // "Save to Files" no share sheet do Safari.
+    return `${url}${sep}download=${encodeURIComponent(name)}`;
+  };
+
+  // PWA iOS bloqueia downloads via anchor+download attribute — o Safari
+  // abre o MP4 inline e reproduz. A única forma que FUNCIONA em PWA mobile
+  // é `navigator.share({url})` que abre o share sheet nativo do iOS/Android
+  // onde o utilizador escolhe "Save to Files" (ou manda para outra app).
+  // Em desktop, anchor+download honra Content-Disposition e descarrega.
+  const isMobile =
+    typeof navigator !== "undefined" &&
+    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  const isIOS =
+    typeof navigator !== "undefined" &&
+    /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  const downloadSmart = async (url: string, name: string) => {
+    const href = downloadHref(url, name);
+    // iOS (Safari/PWA): ignora Content-Disposition + download attribute para
+    // video/mp4 — reproduz sempre inline. A única via que funciona é abrir
+    // o vídeo numa tab e o user fazer long-press → "Save Video" para Fotos.
+    if (isIOS) {
+      window.open(href, "_blank");
+      setShareMsg("iOS: long-press no vídeo → 'Save Video' → vai para Fotos");
+      setTimeout(() => setShareMsg(null), 8000);
+      return;
+    }
+    // Android + Desktop: anchor com download attribute + ?download
+    // (Content-Disposition) descarrega directamente.
     const a = document.createElement("a");
-    a.href = downloadUrl;
+    a.href = href;
+    a.download = name;
     a.rel = "noopener noreferrer";
-    a.target = "_blank";
-    a.download = filename; // desktop honra isto; iOS/Android usam Content-Disposition
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -141,7 +163,7 @@ export function YouTubePublishSteps({
         </p>
         <div className="flex flex-wrap gap-2 text-xs">
           <button
-            onClick={() => downloadDirect(videoUrl, filename)}
+            onClick={() => downloadSmart(videoUrl, filename)}
             className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg"
           >
             ⬇ MP4 (vídeo)
@@ -166,7 +188,7 @@ export function YouTubePublishSteps({
           )}
           {thumbnailUrl && (
             <button
-              onClick={() => downloadDirect(thumbnailUrl, `${slug}-thumb.png`)}
+              onClick={() => downloadSmart(thumbnailUrl, `${slug}-thumb.png`)}
               className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40"
             >
               ⬇ Thumbnail
@@ -175,17 +197,26 @@ export function YouTubePublishSteps({
         </div>
         {shareMsg && <p className="mt-2 text-[10px] text-escola-creme-50">{shareMsg}</p>}
         {kind === "long" ? (
-          <div className="mt-2 rounded border border-escola-coral/30 bg-escola-coral/5 p-2 text-[11px] text-escola-creme-50">
-            <p className="mb-1 text-escola-coral">📱 No telemóvel (vídeo longo ~1 GB)</p>
-            <ol className="list-decimal space-y-0.5 pl-4">
-              <li>Carrega <strong className="text-escola-creme">⬇ MP4</strong> — guarda em Ficheiros/Galeria (pode demorar 2-5 min).</li>
-              <li>Abre a app <strong className="text-escola-creme">YouTube</strong> (não Studio).</li>
-              <li>Toca no <strong className="text-escola-creme">+</strong> em baixo → <strong className="text-escola-creme">Upload a video</strong> → escolhe o MP4 da galeria.</li>
-              <li>Cola título/descrição/tags dos passos 3 abaixo.</li>
-            </ol>
-            <p className="mt-1">
-              Partilhar o ficheiro directo não funciona para vídeos deste tamanho — a app YouTube não aceita ficheiros via share sheet, e Web Share API explode em GBs.
-            </p>
+          <div className="mt-2 space-y-2 rounded border border-escola-coral/30 bg-escola-coral/5 p-2 text-[11px] text-escola-creme-50">
+            <div>
+              <p className="mb-1 text-escola-coral">🍎 iPhone / iPad (Safari ou PWA)</p>
+              <ol className="list-decimal space-y-0.5 pl-4">
+                <li>Carrega <strong className="text-escola-creme">⬇ MP4</strong> — abre o vídeo numa nova tab (vai começar a reproduzir, é normal).</li>
+                <li><strong className="text-escola-creme">Mantém carregado (long-press) no vídeo 2-3 segundos</strong> → escolhe <strong className="text-escola-creme">&quot;Save Video&quot;</strong> → vai para Fotos. Demora 2-5 min.</li>
+                <li>Abre a app <strong className="text-escola-creme">YouTube</strong> → <strong className="text-escola-creme">+</strong> → <strong className="text-escola-creme">Upload a video</strong> → escolhe das Fotos.</li>
+                <li>Volta cá e copia título/descrição/tags dos passos 3 abaixo.</li>
+              </ol>
+              <p className="mt-1 text-escola-creme-50">
+                Safari iOS ignora download attributes para vídeos — &quot;Save Video&quot; no long-press é a única via que funciona.
+              </p>
+            </div>
+            <div>
+              <p className="mb-1 text-escola-coral">🤖 Android</p>
+              <ol className="list-decimal space-y-0.5 pl-4">
+                <li><strong className="text-escola-creme">⬇ MP4</strong> descarrega directamente para Transferências.</li>
+                <li>Abre YouTube → + → Upload → escolhe das Transferências ou Galeria.</li>
+              </ol>
+            </div>
           </div>
         ) : (
           <p className="mt-2 text-[10px] text-escola-creme-50">
