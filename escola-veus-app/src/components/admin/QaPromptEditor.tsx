@@ -50,29 +50,29 @@ export function QaPromptEditor() {
     <div className="rounded-xl border border-escola-border bg-escola-card p-5">
       <div className="mb-2 flex items-center justify-between">
         <h3 className="text-sm font-medium text-escola-creme">
-          Instrucoes extras para o Q&A com Claude
+          Instruções extras para o Q&A com Claude
         </h3>
         <span className="text-[10px] text-escola-creme-50">
-          {state === "saving" && "A guardar..."}
-          {state === "saved" && "Guardado"}
+          {state === "saving" && "A guardar…"}
+          {state === "saved" && "✓ Guardado"}
           {state === "error" && <span className="text-red-400">Erro a guardar</span>}
         </span>
       </div>
       <p className="mb-4 text-xs leading-relaxed text-escola-creme-50">
-        O que escreveres aqui vai ser <strong>anexado ao fim</strong> do system
-        prompt em todas as perguntas. Usa para afinar tom, vocabulario, limites,
-        frases que nao queres ouvir, exemplos concretos, etc. Guarda automatico.
+        O que escreveres aqui é <strong>anexado ao fim</strong> do system
+        prompt em todas as perguntas. Usa para afinar tom, vocabulário, limites,
+        frases que não queres ouvir, exemplos concretos, etc. Guarda automático.
         Sem deploy.
       </p>
       <textarea
         value={value}
         onChange={(e) => setValue(e.target.value)}
         rows={20}
-        placeholder="Ex.: Responde sempre em 2 paragrafos curtos. Nunca uses a palavra 'jornada'. Quando a aluna pergunta algo financeiro concreto, remete para contabilista."
+        placeholder="Ex.: Responde sempre em 2 parágrafos curtos. Nunca uses a palavra 'jornada'. Quando a aluna pergunta algo financeiro concreto, remete para contabilista."
         className="w-full resize-y rounded-lg border border-escola-border bg-escola-bg px-4 py-3 font-serif text-sm leading-relaxed text-escola-creme placeholder:text-escola-creme-50 focus:border-escola-dourado/50 focus:outline-none"
       />
       <p className="mt-2 text-[10px] text-escola-creme-50">
-        {value.length} chars · o prompt base fica em{" "}
+        {value.length} chars · o prompt base vive em{" "}
         <code className="rounded bg-escola-border px-1">src/lib/course-context.ts</code>.
       </p>
     </div>
