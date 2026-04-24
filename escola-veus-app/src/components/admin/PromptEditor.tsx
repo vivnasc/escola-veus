@@ -112,6 +112,21 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     load();
   }, [load]);
 
+  // ── Dirty tracking + beforeunload guard ────────────────────────────────
+  // Se o user gerou prompts (single-ep) ou editou manualmente e não clicou
+  // Guardar, beforeunload pergunta antes de fechar. O bulk NÃO precisa
+  // deste guard porque faz auto-save incremental (ver generateBulk).
+  const [dirty, setDirty] = useState(false);
+  useEffect(() => {
+    if (!dirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [dirty]);
+
   const categories = useMemo(() => {
     const set = new Set<string>(categorySuggestions);
     if (data) for (const p of data.prompts) set.add(p.category);
@@ -151,11 +166,13 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
         ? { ...d, prompts: d.prompts.map((p) => (p.id === id ? { ...p, ...patch } : p)) }
         : d,
     );
+    setDirty(true);
   }
 
   function deletePrompt(id: string) {
     if (!confirm(`Apagar prompt "${id}"?`)) return;
     setData((d) => (d ? { ...d, prompts: d.prompts.filter((p) => p.id !== id) } : d));
+    setDirty(true);
   }
 
   function addPrompt() {
@@ -216,6 +233,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
       return { ...d, prompts: [...d.prompts, ...deduped] };
     });
     setGenPreview(null);
+    setDirty(true);
     setInfo(`+${picked.length} prompts inseridos. Guarda para persistir.`);
   }
 
@@ -253,11 +271,13 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
         `Vais gerar ${genCount} prompts para ${eps.length} eps em falta (${eps.slice(0, 5).join(", ")}${eps.length > 5 ? "…" : ""}).\n\n` +
           `Estimativa de custo: ~$${estimate.toFixed(2)} (Sonnet 4.6 com prompt caching).\n` +
           `Tempo: ~${Math.round((eps.length * 20) / 60)} min a correr serialmente.\n\n` +
-          `Podes cancelar a meio — os eps já gerados ficam.\n\nContinuar?`,
+          `⚙ Auto-save: a cada ep novo gravado, o estado é persistido em Supabase. Se o browser fechar a meio, o progresso fica. Podes cancelar a qualquer momento.\n\nContinuar?`,
       )
     ) {
       return;
     }
+
+    if (!data) return;
 
     setBulkRunning(true);
     setBulkCancel(false);
@@ -271,9 +291,30 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
       errors: [],
     });
 
+    // Accumulator local (snapshot dos prompts actuais) — evita races com
+    // state updates async do React. Cresce a cada ep gerado e é flushed
+    // para Supabase imediatamente. Se o tab morrer, o último flush-anterior
+    // está salvo e o próximo bulk pega a partir daí (missingEps re-avalia).
+    let runningPrompts: PromptItem[] = data.prompts.slice();
+    const runningConfig = data.config;
     let totalAdded = 0;
     let totalCost = 0;
     const errors: string[] = [];
+
+    // Helper: dedup contra ids já existentes.
+    const dedup = (existing: PromptItem[], picked: PromptItem[]) => {
+      const ids = new Set(existing.map((p) => p.id));
+      return picked.map((p) => {
+        if (!ids.has(p.id)) {
+          ids.add(p.id);
+          return p;
+        }
+        const suffix = Date.now().toString(36).slice(-4);
+        const next = { ...p, id: `${p.id}-${suffix}` };
+        ids.add(next.id);
+        return next;
+      });
+    };
 
     for (let i = 0; i < eps.length; i++) {
       if (bulkCancel) break;
@@ -284,7 +325,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
         total: eps.length,
         promptsAdded: totalAdded,
         costUsd: totalCost,
-        errors,
+        errors: [...errors],
       });
 
       try {
@@ -299,9 +340,35 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
           continue;
         }
         const prompts = Array.isArray(d.prompts) ? (d.prompts as PromptItem[]) : [];
-        insertGenerated(prompts);
-        totalAdded += prompts.length;
+        const newOnes = dedup(runningPrompts, prompts);
+        runningPrompts = [...runningPrompts, ...newOnes];
+        totalAdded += newOnes.length;
         totalCost += d.usage?.costUsd ?? 0;
+
+        // ── AUTO-SAVE incremental para Supabase ─────────────────────────
+        // Cada ep gravado é persistido imediatamente. Browser-crash friendly.
+        try {
+          const saveRes = await fetch(`/api/admin/prompts/${collection}/save`, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ config: runningConfig, prompts: runningPrompts }),
+          });
+          const saveData = await saveRes.json();
+          if (!saveRes.ok || saveData.erro) {
+            errors.push(
+              `${ep}: auto-save falhou — prompts em memória (${saveData.erro || saveRes.status})`,
+            );
+          }
+        } catch (saveErr) {
+          errors.push(
+            `${ep}: auto-save falhou — prompts em memória (${saveErr instanceof Error ? saveErr.message : String(saveErr)})`,
+          );
+        }
+
+        // Actualiza UI com o estado corrente (removido fromSeed pois já gravámos).
+        setData((prev) =>
+          prev ? { ...prev, prompts: runningPrompts, fromSeed: false } : prev,
+        );
       } catch (e) {
         errors.push(`${ep}: ${e instanceof Error ? e.message : String(e)}`);
       }
@@ -317,7 +384,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     });
     setBulkRunning(false);
     setInfo(
-      `Bulk: +${totalAdded} prompts em ${eps.length - errors.length}/${eps.length} eps · custo $${totalCost.toFixed(3)}. Guarda para persistir.`,
+      `Bulk: +${totalAdded} prompts em ${eps.length - errors.length}/${eps.length} eps · custo $${totalCost.toFixed(3)} · auto-guardado em Supabase após cada ep.`,
     );
   }
 
@@ -336,6 +403,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
       if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
       setInfo(`Guardado: ${d.count} prompts`);
       setData((prev) => (prev ? { ...prev, fromSeed: false } : prev));
+      setDirty(false);
     } catch (e) {
       setErr(e instanceof Error ? e.message : String(e));
     } finally {
