@@ -237,12 +237,25 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     setInfo(`+${picked.length} prompts inseridos. Guarda para persistir.`);
   }
 
-  // Lista todos os eps da colecção (trailer + ep01..epN) que ainda NÃO têm
-  // prompts — candidatos ao bulk generate.
+  // Lista todos os eps do FUNIL Nomear (trailer + ep01..epN) que ainda NÃO
+  // têm prompts — candidatos ao bulk generate.
+  //
+  // IMPORTANTE: NOMEAR_PRESETS contém scripts para TUDO — funil Nomear
+  // (nomear-ep*, nomear-trailer-*) + cursos (a-chama-*, a-fome-*,
+  // curso-ouro-*, sangue-e-*, ...). As aulas seguem modelo de slides
+  // animados, NÃO precisam de image prompts MJ — filtrar.
+  //
+  // Também considera "havendo prompts" apenas os do funil — um prompt
+  // `nomear-ouro-01-*` (gerado por engano num bulk anterior) NÃO conta
+  // como cobrindo o ep "ouro" porque "ouro" não é um ep Nomear válido.
+  function isFunilScriptId(id: string): boolean {
+    return /^nomear-(ep\d+|trailer)(-|$)/.test(id);
+  }
   function missingEps(): string[] {
     if (!data) return [];
     const haveEp = new Set<string>();
     for (const p of data.prompts) {
+      if (!isFunilScriptId(p.id)) continue;
       const k = p.id.split("-")[1];
       if (k) haveEp.add(k);
     }
@@ -250,6 +263,7 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
     const seen = new Set<string>();
     for (const preset of NOMEAR_PRESETS) {
       for (const s of preset.scripts) {
+        if (!isFunilScriptId(s.id)) continue; // skip aulas (curso-*, a-fome-*, etc)
         const k = s.id.split("-")[1];
         if (!k || seen.has(k)) continue;
         seen.add(k);
@@ -257,6 +271,38 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
       }
     }
     return all;
+  }
+
+  // Prompts já inseridos que NÃO são do funil Nomear — candidatos a purgar.
+  // Inclui: prompts gerados por bulks anteriores com ids tipo nomear-ouro-*,
+  // nomear-chama-* (derivados de scripts de cursos), que não servem nada
+  // porque aulas usam slides.
+  function nonFunilPrompts(): PromptItem[] {
+    if (!data) return [];
+    return data.prompts.filter((p) => !isFunilScriptId(p.id));
+  }
+
+  function purgeNonFunil() {
+    const bad = nonFunilPrompts();
+    if (bad.length === 0) return;
+    if (
+      !confirm(
+        `Vais remover ${bad.length} prompts que NÃO pertencem ao funil Nomear (foram gerados por engano a partir de scripts de cursos).\n\n` +
+          `Exemplos: ${bad
+            .slice(0, 3)
+            .map((p) => p.id)
+            .join(", ")}${bad.length > 3 ? "…" : ""}\n\nContinuar?`,
+      )
+    ) {
+      return;
+    }
+    setData((d) =>
+      d ? { ...d, prompts: d.prompts.filter((p) => isFunilScriptId(p.id)) } : d,
+    );
+    setDirty(true);
+    setInfo(
+      `Removidos ${bad.length} prompts fora do funil. Clica Guardar para persistir.`,
+    );
   }
 
   async function generateBulk() {
@@ -557,6 +603,20 @@ export default function PromptEditor({ collection, categorySuggestions = [] }: P
                     }
                   >
                     ✨✨ Gerar TODOS os eps em falta ({miss.length})
+                  </button>
+                );
+              })()}
+              {(() => {
+                const bad = nonFunilPrompts();
+                if (bad.length === 0) return null;
+                return (
+                  <button
+                    onClick={purgeNonFunil}
+                    disabled={bulkRunning || genLoading}
+                    className="rounded border border-escola-terracota bg-escola-terracota/10 px-3 py-1.5 text-[11px] font-semibold text-escola-terracota hover:bg-escola-terracota/20 disabled:opacity-40"
+                    title="Remove prompts que foram gerados a partir de scripts de cursos (aulas) — o funil Nomear só são os eps e o trailer."
+                  >
+                    🗑 Purgar {bad.length} prompts fora do funil
                   </button>
                 );
               })()}

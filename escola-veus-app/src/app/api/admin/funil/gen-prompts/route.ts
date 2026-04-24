@@ -71,6 +71,8 @@ function pickFewShot(): ImgPrompt[] {
 function findEpisodeScript(episode: string): { titulo: string; texto: string } | null {
   for (const preset of NOMEAR_PRESETS) {
     for (const s of preset.scripts) {
+      // Apenas scripts do funil Nomear (nomear-ep* ou nomear-trailer-*).
+      if (!/^nomear-(ep\d+|trailer)(-|$)/.test(s.id)) continue;
       const key = s.id.split("-")[1];
       if (key === episode) {
         return { titulo: s.titulo, texto: s.texto ?? "" };
@@ -99,6 +101,18 @@ export async function POST(req: NextRequest) {
   const count = Math.max(3, Math.min(15, body.count ?? 10));
   if (!episode) {
     return NextResponse.json({ erro: "episode obrigatório" }, { status: 400 });
+  }
+
+  // Guard: só aceita eps do funil Nomear. O endpoint é "gen-prompts" do funil
+  // — se chamarem com "ouro", "chama", "fome" (prefixos de cursos), rejeita.
+  // Cursos usam slides animados, não precisam de image prompts MJ.
+  if (!/^(ep\d+|trailer)$/.test(episode)) {
+    return NextResponse.json(
+      {
+        erro: `"${episode}" não é um ep do funil Nomear. Só aceitamos trailer + ep01..epN (cursos/aulas usam slides, não image prompts).`,
+      },
+      { status: 400 },
+    );
   }
 
   const script = findEpisodeScript(episode);

@@ -54,7 +54,11 @@ const EPISODES: Episode[] = (() => {
   const list: Episode[] = [];
   for (const preset of NOMEAR_PRESETS) {
     for (const script of preset.scripts) {
-      // id patterns: "nomear-trailer-00", "nomear-ep11", ...
+      // NOMEAR_PRESETS contém scripts para TUDO — funil Nomear + cursos.
+      // Aqui queremos só o funil (nomear-ep* ou nomear-trailer-*). Cursos
+      // (a-chama-*, curso-ouro-*, a-fome-*, ...) usam slides e têm a sua
+      // própria montagem em /admin/producao/aulas.
+      if (!/^nomear-(ep\d+|trailer)(-|$)/.test(script.id)) continue;
       const parts = script.id.split("-");
       const epKey = parts[1] ?? ""; // "trailer" | "ep11"
       if (!epKey) continue;
