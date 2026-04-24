@@ -580,6 +580,7 @@ function PlanoSlot({
               thumbnailUrl={associated.thumbnailUrl}
               channel="ag"
               channelLabel="canal Ancient Ground · 3 passos"
+              kind={slot.type === "longo" ? "long" : "short"}
             />
           )}
         </div>
