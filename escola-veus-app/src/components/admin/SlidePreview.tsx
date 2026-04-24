@@ -139,21 +139,28 @@ export function SlidePreview({
           style={{
             backgroundColor: "#0d0d0d",
             color: "#f0ece6",
-            animation: "escolaFadeIn 0.5s ease-out",
+            animation: "escolaSlideIn 0.9s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
           {/* Label do acto — canto superior esquerdo */}
           {showActoLabel && "romano" in slide && (
             <div
               className="absolute left-[6%] top-[6%] text-[11px] font-medium uppercase"
-              style={{ color: accent, letterSpacing: "3px" }}
+              style={{
+                color: accent,
+                letterSpacing: "3px",
+                animation: "escolaLabelIn 0.6s ease-out",
+              }}
             >
               {slide.romano} · {slide.label}
             </div>
           )}
 
           {/* Corpo principal */}
-          <div className="absolute inset-0 flex items-center justify-center px-[10%]">
+          <div
+            className="absolute inset-0 flex items-center justify-center px-[10%]"
+            style={{ animation: "escolaContentIn 0.8s 0.25s ease-out both" }}
+          >
             {slide.tipo === "title" && (
               <div className="text-center">
                 <p
@@ -335,7 +342,20 @@ export function SlidePreview({
       </p>
 
       <style>{`
-        @keyframes escolaFadeIn {
+        /* Entrada do slide: fade + ligeiro deslize para cima. A curva easeOutExpo
+           dá a sensação de pousar suavemente, sem pressa. */
+        @keyframes escolaSlideIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        /* O conteúdo principal entra com um pequeno atraso em cima do stage,
+           para o olho primeiro ver o "palco" e depois receber o texto. */
+        @keyframes escolaContentIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        /* O label do acto aparece antes do texto — respiração. */
+        @keyframes escolaLabelIn {
           from { opacity: 0; }
           to { opacity: 1; }
         }
