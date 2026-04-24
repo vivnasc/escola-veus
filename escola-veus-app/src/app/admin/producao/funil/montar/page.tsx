@@ -41,6 +41,7 @@ type PoolClip = {
   category: string | null;
   motionPrompt: string | null;
   usageCount: number;
+  variantCount?: number; // 1 cena pode ter 4 variações MJ — pool exibe 1 só
 };
 
 // Computed from NOMEAR_PRESETS (cobre os 122 episódios + trailer) em vez de

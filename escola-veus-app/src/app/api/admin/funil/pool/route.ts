@@ -134,23 +134,48 @@ export async function GET() {
   //    Ground: mar-*, praia-*, rio-*, flora-*, fogo-*, savana-*, etc.) —
   //    esses NÃO devem aparecer no browser de reciclagem do funil porque
   //    visualmente destoam da estética editorial escura do Nomear.
-  const clips = allFiles
-    .filter((f) => /\.mp4$/i.test(f.name))
-    .filter((f) => f.name.startsWith("nomear-"))
-    .map((f) => {
-      const clipId = f.name.replace(/\.mp4$/i, "");
-      const img = imgById.get(clipId);
-      return {
-        clipId,
-        clipUrl: `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/clips/${f.name}`,
-        episode: episodeFromId(clipId),
-        imagePrompt: img?.prompt ?? null,
-        mood: img?.mood ?? [],
-        category: img?.category ?? null,
-        motionPrompt: motionMap[clipId] ?? motionMap._default ?? null,
-        usageCount: usageCount[clipId] ?? 0,
-      };
-    });
+  //
+  // Convenção de nomes: `<promptId>-<h|v>-<NN>.mp4` (h/v = horizontal/vertical,
+  // NN = variação MJ). Ex: `nomear-ep02-01-noite-quarto-h-01.mp4`. Para a pool
+  // queremos **uma cena por prompt**, não 4-8 variações visuais quase iguais.
+  //
+  // Dedup: agrupar clips por base id (strip -h-NN/-v-NN), escolher a `-h-01`
+  // se existir senão a primeira alfabética. Metadata (mood, imagePrompt) vem
+  // do seed indexado pelo base id.
+  const stripVariation = (name: string) =>
+    name.replace(/\.mp4$/i, "").replace(/-[hv]-\d+$/i, "");
+
+  const byBase = new Map<string, { file: { name: string }; variants: { name: string }[] }>();
+  for (const f of allFiles) {
+    if (!/\.mp4$/i.test(f.name)) continue;
+    if (!f.name.startsWith("nomear-")) continue;
+    const base = stripVariation(f.name);
+    const entry = byBase.get(base);
+    if (!entry) {
+      byBase.set(base, { file: f, variants: [f] });
+    } else {
+      entry.variants.push(f);
+      // Prefer `-h-01` como variação representativa
+      if (/-h-01\.mp4$/i.test(f.name) && !/-h-01\.mp4$/i.test(entry.file.name)) {
+        entry.file = f;
+      }
+    }
+  }
+
+  const clips = [...byBase.entries()].map(([basePromptId, { file, variants }]) => {
+    const img = imgById.get(basePromptId);
+    return {
+      clipId: file.name.replace(/\.mp4$/i, ""),
+      clipUrl: `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/clips/${file.name}`,
+      episode: episodeFromId(basePromptId),
+      imagePrompt: img?.prompt ?? null,
+      mood: img?.mood ?? [],
+      category: img?.category ?? null,
+      motionPrompt: motionMap[basePromptId] ?? motionMap._default ?? null,
+      usageCount: usageCount[basePromptId] ?? 0,
+      variantCount: variants.length,
+    };
+  });
 
   // Ordenar por episode (trailer primeiro, depois ep01.., ep02..) e depois id
   const epOrder = (e: string) =>
