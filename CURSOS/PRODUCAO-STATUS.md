@@ -55,7 +55,9 @@ HEAD no MP4 Mock B; se 200, devolve URL pública. Senão fallback legacy `course
 - **Vivianne decide a faixa AG**, não o Claude. Sem faixa, o botão Render fica desactivado.
 - **Sem render sem preview aprovado.** Overrides gravam antes; só depois a UI permite disparar o workflow.
 - **ZERO travessões (—) em conteúdo de curso.** Scripts, manuais, cadernos, Q&A: nada de em-dash. Usar ponto final ou vírgula. Aplica-se a todos os cursos e a todas as branches. Regra permanente.
-- **Acentuação PT-PT obrigatória em tudo o que é visível à aluna.** Sem letras soltas (nao, so, modulo, vídeo, próxima...). A Escola não pode ter português sem acentos.
+- **Acentuação PT-PT obrigatória em tudo o que é visível à aluna.** Páginas, botões, mensagens de erro, slides, prompts, e-mails. Sem letras soltas (nao, so, modulo, video, proxima…). Esta regra é permanente e pré-condição de qualquer commit. Se o agente gerar texto sem acentos, o commit é considerado defeituoso e tem de ser corrigido antes de ir para `main`.
+- **Identidade visual partilhada nos slides de aulas:** fundo `#141428` (roxo escuro da Escola) em todos os cursos. Tipografia única em todos os actos de conteúdo (Cormorant Garamond regular; pergunta em italic; frase final em DM Serif Display maior — esses são as únicas variações). A diferença entre actos vive no label do acto e na cor de acento do curso. Marca "Escola dos Véus" presente no canto inferior direito de cada slide de conteúdo. Esta base não muda entre cursos.
+- **Faixas Ancient Ground vivem no bucket `audios`** (não em `course-assets`), em `albums/ancient-ground/`. A API canónica é `/api/admin/music/list-album?album=ancient-ground`. Qualquer pipeline que precise de música deve consumir esta API, não duplicar a lógica.
 
 ---
 
