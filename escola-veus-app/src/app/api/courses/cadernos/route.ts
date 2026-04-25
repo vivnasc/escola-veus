@@ -18,11 +18,11 @@ import { getCourseBySlug } from "@/data/courses";
 export async function GET(req: NextRequest) {
   const slug = req.nextUrl.searchParams.get("slug");
   if (!slug) {
-    return NextResponse.json({ error: "Param slug obrigatorio" }, { status: 400 });
+    return NextResponse.json({ error: "Parâmetro slug obrigatório" }, { status: 400 });
   }
   const course = getCourseBySlug(slug);
   if (!course) {
-    return NextResponse.json({ error: "Curso nao encontrado" }, { status: 404 });
+    return NextResponse.json({ error: "Curso não encontrado" }, { status: 404 });
   }
 
   const authHeader = req.headers.get("authorization");
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     }
   }
   if (!token) {
-    return NextResponse.json({ error: "Autenticacao necessaria" }, { status: 401 });
+    return NextResponse.json({ error: "Autenticação necessária" }, { status: 401 });
   }
 
   const supabase = createClient(
@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
     error: authError,
   } = await supabase.auth.getUser();
   if (authError || !user) {
-    return NextResponse.json({ error: "Sessao invalida" }, { status: 401 });
+    return NextResponse.json({ error: "Sessão inválida" }, { status: 401 });
   }
 
   const { data: rows, error: qErr } = await supabase

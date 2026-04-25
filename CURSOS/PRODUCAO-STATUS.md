@@ -54,10 +54,12 @@ HEAD no MP4 Mock B; se 200, devolve URL pública. Senão fallback legacy `course
 
 - **Vivianne decide a faixa AG**, não o Claude. Sem faixa, o botão Render fica desactivado.
 - **Sem render sem preview aprovado.** Overrides gravam antes; só depois a UI permite disparar o workflow.
+- **ZERO travessões (—) em conteúdo de curso.** Scripts, manuais, cadernos, Q&A: nada de em-dash. Usar ponto final ou vírgula. Aplica-se a todos os cursos e a todas as branches. Regra permanente.
+- **Acentuação PT-PT obrigatória em tudo o que é visível à aluna.** Sem letras soltas (nao, so, modulo, vídeo, próxima...). A Escola não pode ter português sem acentos.
 
 ---
 
-## Sessão anterior (7 — 2026-04-21)
+## Sessão anterior (7, 2026-04-21)
 
 **Migração Shotstack → FFmpeg nos 3 pipelines de vídeo. Piscar dos Ancient Ground resolvido determinisiticamente.**
 

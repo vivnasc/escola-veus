@@ -33,9 +33,12 @@ export function renderSlideHtml({ slide, deck, accent }) {
     `;
   } else if (slide.tipo === "conteudo") {
     const align = slide.acto === "frase" ? "center" : (slide.acto === "pergunta" || slide.acto === "revelacao" ? "center" : "left");
+    const len = (slide.texto ?? "").length;
+    const sizeClass = len > 280 ? "vlong" : len > 200 ? "long" : "";
+    const html = emphasisToHtml(slide.texto, accent);
     body = `
       <div class="conteudo-wrap ${align === "center" ? "text-center" : "text-left"}">
-        <p class="acto-${slide.acto}">${esc(slide.texto)}</p>
+        <p class="acto-${slide.acto} ${sizeClass}">${html}</p>
         ${slide.acto === "frase" ? `<div class="accent-line" style="background:${accent};margin-top:24px"></div>` : ""}
       </div>
     `;
@@ -114,34 +117,43 @@ export function renderSlideHtml({ slide, deck, accent }) {
   .acto-pergunta {
     font-family: 'Cormorant Garamond', Georgia, serif;
     font-style: italic;
-    font-size: 76px;
+    font-size: 60px;
     font-weight: 500;
     line-height: 1.35;
   }
+  .acto-pergunta.long { font-size: 48px; }
+  .acto-pergunta.vlong { font-size: 40px; }
   .acto-situacao {
     font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 50px;
+    font-size: 42px;
     font-weight: 400;
     line-height: 1.55;
   }
+  .acto-situacao.long { font-size: 36px; }
+  .acto-situacao.vlong { font-size: 30px; }
   .acto-revelacao {
     font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 60px;
+    font-size: 50px;
     font-weight: 400;
     line-height: 1.4;
   }
+  .acto-revelacao.long { font-size: 42px; }
+  .acto-revelacao.vlong { font-size: 36px; }
   .acto-gesto {
     font-family: 'Nunito', sans-serif;
-    font-size: 42px;
+    font-size: 38px;
     font-weight: 400;
     line-height: 1.7;
   }
+  .acto-gesto.long { font-size: 32px; }
+  .acto-gesto.vlong { font-size: 28px; }
   .acto-frase {
     font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 104px;
+    font-size: 86px;
     font-weight: 400;
     line-height: 1.25;
   }
+  .acto-frase.long { font-size: 66px; }
   .end-title {
     font-family: 'DM Serif Display', Georgia, serif;
     font-size: 80px;
@@ -185,4 +197,15 @@ function esc(s) {
     '"': "&quot;",
     "'": "&#39;",
   }[c]));
+}
+
+/**
+ * `**palavra**` → <em> em dourado itálico. Mesmo comportamento que
+ * src/lib/emphasis.tsx no lado do preview React.
+ */
+function emphasisToHtml(text, accentColor) {
+  return esc(text ?? "").replace(
+    /\*\*([^*]+?)\*\*/g,
+    `<em style="color:${accentColor};font-style:italic;font-weight:500">$1</em>`,
+  );
 }

@@ -96,37 +96,53 @@ export function SoundPanel({
 
       {!agTracksLoading && agTracks.length > 0 && (
         <div className="max-h-72 space-y-1 overflow-y-auto rounded border border-escola-border bg-escola-bg p-2">
+          <p className="mb-1 text-[10px] text-escola-creme-50">
+            Marca a caixinha da faixa que queres usar nesta sub-aula.
+          </p>
           {agTracks.map((t) => {
             const selected = resolvedTrack === t.name;
             return (
-              <div
+              <label
                 key={t.name}
-                className={`flex items-center gap-2 rounded px-2 py-1.5 text-xs transition-colors ${
+                className={`flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-xs transition-colors ${
                   selected ? "bg-escola-dourado/10" : "hover:bg-white/5"
                 }`}
               >
+                <input
+                  type="radio"
+                  name="ag-track"
+                  checked={selected}
+                  onChange={() => setTrack(t.name)}
+                  className="h-4 w-4 shrink-0 accent-escola-dourado"
+                />
                 <button
-                  onClick={() => togglePlay(t)}
-                  className="flex h-7 w-7 items-center justify-center rounded-full border border-escola-border text-[11px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
-                  title={playing === t.name ? "Pausa" : "Tocar"}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    togglePlay(t);
+                  }}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-escola-border text-[11px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+                  title={playing === t.name ? "Pausa" : "Tocar amostra"}
                 >
                   {playing === t.name ? "⏸" : "▶"}
                 </button>
-                <button
-                  onClick={() => setTrack(selected ? null : t.name)}
-                  className="flex-1 truncate text-left text-escola-creme"
-                  title={selected ? "Usar faixa por defeito do curso" : "Escolher esta faixa"}
-                >
-                  {t.name}
-                </button>
+                <span className="flex-1 truncate text-escola-creme">{t.name}</span>
                 {selected && (
                   <span className="text-[9px] uppercase tracking-wider text-escola-dourado">
                     activa
                   </span>
                 )}
-              </div>
+              </label>
             );
           })}
+          {resolvedTrack && (
+            <button
+              onClick={() => setTrack(null)}
+              className="mt-1 w-full rounded border border-dashed border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+            >
+              Limpar selecção (voltar à faixa por defeito do curso)
+            </button>
+          )}
         </div>
       )}
 

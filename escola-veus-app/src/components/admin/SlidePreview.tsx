@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Slide, SlideDeck } from "@/lib/course-slides";
 import { getTerritoryTheme } from "@/data/territory-themes";
+import { parseEmphasis } from "@/lib/emphasis";
 
 // Injecta DM Serif Display + Nunito uma unica vez (Cormorant ja esta global).
 function useSlideFonts() {
@@ -138,21 +139,28 @@ export function SlidePreview({
           style={{
             backgroundColor: "#0d0d0d",
             color: "#f0ece6",
-            animation: "escolaFadeIn 0.5s ease-out",
+            animation: "escolaSlideIn 0.9s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
           {/* Label do acto — canto superior esquerdo */}
           {showActoLabel && "romano" in slide && (
             <div
               className="absolute left-[6%] top-[6%] text-[11px] font-medium uppercase"
-              style={{ color: accent, letterSpacing: "3px" }}
+              style={{
+                color: accent,
+                letterSpacing: "3px",
+                animation: "escolaLabelIn 0.6s ease-out",
+              }}
             >
               {slide.romano} · {slide.label}
             </div>
           )}
 
           {/* Corpo principal */}
-          <div className="absolute inset-0 flex items-center justify-center px-[10%]">
+          <div
+            className="absolute inset-0 flex items-center justify-center px-[10%]"
+            style={{ animation: "escolaContentIn 0.8s 0.25s ease-out both" }}
+          >
             {slide.tipo === "title" && (
               <div className="text-center">
                 <p
@@ -201,10 +209,10 @@ export function SlidePreview({
             {slide.tipo === "conteudo" && (
               <div className={slide.acto === "frase" ? "text-center" : "text-left"} style={{ maxWidth: "80%" }}>
                 <p
-                  style={contentStyleFor(slide.acto)}
+                  style={contentStyleFor(slide.acto, slide.texto.length)}
                   className="whitespace-pre-line"
                 >
-                  {slide.texto}
+                  {parseEmphasis(slide.texto, accent)}
                 </p>
                 {slide.acto === "frase" && (
                   <div
@@ -255,6 +263,27 @@ export function SlidePreview({
               {footer}
             </div>
           )}
+        </div>
+
+        {/* Setas de navegação sempre visíveis, dentro e fora do ecrã cheio */}
+        <button
+          onClick={prev}
+          disabled={index === 0}
+          aria-label="Slide anterior"
+          className="absolute left-3 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-xl text-white backdrop-blur transition-opacity hover:bg-black/50 disabled:cursor-not-allowed disabled:opacity-20"
+        >
+          ←
+        </button>
+        <button
+          onClick={next}
+          disabled={index >= deck.slides.length - 1}
+          aria-label="Próximo slide"
+          className="absolute right-3 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-xl text-white backdrop-blur transition-opacity hover:bg-black/50 disabled:cursor-not-allowed disabled:opacity-20"
+        >
+          →
+        </button>
+        <div className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/40 px-3 py-1 text-[11px] text-white backdrop-blur">
+          {index + 1} / {deck.slides.length} · {slide.duracao}s
         </div>
 
         {fullscreen && (
@@ -313,7 +342,20 @@ export function SlidePreview({
       </p>
 
       <style>{`
-        @keyframes escolaFadeIn {
+        /* Entrada do slide: fade + ligeiro deslize para cima. A curva easeOutExpo
+           dá a sensação de pousar suavemente, sem pressa. */
+        @keyframes escolaSlideIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        /* O conteúdo principal entra com um pequeno atraso em cima do stage,
+           para o olho primeiro ver o "palco" e depois receber o texto. */
+        @keyframes escolaContentIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        /* O label do acto aparece antes do texto — respiração. */
+        @keyframes escolaLabelIn {
           from { opacity: 0; }
           to { opacity: 1; }
         }
@@ -322,13 +364,16 @@ export function SlidePreview({
   );
 }
 
-function contentStyleFor(acto: string): React.CSSProperties {
+function contentStyleFor(acto: string, charCount: number): React.CSSProperties {
+  // Escalar tipografia com a quantidade de texto — blocos longos baixam o
+  // font-size para não transbordar. Pergunta e frase mantêm mais presença.
+  const scale = charCount > 280 ? 0.78 : charCount > 200 ? 0.88 : 1;
   switch (acto) {
     case "pergunta":
       return {
         fontFamily: '"Cormorant Garamond", Georgia, serif',
         fontStyle: "italic",
-        fontSize: "clamp(26px, 4vw, 48px)",
+        fontSize: `clamp(${20 * scale}px, ${3 * scale}vw, ${36 * scale}px)`,
         fontWeight: 500,
         lineHeight: 1.35,
         textAlign: "center",
@@ -336,14 +381,14 @@ function contentStyleFor(acto: string): React.CSSProperties {
     case "situacao":
       return {
         fontFamily: '"Cormorant Garamond", Georgia, serif',
-        fontSize: "clamp(20px, 2.4vw, 32px)",
+        fontSize: `clamp(${16 * scale}px, ${2 * scale}vw, ${26 * scale}px)`,
         fontWeight: 400,
         lineHeight: 1.55,
       };
     case "revelacao":
       return {
         fontFamily: '"DM Serif Display", Georgia, serif',
-        fontSize: "clamp(22px, 2.8vw, 38px)",
+        fontSize: `clamp(${18 * scale}px, ${2.3 * scale}vw, ${30 * scale}px)`,
         fontWeight: 400,
         lineHeight: 1.4,
         textAlign: "center",
@@ -351,14 +396,14 @@ function contentStyleFor(acto: string): React.CSSProperties {
     case "gesto":
       return {
         fontFamily: '"Nunito", sans-serif',
-        fontSize: "clamp(18px, 2.2vw, 28px)",
+        fontSize: `clamp(${15 * scale}px, ${1.8 * scale}vw, ${24 * scale}px)`,
         fontWeight: 400,
         lineHeight: 1.7,
       };
     case "frase":
       return {
         fontFamily: '"DM Serif Display", Georgia, serif',
-        fontSize: "clamp(32px, 5vw, 64px)",
+        fontSize: `clamp(${26 * scale}px, ${4 * scale}vw, ${52 * scale}px)`,
         fontWeight: 400,
         lineHeight: 1.25,
         textAlign: "center",

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json(
-      { error: "Nao autenticado" },
+      { error: "Não autenticado" },
       { status: 401 }
     );
   }
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json(
-      { error: "Nao autenticado" },
+      { error: "Não autenticado" },
       { status: 401 }
     );
   }

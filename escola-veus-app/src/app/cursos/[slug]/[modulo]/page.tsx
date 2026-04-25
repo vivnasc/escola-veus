@@ -56,7 +56,7 @@ export default function ModuloPage() {
       <header className="mb-6">
         <div className="mb-1 flex items-center gap-2">
           <span className="text-xs" style={{ color: "var(--t-primary)", opacity: 0.6 }}>
-            Modulo {mod.number} de {course.modules.length}
+            Módulo {mod.number} de {course.modules.length}
           </span>
           {completed && (
             <span className="rounded-full px-2 py-0.5 text-[10px]" style={{ backgroundColor: "rgba(var(--t-primary-rgb), 0.1)", color: "var(--t-primary)" }}>

@@ -60,7 +60,7 @@ export function AudioPlayer({
               Ouvir esta aula
             </p>
             <p className="text-xs text-escola-creme-50">
-              Versao audio para escutar em movimento.
+              Versão áudio para escutar em movimento.
             </p>
           </div>
         </div>
@@ -70,11 +70,11 @@ export function AudioPlayer({
       {expanded && (
         <div className="mt-3">
           {loading && (
-            <p className="text-xs text-escola-creme-50">A carregar...</p>
+            <p className="text-xs text-escola-creme-50">A carregar…</p>
           )}
           {missing && !loading && (
             <p className="text-xs text-escola-creme-50">
-              Audio em producao — ainda nao disponivel.
+              Áudio em produção, ainda não disponível.
             </p>
           )}
           {url && (

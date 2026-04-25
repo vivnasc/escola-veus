@@ -95,7 +95,7 @@ export function AskClaude({
             className="text-xs uppercase tracking-wide"
             style={{ color: "var(--t-primary, #C9A96E)" }}
           >
-            Perguntar sobre este modulo
+            Perguntar sobre este módulo
           </h3>
           <p className="mt-1 text-sm text-escola-creme-50">
             Se algo ficou por dizer, ou se quiseres aprofundar.
@@ -129,7 +129,7 @@ export function AskClaude({
                 </div>
               ))}
               {loading && (
-                <p className="text-xs italic text-escola-creme-50">A pensar...</p>
+                <p className="text-xs italic text-escola-creme-50">A pensar…</p>
               )}
             </div>
           )}
@@ -154,7 +154,7 @@ export function AskClaude({
               className="rounded-lg px-4 py-1.5 text-xs font-medium text-escola-bg transition-opacity hover:opacity-90 disabled:opacity-40"
               style={{ backgroundColor: "var(--t-primary)" }}
             >
-              {loading ? "A enviar..." : "Enviar"}
+              {loading ? "A enviar…" : "Enviar"}
             </button>
           </div>
         </div>
