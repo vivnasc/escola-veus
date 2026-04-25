@@ -144,7 +144,7 @@ export default function EntrarPage() {
             disabled={loading || !email || !password}
             className="w-full py-3 rounded-xl bg-escola-dourado text-escola-bg font-medium text-sm hover:bg-escola-dourado-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "A entrar..." : "Entrar"}
+            {loading ? "A entrar…" : "Entrar"}
           </button>
 
           <button
@@ -153,7 +153,7 @@ export default function EntrarPage() {
             disabled={resetLoading}
             className="w-full text-xs text-escola-creme-50 hover:text-escola-creme transition-colors"
           >
-            {resetLoading ? "A enviar..." : "Esqueci a palavra-passe"}
+            {resetLoading ? "A enviar…" : "Esqueci a palavra-passe"}
           </button>
         </form>
 

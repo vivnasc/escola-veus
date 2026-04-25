@@ -67,7 +67,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "NEXT_PUBLIC_SUPABASE_URL nao configurada" }, { status: 500 });
   }
 
-  const agTrackUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/audios/albums/ancient-ground/${encodeURIComponent(
+  // Bucket de música = `audios` (público), separado de `course-assets`.
+  // Mesmo path que /admin/producao/ancient-ground/montagem usa.
+  const agTrackUrl = `${supabaseUrl}/storage/v1/object/public/audios/albums/ancient-ground/${encodeURIComponent(
     agTrackName,
   )}`;
 

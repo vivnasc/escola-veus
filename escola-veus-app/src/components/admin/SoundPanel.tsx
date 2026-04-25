@@ -90,7 +90,10 @@ export function SoundPanel({
       {agTracksLoading && <p className="text-xs text-escola-creme-50">A carregar faixas…</p>}
       {!agTracksLoading && agTracks.length === 0 && (
         <p className="text-xs text-escola-creme-50">
-          Bucket vazio: põe ficheiros em <code>audios/albums/ancient-ground/</code>.
+          Sem faixas em <code>audios/albums/ancient-ground/</code>. Verifica o
+          bucket <code>audios</code> no Supabase ou abre{" "}
+          <code>/admin/producao/ancient-ground/montagem</code> para confirmar
+          que a biblioteca aparece lá.
         </p>
       )}
 

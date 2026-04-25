@@ -71,7 +71,7 @@ export default function AulaPreviewPage({
         const [c, d, a] = await Promise.all([
           fetch(`/api/admin/aulas/config?slug=${slug}&module=${moduleNumber}&sub=${sub}`),
           fetch(`/api/admin/aulas/course-defaults?slug=${slug}`),
-          fetch("/api/admin/aulas/ag-tracks"),
+          fetch("/api/admin/music/list-album?album=ancient-ground"),
         ]);
         const cj = await c.json();
         const dj = await d.json();
@@ -79,7 +79,13 @@ export default function AulaPreviewPage({
         if (!alive) return;
         setConfig(cj.config ?? {});
         setDefaults(dj.defaults ?? { agTrack: null, volumeDb: DEFAULT_VOLUMES });
-        setAgTracks(aj.files ?? []);
+        setAgTracks(
+          (aj.tracks ?? []).map((t: { name: string; url: string; sizeMB: number | null }) => ({
+            name: t.name,
+            url: t.url,
+            size: t.sizeMB != null ? Math.round(t.sizeMB * 1024 * 1024) : null,
+          })),
+        );
       } finally {
         if (alive) {
           setLoaded(true);
