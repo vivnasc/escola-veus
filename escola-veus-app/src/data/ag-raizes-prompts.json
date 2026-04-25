@@ -1,0 +1,84 @@
+{
+  "config": {
+    "aspect": "9:16 ou 1:1 (para shorts verticais após animação Runway)",
+    "estilo": "photorealistic, cinematic, 35mm film, documentary style — sem ilustração, sem fantasy",
+    "geografia": "sempre Moçambique (Makua, Tsonga, Chope, Ndau, Sena), nunca genérico 'África'",
+    "luz": "variar: dawn, golden hour, dusk, firelight, warm indoor, shade — evitar repetição 'warm golden'"
+  },
+  "prompts": [
+    { "id": "machamba-01-alvorada", "theme": "machamba", "mood": ["ancestral", "vital"], "prompt": "Mozambican woman hoeing at dawn, red earth, rows of maize behind, warm golden light, single bead of sweat on temple, photorealistic, cinematic, 35mm film" },
+    { "id": "machamba-02-semear", "theme": "machamba", "mood": ["calma", "heranca"], "prompt": "Elderly Mozambican farmer sowing seeds by hand, bent over furrowed earth, cassava plants nearby, late afternoon light, documentary style, photorealistic, cinematic" },
+    { "id": "machamba-03-carregar", "theme": "machamba", "mood": ["vital", "expansivo"], "prompt": "Two Mozambican women carrying produce home from the machamba on their heads, dirt path, tall grass either side, warm evening light, photorealistic, cinematic, 35mm film" },
+    { "id": "machamba-04-maos", "theme": "machamba", "mood": ["conexao", "sagrado"], "prompt": "Close-up of African hands pulling green leaves from red earth, soil under fingernails, morning light on skin, shallow depth of field, photorealistic, cinematic" },
+
+    { "id": "pesca-01-alvorada", "theme": "pesca", "mood": ["vital", "poderoso"], "prompt": "Mozambican fishermen pulling nets at sunrise, Indian Ocean coast, wooden dhow beached, warm orange light, silhouettes against water, photorealistic, cinematic, documentary style" },
+    { "id": "pesca-02-solitario", "theme": "pesca", "mood": ["solidao", "contemplativo"], "prompt": "Single Mozambican fisherman checking nets at dawn, standing knee-deep in turquoise shallows, small boat beside him, mist on horizon, photorealistic, cinematic, 35mm film" },
+    { "id": "pesca-03-arrastar-dhow", "theme": "pesca", "mood": ["poderoso", "conexao"], "prompt": "Group of Mozambican fishermen dragging heavy wooden dhow up beach together, sand tracks behind, late afternoon light, photorealistic, cinematic, documentary style" },
+    { "id": "pesca-04-mendar-redes", "theme": "pesca", "mood": ["calma", "heranca"], "prompt": "Close-up of Mozambican fisherman hands mending fishing net, wooden boat hull in background, warm coastal light, photorealistic, cinematic, 35mm film" },
+
+    { "id": "artesanato-01-cesto", "theme": "artesanato", "mood": ["calma", "heranca"], "prompt": "Close-up of Mozambican woman hands weaving sisal basket, capulana fabric wrapped around, warm indoor light from doorway, photorealistic, cinematic, 35mm film" },
+    { "id": "artesanato-02-oleiro", "theme": "artesanato", "mood": ["sagrado", "ancestral"], "prompt": "Mozambican potter shaping clay vessel on the ground, red earth in hands, village hut behind, late morning light, photorealistic, cinematic, documentary style" },
+    { "id": "artesanato-03-pau-preto", "theme": "artesanato", "mood": ["contemplativo", "misterio"], "prompt": "Elderly Mozambican man carving pau-preto ebony sculpture, wood shavings on ground, concentration on face, natural light from small window, photorealistic, cinematic, 35mm film" },
+    { "id": "artesanato-04-missanga", "theme": "artesanato", "mood": ["sensual", "vital"], "prompt": "Mozambican woman threading colorful missanga beads, bowl of beads in lap, capulana skirt, warm afternoon light on hands, shallow depth of field, photorealistic, cinematic" },
+
+    { "id": "batuque-01-roda-fogo", "theme": "batuque", "mood": ["ancestral", "poderoso"], "prompt": "African men playing drums at dusk, Mozambique village circle, firelight on faces, motion blur on hands, photorealistic, cinematic, 35mm film" },
+    { "id": "batuque-02-timbila", "theme": "batuque", "mood": ["heranca", "conexao"], "prompt": "Mozambican drummer hands on timbila xylophone, wooden keys blurred from motion, shadows of dancers around, warm evening light, photorealistic, cinematic, documentary style" },
+    { "id": "batuque-03-mbira-solo", "theme": "batuque", "mood": ["contemplativo", "solidao"], "prompt": "Single Mozambican elder playing mbira thumb piano alone, wooden stool, mud wall behind, late afternoon light through open window, photorealistic, cinematic, 35mm film" },
+    { "id": "batuque-04-coro-mulheres", "theme": "batuque", "mood": ["vital", "catartico"], "prompt": "Mozambican women in circle clapping and singing around drummer, capulanas in motion, firelight flickering, dust rising from ground, photorealistic, cinematic" },
+
+    { "id": "danca-01-capulanas", "theme": "danca", "mood": ["vital", "libertacao"], "prompt": "Mozambican women dancing in traditional ceremony, colorful capulanas in motion, dust rising from red earth, golden hour light, photorealistic, cinematic, 35mm film" },
+    { "id": "danca-02-mapiko", "theme": "danca", "mood": ["misterio", "poderoso"], "prompt": "Mozambican men performing mapiko masked dance, carved wooden masks, drums in background, village night, photorealistic, cinematic, documentary style" },
+    { "id": "danca-03-timbila-circulo", "theme": "danca", "mood": ["conexao", "heranca"], "prompt": "Chope timbila dance circle, young and old moving together, xylophones on ground, late afternoon warm light, photorealistic, cinematic, 35mm film" },
+    { "id": "danca-04-silhuetas", "theme": "danca", "mood": ["sensual", "libertacao"], "prompt": "Two Mozambican women dancing barefoot on packed earth, arms raised, capulanas spinning, backlit by low sun, silhouette edge light, photorealistic, cinematic" },
+
+    { "id": "crianca-01-aprender-enxada", "theme": "crianca", "mood": ["heranca", "conexao"], "prompt": "Mozambican grandmother teaching granddaughter to hoe machamba, elder hands guiding small hands, warm morning light, photorealistic, cinematic, 35mm film" },
+    { "id": "crianca-02-tambor-latao", "theme": "crianca", "mood": ["vital", "libertacao"], "prompt": "Mozambican children playing improvised drum from tin can, dirt yard, palm trees background, late afternoon light, photorealistic, cinematic, documentary style" },
+    { "id": "crianca-03-agua-cabeca", "theme": "crianca", "mood": ["calma", "heranca"], "prompt": "Young Mozambican girl carrying water on her head from well, dirt path home, golden hour light, photorealistic, cinematic, 35mm film" },
+    { "id": "crianca-04-pesca-pequena", "theme": "crianca", "mood": ["contemplativo", "esperanca"], "prompt": "Mozambican boy fishing with small homemade rod at rocky shore, concentration on face, warm evening light, photorealistic, cinematic" },
+
+    { "id": "mercado-01-alvorada", "theme": "mercado", "mood": ["vital", "conexao"], "prompt": "Mozambican market at dawn, women arranging vegetables on capulana cloths, warm orange light filtering through stalls, photorealistic, cinematic, documentary style" },
+    { "id": "mercado-02-peixe-seco", "theme": "mercado", "mood": ["calma", "heranca"], "prompt": "Close-up of dried fish stall in Mozambican market, woman vendor in background, morning light, photorealistic, cinematic, 35mm film" },
+    { "id": "mercado-03-ervas-medicinais", "theme": "mercado", "mood": ["sagrado", "misterio"], "prompt": "Elderly Mozambican herbalist with dried plants and roots arranged before her, wisdom in eyes, natural shade light, photorealistic, cinematic, documentary style" },
+    { "id": "mercado-04-alfaiate", "theme": "mercado", "mood": ["calma", "contemplativo"], "prompt": "Mozambican street tailor with old Singer sewing machine, capulana fabric nearby, warm afternoon light from open door, photorealistic, cinematic, 35mm film" },
+
+    { "id": "anciao-01-cachimbo-mafurra", "theme": "anciao", "mood": ["ancestral", "contemplativo"], "prompt": "Elderly Makua man smoking traditional pipe under mafurra tree, wisdom lines on face, soft afternoon light, photorealistic, cinematic, 35mm film" },
+    { "id": "anciao-02-avo-banco", "theme": "anciao", "mood": ["calma", "heranca"], "prompt": "Mozambican grandmother sitting on low wooden stool by hut entrance, hands folded in lap, late light on her face, photorealistic, cinematic, documentary style" },
+    { "id": "anciao-03-maos-bengala", "theme": "anciao", "mood": ["contemplativo", "sagrado"], "prompt": "Close-up of weathered Mozambican elder hands, cracked and strong, holding wooden walking stick, soft window light, shallow depth of field, photorealistic, cinematic" },
+    { "id": "anciao-04-pescador-lampeao", "theme": "anciao", "mood": ["solidao", "misterio"], "prompt": "Old Mozambican fisherman mending nets alone at dusk, lantern beside him, long shadows, photorealistic, cinematic, 35mm film" },
+
+    { "id": "casa-01-candeeiro-noite", "theme": "casa", "mood": ["calma", "sagrado"], "prompt": "Interior of Mozambican adobe house at night, oil lamp on wooden table, mother stirring pot over fire, warm orange light, photorealistic, cinematic, 35mm film" },
+    { "id": "casa-02-palhota-manha", "theme": "casa", "mood": ["ancestral", "recomeco"], "prompt": "Palm-thatched hut in village at dawn, smoke rising from cooking fire, warm morning mist, photorealistic, cinematic, documentary style" },
+    { "id": "casa-03-capulanas-secar", "theme": "casa", "mood": ["vital", "conexao"], "prompt": "Mozambican woman hanging colorful capulanas to dry on line outside mud-brick house, sun through them, photorealistic, cinematic, 35mm film" },
+    { "id": "casa-04-lume-pes", "theme": "casa", "mood": ["conexao", "sagrado"], "prompt": "Children's bare feet and mother's feet around cooking fire on earth floor inside hut, warm glow, intimate framing, photorealistic, cinematic" },
+
+    { "id": "transmissao-01-rede-peixe", "theme": "transmissao", "mood": ["heranca", "conexao"], "prompt": "Mozambican grandfather showing small boy how to weave fishing net, wooden pegs, warm afternoon light by hut wall, photorealistic, cinematic, 35mm film" },
+    { "id": "transmissao-02-barro", "theme": "transmissao", "mood": ["sagrado", "ancestral"], "prompt": "Elderly Mozambican woman guiding granddaughter hands shaping clay pot, red earth, focus on connection, documentary style, photorealistic, cinematic" },
+    { "id": "transmissao-03-pesca-pai-filho", "theme": "transmissao", "mood": ["heranca", "esperanca"], "prompt": "Mozambican father teaching son to hold and cast fishing line, Indian Ocean shore, golden hour, backlit figures, photorealistic, cinematic, 35mm film" },
+    { "id": "transmissao-04-pilar-milho", "theme": "transmissao", "mood": ["conexao", "vital"], "prompt": "Mozambican grandmother and grandchild pounding maize in wooden mortar together, red dirt yard, early morning light, photorealistic, cinematic, documentary style" },
+
+    { "id": "trabalho-coletivo-01-pilar", "theme": "trabalho-coletivo", "mood": ["vital", "conexao"], "prompt": "Group of Mozambican women pounding maize in tall wooden mortars together, rhythmic motion, dust in warm morning light, photorealistic, cinematic, 35mm film" },
+    { "id": "trabalho-coletivo-02-palhota", "theme": "trabalho-coletivo", "mood": ["poderoso", "conexao"], "prompt": "Mozambican villagers building palm-thatch roof for new hut, many hands lifting palm fronds together, late afternoon light, photorealistic, cinematic, documentary style" },
+    { "id": "trabalho-coletivo-03-rede-praia", "theme": "trabalho-coletivo", "mood": ["poderoso", "vital"], "prompt": "Team of Mozambican fishermen pulling long seine net together onto beach, straining bodies, golden dawn light, photorealistic, cinematic" },
+    { "id": "trabalho-coletivo-04-agua-poco", "theme": "trabalho-coletivo", "mood": ["calma", "conexao"], "prompt": "Mozambican women walking single file back from well with jerrycans of water on their heads, dirt path, warm morning light, photorealistic, cinematic, 35mm film" },
+
+    { "id": "rito-01-agua-terra", "theme": "rito", "mood": ["sagrado", "ancestral"], "prompt": "Mozambican elder pouring water onto red earth as offering to ancestors, dawn light, hands in gentle motion, intimate framing, photorealistic, cinematic, 35mm film" },
+    { "id": "rito-02-circulo-fogo", "theme": "rito", "mood": ["misterio", "sagrado"], "prompt": "Single lit fire at village clearing at dusk, circle of bare feet around it, reverent silence, warm firelight, photorealistic, cinematic, documentary style" },
+    { "id": "rito-03-curandeiro", "theme": "rito", "mood": ["misterio", "poderoso"], "prompt": "Mozambican curandeiro healer laying hands over small fire with herbs, smoke rising, dim indoor light of traditional hut, photorealistic, cinematic" },
+    { "id": "rito-04-candeeiro-maos", "theme": "rito", "mood": ["sagrado", "contemplativo"], "prompt": "Mozambican woman lighting oil lamp at nightfall, cupped hands around flame, warm orange glow on face, photorealistic, cinematic, 35mm film" },
+
+    { "id": "aldeia-01-wide-golden", "theme": "aldeia", "mood": ["vasto", "heranca"], "prompt": "Wide shot of Mozambican village at golden hour, cluster of mud-brick and palm-thatch huts, red dirt paths, warm low light, photorealistic, cinematic, 35mm film" },
+    { "id": "aldeia-02-baoba-praca", "theme": "aldeia", "mood": ["ancestral", "sagrado"], "prompt": "Mozambican village square at dusk with baobá tree in center, small fires scattered, people moving between huts, photorealistic, cinematic, documentary style" },
+    { "id": "aldeia-03-aereo", "theme": "aldeia", "mood": ["expansivo", "conexao"], "prompt": "Aerial view of Mozambique village surrounded by machambas and dense green, dirt road cutting through, early morning light, photorealistic, cinematic" },
+    { "id": "aldeia-04-caminho-tarde", "theme": "aldeia", "mood": ["calma", "contemplativo"], "prompt": "Quiet dirt path between village huts in late afternoon, chickens walking, capulanas drying on lines, warm light, photorealistic, cinematic, 35mm film" },
+
+    { "id": "gente-paisagem-01-lavadeira", "theme": "gente-paisagem", "mood": ["calma", "conexao"], "prompt": "Mozambican woman washing clothes at riverbank at dawn, reflections in water, mist rising, warm first light, photorealistic, cinematic, 35mm film" },
+    { "id": "gente-paisagem-02-pescador-por", "theme": "gente-paisagem", "mood": ["solidao", "poderoso"], "prompt": "Silhouette of single Mozambican fisherman with long pole wading into Indian Ocean at sunset, backlit, photorealistic, cinematic, 35mm film" },
+    { "id": "gente-paisagem-03-rio-rapaz", "theme": "gente-paisagem", "mood": ["libertacao", "vital"], "prompt": "Mozambican boy swimming in river surrounded by dense tropical vegetation, ripples on water, golden afternoon light filtering through leaves, photorealistic, cinematic" },
+    { "id": "gente-paisagem-04-pastor-savana", "theme": "gente-paisagem", "mood": ["vasto", "contemplativo"], "prompt": "Mozambican herder with small goat herd walking through tall savanna grass, baobá trees distant, late afternoon light, photorealistic, cinematic, documentary style" },
+
+    { "id": "retrato-01-anciana-capulana", "theme": "retrato", "mood": ["ancestral", "poderoso"], "prompt": "Close-up portrait of elderly Mozambican woman with weathered skin and deep lines, traditional capulana headwrap, soft natural window light, direct gaze, photorealistic, cinematic, 35mm film" },
+    { "id": "retrato-02-menino-poeira", "theme": "retrato", "mood": ["esperanca", "vital"], "prompt": "Close-up of young Mozambican boy face with bright eyes and small smile, red dust on cheek, late afternoon light, shallow depth of field, photorealistic, cinematic" },
+    { "id": "retrato-03-tamborista", "theme": "retrato", "mood": ["catartico", "poderoso"], "prompt": "Portrait of Mozambican drummer mid-performance, sweat on forehead, firelight on features, motion blur around face suggesting rhythm, photorealistic, cinematic, 35mm film" },
+    { "id": "retrato-04-pescador-alva", "theme": "retrato", "mood": ["contemplativo", "solidao"], "prompt": "Close-up portrait of Mozambican fisherman at dawn, weathered face, salt on skin, mist behind, shallow depth of field, photorealistic, cinematic, 35mm film" }
+  ]
+}
