@@ -60,8 +60,8 @@ export function renderSlideHtml({ slide, deck, accent }) {
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Serif+Display&family=Nunito:wght@400;600;700&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 1920px; height: 1080px; background: #0d0d0d; color: #f0ece6; font-family: 'Nunito', sans-serif; }
-  .stage { position: relative; width: 1920px; height: 1080px; background: #0d0d0d; overflow: hidden; }
+  html, body { width: 1920px; height: 1080px; background: #141428; color: #f0ece6; font-family: 'Cormorant Garamond', Georgia, serif; }
+  .stage { position: relative; width: 1920px; height: 1080px; background: #141428; overflow: hidden; }
   .acto-label {
     position: absolute;
     left: 6%;
@@ -114,46 +114,34 @@ export function renderSlideHtml({ slide, deck, accent }) {
     font-family: 'Nunito', sans-serif;
   }
   .conteudo-wrap { width: 100%; }
-  .acto-pergunta {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-style: italic;
-    font-size: 60px;
-    font-weight: 500;
-    line-height: 1.35;
-  }
-  .acto-pergunta.long { font-size: 48px; }
-  .acto-pergunta.vlong { font-size: 40px; }
-  .acto-situacao {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 42px;
-    font-weight: 400;
-    line-height: 1.55;
-  }
-  .acto-situacao.long { font-size: 36px; }
-  .acto-situacao.vlong { font-size: 30px; }
-  .acto-revelacao {
-    font-family: 'DM Serif Display', Georgia, serif;
-    font-size: 50px;
-    font-weight: 400;
-    line-height: 1.4;
-  }
-  .acto-revelacao.long { font-size: 42px; }
-  .acto-revelacao.vlong { font-size: 36px; }
+  /* Tipografia ÚNICA em todos os actos de conteúdo. A diferenciação fica
+     no label (I · PERGUNTA, II · SITUAÇÃO…) e na cor de acento.
+     Pergunta usa italic. Frase final usa fonte e tamanho maiores. */
+  .acto-pergunta,
+  .acto-situacao,
+  .acto-revelacao,
   .acto-gesto {
-    font-family: 'Nunito', sans-serif;
-    font-size: 38px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 56px;
     font-weight: 400;
-    line-height: 1.7;
+    line-height: 1.5;
+    text-align: center;
   }
-  .acto-gesto.long { font-size: 32px; }
-  .acto-gesto.vlong { font-size: 28px; }
+  .acto-pergunta { font-style: italic; }
+  .acto-pergunta.long, .acto-situacao.long, .acto-revelacao.long, .acto-gesto.long {
+    font-size: 48px;
+  }
+  .acto-pergunta.vlong, .acto-situacao.vlong, .acto-revelacao.vlong, .acto-gesto.vlong {
+    font-size: 42px;
+  }
   .acto-frase {
     font-family: 'DM Serif Display', Georgia, serif;
     font-size: 86px;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.3;
+    text-align: center;
   }
-  .acto-frase.long { font-size: 66px; }
+  .acto-frase.long { font-size: 70px; }
   .end-title {
     font-family: 'DM Serif Display', Georgia, serif;
     font-size: 80px;
@@ -177,6 +165,18 @@ export function renderSlideHtml({ slide, deck, accent }) {
     font-family: 'Nunito', sans-serif;
     opacity: 0.6;
   }
+  /* Marca da Escola dos Véus, canto inferior direito. Mesma cor do acento
+     do curso, opacidade reduzida — assinatura, não distração. */
+  .escola-mark {
+    position: absolute;
+    right: 6%;
+    bottom: 6%;
+    font-size: 18px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    font-family: 'Nunito', sans-serif;
+    opacity: 0.55;
+  }
 </style>
 </head>
 <body>
@@ -184,6 +184,9 @@ export function renderSlideHtml({ slide, deck, accent }) {
     ${actoLabel}
     <div class="body-center">${body}</div>
     ${footer ? `<div class="footer">${esc(footer)}</div>` : ""}
+    ${slide.tipo !== "title" && slide.tipo !== "end" && slide.tipo !== "fecho"
+      ? `<div class="escola-mark" style="color:${accent}">Escola dos Véus</div>`
+      : ""}
   </div>
 </body>
 </html>`;

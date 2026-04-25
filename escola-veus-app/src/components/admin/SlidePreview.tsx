@@ -132,12 +132,13 @@ export function SlidePreview({
             : "relative mx-auto aspect-video w-full max-w-[1280px] overflow-hidden rounded-lg border border-escola-border"
         }
       >
-        {/* Stage 1920x1080 em container responsive */}
+        {/* Stage 1920x1080. Fundo = roxo escuro da Escola (#141428), comum
+            a todos os cursos. A variação por curso vive só no `accent`. */}
         <div
           key={index}
           className="relative h-full w-full overflow-hidden"
           style={{
-            backgroundColor: "#0d0d0d",
+            backgroundColor: "#141428",
             color: "#f0ece6",
             animation: "escolaSlideIn 0.9s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
@@ -153,6 +154,22 @@ export function SlidePreview({
               }}
             >
               {slide.romano} · {slide.label}
+            </div>
+          )}
+
+          {/* Marca da Escola — assinatura discreta no canto inferior direito.
+              Aparece em todos os slides de conteúdo (não no title/end/fecho). */}
+          {slide.tipo !== "title" && slide.tipo !== "end" && slide.tipo !== "fecho" && (
+            <div
+              className="absolute right-[6%] bottom-[6%] text-[10px] uppercase"
+              style={{
+                color: accent,
+                opacity: 0.55,
+                letterSpacing: "4px",
+                fontFamily: '"Nunito", sans-serif',
+              }}
+            >
+              Escola dos Véus
             </div>
           )}
 
@@ -207,7 +224,7 @@ export function SlidePreview({
             )}
 
             {slide.tipo === "conteudo" && (
-              <div className={slide.acto === "frase" ? "text-center" : "text-left"} style={{ maxWidth: "80%" }}>
+              <div className="text-center" style={{ maxWidth: "78%" }}>
                 <p
                   style={contentStyleFor(slide.acto, slide.texto.length)}
                   className="whitespace-pre-line"
@@ -365,50 +382,31 @@ export function SlidePreview({
 }
 
 function contentStyleFor(acto: string, charCount: number): React.CSSProperties {
-  // Escalar tipografia com a quantidade de texto — blocos longos baixam o
-  // font-size para não transbordar. Pergunta e frase mantêm mais presença.
-  const scale = charCount > 280 ? 0.78 : charCount > 200 ? 0.88 : 1;
-  switch (acto) {
-    case "pergunta":
-      return {
-        fontFamily: '"Cormorant Garamond", Georgia, serif',
-        fontStyle: "italic",
-        fontSize: `clamp(${20 * scale}px, ${3 * scale}vw, ${36 * scale}px)`,
-        fontWeight: 500,
-        lineHeight: 1.35,
-        textAlign: "center",
-      };
-    case "situacao":
-      return {
-        fontFamily: '"Cormorant Garamond", Georgia, serif',
-        fontSize: `clamp(${16 * scale}px, ${2 * scale}vw, ${26 * scale}px)`,
-        fontWeight: 400,
-        lineHeight: 1.55,
-      };
-    case "revelacao":
-      return {
-        fontFamily: '"DM Serif Display", Georgia, serif',
-        fontSize: `clamp(${18 * scale}px, ${2.3 * scale}vw, ${30 * scale}px)`,
-        fontWeight: 400,
-        lineHeight: 1.4,
-        textAlign: "center",
-      };
-    case "gesto":
-      return {
-        fontFamily: '"Nunito", sans-serif',
-        fontSize: `clamp(${15 * scale}px, ${1.8 * scale}vw, ${24 * scale}px)`,
-        fontWeight: 400,
-        lineHeight: 1.7,
-      };
-    case "frase":
-      return {
-        fontFamily: '"DM Serif Display", Georgia, serif',
-        fontSize: `clamp(${26 * scale}px, ${4 * scale}vw, ${52 * scale}px)`,
-        fontWeight: 400,
-        lineHeight: 1.25,
-        textAlign: "center",
-      };
-    default:
-      return {};
+  // UMA tipografia única para todos os actos — coesão visual de curso a
+  // curso. A diferenciação entre actos faz-se pelo label (I·PERGUNTA…) e
+  // pela cor de acento. Não pelo tamanho da letra.
+  //
+  // Pergunta usa italic (é pergunta, tem inclinação). Frase final usa um
+  // tamanho maior (é o monumento). Tudo o resto: mesmo tamanho regular.
+  const scale = charCount > 280 ? 0.85 : charCount > 200 ? 0.92 : 1;
+  const baseFont = '"Cormorant Garamond", Georgia, serif';
+
+  if (acto === "frase") {
+    return {
+      fontFamily: '"DM Serif Display", Georgia, serif',
+      fontSize: `clamp(${26 * scale}px, ${3.6 * scale}vw, ${48 * scale}px)`,
+      fontWeight: 400,
+      lineHeight: 1.3,
+      textAlign: "center",
+    };
   }
+
+  return {
+    fontFamily: baseFont,
+    fontStyle: acto === "pergunta" ? "italic" : "normal",
+    fontSize: `clamp(${18 * scale}px, ${2.2 * scale}vw, ${30 * scale}px)`,
+    fontWeight: 400,
+    lineHeight: 1.5,
+    textAlign: "center",
+  };
 }

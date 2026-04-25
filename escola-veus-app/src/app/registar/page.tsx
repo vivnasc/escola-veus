@@ -131,7 +131,7 @@ export default function RegistarPage() {
             disabled={loading || !email || !password}
             className="w-full py-3 rounded-xl bg-escola-dourado text-escola-bg font-medium text-sm hover:bg-escola-dourado-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "A criar..." : "Criar conta"}
+            {loading ? "A criar…" : "Criar conta"}
           </button>
         </form>
 
