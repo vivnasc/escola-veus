@@ -3743,4 +3743,280 @@ Quiet
 Is the loudest thing
 She's ever done`,
 
+  "nua-inteira/7": `[Verse 1]
+O espelho de manhã é o primeiro juiz
+Antes do café já dei o veredicto
+Olheiras, peso, cabelo, pele
+O inventário é sempre o mesmo — e sempre estrito
+
+[Verse 2]
+Aos vinte media a cintura com fita
+Aos trinta media o valor pela roupa
+Aos quarenta olho para o espelho
+E pergunto: quando é que isto poupa — quando é que pára
+
+[Pre-Chorus]
+O espelho não mente
+Mas eu minto ao espelho
+Vejo defeito onde há vida
+Vejo falha onde há trajecto
+
+[Chorus]
+Espelho, espelho de manhã
+Que queres de mim tão cedo
+Espelho, espelho sem piedade
+Ainda estou a aprender a ver sem medo
+Não a perfeição que nunca tive
+Não a versão que me venderam
+Mas a mulher real que está aqui
+Com as marcas que a vida lhe deram
+
+[Verse 3]
+A minha filha olha para mim a vestir
+E diz mãe, estás bonita
+Ela não vê as olheiras
+Ela vê a mãe inteira — e isso basta, e isso grita
+
+[Chorus]
+Espelho, espelho de manhã
+Ainda estou a aprender a ver sem medo
+A mulher real que está aqui
+Com as marcas que a vida lhe deram
+
+[Bridge]
+Um dia vou olhar para o espelho
+E ver o que a minha filha vê
+Não o peso, não a ruga
+Mas a mulher que se pôs de pé
+Todos os dias, todos os anos
+Com sono, com dor, com pressa
+E mesmo assim escolheu vestir-se
+E enfrentar o dia com a cara impressa
+De quem não desistiu
+
+[Chorus]
+Espelho, espelho sem piedade
+A mulher real que está aqui
+É mais do que o reflexo
+É mais
+
+[Outro]
+O espelho mostra uma versão
+A minha filha mostra outra
+E eu escolho
+Aos poucos
+Acreditar
+Na versão dela`,
+
+  "nua-inteira/8": `[Verse 1]
+He rearranges my plans like furniture
+Moves things around to make them fit
+His version of me is slightly edited
+A little softer, a better lit
+
+[Verse 2]
+He says it's love, he says he cares
+He says he only wants the best
+But the best looks a lot like his idea
+And my idea needs a rest — apparently
+
+[Pre-Chorus]
+There's a line between love and renovation
+Between holding and rearranging the shelf
+The moment you start fixing someone
+You're saying they're not enough — as themselves
+
+[Chorus]
+Don't fix me, don't fix me
+I am not a project or a plan
+Don't fix me, don't fix me
+Love me like a woman, not a brand
+I don't need a better version
+I don't need a softer edge
+Don't fix me is the kindest thing
+A woman says from the ledge
+Of a love that almost worked
+Until the fixing began
+
+[Verse 3]
+I love him and I know he loves me
+But love that edits isn't love that sees
+It's love that squints, that crops, that tilts
+Until the picture is a different woman — with my keys
+
+[Chorus]
+Don't fix me, don't fix me
+Love me like a woman, not a brand
+Don't fix me is the kindest thing
+A woman says
+
+[Bridge]
+I don't want a man who tolerates
+The parts of me that spill
+I want a man who sees the mess
+And says — I love you, and I will
+Not change a single thing about
+The way you fill the room
+Don't fix me is not rejection
+Don't fix me is — make room
+
+[Chorus]
+Don't fix me, don't fix me
+I am not a project or a plan
+Love me whole
+Or don't love me at all
+
+[Outro]
+Don't fix me
+See me
+All of me
+The loud
+The much
+The difficult
+And stay
+Without
+A screwdriver`,
+
+  "nua-inteira/9": `[Verse 1]
+Estas mãos fizeram almoço e relatórios
+No mesmo dia, na mesma hora
+Estas mãos assinaram contratos
+E limparam vómito no chão da escola
+
+[Verse 2]
+Estas mãos trançaram cabelo
+Enquanto respondiam a um email
+Estas mãos seguraram um filho a chorar
+E digitaram uma password sem falhar no detalhe
+
+[Pre-Chorus]
+Mãos de mãe não descansam
+Quando descansam estão a planear
+O próximo prato, o próximo abraço
+A próxima crise para resolver e reparar
+
+[Chorus]
+Mãos de mãe, mãos de mãe
+Fazem tudo ao mesmo tempo
+Mãos de mãe, mãos de mãe
+E ninguém pára para ver o invento
+De segurar dez vidas numa palma
+De costurar o dia sem agulha
+Mãos de mãe são a máquina
+Que nenhuma fábrica orgulha
+
+[Verse 3]
+À noite as mãos finalmente param
+Poisam no colo como dois pássaros
+Com as unhas partidas e os dedos secos
+E o cansaço escrito em todos os traços
+
+[Chorus]
+Mãos de mãe, mãos de mãe
+E ninguém pára para ver o invento
+Mãos de mãe são a máquina
+Que nenhuma fábrica orgulha
+
+[Bridge]
+A minha mãe tinha mãos assim
+Partidas de trabalho e de cuidado
+Nunca lhe disse que eram bonitas
+Nunca lhe disse que eram o meu lado
+Seguro do mundo, a minha âncora
+Hoje as minhas mãos são iguais
+E a minha filha também não sabe
+Que um dia vai olhar para as suas e ver — as minhas, as da avó, e as de trás
+
+[Chorus]
+Mãos de mãe, mãos de mãe
+Fazem tudo ao mesmo tempo
+E ninguém pára
+Ninguém pára
+
+[Outro]
+Estas mãos
+Partidas
+Secas
+Cansadas
+São as mãos
+Mais bonitas
+Que eu tenho
+E ninguém
+Me disse`,
+
+  "nua-inteira/10": `[Verse 1]
+Sou a que trabalha e a que chora no carro
+Sou a que ri alto e a que duvida em silêncio
+Sou a que organiza dez vidas
+E esquece de si no processo
+
+[Verse 2]
+Sou a do espelho difícil de manhã
+E a que dança na cozinha à noite
+Sou a que sangra e vai trabalhar
+E a que ama sem pedir um acoite
+
+[Pre-Chorus]
+Disseram-me para ser menos
+Disseram-me para ser mais
+Disseram-me para ser outra
+Disseram-me tantos sinais
+Que me perdi entre as versões
+Que o mundo pedia de mim
+
+[Chorus]
+Inteira — é assim que estou
+Não perfeita, não arrumada
+Inteira com as contradições
+Com a força e com a derrapada
+Inteira com o cansaço e a fé
+Com a ruga e com a gargalhada
+Inteira é a única forma
+De não ser nada — de ser tudo
+
+[Verse 3]
+Sou mãe de três que não se repetem
+Sou mulher de um que ainda aprende
+Sou filha de uma terra vermelha
+E profissional que se defende
+
+[Chorus]
+Inteira — é assim que estou
+Com a força e com a derrapada
+Inteira é a única forma
+De não ser nada — de ser tudo
+
+[Bridge]
+Não vou pedir desculpa
+Por ocupar espaço
+Por ter opinião, por ter cansaço
+Por rir demais, por chorar sem aviso
+Não vou pedir licença
+Para existir no meu tamanho
+Inteira é a resposta
+A todas as vezes que me disseram
+Que eu era demais
+Sou — e era isso que eu devia ser
+
+[Chorus]
+Inteira — é assim que estou
+Não perfeita, não arrumada
+Inteira com o cansaço e a fé
+Inteira é a única forma
+De ser tudo ao mesmo tempo
+E ser suficiente
+
+[Outro]
+Inteira
+Com tudo
+Com nada
+Com isto
+Que sou
+Sem filtro
+Sem corte
+Sem desculpa
+Inteira
+Finalmente
+Inteira`,
+
 };
