@@ -4019,4 +4019,333 @@ Inteira
 Finalmente
 Inteira`,
 
+  // ─────────────────────────────────────────────
+  // BOA — A mulher que se permite estar bem
+  // ─────────────────────────────────────────────
+
+  "nua-boa/1": `[Verse 1]
+Hoje não tenho queixa
+O café saiu quente, a torrada no ponto
+A pequena dormiu a noite inteira
+E eu acordei sem o peso do mundo no rosto
+
+[Verse 2]
+A roupa que vesti serve
+O cabelo obedeceu sem luta
+O trânsito até foi manso
+E a manhã tem sabor a fruta
+
+[Pre-Chorus]
+Não aconteceu nada de especial
+Não ganhei nada, não resolvi nada
+Mas tudo está no sítio certo
+E eu estou aqui — descansada
+
+[Chorus]
+Hoje está bom, hoje está bom
+Não preciso de mais do que isto
+Hoje está bom, hoje está bom
+E não vou estragar com a lista
+Do que falta, do que falha, do que vem
+Hoje o dia é só o que é
+Está bom — e eu estou bem
+E não preciso de porquê
+
+[Verse 3]
+O sol entrou pela janela do escritório
+E parei só para olhar
+Não por inspiração nem por poesia
+Só porque o sol estava ali — a dar
+
+[Chorus]
+Hoje está bom, hoje está bom
+E não vou estragar com a lista
+Está bom — e eu estou bem
+E não preciso de porquê
+
+[Bridge]
+Amanhã pode ser difícil
+Ontem sei que foi
+Mas hoje está bom
+E eu vou ficar aqui
+Neste bom
+Sem culpa de não estar a sofrer
+Sem medo de que acabe
+Só aqui — a ser
+
+[Chorus]
+Hoje está bom, hoje está bom
+Não preciso de mais do que isto
+Hoje está bom
+
+[Outro]
+Bom
+Só bom
+Sem mais
+Sem menos
+Bom
+E chega`,
+
+  "nua-boa/2": `[Verse 1]
+The playlist is on shuffle
+The rice is on the stove
+The baby's on my hip
+And we're in our own little cove
+
+[Verse 2]
+She grabs my ear for balance
+I spin her and she screams
+The kitchen smells like garlic
+And everything she dreams — is right here
+
+[Pre-Chorus]
+No one is watching
+No one needs to see
+The best dancing in the world
+Happens between the fridge and me
+
+[Chorus]
+Kitchen dancing, kitchen dancing
+Barefoot on the tiles with a baby on my hip
+Kitchen dancing, kitchen dancing
+The sauce is burning but I'll deal with it
+This is the joy they never photograph
+The happiness that has no frame
+Kitchen dancing is the richest thing
+And it doesn't even have a name
+
+[Verse 3]
+The older ones walk in and roll their eyes
+Then slowly start to sway
+The kitchen gets too small for four
+And that's the best part of the day
+
+[Chorus]
+Kitchen dancing, kitchen dancing
+The sauce is burning but I'll deal with it
+Kitchen dancing is the richest thing
+And it doesn't even have a name
+
+[Bridge]
+My mother danced like this
+With me where she is now
+The same hip, the same spin
+The same unwritten vow
+That the kitchen is the church
+And the music is the prayer
+And the child who learns to dance here
+Will dance anywhere
+
+[Chorus]
+Kitchen dancing, kitchen dancing
+Barefoot on the tiles
+Kitchen dancing is the richest thing
+That doesn't have a name
+
+[Outro]
+The sauce burned
+Nobody cared
+We danced
+Until the rice
+Was ready
+And then
+We danced
+A little more`,
+
+  "nua-boa/3": `[Verse 1]
+Passei pelo espelho sem parar
+Mas voltei atrás — porquê não sei
+Olhei sem a lista dos defeitos
+E pela primeira vez não me julguei
+
+[Verse 2]
+O cabelo está como está
+A pele mostra o que mostra
+Mas hoje vi qualquer coisa
+Que normalmente fica à porta
+
+[Pre-Chorus]
+Não sei explicar o que mudou
+Não perdi peso, não dormi mais
+Só hoje o espelho mostrou
+A versão que os meus filhos vêem — e nada mais
+
+[Chorus]
+Gosto de mim, gosto de mim
+Hoje — sem razão, sem motivo
+Gosto de mim, gosto de mim
+Não da versão perfeita que persigo
+Mas desta, a de agora
+A que está aqui, com esta cara
+Gosto de mim é a frase mais difícil
+E hoje saiu — rara, clara
+
+[Verse 3]
+Vesti a saia que estava no fundo
+A que nunca ponho porque acho que não fica
+Hoje fica — ou talvez não
+Mas hoje não interessa a crítica
+
+[Chorus]
+Gosto de mim, gosto de mim
+Não da versão perfeita que persigo
+Gosto de mim é a frase mais difícil
+E hoje saiu — rara, clara
+
+[Bridge]
+Não sei se amanhã consigo
+Não sei se dura até à tarde
+Mas agora, neste segundo
+Não tenho pressa e não é tarde
+Para gostar do que vejo
+Sem condições, sem reforma
+Gosto de mim como estou
+Nesta exacta, imperfeita forma
+
+[Chorus]
+Gosto de mim, gosto de mim
+Hoje — sem razão, sem motivo
+Desta, a de agora
+E hoje chega
+
+[Outro]
+Gosto
+Hoje gosto
+Amanhã não sei
+Mas hoje
+Gosto
+E isso
+É tudo`,
+
+  "nua-boa/4": `[Verse 1]
+The coffee before anyone wakes
+Drunk standing up, both hands on the mug
+The heat through the ceramic
+Is the closest thing I get to a hug — at six AM
+
+[Verse 2]
+The shower five minutes longer
+When the house is finally quiet
+The hot water on the shoulders
+Is a holiday I buy in secret — every night
+
+[Pre-Chorus]
+Nobody sees these moments
+They don't make the highlight reel
+But they're the only reason
+Some days I remember how to feel
+
+[Chorus]
+Small luxury, small luxury
+The things that cost me nothing
+Small luxury, small luxury
+The silence and the something
+That lives between the chaos and the sleep
+The stolen minute at the door
+Small luxury is not a spa or trip
+Small luxury is the thing I live for
+
+[Verse 3]
+The chocolate after bedtime
+Eaten in the dark without a plate
+The book I'll never finish
+But the three pages are enough — they're great
+
+[Chorus]
+Small luxury, small luxury
+The things that cost me nothing
+Small luxury is not a spa or trip
+Small luxury is the thing I live for
+
+[Bridge]
+I used to think joy was an event
+A holiday, a gift, a plan
+But joy is the coffee standing up
+The shower, the chocolate, the contraband
+Of tiny pleasures hidden in a day
+That nobody designed for me
+Small luxury is the rebellion
+Of a woman making space — to breathe
+
+[Chorus]
+Small luxury, small luxury
+The silence and the something
+Small luxury is the thing I live for
+
+[Outro]
+The mug
+The water
+The chocolate
+The page
+Small things
+That save
+Whole days`,
+
+  "nua-boa/5": `[Verse 1]
+Sábado sem alarme
+Sábado sem agenda
+Ele levou os três ao parque
+E a casa é minha — sem emenda
+
+[Verse 2]
+Sento-me no sofá com as pernas cruzadas
+Ponho um programa que não interessa
+Não faço nada com as mãos
+E não sinto que estou em dívida — nem com pressa
+
+[Pre-Chorus]
+Não fazer nada é um verbo
+Que as mulheres não conjugam
+Há sempre algo por dobrar
+Há sempre culpas que se juntam
+
+[Chorus]
+Sábado, sábado
+O dia em que me dou licença
+Sábado, sábado
+De não ser útil, de não ter urgência
+De estar sentada sem motivo
+De respirar sem estar a treinar
+Sábado é o dia em que pratico
+A arte difícil de não me ocupar
+
+[Verse 3]
+Ouço a casa vazia
+Os ruídos que nunca ouço
+O frigorífico zumbe baixo
+E eu percebo que este é o meu poço
+De silêncio — e que estava cheio à espera
+
+[Chorus]
+Sábado, sábado
+De não ser útil, de não ter urgência
+Sábado é o dia em que pratico
+A arte difícil de não me ocupar
+
+[Bridge]
+Daqui a duas horas voltam
+Com areia nos sapatos e fome
+E a casa enche-se outra vez
+De barulho e de nome
+Mãe, mãe, mãe
+Mas por agora
+Sou só eu
+E o frigorífico
+E o sábado
+Que não me pede nada
+
+[Chorus]
+Sábado, sábado
+O dia em que me dou licença
+De respirar sem estar a treinar
+
+[Outro]
+Duas horas
+Sem ninguém
+Sem nada
+Com tudo
+O luxo
+Mais caro
+Que conheço`,
+
 };
