@@ -74,3 +74,12 @@ export function parseRaizTema(filename: string): RaizTema | null {
   }
   return null;
 }
+
+/** Tipo de cada entrada em ag-raizes-prompts.json — agora com motion. */
+export type RaizPromptEntry = {
+  id: string;
+  theme: RaizTema;
+  mood: string[];
+  prompt: string;
+  motion: string;
+};
