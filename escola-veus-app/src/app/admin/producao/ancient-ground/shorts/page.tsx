@@ -5,23 +5,23 @@ import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
 import {
-  CLIP_THEMES,
-  CLIP_THEME_LABELS,
-  parseClipTheme,
-  type ClipTheme,
-} from "@/components/admin/ClipUploader";
+  RAIZES_TEMAS,
+  RAIZES_TEMA_LABELS,
+  parseRaizTema,
+  type RaizTema,
+} from "@/lib/ag-raizes-temas";
 
-// Shorts AG — reaproveitam clips da biblioteca partilhada Loranne+AG (listados
-// via list-clips-ag), música do álbum ancient-ground (100 faixas) e 2 versos
-// próprios sobrepostos. O renderer (render-short-submit + workflow) é o mesmo
-// que os shorts Loranne, só muda o conteúdo do manifest.
+// Shorts AG — consomem da pool raízes (escola-shorts/ag-raizes-clips/{tema}/),
+// totalmente separada da paisagem Loranne. Música ainda do álbum ancient-ground
+// (100 faixas) e 2 versos próprios sobrepostos. O renderer (render-short-submit
+// + workflow) é o mesmo que os shorts Loranne, só muda o conteúdo do manifest.
 
 type AgClip = {
-  name: string;
+  name: string;     // filename sem extensão (compat — usado em UI/state)
+  filename: string; // filename completo com .mp4
   url: string;
-  thumbUrl?: string;
   createdAt: string | null;
-  theme: ClipTheme;
+  tema: RaizTema;
 };
 
 type SlotState = {
@@ -78,7 +78,7 @@ export default function AncientGroundShortsPage() {
   const [clips, setClips] = useState<AgClip[]>([]);
   const [loadingClips, setLoadingClips] = useState(false);
   const [clipQuery, setClipQuery] = useState("");
-  const [clipThemeFilter, setClipThemeFilter] = useState<ClipTheme | "all">("all");
+  const [clipThemeFilter, setClipThemeFilter] = useState<RaizTema | "all">("all");
 
   const [slots, setSlots] = useState<SlotState[]>(EMPTY_SLOTS);
   const [verse1, setVerse1] = useState("");
@@ -141,16 +141,26 @@ export default function AncientGroundShortsPage() {
     } catch { /* ignore */ }
   }, [slots, verse1, verse2, trackNumber, title]);
 
-  // Lista de clips da biblioteca Loranne+AG (mesma pool que Loranne usa).
+  // Lista de clips da pool raízes AG (separada da paisagem Loranne).
   useEffect(() => {
     setLoadingClips(true);
-    fetch("/api/admin/shorts/list-clips-ag")
+    fetch("/api/admin/ancient-ground/raizes-clips")
       .then((r) => r.json())
       .then((d) => {
-        const rows: AgClip[] = (d.clips || []).map((c: Omit<AgClip, "theme">) => ({
-          ...c,
-          theme: parseClipTheme(c.name),
-        }));
+        type ServerItem = { tema: string; filename: string; url: string; createdAt: string | null };
+        const rows: AgClip[] = (d.items || [])
+          .map((c: ServerItem) => {
+            const tema = parseRaizTema(c.filename);
+            if (!tema) return null;
+            return {
+              name: c.filename.replace(/\.[^.]+$/, ""),
+              filename: c.filename,
+              url: c.url,
+              createdAt: c.createdAt,
+              tema,
+            } as AgClip;
+          })
+          .filter((c: AgClip | null): c is AgClip => c !== null);
         setClips(rows);
       })
       .catch(() => setClips([]))
@@ -200,7 +210,7 @@ export default function AncientGroundShortsPage() {
 
   const filteredClips = (() => {
     const base = clips.filter((c) => {
-      if (clipThemeFilter !== "all" && c.theme !== clipThemeFilter) return false;
+      if (clipThemeFilter !== "all" && c.tema !== clipThemeFilter) return false;
       if (clipQuery.trim() && !c.name.toLowerCase().includes(clipQuery.toLowerCase())) return false;
       return true;
     });
@@ -208,7 +218,7 @@ export default function AncientGroundShortsPage() {
   })();
 
   const clipThemeCounts: Record<string, number> = {};
-  for (const c of clips) clipThemeCounts[c.theme] = (clipThemeCounts[c.theme] || 0) + 1;
+  for (const c of clips) clipThemeCounts[c.tema] = (clipThemeCounts[c.tema] || 0) + 1;
 
   const allClipsReady = slots.every((s) => s.clipUrl);
 
@@ -222,7 +232,7 @@ export default function AncientGroundShortsPage() {
     setSlots((prev) => prev.map((s, j) => (j === i ? { clipUrl: "", clipName: "" } : s)));
   };
 
-  // Suggest versos + captions via Claude. Usa as categorias dos 3 clips
+  // Suggest versos + captions via Claude. Usa os temas raízes dos 3 clips
   // escolhidos como contexto. Substitui verso1/verso2 pelos 2 primeiros
   // candidatos e preenche captions AI-tonal (freezes template).
   const runSuggest = async () => {
@@ -233,11 +243,16 @@ export default function AncientGroundShortsPage() {
     setSuggesting(true);
     setSuggestError(null);
     try {
-      const categorias = slots.map((s) => parseClipTheme(s.clipName));
+      const temas = slots
+        .map((s) => parseRaizTema(s.clipName))
+        .filter((t): t is RaizTema => t !== null);
+      if (temas.length === 0) {
+        throw new Error("Os clips escolhidos não têm tema raízes reconhecível.");
+      }
       const res = await fetch("/api/admin/shorts/suggest-ag", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ categorias, trackNumber }),
+        body: JSON.stringify({ temas, trackNumber }),
       });
       const data = await res.json();
       if (!res.ok || data.erro) {
@@ -369,17 +384,17 @@ export default function AncientGroundShortsPage() {
       {/* 1. CLIPS */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          1. Escolhe 3 clips da biblioteca motion
+          1. Escolhe 3 clips raízes
         </h3>
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs text-escola-creme-50">
-            Clips de paisagem partilhados com Loranne. Reaproveitamos sem pagar créditos novos.
+            Clips humano-culturais Moçambique. Pool exclusiva AG (escola-shorts/ag-raizes-clips).
           </p>
           <Link
-            href="/admin/producao/clips-paisagem"
+            href="/admin/producao/ancient-ground/raizes"
             className="text-[10px] text-escola-coral hover:text-escola-coral/80"
           >
-            → Upload / gerir clips
+            → Gerar / animar / upload em Raízes
           </Link>
         </div>
         <div className="mb-3 flex flex-wrap gap-1">
@@ -393,7 +408,7 @@ export default function AncientGroundShortsPage() {
           >
             Todos ({clips.length})
           </button>
-          {CLIP_THEMES.map((t) => {
+          {RAIZES_TEMAS.map((t) => {
             const n = clipThemeCounts[t] || 0;
             if (n === 0) return null;
             const active = clipThemeFilter === t;
@@ -407,7 +422,7 @@ export default function AncientGroundShortsPage() {
                     : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
                 }`}
               >
-                {CLIP_THEME_LABELS[t]} ({n})
+                {RAIZES_TEMA_LABELS[t]} ({n})
               </button>
             );
           })}
@@ -471,12 +486,11 @@ export default function AncientGroundShortsPage() {
                   >
                     <video
                       src={c.url}
-                      poster={c.thumbUrl}
                       className="h-full w-full object-cover"
                       muted
                     />
                     <span className="pointer-events-none absolute left-1 top-1 rounded bg-black/70 px-1 text-[9px] font-semibold text-escola-dourado">
-                      {CLIP_THEME_LABELS[c.theme]}
+                      {RAIZES_TEMA_LABELS[c.tema]}
                     </span>
                   </button>
                 );
@@ -486,7 +500,7 @@ export default function AncientGroundShortsPage() {
               <p className="text-xs text-escola-creme-50">Nenhum clip encontrado.</p>
             )}
             <p className="mt-2 text-xs text-escola-creme-50">
-              {clips.length} clips em biblioteca · a mostrar {filteredClips.length}
+              {clips.length} clips raízes · a mostrar {filteredClips.length}
             </p>
           </>
         )}
@@ -515,7 +529,7 @@ export default function AncientGroundShortsPage() {
         </div>
         <p className="mb-2 text-xs text-escola-creme-50">
           A 1ª frase aparece na 1ª metade (0–15s), a 2ª na 2ª metade (15–30s).
-          O sugestor usa a filosofia AG + categorias dos clips escolhidos.
+          O sugestor usa a filosofia AG + temas raízes dos clips escolhidos.
         </p>
         {suggestError && (
           <div className="mb-3 rounded bg-red-950/50 p-2 text-xs text-red-300">

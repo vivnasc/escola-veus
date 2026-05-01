@@ -8,11 +8,11 @@ import {
   AG_CAPTION_RULES,
 } from "@/lib/ag-tom";
 import {
-  CATEGORIA_LABELS,
-  CATEGORIA_DESCRICOES,
-  type CategoriaPaisagem,
-  CATEGORIAS_PAISAGEM,
-} from "@/lib/paisagem-categorias";
+  RAIZES_TEMAS,
+  RAIZES_TEMA_LABELS,
+  RAIZES_TEMA_DESCRICOES,
+  type RaizTema,
+} from "@/lib/ag-raizes-temas";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -22,10 +22,13 @@ export const maxDuration = 60;
  *
  * Sugere versos para overlays Ancient Ground + captions TikTok/YouTube,
  * alinhados com a filosofia AG (centralidade africana, elementos como
- * sujeitos, ubuntu) e as categorias dos clips escolhidos.
+ * sujeitos, ubuntu) e os TEMAS RAÍZES dos clips escolhidos (machamba,
+ * pesca, batuque, ancião, transmissão…).
+ *
+ * Total separação de Loranne (paisagem) — esta rota só sabe de raízes.
  *
  * Body: {
- *   categorias: string[]  // ex ["mar","mar","flora"] — uma por clip (geralmente 3)
+ *   temas: string[]       // ex ["batuque","machamba","crianca"] — um por clip
  *   trackNumber?: number  // faixa AG (1-100), contexto opcional
  * }
  *
@@ -33,7 +36,7 @@ export const maxDuration = 60;
  *   versos: string[]               // 8 candidatos
  *   tiktokCaption: string          // ≤150 chars
  *   youtubeTitle: string           // ≤70 chars, termina em #Shorts
- *   youtubeDescription: string     // hook + corpo + créditos + hashtags
+ *   youtubeDescription: string
  *   usage?: { input, output, cached }
  * }
  *
@@ -68,7 +71,8 @@ ${AG_REGRAS_TONAIS}
 
 Cada entrada abaixo é um overlay já validado pela autora do projecto.
 Extrai o padrão destes 30 versos. Não os copies — gera novos respeitando
-o mesmo ADN (inversão, tempo profundo, elementos como sujeitos, ubuntu).
+o mesmo ADN (inversão, tempo profundo, elementos como sujeitos, ubuntu,
+parentesco, vocabulário da terra).
 
 ${seedBlock}
 
@@ -85,12 +89,11 @@ Responde APENAS com JSON válido conforme o schema pedido. Sem preâmbulo,
 sem markdown fences, sem explicações.`;
 }
 
-function buildUserMessage(categorias: string[], trackNumber: number | null): string {
-  const categoriaInfo = categorias
-    .map((cat, i) => {
-      const c = cat as CategoriaPaisagem;
-      const label = CATEGORIA_LABELS[c] || cat;
-      const desc = CATEGORIA_DESCRICOES[c] || "";
+function buildUserMessage(temas: RaizTema[], trackNumber: number | null): string {
+  const temaInfo = temas
+    .map((tema, i) => {
+      const label = RAIZES_TEMA_LABELS[tema] || tema;
+      const desc = RAIZES_TEMA_DESCRICOES[tema] || "";
       return `- Clip ${i + 1}: ${label} — ${desc}`;
     })
     .join("\n");
@@ -99,24 +102,29 @@ function buildUserMessage(categorias: string[], trackNumber: number | null): str
     ? `\nFaixa AG escolhida: faixa-${String(trackNumber).padStart(2, "0")} (música ambient original).`
     : "";
 
-  return `Categorias dos clips escolhidos para este short:
-${categoriaInfo}${trackContext}
+  return `Temas raízes dos clips escolhidos para este short:
+${temaInfo}${trackContext}
+
+Os clips são imagens humano-culturais de Moçambique animadas: pessoas em
+trabalho, ritual, cuidado, ritmo, transmissão. Os versos têm de ressoar com
+estes temas — directamente (a enxada, o tambor, a avó, o fogo) ou
+obliquamente (o que a mão sabe, o que o ritmo lembra, o que o silêncio
+guarda entre uma e outra geração).
 
 Gera:
 
 1. **8 versos candidatos** para overlay. Cada um segue as 5 regras tonais.
-   Devem ressoar com as categorias listadas — directamente (fala do mar, do
-   fogo, da raiz) ou obliquamente (o que o mar lembra, o que a folha sabe).
    Varia a estrutura: algumas de 1 linha, algumas de 2 linhas. Usa inversão
-   ("não X, Y"), tempo profundo ("antes de X, já Y"), parentesco (elementos
-   como sujeitos vivos).
+   ("não X, Y"), tempo profundo ("antes de X, já Y"), parentesco
+   (elementos/gestos como sujeitos vivos), e — onde fizer sentido — figura
+   humana ancestral (mãos, avó, antepassados, voz, tambor).
 
 2. **tiktokCaption** (≤150 chars): usa o verso mais forte como 1ª linha
    (hook), \\n\\n, depois 5-6 hashtags. Prioriza #Shorts, #AncientGround,
    #AfricanNature, #Mozambique, #NaturePoetry, #AmbientMusic.
 
-3. **youtubeTitle** (≤70 chars): hook curto seguido de " #Shorts". Se o verso
-   for longo demais, encurta mantendo o impacto.
+3. **youtubeTitle** (≤70 chars): hook curto seguido de " #Shorts". Se o
+   verso for longo demais, encurta mantendo o impacto.
 
 4. **youtubeDescription** (≤2000 chars): 1ª linha = hook (verso 1 — aparece
    no preview). Linha em branco. Verso 2. Linha em branco. Texto sobre a
@@ -132,22 +140,35 @@ function clamp(s: string, max: number): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { categorias, trackNumber } = (await req.json()) as {
+    const body = (await req.json()) as {
+      temas?: string[];
+      // backwards-compat com chamadas antigas durante a migração
       categorias?: string[];
       trackNumber?: number;
     };
+    const inputTemas = body.temas ?? body.categorias;
 
-    if (!Array.isArray(categorias) || categorias.length === 0) {
+    if (!Array.isArray(inputTemas) || inputTemas.length === 0) {
       return NextResponse.json(
-        { erro: "categorias[] obrigatório (uma por clip)." },
+        { erro: "temas[] obrigatório (uma por clip raízes)." },
         { status: 400 },
       );
     }
 
-    // Sanitiza categorias — qualquer desconhecida vira "outro"
-    const cleanCategorias = categorias.map((c) =>
-      (CATEGORIAS_PAISAGEM as readonly string[]).includes(c) ? c : "outro",
+    // Aceita só temas raízes válidos. Desconhecidos são descartados; se ficar
+    // a lista vazia, devolve erro claro (em vez de gerar com contexto inútil).
+    const cleanTemas = inputTemas.filter((t): t is RaizTema =>
+      (RAIZES_TEMAS as readonly string[]).includes(t),
     );
+    if (cleanTemas.length === 0) {
+      return NextResponse.json(
+        {
+          erro:
+            "Nenhum tema raízes reconhecido. Os clips devem ter prefixo de tema (ex: batuque-01.mp4).",
+        },
+        { status: 400 },
+      );
+    }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -168,8 +189,8 @@ export async function POST(req: NextRequest) {
     ];
 
     const userMessage = buildUserMessage(
-      cleanCategorias,
-      typeof trackNumber === "number" ? trackNumber : null,
+      cleanTemas,
+      typeof body.trackNumber === "number" ? body.trackNumber : null,
     );
 
     const response = await client.messages.create({
@@ -220,7 +241,6 @@ export async function POST(req: NextRequest) {
       throw new Error("Claude devolveu lista de versos vazia.");
     }
 
-    // Enforcement server-side dos limites de caracteres (não confio na LLM)
     const tiktokCaption = clamp(
       typeof parsed.tiktokCaption === "string" ? parsed.tiktokCaption : "",
       AG_CAPTION_RULES.tiktokMaxChars,
