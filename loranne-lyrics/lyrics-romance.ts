@@ -4682,4 +4682,335 @@ E hoje
 É o único dia
 Que existe`,
 
+  // ─────────────────────────────────────────────
+  // POR DENTRO — O que ninguém vê quando olha
+  // para uma mulher forte
+  // ─────────────────────────────────────────────
+
+  "nua-por-dentro/1": `[Verse 1]
+Dizem que sou forte
+Como se fosse elogio
+Forte como quem diz: não precisas de ajuda
+Forte como quem fecha o abrigo
+
+[Verse 2]
+Forte quando o dinheiro não chega
+Forte quando o filho não dorme
+Forte quando ninguém pergunta como estou
+Porque forte não adoece — forte é enorme
+
+[Pre-Chorus]
+A palavra forte é um cadeado
+Que tranca a porta por fora
+Ninguém entra para ver o que há dentro
+Porque forte não precisa — forte aguenta, forte demora
+
+[Chorus]
+Forte, forte, forte
+Já estou farta desta palavra
+Forte é o nome que dão
+A quem não tem quem a salva
+Forte é o prémio de consolação
+De quem carrega tudo sozinha
+Forte é a forma mais bonita
+De dizer: não temos mais nada para ti, menina
+
+[Verse 3]
+Queria ser fraca um dia
+Fraca sem consequência
+Deitar-me no chão da cozinha
+E que alguém tratasse da minha existência
+
+[Chorus]
+Forte, forte, forte
+Forte é o prémio de consolação
+Forte é a forma mais bonita
+De dizer: não temos mais nada para ti
+
+[Bridge]
+A minha mãe era forte
+A mãe dela era forte
+E a mãe da mãe dela era forte
+E nenhuma delas escolheu ser
+Foram fortes porque não havia outra opção
+Porque fraca era morrer
+E forte era o único verbo
+Que o mundo lhes deixou ter
+
+[Chorus]
+Forte, forte, forte
+Já estou farta desta palavra
+Queria que alguém me dissesse
+Não precisas de ser forte hoje
+Hoje eu seguro
+
+[Outro]
+Forte
+É a palavra mais pesada
+Que já me deram
+E ninguém percebe
+Que é um peso
+Não é um elogio`,
+
+  "nua-por-dentro/2": `[Verse 1]
+Three AM and the house is still
+Every breath accounted for
+The children sleep like small warm stones
+And I am wide awake on the floor — of my mind
+
+[Verse 2]
+The ceiling holds no answers
+But I ask it anyway
+Did I do enough today
+Did I say the right thing, the right way
+
+[Pre-Chorus]
+Three AM is when the armour falls
+When the woman behind the woman appears
+She doesn't have a plan
+She doesn't have it together
+She just has the dark — and the fears
+
+[Chorus]
+Three AM, three AM
+The hour that belongs to doubt
+Three AM, three AM
+When everything I held comes out
+The questions I don't ask at noon
+The panic I don't show at nine
+Three AM is the only hour
+That knows this version of mine
+
+[Verse 3]
+Am I a good enough mother
+Am I a good enough wife
+Am I building something real
+Or just surviving this life
+
+[Chorus]
+Three AM, three AM
+The hour that belongs to doubt
+The questions I don't ask at noon
+Three AM is the only hour
+That knows this version of mine
+
+[Bridge]
+By six I'll have the answers back
+The armour zipped, the smile in place
+By seven no one will suspect
+That three AM happened on my face
+But it did — every night it does
+The woman at three is just as real
+As the woman at eight who drops the kids
+And pretends she doesn't feel
+
+[Chorus]
+Three AM, three AM
+When everything I held comes out
+That knows this version of mine
+
+[Outro]
+Three AM
+The truest hour
+The loneliest hour
+The hour
+That knows
+My name`,
+
+  "nua-por-dentro/3": `[Verse 1]
+Mãe como estás — nunca
+Mulher como estás — às vezes
+Amiga como estás — quando sobra tempo
+E o tempo nunca sobra nestes meses
+
+[Verse 2]
+Perguntam-me o que é o jantar
+Perguntam-me onde está a chave
+Perguntam-me se já paguei a conta
+Mas ninguém me pergunta se estou suave
+
+[Pre-Chorus]
+Não é queixa, é inventário
+De um dia normal de uma mulher normal
+Que responde a tudo e a todos
+E no fim não tem a quem contar o final
+
+[Chorus]
+Ninguém pergunta, ninguém pergunta
+Como é que eu estou
+Ninguém pergunta, ninguém pergunta
+Se ainda me resta o que sobrou
+De mim, depois de dar a todos
+Depois de resolver e sustentar
+Ninguém pergunta porque assumem
+Que eu nunca preciso de alguém me perguntar
+
+[Verse 3]
+Ontem chorei no duche
+Não por tristeza, por acumulação
+Chorei porque o duche é o único sítio
+Onde a água se confunde com a emoção
+
+[Chorus]
+Ninguém pergunta, ninguém pergunta
+Se ainda me resta o que sobrou
+Ninguém pergunta porque assumem
+Que eu nunca preciso
+
+[Bridge]
+Se eu adoecer quem é que trata
+Se eu parar quem é que faz
+Se eu não estiver quem é que lembra
+O dentista, a vacina, o gás
+Ninguém sabe a resposta
+Porque ninguém pensou na pergunta
+E a pergunta mais simples de todas
+É a que ninguém me junta: como estás
+
+[Chorus]
+Ninguém pergunta, ninguém pergunta
+Como é que eu estou
+E eu continuo
+Sem que ninguém pergunte
+
+[Outro]
+Como estás
+São duas palavras
+Duas
+E ninguém
+As diz
+Na minha direcção`,
+
+  "nua-por-dentro/4": `[Verse 1]
+It happened in the supermarket
+Between the bread and the frozen peas
+My hands started shaking on the trolley
+And my legs forgot they had knees
+
+[Verse 2]
+Not a dramatic scene, no sirens
+Just a woman standing very still
+In aisle four with wet eyes
+And a thousand things she cannot spill — not here
+
+[Pre-Chorus]
+Cracking is not the same as breaking
+Cracking is how the light gets in
+The woman who cracks in the supermarket
+Is not weak — she's wearing thin
+
+[Chorus]
+Cracked open, cracked open
+Not broken, not destroyed
+Cracked open, cracked open
+Just the armour finally void
+The strong woman doesn't shatter
+She cracks — slowly, quietly, alone
+In a supermarket, in a car park
+On the phone in an empty zone
+
+[Verse 3]
+I left the trolley in the aisle
+Walked to the car and sat inside
+Didn't cry, didn't scream
+Just breathed — and let the crack get wide
+
+[Chorus]
+Cracked open, cracked open
+The strong woman doesn't shatter
+She cracks — slowly, quietly, alone
+
+[Bridge]
+What came out of the crack surprised me
+Not sadness, not defeat
+Just a tiredness so old and deep
+It had its own heartbeat
+And underneath the tiredness
+A question I'd been hiding since fifteen
+Who takes care of the woman
+Who takes care of everything
+
+[Chorus]
+Cracked open, cracked open
+Not broken, not destroyed
+Just the armour finally void
+And a question underneath:
+Who takes care of me
+
+[Outro]
+The crack
+Stays open now
+I don't fix it
+I let it breathe
+Because the light
+That comes through
+Is mine`,
+
+  "nua-por-dentro/5": `[Verse 1]
+Não é um peso que se veja
+Não é um saco, não é uma caixa
+É um peso que mora nos ombros
+Como se os ombros nunca tivessem folga, nunca tivessem baixa
+
+[Verse 2]
+É o peso de antecipar tudo
+De pensar três passos à frente
+De saber que se eu não pensar
+Ninguém pensa — e alguém se ressente
+
+[Pre-Chorus]
+O peso invisível não tem forma
+Não tem nome, não tem cor
+Mas à noite quando deito a cabeça
+Sinto cada grama como se fosse dor
+
+[Chorus]
+Peso invisível, peso invisível
+Que ninguém reconhece nem nomeia
+Peso invisível, peso invisível
+A gravidade de quem segura a cadeia
+Inteira, elo por elo
+Sem deixar cair nenhum
+Peso invisível é o peso
+Que só uma mulher sabe — e que não é nenhum
+
+[Verse 3]
+Ele olha para mim e diz
+Estás tensa, relaxa um bocado
+E eu queria explicar o peso
+Mas o peso é tão invisível
+Que nem eu sei onde está guardado
+
+[Chorus]
+Peso invisível, peso invisível
+Que ninguém reconhece nem nomeia
+A gravidade de quem segura a cadeia
+Sem deixar cair nenhum
+
+[Bridge]
+Se eu poisasse o peso na mesa
+E dissesse: olha, é isto que carrego
+As pessoas veriam uma montanha
+De preocupações que não partilho nem entrego
+A consulta, a reunião, o lanche
+A roupa que não serve, o sapato apertado
+O trabalho de casa, a birra da pequena
+E o sorriso que dou quando estou esgotada
+
+[Chorus]
+Peso invisível, peso invisível
+Que só uma mulher sabe
+E que não é nenhum
+É todos ao mesmo tempo
+
+[Outro]
+Invisível
+Mas está aqui
+Nos ombros
+No maxilar
+Na forma como durmo
+Sempre
+Sempre
+A carregar`,
+
 };
