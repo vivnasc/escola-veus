@@ -45,6 +45,8 @@ const FPS = 30;
 const TRANSITION = 0.5; // segundos
 const RESPIRACAO = 1.0; // pausa após voz
 const MUSICA_VOL = MUSICA_VOLUME;
+// Duração fixa por slide quando não há voz (modo "só música")
+const SLIDE_DURATION_NO_VOICE = parseFloat(process.env.SLIDE_DURATION || "8");
 
 async function ensureDir(dir) {
   if (!existsSync(dir)) await mkdir(dir, { recursive: true });
@@ -66,17 +68,26 @@ async function audioDuration(file) {
 // usamos H.264 + AAC e depois concat por filtros.
 async function renderSegmento(png, mp3, outFile, duracao) {
   return new Promise((resolve, reject) => {
-    ffmpeg()
+    const cmd = ffmpeg()
       .input(png)
-      .inputOptions(["-loop 1", "-framerate", String(FPS)])
-      .input(mp3)
-      // adiciona silêncio no final do mp3 para igualar `duracao`
-      .complexFilter([
-        // pad video
+      .inputOptions(["-loop 1", "-framerate", String(FPS)]);
+    if (mp3) {
+      cmd.input(mp3);
+      cmd.complexFilter([
         `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},format=yuv420p,fps=${FPS}[v]`,
-        // pad audio com silêncio até `duracao`
         `[1:a]apad=whole_dur=${duracao.toFixed(3)}[a]`,
-      ])
+      ]);
+    } else {
+      // sem voz: gera silêncio do tamanho do slide para o áudio do segmento
+      // existir (concat com acrossfade precisa de áudio em todos os inputs)
+      cmd.input("anullsrc=channel_layout=stereo:sample_rate=44100");
+      cmd.inputOptions(["-f", "lavfi"]);
+      cmd.complexFilter([
+        `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},format=yuv420p,fps=${FPS}[v]`,
+        `[1:a]atrim=duration=${duracao.toFixed(3)},asetpts=PTS-STARTPTS[a]`,
+      ]);
+    }
+    cmd
       .outputOptions([
         "-map [v]",
         "-map [a]",
@@ -192,15 +203,21 @@ async function processarDia(dia) {
     const mp3 = path.join(AUDIOS_DIR, `dia-${dia.numero}`, `slide-${slideNum}.mp3`);
 
     if (!existsSync(png)) throw new Error(`falta PNG: ${png}`);
-    if (!existsSync(mp3)) throw new Error(`falta MP3: ${mp3}`);
 
-    const dVoz = await audioDuration(mp3);
-    const dSlide = dVoz + RESPIRACAO;
+    const temVoz = existsSync(mp3);
+    let dSlide;
+    if (temVoz) {
+      const dVoz = await audioDuration(mp3);
+      dSlide = dVoz + RESPIRACAO;
+      process.stdout.write(`  · slide ${slideNum} (voz ${dVoz.toFixed(1)}s + ${RESPIRACAO}s)… `);
+    } else {
+      dSlide = (globalThis.__SLIDE_DURATION_OVERRIDE) ?? SLIDE_DURATION_NO_VOICE;
+      process.stdout.write(`  · slide ${slideNum} (sem voz, ${dSlide}s)… `);
+    }
     duracoes.push(dSlide);
 
     const seg = path.join(TMP_DIR, `dia-${dia.numero}-seg-${slideNum}.mp4`);
-    process.stdout.write(`  · slide ${slideNum} (voz ${dVoz.toFixed(1)}s + ${RESPIRACAO}s)… `);
-    await renderSegmento(png, mp3, seg, dSlide);
+    await renderSegmento(png, temVoz ? mp3 : null, seg, dSlide);
     segmentos.push(seg);
     console.log("ok");
   }
@@ -239,7 +256,15 @@ async function downloadAudiosFromManifest() {
   const res = await fetch(MANIFEST_URL);
   if (!res.ok) throw new Error(`Manifest fetch falhou ${res.status}`);
   const manifest = await res.json();
-  if (!Array.isArray(manifest.audios)) throw new Error("manifest.audios[] em falta");
+
+  if (manifest.withoutVoice) {
+    console.log(`→ modo "sem voz" — slides ${manifest.slideDuration ?? SLIDE_DURATION_NO_VOICE}s cada`);
+    return manifest;
+  }
+
+  if (!Array.isArray(manifest.audios) || manifest.audios.length === 0) {
+    throw new Error("manifest.audios[] em falta (e withoutVoice falso)");
+  }
 
   console.log(`→ a descarregar ${manifest.audios.length} áudios`);
   for (const a of manifest.audios) {
@@ -264,6 +289,11 @@ async function main() {
   // Manifest tem precedência: se passado, descarrega áudios + define música.
   const manifest = await downloadAudiosFromManifest();
   await downloadMusicIfNeeded(manifest?.musicUrl);
+
+  // Permite manifest override do slide-duration (modo sem voz)
+  if (manifest?.withoutVoice && typeof manifest.slideDuration === "number") {
+    globalThis.__SLIDE_DURATION_OVERRIDE = manifest.slideDuration;
+  }
 
   if (!existsSync(MUSICA)) {
     console.log(`! musica.mp3 não encontrada em ${ROOT} — vídeos sairão só com voz.`);

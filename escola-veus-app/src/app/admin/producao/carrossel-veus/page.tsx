@@ -60,6 +60,8 @@ export default function CarrosselVeusPage() {
   // ─── Vídeo ──────────────────────────────────────────
   const [musicTrack, setMusicTrack] = useState<number>(1);
   const [musicVolume, setMusicVolume] = useState<number>(0.4);
+  const [withoutVoice, setWithoutVoice] = useState<boolean>(false);
+  const [slideDuration, setSlideDuration] = useState<number>(8);
   const [previewDia, setPreviewDia] = useState<number | null>(null);
   const [renderJob, setRenderJob] = useState<RenderStatus | null>(null);
   const [workflowUrl, setWorkflowUrl] = useState<string | null>(null);
@@ -167,27 +169,33 @@ export default function CarrosselVeusPage() {
 
   // ─── Submit render final ──────────────────────────
   async function submitRender() {
-    if (!allAudiosReady) {
-      alert("Faltam áudios. Gera as 42 vozes primeiro.");
+    if (!withoutVoice && !allAudiosReady) {
+      alert("Faltam áudios. Gera as 42 vozes primeiro, ou marca \"sem voz\".");
       return;
     }
     setBusy("submit-render");
     try {
-      const audiosList = DIAS.flatMap((dia) =>
-        dia.slides.map((_, i) => ({
-          dia: dia.numero,
-          slide: i + 1,
-          url: audios[audioKey(dia.numero, i + 1)]!.url!,
-        }))
-      );
+      const currentJobId = jobId || `carrossel-veus-${Date.now()}`;
+      if (!jobId) setJobId(currentJobId);
+      const audiosList = withoutVoice
+        ? []
+        : DIAS.flatMap((dia) =>
+            dia.slides.map((_, i) => ({
+              dia: dia.numero,
+              slide: i + 1,
+              url: audios[audioKey(dia.numero, i + 1)]!.url!,
+            }))
+          );
       const r = await fetch("/api/admin/carrossel-veus/render-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          jobId,
+          jobId: currentJobId,
           audios: audiosList,
           musicUrl: agTrackUrl(musicTrack),
           musicVolume,
+          withoutVoice,
+          slideDuration,
         }),
       });
       const data = await r.json();
@@ -430,9 +438,25 @@ export default function CarrosselVeusPage() {
       <section className="rounded-lg border border-escola-border bg-escola-card p-5">
         <h3 className="mb-2 font-serif text-lg text-escola-creme">3. Vídeos finais (MP4)</h3>
         <p className="mb-4 text-xs text-escola-creme-50">
-          7 MP4 verticais ~60s cada. Renderizados numa GitHub Action (~15-25 min) com a
-          voz que já tens + música Ancient Ground por baixo.
+          7 MP4 verticais. Renderizados numa GitHub Action (~10-25 min) com música
+          Ancient Ground por baixo. Por defeito usa a voz já gerada; podes optar
+          por <em>sem voz</em> (vídeo só com música, slides com duração fixa).
         </p>
+
+        <label className="mb-4 flex cursor-pointer items-center gap-3 rounded border border-escola-border bg-escola-bg p-3">
+          <input
+            type="checkbox"
+            checked={withoutVoice}
+            onChange={(e) => setWithoutVoice(e.target.checked)}
+            className="h-4 w-4"
+          />
+          <div>
+            <p className="text-sm text-escola-creme">Sem voz — vídeo só com música</p>
+            <p className="text-xs text-escola-creme-50">
+              Não precisa das 42 narrações. Cada slide aparece durante a duração fixa em baixo.
+            </p>
+          </div>
+        </label>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <label className="block text-xs text-escola-creme-50">
@@ -458,20 +482,41 @@ export default function CarrosselVeusPage() {
               className="mt-2 w-full"
             />
           </label>
-          <div className="flex items-end">
-            <button
-              onClick={submitRender}
-              disabled={
-                !allAudiosReady ||
-                busy === "submit-render" ||
-                (renderJob !== null && renderJob.status !== "done" && renderJob.status !== "failed")
-              }
-              className="w-full rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
-              title={!allAudiosReady ? "Gera as 42 vozes primeiro" : ""}
-            >
-              {busy === "submit-render" ? "A submeter…" : "▶ Gerar vídeos"}
-            </button>
-          </div>
+          {withoutVoice ? (
+            <label className="block text-xs text-escola-creme-50">
+              Duração por slide ({slideDuration}s)
+              <input
+                type="range"
+                min={3}
+                max={20}
+                step={1}
+                value={slideDuration}
+                onChange={(e) => setSlideDuration(Number(e.target.value))}
+                className="mt-2 w-full"
+              />
+            </label>
+          ) : (
+            <div />
+          )}
+        </div>
+
+        <div className="mt-4">
+          <button
+            onClick={submitRender}
+            disabled={
+              (!withoutVoice && !allAudiosReady) ||
+              busy === "submit-render" ||
+              (renderJob !== null && renderJob.status !== "done" && renderJob.status !== "failed")
+            }
+            className="w-full rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40 sm:w-auto"
+            title={!withoutVoice && !allAudiosReady ? "Gera as 42 vozes primeiro, ou marca sem voz" : ""}
+          >
+            {busy === "submit-render"
+              ? "A submeter…"
+              : withoutVoice
+              ? "▶ Gerar vídeos (sem voz)"
+              : "▶ Gerar vídeos com voz"}
+          </button>
         </div>
 
         {renderJob && (

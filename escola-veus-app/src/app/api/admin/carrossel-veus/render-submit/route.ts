@@ -27,21 +27,28 @@ export async function POST(req: NextRequest) {
     audios?: Array<{ dia: number; slide: number; url: string }>;
     musicUrl?: string;
     musicVolume?: number;
+    withoutVoice?: boolean;
+    slideDuration?: number;
   };
 
   const jobId = (body.jobId || "").trim();
   if (!jobId) {
     return NextResponse.json({ erro: "jobId obrigatório" }, { status: 400 });
   }
-  if (!Array.isArray(body.audios) || body.audios.length !== 42) {
+
+  const withoutVoice = !!body.withoutVoice;
+  const audios = Array.isArray(body.audios) ? body.audios : [];
+
+  if (!withoutVoice && audios.length !== 42) {
     return NextResponse.json(
-      { erro: `audios[] tem de ter 42 entradas (recebi ${body.audios?.length ?? 0})` },
+      { erro: `audios[] tem de ter 42 entradas (recebi ${audios.length}). Ou marca "sem voz".` },
       { status: 400 }
     );
   }
 
   const musicUrl = (body.musicUrl || "").trim();
   const musicVolume = clamp(Number(body.musicVolume ?? 0.4), 0, 1);
+  const slideDuration = clamp(Number(body.slideDuration ?? 8), 3, 20);
 
   const admin = createSupabaseAdminClient();
   if (!admin) {
@@ -54,9 +61,11 @@ export async function POST(req: NextRequest) {
   // Manifest: lido pelo workflow para saber quais áudios descarregar
   const manifest = {
     jobId,
-    audios: body.audios,
+    audios,
     musicUrl: musicUrl || null,
     musicVolume,
+    withoutVoice,
+    slideDuration,
     createdAt: new Date().toISOString(),
   };
   const manifestPath = `render-jobs/${jobId}.json`;
