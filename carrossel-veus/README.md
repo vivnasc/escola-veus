@@ -1,6 +1,6 @@
 # Carrossel "A Estação dos Véus"
 
-Gerador de **42 slides verticais** (1080×1920, exportados a 2160×3840 com `deviceScaleFactor: 2`) para publicar como **status diário do WhatsApp** durante a estação fria em Maputo. 7 dias × 6 slides, um véu por dia.
+Gerador de **42 slides verticais** (1080×1920) + **7 vídeos verticais com voz e música** (~60s cada, prontos para status do WhatsApp) durante a estação fria em Maputo. 7 dias × 6 slides, um véu por dia.
 
 > Projecto **independente** dos outros sub-repos (Escola dos Véus, etc.). Vive isolado em `carrossel-veus/`.
 
@@ -9,34 +9,61 @@ Gerador de **42 slides verticais** (1080×1920, exportados a 2160×3840 com `dev
 ```
 carrossel-veus/
 ├── package.json
-├── generate.js       # script Puppeteer
-├── template.html     # HTML do slide (lê window.SLIDE_DATA)
-├── styles.css        # paleta + tipografia + layouts (capa / conteúdo / cta)
-├── content.json      # os 42 slides (7 dias × 6)
-├── README.md         # este ficheiro
-└── output/           # gerado pelo script
-    ├── index.html    # grelha 7×6 para revisão
-    ├── dia-1/
-    │   └── veu-1-slide-{1..6}.png
-    └── dia-2/ ... dia-7/
+├── generate.js          # PNGs (Puppeteer)
+├── gerar-vozes.mjs      # MP3s de narração (ElevenLabs TTS)
+├── montar-videos.mjs    # MP4s = PNG + voz + música (ffmpeg)
+├── template.html        # HTML do slide (lê window.SLIDE_DATA)
+├── styles.css           # paleta + tipografia + layouts
+├── content.json         # os 42 slides (7 dias × 6)
+├── musica.mp3           # OPCIONAL — música de fundo (ex.: Ancient Ground)
+├── README.md
+├── audios/              # gerado por gerar-vozes.mjs
+│   └── dia-{1..7}/slide-{1..6}.mp3
+└── output/              # gerado por generate.js + montar-videos.mjs
+    ├── index.html
+    ├── dia-{1..7}/veu-{n}-slide-{1..6}.png
+    └── videos/dia-{1..7}.mp4
 ```
 
 ## Pré-requisitos
 
 - Node.js ≥ 20
-- Acesso à internet na primeira execução (Google Fonts + download do Chromium do Puppeteer)
+- `ELEVENLABS_API_KEY` no env (para narração)
+- Acesso à internet na primeira execução (Google Fonts, Chromium do Puppeteer, binário ffmpeg estático)
+- (opcional) `musica.mp3` na raiz do `carrossel-veus/` — sem ela, os vídeos saem só com voz
 
 ## Uso
 
 ```bash
 cd carrossel-veus
 npm install
-npm run generate
+
+# 1) Slides PNG
+npm run slides
+
+# 2) Narração (precisa ELEVENLABS_API_KEY)
+ELEVENLABS_API_KEY=sk-... npm run vozes
+
+# 3) Vídeos MP4 (mistura PNG + voz + música)
+npm run videos
+
+# Tudo de uma vez:
+ELEVENLABS_API_KEY=sk-... npm run all
 ```
 
-No fim, abre `output/index.html` no browser para ver a grelha 7×6 e revisar.
+Cada slide dura **o tempo da narração + 1s de respiração**. Cross-dissolve de 0.5s entre slides. Música de fundo a -18 dB com fade in/out.
 
-Para regenerar depois de editar `content.json`, basta correr `npm run generate` outra vez (o output é apagado e recriado).
+Para correr só alguns dias: `node montar-videos.mjs 1 3 5`.
+
+No fim, abre `output/index.html` para a grelha 7×6 dos PNGs, e os MP4s ficam em `output/videos/`.
+
+Para regenerar depois de editar `content.json`: corre `npm run all` outra vez (output e áudios são apagados e recriados).
+
+## Voz
+
+- Voz por defeito: `JGnWZj684pcXmK2SxYIv` (voz dos Véus, ElevenLabs `eleven_multilingual_v2`).
+- Para usar outra voz: `ELEVENLABS_VOICE_ID=...` no env.
+- Texto narrado é derivado automaticamente de cada slide (capa: nome do véu + linhas; conteúdo: texto; CTA: recurso + descrição). Para sobrepor, adiciona `"narracao": "texto a falar"` ao slide em `content.json`.
 
 ## Identidade visual
 

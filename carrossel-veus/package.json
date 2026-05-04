@@ -5,9 +5,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "generate": "node generate.js"
+    "slides": "node generate.js",
+    "vozes": "node gerar-vozes.mjs",
+    "videos": "node montar-videos.mjs",
+    "all": "npm run slides && npm run vozes && npm run videos"
   },
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "fluent-ffmpeg": "^2.1.3",
     "puppeteer": "^23.0.0"
   },
   "engines": {

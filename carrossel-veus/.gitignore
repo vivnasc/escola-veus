@@ -1,4 +1,6 @@
 node_modules/
 output/
+audios/
+musica.mp3
 *.log
 .DS_Store
