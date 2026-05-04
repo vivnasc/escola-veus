@@ -1,0 +1,66 @@
+name: Render Carrossel Véus
+
+# Disparado por /api/admin/carrossel-veus/render-submit. Gera os 7 vídeos
+# verticais com voz + música (Ancient Ground) e faz upload para Supabase.
+
+on:
+  workflow_dispatch:
+    inputs:
+      jobId:
+        description: "ID único do job (escreve em course-assets/render-jobs/<jobId>-result.json)"
+        required: true
+        type: string
+      musicUrl:
+        description: "URL pública da faixa de música (Supabase Storage)"
+        required: false
+        type: string
+        default: ""
+      musicVolume:
+        description: "Volume da música (0-1, default 0.4)"
+        required: false
+        type: string
+        default: "0.4"
+
+run-name: "render-carrossel-veus: ${{ inputs.jobId }}"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies (carrossel-veus)
+        working-directory: carrossel-veus
+        run: npm ci
+
+      - name: Generate slides (PNG)
+        working-directory: carrossel-veus
+        run: npm run slides
+
+      - name: Generate voices (ElevenLabs)
+        working-directory: carrossel-veus
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
+        run: npm run vozes
+
+      - name: Render videos (ffmpeg + music)
+        working-directory: carrossel-veus
+        env:
+          MUSIC_URL: ${{ inputs.musicUrl }}
+          MUSIC_VOLUME: ${{ inputs.musicVolume }}
+        run: npm run videos
+
+      - name: Upload result to Supabase
+        env:
+          JOB_ID: ${{ inputs.jobId }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node tools/render-carrossel-veus/upload-result.mjs

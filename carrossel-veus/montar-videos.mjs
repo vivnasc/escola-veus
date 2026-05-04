@@ -9,8 +9,10 @@
 //   node montar-videos.mjs           # processa todos os dias
 //   node montar-videos.mjs 1 3 5     # só os dias 1, 3 e 5
 
-import { readFile, mkdir, rm, stat } from "node:fs/promises";
-import { existsSync } from "node:fs";
+import { readFile, writeFile, mkdir, rm, stat } from "node:fs/promises";
+import { existsSync, createWriteStream } from "node:fs";
+import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import ffmpegInstaller from "@ffmpeg-installer/ffmpeg";
@@ -27,12 +29,18 @@ const VIDEOS_DIR = path.join(ROOT, "output", "videos");
 const TMP_DIR = path.join(ROOT, "output", ".tmp");
 const MUSICA = path.join(ROOT, "musica.mp3");
 
+// Permite passar uma URL pública de música via env (ex.: faixa Ancient Ground
+// no Supabase). Quando definida, baixa para musica.mp3 antes de processar.
+const MUSIC_URL = process.env.MUSIC_URL;
+// Volume da música por baixo da voz. Default 0.4 (voz é o foco).
+const MUSICA_VOLUME = parseFloat(process.env.MUSIC_VOLUME || "0.4");
+
 const W = 1080;
 const H = 1920;
 const FPS = 30;
 const TRANSITION = 0.5; // segundos
 const RESPIRACAO = 1.0; // pausa após voz
-const MUSICA_VOL = 0.13; // ~ -18 dB
+const MUSICA_VOL = MUSICA_VOLUME;
 
 async function ensureDir(dir) {
   if (!existsSync(dir)) await mkdir(dir, { recursive: true });
@@ -206,15 +214,32 @@ async function processarDia(dia) {
   console.log(`✓ dia-${dia.numero}.mp4 (${tamanho.toFixed(1)} MB, ${total.toFixed(1)}s)`);
 }
 
+async function downloadMusicIfNeeded() {
+  if (!MUSIC_URL) return;
+  if (existsSync(MUSICA)) {
+    console.log(`→ musica.mp3 já existe, mantém (apaga para forçar download de MUSIC_URL)`);
+    return;
+  }
+  console.log(`→ a descarregar música: ${MUSIC_URL}`);
+  const res = await fetch(MUSIC_URL);
+  if (!res.ok) throw new Error(`Download música falhou ${res.status} ${MUSIC_URL}`);
+  await pipeline(Readable.fromWeb(res.body), createWriteStream(MUSICA));
+  const tam = (await stat(MUSICA)).size / 1024 / 1024;
+  console.log(`  ✓ musica.mp3 (${tam.toFixed(2)} MB)`);
+}
+
 async function main() {
   const content = JSON.parse(await readFile(CONTENT, "utf8"));
   const arg = process.argv.slice(2).map(Number).filter((n) => !isNaN(n));
   const dias = arg.length ? content.dias.filter((d) => arg.includes(d.numero)) : content.dias;
 
   await ensureDir(VIDEOS_DIR);
+  await downloadMusicIfNeeded();
 
   if (!existsSync(MUSICA)) {
     console.log(`! musica.mp3 não encontrada em ${ROOT} — vídeos sairão só com voz.`);
+  } else {
+    console.log(`→ música a ${MUSICA_VOL.toFixed(2)} de volume`);
   }
 
   for (const dia of dias) {
