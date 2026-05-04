@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
     musicVolume?: number;
     withoutVoice?: boolean;
     slideDuration?: number;
+    dias?: number[] | null; // se presente: só estes dias (ex: [3]); senão: todos
   };
 
   const jobId = (body.jobId || "").trim();
@@ -39,11 +40,25 @@ export async function POST(req: NextRequest) {
   const withoutVoice = !!body.withoutVoice;
   const audios = Array.isArray(body.audios) ? body.audios : [];
 
-  if (!withoutVoice && audios.length !== 42) {
-    return NextResponse.json(
-      { erro: `audios[] tem de ter 42 entradas (recebi ${audios.length}). Ou marca "sem voz".` },
-      { status: 400 }
-    );
+  // dias: lista de dias (1-7) a renderizar. Se omitido, todos os 7.
+  const diasFiltrados = Array.isArray(body.dias) && body.dias.length > 0
+    ? body.dias.filter((n) => Number.isFinite(n) && n >= 1 && n <= 7)
+    : null;
+
+  // Quando há voz, esperamos um áudio por slide dos dias pedidos (6 por dia).
+  // Se dias=null (todos), tem de haver 42. Se dias=[3], tem de haver 6 desse dia.
+  if (!withoutVoice) {
+    const expectedDias = diasFiltrados ?? [1, 2, 3, 4, 5, 6, 7];
+    const expectedCount = expectedDias.length * 6;
+    const presentForExpected = audios.filter((a) => expectedDias.includes(a.dia)).length;
+    if (presentForExpected !== expectedCount) {
+      return NextResponse.json(
+        {
+          erro: `audios[] esperava ${expectedCount} entradas (6 × ${expectedDias.length} dia(s)); recebi ${presentForExpected}. Ou marca "sem voz".`,
+        },
+        { status: 400 }
+      );
+    }
   }
 
   const musicUrl = (body.musicUrl || "").trim();
@@ -66,6 +81,7 @@ export async function POST(req: NextRequest) {
     musicVolume,
     withoutVoice,
     slideDuration,
+    dias: diasFiltrados, // null = todos
     createdAt: new Date().toISOString(),
   };
   const manifestPath = `render-jobs/${jobId}.json`;
@@ -126,7 +142,13 @@ export async function POST(req: NextRequest) {
       "X-GitHub-Api-Version": "2022-11-28",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ ref, inputs: { jobId } }),
+    body: JSON.stringify({
+      ref,
+      inputs: {
+        jobId,
+        dias: diasFiltrados ? diasFiltrados.join(" ") : "",
+      },
+    }),
   });
   if (!ghRes.ok) {
     const errText = await ghRes.text();
