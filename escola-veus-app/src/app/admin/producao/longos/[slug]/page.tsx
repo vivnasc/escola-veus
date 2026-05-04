@@ -19,7 +19,14 @@ type LongoProject = {
   thumbnailText: string;
   capitulos: { titulo: string; ancora: string }[];
   script: string;
-  prompts: { id: string; category: string; mood: string[]; prompt: string }[];
+  prompts: {
+    id: string;
+    category: string;
+    mood: string[];
+    prompt: string;
+    clipUrl?: string;
+    clipDurationSec?: number;
+  }[];
   promptCount: number;
   wordCount: number;
   narrationUrl?: string;
@@ -97,10 +104,22 @@ export default function LongoDetailPage() {
   // dirty antes de Gerar narração.
   const [scriptDraft, setScriptDraft] = useState("");
   const [promptsDraft, setPromptsDraft] = useState<
-    { id: string; category: string; mood: string[]; prompt: string }[]
+    {
+      id: string;
+      category: string;
+      mood: string[];
+      prompt: string;
+      clipUrl?: string;
+      clipDurationSec?: number;
+    }[]
   >([]);
   const [scriptDirty, setScriptDirty] = useState(false);
   const [promptsDirty, setPromptsDirty] = useState(false);
+
+  // Per-prompt clip upload status. Key = promptId.
+  const [clipUpload, setClipUpload] = useState<
+    Record<string, { stage: "signing" | "uploading" | "finalizing"; progress: number }>
+  >({});
 
   // ── Voice / model: persistência localStorage (mesma UX do /audios) ───
   const [voiceId, setVoiceId] = useState<string>("JGnWZj684pcXmK2SxYIv");
@@ -338,6 +357,138 @@ export default function LongoDetailPage() {
       );
     } finally {
       setNarrating(false);
+    }
+  };
+
+  // ── Upload de clip MJ Video por cena ─────────────────────────────────
+  // Workflow: pede signed URL → PUT directo Supabase (bypass 4.5MB Vercel
+  // body limit; clips MJ extend ~10-30MB) → finalize-clip patcha o projecto.
+  const uploadClipForPrompt = async (promptId: string, file: File) => {
+    if (!project) return;
+    if (!file.type.startsWith("video/") && !/\.(mp4|mov|webm|m4v)$/i.test(file.name)) {
+      setInfo(`Erro: ${file.name} não é vídeo`);
+      return;
+    }
+    if (file.size > 200 * 1024 * 1024) {
+      setInfo(`Erro: ${file.name} > 200MB (limite Supabase)`);
+      return;
+    }
+
+    setClipUpload((prev) => ({
+      ...prev,
+      [promptId]: { stage: "signing", progress: 0 },
+    }));
+
+    try {
+      // 1. Signed URL
+      const signRes = await fetch("/api/admin/longos/upload-clip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug, promptId }),
+      });
+      const sign = await signRes.json();
+      if (!signRes.ok || sign.erro || !sign.clipUploadUrl) {
+        throw new Error(sign.erro || `Sign HTTP ${signRes.status}`);
+      }
+
+      // 2. PUT directo
+      setClipUpload((prev) => ({
+        ...prev,
+        [promptId]: { stage: "uploading", progress: 0 },
+      }));
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("PUT", sign.clipUploadUrl);
+        xhr.setRequestHeader("Content-Type", file.type || "video/mp4");
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            setClipUpload((prev) => ({
+              ...prev,
+              [promptId]: { stage: "uploading", progress: pct },
+            }));
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) resolve();
+          else reject(new Error(`Upload ${xhr.status}: ${xhr.responseText.slice(0, 200)}`));
+        };
+        xhr.onerror = () => reject(new Error("Upload network error"));
+        xhr.send(file);
+      });
+
+      // 3. Tentar extrair duração do video local (best-effort)
+      let durationSec: number | undefined;
+      try {
+        const url = URL.createObjectURL(file);
+        const v = document.createElement("video");
+        v.preload = "metadata";
+        v.src = url;
+        await new Promise<void>((resolve, reject) => {
+          v.addEventListener("loadedmetadata", () => resolve(), { once: true });
+          v.addEventListener("error", () => reject(new Error("metadata")), { once: true });
+        });
+        if (Number.isFinite(v.duration)) durationSec = v.duration;
+        URL.revokeObjectURL(url);
+      } catch {
+        /* duração desconhecida — não bloqueia */
+      }
+
+      // 4. Finalize: patch projecto
+      setClipUpload((prev) => ({
+        ...prev,
+        [promptId]: { stage: "finalizing", progress: 100 },
+      }));
+      const finRes = await fetch("/api/admin/longos/finalize-clip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: project.slug,
+          promptId,
+          clipUrl: `${sign.clipUrl}?t=${Date.now()}`,
+          clipDurationSec: durationSec,
+        }),
+      });
+      const fin = await finRes.json();
+      if (!finRes.ok || fin.erro) {
+        throw new Error(fin.erro || `Finalize HTTP ${finRes.status}`);
+      }
+
+      // 5. Reload local state
+      setClipUpload((prev) => {
+        const next = { ...prev };
+        delete next[promptId];
+        return next;
+      });
+      await load();
+      setInfo(`✓ Clip ${promptId} carregado`);
+      setTimeout(() => setInfo(null), 2000);
+    } catch (e) {
+      setClipUpload((prev) => {
+        const next = { ...prev };
+        delete next[promptId];
+        return next;
+      });
+      setInfo(`Erro upload ${promptId}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  };
+
+  const deleteClipForPrompt = async (promptId: string) => {
+    if (!project) return;
+    if (!confirm(`Apagar o clip da cena ${promptId}?`)) return;
+    try {
+      const r = await fetch("/api/admin/longos/delete-clip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug, promptId }),
+      });
+      const d = await r.json();
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      await load();
+      setInfo(`✓ Clip ${promptId} apagado`);
+      setTimeout(() => setInfo(null), 2000);
+    } catch (e) {
+      setInfo(`Erro: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 
@@ -926,9 +1077,35 @@ export default function LongoDetailPage() {
                 rows={3}
                 className="w-full rounded border border-escola-border bg-escola-card px-1.5 py-1 text-[10px] text-escola-creme"
               />
+
+              {/* Clip MJ Video slot — upload + preview + delete */}
+              <ClipSlot
+                promptId={p.id}
+                clipUrl={p.clipUrl}
+                clipDurationSec={p.clipDurationSec}
+                upload={clipUpload[p.id]}
+                onUpload={(file) => uploadClipForPrompt(p.id, file)}
+                onDelete={() => deleteClipForPrompt(p.id)}
+                disabled={promptsDirty}
+              />
             </li>
           ))}
         </ul>
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          💡 Geras a imagem em Midjourney → usa <b>Image to Video</b> +{" "}
+          <b>Extend</b> (3× para chegar aos 15-20s) → faz upload do MP4 aqui.
+          Pode ser horizontal ou vertical (a Fase 3 escala/crop ao formato
+          final). Limite Supabase: 200MB por clip.
+          {promptsDirty && (
+            <>
+              {" "}
+              <span className="text-escola-terracota">
+                ⚠ guarda as edições aos prompts antes de upload (o id pode
+                mudar e o clip ficaria órfão).
+              </span>
+            </>
+          )}
+        </p>
       </section>
 
       <details className="rounded border border-escola-border bg-escola-card/40 p-3 text-[10px] text-escola-creme-50">
@@ -950,6 +1127,129 @@ export default function LongoDetailPage() {
           </li>
         </ol>
       </details>
+    </div>
+  );
+}
+
+// ─── ClipSlot ───────────────────────────────────────────────────────────────
+// Per-prompt slot: upload MJ Video clip, preview inline, replace/delete.
+// File picker + progress bar quando uploading. Aceita drag-and-drop.
+//
+// Limite 200MB (Supabase). Aspect ratio livre — a Fase 3 escala/crop ao
+// formato final (1920x1080 horizontal long-form ou 1080x1920 vertical).
+
+function ClipSlot({
+  promptId,
+  clipUrl,
+  clipDurationSec,
+  upload,
+  onUpload,
+  onDelete,
+  disabled,
+}: {
+  promptId: string;
+  clipUrl?: string;
+  clipDurationSec?: number;
+  upload?: { stage: "signing" | "uploading" | "finalizing"; progress: number };
+  onUpload: (file: File) => void;
+  onDelete: () => void;
+  disabled?: boolean;
+}) {
+  const inputId = `clip-up-${promptId}`;
+  const isBusy = !!upload;
+  return (
+    <div className="mt-2 rounded border border-escola-border bg-escola-card/40 p-2">
+      {clipUrl && !isBusy ? (
+        <div className="flex items-start gap-2">
+          <video
+            src={clipUrl}
+            className="h-16 w-28 shrink-0 rounded border border-escola-border bg-black"
+            muted
+            preload="metadata"
+            onMouseEnter={(e) =>
+              (e.currentTarget as HTMLVideoElement).play().catch(() => {})
+            }
+            onMouseLeave={(e) => {
+              const v = e.currentTarget as HTMLVideoElement;
+              v.pause();
+              v.currentTime = 0;
+            }}
+          />
+          <div className="flex-1 text-[10px] text-escola-creme-50">
+            <p className="text-escola-dourado">
+              ✓ Clip pronto
+              {clipDurationSec ? ` · ${clipDurationSec.toFixed(1)}s` : ""}
+            </p>
+            <div className="mt-1 flex flex-wrap gap-1">
+              <label
+                htmlFor={inputId}
+                className="cursor-pointer rounded border border-escola-border bg-escola-bg px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+              >
+                ↻ trocar
+              </label>
+              <button
+                onClick={onDelete}
+                disabled={disabled}
+                className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-terracota disabled:opacity-40"
+              >
+                ✗ apagar
+              </button>
+              <a
+                href={clipUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+              >
+                abrir ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      ) : isBusy ? (
+        <div>
+          <p className="text-[10px] text-escola-dourado">
+            {upload!.stage === "signing"
+              ? "A pedir signed URL..."
+              : upload!.stage === "uploading"
+                ? `A enviar... ${upload!.progress}%`
+                : "A guardar no projecto..."}
+          </p>
+          <div className="mt-1 h-1 w-full rounded bg-escola-border">
+            <div
+              className="h-full rounded bg-escola-dourado transition-all"
+              style={{ width: `${upload!.progress}%` }}
+            />
+          </div>
+        </div>
+      ) : (
+        <label
+          htmlFor={inputId}
+          className={`flex cursor-pointer items-center gap-2 text-[10px] ${
+            disabled
+              ? "cursor-not-allowed opacity-40"
+              : "text-escola-creme-50 hover:text-escola-creme"
+          }`}
+        >
+          <span className="rounded bg-escola-coral/20 px-2 py-0.5 text-[10px] font-semibold text-escola-coral">
+            📤 Upload MP4 (MJ Video)
+          </span>
+          <span>
+            ou arrasta — sem clip = vai precisar de gerar antes do render final
+          </span>
+        </label>
+      )}
+      <input
+        id={inputId}
+        type="file"
+        accept="video/mp4,video/quicktime,video/webm,video/*"
+        className="hidden"
+        disabled={isBusy || disabled}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) onUpload(f);
+          e.target.value = "";
+        }}
+      />
     </div>
   );
 }
