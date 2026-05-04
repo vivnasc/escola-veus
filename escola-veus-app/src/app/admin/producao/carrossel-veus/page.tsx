@@ -299,86 +299,89 @@ export default function CarrosselVeusPage() {
           <div>
             <h3 className="font-serif text-lg text-escola-creme">1. Vozes (ElevenLabs)</h3>
             <p className="text-xs text-escola-creme-50">
-              {audiosCount === 0
-                ? "Gera as 42 narrações. Podes ouvir cada uma e regerar individualmente."
-                : `${audiosCount}/42 vozes geradas. Ouve, regera as que não gostares.`}
+              Clica <span className="text-escola-dourado">▶</span> em cada slide para gerar a voz dessa narração.
+              Ouve, regera com <span className="text-escola-dourado">↻</span> se não gostares.
+              {audiosCount > 0 && ` · ${audiosCount}/42 prontas`}
             </p>
           </div>
           <button
             onClick={generateAllVoices}
             disabled={generatingAll}
-            className="shrink-0 rounded bg-escola-violeta px-4 py-2 text-sm font-semibold text-escola-creme hover:bg-escola-violeta-dark disabled:opacity-40"
+            className="shrink-0 rounded border border-escola-border px-3 py-2 text-xs text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme disabled:opacity-40"
+            title="Gera todas as que ainda faltam, em sequência"
           >
             {generatingAll
-              ? `A gerar… ${progress?.done ?? 0}/${progress?.total ?? 42}`
-              : audiosCount > 0
-              ? "↻ Continuar / regenerar todas"
-              : "▶ Gerar 42 vozes"}
+              ? `${progress?.done ?? 0}/${progress?.total ?? 42}`
+              : "↻ gerar todas as que faltam"}
           </button>
         </header>
 
-        {audiosCount > 0 && (
-          <div className="space-y-4">
-            {DIAS.map((dia) => (
-              <details key={dia.numero} className="rounded border border-escola-border bg-escola-bg" open>
-                <summary className="cursor-pointer list-none px-4 py-3 text-sm">
-                  <div className="flex items-baseline justify-between">
-                    <div>
-                      <span className="text-escola-creme">Dia {dia.numero}</span>{" "}
-                      <span className="text-escola-dourado">{dia.veu}</span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setPreviewDia(dia.numero);
-                      }}
-                      disabled={!dia.slides.every((_, i) => audios[audioKey(dia.numero, i + 1)]?.url)}
-                      className="rounded bg-escola-dourado/20 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/30 disabled:opacity-30"
-                    >
-                      ▶ Preview vídeo do dia
-                    </button>
+        <div className="space-y-4">
+          {DIAS.map((dia) => (
+            <details key={dia.numero} className="rounded border border-escola-border bg-escola-bg" open>
+              <summary className="cursor-pointer list-none px-4 py-3 text-sm">
+                <div className="flex items-baseline justify-between">
+                  <div>
+                    <span className="text-escola-creme">Dia {dia.numero}</span>{" "}
+                    <span className="text-escola-dourado">{dia.veu}</span>
+                    <span className="ml-3 text-xs text-escola-creme-50">
+                      {dia.slides.filter((_, i) => audios[audioKey(dia.numero, i + 1)]?.url).length}/{dia.slides.length}
+                    </span>
                   </div>
-                </summary>
-                <ul className="space-y-2 px-4 pb-4">
-                  {dia.slides.map((slide, i) => {
-                    const k = audioKey(dia.numero, i + 1);
-                    const a = audios[k];
-                    const text = deriveText(dia, slide);
-                    return (
-                      <li key={k} className="flex items-start gap-3 rounded border border-escola-border bg-escola-card p-3">
-                        <div className="w-12 shrink-0 text-xs text-escola-creme-50">
-                          {String(i + 1).padStart(2, "0")} · <span className="text-escola-dourado">{tipoLabel(slide)}</span>
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="mb-2 line-clamp-2 text-xs italic text-escola-creme-50">{text}</p>
-                          {a?.url ? (
-                            <audio controls src={a.url} className="h-8 w-full" preload="none" />
-                          ) : a?.error ? (
-                            <p className="text-xs text-red-300">erro: {a.error}</p>
-                          ) : a?.generating ? (
-                            <p className="text-xs text-escola-creme-50">a gerar…</p>
-                          ) : (
-                            <p className="text-xs text-escola-creme-50">por gerar</p>
-                          )}
-                        </div>
-                        <button
-                          onClick={() => regenerateOne(dia, i)}
-                          disabled={a?.generating || generatingAll}
-                          className="shrink-0 rounded border border-escola-border px-2 py-1 text-xs text-escola-creme hover:border-escola-dourado/40 disabled:opacity-30"
-                          title="Regerar esta voz"
-                        >
-                          ↻
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </details>
-            ))}
-          </div>
-        )}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setPreviewDia(dia.numero);
+                    }}
+                    disabled={!dia.slides.every((_, i) => audios[audioKey(dia.numero, i + 1)]?.url)}
+                    className="rounded bg-escola-dourado/20 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/30 disabled:opacity-30"
+                  >
+                    ▶ Preview vídeo do dia
+                  </button>
+                </div>
+              </summary>
+              <ul className="space-y-2 px-4 pb-4">
+                {dia.slides.map((slide, i) => {
+                  const k = audioKey(dia.numero, i + 1);
+                  const a = audios[k];
+                  const text = deriveText(dia, slide);
+                  return (
+                    <li key={k} className="flex items-start gap-3 rounded border border-escola-border bg-escola-card p-3">
+                      <div className="w-12 shrink-0 text-xs text-escola-creme-50">
+                        {String(i + 1).padStart(2, "0")} ·{" "}
+                        <span className="text-escola-dourado">{tipoLabel(slide)}</span>
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="mb-2 text-xs italic text-escola-creme-50">{text}</p>
+                        {a?.url ? (
+                          <audio controls src={a.url} className="h-8 w-full" preload="none" />
+                        ) : a?.error ? (
+                          <p className="text-xs text-red-300">erro: {a.error}</p>
+                        ) : a?.generating ? (
+                          <p className="text-xs text-escola-dourado">a gerar…</p>
+                        ) : (
+                          <p className="text-xs text-escola-creme-50">
+                            <em>por gerar — clica ▶ à direita</em>
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => regenerateOne(dia, i)}
+                        disabled={a?.generating || generatingAll}
+                        className="shrink-0 rounded border border-escola-border px-3 py-1 text-sm text-escola-creme hover:border-escola-dourado/40 disabled:opacity-30"
+                        title={a?.url ? "Regerar esta voz" : "Gerar esta voz"}
+                      >
+                        {a?.generating ? "…" : a?.url ? "↻" : "▶"}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          ))}
+        </div>
       </section>
 
       {/* ─── SLIDES (preview/downloads PNG) ──────────────────── */}
