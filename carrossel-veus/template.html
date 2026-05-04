@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carrossel Véus — slide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=block"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    // Espera-se window.SLIDE_DATA injectado pelo Puppeteer.
+    // Estrutura: { dia: {numero, veu, subtitulo, romano}, slide: {tipo, ...}, indiceSlide: number }
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function nl2br(str) {
+      return escapeHtml(str).replace(/\n/g, "<br/>");
+    }
+
+    function render(data) {
+      const { dia, slide, indiceSlide } = data;
+      const root = document.getElementById("root");
+
+      if (slide.tipo === "capa") {
+        root.innerHTML = `
+          <div class="slide capa">
+            <div class="header">
+              <div class="romano">${escapeHtml(dia.romano)}</div>
+              <div class="veu">${escapeHtml(dia.veu)}</div>
+              <div class="subtitulo">${escapeHtml(dia.subtitulo)}</div>
+            </div>
+            <div class="abertura">
+              <span class="linha">${escapeHtml(slide.linha1)}</span>
+              <span class="linha">${escapeHtml(slide.linha2)}</span>
+            </div>
+            <div class="footer">
+              <div class="romano">os sete véus</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      if (slide.tipo === "conteudo") {
+        const estilo = slide.estilo === "poetico" ? "poetico" : "prosa";
+        const numeroSlide = String(indiceSlide + 1).padStart(2, "0");
+        const indicador = `${numeroSlide} · ${dia.romano.split(" ")[0]}`;
+        const textoLongo = slide.texto && slide.texto.length > 180 ? "longo" : "";
+        const titulo = slide.titulo
+          ? `<div class="titulo-pequeno">${escapeHtml(slide.titulo)}</div>`
+          : "";
+
+        root.innerHTML = `
+          <div class="slide conteudo ${estilo}">
+            <div class="numero">${escapeHtml(indicador)}</div>
+            <div class="corpo">
+              ${titulo}
+              <div class="texto ${textoLongo}">${nl2br(slide.texto)}</div>
+            </div>
+            <div class="assinatura">os sete véus</div>
+          </div>
+        `;
+        return;
+      }
+
+      if (slide.tipo === "cta") {
+        root.innerHTML = `
+          <div class="slide cta">
+            <div class="icone">${escapeHtml(slide.icone || "")}</div>
+            <div class="corpo">
+              <div class="recurso">${escapeHtml(slide.recurso)}</div>
+              <div class="descricao">${escapeHtml(slide.descricao)}</div>
+            </div>
+            <div class="footer">
+              <div class="url">${escapeHtml(slide.url)}</div>
+              <div class="espiral">🌀</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      root.innerHTML = `<div class="slide"><div>tipo desconhecido: ${escapeHtml(slide.tipo)}</div></div>`;
+    }
+
+    if (window.SLIDE_DATA) {
+      render(window.SLIDE_DATA);
+    } else {
+      document.body.innerHTML = "<pre>aguardando window.SLIDE_DATA…</pre>";
+    }
+  </script>
+</body>
+</html>
