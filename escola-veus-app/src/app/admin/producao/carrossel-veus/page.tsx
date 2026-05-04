@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as htmlToImage from "html-to-image";
 import JSZip from "jszip";
 import { CAMPANHA, DIAS, type Dia, type Slide as SlideType } from "./content";
@@ -8,6 +8,24 @@ import { Slide } from "./Slide";
 
 const PREVIEW_SCALE = 0.18; // 1080×1920 → ~194×346 no preview
 const EXPORT_PIXEL_RATIO = 2; // 2160×3840 PNG final
+
+const SUPABASE_URL = "https://tdytdamtfillqyklgrmb.supabase.co";
+const AG_MUSIC_BASE = `${SUPABASE_URL}/storage/v1/object/public/audios/albums/ancient-ground`;
+const AG_TOTAL_TRACKS = 100;
+
+function agTrackUrl(n: number): string {
+  return `${AG_MUSIC_BASE}/faixa-${String(n).padStart(2, "0")}.mp3`;
+}
+
+type VideoEntry = { file: string; url: string; sizeBytes: number };
+type RenderStatus = {
+  jobId: string;
+  status: "queued" | "running" | "done" | "failed" | "not_found";
+  progress?: number;
+  phase?: string;
+  videos?: VideoEntry[];
+  error?: string;
+};
 
 type DownloadKey = string; // `dia-slide`
 
@@ -31,6 +49,57 @@ export default function CarrosselVeusPage() {
   const refs = useRef<Map<DownloadKey, HTMLDivElement>>(new Map());
   const [busy, setBusy] = useState<DownloadKey | "all" | null>(null);
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+
+  // Vídeos (voz + música)
+  const [musicTrack, setMusicTrack] = useState<number>(1);
+  const [musicVolume, setMusicVolume] = useState<number>(0.4);
+  const [submittingVideo, setSubmittingVideo] = useState(false);
+  const [job, setJob] = useState<RenderStatus | null>(null);
+  const [workflowUrl, setWorkflowUrl] = useState<string | null>(null);
+
+  // Polling do status do job
+  useEffect(() => {
+    if (!job?.jobId) return;
+    if (job.status === "done" || job.status === "failed") return;
+    const id = setInterval(async () => {
+      try {
+        const res = await fetch(
+          `/api/admin/carrossel-veus/render-status?jobId=${encodeURIComponent(job.jobId)}`,
+          { cache: "no-store" }
+        );
+        if (res.ok) {
+          const data = (await res.json()) as RenderStatus;
+          setJob(data);
+        }
+      } catch {
+        // mantém o último estado conhecido
+      }
+    }, 5000);
+    return () => clearInterval(id);
+  }, [job?.jobId, job?.status]);
+
+  async function submitVideoJob() {
+    setSubmittingVideo(true);
+    try {
+      const res = await fetch("/api/admin/carrossel-veus/render-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          musicUrl: agTrackUrl(musicTrack),
+          musicVolume,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.erro || `HTTP ${res.status}`);
+      setJob({ jobId: data.jobId, status: "queued" });
+      setWorkflowUrl(data.workflowRunUrl || null);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      alert(`Falha a submeter: ${msg}`);
+    } finally {
+      setSubmittingVideo(false);
+    }
+  }
 
   function setRef(key: DownloadKey, el: HTMLDivElement | null) {
     if (el) refs.current.set(key, el);
@@ -195,16 +264,108 @@ export default function CarrosselVeusPage() {
         ))}
       </div>
 
-      <div className="mt-12 rounded-lg border border-escola-border bg-escola-card p-4 text-xs text-escola-creme-50">
-        <p className="mb-2 font-semibold text-escola-creme">Voz + vídeo</p>
-        <p>
-          A pipeline de narração ElevenLabs + montagem MP4 com Ancient Ground está em
-          {" "}
-          <code className="rounded bg-escola-bg px-1 py-0.5 text-escola-dourado">carrossel-veus/</code>
-          {" "}
-          (CLI). Para a expor aqui na web preciso de uma GitHub Action — conta-me se queres avançar com isso.
+      <section className="mt-12 rounded-lg border border-escola-border bg-escola-card p-5">
+        <h3 className="mb-2 font-serif text-lg text-escola-creme">
+          Vídeos com voz + música (status WhatsApp ~60s)
+        </h3>
+        <p className="mb-4 text-xs text-escola-creme-50">
+          Gera 7 MP4 verticais (1 por dia) com narração ElevenLabs (voz dos Véus) e
+          uma faixa Ancient Ground por baixo. Corre numa GitHub Action (~15-30 min).
+          Quando terminar, descarregas aqui.
         </p>
-      </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <label className="block text-xs text-escola-creme-50">
+            Faixa Ancient Ground (1–{AG_TOTAL_TRACKS})
+            <input
+              type="number"
+              min={1}
+              max={AG_TOTAL_TRACKS}
+              value={musicTrack}
+              onChange={(e) =>
+                setMusicTrack(Math.max(1, Math.min(AG_TOTAL_TRACKS, Number(e.target.value) || 1)))
+              }
+              className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-sm text-escola-creme"
+            />
+          </label>
+          <label className="block text-xs text-escola-creme-50">
+            Volume da música ({musicVolume.toFixed(2)})
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.05}
+              value={musicVolume}
+              onChange={(e) => setMusicVolume(Number(e.target.value))}
+              className="mt-2 w-full"
+            />
+          </label>
+          <div className="flex items-end">
+            <button
+              onClick={submitVideoJob}
+              disabled={submittingVideo || (job !== null && job.status !== "done" && job.status !== "failed")}
+              className="w-full rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
+            >
+              {submittingVideo ? "A submeter…" : "▶ Gerar vídeos"}
+            </button>
+          </div>
+        </div>
+
+        {job && (
+          <div className="mt-5 rounded border border-escola-border bg-escola-bg p-4 text-xs">
+            <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+              <div>
+                <span className="text-escola-creme-50">Job:</span>{" "}
+                <code className="text-escola-dourado">{job.jobId}</code>
+              </div>
+              <span
+                className={
+                  job.status === "done"
+                    ? "rounded bg-green-700/30 px-2 py-0.5 text-green-300"
+                    : job.status === "failed"
+                    ? "rounded bg-red-700/30 px-2 py-0.5 text-red-300"
+                    : "rounded bg-escola-dourado/20 px-2 py-0.5 text-escola-dourado"
+                }
+              >
+                {job.status}
+                {job.phase ? ` · ${job.phase}` : ""}
+              </span>
+            </div>
+            {workflowUrl && (
+              <p className="mb-2 text-escola-creme-50">
+                Logs:{" "}
+                <a className="text-escola-dourado underline" href={workflowUrl} target="_blank" rel="noreferrer">
+                  GitHub Actions
+                </a>
+              </p>
+            )}
+            {job.error && <p className="mb-2 text-red-300">Erro: {job.error}</p>}
+            {job.status === "done" && job.videos && job.videos.length > 0 && (
+              <div className="mt-3">
+                <p className="mb-2 font-semibold text-escola-creme">Descarregar:</p>
+                <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {job.videos.map((v) => (
+                    <li key={v.file}>
+                      <a
+                        href={v.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        download
+                        className="block rounded border border-escola-border bg-escola-card px-3 py-2 text-center text-escola-creme hover:border-escola-dourado/40"
+                      >
+                        ↓ {v.file.replace(".mp4", "")}
+                        <span className="ml-1 text-[10px] text-escola-creme-50">
+                          {(v.sizeBytes / 1024 / 1024).toFixed(1)} MB
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+      </section>
     </div>
   );
 }
