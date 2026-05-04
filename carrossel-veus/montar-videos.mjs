@@ -34,6 +34,10 @@ const MUSICA = path.join(ROOT, "musica.mp3");
 const MUSIC_URL = process.env.MUSIC_URL;
 // Volume da música por baixo da voz. Default 0.4 (voz é o foco).
 const MUSICA_VOLUME = parseFloat(process.env.MUSIC_VOLUME || "0.4");
+// URL pública de um manifest JSON com os URLs dos áudios já gerados na Vercel.
+// Estrutura esperada: { audios: [{dia, slide, url}, ...], musicUrl?, musicVolume? }
+// Quando definida, descarrega cada áudio para audios/dia-{n}/slide-{i}.mp3.
+const MANIFEST_URL = process.env.MANIFEST_URL;
 
 const W = 1080;
 const H = 1920;
@@ -214,18 +218,40 @@ async function processarDia(dia) {
   console.log(`✓ dia-${dia.numero}.mp4 (${tamanho.toFixed(1)} MB, ${total.toFixed(1)}s)`);
 }
 
-async function downloadMusicIfNeeded() {
-  if (!MUSIC_URL) return;
+async function downloadMusicIfNeeded(musicUrl) {
+  const url = musicUrl || MUSIC_URL;
+  if (!url) return;
   if (existsSync(MUSICA)) {
-    console.log(`→ musica.mp3 já existe, mantém (apaga para forçar download de MUSIC_URL)`);
+    console.log(`→ musica.mp3 já existe, mantém (apaga para forçar novo download)`);
     return;
   }
-  console.log(`→ a descarregar música: ${MUSIC_URL}`);
-  const res = await fetch(MUSIC_URL);
-  if (!res.ok) throw new Error(`Download música falhou ${res.status} ${MUSIC_URL}`);
+  console.log(`→ a descarregar música: ${url}`);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Download música falhou ${res.status} ${url}`);
   await pipeline(Readable.fromWeb(res.body), createWriteStream(MUSICA));
   const tam = (await stat(MUSICA)).size / 1024 / 1024;
   console.log(`  ✓ musica.mp3 (${tam.toFixed(2)} MB)`);
+}
+
+async function downloadAudiosFromManifest() {
+  if (!MANIFEST_URL) return null;
+  console.log(`→ a ler manifest: ${MANIFEST_URL}`);
+  const res = await fetch(MANIFEST_URL);
+  if (!res.ok) throw new Error(`Manifest fetch falhou ${res.status}`);
+  const manifest = await res.json();
+  if (!Array.isArray(manifest.audios)) throw new Error("manifest.audios[] em falta");
+
+  console.log(`→ a descarregar ${manifest.audios.length} áudios`);
+  for (const a of manifest.audios) {
+    const dest = path.join(AUDIOS_DIR, `dia-${a.dia}`, `slide-${a.slide}.mp3`);
+    await ensureDir(path.dirname(dest));
+    if (existsSync(dest)) continue;
+    const r = await fetch(a.url);
+    if (!r.ok) throw new Error(`audio ${a.url} → ${r.status}`);
+    await pipeline(Readable.fromWeb(r.body), createWriteStream(dest));
+  }
+  console.log(`  ✓ áudios em ${AUDIOS_DIR}`);
+  return manifest;
 }
 
 async function main() {
@@ -234,7 +260,10 @@ async function main() {
   const dias = arg.length ? content.dias.filter((d) => arg.includes(d.numero)) : content.dias;
 
   await ensureDir(VIDEOS_DIR);
-  await downloadMusicIfNeeded();
+
+  // Manifest tem precedência: se passado, descarrega áudios + define música.
+  const manifest = await downloadAudiosFromManifest();
+  await downloadMusicIfNeeded(manifest?.musicUrl);
 
   if (!existsSync(MUSICA)) {
     console.log(`! musica.mp3 não encontrada em ${ROOT} — vídeos sairão só com voz.`);
