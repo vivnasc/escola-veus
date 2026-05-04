@@ -28,6 +28,19 @@
       return escapeHtml(str).replace(/\n/g, "<br/>");
     }
 
+    // Reduz font-size do elemento até caber em max-width sem overflow.
+    function fitToWidth(el, maxWidth, minFontPx) {
+      if (!el) return;
+      const min = minFontPx || 80;
+      let size = parseFloat(getComputedStyle(el).fontSize);
+      // protege contra loops infinitos
+      let guard = 60;
+      while (el.scrollWidth > maxWidth && size > min && guard-- > 0) {
+        size -= 4;
+        el.style.fontSize = size + "px";
+      }
+    }
+
     function render(data) {
       const { dia, slide, indiceSlide } = data;
       const root = document.getElementById("root");
@@ -49,6 +62,12 @@
             </div>
           </div>
         `;
+        // Fit palavra-véu (180px Cormorant pode transbordar em 11 chars como "PERMANÊNCIA")
+        // — reduz até caber dentro de 840px de largura útil (1080 - 240 padding).
+        // Espera fonts ready antes de medir.
+        document.fonts.ready.then(() => {
+          fitToWidth(document.querySelector(".slide.capa .veu"), 840, 100);
+        });
         return;
       }
 
