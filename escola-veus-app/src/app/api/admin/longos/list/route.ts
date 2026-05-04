@@ -25,9 +25,9 @@ type LongoProject = {
   slug?: string;
   titulo?: string;
   tema?: string;
-  duracaoAlvo?: number;
   promptCount?: number;
   wordCount?: number;
+  durationSec?: number; // real, do MP3 da narração
   createdAt?: string;
   updatedAt?: string;
   narrationUrl?: string;
@@ -58,9 +58,9 @@ export async function GET() {
           slug: parsed.slug ?? f.name.replace(/\.json$/, ""),
           titulo: parsed.titulo ?? "",
           tema: parsed.tema ?? "",
-          duracaoAlvo: parsed.duracaoAlvo ?? null,
           promptCount: parsed.promptCount ?? 0,
           wordCount: parsed.wordCount ?? 0,
+          durationSec: parsed.durationSec ?? null,
           createdAt: parsed.createdAt ?? null,
           updatedAt: parsed.updatedAt ?? null,
           hasNarration: !!parsed.narrationUrl,

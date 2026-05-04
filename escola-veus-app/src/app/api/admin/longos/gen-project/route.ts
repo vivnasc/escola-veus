@@ -95,13 +95,13 @@ export async function POST(req: NextRequest) {
   if (!tema) {
     return NextResponse.json({ erro: "tema obrigatório" }, { status: 400 });
   }
-  const duracaoAlvo = Math.max(10, Math.min(30, body.duracaoAlvo ?? 20));
   const tom = body.tom || "contemplativo";
 
-  // Heurística: ~150 palavras/min em narração lenta contemplativa → 20 min ≈ 3000 palavras.
-  // Cenas: ~30-60s por cena → 20 min ≈ 25-35 cenas.
-  const palavrasAlvo = duracaoAlvo * 150;
-  const cenasAlvo = Math.round((duracaoAlvo * 60) / 45); // 1 cena por 45s média
+  // Sem duração-alvo. Claude decide o comprimento natural ao tema, no
+  // sweet-spot Corvo Seco (~2500-4000 palavras → 20-30 min de leitura
+  // contemplativa com pausas — narração com [pause] tags fica em ~100 wpm
+  // efectivos, nada perto dos 150-200 wpm de leitura normal).
+  // Cenas: ~1 cena por 40-50s → 25-40 cenas tipicamente.
 
   const fewShotPrompts = pickFewShot();
   const fewShotScript = getFewShotScript().slice(0, 2500);
@@ -161,10 +161,14 @@ CAPÍTULOS:
 "${tema}"
 
 ESPECIFICAÇÕES:
-- Duração-alvo: ${duracaoAlvo} min de narração lenta (~${palavrasAlvo} palavras)
 - Tom: ${tom}
-- Cenas: ${cenasAlvo}-${cenasAlvo + 5} prompts de imagem (~30-60s/cena)
-- Capítulos: 4-6
+- Comprimento NATURAL ao tema (não forces tamanho). Sweet-spot Corvo Seco:
+  2500-4000 palavras → 20-30 min de leitura contemplativa com [pause]s.
+  Se o tema for denso, aproxima-te de 4000. Se for íntimo e simples, 2500
+  está bem. NUNCA estiques só para chegar a um número.
+- Capítulos: 4-6 secções, ritmo de respiração (não didáctico)
+- Cenas visuais: 25-40 prompts de imagem (1 a cada ~40-60s de narração).
+  Cada prompt é uma cena ÚNICA — não repitas variações da mesma imagem.
 
 Devolve JSON com:
 - titulo: 4-7 palavras evocativas (pode ser uma frase, não um sumário)
@@ -172,7 +176,7 @@ Devolve JSON com:
 - thumbnailText: 2-4 palavras impactantes para a thumbnail (UPPERCASE pronto)
 - capitulos: array de { titulo (2-5 palavras), ancora (1 frase, 1 linha) }
 - script: markdown completo. Cada capítulo começa com "## <titulo capitulo>". Texto da narração com tags [calm]/[pause]/[long pause]/[thoughtful]. NÃO incluas instruções de palco — apenas o que vai ser lido em voz alta + tags.
-- prompts: array de ${cenasAlvo} prompts de imagem no formato { id, category, mood (array PT), prompt (EN) }. IDs sequenciais começando em <slug>-01.
+- prompts: array de prompts de imagem no formato { id, category, mood (array PT), prompt (EN) }. IDs sequenciais começando em <slug>-01.
 
 Responde APENAS com JSON válido.`;
 
@@ -266,11 +270,15 @@ Responde APENAS com JSON válido.`;
       ((usage.cache_creation_input_tokens || 0) * 3.75) / 1_000_000;
     const costUsd = inCost + outCost + cacheReadCost + cacheWriteCost;
 
+    // Não estimamos duração. Duração real vem do MP3 quando a narração for
+    // gerada (ElevenLabs API devolve durationSec exacto via timestamps).
+    // Antes disso, só sabemos wordCount como informação útil.
+    const wordCount = (parsed.script || "").split(/\s+/).filter(Boolean).length;
+
     return NextResponse.json({
       titulo,
       slug,
       tema,
-      duracaoAlvo,
       thumbnailText: parsed.thumbnailText || titulo.toUpperCase(),
       capitulos: parsed.capitulos || [],
       script: parsed.script || "",

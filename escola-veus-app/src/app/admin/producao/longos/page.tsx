@@ -19,9 +19,10 @@ type Project = {
   slug: string;
   titulo: string;
   tema: string;
-  duracaoAlvo: number | null;
   promptCount: number;
   wordCount: number;
+  // Duração real vem do MP3 da narração (em segundos). Antes disso é null.
+  durationSec?: number | null;
   createdAt: string | null;
   updatedAt: string | null;
   hasNarration: boolean;
@@ -33,7 +34,6 @@ type GenResult = {
   titulo: string;
   slug: string;
   tema: string;
-  duracaoAlvo: number;
   thumbnailText: string;
   capitulos: { titulo: string; ancora: string }[];
   script: string;
@@ -54,7 +54,6 @@ export default function LongosPage() {
   const [loading, setLoading] = useState(true);
 
   const [tema, setTema] = useState("");
-  const [duracaoAlvo, setDuracaoAlvo] = useState(20);
   const [generating, setGenerating] = useState(false);
   const [genErr, setGenErr] = useState<string | null>(null);
   const [preview, setPreview] = useState<GenResult | null>(null);
@@ -90,7 +89,7 @@ export default function LongosPage() {
       const r = await fetch("/api/admin/longos/gen-project", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tema: tema.trim(), duracaoAlvo }),
+        body: JSON.stringify({ tema: tema.trim() }),
       });
       const d = await r.json();
       if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
@@ -162,19 +161,6 @@ export default function LongosPage() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <label className="text-escola-creme-50">Duração-alvo:</label>
-            <select
-              value={duracaoAlvo}
-              onChange={(e) => setDuracaoAlvo(parseInt(e.target.value, 10))}
-              disabled={generating}
-              className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
-            >
-              <option value={10}>10 min</option>
-              <option value={15}>15 min</option>
-              <option value={20}>20 min</option>
-              <option value={25}>25 min</option>
-              <option value={30}>30 min</option>
-            </select>
             <button
               onClick={generate}
               disabled={generating || !tema.trim()}
@@ -189,7 +175,9 @@ export default function LongosPage() {
             )}
           </div>
           <p className="text-[10px] text-escola-creme-50">
-            Sonnet 4.6 + adaptive thinking · ~$0.10-0.15 por projecto · 1-3 min de espera.
+            Claude decide o comprimento natural ao tema (tipicamente 2500-4000 palavras
+            → 20-30 min de narração contemplativa). Duração real fica conhecida só
+            depois da narração ElevenLabs ser gerada. Sonnet 4.6 · ~$0.10-0.15/projecto.
           </p>
         </div>
 
@@ -322,8 +310,11 @@ export default function LongosPage() {
                       {p.titulo}
                     </p>
                     <p className="text-[10px] text-escola-creme-50">
-                      <code>{p.slug}</code> · {p.duracaoAlvo}min ·{" "}
-                      {p.wordCount} palavras · {p.promptCount} cenas
+                      <code>{p.slug}</code> ·{" "}
+                      {p.durationSec
+                        ? `${Math.round(p.durationSec / 60)} min (real)`
+                        : `${p.wordCount} palavras (sem narração ainda)`}{" "}
+                      · {p.promptCount} cenas
                     </p>
                     <p className="mt-1 truncate text-[11px] text-escola-creme-50">
                       {p.tema}
