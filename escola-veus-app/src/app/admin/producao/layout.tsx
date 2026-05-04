@@ -14,6 +14,7 @@ type Tab = { href: string; label: string; exact?: boolean };
 const TABS_CURSOS: Tab[] = [
   { href: "/admin/producao/aulas", label: "Aulas" },
   { href: "/admin/producao/funil", label: "Funil" },
+  { href: "/admin/producao/longos", label: "Longos" },
   { href: "/admin/producao/shorts/nomear", label: "Shorts Funil" },
   { href: "/admin/producao/audios", label: "Áudios" },
   { href: "/admin/producao/carrossel-veus", label: "Carrossel Véus" },
