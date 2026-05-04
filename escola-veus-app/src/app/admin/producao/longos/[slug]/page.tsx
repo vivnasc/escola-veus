@@ -30,7 +30,7 @@ type LongoProject = {
   updatedAt?: string;
 };
 
-const DEFAULT_VOICE_ID = "JGnWZj684pcXmK2SxYIv"; // mesma voz dos mini-eps Nomear
+// Voz default (usada como fallback inicial — user pode mudar no test panel).
 
 // Parte o script por capítulos (## headings markdown). Cada capítulo é
 // um chunk para gerar separadamente em ElevenLabs (mais fiável que enviar
@@ -90,6 +90,78 @@ export default function LongoDetailPage() {
   } | null>(null);
   const [narrErr, setNarrErr] = useState<string | null>(null);
 
+  // ── Editor mode: drafts do script + prompts antes de gravar ──────────
+  // Permite rever e editar livremente sem custo. Só persiste em Supabase
+  // ao clicar Guardar. Ao gerar narração (ElevenLabs custa créditos),
+  // usa-se o draft já guardado — daí o botão Guardar a piscar quando
+  // dirty antes de Gerar narração.
+  const [scriptDraft, setScriptDraft] = useState("");
+  const [promptsDraft, setPromptsDraft] = useState<
+    { id: string; category: string; mood: string[]; prompt: string }[]
+  >([]);
+  const [scriptDirty, setScriptDirty] = useState(false);
+  const [promptsDirty, setPromptsDirty] = useState(false);
+
+  // ── Voice / model: persistência localStorage (mesma UX do /audios) ───
+  const [voiceId, setVoiceId] = useState<string>("JGnWZj684pcXmK2SxYIv");
+  const [modelId, setModelId] = useState<string>("eleven_multilingual_v2");
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem("longos-voice");
+      const m = localStorage.getItem("longos-model");
+      if (v) setVoiceId(v);
+      if (m) setModelId(m);
+    } catch {
+      /* SSR / privacy mode */
+    }
+  }, []);
+  useEffect(() => {
+    try {
+      localStorage.setItem("longos-voice", voiceId);
+    } catch {
+      /* ignore */
+    }
+  }, [voiceId]);
+  useEffect(() => {
+    try {
+      localStorage.setItem("longos-model", modelId);
+    } catch {
+      /* ignore */
+    }
+  }, [modelId]);
+
+  // ── Voice test: sample curto para testar antes de gastar créditos ────
+  const [testText, setTestText] = useState(
+    "[calm] Há frases que o teu corpo já sabe de cor. [pause] Mas que nunca ninguém te disse.",
+  );
+  const [testing, setTesting] = useState(false);
+  const [testAudioUrl, setTestAudioUrl] = useState<string | null>(null);
+  const [testErr, setTestErr] = useState<string | null>(null);
+
+  const testVoice = async () => {
+    if (!testText.trim()) {
+      setTestErr("Preenche o texto de teste");
+      return;
+    }
+    setTesting(true);
+    setTestErr(null);
+    setTestAudioUrl(null);
+    try {
+      const r = await fetch("/api/admin/audio-bulk/test-voice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: testText, voiceId, modelId }),
+      });
+      const d = await r.json();
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      setTestAudioUrl(d.audioDataUrl);
+    } catch (e) {
+      setTestErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setTesting(false);
+    }
+  };
+
   const load = useCallback(async () => {
     if (!slug) return;
     setLoading(true);
@@ -100,10 +172,15 @@ export default function LongoDetailPage() {
       });
       const d = await r.json();
       if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
-      setProject(d as LongoProject);
-      setNarrationInput((d as LongoProject).narrationUrl ?? "");
-      setTituloDraft((d as LongoProject).titulo ?? "");
-      setThumbDraft((d as LongoProject).thumbnailText ?? "");
+      const p = d as LongoProject;
+      setProject(p);
+      setNarrationInput(p.narrationUrl ?? "");
+      setTituloDraft(p.titulo ?? "");
+      setThumbDraft(p.thumbnailText ?? "");
+      setScriptDraft(p.script ?? "");
+      setPromptsDraft(p.prompts ?? []);
+      setScriptDirty(false);
+      setPromptsDirty(false);
     } catch (e) {
       setErr(e instanceof Error ? e.message : String(e));
     } finally {
@@ -147,9 +224,18 @@ export default function LongoDetailPage() {
   //      concat e patcha o projecto com narrationUrl + durationSec real.
   const generateNarration = async () => {
     if (!project) return;
+    if (scriptDirty || promptsDirty) {
+      if (
+        !confirm(
+          "Tens edições NÃO GUARDADAS. Se gerares agora, vais usar o estado anterior (em Supabase) e os teus edits ficam só em memória. Queres mesmo continuar? Cancela e clica Guardar primeiro.",
+        )
+      ) {
+        return;
+      }
+    }
     if (
       project.narrationUrl &&
-      !confirm("Já existe narração para este projecto. Re-gerar (vai sobrescrever)?")
+      !confirm("Já existe narração para este projecto. Re-gerar vai gastar créditos ElevenLabs novamente e sobrescrever a actual. Continuar?")
     ) {
       return;
     }
@@ -188,8 +274,8 @@ export default function LongoDetailPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             text: ch.texto,
-            voiceId: DEFAULT_VOICE_ID,
-            modelId: "eleven_multilingual_v2",
+            voiceId,
+            modelId,
             title: `${project.slug}-cap-${String(i + 1).padStart(2, "0")}`,
             folder: "longos-audios",
           }),
@@ -411,6 +497,106 @@ export default function LongoDetailPage() {
         </div>
       </section>
 
+      {/* ── Voice test panel (gastar 0 antes de gravar tudo) ────── */}
+      <section className="rounded-xl border border-escola-border bg-escola-card p-4">
+        <h2 className="mb-2 text-sm text-escola-creme">
+          🔊 Testar voz (sample curto, custo mínimo)
+        </h2>
+        <p className="mb-3 text-[11px] text-escola-creme-50">
+          Antes de gerar a narração inteira (~20-30 min × ElevenLabs chars), testa
+          aqui o tom e modelo com um sample. As escolhas ficam guardadas e são
+          usadas na geração final.
+        </p>
+        <div className="space-y-2 text-xs">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+                Voice ID (ElevenLabs)
+              </label>
+              <input
+                value={voiceId}
+                onChange={(e) => setVoiceId(e.target.value.trim())}
+                className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-escola-creme"
+              />
+              <p className="mt-1 text-[10px] text-escola-creme-50">
+                Default <code>JGnWZj684pcXmK2SxYIv</code> (mesma dos shorts).
+              </p>
+            </div>
+            <div>
+              <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+                Model
+              </label>
+              <select
+                value={modelId}
+                onChange={(e) => setModelId(e.target.value)}
+                className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+              >
+                <option value="eleven_multilingual_v2">
+                  Multilingual v2 (PT natural, sem tags emoção)
+                </option>
+                <option value="eleven_v3">
+                  v3 (expressivo, suporta [calm]/[thoughtful], beta)
+                </option>
+              </select>
+              <p className="mt-1 text-[10px] text-escola-creme-50">
+                v3 honra <code>[calm]</code> <code>[thoughtful]</code>; v2 strip-as
+                e usa só <code>[pause]</code>.
+              </p>
+            </div>
+          </div>
+          <div>
+            <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+              Texto de teste (sample 100-300 chars)
+            </label>
+            <textarea
+              value={testText}
+              onChange={(e) => setTestText(e.target.value)}
+              rows={3}
+              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+            />
+            <div className="mt-1 flex flex-wrap gap-1.5 text-[10px]">
+              <button
+                onClick={() => {
+                  // Pega os primeiros 250 chars do script com tags incluídas
+                  const sample = scriptDraft
+                    .replace(/^##.*$/gm, "")
+                    .trim()
+                    .slice(0, 250);
+                  setTestText(sample || testText);
+                }}
+                className="rounded border border-escola-border px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+              >
+                ↓ usar primeiros 250 chars do script
+              </button>
+              <button
+                onClick={testVoice}
+                disabled={testing || !testText.trim() || !voiceId.trim()}
+                className="rounded bg-escola-dourado px-2 py-0.5 text-[10px] font-semibold text-escola-bg disabled:opacity-40"
+              >
+                {testing ? "a gerar sample..." : "▶ Testar voz"}
+              </button>
+              {testErr && (
+                <span className="text-[10px] text-escola-terracota">{testErr}</span>
+              )}
+            </div>
+          </div>
+          {testAudioUrl && (
+            <div>
+              <p className="mb-1 text-[10px] text-escola-dourado">
+                ✓ Sample pronto — ouve, ajusta voice/model/texto, repete até
+                gostares
+              </p>
+              <audio
+                src={testAudioUrl}
+                controls
+                preload="auto"
+                className="w-full max-w-md"
+              />
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* ── Narração ElevenLabs (automática) ────────────────────── */}
       <section className="rounded-xl border border-escola-border bg-escola-card p-4">
         <h2 className="mb-2 text-sm text-escola-creme">
@@ -455,9 +641,16 @@ export default function LongoDetailPage() {
                 : "🎙 Gerar narração com ElevenLabs"}
           </button>
           <p className="text-[10px] text-escola-creme-50">
-            Voz <code>JGnWZj684pcXmK2SxYIv</code> · model{" "}
-            <code>eleven_multilingual_v2</code> · ~3-5 min para gerar 20-30 min de
-            áudio · custo ElevenLabs por chars.
+            Vai usar: voz <code>{voiceId}</code> · model <code>{modelId}</code>
+            {scriptDirty && (
+              <span className="ml-2 text-escola-terracota">
+                ⚠ tens edits ao script não guardados
+              </span>
+            )}
+          </p>
+          <p className="text-[10px] text-escola-creme-50">
+            ~3-5 min para 20-30 min de áudio · gasta créditos ElevenLabs por
+            chars (~{scriptDraft.length} chars no script actual).
           </p>
         </div>
 
@@ -558,45 +751,131 @@ export default function LongoDetailPage() {
         </ol>
       </section>
 
-      {/* Script */}
+      {/* Script (editável) */}
       <section className="rounded-xl border border-escola-border bg-escola-card p-4">
-        <div className="mb-2 flex items-center justify-between">
+        <div className="mb-2 flex items-center justify-between gap-2">
           <h2 className="text-sm text-escola-creme">
-            Script ({project.wordCount} palavras
+            Script (
+            {scriptDraft.split(/\s+/).filter(Boolean).length} palavras ·{" "}
+            {scriptDraft.length} chars
             {project.durationSec
               ? ` · ${Math.floor(project.durationSec / 60)} min reais`
               : ""}
-            )
+            ){scriptDirty && (
+              <span className="ml-2 text-[10px] text-escola-terracota">
+                ● não guardado
+              </span>
+            )}
           </h2>
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(project.script);
-              setInfo("✓ Script copiado para clipboard");
-              setTimeout(() => setInfo(null), 1500);
-            }}
-            className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
-          >
-            copiar
-          </button>
+          <div className="flex gap-1">
+            {scriptDirty && (
+              <>
+                <button
+                  onClick={() => {
+                    setScriptDraft(project.script);
+                    setScriptDirty(false);
+                  }}
+                  className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-terracota"
+                >
+                  ↺ descartar
+                </button>
+                <button
+                  onClick={async () => {
+                    await patchProject({ script: scriptDraft });
+                    setScriptDirty(false);
+                  }}
+                  disabled={saving}
+                  className="rounded bg-escola-dourado px-2 py-0.5 text-[10px] font-semibold text-escola-bg disabled:opacity-40"
+                >
+                  ✓ guardar script
+                </button>
+              </>
+            )}
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(scriptDraft);
+                setInfo("✓ Script copiado");
+                setTimeout(() => setInfo(null), 1500);
+              }}
+              className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              copiar
+            </button>
+          </div>
         </div>
-        <pre className="max-h-[600px] overflow-auto whitespace-pre-wrap text-xs leading-relaxed text-escola-creme-50">
-          {project.script}
-        </pre>
+        <textarea
+          value={scriptDraft}
+          onChange={(e) => {
+            setScriptDraft(e.target.value);
+            setScriptDirty(e.target.value !== project.script);
+          }}
+          rows={20}
+          className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 font-mono text-[11px] leading-relaxed text-escola-creme"
+        />
+        <p className="mt-1 text-[10px] text-escola-creme-50">
+          💡 Edita livremente. Tags ElevenLabs: <code>[pause]</code>{" "}
+          <code>[long pause]</code> <code>[short pause]</code>{" "}
+          <code>[calm]</code> <code>[thoughtful]</code> (estas últimas só
+          funcionam com modelo v3). Capítulos começam com <code>## </code>.
+          Guarda antes de gerar narração.
+        </p>
       </section>
 
-      {/* Prompts */}
+      {/* Prompts (editáveis) */}
       <section className="rounded-xl border border-escola-border bg-escola-card p-4">
-        <h2 className="mb-2 text-sm text-escola-creme">
-          Image prompts ({project.prompts.length})
-        </h2>
-        <ul className="space-y-1.5 text-[11px]">
-          {project.prompts.map((p, i) => (
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <h2 className="text-sm text-escola-creme">
+            Image prompts ({promptsDraft.length})
+            {promptsDirty && (
+              <span className="ml-2 text-[10px] text-escola-terracota">
+                ● não guardado
+              </span>
+            )}
+          </h2>
+          {promptsDirty && (
+            <div className="flex gap-1">
+              <button
+                onClick={() => {
+                  setPromptsDraft(project.prompts);
+                  setPromptsDirty(false);
+                }}
+                className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-terracota"
+              >
+                ↺ descartar
+              </button>
+              <button
+                onClick={async () => {
+                  await patchProject({
+                    prompts: promptsDraft,
+                    promptCount: promptsDraft.length,
+                  });
+                  setPromptsDirty(false);
+                }}
+                disabled={saving}
+                className="rounded bg-escola-dourado px-2 py-0.5 text-[10px] font-semibold text-escola-bg disabled:opacity-40"
+              >
+                ✓ guardar prompts
+              </button>
+            </div>
+          )}
+        </div>
+        <ul className="space-y-2">
+          {promptsDraft.map((p, i) => (
             <li
-              key={p.id + i}
-              className="rounded border border-escola-border bg-escola-bg p-2"
+              key={i}
+              className="rounded border border-escola-border bg-escola-bg p-2 text-[11px]"
             >
-              <div className="flex items-start justify-between gap-2">
-                <p className="font-semibold text-escola-creme">{p.id}</p>
+              <div className="mb-1 flex items-center gap-2">
+                <input
+                  value={p.id}
+                  onChange={(e) => {
+                    const next = [...promptsDraft];
+                    next[i] = { ...next[i], id: e.target.value };
+                    setPromptsDraft(next);
+                    setPromptsDirty(true);
+                  }}
+                  className="flex-1 rounded border border-escola-border bg-escola-card px-1.5 py-0.5 font-mono text-[10px] text-escola-creme"
+                />
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(p.prompt);
@@ -607,9 +886,46 @@ export default function LongoDetailPage() {
                 >
                   copiar
                 </button>
+                <button
+                  onClick={() => {
+                    if (!confirm(`Apagar prompt ${p.id}?`)) return;
+                    const next = promptsDraft.filter((_, idx) => idx !== i);
+                    setPromptsDraft(next);
+                    setPromptsDirty(true);
+                  }}
+                  className="rounded border border-escola-border px-1.5 py-0.5 text-[9px] text-escola-creme-50 hover:text-escola-terracota"
+                >
+                  ✗
+                </button>
               </div>
-              <p className="text-escola-creme-50">mood: {p.mood.join(" · ")}</p>
-              <p className="mt-1 text-escola-creme-50">{p.prompt}</p>
+              <input
+                value={p.mood.join(", ")}
+                onChange={(e) => {
+                  const next = [...promptsDraft];
+                  next[i] = {
+                    ...next[i],
+                    mood: e.target.value
+                      .split(",")
+                      .map((m) => m.trim())
+                      .filter(Boolean),
+                  };
+                  setPromptsDraft(next);
+                  setPromptsDirty(true);
+                }}
+                placeholder="mood (vírgulas)"
+                className="mb-1 w-full rounded border border-escola-border bg-escola-card px-1.5 py-0.5 text-[10px] text-escola-creme-50"
+              />
+              <textarea
+                value={p.prompt}
+                onChange={(e) => {
+                  const next = [...promptsDraft];
+                  next[i] = { ...next[i], prompt: e.target.value };
+                  setPromptsDraft(next);
+                  setPromptsDirty(true);
+                }}
+                rows={3}
+                className="w-full rounded border border-escola-border bg-escola-card px-1.5 py-1 text-[10px] text-escola-creme"
+              />
             </li>
           ))}
         </ul>
