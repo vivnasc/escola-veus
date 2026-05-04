@@ -1,25 +1,17 @@
 name: Render Carrossel Véus
 
-# Disparado por /api/admin/carrossel-veus/render-submit. Gera os 7 vídeos
-# verticais com voz + música (Ancient Ground) e faz upload para Supabase.
+# Disparado por /api/admin/carrossel-veus/render-submit. As 42 vozes JÁ
+# foram geradas via Vercel (/api/admin/carrossel-veus/generate-voice) e
+# estão em Supabase. O manifest em course-assets/render-jobs/<jobId>.json
+# tem os URLs. Aqui só fazemos: Puppeteer (PNGs) → ffmpeg (MP4).
 
 on:
   workflow_dispatch:
     inputs:
       jobId:
-        description: "ID único do job (escreve em course-assets/render-jobs/<jobId>-result.json)"
+        description: "ID do job (lê manifest em course-assets/render-jobs/<jobId>.json)"
         required: true
         type: string
-      musicUrl:
-        description: "URL pública da faixa de música (Supabase Storage)"
-        required: false
-        type: string
-        default: ""
-      musicVolume:
-        description: "Volume da música (0-1, default 0.4)"
-        required: false
-        type: string
-        default: "0.4"
 
 run-name: "render-carrossel-veus: ${{ inputs.jobId }}"
 
@@ -56,22 +48,14 @@ jobs:
         working-directory: carrossel-veus
         run: npm ci
 
-      - name: Generate slides (PNG)
+      - name: Generate slides (PNG via Puppeteer)
         working-directory: carrossel-veus
         run: npm run slides
 
-      - name: Generate voices (ElevenLabs)
+      - name: Render videos (ffmpeg + manifest)
         working-directory: carrossel-veus
         env:
-          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-          ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
-        run: npm run vozes
-
-      - name: Render videos (ffmpeg + music)
-        working-directory: carrossel-veus
-        env:
-          MUSIC_URL: ${{ inputs.musicUrl }}
-          MUSIC_VOLUME: ${{ inputs.musicVolume }}
+          MANIFEST_URL: "${{ secrets.SUPABASE_URL }}/storage/v1/object/public/course-assets/render-jobs/${{ inputs.jobId }}.json"
         run: npm run videos
 
       - name: Upload result to Supabase
