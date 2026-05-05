@@ -96,6 +96,17 @@ export function SlidePreview({
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
+      // Ignorar quando o foco está num campo editável — caso contrário
+      // escrever espaço/seta no editor faz o preview saltar de slide.
+      const t = e.target as HTMLElement | null;
+      const tag = t?.tagName;
+      const editable =
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "SELECT" ||
+        (t && (t as HTMLElement).isContentEditable);
+      if (editable) return;
+
       if (e.key === "ArrowRight" || e.key === " ") {
         e.preventDefault();
         next();
