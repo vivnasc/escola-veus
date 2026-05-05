@@ -17,8 +17,7 @@ const TABS_CURSOS: Tab[] = [
   { href: "/admin/producao/longos", label: "Longos" },
   { href: "/admin/producao/shorts/nomear", label: "Shorts Funil" },
   { href: "/admin/producao/audios", label: "Áudios" },
-  { href: "/admin/producao/colecoes", label: "Colecções" },
-  { href: "/admin/producao/carrossel-veus", label: "Carrossel Véus" },
+  { href: "/admin/producao/colecoes", label: "Carrosséis" },
 ];
 
 const TABS_AG: Tab[] = [
