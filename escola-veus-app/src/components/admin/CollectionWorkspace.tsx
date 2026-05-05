@@ -392,21 +392,24 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
           {onThemeChange && (
-            <select
-              value={theme.id}
-              onChange={(e) => {
-                const t = THEMES.find((x) => x.id === e.target.value);
-                if (t) onThemeChange(t);
-              }}
-              className="rounded border border-escola-border bg-escola-bg px-2 py-2 text-xs text-escola-creme"
-              title="Paleta visual"
-            >
-              {THEMES.map((t) => (
-                <option key={t.id} value={t.id}>
-                  🎨 {t.label}
-                </option>
-              ))}
-            </select>
+            <label className="flex items-center gap-2 rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme-50">
+              🎨 Paleta:
+              <select
+                value={theme.id}
+                onChange={(e) => {
+                  const t = THEMES.find((x) => x.id === e.target.value);
+                  if (t) onThemeChange(t);
+                }}
+                className="bg-transparent text-escola-creme focus:outline-none"
+                title="Cor visual dos slides — não muda o conteúdo"
+              >
+                {THEMES.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.label}
+                  </option>
+                ))}
+              </select>
+            </label>
           )}
           {onReset && (
             <button

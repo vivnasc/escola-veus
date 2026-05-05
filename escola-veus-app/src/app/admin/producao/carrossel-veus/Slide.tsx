@@ -111,7 +111,7 @@ function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "
     <div
       style={{
         ...slideBase,
-        background: `radial-gradient(ellipse 70% 50% at 50% 35%, #1f1812 0%, #0a0907 70%), ${C.deep}`,
+        background: `radial-gradient(ellipse 70% 50% at 50% 35%, ${C.deepWarm} 0%, ${C.deep} 70%)`,
         color: C.ivory,
       }}
     >
@@ -265,7 +265,7 @@ function Conteudo({
     <div
       style={{
         ...slideBase,
-        background: `radial-gradient(ellipse 80% 70% at 50% 50%, #efe7d6 0%, #d8cfb8 100%), ${C.ivory}`,
+        background: `radial-gradient(ellipse 80% 70% at 50% 50%, ${C.ivory} 0%, ${C.parchmentDark} 100%)`,
         color: C.ink,
       }}
     >
@@ -460,7 +460,7 @@ function Cta({ slide, C }: { slide: Extract<SlideType, { tipo: "cta" }>; C: Caro
     <div
       style={{
         ...slideBase,
-        background: `radial-gradient(ellipse 70% 60% at 50% 50%, #1c140e 0%, #08070a 80%), ${C.deep}`,
+        background: `radial-gradient(ellipse 70% 60% at 50% 50%, ${C.deepWarm} 0%, ${C.deep} 80%)`,
         color: C.ivory,
       }}
     >
