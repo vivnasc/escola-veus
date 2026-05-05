@@ -160,6 +160,58 @@ export default function LongoDetailPage() {
     Record<string, { stage: "signing" | "uploading" | "finalizing"; progress: number }>
   >({});
 
+  // Claude review pass: keyed by promptId. Decora cada prompt com flags.
+  type Review = {
+    id: string;
+    alignment: "aligned" | "weak" | "misaligned";
+    slop: "clean" | "generic" | "ai-slop";
+    notes: string;
+    suggested?: string;
+  };
+  const [reviews, setReviews] = useState<Record<string, Review>>({});
+  const [reviewing, setReviewing] = useState(false);
+  const [reviewErr, setReviewErr] = useState<string | null>(null);
+
+  const reviewPromptsWithClaude = async () => {
+    if (!project) return;
+    if (
+      !confirm(
+        "Claude vai ler script + prompts e classificar cada prompt em alinhamento ao script + qualidade visual (AI-slop detection). " +
+          `Custo ~$0.05-0.10. Continuar?`,
+      )
+    )
+      return;
+    setReviewing(true);
+    setReviewErr(null);
+    try {
+      const r = await fetch("/api/admin/longos/review-prompts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug }),
+      });
+      const ct = r.headers.get("content-type") || "";
+      const text = await r.text();
+      if (!ct.includes("application/json")) {
+        throw new Error(`HTTP ${r.status}: ${text.slice(0, 200)}`);
+      }
+      const d = JSON.parse(text);
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      const map: Record<string, Review> = {};
+      for (const rev of d.reviews ?? []) {
+        if (rev?.id) map[rev.id] = rev;
+      }
+      setReviews(map);
+      setInfo(
+        `✓ Review feita · ${d.summary.misaligned} misaligned, ${d.summary.weak} weak, ${d.summary.aiSlop} AI-slop, ${d.summary.generic} genéricos · custo $${d.usage.costUsd.toFixed(4)}`,
+      );
+      setTimeout(() => setInfo(null), 8000);
+    } catch (e) {
+      setReviewErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setReviewing(false);
+    }
+  };
+
   // ── Render long-form: música + GitHub Actions polling ────────────────
   type Track = { name: string; url: string };
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -1262,6 +1314,17 @@ export default function LongoDetailPage() {
           </h2>
           <div className="flex items-center gap-1">
             <button
+              onClick={reviewPromptsWithClaude}
+              disabled={reviewing || promptsDraft.length === 0}
+              className="rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-40"
+              title="Claude lê o script + prompts e classifica cada prompt em alinhamento e AI-slop. Custo ~$0.05-0.10."
+            >
+              {reviewing ? "a rever..." : "✨ revisar com Claude"}
+            </button>
+            {reviewErr && (
+              <span className="text-[10px] text-escola-terracota">{reviewErr}</span>
+            )}
+            <button
               onClick={async () => {
                 if (!project) return;
                 try {
@@ -1323,11 +1386,64 @@ export default function LongoDetailPage() {
           </div>
         </div>
         <ul className="space-y-2">
-          {promptsDraft.map((p, i) => (
+          {promptsDraft.map((p, i) => {
+            const review = reviews[p.id];
+            const reviewBorder =
+              review?.alignment === "misaligned" || review?.slop === "ai-slop"
+                ? "border-escola-terracota"
+                : review?.alignment === "weak" || review?.slop === "generic"
+                  ? "border-escola-dourado/60"
+                  : "border-escola-border";
+            return (
             <li
               key={i}
-              className="rounded border border-escola-border bg-escola-bg p-2 text-[11px]"
+              className={`rounded border ${reviewBorder} bg-escola-bg p-2 text-[11px]`}
             >
+              {review && (
+                <div className="mb-1 flex flex-wrap items-center gap-1 text-[9px]">
+                  <span
+                    className={`rounded px-1.5 py-0.5 font-semibold ${
+                      review.alignment === "aligned"
+                        ? "bg-escola-dourado/20 text-escola-dourado"
+                        : review.alignment === "weak"
+                          ? "bg-escola-dourado/40 text-escola-bg"
+                          : "bg-escola-terracota/30 text-escola-terracota"
+                    }`}
+                    title={`alinhamento ao script: ${review.alignment}`}
+                  >
+                    {review.alignment}
+                  </span>
+                  <span
+                    className={`rounded px-1.5 py-0.5 font-semibold ${
+                      review.slop === "clean"
+                        ? "bg-escola-dourado/20 text-escola-dourado"
+                        : review.slop === "generic"
+                          ? "bg-escola-dourado/40 text-escola-bg"
+                          : "bg-escola-terracota/30 text-escola-terracota"
+                    }`}
+                    title={`qualidade visual: ${review.slop}`}
+                  >
+                    {review.slop}
+                  </span>
+                  <span className="text-escola-creme-50 italic">
+                    {review.notes}
+                  </span>
+                  {review.suggested && (
+                    <button
+                      onClick={() => {
+                        const next = [...promptsDraft];
+                        next[i] = { ...next[i], prompt: review.suggested! };
+                        setPromptsDraft(next);
+                        setPromptsDirty(true);
+                      }}
+                      className="ml-auto rounded border border-escola-dourado bg-escola-dourado/10 px-1.5 py-0.5 text-[9px] font-semibold text-escola-dourado hover:bg-escola-dourado/20"
+                      title={review.suggested}
+                    >
+                      ↪ aplicar sugestão
+                    </button>
+                  )}
+                </div>
+              )}
               <div className="mb-1 flex items-center gap-2">
                 <input
                   value={p.id}
@@ -1401,7 +1517,8 @@ export default function LongoDetailPage() {
                 disabled={promptsDirty}
               />
             </li>
-          ))}
+            );
+          })}
         </ul>
         <p className="mt-2 text-[10px] text-escola-creme-50">
           💡 Geras a imagem em Midjourney → usa <b>Image to Video</b> +{" "}
