@@ -91,7 +91,14 @@ export default function ColecoesIndex() {
             brief, o Claude escreve, tu refinas, geras MP4 com música ou voz.
           </p>
         </div>
-        <div className="flex shrink-0 gap-2">
+        <div className="flex shrink-0 flex-wrap gap-2">
+          <Link
+            href="/admin/producao/colecoes/videos"
+            className="rounded border border-escola-border px-3 py-2 text-xs text-escola-creme hover:border-escola-dourado/40"
+            title="Todos os MP4 já gerados — qualquer colecção, qualquer browser"
+          >
+            🎬 Vídeos prontos
+          </Link>
           <Link
             href="/admin/producao/colecoes/calendario"
             className="rounded border border-escola-border px-3 py-2 text-xs text-escola-creme hover:border-escola-dourado/40"
