@@ -97,6 +97,46 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
   } | null>(null);
   const [renderJob, setRenderJob] = useState<RenderStatus | null>(null);
   const [workflowUrl, setWorkflowUrl] = useState<string | null>(null);
+  const [historicalJobs, setHistoricalJobs] = useState<RenderStatus[]>([]);
+
+  const JOBS_KEY = `carrossel.jobs.${slug}`;
+
+  // Persiste jobId após submit (lista por colecção, max 20 mais recentes)
+  function persistJobId(id: string) {
+    try {
+      const raw = localStorage.getItem(JOBS_KEY);
+      const arr: string[] = raw ? JSON.parse(raw) : [];
+      if (!arr.includes(id)) arr.push(id);
+      localStorage.setItem(JOBS_KEY, JSON.stringify(arr.slice(-20)));
+    } catch {}
+  }
+
+  // Ao montar: carrega histórico de jobs do localStorage e poll status
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(JOBS_KEY);
+      if (!raw) return;
+      const ids: string[] = JSON.parse(raw);
+      if (!Array.isArray(ids) || ids.length === 0) return;
+      Promise.all(
+        ids.map(async (id) => {
+          try {
+            const r = await fetch(
+              `/api/admin/carrossel-veus/render-status?jobId=${encodeURIComponent(id)}`,
+              { cache: "no-store" }
+            );
+            if (r.ok) return (await r.json()) as RenderStatus;
+          } catch {}
+          return null;
+        })
+      ).then((results) => {
+        setHistoricalJobs(
+          results.filter((r): r is RenderStatus => !!r && (r.status === "done" || r.status === "failed"))
+        );
+      });
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
 
   const allAudiosReady = useMemo(() => {
     for (const dia of dias) {
@@ -283,6 +323,7 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
       if (!r.ok) throw new Error(data.erro || `HTTP ${r.status}`);
       setRenderJob({ jobId: data.jobId, status: "queued" });
       setWorkflowUrl(data.workflowRunUrl || null);
+      persistJobId(data.jobId);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       alert(`Falha ao submeter: ${msg}`);
@@ -429,6 +470,53 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
           {extraHeaderActions}
         </div>
       </div>
+
+      {/* ─── VÍDEOS GERADOS ANTERIORMENTE ─────────────── */}
+      {historicalJobs.length > 0 && (
+        <section className="mb-10 rounded-lg border border-escola-border bg-escola-card p-5">
+          <header className="mb-4 flex items-baseline justify-between gap-3">
+            <div>
+              <h3 className="font-serif text-lg text-escola-creme">Vídeos gerados</h3>
+              <p className="text-xs text-escola-creme-50">
+                {historicalJobs.reduce((a, j) => a + (j.videos?.length ?? 0), 0)} MP4 prontos.
+                Clica para reproduzir, copiar legenda ou descarregar.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                if (confirm("Limpar histórico desta colecção? Os MP4 continuam no Supabase, só ficas sem o atalho aqui.")) {
+                  try { localStorage.removeItem(JOBS_KEY); } catch {}
+                  setHistoricalJobs([]);
+                }
+              }}
+              className="text-[11px] text-escola-creme-50 hover:text-red-300"
+              title="Limpar lista (não apaga os MP4)"
+            >
+              limpar lista
+            </button>
+          </header>
+          <div className="space-y-6">
+            {historicalJobs.flatMap((job) => {
+              if (job.status !== "done" || !job.videos) return [];
+              return job.videos.map((v) => {
+                const m = v.file.match(/dia-(\d+)/);
+                const diaNum = m ? Number(m[1]) : 0;
+                const dia = dias.find((d) => d.numero === diaNum);
+                return (
+                  <VideoResultCard
+                    key={`${job.jobId}-${v.file}`}
+                    file={v.file}
+                    url={v.url}
+                    sizeBytes={v.sizeBytes}
+                    dia={dia}
+                    totalDias={totalDias}
+                  />
+                );
+              });
+            })}
+          </div>
+        </section>
+      )}
 
       {/* ─── VOZES ──────────────────────────────────── */}
       <section className="mb-10 rounded-lg border border-escola-border bg-escola-card p-5">
