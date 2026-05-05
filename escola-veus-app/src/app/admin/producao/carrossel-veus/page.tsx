@@ -43,6 +43,33 @@ function deriveText(dia: Dia, slide: SlideType): string {
   return `${slide.recurso}. ${slide.descricao}`;
 }
 
+/**
+ * Gera uma legenda sugerida para o post — capa + uma frase chave + CTA.
+ * Pensada para WhatsApp/IG: voz calma, sem exclamações.
+ */
+function captionFor(dia: Dia): string {
+  const capa = dia.slides.find((s) => s.tipo === "capa") as Extract<SlideType, { tipo: "capa" }> | undefined;
+  const cta = dia.slides.find((s) => s.tipo === "cta") as Extract<SlideType, { tipo: "cta" }> | undefined;
+  const conteudos = dia.slides.filter(
+    (s): s is Extract<SlideType, { tipo: "conteudo" }> => s.tipo === "conteudo"
+  );
+  const primeiraProsa = conteudos.find((c) => c.estilo === "prosa")?.texto || conteudos[0]?.texto || "";
+
+  return [
+    `${dia.veu} · Dia ${dia.numero}/7`,
+    `— ${dia.subtitulo}`,
+    "",
+    capa ? `${capa.linha1}\n${capa.linha2}` : "",
+    "",
+    primeiraProsa.replace(/\n+/g, " ").slice(0, 280),
+    "",
+    cta ? `${cta.recurso}\n${cta.url}` : "",
+  ]
+    .filter((s) => s !== null && s !== undefined)
+    .join("\n")
+    .trim();
+}
+
 function audioKey(dia: number, slide: number) {
   return `${dia}-${slide}`;
 }
@@ -63,6 +90,7 @@ export default function CarrosselVeusPage() {
   const [withoutVoice, setWithoutVoice] = useState<boolean>(false);
   const [slideDuration, setSlideDuration] = useState<number>(8);
   const [previewDia, setPreviewDia] = useState<number | null>(null);
+  const [fullscreenSlide, setFullscreenSlide] = useState<{ dia: Dia; slide: SlideType; indice: number } | null>(null);
   const [renderJob, setRenderJob] = useState<RenderStatus | null>(null);
   const [workflowUrl, setWorkflowUrl] = useState<string | null>(null);
 
@@ -168,24 +196,49 @@ export default function CarrosselVeusPage() {
   }
 
   // ─── Submit render final ──────────────────────────
-  async function submitRender() {
-    if (!withoutVoice && !allAudiosReady) {
-      alert("Faltam áudios. Gera as 42 vozes primeiro, ou marca \"sem voz\".");
-      return;
+  /**
+   * Submete um job de render. `dias` opcional: se omitido, gera os 7. Se passado
+   * (ex.: [3]), só gera os dias indicados. Em modo `withoutVoice` ignora voz e
+   * usa duração fixa por slide. Em modo normal envia só os áudios dos dias
+   * pedidos (não os 42 sempre).
+   */
+  async function submitRender(opts?: { dias?: number[]; withoutVoiceOverride?: boolean }) {
+    const dias = opts?.dias;
+    const noVoice = opts?.withoutVoiceOverride ?? withoutVoice;
+
+    // Quais dias estão a ser gerados
+    const targetDias = dias ? DIAS.filter((d) => dias.includes(d.numero)) : DIAS;
+
+    // Validar áudios para esses dias quando há voz
+    if (!noVoice) {
+      for (const dia of targetDias) {
+        for (let i = 0; i < dia.slides.length; i++) {
+          if (!audios[audioKey(dia.numero, i + 1)]?.url) {
+            alert(
+              `Falta voz no Dia ${dia.numero} · slide ${i + 1}. Gera-a primeiro ou marca "sem voz".`
+            );
+            return;
+          }
+        }
+      }
     }
-    setBusy("submit-render");
+
+    const busyKey = dias ? `submit-${dias.join(",")}` : "submit-render";
+    setBusy(busyKey);
     try {
       const currentJobId = jobId || `carrossel-veus-${Date.now()}`;
       if (!jobId) setJobId(currentJobId);
-      const audiosList = withoutVoice
+
+      const audiosList = noVoice
         ? []
-        : DIAS.flatMap((dia) =>
+        : targetDias.flatMap((dia) =>
             dia.slides.map((_, i) => ({
               dia: dia.numero,
               slide: i + 1,
               url: audios[audioKey(dia.numero, i + 1)]!.url!,
             }))
           );
+
       const r = await fetch("/api/admin/carrossel-veus/render-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -194,8 +247,9 @@ export default function CarrosselVeusPage() {
           audios: audiosList,
           musicUrl: agTrackUrl(musicTrack),
           musicVolume,
-          withoutVoice,
+          withoutVoice: noVoice,
           slideDuration,
+          dias: dias ?? null,
         }),
       });
       const data = await r.json();
@@ -328,26 +382,44 @@ export default function CarrosselVeusPage() {
           {DIAS.map((dia) => (
             <details key={dia.numero} className="rounded border border-escola-border bg-escola-bg" open>
               <summary className="cursor-pointer list-none px-4 py-3 text-sm">
-                <div className="flex items-baseline justify-between">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <div>
                     <span className="text-escola-creme">Dia {dia.numero}</span>{" "}
                     <span className="text-escola-dourado">{dia.veu}</span>
                     <span className="ml-3 text-xs text-escola-creme-50">
-                      {dia.slides.filter((_, i) => audios[audioKey(dia.numero, i + 1)]?.url).length}/{dia.slides.length}
+                      {dia.slides.filter((_, i) => audios[audioKey(dia.numero, i + 1)]?.url).length}/{dia.slides.length} vozes
                     </span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setPreviewDia(dia.numero);
-                    }}
-                    disabled={!dia.slides.every((_, i) => audios[audioKey(dia.numero, i + 1)]?.url)}
-                    className="rounded bg-escola-dourado/20 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/30 disabled:opacity-30"
-                  >
-                    ▶ Preview vídeo do dia
-                  </button>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setPreviewDia(dia.numero);
+                      }}
+                      className="rounded bg-escola-dourado/20 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/30"
+                      title="Pré-visualizar slides em sequência (com voz se já existir, ou só com música/timer)"
+                    >
+                      ▶ Preview
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        submitRender({ dias: [dia.numero] });
+                      }}
+                      disabled={
+                        busy?.startsWith("submit-") ||
+                        (renderJob !== null && renderJob.status !== "done" && renderJob.status !== "failed")
+                      }
+                      className="rounded bg-escola-violeta/30 px-3 py-1 text-xs font-semibold text-escola-creme hover:bg-escola-violeta/50 disabled:opacity-30"
+                      title="Gerar MP4 só deste dia (não precisa esperar pelos outros)"
+                    >
+                      ▶ Gerar vídeo deste dia
+                    </button>
+                  </div>
                 </div>
               </summary>
               <ul className="space-y-2 px-4 pb-4">
@@ -407,12 +479,16 @@ export default function CarrosselVeusPage() {
                   const k = audioKey(dia.numero, i + 1);
                   return (
                     <div key={k} className="flex flex-col items-center gap-2">
-                      <div
-                        ref={(el) => setRef(k, el)}
-                        className="overflow-hidden rounded border border-escola-border bg-black"
+                      <button
+                        type="button"
+                        onClick={() => setFullscreenSlide({ dia, slide, indice: i })}
+                        className="overflow-hidden rounded border border-escola-border bg-black transition-colors hover:border-escola-dourado/60"
+                        title="Abrir em ecrã inteiro"
                       >
-                        <Slide dia={dia} slide={slide} indice={i} scale={PREVIEW_SCALE} />
-                      </div>
+                        <div ref={(el) => setRef(k, el)}>
+                          <Slide dia={dia} slide={slide} indice={i} scale={PREVIEW_SCALE} />
+                        </div>
+                      </button>
                       <div className="flex w-full items-center justify-between gap-2 px-1">
                         <span className="text-[10px] uppercase tracking-wider text-escola-creme-50">
                           {tipoLabel(slide)}
@@ -502,7 +578,7 @@ export default function CarrosselVeusPage() {
 
         <div className="mt-4">
           <button
-            onClick={submitRender}
+            onClick={() => submitRender()}
             disabled={
               (!withoutVoice && !allAudiosReady) ||
               busy === "submit-render" ||
@@ -549,26 +625,22 @@ export default function CarrosselVeusPage() {
             )}
             {renderJob.error && <p className="mb-2 text-red-300">Erro: {renderJob.error}</p>}
             {renderJob.status === "done" && renderJob.videos && renderJob.videos.length > 0 && (
-              <div className="mt-3">
-                <p className="mb-2 font-semibold text-escola-creme">Descarregar:</p>
-                <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {renderJob.videos.map((v) => (
-                    <li key={v.file}>
-                      <a
-                        href={v.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        download
-                        className="block rounded border border-escola-border bg-escola-card px-3 py-2 text-center text-escola-creme hover:border-escola-dourado/40"
-                      >
-                        ↓ {v.file.replace(".mp4", "")}
-                        <span className="ml-1 text-[10px] text-escola-creme-50">
-                          {(v.sizeBytes / 1024 / 1024).toFixed(1)} MB
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+              <div className="mt-3 space-y-6">
+                <p className="font-semibold text-escola-creme">Vídeos prontos:</p>
+                {renderJob.videos.map((v) => {
+                  const m = v.file.match(/dia-(\d+)/);
+                  const diaNum = m ? Number(m[1]) : 0;
+                  const dia = DIAS.find((d) => d.numero === diaNum);
+                  return (
+                    <VideoResultCard
+                      key={v.file}
+                      file={v.file}
+                      url={v.url}
+                      sizeBytes={v.sizeBytes}
+                      dia={dia}
+                    />
+                  );
+                })}
               </div>
             )}
           </div>
@@ -581,7 +653,18 @@ export default function CarrosselVeusPage() {
           audios={audios}
           musicUrl={agTrackUrl(musicTrack)}
           musicVolume={musicVolume}
+          slideDuration={slideDuration}
           onClose={() => setPreviewDia(null)}
+        />
+      )}
+
+      {fullscreenSlide && (
+        <FullscreenSlide
+          dia={fullscreenSlide.dia}
+          slide={fullscreenSlide.slide}
+          indice={fullscreenSlide.indice}
+          onClose={() => setFullscreenSlide(null)}
+          onDownload={() => downloadSlide(fullscreenSlide.dia, fullscreenSlide.indice)}
         />
       )}
     </div>
@@ -603,31 +686,58 @@ function PreviewModal({
   audios,
   musicUrl,
   musicVolume,
+  slideDuration,
   onClose,
 }: {
   dia: Dia;
   audios: Record<string, AudioState>;
   musicUrl: string;
   musicVolume: number;
+  slideDuration: number;
   onClose: () => void;
 }) {
   const [slideIdx, setSlideIdx] = useState(0);
   const [playing, setPlaying] = useState(false);
   const voiceRef = useRef<HTMLAudioElement>(null);
   const musicAudioRef = useRef<HTMLAudioElement>(null);
+  const noVoiceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const slide = dia.slides[slideIdx];
   const voiceUrl = audios[audioKey(dia.numero, slideIdx + 1)]?.url;
 
-  // Carrega nova voz quando muda o slide e (se playing) começa
-  useEffect(() => {
-    if (!voiceRef.current || !voiceUrl) return;
-    voiceRef.current.src = voiceUrl;
-    voiceRef.current.load();
-    if (playing) {
-      voiceRef.current.play().catch(() => {});
+  function clearNoVoiceTimer() {
+    if (noVoiceTimerRef.current) {
+      clearTimeout(noVoiceTimerRef.current);
+      noVoiceTimerRef.current = null;
     }
-  }, [voiceUrl, slideIdx, playing]);
+  }
+
+  // Avança para o próximo slide (ou pára no fim).
+  function advance() {
+    if (slideIdx >= dia.slides.length - 1) {
+      setPlaying(false);
+      return;
+    }
+    setTimeout(() => setSlideIdx((i) => i + 1), RESPIRACAO_MS);
+  }
+
+  // Carrega voz (se existir) ou agenda timer (se não existir) quando muda o slide.
+  useEffect(() => {
+    clearNoVoiceTimer();
+    if (!playing) return;
+    if (voiceUrl) {
+      if (voiceRef.current) {
+        voiceRef.current.src = voiceUrl;
+        voiceRef.current.load();
+        voiceRef.current.play().catch(() => {});
+      }
+    } else {
+      // sem voz neste slide → avança após slideDuration segundos
+      noVoiceTimerRef.current = setTimeout(advance, slideDuration * 1000);
+    }
+    return clearNoVoiceTimer;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [voiceUrl, slideIdx, playing, slideDuration]);
 
   // Música: arranque/paragem segue o estado playing
   useEffect(() => {
@@ -639,26 +749,18 @@ function PreviewModal({
     else a.pause();
   }, [playing, musicVolume]);
 
-  // Quando a voz acaba: 1s respiração → próximo slide (ou fim)
   function onVoiceEnded() {
-    if (slideIdx >= dia.slides.length - 1) {
-      setPlaying(false);
-      return;
-    }
-    setTimeout(() => setSlideIdx((i) => i + 1), RESPIRACAO_MS);
+    advance();
   }
 
   function start() {
     setSlideIdx(0);
     setPlaying(true);
-    // pequena espera para o useEffect carregar voiceUrl no <audio>
-    setTimeout(() => {
-      voiceRef.current?.play().catch(() => {});
-    }, 50);
   }
 
   function stop() {
     setPlaying(false);
+    clearNoVoiceTimer();
     voiceRef.current?.pause();
     musicAudioRef.current?.pause();
   }
@@ -733,6 +835,148 @@ function PreviewModal({
 
       {/* Música em loop, sem controlos visíveis */}
       <audio ref={musicAudioRef} src={musicUrl} preload="auto" />
+    </div>
+  );
+}
+
+/* ─── FullscreenSlide ─────────────────────────────────────────
+   Mostra um único slide preenchendo o ecrã (mantém aspect 9:16).
+   Útil em mobile — vê-se grande sem precisar fazer download do PNG.
+*/
+function FullscreenSlide({
+  dia,
+  slide,
+  indice,
+  onClose,
+  onDownload,
+}: {
+  dia: Dia;
+  slide: SlideType;
+  indice: number;
+  onClose: () => void;
+  onDownload: () => void;
+}) {
+  const [scale, setScale] = useState(0.4);
+
+  useEffect(() => {
+    function fit() {
+      const margin = 80;
+      const sH = (window.innerHeight - margin) / 1920;
+      const sW = (window.innerWidth - 32) / 1080;
+      setScale(Math.max(0.15, Math.min(sH, sW)));
+    }
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95 p-4">
+      <div className="absolute right-4 top-4 flex gap-2">
+        <button
+          onClick={onDownload}
+          className="rounded bg-escola-card px-3 py-2 text-xs text-escola-creme hover:bg-escola-bg-light"
+        >
+          ↓ PNG
+        </button>
+        <button
+          onClick={onClose}
+          className="rounded bg-escola-card px-3 py-2 text-xs text-escola-creme hover:bg-escola-bg-light"
+        >
+          ✕
+        </button>
+      </div>
+      <p className="mb-3 text-center text-xs text-escola-creme-50">
+        Dia {dia.numero} · {dia.veu} · slide {indice + 1}/{dia.slides.length}
+      </p>
+      <div className="overflow-hidden rounded border border-escola-border">
+        <Slide dia={dia} slide={slide} indice={indice} scale={scale} />
+      </div>
+    </div>
+  );
+}
+
+/* ─── VideoResultCard ─────────────────────────────────────────
+   Player do MP4 + legenda editável + botões copiar/descarregar.
+*/
+function VideoResultCard({
+  file,
+  url,
+  sizeBytes,
+  dia,
+}: {
+  file: string;
+  url: string;
+  sizeBytes: number;
+  dia?: Dia;
+}) {
+  const [caption, setCaption] = useState(dia ? captionFor(dia) : "");
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(caption);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      alert("Não consegui copiar — selecciona e copia à mão.");
+    }
+  }
+
+  return (
+    <div className="rounded border border-escola-border bg-escola-card p-3">
+      <div className="mb-2 flex items-baseline justify-between gap-2">
+        <p className="text-sm text-escola-creme">
+          {dia ? (
+            <>
+              Dia {dia.numero} · <span className="text-escola-dourado">{dia.veu}</span>
+            </>
+          ) : (
+            file
+          )}
+        </p>
+        <span className="text-[10px] text-escola-creme-50">
+          {(sizeBytes / 1024 / 1024).toFixed(1)} MB
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[200px_1fr]">
+        <video
+          src={url}
+          controls
+          playsInline
+          preload="metadata"
+          className="aspect-[9/16] w-full rounded border border-escola-border bg-black"
+        />
+        <div className="flex flex-col gap-2">
+          <label className="text-[11px] uppercase tracking-wider text-escola-creme-50">
+            Legenda (editável)
+          </label>
+          <textarea
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            rows={8}
+            className="w-full rounded border border-escola-border bg-escola-bg p-2 text-xs text-escola-creme"
+          />
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={copy}
+              className="rounded bg-escola-dourado/90 px-3 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado"
+            >
+              {copied ? "✓ copiada" : "⧉ copiar legenda"}
+            </button>
+            <a
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              download
+              className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40"
+            >
+              ↓ descarregar MP4
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
