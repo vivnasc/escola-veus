@@ -258,17 +258,26 @@ export default function CarrosselVeusPage() {
     // Quais dias estão a ser gerados
     const targetDias = dias ? DIAS.filter((d) => dias.includes(d.numero)) : DIAS;
 
-    // Validar áudios para esses dias quando há voz
-    if (!noVoice) {
-      for (const dia of targetDias) {
+    // Validar áudios para esses dias quando há voz; se faltar, oferecer "sem voz"
+    let effectiveNoVoice = noVoice;
+    if (!effectiveNoVoice) {
+      let missing = false;
+      outer: for (const dia of targetDias) {
         for (let i = 0; i < dia.slides.length; i++) {
           if (!audios[audioKey(dia.numero, i + 1)]?.url) {
-            alert(
-              `Falta voz no Dia ${dia.numero} · slide ${i + 1}. Gera-a primeiro ou marca "sem voz".`
-            );
-            return;
+            missing = true;
+            break outer;
           }
         }
+      }
+      if (missing) {
+        const ok = confirm(
+          targetDias.length === 1
+            ? `Não há vozes geradas para o Dia ${targetDias[0].numero}. Gerar só com música Ancient Ground?`
+            : `Faltam vozes. Gerar todos os vídeos só com música Ancient Ground (sem narração)?`
+        );
+        if (!ok) return;
+        effectiveNoVoice = true;
       }
     }
 
@@ -278,7 +287,7 @@ export default function CarrosselVeusPage() {
       const currentJobId = jobId || `carrossel-veus-${Date.now()}`;
       if (!jobId) setJobId(currentJobId);
 
-      const audiosList = noVoice
+      const audiosList = effectiveNoVoice
         ? []
         : targetDias.flatMap((dia) =>
             dia.slides.map((_, i) => ({
@@ -299,7 +308,7 @@ export default function CarrosselVeusPage() {
           audios: audiosList,
           musicUrl: agTrackUrl(musicTrack),
           musicVolume,
-          withoutVoice: noVoice,
+          withoutVoice: effectiveNoVoice,
           slideDuration,
           dias: dias ?? null,
           content: contentChanged ? { campanha: CAMPANHA, dias: DIAS } : undefined,
@@ -419,25 +428,39 @@ export default function CarrosselVeusPage() {
 
       {/* ─── Painel de VOZES ──────────────────────────── */}
       <section className="mb-10 rounded-lg border border-escola-border bg-escola-card p-5">
-        <header className="mb-4 flex items-baseline justify-between gap-3">
-          <div>
+        <header className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
+          <div className="min-w-0 flex-1">
             <h3 className="font-serif text-lg text-escola-creme">1. Vozes (ElevenLabs)</h3>
             <p className="text-xs text-escola-creme-50">
-              Clica <span className="text-escola-dourado">▶</span> em cada slide para gerar a voz dessa narração.
-              Ouve, regera com <span className="text-escola-dourado">↻</span> se não gostares.
-              {audiosCount > 0 && ` · ${audiosCount}/42 prontas`}
+              {withoutVoice
+                ? <><span className="text-escola-dourado">Modo sem voz activo</span> — os vídeos vão sair só com música Ancient Ground. Os botões "Gerar vídeo deste dia" funcionam sem precisares de gerar narrações.</>
+                : <>Clica <span className="text-escola-dourado">▶</span> em cada slide para gerar a voz. Ou marca "sem voz" para vídeos só com música.</>}
+              {audiosCount > 0 && ` · ${audiosCount}/42 vozes prontas`}
             </p>
           </div>
-          <button
-            onClick={generateAllVoices}
-            disabled={generatingAll}
-            className="shrink-0 rounded border border-escola-border px-3 py-2 text-xs text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme disabled:opacity-40"
-            title="Gera todas as que ainda faltam, em sequência"
-          >
-            {generatingAll
-              ? `${progress?.done ?? 0}/${progress?.total ?? 42}`
-              : "↻ gerar todas as que faltam"}
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <label className="flex cursor-pointer items-center gap-2 rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-xs text-escola-creme">
+              <input
+                type="checkbox"
+                checked={withoutVoice}
+                onChange={(e) => setWithoutVoice(e.target.checked)}
+                className="h-3.5 w-3.5"
+              />
+              Sem voz (só música AG)
+            </label>
+            {!withoutVoice && (
+              <button
+                onClick={generateAllVoices}
+                disabled={generatingAll}
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme disabled:opacity-40"
+                title="Gera todas as que ainda faltam, em sequência"
+              >
+                {generatingAll
+                  ? `${progress?.done ?? 0}/${progress?.total ?? 42}`
+                  : "↻ gerar todas as que faltam"}
+              </button>
+            )}
+          </div>
         </header>
 
         <div className="space-y-4">
