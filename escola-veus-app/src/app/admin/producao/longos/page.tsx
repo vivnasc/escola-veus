@@ -60,6 +60,57 @@ export default function LongosPage() {
   const [saving, setSaving] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
 
+  // ── Anti-perda: localStorage backup do preview ──────────────────────
+  // Gerar projecto custa ~$0.10 ao Claude. Se o user fechar o browser antes
+  // de clicar Guardar, perde-se. Auto-backup em localStorage assim que
+  // chega o preview; recupera-se ao reabrir a página.
+  const PREVIEW_KEY = "longos-preview-backup";
+
+  // Restaurar backup à entrada (uma vez)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(PREVIEW_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as GenResult & { _backupAt?: string };
+        if (parsed && parsed.titulo) {
+          setPreview(parsed);
+          setInfo(
+            `📦 Recuperado preview de Claude (gerado ${parsed._backupAt ? `em ${new Date(parsed._backupAt).toLocaleTimeString("pt-PT")}` : "anteriormente"}). Clica Guardar para persistir em Supabase ou Descartar.`,
+          );
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  // Sempre que preview muda (set ou clear), sync com localStorage
+  useEffect(() => {
+    try {
+      if (preview) {
+        localStorage.setItem(
+          PREVIEW_KEY,
+          JSON.stringify({ ...preview, _backupAt: new Date().toISOString() }),
+        );
+      } else {
+        localStorage.removeItem(PREVIEW_KEY);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, [preview]);
+
+  // beforeunload: avisa se há preview não guardado
+  useEffect(() => {
+    if (!preview) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [preview]);
+
   const reload = useCallback(async () => {
     setLoading(true);
     try {
