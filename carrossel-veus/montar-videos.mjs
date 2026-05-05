@@ -108,46 +108,30 @@ async function renderSegmento(png, mp3, outFile, duracao) {
   });
 }
 
-// Concatena segmentos com cross-dissolve usando xfade + acrossfade.
+// Concatena segmentos via concat demuxer (corte directo, sem cross-fade).
+// Mais robusto que xfade em complex filter, especialmente em modo "sem voz".
+// Cada segmento já tem H.264 + AAC com mesmas specs portanto -c copy funciona.
 async function concatComFade(segmentos, duracoes, outFile) {
+  // Escreve lista para concat demuxer com paths absolutos (ffmpeg resolve
+  // relativos a partir do CWD que é incerto via fluent-ffmpeg).
+  const listPath = path.join(TMP_DIR, `concat-list-${Date.now()}.txt`);
+  const listContent = segmentos
+    .map((s) => `file '${s.replace(/'/g, "'\\''")}'`)
+    .join("\n");
+  await writeFile(listPath, listContent, "utf8");
+
+  const total = duracoes.reduce((a, b) => a + b, 0);
+
   return new Promise((resolve, reject) => {
-    let cmd = ffmpeg();
-    segmentos.forEach((s) => cmd.input(s));
-
-    const filters = [];
-    let prevV = "0:v";
-    let prevA = "0:a";
-    let acumulada = duracoes[0];
-
-    for (let i = 1; i < segmentos.length; i++) {
-      const offset = acumulada - TRANSITION;
-      const vOut = `v${i}`;
-      const aOut = `a${i}`;
-      filters.push(
-        `[${prevV}][${i}:v]xfade=transition=fade:duration=${TRANSITION}:offset=${offset.toFixed(3)}[${vOut}]`
-      );
-      filters.push(
-        `[${prevA}][${i}:a]acrossfade=d=${TRANSITION}[${aOut}]`
-      );
-      prevV = vOut;
-      prevA = aOut;
-      acumulada += duracoes[i] - TRANSITION;
-    }
-
-    cmd
-      .complexFilter(filters, [prevV, prevA])
+    ffmpeg()
+      .input(listPath)
+      .inputOptions(["-f concat", "-safe 0"])
       .outputOptions([
-        "-c:v libx264",
-        "-pix_fmt yuv420p",
-        "-preset medium",
-        "-crf 18",
-        "-c:a aac",
-        "-b:a 192k",
-        "-r",
-        String(FPS),
+        "-c:v copy",
+        "-c:a copy",
       ])
       .on("error", reject)
-      .on("end", () => resolve(acumulada))
+      .on("end", () => resolve(total))
       .save(outFile);
   });
 }
