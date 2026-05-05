@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   defaultBlocksForActo,
   type Acto,
@@ -99,8 +100,86 @@ export function CurrentSlideEditor({
     });
   }
 
+  /** Calcula o texto/título original deste slide (vindo do script base do
+   *  repo, ignorando overrides). Para conteúdo, devolve o bloco no índice
+   *  que este slide ocupa dentro do seu acto. */
+  function originalTextForCurrentSlide(): string | null {
+    if (slide.tipo === "title") return baseScript.title;
+    if (slide.tipo !== "conteudo") return null;
+    const baseBlocks = defaultBlocksForActo(slide.acto, baseScript[FIELD_BY_ACTO[slide.acto]] as string);
+    const blockIdx = computeBlockIndex(deck, slideIdx);
+    return baseBlocks[blockIdx] ?? null;
+  }
+
+  /** Repõe este slide ao original do repo: limpa override de texto deste
+   *  bloco/título e o override de duração. Não toca em outros slides. */
+  function revertCurrentSlide() {
+    const next: LessonConfig = { ...config };
+
+    // Duração
+    if (next.timingOverrides) {
+      const t = { ...next.timingOverrides };
+      delete t[String(slideIdx)];
+      next.timingOverrides = t;
+    }
+
+    if (slide.tipo === "title") {
+      // Apaga o override do título
+      if (next.script) {
+        const s = { ...next.script };
+        delete s.title;
+        next.script = Object.keys(s).length === 0 ? undefined : s;
+      }
+    } else if (slide.tipo === "conteudo") {
+      // Repõe o bloco específico para o original. Como tinhas overrides
+      // gravados em config.blockSplits[acto], precisamos de:
+      //  - se a quantidade de blocos atual ≠ default, voltar ao default
+      //    (não dá para reverter "só este" se tu adicionaste/removeste)
+      //  - senão, substituir só o bloco pelo original
+      const baseText = baseScript[FIELD_BY_ACTO[slide.acto]] as string;
+      const baseBlocks = defaultBlocksForActo(slide.acto, baseText);
+      const idx = computeBlockIndex(deck, slideIdx);
+      const overrideBlocks = next.blockSplits?.[slide.acto];
+
+      if (
+        overrideBlocks &&
+        overrideBlocks.length === baseBlocks.length &&
+        idx >= 0 &&
+        idx < baseBlocks.length
+      ) {
+        // Mesmo número de blocos: substitui só este pelo original.
+        const restored = [...overrideBlocks];
+        restored[idx] = baseBlocks[idx];
+        const matchesAll = restored.every((b, i) => b.trim() === baseBlocks[i].trim());
+        const splits = { ...(next.blockSplits ?? {}) };
+        if (matchesAll) {
+          delete splits[slide.acto];
+        } else {
+          splits[slide.acto] = restored;
+        }
+        next.blockSplits = Object.keys(splits).length === 0 ? undefined : splits;
+      } else {
+        // Quantidade de blocos foi mexida: repor o acto inteiro ao default.
+        const splits = { ...(next.blockSplits ?? {}) };
+        delete splits[slide.acto];
+        next.blockSplits = Object.keys(splits).length === 0 ? undefined : splits;
+      }
+
+      // Também tira o override de texto do campo do script para este acto
+      if (next.script) {
+        const s = { ...next.script };
+        delete s[FIELD_BY_ACTO[slide.acto] as keyof typeof s];
+        next.script = Object.keys(s).length === 0 ? undefined : s;
+      }
+    }
+
+    onConfigChange(next);
+  }
+
+  const [showOriginal, setShowOriginal] = useState(false);
   const hasCustomDuration = config.timingOverrides?.[String(slideIdx)] != null;
   const header = headerFor(slide);
+  const originalText = originalTextForCurrentSlide();
 
   return (
     <div className="rounded-xl border border-escola-dourado/30 bg-escola-card p-5">
@@ -132,13 +211,51 @@ export function CurrentSlideEditor({
             <button
               onClick={resetDuracao}
               className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
-              title="Repor automático (1s/5chars)"
+              title="Repor automático (1s/7chars)"
             >
               ↺ auto
             </button>
           )}
         </div>
       </div>
+
+      {/* Affordances de autonomia: reverter este slide / ver original. */}
+      {(slide.tipo === "title" || slide.tipo === "conteudo") && (
+        <div className="mb-3 flex flex-wrap items-center gap-2 border-b border-escola-border pb-3 text-[11px]">
+          <button
+            onClick={revertCurrentSlide}
+            className="rounded border border-escola-border px-2 py-1 text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+            title="Substitui o texto e a duração deste slide pelo original do script"
+          >
+            ↩ Repor original deste slide
+          </button>
+          <button
+            onClick={() => setShowOriginal((v) => !v)}
+            className="rounded border border-escola-border px-2 py-1 text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+            title="Ver o texto original sem alterar nada"
+          >
+            {showOriginal ? "Esconder" : "Mostrar"} texto original
+          </button>
+        </div>
+      )}
+
+      {showOriginal && originalText != null && (
+        <div className="mb-3 rounded border border-dashed border-escola-border bg-escola-bg/40 p-3">
+          <p className="mb-1 text-[10px] uppercase tracking-wider text-escola-creme-50">
+            Original deste slide (script base)
+          </p>
+          <p className="whitespace-pre-line font-serif text-xs leading-relaxed text-escola-creme-50">
+            {originalText}
+          </p>
+          <button
+            onClick={() => navigator.clipboard?.writeText(originalText)}
+            className="mt-2 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+            title="Copiar para a área de transferência"
+          >
+            ⧉ copiar
+          </button>
+        </div>
+      )}
 
       {slide.tipo === "title" && (
         <div>
