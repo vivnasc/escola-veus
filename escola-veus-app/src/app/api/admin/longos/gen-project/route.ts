@@ -241,7 +241,12 @@ Devolve JSON com:
 Responde APENAS com JSON válido.`;
 
   try {
-    const response = await client.messages.create({
+    // STREAMING: a geração com adaptive thinking pode demorar 1-3 min. Sem
+    // streaming, Vercel gateway corta a connection e devolve HTML de erro
+    // ("An error occurred...") que faz o cliente fazer JSON.parse de algo
+    // que não é JSON. Streaming mantém a connection viva durante a geração;
+    // .finalMessage() junta o final completo no fim.
+    const stream = client.messages.stream({
       model: "claude-sonnet-4-6",
       max_tokens: 16000, // script de 3000 palavras + 30 prompts ≈ 12k tokens
       thinking: { type: "adaptive" },
@@ -297,6 +302,10 @@ Responde APENAS com JSON válido.`;
         },
       },
     });
+
+    // .finalMessage() acumula todos os eventos do stream e devolve o
+    // Message completo (mesmo shape que .create()).
+    const response = await stream.finalMessage();
 
     const textBlock = response.content.find((b) => b.type === "text");
     if (!textBlock || textBlock.type !== "text") {
