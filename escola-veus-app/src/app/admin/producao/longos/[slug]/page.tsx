@@ -168,6 +168,80 @@ export default function LongoDetailPage() {
     notes: string;
     suggested?: string;
   };
+  type PoolClip = {
+    clipId: string;
+    clipUrl: string;
+    source: "longo" | "nomear";
+    episode: string;
+    mood: string[];
+    prompt: string | null;
+    sourceLabel: string;
+  };
+  const [pool, setPool] = useState<PoolClip[]>([]);
+  const [poolOpenForPrompt, setPoolOpenForPrompt] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/longos/pool", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.clips)) setPool(d.clips);
+      })
+      .catch(() => {});
+  }, []);
+
+  const rankPoolFor = (prompt: { mood: string[]; prompt: string }): (PoolClip & { score: number })[] => {
+    const moodSet = new Set(prompt.mood ?? []);
+    const tokens = new Set(
+      (prompt.prompt ?? "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .split(/\s+/)
+        .filter((w) => w.length >= 4),
+    );
+    const scored = pool.map((c) => {
+      const moodMatches = c.mood.filter((m) => moodSet.has(m)).length;
+      const cTokens = new Set(
+        (c.prompt ?? "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9\s]/g, " ")
+          .split(/\s+/)
+          .filter((w) => w.length >= 4),
+      );
+      let kwMatches = 0;
+      tokens.forEach((t) => {
+        if (cTokens.has(t)) kwMatches++;
+      });
+      return { ...c, score: 2 * moodMatches + kwMatches };
+    });
+    return scored
+      .filter((c) => c.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6);
+  };
+
+  const reusePoolClipForPrompt = async (promptId: string, clipUrl: string) => {
+    if (!project) return;
+    try {
+      const r = await fetch("/api/admin/longos/finalize-clip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug, promptId, clipUrl }),
+      });
+      const d = await r.json();
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      await load();
+      setPoolOpenForPrompt(null);
+      setInfo(`✓ Clip reaproveitado para ${promptId}`);
+      setTimeout(() => setInfo(null), 2000);
+    } catch (e) {
+      setInfo(`Erro: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  };
+
   const [reviews, setReviews] = useState<Record<string, Review>>({});
   const [reviewing, setReviewing] = useState(false);
   const [reviewErr, setReviewErr] = useState<string | null>(null);
@@ -1516,6 +1590,77 @@ export default function LongoDetailPage() {
                 onDelete={() => deleteClipForPrompt(p.id)}
                 disabled={promptsDirty}
               />
+
+              {/* Pool reuse: candidatos de outros longos + funil shorts.
+                  Só aparece se não há clip ainda — para reutilizares em
+                  vez de gerar/upload novo. Score por mood + keywords. */}
+              {!p.clipUrl && pool.length > 0 && (
+                <div className="mt-1">
+                  <button
+                    onClick={() =>
+                      setPoolOpenForPrompt(
+                        poolOpenForPrompt === p.id ? null : p.id,
+                      )
+                    }
+                    className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                  >
+                    {poolOpenForPrompt === p.id
+                      ? "− fechar pool"
+                      : `📦 ver pool (${rankPoolFor(p).length} candidatos)`}
+                  </button>
+                  {poolOpenForPrompt === p.id && (
+                    <div className="mt-1 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+                      {rankPoolFor(p).map((c) => (
+                        <div
+                          key={c.clipUrl}
+                          className="overflow-hidden rounded border border-escola-border bg-escola-card text-[9px]"
+                        >
+                          <video
+                            src={c.clipUrl}
+                            className="aspect-video w-full"
+                            muted
+                            preload="none"
+                            onMouseEnter={(e) =>
+                              (e.currentTarget as HTMLVideoElement)
+                                .play()
+                                .catch(() => {})
+                            }
+                            onMouseLeave={(e) => {
+                              const v = e.currentTarget as HTMLVideoElement;
+                              v.pause();
+                              v.currentTime = 0;
+                            }}
+                          />
+                          <div className="p-1">
+                            <p className="truncate text-escola-creme">
+                              {c.sourceLabel} · score {c.score}
+                            </p>
+                            {c.mood.length > 0 && (
+                              <p className="truncate text-escola-creme-50">
+                                mood: {c.mood.join(" · ")}
+                              </p>
+                            )}
+                            <button
+                              onClick={() =>
+                                reusePoolClipForPrompt(p.id, c.clipUrl)
+                              }
+                              className="mt-1 w-full rounded bg-escola-dourado px-1 py-0.5 text-[9px] font-semibold text-escola-bg hover:opacity-90"
+                            >
+                              ♻ reutilizar
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      {rankPoolFor(p).length === 0 && (
+                        <p className="col-span-full text-[10px] text-escola-creme-50">
+                          Nenhum candidato com mood/keywords compatíveis.
+                          Faz upload novo.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </li>
             );
           })}
