@@ -2,20 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import type { Dia, Slide as SlideType } from "./content";
+import { DEFAULT_THEME, type CarouselTheme } from "@/lib/carousel-themes";
 
 const W = 1080;
 const H = 1920;
 const PAD = 110;
-
-const C = {
-  ink: "#1a1614",
-  ivory: "#ede4d3",
-  parchmentDark: "#c9bfa9",
-  deep: "#0a0907",
-  terracotta: "#b85c38",
-  gold: "#c9a961",
-  mist: "rgba(237, 228, 211, 0.65)",
-};
 
 const GRAIN_SVG =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")";
@@ -25,22 +16,23 @@ type Props = {
   slide: SlideType;
   indice: number;
   scale?: number;
+  theme?: CarouselTheme;
 };
 
-export function Slide({ dia, slide, indice, scale = 1 }: Props) {
+export function Slide({ dia, slide, indice, scale = 1, theme = DEFAULT_THEME }: Props) {
   return (
     <div style={{ width: W * scale, height: H * scale, overflow: "hidden", flexShrink: 0 }}>
       <div style={{ width: W, height: H, transform: `scale(${scale})`, transformOrigin: "top left" }}>
-        <SlideInner dia={dia} slide={slide} indice={indice} />
+        <SlideInner dia={dia} slide={slide} indice={indice} theme={theme} />
       </div>
     </div>
   );
 }
 
-function SlideInner({ dia, slide, indice }: { dia: Dia; slide: SlideType; indice: number }) {
-  if (slide.tipo === "capa") return <Capa dia={dia} slide={slide} />;
-  if (slide.tipo === "conteudo") return <Conteudo dia={dia} slide={slide} indice={indice} />;
-  return <Cta slide={slide} />;
+function SlideInner({ dia, slide, indice, theme }: { dia: Dia; slide: SlideType; indice: number; theme: CarouselTheme }) {
+  if (slide.tipo === "capa") return <Capa dia={dia} slide={slide} C={theme} />;
+  if (slide.tipo === "conteudo") return <Conteudo dia={dia} slide={slide} indice={indice} C={theme} />;
+  return <Cta slide={slide} C={theme} />;
 }
 
 const slideBase: React.CSSProperties = {
@@ -96,7 +88,7 @@ const glowTerra: React.CSSProperties = {
 
 /* ─── CAPA ─────────────────────────────────────────── */
 
-function Capa({ dia, slide }: { dia: Dia; slide: Extract<SlideType, { tipo: "capa" }> }) {
+function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "capa" }>; C: CarouselTheme }) {
   const veuRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = veuRef.current;
@@ -258,10 +250,12 @@ function Conteudo({
   dia,
   slide,
   indice,
+  C,
 }: {
   dia: Dia;
   slide: Extract<SlideType, { tipo: "conteudo" }>;
   indice: number;
+  C: CarouselTheme;
 }) {
   const num = String(indice + 1).padStart(2, "0");
   const ePoetico = slide.estilo === "poetico";
@@ -443,7 +437,7 @@ function Conteudo({
 
 /* ─── CTA ─────────────────────────────────────────── */
 
-function Cta({ slide }: { slide: Extract<SlideType, { tipo: "cta" }> }) {
+function Cta({ slide, C }: { slide: Extract<SlideType, { tipo: "cta" }>; C: CarouselTheme }) {
   const recursoRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = recursoRef.current;
