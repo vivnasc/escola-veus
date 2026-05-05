@@ -51,6 +51,7 @@ export default function RevisaoCursoPage({
   const [progress, setProgress] = useState<{ current: number; total: number } | null>(null);
   const [requestError, setRequestError] = useState<string | null>(null);
   const [hideAccepted, setHideAccepted] = useState(false);
+  const [failedModules, setFailedModules] = useState<number[]>([]);
 
   async function safeJson(res: Response): Promise<{ ok: boolean; data: Record<string, unknown>; erro?: string }> {
     const text = await res.text();
@@ -66,24 +67,21 @@ export default function RevisaoCursoPage({
     }
   }
 
-  async function pedirRevisao() {
+  async function runReviewForModules(modulesToRun: number[], appendToExisting = false) {
     setLoading(true);
     setRequestError(null);
-    setItems([]);
-    setProgress(null);
+    setProgress({ current: 0, total: modulesToRun.length });
 
-    if (!course) {
-      setLoading(false);
-      return;
-    }
+    const accumulated: Suggestion[] = appendToExisting
+      ? items.map(({ status: _s, error: _e, ...rest }) => rest)
+      : [];
+    const newFailures: number[] = [];
+    const errorMessages: string[] = [];
 
-    // Itera módulo a módulo — cada chamada cabe nos 60s do Vercel Hobby.
-    const accumulated: Suggestion[] = [];
-    const modules = course.modules.map((m) => m.number);
-    setProgress({ current: 0, total: modules.length });
+    if (!appendToExisting) setItems([]);
 
-    for (let i = 0; i < modules.length; i++) {
-      const mod = modules[i];
+    for (let i = 0; i < modulesToRun.length; i++) {
+      const mod = modulesToRun[i];
       try {
         const r = await fetch("/api/admin/aulas/review-accents", {
           method: "POST",
@@ -92,22 +90,47 @@ export default function RevisaoCursoPage({
         });
         const { ok, data, erro } = await safeJson(r);
         if (!ok) {
-          setRequestError(`Módulo ${mod}: ${erro}`);
-          // Continua para os próximos módulos mesmo com erro num.
+          newFailures.push(mod);
+          errorMessages.push(`M${mod}: ${erro}`);
         } else {
           const sugs = (data.suggestions as Suggestion[] | undefined) ?? [];
-          accumulated.push(...sugs);
+          // Filtra duplicados se estamos a fazer append
+          for (const s of sugs) {
+            const dup = accumulated.some(
+              (a) =>
+                a.moduleNumber === s.moduleNumber &&
+                a.sub === s.sub &&
+                a.field === s.field &&
+                a.original === s.original,
+            );
+            if (!dup) accumulated.push(s);
+          }
           setItems(accumulated.map((s) => ({ ...s, status: "pending" as Status })));
         }
       } catch (err) {
-        setRequestError(`Módulo ${mod}: ${err instanceof Error ? err.message : String(err)}`);
+        newFailures.push(mod);
+        errorMessages.push(`M${mod}: ${err instanceof Error ? err.message : String(err)}`);
       } finally {
-        setProgress({ current: i + 1, total: modules.length });
+        setProgress({ current: i + 1, total: modulesToRun.length });
       }
     }
 
+    setFailedModules(newFailures);
+    if (errorMessages.length > 0) {
+      setRequestError(errorMessages.join(" · "));
+    }
     setLoading(false);
     setProgress(null);
+  }
+
+  function pedirRevisao() {
+    if (!course) return;
+    void runReviewForModules(course.modules.map((m) => m.number));
+  }
+
+  function tentarSoFalhados() {
+    if (failedModules.length === 0) return;
+    void runReviewForModules([...failedModules], true);
   }
 
   async function aplicarItem(idx: number) {
@@ -251,6 +274,16 @@ export default function RevisaoCursoPage({
               ? "Pedir revisão"
               : "Pedir nova revisão"}
         </button>
+
+        {failedModules.length > 0 && !loading && (
+          <button
+            onClick={tentarSoFalhados}
+            className="rounded border border-red-400/40 bg-red-500/10 px-3 py-2 text-xs text-red-300 hover:bg-red-500/20"
+            title="Volta a chamar a Claude apenas para os módulos onde houve erro (ex: créditos esgotados a meio). Mantém as sugestões já recebidas."
+          >
+            ↻ Tentar só os módulos com erro ({failedModules.map((m) => `M${m}`).join(", ")})
+          </button>
+        )}
 
         {items.length > 0 && (
           <>
