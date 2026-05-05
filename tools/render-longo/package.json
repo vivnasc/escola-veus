@@ -1,0 +1,13 @@
+{
+  "name": "render-longo",
+  "version": "0.1.0",
+  "description": "FFmpeg renderer for Escola dos Veus long-form videos (15-30 min, narração contemplativa + clips MJ Video extend + música ducked)",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "render-longo": "./render.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
