@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Slide, SlideDeck } from "@/lib/course-slides";
 import { getTerritoryTheme } from "@/data/territory-themes";
 import { parseEmphasis } from "@/lib/emphasis";
@@ -67,13 +67,25 @@ export function SlidePreview({
 
   const slide = deck.slides[index];
 
+  // Refs para os callbacks. Evita o loop de re-renders quando o pai passa
+  // funções inline como `onIndexChange={(i, s) => setCurrentIdx(i)}` —
+  // a referência da função muda a cada render do pai.
+  const onIndexChangeRef = useRef(onIndexChange);
+  const onPlayingChangeRef = useRef(onPlayingChange);
   useEffect(() => {
-    onIndexChange?.(index, slide);
-  }, [index, slide, onIndexChange]);
+    onIndexChangeRef.current = onIndexChange;
+  }, [onIndexChange]);
+  useEffect(() => {
+    onPlayingChangeRef.current = onPlayingChange;
+  }, [onPlayingChange]);
 
   useEffect(() => {
-    onPlayingChange?.(playing);
-  }, [playing, onPlayingChange]);
+    onIndexChangeRef.current?.(index, slide);
+  }, [index, slide]);
+
+  useEffect(() => {
+    onPlayingChangeRef.current?.(playing);
+  }, [playing]);
 
   const next = useCallback(() => {
     setIndex((i) => Math.min(deck.slides.length - 1, i + 1));
