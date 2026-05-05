@@ -109,34 +109,18 @@ async function renderSegmento(png, mp3, outFile, duracao) {
 }
 
 // Concatena segmentos com cross-dissolve usando xfade + acrossfade.
-//
-// FIX: o xfade do ffmpeg falha com "Invalid argument" / "Error initializing
-// complex filters" quando offset+duration excede o comprimento REAL do
-// primeiro input. libx264 + AAC podem produzir ficheiros 10-50ms mais curtos
-// que o `-t` pedido (alinhamento de keyframes/audio packets) — usar
-// `duracoes[i]` como fonte da verdade quebra em runtime.
-//
-// Probamos a duração real com ffprobe + adicionamos margem de 5ms ao offset
-// para proteger contra rounding na fronteira.
-async function concatComFade(segmentos, _duracoesPedidas, outFile) {
-  // Probe real durations
-  const duracoesReais = [];
-  for (const s of segmentos) {
-    duracoesReais.push(await audioDuration(s));
-  }
-
+async function concatComFade(segmentos, duracoes, outFile) {
   return new Promise((resolve, reject) => {
-    const cmd = ffmpeg();
+    let cmd = ffmpeg();
     segmentos.forEach((s) => cmd.input(s));
 
     const filters = [];
     let prevV = "0:v";
     let prevA = "0:a";
-    let acumulada = duracoesReais[0];
+    let acumulada = duracoes[0];
 
     for (let i = 1; i < segmentos.length; i++) {
-      // Margem de 5ms para evitar rounding hits na fronteira do clip
-      const offset = Math.max(0, acumulada - TRANSITION - 0.005);
+      const offset = acumulada - TRANSITION;
       const vOut = `v${i}`;
       const aOut = `a${i}`;
       filters.push(
@@ -147,7 +131,7 @@ async function concatComFade(segmentos, _duracoesPedidas, outFile) {
       );
       prevV = vOut;
       prevA = aOut;
-      acumulada += duracoesReais[i] - TRANSITION;
+      acumulada += duracoes[i] - TRANSITION;
     }
 
     cmd
