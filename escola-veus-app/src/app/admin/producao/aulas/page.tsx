@@ -159,10 +159,16 @@ export default function AulasPage() {
                       href={`/admin/producao/aulas/editar/${c.slug}`}
                       className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
                     >
-                      ✏️ Editar texto de todas as sub-aulas (vista única)
+                      ✏️ Editar texto de todas as sub-aulas
+                    </Link>
+                    <Link
+                      href={`/admin/producao/aulas/revisao/${c.slug}`}
+                      className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
+                    >
+                      ✨ Revisão Claude (acentos · travessões · ortografia)
                     </Link>
                     <span className="text-escola-creme-50">
-                      Ideal para varrer acentos / reescrever em massa.
+                      A Claude lê tudo e propõe correcções; tu aceitas ou rejeitas.
                     </span>
                   </div>
                   <ul className="divide-y divide-escola-border border-t border-escola-border">
