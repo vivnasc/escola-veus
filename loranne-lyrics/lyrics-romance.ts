@@ -5013,4 +5013,340 @@ Sempre
 Sempre
 A carregar`,
 
+  "nua-por-dentro/6": `[Verse 1]
+I used to ask before I spoke
+Raise my hand before I thought
+Wait for someone to approve
+Every idea that I brought
+
+[Verse 2]
+Permission to feel, permission to cry
+Permission to want more than this
+Permission to say no to the dinner
+Permission to exist — without a list
+
+[Pre-Chorus]
+The day I stopped asking
+Was not a revolution
+It was a Tuesday afternoon
+And the only resolution
+Was to stop waiting for a yes
+That was never going to come
+
+[Chorus]
+Permission — I don't need it anymore
+Permission — I'm not asking anymore
+Not your approval, not your nod
+Not the room's collective breath
+Permission was the chain I wore
+And I took it off — like a dress
+That never fit, that never will
+Permission is the word I kill
+Every morning when I choose
+Without consulting anyone
+
+[Verse 3]
+My mother asked permission all her life
+From her father, from her husband, from the priest
+I watched her shrink inside the asking
+And decided I would be the one — at least
+The one who stopped
+
+[Chorus]
+Permission — I don't need it anymore
+Permission was the chain I wore
+Every morning when I choose
+Without consulting anyone
+
+[Bridge]
+This is not rebellion
+This is not a war
+This is just a woman
+Walking through an open door
+That was always open
+But she kept knocking anyway
+Permission is the habit I am unlearning every day
+
+[Chorus]
+Permission — I'm not asking anymore
+Permission is the word I kill
+Every morning when I choose
+
+[Outro]
+The door
+Was always open
+I just kept
+Knocking
+Out of habit
+Not anymore`,
+
+  "nua-por-dentro/7": `[Verse 1]
+Não é solidão de estar sozinha
+É solidão de estar acompanhada
+E ser a única que vê
+A rachadura na fachada
+
+[Verse 2]
+Sento-me à mesa cheia
+Com o jantar que fiz, com a roupa que lavei
+Com as pessoas que amo à volta
+E sinto-me a mais — ou a menos, nunca sei
+
+[Pre-Chorus]
+Sozinha com tudo não é estar só
+É estar rodeada e invisível
+É ser o pilar que ninguém olha
+Porque o pilar é sempre previsível
+
+[Chorus]
+Sozinha com tudo, sozinha com tudo
+A solidão que não se explica num post
+Sozinha com tudo, sozinha com tudo
+Rodeada de gente e mesmo assim ghost
+Não é abandono, não é rejeição
+É a distância entre cuidar e ser cuidada
+Sozinha com tudo é a mulher
+Que dá tudo e recebe a pergunta: o que é o jantar amanhã
+
+[Verse 3]
+Ele adormece em dois minutos
+Eu fico com os olhos no escuro
+A planear o dia seguinte
+E o seguinte e o seguinte e o futuro
+
+[Chorus]
+Sozinha com tudo, sozinha com tudo
+Rodeada de gente e mesmo assim ghost
+Sozinha com tudo é a mulher
+Que dá tudo e recebe a pergunta
+
+[Bridge]
+Não quero que sintam pena
+Não quero que mudem de vida
+Queria só que alguém dissesse
+Eu sei que estás cansada
+Eu sei que carregas mais do que mostras
+Eu sei que à noite ficas acordada
+Eu sei — e estou aqui
+Não para resolver
+Só para estar ao lado
+De quem nunca pára de correr
+
+[Chorus]
+Sozinha com tudo, sozinha com tudo
+A solidão que não se explica
+E a pergunta: o que é o jantar amanhã
+
+[Outro]
+Sozinha
+Com tudo
+E com todos
+E mesmo assim
+Sozinha
+Com tudo`,
+
+  "nua-por-dentro/8": `[Verse 1]
+Be soft but be strong
+Be kind but have a backbone
+Be sexy but be modest
+Be ambitious but stay home
+
+[Verse 2]
+Be patient with the children
+Be passionate at work
+Be pretty without trying
+Be smart but not a jerk
+
+[Pre-Chorus]
+The list of things a woman should be
+Would fill a library wall
+And the cruelest part is not the list
+It's that we memorised it all
+
+[Chorus]
+Glass woman, glass woman
+See-through and expected not to crack
+Glass woman, glass woman
+Every flaw is visible and tracked
+Be everything at once
+And do it with a smile
+Glass woman is the role
+We've been rehearsing since the cradle
+And the audience never claps
+They just check for cracks
+
+[Verse 3]
+I caught myself apologising
+For being tired at a party
+Apologising for the bags
+Under my eyes — like I'm sorry
+For being human in public
+
+[Chorus]
+Glass woman, glass woman
+Every flaw is visible and tracked
+Be everything at once
+And the audience never claps
+
+[Bridge]
+I am done being made of glass
+I am done being see-through and expected to shine
+I am opaque, I am dense
+I am solid and I am mine
+The light doesn't pass through me anymore
+It bounces off — and I like the sound
+Glass woman is the myth
+And I just put her in the ground
+
+[Chorus]
+Glass woman, glass woman
+The role we've been rehearsing
+Glass woman — I put her in the ground
+And what's left
+Is just a woman
+Standing
+
+[Outro]
+Not glass
+Not crystal
+Not porcelain
+Just skin
+Just bone
+Just real
+And done
+Performing`,
+
+  "nua-por-dentro/9": `[Verse 1]
+O medo não vem de noite
+O medo vem às sete da manhã
+Quando olho para os três a dormir
+E penso: e se não sou capaz amanhã
+
+[Verse 2]
+Não é o medo dos filmes
+Não é o medo que se grita
+É o medo que se engole com café
+E se leva para o dia como uma visita — indesejada, silenciosa
+
+[Pre-Chorus]
+O medo que não se diz
+É o que mais pesa
+Porque vive disfarçado
+De eficiência e de certeza
+
+[Chorus]
+Medo que não se diz, medo que não se diz
+O segredo mais comum entre nós
+Medo que não se diz, medo que não se diz
+Está na garganta, está na voz
+Que treme no segundo antes de falar
+Que duvida no segundo antes de agir
+O medo que não se diz é o mais honesto
+Porque é o que nunca nos deixa mentir
+
+[Verse 3]
+Tenho medo de falhar os três
+De formas diferentes, em três direcções
+De dar demais a um e pouco ao outro
+De confundir amor com correcções
+
+[Chorus]
+Medo que não se diz, medo que não se diz
+Está na garganta, está na voz
+O medo que não se diz é o mais honesto
+Porque nunca nos deixa mentir
+
+[Bridge]
+Nenhuma mulher que conheço
+Não tem este medo guardado
+Nenhuma admite em voz alta
+Mas todas carregam o mesmo fardo
+De não ser suficiente
+Para a vida que construíram
+E o medo mais cruel de todos
+É que o amor que demos
+Não chegue para os que partilham
+
+[Chorus]
+Medo que não se diz, medo que não se diz
+O segredo mais comum entre nós
+Que nunca nos deixa mentir
+
+[Outro]
+O medo está aqui
+Todas as manhãs
+E eu levanto-me
+Com ele
+E vou
+Porque ir
+É a única resposta
+Que conheço`,
+
+  "nua-por-dentro/10": `[Verse 1]
+Depois do medo e da dúvida
+Depois das noites às três da manhã
+Depois do espelho e do peso invisível
+Depois da pergunta que ninguém me faz
+
+[Verse 2]
+Depois de ser forte sem querer
+Depois de carregar o que não é meu
+Depois de rachar no corredor quatro
+Depois de tudo o que doeu
+
+[Pre-Chorus]
+Não tenho discurso nem bandeira
+Não tenho vitória para anunciar
+Tenho só isto: estou aqui
+E isso devia bastar
+
+[Chorus]
+Ainda aqui, ainda aqui
+Depois de tudo, ainda aqui
+Não mais forte, não mais sábia
+Não mais nada — só aqui
+Ainda de pé, não por coragem
+Mas porque deitar era pior
+Ainda aqui com o medo e o cansaço
+E uma teimosia que parece amor
+
+[Verse 3]
+A mais velha olha para mim de manhã
+O do meio agarra-me a mão no carro
+A mais nova põe a cabeça no meu ombro
+E eu percebo que aqui é onde eu paro
+Onde tudo faz sentido — mesmo cansada
+
+[Chorus]
+Ainda aqui, ainda aqui
+Não mais forte, não mais sábia
+Ainda de pé, não por coragem
+E uma teimosia que parece amor
+
+[Bridge]
+Se este álbum é sobre o que ninguém vê
+Então esta faixa é o que eu vejo
+Quando olho para dentro sem fingir
+Vejo uma mulher com medo e com desejo
+De continuar, apesar de tudo
+De acordar amanhã e fazer igual
+Não por heroísmo, não por obrigação
+Mas porque ainda acredito que vale
+
+[Chorus]
+Ainda aqui, ainda aqui
+Depois de tudo, ainda aqui
+E uma teimosia que parece amor
+Ainda aqui
+Ainda
+
+[Outro]
+Ainda
+Aqui
+Amanhã
+Também
+Ainda
+Sempre
+Ainda`,
+
 };
