@@ -227,8 +227,12 @@ ESPECIFICAÇÕES:
 - VOZ: 2ª pessoa feminino (tu, tua, tuas). Nunca "muitas mulheres",
   "todas nós", "vocês". É íntimo, individual, dirigido àquela ouvinte.
 - Capítulos: 4-6 secções, ritmo de respiração (não didáctico)
-- Cenas visuais: 25-40 prompts de imagem (1 a cada ~40-60s de narração).
-  Cada prompt é uma cena ÚNICA — não repitas variações da mesma imagem.
+- Cenas visuais: 50-70 prompts de imagem (1 a cada ~20-30s de narração).
+  Cada prompt = 1 cena ÚNICA. NÃO repitas variações da mesma imagem.
+  Razão: cada prompt vai ser animado em MJ Video (Image-to-Video + 3
+  extends = ~15-20s de clip). Para 25 min de narração, precisamos de
+  ~80-100 clips × 15s. Daí 50-70 prompts (cada com 1-2 variações de MJ
+  extend) cobre a duração sem freezes longos.
 
 Devolve JSON com:
 - titulo: 4-7 palavras evocativas (pode ser uma frase, não um sumário)

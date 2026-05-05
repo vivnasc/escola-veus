@@ -245,7 +245,9 @@ export default function LongoDetailPage() {
   };
 
   // ── Voice / model: persistência localStorage (mesma UX do /audios) ───
-  const [voiceId, setVoiceId] = useState<string>("JGnWZj684pcXmK2SxYIv");
+  // Default: UnchUhO6d8TYPl7TuqgU (voz long-form da Vivianne, distinta da
+  // dos shorts JGnWZj684pcXmK2SxYIv).
+  const [voiceId, setVoiceId] = useState<string>("UnchUhO6d8TYPl7TuqgU");
   const [modelId, setModelId] = useState<string>("eleven_multilingual_v2");
   useEffect(() => {
     try {
@@ -973,10 +975,36 @@ export default function LongoDetailPage() {
               </span>
             )}
           </p>
-          <p className="text-[10px] text-escola-creme-50">
-            ~3-5 min para 20-30 min de áudio · gasta créditos ElevenLabs por
-            chars (~{scriptDraft.length} chars no script actual).
-          </p>
+          {/* Estimativa de custo ElevenLabs.
+              Pricing: 1 char = 1 credit em qualquer modelo.
+              Pro plan ($22/mo) = 500k credits → $0.044 por 1k chars.
+              Creator ($11/mo) = 100k credits → $0.110 por 1k chars.
+              Stand-alone (sem plano) = $0.30 por 1k chars (multilingual v2). */}
+          {(() => {
+            const chars = scriptDraft.length;
+            const proCost = (chars / 1000) * 0.044;
+            const proPercent = (chars / 500_000) * 100;
+            return (
+              <div className="rounded border border-escola-border bg-escola-bg p-2 text-[10px] text-escola-creme-50">
+                <p>
+                  💸 <b>Custo estimado:</b> {chars.toLocaleString("pt-PT")} chars
+                </p>
+                <ul className="mt-0.5 space-y-0.5">
+                  <li>
+                    Pro plan ($22/mo, 500k chars): <b className="text-escola-dourado">{proPercent.toFixed(1)}%</b> do mês = ~${proCost.toFixed(2)}
+                  </li>
+                  <li>
+                    Creator plan ($11/mo, 100k chars): {((chars / 100_000) * 100).toFixed(1)}% do mês
+                  </li>
+                  <li>Stand-alone: ~${((chars / 1000) * 0.3).toFixed(2)}</li>
+                </ul>
+                <p className="mt-1">
+                  ~3-5 min de geração para 20-30 min de áudio. Idempotente: se
+                  algo falhar a meio, próxima execução salta capítulos já feitos.
+                </p>
+              </div>
+            );
+          })()}
         </div>
 
         {narrErr && (
