@@ -75,12 +75,15 @@ async function uploadLargeToSupabase(pathInBucket, filePath, contentType) {
   const CHUNK_SIZE = 6 * 1024 * 1024; // 6MB — recomendado pela Supabase
 
   // Metadata format do TUS: "key base64value,key base64value" (keys ASCII).
+  // O `upsert true` TEM de vir aqui (não basta o header x-upsert) para o
+  // Supabase TUS aceitar overwrite e não devolver 409 "resource already exists".
   const b64 = (s) => Buffer.from(s, "utf-8").toString("base64");
   const metadata = [
     `bucketName ${b64(BUCKET)}`,
     `objectName ${b64(pathInBucket)}`,
     `contentType ${b64(contentType)}`,
     `cacheControl ${b64("3600")}`,
+    `upsert ${b64("true")}`,
   ].join(",");
 
   // 1. Create upload — recebe Location para enviar chunks.

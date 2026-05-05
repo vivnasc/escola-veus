@@ -305,11 +305,15 @@ async function uploadLargeToSupabase(pathInBucket, filePath, contentType) {
   const CHUNK_SIZE = 6 * 1024 * 1024;
 
   const b64 = (s) => Buffer.from(s, "utf-8").toString("base64");
+  // O `upsert true` TEM de vir no Upload-Metadata para o Supabase aceitar
+  // overwrite — o header `x-upsert` sozinho NÃO é honrado pelo TUS endpoint
+  // (devolve 409 "The resource already exists" se o ficheiro já lá estiver).
   const metadata = [
     `bucketName ${b64(BUCKET)}`,
     `objectName ${b64(pathInBucket)}`,
     `contentType ${b64(contentType)}`,
     `cacheControl ${b64("3600")}`,
+    `upsert ${b64("true")}`,
   ].join(",");
 
   const createRes = await fetch(`${SUPABASE_URL}/storage/v1/upload/resumable`, {
