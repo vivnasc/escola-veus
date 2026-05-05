@@ -190,6 +190,11 @@ async function main() {
     includeBrand = true,
     subtitlesUrl,    // SRT em Supabase (gerada por /generate-srt)
     subtitleStyle,   // override libass (string force_style)
+    // Preview mode: render só os primeiros 90s para validar sync sem
+    // gastar tempo total. Output vai para slug-preview.mp4 em vez de
+    // sobrescrever o final.
+    preview = false,
+    previewSeconds = 90,
   } = manifest;
 
   if (!narrationUrl) throw new Error("narrationUrl vazio");
@@ -461,46 +466,63 @@ async function main() {
     "-map", "[aout]",
     "-c:v", "libx264",
     "-preset", "medium",
-    "-crf", "20",
+    // Preview: CRF mais agressivo (26 vs 20) e preset ultrafast para
+    // entregar em 1-2 min em vez de 10-15. Quality é menor mas é só para
+    // validar sync, layout, legendas — descartável.
+    "-crf", preview ? "26" : "20",
     "-pix_fmt", "yuv420p",
     "-c:a", "aac",
     "-b:a", "192k",
     "-movflags", "+faststart",
-    "-t", totalDuration.toFixed(2),
+    // Em preview, limita output aos primeiros N segundos (default 90).
+    "-t",
+    (preview
+      ? Math.min(previewSeconds, totalDuration)
+      : totalDuration
+    ).toFixed(2),
     outPath,
   ];
+  // Preset depois para overrride no preview
+  if (preview) {
+    const presetIdx = args.indexOf("-preset");
+    if (presetIdx >= 0) args[presetIdx + 1] = "ultrafast";
+  }
 
   await runFfmpeg(args, "render");
 
   await writeResult(jobId, { status: "running", phase: "upload", progress: 90 });
 
-  console.log(`[3/5] Upload MP4`);
-  const stamp = Date.now();
-  const mp4Name = `${slug}-${stamp}.mp4`;
+  console.log(`[3/5] Upload MP4 (${preview ? "preview" : "final"})`);
+  // Preview vai para slug-preview.mp4 (idempotente, sobrescreve cada vez).
+  // Final mantém timestamp por versão.
+  const mp4Name = preview ? `${slug}-preview.mp4` : `${slug}-${Date.now()}.mp4`;
   const mp4Buf = await readFile(outPath);
   await uploadToSupabase(`${VIDEO_DIR}/${mp4Name}`, mp4Buf, "video/mp4");
   const videoUrl = supabasePublicUrl(`${VIDEO_DIR}/${mp4Name}`);
 
-  // Patch projecto longo com videoUrl + durationSec final
-  try {
-    const projUrl = supabasePublicUrl(`admin/longos/${slug}.json`);
-    const r = await fetch(projUrl);
-    if (r.ok) {
-      const proj = await r.json();
-      const updated = {
-        ...proj,
-        videoUrl,
-        videoDurationSec: totalDuration,
-        updatedAt: new Date().toISOString(),
-      };
-      await uploadToSupabase(
-        `admin/longos/${slug}.json`,
-        JSON.stringify(updated, null, 2),
-        "application/json",
-      );
+  // Só patcha o projecto com videoUrl em modo FINAL. Preview é descartável,
+  // não deve sobrescrever o vídeo final que a user já tenha feito.
+  if (!preview) {
+    try {
+      const projUrl = supabasePublicUrl(`admin/longos/${slug}.json`);
+      const r = await fetch(projUrl);
+      if (r.ok) {
+        const proj = await r.json();
+        const updated = {
+          ...proj,
+          videoUrl,
+          videoDurationSec: totalDuration,
+          updatedAt: new Date().toISOString(),
+        };
+        await uploadToSupabase(
+          `admin/longos/${slug}.json`,
+          JSON.stringify(updated, null, 2),
+          "application/json",
+        );
+      }
+    } catch (e) {
+      console.warn("Patch projecto falhou:", e);
     }
-  } catch (e) {
-    console.warn("Patch projecto falhou:", e);
   }
 
   console.log(`[4/5] Done: ${videoUrl}`);

@@ -189,7 +189,7 @@ export default function LongoDetailPage() {
       .catch(() => {});
   }, []);
 
-  const submitRender = async () => {
+  const submitRender = async (preview = false) => {
     if (!project) return;
     if (!project.narrationUrl) {
       setRenderErr("Sem narração — gera primeiro");
@@ -206,7 +206,7 @@ export default function LongoDetailPage() {
     }
     if (
       !confirm(
-        `Vais render long-form com:\n` +
+        `Vais render ${preview ? "PREVIEW (90s, qualidade reduzida)" : "long-form COMPLETO"} com:\n` +
           `- ${clipsReady}/${project.prompts.length} cenas com clip\n` +
           `- Narração: ${
             project.durationSec
@@ -215,9 +215,14 @@ export default function LongoDetailPage() {
           }\n` +
           `- Música: ${selectedMusic.length} track(s)\n` +
           `- Crossfade: ${crossfade}s\n` +
-          `- Intro/outro brand: ${includeBrand ? "sim" : "não"}\n\n` +
+          `- Intro/outro brand: ${includeBrand ? "sim" : "não"}\n` +
+          `- Legendas: ${project.subtitlesUrl ? "sim (queimadas)" : "não (gera SRT primeiro se quiseres)"}\n\n` +
           `Cenas SEM clip serão IGNORADAS (não atrasam o render).\n\n` +
-          `Tempo estimado: ~5-15 min em GitHub Actions. Continuar?`,
+          `Tempo estimado: ${preview ? "~1-2 min (CRF agressivo + ultrafast)" : "~5-15 min (CRF20 medium)"}. ` +
+          (preview
+            ? "Output vai para slug-preview.mp4, NÃO substitui vídeo final."
+            : "Output substitui vídeo final do projecto.") +
+          " Continuar?",
       )
     ) {
       return;
@@ -236,6 +241,7 @@ export default function LongoDetailPage() {
           musicVolume,
           crossfade,
           includeBrand,
+          preview,
         }),
       });
       const d = await r.json();
@@ -1507,17 +1513,29 @@ export default function LongoDetailPage() {
             Intro + outro com mandala &quot;A ESCOLA DOS VÉUS&quot; (5s cada)
           </label>
 
-          {/* Botão render */}
+          {/* Botões render */}
           <div className="flex flex-wrap items-center gap-2 pt-2">
             <button
-              onClick={submitRender}
-              disabled={rendering || !project.narrationUrl || selectedMusic.length === 0}
+              onClick={() => submitRender(true)}
+              disabled={
+                rendering || !project.narrationUrl || selectedMusic.length === 0
+              }
+              className="rounded border border-escola-dourado px-3 py-2 text-[11px] font-semibold text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40"
+              title="Render rápido dos primeiros 90s (CRF26 ultrafast). Para validar sync + legendas + layout sem gastar render completo. NÃO substitui o vídeo final."
+            >
+              ⏱ Preview (90s · 1-2 min)
+            </button>
+            <button
+              onClick={() => submitRender(false)}
+              disabled={
+                rendering || !project.narrationUrl || selectedMusic.length === 0
+              }
               className="rounded bg-escola-dourado px-4 py-2 font-semibold text-escola-bg disabled:opacity-40"
             >
               {rendering
                 ? "A renderizar..."
                 : project.videoUrl
-                  ? "↻ Re-render"
+                  ? "↻ Re-render completo"
                   : "🎬 Render long-form"}
             </button>
             <span className="text-[10px] text-escola-creme-50">

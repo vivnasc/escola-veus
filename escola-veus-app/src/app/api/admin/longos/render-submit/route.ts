@@ -54,13 +54,24 @@ export async function POST(req: NextRequest) {
     narrationVolume?: number;
     crossfade?: number;
     includeBrand?: boolean;
+    preview?: boolean;
+    previewSeconds?: number;
   };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ erro: "Body JSON inválido" }, { status: 400 });
   }
-  const { slug, musicUrls, musicVolume, narrationVolume, crossfade, includeBrand } = body;
+  const {
+    slug,
+    musicUrls,
+    musicVolume,
+    narrationVolume,
+    crossfade,
+    includeBrand,
+    preview = false,
+    previewSeconds = 90,
+  } = body;
   if (!slug) {
     return NextResponse.json({ erro: "slug obrigatório" }, { status: 400 });
   }
@@ -127,6 +138,8 @@ export async function POST(req: NextRequest) {
     narrationVolume: typeof narrationVolume === "number" ? narrationVolume : 1.2,
     crossfade: typeof crossfade === "number" ? crossfade : 1.0,
     includeBrand: includeBrand !== false,
+    preview: !!preview,
+    previewSeconds: typeof previewSeconds === "number" ? previewSeconds : 90,
     createdAt: new Date().toISOString(),
   };
 
