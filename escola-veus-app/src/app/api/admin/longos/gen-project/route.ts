@@ -241,15 +241,20 @@ Devolve JSON com:
 Responde APENAS com JSON válido.`;
 
   try {
-    // STREAMING: a geração com adaptive thinking pode demorar 1-3 min. Sem
-    // streaming, Vercel gateway corta a connection e devolve HTML de erro
+    // STREAMING: a geração com saída JSON pode demorar 1-3 min. Sem
+    // streaming, o Vercel gateway corta a connection e devolve HTML de erro
     // ("An error occurred...") que faz o cliente fazer JSON.parse de algo
     // que não é JSON. Streaming mantém a connection viva durante a geração;
     // .finalMessage() junta o final completo no fim.
+    //
+    // ADAPTIVE THINKING DESLIGADO: tinha problemas com output_config.format
+    // — às vezes a resposta só tinha thinking blocks, sem text block,
+    // resultando em "Claude não devolveu text block". O Sonnet 4.6 sem
+    // adaptive já produz output muito bom para este caso (geração
+    // criativa estruturada).
     const stream = client.messages.stream({
       model: "claude-sonnet-4-6",
-      max_tokens: 16000, // script de 3000 palavras + 30 prompts ≈ 12k tokens
-      thinking: { type: "adaptive" },
+      max_tokens: 16000,
       system,
       messages: [{ role: "user", content: userMessage }],
       output_config: {
@@ -309,7 +314,17 @@ Responde APENAS com JSON válido.`;
 
     const textBlock = response.content.find((b) => b.type === "text");
     if (!textBlock || textBlock.type !== "text") {
-      throw new Error("Claude não devolveu text block");
+      // Diagnóstico — devolve info actionable em vez de só "no text block".
+      const blockTypes = response.content.map((b) => b.type).join(", ") || "(vazio)";
+      const stopReason = response.stop_reason || "unknown";
+      throw new Error(
+        `Claude devolveu sem text block. stop_reason=${stopReason}, blocks=[${blockTypes}]. ` +
+          (stopReason === "max_tokens"
+            ? "Output truncado — pede tema mais específico."
+            : stopReason === "refusal"
+              ? "Claude recusou — reformula o tema (sem violência/etc)."
+              : "Tenta de novo ou simplifica o tema."),
+      );
     }
     let parsed: {
       titulo?: string;
