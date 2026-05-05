@@ -167,6 +167,12 @@ export default function AulasPage() {
                     >
                       ✨ Revisão Claude (acentos · travessões · ortografia)
                     </Link>
+                    <Link
+                      href={`/admin/producao/aulas/render-bulk/${c.slug}`}
+                      className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
+                    >
+                      🎬 Render bulk (MP4 de todas as sub-aulas)
+                    </Link>
                     <span className="text-escola-creme-50">
                       A Claude lê tudo e propõe correcções; tu aceitas ou rejeitas.
                     </span>
