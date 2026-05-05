@@ -263,18 +263,35 @@ export default function AulaPreviewPage({
           </h1>
           <p className="text-sm text-escola-creme-50">{deck.subTitle}</p>
         </div>
-        <div className="text-right text-xs text-escola-creme-50">
+        <div className="flex flex-col items-end gap-1 text-right text-xs text-escola-creme-50">
           <p>
             {deck.slides.length} slides ·{" "}
             {Math.floor(deck.totalDurationSec / 60)}:{String(deck.totalDurationSec % 60).padStart(2, "0")}
           </p>
-          <p className="mt-1">
+          <p>
             {saveState === "saving" && "A guardar…"}
             {saveState === "saved" && "✓ Guardado"}
             {saveState === "error" && <span className="text-red-400">Erro a guardar</span>}
             {saveState === "idle" && hasCustomScript && "✓ Configuração guardada"}
             {saveState === "idle" && !hasCustomScript && "A usar valores por defeito"}
           </p>
+          {hasCustomScript && (
+            <button
+              onClick={() => {
+                if (
+                  confirm(
+                    "Repor toda esta sub-aula ao original do script?\n\nApaga TODOS os teus overrides (texto, blocos, durações, faixa AG, volumes) — não há undo.",
+                  )
+                ) {
+                  setConfig({});
+                }
+              }}
+              className="rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:border-red-400/40 hover:text-red-300"
+              title="Limpa todos os overrides desta sub-aula"
+            >
+              ↩ Repor toda a aula ao original
+            </button>
+          )}
         </div>
       </div>
 
