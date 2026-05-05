@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
     withoutVoice?: boolean;
     slideDuration?: number;
     dias?: number[] | null; // se presente: só estes dias (ex: [3]); senão: todos
+    content?: { campanha: string; dias: unknown[] }; // override do content.json
   };
 
   const jobId = (body.jobId || "").trim();
@@ -82,6 +83,7 @@ export async function POST(req: NextRequest) {
     withoutVoice,
     slideDuration,
     dias: diasFiltrados, // null = todos
+    content: body.content && Array.isArray(body.content.dias) ? body.content : null,
     createdAt: new Date().toISOString(),
   };
   const manifestPath = `render-jobs/${jobId}.json`;

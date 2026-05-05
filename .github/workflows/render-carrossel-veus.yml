@@ -53,6 +53,19 @@ jobs:
         working-directory: carrossel-veus
         run: npm ci
 
+      - name: Override content.json from manifest (if user edited texts)
+        working-directory: carrossel-veus
+        run: |
+          MANIFEST_URL="${{ secrets.SUPABASE_URL }}/storage/v1/object/public/course-assets/render-jobs/${{ inputs.jobId }}.json"
+          curl -s "$MANIFEST_URL" -o /tmp/manifest.json
+          if jq -e '.content != null and (.content.dias | type == "array") and (.content.dias | length > 0)' /tmp/manifest.json >/dev/null 2>&1; then
+            jq '.content' /tmp/manifest.json > content.json
+            echo "✓ content.json substituído pelo do manifest (edições do utilizador)"
+            jq '.dias | length' content.json
+          else
+            echo "→ manifest sem content; mantém content.json do repo"
+          fi
+
       - name: Generate slides (PNG via Puppeteer)
         working-directory: carrossel-veus
         run: npm run slides
