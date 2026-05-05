@@ -15,6 +15,7 @@ import {
   CurrentSlideEditor,
   computeBlockIndex,
 } from "@/components/admin/CurrentSlideEditor";
+import { BulkTextEditor } from "@/components/admin/BulkTextEditor";
 import { SoundPanel, type AgTrack } from "@/components/admin/SoundPanel";
 
 type CourseDefaults = { agTrack: string | null; volumeDb: Record<Acto, number> };
@@ -331,10 +332,20 @@ export default function AulaPreviewPage({
       </div>
 
       {/* Editor contextual do slide actual */}
-      <div className="mb-6">
+      <div className="mb-4">
         <CurrentSlideEditor
           deck={deck}
           slideIdx={currentIdx}
+          baseScript={baseScript}
+          config={config}
+          onConfigChange={setConfig}
+        />
+      </div>
+
+      {/* Editor "tudo de uma vez" — útil para varrer acentos sem ir slide
+          a slide. Colapsado por defeito, abre quando preciso. */}
+      <div className="mb-6">
+        <BulkTextEditor
           baseScript={baseScript}
           config={config}
           onConfigChange={setConfig}
