@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
 
 /**
  * /admin/producao/longos
@@ -54,11 +55,79 @@ export default function LongosPage() {
   const [loading, setLoading] = useState(true);
 
   const [tema, setTema] = useState("");
+  // Modo de seed: "funil" = expandir um mini-ep existente; "novo" = tema livre.
+  // Default "funil" — quase sempre é o que se quer (long-form continua a
+  // territorialidade emocional dos shorts).
+  const [seedMode, setSeedMode] = useState<"funil" | "novo">("funil");
+  const [seedFromEpId, setSeedFromEpId] = useState<string>("");
   const [generating, setGenerating] = useState(false);
+
+  // Lista plana dos 122 mini-eps + trailer para o dropdown.
+  const funilEps = useMemo(() => {
+    const list: { id: string; titulo: string }[] = [];
+    for (const preset of NOMEAR_PRESETS) {
+      for (const s of preset.scripts) {
+        if (!/^nomear-(ep\d+|trailer)/.test(s.id)) continue;
+        list.push({ id: s.id, titulo: s.titulo });
+      }
+    }
+    return list.sort((a, b) => a.id.localeCompare(b.id));
+  }, []);
   const [genErr, setGenErr] = useState<string | null>(null);
   const [preview, setPreview] = useState<GenResult | null>(null);
   const [saving, setSaving] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
+
+  // ── Anti-perda: localStorage backup do preview ──────────────────────
+  // Gerar projecto custa ~$0.10 ao Claude. Se o user fechar o browser antes
+  // de clicar Guardar, perde-se. Auto-backup em localStorage assim que
+  // chega o preview; recupera-se ao reabrir a página.
+  const PREVIEW_KEY = "longos-preview-backup";
+
+  // Restaurar backup à entrada (uma vez)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(PREVIEW_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as GenResult & { _backupAt?: string };
+        if (parsed && parsed.titulo) {
+          setPreview(parsed);
+          setInfo(
+            `📦 Recuperado preview de Claude (gerado ${parsed._backupAt ? `em ${new Date(parsed._backupAt).toLocaleTimeString("pt-PT")}` : "anteriormente"}). Clica Guardar para persistir em Supabase ou Descartar.`,
+          );
+        }
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  // Sempre que preview muda (set ou clear), sync com localStorage
+  useEffect(() => {
+    try {
+      if (preview) {
+        localStorage.setItem(
+          PREVIEW_KEY,
+          JSON.stringify({ ...preview, _backupAt: new Date().toISOString() }),
+        );
+      } else {
+        localStorage.removeItem(PREVIEW_KEY);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, [preview]);
+
+  // beforeunload: avisa se há preview não guardado
+  useEffect(() => {
+    if (!preview) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [preview]);
 
   const reload = useCallback(async () => {
     setLoading(true);
@@ -78,7 +147,12 @@ export default function LongosPage() {
   }, [reload]);
 
   const generate = async () => {
-    if (!tema.trim()) {
+    if (seedMode === "funil") {
+      if (!seedFromEpId) {
+        setGenErr("Escolhe um ep do funil para expandir");
+        return;
+      }
+    } else if (!tema.trim()) {
       setGenErr("Preenche o tema primeiro");
       return;
     }
@@ -86,10 +160,14 @@ export default function LongosPage() {
     setGenErr(null);
     setPreview(null);
     try {
+      const payload =
+        seedMode === "funil" && seedFromEpId
+          ? { seedFromEpId, tema: tema.trim() || undefined }
+          : { tema: tema.trim() };
       const r = await fetch("/api/admin/longos/gen-project", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tema: tema.trim() }),
+        body: JSON.stringify(payload),
       });
       const d = await r.json();
       if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
@@ -143,23 +221,85 @@ export default function LongosPage() {
           ✨ Gerar novo projecto long-form
         </h2>
         <div className="space-y-3">
-          <div>
-            <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
-              Tema
-            </label>
-            <textarea
-              value={tema}
-              onChange={(e) => setTema(e.target.value)}
-              rows={3}
-              placeholder="Ex: A culpa que herdamos das mães e avós, e como começar a devolvê-la sem trair quem nos amou."
-              className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme"
+          {/* Seed mode: expandir ep funil OU tema novo */}
+          <div className="flex flex-wrap gap-1.5 text-[11px]">
+            <button
+              type="button"
+              onClick={() => setSeedMode("funil")}
               disabled={generating}
-            />
-            <p className="mt-1 text-[10px] text-escola-creme-50">
-              Quanto mais específico (com tensão emocional concreta), melhor o
-              script. Vai-se a 2-4 frases que descrevem o ângulo.
-            </p>
+              className={`rounded border px-3 py-1 ${
+                seedMode === "funil"
+                  ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                  : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+              }`}
+            >
+              📺 Expandir mini-ep do funil
+            </button>
+            <button
+              type="button"
+              onClick={() => setSeedMode("novo")}
+              disabled={generating}
+              className={`rounded border px-3 py-1 ${
+                seedMode === "novo"
+                  ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                  : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+              }`}
+            >
+              ✨ Tema novo (fora do funil)
+            </button>
           </div>
+
+          {seedMode === "funil" ? (
+            <div>
+              <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+                Mini-ep a expandir ({funilEps.length} disponíveis)
+              </label>
+              <select
+                value={seedFromEpId}
+                onChange={(e) => setSeedFromEpId(e.target.value)}
+                disabled={generating}
+                className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-xs text-escola-creme"
+              >
+                <option value="">— escolhe um ep —</option>
+                {funilEps.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.id} · {e.titulo}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-[10px] text-escola-creme-50">
+                Claude lê a narração do mini-ep (1:30 teaser) e expande para
+                20-30 min na mesma territorialidade emocional. Mantém voz, frase
+                âncora, referenciais visuais — só vai mais fundo.
+              </p>
+              <textarea
+                value={tema}
+                onChange={(e) => setTema(e.target.value)}
+                rows={2}
+                placeholder="(opcional) Adiciona ângulo extra para o long, ex: 'foca na culpa em relação ao dinheiro'"
+                className="mt-2 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme"
+                disabled={generating}
+              />
+            </div>
+          ) : (
+            <div>
+              <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+                Tema (livre)
+              </label>
+              <textarea
+                value={tema}
+                onChange={(e) => setTema(e.target.value)}
+                rows={3}
+                placeholder="Ex: A culpa que herdamos das mães e avós, e como começar a devolvê-la sem trair quem nos amou."
+                className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme"
+                disabled={generating}
+              />
+              <p className="mt-1 text-[10px] text-escola-creme-50">
+                Quanto mais específico (com tensão emocional concreta), melhor.
+                Vai a 2-4 frases que descrevem o ângulo.
+              </p>
+            </div>
+          )}
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <button
               onClick={generate}

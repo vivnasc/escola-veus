@@ -47,6 +47,11 @@ export async function POST(req: NextRequest) {
       title,
       folder = "youtube",
       languageCode, // opcional — se omitido, voice decide sotaque
+      // Nome de ficheiro fixo (sem timestamp) — útil para idempotência:
+      // re-chamadas com o mesmo keyName sobrescrevem em vez de criar
+      // múltiplos ficheiros. Usado pelos longos para resume de narração
+      // (skip chunks que já existem em Supabase).
+      keyName,
     } = await req.json();
 
     if (!text || !voiceId) {
@@ -133,7 +138,21 @@ export async function POST(req: NextRequest) {
       .replace(/^-+|-+$/g, "")
       .slice(0, 60);
 
-    const filePath = `${folder}/${slug}-${Date.now()}.mp3`;
+    // keyName: nome fixo (idempotente) \u2014 \u00fatil para resume. Sanitizado igual
+    // ao slug. Sem keyName \u2192 mant\u00e9m comportamento legado com timestamp.
+    const cleanKeyName = typeof keyName === "string" && keyName
+      ? keyName
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9-]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 80)
+      : null;
+
+    const filePath = cleanKeyName
+      ? `${folder}/${cleanKeyName}.mp3`
+      : `${folder}/${slug}-${Date.now()}.mp3`;
     const { error } = await supabase.storage
       .from("course-assets")
       .upload(filePath, new Uint8Array(audioBuffer), {

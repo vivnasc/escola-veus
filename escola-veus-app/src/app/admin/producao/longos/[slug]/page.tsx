@@ -334,6 +334,31 @@ export default function LongoDetailPage() {
     load();
   }, [load]);
 
+  // ── Anti-perda: beforeunload guard ────────────────────────────────────
+  // Avisa se o user tenta fechar tab com:
+  //   - edits ao script ou prompts não guardados (perde edits)
+  //   - upload de clip a meio (perde tempo, mas Supabase pode receber o PUT
+  //     completo — recuperável via /scan-clips)
+  //   - narração a gerar (chunks já gerados ficam em Supabase, mas concat
+  //     final perde-se se browser fecha)
+  //   - render a correr (cliente perde polling, mas GitHub Actions continua
+  //     e pode ser consultado depois pelo jobId)
+  useEffect(() => {
+    const hasUnsaved =
+      scriptDirty ||
+      promptsDirty ||
+      Object.keys(clipUpload).length > 0 ||
+      narrating ||
+      rendering;
+    if (!hasUnsaved) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [scriptDirty, promptsDirty, clipUpload, narrating, rendering]);
+
   const patchProject = async (patch: Partial<LongoProject>) => {
     if (!project) return;
     setSaving(true);
@@ -399,8 +424,14 @@ export default function LongoDetailPage() {
 
     const chunkUrls: string[] = [];
     const chunkErrors: string[] = [];
+    const supabasePublicBase = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
-    // 1. Gerar cada capítulo em série (audio-bulk endpoint — mesma infra do funil).
+    // 1. Gerar cada capítulo em série. IDEMPOTENTE:
+    //   - keyName fixo (`<slug>-cap-NN`) → re-chamada sobrescreve em vez de
+    //     criar novo ficheiro
+    //   - Antes de chamar ElevenLabs, fazemos HEAD ao Supabase para ver se
+    //     o ficheiro já existe (ex: browser fechou anteriormente). Se sim,
+    //     reutiliza o URL → ZERO custo adicional ElevenLabs.
     for (let i = 0; i < chapters.length; i++) {
       const ch = chapters[i];
       setNarrProgress({
@@ -410,6 +441,25 @@ export default function LongoDetailPage() {
         chunkUrls: [...chunkUrls],
         chunkErrors: [...chunkErrors],
       });
+
+      const keyName = `${project.slug}-cap-${String(i + 1).padStart(2, "0")}`;
+      const existingUrl = supabasePublicBase
+        ? `${supabasePublicBase}/storage/v1/object/public/course-assets/longos-audios/${keyName}.mp3`
+        : null;
+
+      // Probe se já existe — HEAD request é cheap
+      if (existingUrl) {
+        try {
+          const head = await fetch(existingUrl, { method: "HEAD", cache: "no-store" });
+          if (head.ok) {
+            chunkUrls.push(existingUrl);
+            continue; // skip ElevenLabs — resume!
+          }
+        } catch {
+          /* not exists or network — fall through to generate */
+        }
+      }
+
       try {
         const r = await fetch("/api/admin/audio-bulk/generate-one", {
           method: "POST",
@@ -418,7 +468,8 @@ export default function LongoDetailPage() {
             text: ch.texto,
             voiceId,
             modelId,
-            title: `${project.slug}-cap-${String(i + 1).padStart(2, "0")}`,
+            title: keyName,
+            keyName, // ← fixo, sem timestamp
             folder: "longos-audios",
           }),
         });
@@ -1099,39 +1150,77 @@ export default function LongoDetailPage() {
       <section className="rounded-xl border border-escola-border bg-escola-card p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
           <h2 className="text-sm text-escola-creme">
-            Image prompts ({promptsDraft.length})
+            Image prompts ({promptsDraft.length}){" "}
+            <span className="text-[10px] text-escola-creme-50">
+              · {promptsDraft.filter((p) => p.clipUrl).length} com clip
+            </span>
             {promptsDirty && (
               <span className="ml-2 text-[10px] text-escola-terracota">
                 ● não guardado
               </span>
             )}
           </h2>
-          {promptsDirty && (
-            <div className="flex gap-1">
-              <button
-                onClick={() => {
-                  setPromptsDraft(project.prompts);
-                  setPromptsDirty(false);
-                }}
-                className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-terracota"
-              >
-                ↺ descartar
-              </button>
-              <button
-                onClick={async () => {
-                  await patchProject({
-                    prompts: promptsDraft,
-                    promptCount: promptsDraft.length,
+          <div className="flex items-center gap-1">
+            <button
+              onClick={async () => {
+                if (!project) return;
+                try {
+                  const r = await fetch("/api/admin/longos/scan-clips", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ slug: project.slug }),
                   });
-                  setPromptsDirty(false);
-                }}
-                disabled={saving}
-                className="rounded bg-escola-dourado px-2 py-0.5 text-[10px] font-semibold text-escola-bg disabled:opacity-40"
-              >
-                ✓ guardar prompts
-              </button>
-            </div>
-          )}
+                  const d = await r.json();
+                  if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+                  if (d.recovered.length > 0) {
+                    setInfo(
+                      `🛟 ${d.recovered.length} clip(s) recuperado(s) de Supabase: ${d.recovered.map((x: { promptId: string }) => x.promptId).join(", ")}`,
+                    );
+                    await load();
+                  } else {
+                    setInfo(
+                      `✓ Nada para recuperar — projecto sincronizado. ${d.missing.length} cenas ainda sem clip.`,
+                    );
+                  }
+                  setTimeout(() => setInfo(null), 5000);
+                } catch (e) {
+                  setInfo(
+                    `Erro scan: ${e instanceof Error ? e.message : String(e)}`,
+                  );
+                }
+              }}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+              title="Lista MP4s em longos-clips/<slug>/ e patcha o projecto se algum clip subiu mas não foi finalizado (ex: browser fechou)"
+            >
+              🛟 scan clips
+            </button>
+            {promptsDirty && (
+              <>
+                <button
+                  onClick={() => {
+                    setPromptsDraft(project.prompts);
+                    setPromptsDirty(false);
+                  }}
+                  className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-terracota"
+                >
+                  ↺ descartar
+                </button>
+                <button
+                  onClick={async () => {
+                    await patchProject({
+                      prompts: promptsDraft,
+                      promptCount: promptsDraft.length,
+                    });
+                    setPromptsDirty(false);
+                  }}
+                  disabled={saving}
+                  className="rounded bg-escola-dourado px-2 py-0.5 text-[10px] font-semibold text-escola-bg disabled:opacity-40"
+                >
+                  ✓ guardar prompts
+                </button>
+              </>
+            )}
+          </div>
         </div>
         <ul className="space-y-2">
           {promptsDraft.map((p, i) => (
