@@ -4,17 +4,17 @@ import { getCourseBySlug } from "@/data/courses";
 import { getBaseScript, type LessonConfig } from "@/lib/course-slides";
 import type { LessonScript } from "@/data/course-scripts/ouro-proprio";
 
-export const maxDuration = 120;
+export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 /**
  * POST /api/admin/aulas/review-accents
- *   body: { slug }
+ *   body: { slug, module?: number }
  *
- * Pede ao Claude uma revisão dos textos de todo o curso. A Claude devolve
- * sugestões pontuais (acentos PT-PT, travessões em conteúdo, ortografia).
- * NÃO aplica nada automaticamente — devolve a lista para a Vivianne aceitar
- * ou rejeitar na UI.
+ * Pede ao Claude uma revisão dos textos do curso. Se `module` for passado,
+ * só revê esse módulo (3 sub-aulas) — para caber nos 60s do Vercel Hobby.
+ * Sem `module`, tenta o curso todo (pode falhar em cursos grandes — usa
+ * para courses pequenos ou onde tens Pro).
  */
 
 const MODEL = "claude-sonnet-4-6";
@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "ANTHROPIC_API_KEY em falta no servidor" }, { status: 500 });
   }
 
-  let body: { slug?: string };
+  let body: { slug?: string; module?: number };
   try {
     body = await req.json();
   } catch {
@@ -124,12 +124,14 @@ export async function POST(req: NextRequest) {
   }
   const slug = (body.slug ?? "").trim();
   if (!slug) return NextResponse.json({ erro: "Falta slug" }, { status: 400 });
+  const moduleFilter = typeof body.module === "number" ? body.module : null;
 
   const course = getCourseBySlug(slug);
   if (!course) return NextResponse.json({ erro: "Curso não encontrado" }, { status: 404 });
 
   const subs: Array<{ module: number; sub: string }> = [];
   for (const mod of course.modules) {
+    if (moduleFilter !== null && mod.number !== moduleFilter) continue;
     for (const sl of mod.subLessons) subs.push({ module: mod.number, sub: sl.letter.toLowerCase() });
   }
 
