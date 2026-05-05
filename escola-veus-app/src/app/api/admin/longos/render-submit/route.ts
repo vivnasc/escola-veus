@@ -41,6 +41,7 @@ type Project = {
   slug?: string;
   titulo?: string;
   narrationUrl?: string;
+  subtitlesUrl?: string; // SRT em Supabase, gerada por /generate-srt
   prompts?: ProjectPrompt[];
   [k: string]: unknown;
 };
@@ -119,6 +120,7 @@ export async function POST(req: NextRequest) {
     title: project.titulo || slug,
     slug,
     narrationUrl: project.narrationUrl,
+    subtitlesUrl: project.subtitlesUrl || null,
     clips: clipsForRender,
     musicUrls,
     musicVolume: typeof musicVolume === "number" ? musicVolume : 0.15,

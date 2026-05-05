@@ -31,6 +31,7 @@ type LongoProject = {
   wordCount: number;
   narrationUrl?: string;
   durationSec?: number; // real, vem do MP3 gerado
+  subtitlesUrl?: string; // SRT em Supabase, gerada via /generate-srt
   videoUrl?: string;
   thumbnailUrl?: string;
   createdAt?: string;
@@ -85,6 +86,44 @@ export default function LongoDetailPage() {
   const [tituloDraft, setTituloDraft] = useState("");
   const [thumbDraft, setThumbDraft] = useState("");
   const [saving, setSaving] = useState(false);
+
+  // SRT generation (ElevenLabs Scribe). Cacheado em longos-subtitles/<slug>.srt
+  // — re-execução sobrescreve. Patcha o projecto com subtitlesUrl.
+  const [srtGenerating, setSrtGenerating] = useState(false);
+  const [srtErr, setSrtErr] = useState<string | null>(null);
+
+  const generateSrt = async () => {
+    if (!project) return;
+    if (!project.narrationUrl) {
+      setSrtErr("Sem narração — gera primeiro");
+      return;
+    }
+    setSrtGenerating(true);
+    setSrtErr(null);
+    try {
+      const r = await fetch("/api/admin/longos/generate-srt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug }),
+      });
+      const ct = r.headers.get("content-type") || "";
+      const text = await r.text();
+      if (!ct.includes("application/json")) {
+        throw new Error(
+          `HTTP ${r.status}: ${text.slice(0, 200)} — provavelmente Vercel timeout`,
+        );
+      }
+      const d = JSON.parse(text);
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      setInfo(`✓ SRT gerada: ${d.lineCount} linhas`);
+      setTimeout(() => setInfo(null), 3000);
+      await load();
+    } catch (e) {
+      setSrtErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSrtGenerating(false);
+    }
+  };
 
   // Geração automática de narração via ElevenLabs (chunked by chapter + concat)
   const [narrating, setNarrating] = useState(false);
@@ -967,6 +1006,33 @@ export default function LongoDetailPage() {
                 ? "↻ Re-gerar narração"
                 : "🎙 Gerar narração com ElevenLabs"}
           </button>
+          {project.narrationUrl && (
+            <button
+              onClick={generateSrt}
+              disabled={srtGenerating}
+              className="rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-[11px] text-escola-creme hover:border-escola-dourado/40 disabled:opacity-40"
+              title="Transcreve a narração via ElevenLabs Scribe e gera ficheiro SRT (cacheado por slug). Será queimada no vídeo final pelo render, e podes descarregar para upload manual no YouTube Studio."
+            >
+              {srtGenerating
+                ? "a transcrever..."
+                : project.subtitlesUrl
+                  ? "↻ Re-gerar SRT (Scribe)"
+                  : "📝 Gerar legenda SRT (Scribe)"}
+            </button>
+          )}
+          {project.subtitlesUrl && (
+            <a
+              href={project.subtitlesUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-[10px] text-escola-dourado hover:bg-escola-dourado/20"
+            >
+              ✓ SRT pronto · abrir
+            </a>
+          )}
+          {srtErr && (
+            <span className="text-[10px] text-escola-terracota">{srtErr}</span>
+          )}
           <p className="text-[10px] text-escola-creme-50">
             Vai usar: voz <code>{voiceId}</code> · model <code>{modelId}</code>
             {scriptDirty && (

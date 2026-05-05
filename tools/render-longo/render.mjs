@@ -55,6 +55,46 @@ const TARGET_W = 1920;
 const TARGET_H = 1080;
 const TARGET_FPS = 30;
 
+// Estilo das legendas (libass force_style). Igual ao do funil mas FontSize
+// maior porque 1080p é mais alto que 720p — 32px em 1080p ≈ 24px em 720p.
+//   PrimaryColour é BGR (não RGB!). #F5F0E6 (cream) -> &H00E6F0F5
+//   BorderStyle=1 (outline + shadow). MarginV=80 dá faixa segura em 1080p.
+//   Alignment=2 = bottom-center.
+const DEFAULT_SUBTITLE_STYLE =
+  "FontName=DejaVu Serif," +
+  "FontSize=32," +
+  "PrimaryColour=&H00E6F0F5," +
+  "OutlineColour=&H00000000," +
+  "BackColour=&H80000000," +
+  "BorderStyle=1," +
+  "Outline=2," +
+  "Shadow=0," +
+  "MarginV=80," +
+  "Alignment=2";
+
+// Aplica offset (segundos) aos timestamps SRT. SRT é gerada sobre o áudio
+// cru (timestamps começam em 0) mas no vídeo final a narração arranca em
+// narrationStartAt (= introStride) — fazemos shift antes de queimar.
+function shiftSrtTimestamps(srtText, offsetSec) {
+  return srtText.replace(/(\d{2}):(\d{2}):(\d{2}),(\d{3})/g, (_, h, m, s, ms) => {
+    const total = +h * 3600 + +m * 60 + +s + +ms / 1000 + offsetSec;
+    if (total < 0) return "00:00:00,000";
+    const H = Math.floor(total / 3600);
+    const M = Math.floor((total % 3600) / 60);
+    const S = Math.floor(total % 60);
+    const MS = Math.round((total - Math.floor(total)) * 1000);
+    return (
+      String(H).padStart(2, "0") +
+      ":" +
+      String(M).padStart(2, "0") +
+      ":" +
+      String(S).padStart(2, "0") +
+      "," +
+      String(MS).padStart(3, "0")
+    );
+  });
+}
+
 function requireEnv(name) {
   const v = process.env[name];
   if (!v) throw new Error(`Falta env ${name}`);
@@ -148,6 +188,8 @@ async function main() {
     narrationVolume = 1.2,
     crossfade = 1.0,
     includeBrand = true,
+    subtitlesUrl,    // SRT em Supabase (gerada por /generate-srt)
+    subtitleStyle,   // override libass (string force_style)
   } = manifest;
 
   if (!narrationUrl) throw new Error("narrationUrl vazio");
@@ -181,6 +223,22 @@ async function main() {
       ? [downloadTo(INTRO_URL, introPath), downloadTo(INTRO_URL, outroPath)]
       : []),
   ]);
+
+  // Subtitles (opcional). Geradas pelo ElevenLabs Scribe — timestamps
+  // arrancam em 0 (áudio cru). Como a narração entra em narrationStartAt
+  // no vídeo final, fazemos shift abaixo (depois de calcular o offset).
+  let subtitlesPath = null;
+  if (subtitlesUrl) {
+    try {
+      const sres = await fetch(subtitlesUrl);
+      if (!sres.ok) throw new Error(`SRT ${sres.status}`);
+      subtitlesPath = path.join(WORK_DIR, "sub.srt");
+      await writeFile(subtitlesPath, await sres.text());
+    } catch (e) {
+      console.warn(`Subtitles falhou (${e?.message || e}); SEM legendas.`);
+      subtitlesPath = null;
+    }
+  }
 
   await writeResult(jobId, { status: "running", phase: "probe", progress: 15 });
 
@@ -223,6 +281,19 @@ async function main() {
     narrationStartAt + narrSec + NARR_TAIL_PAD,
   );
   const tailExtra = Math.max(0, totalDuration - bodyDuration);
+
+  // Aplica shift à SRT (timestamps eram relativos à narração crua a 0).
+  if (subtitlesPath) {
+    try {
+      const raw = await readFile(subtitlesPath, "utf8");
+      const shifted = shiftSrtTimestamps(raw, narrationStartAt);
+      await writeFile(subtitlesPath, shifted);
+      console.log(`[srt] shifted +${narrationStartAt.toFixed(2)}s`);
+    } catch (e) {
+      console.warn(`SRT shift falhou (${e?.message || e}); SEM legendas.`);
+      subtitlesPath = null;
+    }
+  }
 
   console.log(
     `[timeline] body=${bodyDuration.toFixed(1)}s · ` +
@@ -330,6 +401,17 @@ async function main() {
         `enable='between(t\\,${(outroTextStart + 0.5).toFixed(2)}\\,${outroTextEnd.toFixed(2)})'[vtext]`,
     );
     videoOutLabel = "vtext";
+  }
+
+  // Subtitles burn-in (opcional). Escapa `:` no path porque é separador de
+  // opções do filtro libass. SRT já tem timestamps shiftados em narrationStartAt.
+  if (subtitlesPath) {
+    const escapedPath = subtitlesPath.replace(/\\/g, "\\\\").replace(/:/g, "\\:");
+    const style = (subtitleStyle || DEFAULT_SUBTITLE_STYLE).replace(/'/g, "");
+    videoFilters.push(
+      `[${videoOutLabel}]subtitles=${escapedPath}:force_style='${style}'[vsub]`,
+    );
+    videoOutLabel = "vsub";
   }
 
   // Fade in/out global
