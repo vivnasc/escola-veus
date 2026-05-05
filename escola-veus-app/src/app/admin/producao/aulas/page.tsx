@@ -153,7 +153,19 @@ export default function AulasPage() {
               </button>
 
               {isOpen && (
-                <ul className="divide-y divide-escola-border border-t border-escola-border">
+                <>
+                  <div className="flex flex-wrap items-center gap-2 border-t border-escola-border bg-escola-bg/50 px-4 py-2 text-[11px]">
+                    <Link
+                      href={`/admin/producao/aulas/editar/${c.slug}`}
+                      className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
+                    >
+                      ✏️ Editar texto de todas as sub-aulas (vista única)
+                    </Link>
+                    <span className="text-escola-creme-50">
+                      Ideal para varrer acentos / reescrever em massa.
+                    </span>
+                  </div>
+                  <ul className="divide-y divide-escola-border border-t border-escola-border">
                   {c.modules.map((mod) => (
                     <li key={mod.number} className="px-4 py-2.5">
                       <p className="text-sm text-escola-creme">
@@ -193,6 +205,7 @@ export default function AulasPage() {
                     </li>
                   ))}
                 </ul>
+                </>
               )}
             </section>
           );
