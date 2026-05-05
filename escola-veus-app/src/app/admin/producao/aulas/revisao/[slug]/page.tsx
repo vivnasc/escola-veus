@@ -48,29 +48,66 @@ export default function RevisaoCursoPage({
   const course = getCourseBySlug(slug);
   const [items, setItems] = useState<Array<Suggestion & { status: Status; error?: string }>>([]);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState<{ current: number; total: number } | null>(null);
   const [requestError, setRequestError] = useState<string | null>(null);
   const [hideAccepted, setHideAccepted] = useState(false);
+
+  async function safeJson(res: Response): Promise<{ ok: boolean; data: Record<string, unknown>; erro?: string }> {
+    const text = await res.text();
+    try {
+      const data = JSON.parse(text);
+      return { ok: res.ok, data, erro: res.ok ? undefined : (data?.erro ?? `HTTP ${res.status}`) };
+    } catch {
+      return {
+        ok: false,
+        data: {},
+        erro: `Servidor devolveu resposta inválida (HTTP ${res.status}). ${text.slice(0, 120)}`,
+      };
+    }
+  }
 
   async function pedirRevisao() {
     setLoading(true);
     setRequestError(null);
     setItems([]);
-    try {
-      const r = await fetch("/api/admin/aulas/review-accents", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug }),
-      });
-      const j = await r.json();
-      if (!r.ok) throw new Error(j.erro ?? `HTTP ${r.status}`);
-      setItems(
-        (j.suggestions as Suggestion[]).map((s) => ({ ...s, status: "pending" as Status })),
-      );
-    } catch (err) {
-      setRequestError(err instanceof Error ? err.message : String(err));
-    } finally {
+    setProgress(null);
+
+    if (!course) {
       setLoading(false);
+      return;
     }
+
+    // Itera módulo a módulo — cada chamada cabe nos 60s do Vercel Hobby.
+    const accumulated: Suggestion[] = [];
+    const modules = course.modules.map((m) => m.number);
+    setProgress({ current: 0, total: modules.length });
+
+    for (let i = 0; i < modules.length; i++) {
+      const mod = modules[i];
+      try {
+        const r = await fetch("/api/admin/aulas/review-accents", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug, module: mod }),
+        });
+        const { ok, data, erro } = await safeJson(r);
+        if (!ok) {
+          setRequestError(`Módulo ${mod}: ${erro}`);
+          // Continua para os próximos módulos mesmo com erro num.
+        } else {
+          const sugs = (data.suggestions as Suggestion[] | undefined) ?? [];
+          accumulated.push(...sugs);
+          setItems(accumulated.map((s) => ({ ...s, status: "pending" as Status })));
+        }
+      } catch (err) {
+        setRequestError(`Módulo ${mod}: ${err instanceof Error ? err.message : String(err)}`);
+      } finally {
+        setProgress({ current: i + 1, total: modules.length });
+      }
+    }
+
+    setLoading(false);
+    setProgress(null);
   }
 
   async function aplicarItem(idx: number) {
@@ -206,7 +243,13 @@ export default function RevisaoCursoPage({
           disabled={loading}
           className="rounded-lg bg-escola-dourado px-4 py-2 text-sm font-medium text-escola-bg transition-opacity hover:opacity-90 disabled:opacity-40"
         >
-          {loading ? "A pedir revisão à Claude…" : items.length === 0 ? "Pedir revisão" : "Pedir nova revisão"}
+          {loading
+            ? progress
+              ? `A pedir revisão à Claude… (módulo ${progress.current}/${progress.total})`
+              : "A pedir revisão à Claude…"
+            : items.length === 0
+              ? "Pedir revisão"
+              : "Pedir nova revisão"}
         </button>
 
         {items.length > 0 && (
