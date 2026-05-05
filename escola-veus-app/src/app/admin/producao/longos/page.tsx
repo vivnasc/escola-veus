@@ -303,7 +303,10 @@ export default function LongosPage() {
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <button
               onClick={generate}
-              disabled={generating || !tema.trim()}
+              disabled={
+                generating ||
+                (seedMode === "funil" ? !seedFromEpId : !tema.trim())
+              }
               className="rounded bg-escola-dourado px-4 py-1.5 text-xs font-semibold text-escola-bg disabled:opacity-40"
             >
               {generating
