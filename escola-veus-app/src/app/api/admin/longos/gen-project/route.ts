@@ -85,17 +85,53 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: { tema?: string; duracaoAlvo?: number; tom?: string };
+  let body: {
+    tema?: string;
+    duracaoAlvo?: number;
+    tom?: string;
+    seedFromEpId?: string;
+  };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ erro: "Body JSON inválido" }, { status: 400 });
   }
-  const tema = (body.tema || "").trim();
-  if (!tema) {
-    return NextResponse.json({ erro: "tema obrigatório" }, { status: 400 });
-  }
+  const seedFromEpId = (body.seedFromEpId || "").trim();
   const tom = body.tom || "contemplativo";
+
+  // ── Modo "expandir ep funil" ──────────────────────────────────────────
+  // Em vez de tema livre, parte dum mini-ep dos 122 do funil Nomear (~1:30
+  // de teaser) e expande para 20+ min na mesma territorialidade emocional.
+  // O long é a "mesa servida" do que o short foi o aperitivo.
+  let seedScript: { titulo: string; texto: string } | null = null;
+  let tema = (body.tema || "").trim();
+
+  if (seedFromEpId) {
+    for (const preset of NOMEAR_PRESETS) {
+      const hit = preset.scripts.find((s) => s.id === seedFromEpId);
+      if (hit) {
+        seedScript = {
+          titulo: hit.titulo,
+          texto: (hit as { texto?: string }).texto ?? "",
+        };
+        if (!tema) tema = hit.titulo;
+        break;
+      }
+    }
+    if (!seedScript) {
+      return NextResponse.json(
+        { erro: `Ep "${seedFromEpId}" não encontrado` },
+        { status: 404 },
+      );
+    }
+  }
+
+  if (!tema && !seedScript) {
+    return NextResponse.json(
+      { erro: "tema ou seedFromEpId obrigatório" },
+      { status: 400 },
+    );
+  }
 
   // Sem duração-alvo. Claude decide o comprimento natural ao tema, no
   // sweet-spot Corvo Seco (~2500-4000 palavras → 20-30 min de leitura
@@ -160,10 +196,28 @@ CAPÍTULOS:
     },
   ];
 
-  const userMessage = `Cria um projecto long-form sobre o tema:
+  const seedSection = seedScript
+    ? `\n\nESTE LONG-FORM EXPANDE UM MINI-EP DO FUNIL DA VIVIANNE.\n` +
+      `O mini-ep tem ~1:30 de narração (teaser/aperitivo). O teu trabalho é\n` +
+      `aprofundar a MESMA territorialidade emocional para 20-30 min, sem\n` +
+      `repetir literalmente o que já está dito. Mantém:\n` +
+      `- mesma voz (2ª pessoa feminino, tom de companhia)\n` +
+      `- mesmos referenciais visuais (cozinha, mesas, véus, objectos)\n` +
+      `- mesma frase-âncora ou imagem central, mas explorada de mais ângulos\n` +
+      `- final que reconhece o eco do mini-ep ("isto que sentes agora não\n` +
+      `  começou hoje" tipo)\n\n` +
+      `MINI-EP DO FUNIL — "${seedScript.titulo}":\n` +
+      `"""\n${seedScript.texto.slice(0, 3000)}\n"""\n`
+    : "";
+
+  const userMessage = `${
+    seedScript
+      ? `Cria um projecto long-form que EXPANDE este mini-ep:`
+      : `Cria um projecto long-form sobre o tema:`
+  }
 
 "${tema}"
-
+${seedSection}
 ESPECIFICAÇÕES:
 - Tom: ${tom}
 - Comprimento NATURAL ao tema (não forces tamanho). Tipicamente 2500-4000
