@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as htmlToImage from "html-to-image";
 import JSZip from "jszip";
-import { CAMPANHA, DIAS, type Dia, type Slide as SlideType } from "./content";
+import { CAMPANHA, DIAS as DEFAULT_DIAS, type Dia, type Slide as SlideType } from "./content";
 import { Slide } from "./Slide";
 
 const PREVIEW_SCALE = 0.18;
@@ -78,6 +78,55 @@ export default function CarrosselVeusPage() {
   const refs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [busy, setBusy] = useState<string | null>(null);
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+
+  // ─── Conteúdo editável ─────────────────────────────
+  // Inicializa com DEFAULT_DIAS; quando montado no browser, hidrata com
+  // o que estiver em localStorage (se existir e for válido).
+  const [DIAS, setDias] = useState<Dia[]>(DEFAULT_DIAS);
+  const [editing, setEditing] = useState<{ diaIdx: number; slideIdx: number } | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("carrossel-veus.content");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length === DEFAULT_DIAS.length) {
+          setDias(parsed);
+        }
+      }
+    } catch {}
+  }, []);
+
+  // Persistência
+  useEffect(() => {
+    try {
+      localStorage.setItem("carrossel-veus.content", JSON.stringify(DIAS));
+    } catch {}
+  }, [DIAS]);
+
+  function updateSlide(diaIdx: number, slideIdx: number, patch: Partial<SlideType>) {
+    setDias((prev) =>
+      prev.map((d, di) => {
+        if (di !== diaIdx) return d;
+        return {
+          ...d,
+          slides: d.slides.map((s, si) =>
+            si === slideIdx ? ({ ...s, ...patch } as SlideType) : s
+          ),
+        };
+      })
+    );
+  }
+
+  function updateDia(diaIdx: number, patch: Partial<Dia>) {
+    setDias((prev) => prev.map((d, di) => (di === diaIdx ? { ...d, ...patch } : d)));
+  }
+
+  function resetContent() {
+    if (confirm("Repor texto original (perde as tuas edições)?")) {
+      setDias(DEFAULT_DIAS);
+    }
+  }
 
   // ─── Vozes ──────────────────────────────────────────
   const [jobId, setJobId] = useState<string>("");
@@ -239,6 +288,9 @@ export default function CarrosselVeusPage() {
             }))
           );
 
+      // Incluímos content só se for diferente do default — o workflow
+      // override o content.json do repo se vier.
+      const contentChanged = JSON.stringify(DIAS) !== JSON.stringify(DEFAULT_DIAS);
       const r = await fetch("/api/admin/carrossel-veus/render-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -250,6 +302,7 @@ export default function CarrosselVeusPage() {
           withoutVoice: noVoice,
           slideDuration,
           dias: dias ?? null,
+          content: contentChanged ? { campanha: CAMPANHA, dias: DIAS } : undefined,
         }),
       });
       const data = await r.json();
@@ -346,13 +399,22 @@ export default function CarrosselVeusPage() {
             <span className="text-escola-dourado"> 3.</span> Gera os 7 vídeos MP4
           </p>
         </div>
-        <button
-          onClick={downloadAllZip}
-          disabled={busy !== null}
-          className="shrink-0 rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
-        >
-          {busy === "all" ? `${progress?.done ?? 0}/${progress?.total ?? 42}` : "↓ PNGs (ZIP)"}
-        </button>
+        <div className="flex shrink-0 gap-2">
+          <button
+            onClick={resetContent}
+            className="rounded border border-escola-border px-3 py-2 text-xs text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+            title="Repor texto original (apaga as tuas edições)"
+          >
+            ↺ repor texto
+          </button>
+          <button
+            onClick={downloadAllZip}
+            disabled={busy !== null}
+            className="rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
+          >
+            {busy === "all" ? `${progress?.done ?? 0}/${progress?.total ?? 42}` : "↓ PNGs (ZIP)"}
+          </button>
+        </div>
       </div>
 
       {/* ─── Painel de VOZES ──────────────────────────── */}
@@ -468,11 +530,20 @@ export default function CarrosselVeusPage() {
       <section className="mb-10">
         <h3 className="mb-4 font-serif text-lg text-escola-creme">Slides (PNG individuais)</h3>
         <div className="space-y-8">
-          {DIAS.map((dia) => (
+          {DIAS.map((dia, diaIdx) => (
             <div key={dia.numero}>
-              <header className="mb-3 border-b border-escola-border pb-2 text-sm text-escola-creme-50">
-                Dia {dia.numero} · <span className="text-escola-dourado">{dia.veu}</span> ·{" "}
-                <em>{dia.subtitulo}</em>
+              <header className="mb-3 flex items-baseline justify-between gap-2 border-b border-escola-border pb-2 text-sm text-escola-creme-50">
+                <span>
+                  Dia {dia.numero} · <span className="text-escola-dourado">{dia.veu}</span> ·{" "}
+                  <em>{dia.subtitulo}</em>
+                </span>
+                <button
+                  onClick={() => setEditing({ diaIdx, slideIdx: -1 })}
+                  className="text-xs text-escola-creme-50 hover:text-escola-dourado"
+                  title="Editar nome do véu / subtítulo"
+                >
+                  ✏ editar dia
+                </button>
               </header>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6">
                 {dia.slides.map((slide, i) => {
@@ -489,17 +560,26 @@ export default function CarrosselVeusPage() {
                           <Slide dia={dia} slide={slide} indice={i} scale={PREVIEW_SCALE} />
                         </div>
                       </button>
-                      <div className="flex w-full items-center justify-between gap-2 px-1">
+                      <div className="flex w-full items-center justify-between gap-1 px-1">
                         <span className="text-[10px] uppercase tracking-wider text-escola-creme-50">
                           {tipoLabel(slide)}
                         </span>
-                        <button
-                          onClick={() => downloadSlide(dia, i)}
-                          disabled={busy !== null}
-                          className="rounded bg-escola-card px-2 py-0.5 text-[10px] text-escola-creme hover:bg-escola-bg-light disabled:opacity-40"
-                        >
-                          ↓ PNG
-                        </button>
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => setEditing({ diaIdx, slideIdx: i })}
+                            className="rounded bg-escola-card px-2 py-0.5 text-[10px] text-escola-creme hover:bg-escola-bg-light"
+                            title="Editar texto"
+                          >
+                            ✏
+                          </button>
+                          <button
+                            onClick={() => downloadSlide(dia, i)}
+                            disabled={busy !== null}
+                            className="rounded bg-escola-card px-2 py-0.5 text-[10px] text-escola-creme hover:bg-escola-bg-light disabled:opacity-40"
+                          >
+                            ↓ PNG
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
@@ -665,6 +745,18 @@ export default function CarrosselVeusPage() {
           indice={fullscreenSlide.indice}
           onClose={() => setFullscreenSlide(null)}
           onDownload={() => downloadSlide(fullscreenSlide.dia, fullscreenSlide.indice)}
+        />
+      )}
+
+      {editing && (
+        <EditModal
+          dia={DIAS[editing.diaIdx]}
+          slideIdx={editing.slideIdx}
+          onClose={() => setEditing(null)}
+          onSaveDia={(patch) => updateDia(editing.diaIdx, patch)}
+          onSaveSlide={(patch) =>
+            editing.slideIdx >= 0 && updateSlide(editing.diaIdx, editing.slideIdx, patch)
+          }
         />
       )}
     </div>
@@ -978,5 +1070,206 @@ function VideoResultCard({
         </div>
       </div>
     </div>
+  );
+}
+
+/* ─── EditModal ─────────────────────────────────────────
+   Edita os campos de um slide (ou os metadados do dia se slideIdx === -1).
+*/
+function EditModal({
+  dia,
+  slideIdx,
+  onClose,
+  onSaveDia,
+  onSaveSlide,
+}: {
+  dia: Dia;
+  slideIdx: number;
+  onClose: () => void;
+  onSaveDia: (patch: Partial<Dia>) => void;
+  onSaveSlide: (patch: Partial<SlideType>) => void;
+}) {
+  const isDia = slideIdx === -1;
+  const slide = isDia ? null : dia.slides[slideIdx];
+
+  // estado local para os inputs (commit no save)
+  const [veu, setVeu] = useState(dia.veu);
+  const [subtitulo, setSubtitulo] = useState(dia.subtitulo);
+  const [linha1, setLinha1] = useState(slide?.tipo === "capa" ? slide.linha1 : "");
+  const [linha2, setLinha2] = useState(slide?.tipo === "capa" ? slide.linha2 : "");
+  const [titulo, setTitulo] = useState(slide?.tipo === "conteudo" ? slide.titulo ?? "" : "");
+  const [texto, setTexto] = useState(slide?.tipo === "conteudo" ? slide.texto : "");
+  const [estilo, setEstilo] = useState<"poetico" | "prosa">(
+    slide?.tipo === "conteudo" ? slide.estilo : "prosa"
+  );
+  const [icone, setIcone] = useState(slide?.tipo === "cta" ? slide.icone : "");
+  const [recurso, setRecurso] = useState(slide?.tipo === "cta" ? slide.recurso : "");
+  const [descricao, setDescricao] = useState(slide?.tipo === "cta" ? slide.descricao : "");
+  const [url, setUrl] = useState(slide?.tipo === "cta" ? slide.url : "");
+
+  function save() {
+    if (isDia) {
+      onSaveDia({ veu, subtitulo });
+    } else if (slide?.tipo === "capa") {
+      onSaveSlide({ tipo: "capa", linha1, linha2 });
+    } else if (slide?.tipo === "conteudo") {
+      onSaveSlide({ tipo: "conteudo", estilo, titulo: titulo || undefined, texto });
+    } else if (slide?.tipo === "cta") {
+      onSaveSlide({ tipo: "cta", icone, recurso, descricao, url });
+    }
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+      <div className="w-full max-w-lg rounded-lg border border-escola-border bg-escola-card p-5">
+        <div className="mb-4 flex items-baseline justify-between gap-2">
+          <h3 className="font-serif text-lg text-escola-creme">
+            {isDia ? `Editar Dia ${dia.numero}` : `Editar slide ${slideIdx + 1} · ${dia.veu}`}
+          </h3>
+          <button onClick={onClose} className="text-escola-creme-50 hover:text-escola-creme">
+            ✕
+          </button>
+        </div>
+
+        <div className="space-y-3 text-sm">
+          {isDia && (
+            <>
+              <Field label="Palavra-véu (maiúsculas, ex: PERMANÊNCIA)">
+                <input
+                  value={veu}
+                  onChange={(e) => setVeu(e.target.value)}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+              <Field label="Subtítulo (italic, no fim da capa)">
+                <input
+                  value={subtitulo}
+                  onChange={(e) => setSubtitulo(e.target.value)}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+            </>
+          )}
+
+          {slide?.tipo === "capa" && (
+            <>
+              <Field label="Linha 1 (abertura)">
+                <input
+                  value={linha1}
+                  onChange={(e) => setLinha1(e.target.value)}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+              <Field label="Linha 2 (abertura)">
+                <input
+                  value={linha2}
+                  onChange={(e) => setLinha2(e.target.value)}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+            </>
+          )}
+
+          {slide?.tipo === "conteudo" && (
+            <>
+              <Field label="Estilo">
+                <div className="flex gap-2">
+                  {(["prosa", "poetico"] as const).map((e) => (
+                    <button
+                      key={e}
+                      onClick={() => setEstilo(e)}
+                      className={`rounded border px-3 py-1 text-xs ${
+                        estilo === e
+                          ? "border-escola-dourado text-escola-dourado"
+                          : "border-escola-border text-escola-creme-50"
+                      }`}
+                    >
+                      {e}
+                    </button>
+                  ))}
+                </div>
+              </Field>
+              <Field label="Título pequeno (opcional, ex: HÁBITO DA ESTAÇÃO)">
+                <input
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
+                  placeholder="vazio = sem título"
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme placeholder:text-escola-creme-50"
+                />
+              </Field>
+              <Field label='Texto (usa "\n" ou Enter para quebra de linha em poético)'>
+                <textarea
+                  value={texto}
+                  onChange={(e) => setTexto(e.target.value)}
+                  rows={6}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+            </>
+          )}
+
+          {slide?.tipo === "cta" && (
+            <>
+              <Field label="Ícone (emoji)">
+                <input
+                  value={icone}
+                  onChange={(e) => setIcone(e.target.value)}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+              <Field label="Recurso (ex: Os 7 Véus do Despertar)">
+                <input
+                  value={recurso}
+                  onChange={(e) => setRecurso(e.target.value)}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+              <Field label="Descrição">
+                <textarea
+                  value={descricao}
+                  onChange={(e) => setDescricao(e.target.value)}
+                  rows={2}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+              <Field label="URL (mostrado em terracota)">
+                <input
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+                />
+              </Field>
+            </>
+          )}
+        </div>
+
+        <div className="mt-5 flex justify-end gap-2">
+          <button
+            onClick={onClose}
+            className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={save}
+            className="rounded bg-escola-dourado/90 px-4 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="block">
+      <span className="mb-1 block text-[11px] uppercase tracking-wider text-escola-creme-50">
+        {label}
+      </span>
+      {children}
+    </label>
   );
 }
