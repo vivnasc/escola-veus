@@ -1,7 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase-server";
 import { gerarColecaoComClaude } from "@/lib/carousel-generate";
-import { slugify } from "@/lib/carousel-types";
+import { slugify, romanFor, type Dia } from "@/lib/carousel-types";
+
+const BRIEF_FALLBACK =
+  "Série temática contemplativa na voz de Os Sete Véus (Vivianne dos Santos). Tom íntimo e calmo, autoridade sem performance. Em cada dia, escolhe uma palavra-tema que destile uma ideia central; mistura prosa curta com momentos poéticos.";
+
+function blankDias(n: number): Dia[] {
+  const arr: Dia[] = [];
+  for (let i = 1; i <= n; i++) {
+    arr.push({
+      numero: i,
+      veu: `DIA ${i}`,
+      subtitulo: "Subtítulo do dia (clica ✏ para editar)",
+      romano: romanFor(i, n),
+      slides: [
+        { tipo: "capa", linha1: "Linha 1 da capa.", linha2: "Linha 2 da capa." },
+        { tipo: "conteudo", estilo: "poetico", texto: "Slide poético.\nUma frase por linha." },
+        { tipo: "conteudo", estilo: "prosa", texto: "Slide de prosa. Escreve o que quiseres." },
+        { tipo: "conteudo", estilo: "poetico", texto: "Outro slide poético." },
+        { tipo: "conteudo", estilo: "prosa", titulo: "HÁBITO DA ESTAÇÃO", texto: "Convite a uma prática." },
+        { tipo: "cta", icone: "🌀", recurso: "Os Sete Véus", descricao: "Descrição curta.", url: "seteveus.space" },
+      ],
+    });
+  }
+  return arr;
+}
 
 export const dynamic = "force-dynamic";
 // 5 min — gerar 7×6 slides via Claude leva 30-90s normalmente
@@ -19,7 +43,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "ANTHROPIC_API_KEY não configurada." }, { status: 500 });
   }
 
-  let body: { title?: string; brief?: string; numDias?: number };
+  let body: { title?: string; brief?: string; numDias?: number; skipClaude?: boolean };
   try {
     body = await req.json();
   } catch {
@@ -29,26 +53,30 @@ export async function POST(req: NextRequest) {
   const title = (body.title || "").trim();
   const brief = (body.brief || "").trim();
   const numDias = Math.max(1, Math.min(12, Number(body.numDias) || 7));
+  const skipClaude = !!body.skipClaude;
 
-  if (!title || !brief) {
-    return NextResponse.json(
-      { erro: "title e brief obrigatórios" },
-      { status: 400 }
-    );
+  if (!title) {
+    return NextResponse.json({ erro: "title obrigatório" }, { status: 400 });
   }
+  // brief é opcional; se vazio e for para usar Claude, usa fallback genérico
+  const briefEffective = brief || (skipClaude ? "" : BRIEF_FALLBACK);
 
   // Owner
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   const ownerId = user?.id ?? null;
 
-  // Gera com Claude
-  let generated;
-  try {
-    generated = await gerarColecaoComClaude({ apiKey, title, brief, numDias });
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return NextResponse.json({ erro: `Claude falhou: ${msg}` }, { status: 502 });
+  // Gera com Claude OU cria vazio
+  let generated: { dias: Dia[]; usage: unknown };
+  if (skipClaude) {
+    generated = { dias: blankDias(numDias), usage: null };
+  } else {
+    try {
+      generated = await gerarColecaoComClaude({ apiKey, title, brief: briefEffective, numDias });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      return NextResponse.json({ erro: `Claude falhou: ${msg}` }, { status: 502 });
+    }
   }
 
   // Persiste em Supabase
@@ -75,7 +103,7 @@ export async function POST(req: NextRequest) {
     .insert({
       slug,
       title,
-      brief,
+      brief: brief || "",
       dias: generated.dias,
       theme: {},
       owner_id: ownerId,

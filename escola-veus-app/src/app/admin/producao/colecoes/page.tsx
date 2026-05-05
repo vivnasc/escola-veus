@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+// (Link usado em baixo no botão calendário)
 
 type Item = {
   id: string;
@@ -39,9 +40,9 @@ export default function ColecoesIndex() {
     load();
   }, []);
 
-  async function createColecao() {
-    if (!title.trim() || !brief.trim()) {
-      alert("Dá um título e um brief antes de gerar.");
+  async function createColecao(opts: { skipClaude?: boolean } = {}) {
+    if (!title.trim()) {
+      alert("Dá um título antes de criar.");
       return;
     }
     setCreating(true);
@@ -49,11 +50,15 @@ export default function ColecoesIndex() {
       const r = await fetch("/api/admin/colecoes/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, brief, numDias }),
+        body: JSON.stringify({
+          title,
+          brief,
+          numDias,
+          skipClaude: !!opts.skipClaude,
+        }),
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.erro || `HTTP ${r.status}`);
-      // redirect para o editor
       window.location.href = `/admin/producao/colecoes/${data.id}`;
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -85,12 +90,21 @@ export default function ColecoesIndex() {
             com N dias × 6 slides cada. Dás um brief, o Claude escreve, tu refinas.
           </p>
         </div>
-        <button
-          onClick={() => setShowNew(true)}
-          className="shrink-0 rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado"
-        >
-          + Nova colecção
-        </button>
+        <div className="flex shrink-0 gap-2">
+          <Link
+            href="/admin/producao/colecoes/calendario"
+            className="rounded border border-escola-border px-3 py-2 text-xs text-escola-creme hover:border-escola-dourado/40"
+            title="52 semanas pré-sugeridas para todo o ano"
+          >
+            📅 Calendário anual
+          </Link>
+          <button
+            onClick={() => setShowNew(true)}
+            className="rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado"
+          >
+            + Nova colecção
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -172,14 +186,14 @@ export default function ColecoesIndex() {
 
               <label className="block">
                 <span className="mb-1 block text-[11px] uppercase tracking-wider text-escola-creme-50">
-                  Brief — descreve o que queres ensinar
+                  Brief (opcional) — descreve o que queres ensinar
                 </span>
                 <textarea
                   value={brief}
                   onChange={(e) => setBrief(e.target.value)}
                   rows={6}
                   placeholder={[
-                    "Exemplo:",
+                    "Exemplo (deixa vazio para Claude usar voz genérica):",
                     "Série de 7 dias sobre maternidade consciente em Maputo. Cada dia explora um véu",
                     "que a maternidade levanta — perda, repetição, identidade, corpo, comunidade.",
                     "Voz íntima, dirigida a mães primíparas. CTA: livro Os 7 Véus, Colecção Espelhos,",
@@ -204,7 +218,7 @@ export default function ColecoesIndex() {
               </label>
             </div>
 
-            <div className="mt-5 flex justify-end gap-2">
+            <div className="mt-5 flex flex-wrap justify-end gap-2">
               <button
                 onClick={() => setShowNew(false)}
                 disabled={creating}
@@ -213,7 +227,15 @@ export default function ColecoesIndex() {
                 Cancelar
               </button>
               <button
-                onClick={createColecao}
+                onClick={() => createColecao({ skipClaude: true })}
+                disabled={creating}
+                className="rounded border border-escola-border px-4 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40 disabled:opacity-30"
+                title="Cria a colecção com slides em branco — escreves tudo à mão"
+              >
+                {creating ? "…" : "📝 Começar do zero"}
+              </button>
+              <button
+                onClick={() => createColecao()}
                 disabled={creating}
                 className="rounded bg-escola-dourado/90 px-4 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
               >
