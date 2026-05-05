@@ -169,7 +169,28 @@ export default function LongosPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const d = await r.json();
+      // Lê texto primeiro — se a API devolveu HTML (timeout do gateway,
+      // erro 5xx que não passou pelo nosso try/catch), JSON.parse falhava
+      // com "Unexpected token 'A'..." sem dar pista nenhuma. Lemos texto e
+      // só fazemos parse se o content-type confirma JSON.
+      const ct = r.headers.get("content-type") || "";
+      const text = await r.text();
+      if (!ct.includes("application/json")) {
+        throw new Error(
+          `Servidor devolveu ${ct || "resposta sem JSON"} (HTTP ${r.status}). ` +
+            `Provavelmente Vercel timeout — geração com adaptive thinking pode demorar 1-3 min. ` +
+            `Tenta de novo (já gravei modo streaming na próxima versão). ` +
+            `Detalhe: ${text.slice(0, 150)}…`,
+        );
+      }
+      let d: { erro?: string } & GenResult;
+      try {
+        d = JSON.parse(text) as typeof d;
+      } catch {
+        throw new Error(
+          `Resposta malformada (não é JSON válido): ${text.slice(0, 200)}…`,
+        );
+      }
       if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
       setPreview(d as GenResult);
     } catch (e) {
