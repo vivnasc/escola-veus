@@ -52,7 +52,7 @@ export default function CursosPage() {
           Cursos
         </h1>
         <p className="mt-2 text-sm text-escola-creme-50 leading-relaxed">
-          Cada curso e um territorio. Uma zona da tua vida que precisas de
+          Cada curso é um território. Uma zona da tua vida que precisas de
           atravessar com mais clareza.
         </p>
       </div>
@@ -61,7 +61,7 @@ export default function CursosPage() {
       {featured && (
         <section className="mb-12">
           <p className="text-[10px] uppercase tracking-[0.2em] text-escola-dourado/60 mb-3">
-            Comeca aqui
+            Começa aqui
           </p>
           <Link
             href={`/cursos/${FEATURED_SLUG}`}
@@ -85,14 +85,14 @@ export default function CursosPage() {
             </p>
             <div className="mt-4 flex items-center gap-2">
               <span className="text-xs text-escola-creme-50">
-                {featured.modules.length} modulos
+                {featured.modules.length} módulos
               </span>
               <span className="text-escola-creme-50/30">~</span>
               <span
                 className="text-xs font-medium"
                 style={{ color: featuredColors.accent }}
               >
-                Disponivel
+                Disponível
               </span>
             </div>
           </Link>
@@ -140,7 +140,7 @@ export default function CursosPage() {
                       </p>
                       <div className="mt-2 flex items-center gap-2">
                         <span className="text-[10px] text-escola-creme-50/50">
-                          {course.modules.length} modulos
+                          {course.modules.length} módulos
                         </span>
                         {isFeatured && (
                           <>
@@ -149,7 +149,7 @@ export default function CursosPage() {
                               className="text-[10px] font-medium"
                               style={{ color: colors.accent }}
                             >
-                              Disponivel
+                              Disponível
                             </span>
                           </>
                         )}

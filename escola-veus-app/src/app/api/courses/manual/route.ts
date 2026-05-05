@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
   if (!slug || !MANUALS[slug]) {
     return NextResponse.json(
-      { error: "Curso nao encontrado" },
+      { error: "Curso não encontrado" },
       { status: 404 }
     );
   }
@@ -79,7 +79,7 @@ export async function GET(req: NextRequest) {
 
   if (!token) {
     return NextResponse.json(
-      { error: "Autenticacao necessaria. Usa ?preview=admin para preview." },
+      { error: "Autenticação necessária. Usa ?preview=admin para preview." },
       { status: 401 }
     );
   }
@@ -97,7 +97,7 @@ export async function GET(req: NextRequest) {
 
   if (authError || !user) {
     return NextResponse.json(
-      { error: "Sessao invalida. Usa ?preview=admin para preview." },
+      { error: "Sessão inválida. Usa ?preview=admin para preview." },
       { status: 401 }
     );
   }

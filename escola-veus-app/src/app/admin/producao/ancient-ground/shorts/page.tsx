@@ -4,16 +4,24 @@ import { useState, useEffect, useRef, forwardRef } from "react";
 import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
+import {
+  RAIZES_TEMAS,
+  RAIZES_TEMA_LABELS,
+  parseRaizTema,
+  type RaizTema,
+} from "@/lib/ag-raizes-temas";
 
-// Shorts AG — reaproveitam clips Runway já pagos (listados em escola-shorts/clips/*
-// via list-clips-ag), música do álbum ancient-ground (100 faixas) e 2 versos
-// próprios sobrepostos. O renderer (render-short-submit + workflow) é o mesmo
-// que os shorts Loranne, só muda o conteúdo do manifest.
+// Shorts AG — consomem da pool raízes (escola-shorts/ag-raizes-clips/{tema}/),
+// totalmente separada da paisagem Loranne. Música ainda do álbum ancient-ground
+// (100 faixas) e 2 versos próprios sobrepostos. O renderer (render-short-submit
+// + workflow) é o mesmo que os shorts Loranne, só muda o conteúdo do manifest.
 
 type AgClip = {
-  name: string;
+  name: string;     // filename sem extensão (compat — usado em UI/state)
+  filename: string; // filename completo com .mp4
   url: string;
   createdAt: string | null;
+  tema: RaizTema;
 };
 
 type SlotState = {
@@ -70,6 +78,7 @@ export default function AncientGroundShortsPage() {
   const [clips, setClips] = useState<AgClip[]>([]);
   const [loadingClips, setLoadingClips] = useState(false);
   const [clipQuery, setClipQuery] = useState("");
+  const [clipThemeFilter, setClipThemeFilter] = useState<RaizTema | "all">("all");
 
   const [slots, setSlots] = useState<SlotState[]>(EMPTY_SLOTS);
   const [verse1, setVerse1] = useState("");
@@ -81,6 +90,13 @@ export default function AncientGroundShortsPage() {
   const [tiktokCaption, setTiktokCaption] = useState("");
   const [youtubeTitle, setYoutubeTitle] = useState("");
   const [youtubeDescription, setYoutubeDescription] = useState("");
+
+  // Quando suggest-ag enche versos+captions, congelamos o template useEffect
+  // para não sobrescrever. Sai de lock automático quando user edita a mão.
+  const [aiCaptionsLocked, setAiCaptionsLocked] = useState(false);
+  const [suggesting, setSuggesting] = useState(false);
+  const [candidates, setCandidates] = useState<string[]>([]);
+  const [suggestError, setSuggestError] = useState<string | null>(null);
 
   const [rendering, setRendering] = useState(false);
   const [renderProgress, setRenderProgress] = useState(0);
@@ -125,12 +141,28 @@ export default function AncientGroundShortsPage() {
     } catch { /* ignore */ }
   }, [slots, verse1, verse2, trackNumber, title]);
 
-  // Lista de clips já animados em Supabase.
+  // Lista de clips da pool raízes AG (separada da paisagem Loranne).
   useEffect(() => {
     setLoadingClips(true);
-    fetch("/api/admin/shorts/list-clips-ag")
+    fetch("/api/admin/ancient-ground/raizes-clips")
       .then((r) => r.json())
-      .then((d) => setClips(d.clips || []))
+      .then((d) => {
+        type ServerItem = { tema: string; filename: string; url: string; createdAt: string | null };
+        const rows: AgClip[] = (d.items || [])
+          .map((c: ServerItem) => {
+            const tema = parseRaizTema(c.filename);
+            if (!tema) return null;
+            return {
+              name: c.filename.replace(/\.[^.]+$/, ""),
+              filename: c.filename,
+              url: c.url,
+              createdAt: c.createdAt,
+              tema,
+            } as AgClip;
+          })
+          .filter((c: AgClip | null): c is AgClip => c !== null);
+        setClips(rows);
+      })
       .catch(() => setClips([]))
       .finally(() => setLoadingClips(false));
   }, []);
@@ -142,6 +174,9 @@ export default function AncientGroundShortsPage() {
   // - YouTube description: 1ª linha = hook (1º verso) — é o que aparece no
   //   preview. Depois 2º verso + créditos música + canal + 10 hashtags.
   useEffect(() => {
+    // Skip template se AI encheu — só retoma quando user edita verso à mão.
+    if (aiCaptionsLocked) return;
+
     const hashtagsLine = SEO_HASHTAGS.join(" ");
 
     // TikTok caption: limite 150 chars (cap atual da plataforma para descobrir).
@@ -171,11 +206,19 @@ export default function AncientGroundShortsPage() {
       hashtagsLine,
     ].join("\n");
     setYoutubeDescription(yDesc);
-  }, [verse1, verse2, title, trackNumber]);
+  }, [verse1, verse2, title, trackNumber, aiCaptionsLocked]);
 
-  const filteredClips = clipQuery.trim()
-    ? clips.filter((c) => c.name.toLowerCase().includes(clipQuery.toLowerCase()))
-    : clips.slice(0, 60);
+  const filteredClips = (() => {
+    const base = clips.filter((c) => {
+      if (clipThemeFilter !== "all" && c.tema !== clipThemeFilter) return false;
+      if (clipQuery.trim() && !c.name.toLowerCase().includes(clipQuery.toLowerCase())) return false;
+      return true;
+    });
+    return clipQuery.trim() || clipThemeFilter !== "all" ? base : base.slice(0, 60);
+  })();
+
+  const clipThemeCounts: Record<string, number> = {};
+  for (const c of clips) clipThemeCounts[c.tema] = (clipThemeCounts[c.tema] || 0) + 1;
 
   const allClipsReady = slots.every((s) => s.clipUrl);
 
@@ -187,6 +230,58 @@ export default function AncientGroundShortsPage() {
 
   const clearSlot = (i: number) => {
     setSlots((prev) => prev.map((s, j) => (j === i ? { clipUrl: "", clipName: "" } : s)));
+  };
+
+  // Suggest versos + captions via Claude. Usa os temas raízes dos 3 clips
+  // escolhidos como contexto. Substitui verso1/verso2 pelos 2 primeiros
+  // candidatos e preenche captions AI-tonal (freezes template).
+  const runSuggest = async () => {
+    if (!allClipsReady) {
+      alert("Escolhe os 3 clips primeiro.");
+      return;
+    }
+    setSuggesting(true);
+    setSuggestError(null);
+    try {
+      const temas = slots
+        .map((s) => parseRaizTema(s.clipName))
+        .filter((t): t is RaizTema => t !== null);
+      if (temas.length === 0) {
+        throw new Error("Os clips escolhidos não têm tema raízes reconhecível.");
+      }
+      const res = await fetch("/api/admin/shorts/suggest-ag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ temas, trackNumber }),
+      });
+      const data = await res.json();
+      if (!res.ok || data.erro) {
+        throw new Error(data.erro || `HTTP ${res.status}`);
+      }
+      const versos: string[] = Array.isArray(data.versos) ? data.versos : [];
+      if (versos.length < 2) {
+        throw new Error("AI devolveu menos de 2 versos. Tenta de novo.");
+      }
+      setCandidates(versos);
+      setVerse1(versos[0]);
+      setVerse2(versos[1] || "");
+      setTiktokCaption(data.tiktokCaption || "");
+      setYoutubeTitle(data.youtubeTitle || "");
+      setYoutubeDescription(data.youtubeDescription || "");
+      setAiCaptionsLocked(true);
+    } catch (err) {
+      setSuggestError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setSuggesting(false);
+    }
+  };
+
+  const pickCandidate = (versoIdx: number, slotKey: "v1" | "v2") => {
+    const v = candidates[versoIdx];
+    if (!v) return;
+    if (slotKey === "v1") setVerse1(v);
+    else setVerse2(v);
+    // Mantém aiCaptionsLocked — os captions AI ainda fazem sentido com estes versos.
   };
 
   const startRender = async () => {
@@ -289,24 +384,54 @@ export default function AncientGroundShortsPage() {
       {/* 1. CLIPS */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          1. Escolhe 3 clips da biblioteca motion
+          1. Escolhe 3 clips raízes
         </h3>
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs text-escola-creme-50">
-            Clips já gerados via Runway (bucket escola-shorts/clips). Reaproveitamos sem pagar créditos novos.
+            Clips humano-culturais Moçambique. Pool exclusiva AG (escola-shorts/ag-raizes-clips).
           </p>
           <Link
-            href="/admin/producao/shorts/biblioteca"
+            href="/admin/producao/ancient-ground/raizes"
             className="text-[10px] text-escola-coral hover:text-escola-coral/80"
           >
-            → Upload na biblioteca
+            → Gerar / animar / upload em Raízes
           </Link>
+        </div>
+        <div className="mb-3 flex flex-wrap gap-1">
+          <button
+            onClick={() => setClipThemeFilter("all")}
+            className={`rounded border px-2 py-0.5 text-[10px] ${
+              clipThemeFilter === "all"
+                ? "border-escola-coral bg-escola-coral/20 text-escola-coral"
+                : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            Todos ({clips.length})
+          </button>
+          {RAIZES_TEMAS.map((t) => {
+            const n = clipThemeCounts[t] || 0;
+            if (n === 0) return null;
+            const active = clipThemeFilter === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setClipThemeFilter(t)}
+                className={`rounded border px-2 py-0.5 text-[10px] ${
+                  active
+                    ? "border-escola-coral bg-escola-coral/20 text-escola-coral"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+              >
+                {RAIZES_TEMA_LABELS[t]} ({n})
+              </button>
+            );
+          })}
         </div>
         <input
           type="text"
           value={clipQuery}
           onChange={(e) => setClipQuery(e.target.value)}
-          placeholder="Filtrar por nome (ex: mar, praia, floresta...)"
+          placeholder="Pesquisa livre no nome"
           className="mb-3 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
         />
 
@@ -359,7 +484,14 @@ export default function AncientGroundShortsPage() {
                         : "border-escola-border hover:border-escola-coral"
                     }`}
                   >
-                    <video src={c.url} className="h-full w-full object-cover" muted />
+                    <video
+                      src={c.url}
+                      className="h-full w-full object-cover"
+                      muted
+                    />
+                    <span className="pointer-events-none absolute left-1 top-1 rounded bg-black/70 px-1 text-[9px] font-semibold text-escola-dourado">
+                      {RAIZES_TEMA_LABELS[c.tema]}
+                    </span>
                   </button>
                 );
               })}
@@ -368,7 +500,7 @@ export default function AncientGroundShortsPage() {
               <p className="text-xs text-escola-creme-50">Nenhum clip encontrado.</p>
             )}
             <p className="mt-2 text-xs text-escola-creme-50">
-              {clips.length} clips em biblioteca · a mostrar {filteredClips.length}
+              {clips.length} clips raízes · a mostrar {filteredClips.length}
             </p>
           </>
         )}
@@ -376,12 +508,34 @@ export default function AncientGroundShortsPage() {
 
       {/* 2. TEXTO */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-escola-coral">
-          2. Texto (2 frases sobrepostas)
-        </h3>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-coral">
+            2. Texto (2 frases sobrepostas)
+          </h3>
+          <div className="flex items-center gap-2">
+            {aiCaptionsLocked && (
+              <span className="rounded bg-escola-dourado/20 px-2 py-0.5 text-[10px] text-escola-dourado">
+                AI · legendas sincronizadas
+              </span>
+            )}
+            <button
+              onClick={runSuggest}
+              disabled={!allClipsReady || suggesting}
+              className="rounded bg-escola-coral px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-30"
+            >
+              {suggesting ? "A pensar..." : candidates.length > 0 ? "↻ Regenerar" : "✨ Sugerir versos AG"}
+            </button>
+          </div>
+        </div>
         <p className="mb-2 text-xs text-escola-creme-50">
           A 1ª frase aparece na 1ª metade (0–15s), a 2ª na 2ª metade (15–30s).
+          O sugestor usa a filosofia AG + temas raízes dos clips escolhidos.
         </p>
+        {suggestError && (
+          <div className="mb-3 rounded bg-red-950/50 p-2 text-xs text-red-300">
+            {suggestError}
+          </div>
+        )}
         <div className="grid gap-3 md:grid-cols-2">
           <div>
             <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
@@ -389,7 +543,10 @@ export default function AncientGroundShortsPage() {
             </label>
             <textarea
               value={verse1}
-              onChange={(e) => setVerse1(e.target.value)}
+              onChange={(e) => {
+                setVerse1(e.target.value);
+                setAiCaptionsLocked(false);
+              }}
               rows={3}
               placeholder="onde o tempo dorme, a água lembra"
               className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-sm text-escola-creme"
@@ -401,13 +558,59 @@ export default function AncientGroundShortsPage() {
             </label>
             <textarea
               value={verse2}
-              onChange={(e) => setVerse2(e.target.value)}
+              onChange={(e) => {
+                setVerse2(e.target.value);
+                setAiCaptionsLocked(false);
+              }}
               rows={3}
               placeholder="respira — aqui também é casa"
               className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-sm text-escola-creme"
             />
           </div>
         </div>
+
+        {candidates.length > 0 && (
+          <div className="mt-4">
+            <p className="mb-2 text-[10px] uppercase tracking-wider text-escola-creme-50">
+              Candidatos AI ({candidates.length}) · clica para trocar frase 1 ou 2
+            </p>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {candidates.map((c, i) => {
+                const isV1 = c === verse1;
+                const isV2 = c === verse2;
+                const inUse = isV1 || isV2;
+                return (
+                  <div
+                    key={i}
+                    className={`rounded border p-2 text-xs ${
+                      inUse
+                        ? "border-escola-dourado bg-escola-dourado/10"
+                        : "border-escola-border bg-escola-bg"
+                    }`}
+                  >
+                    <p className="mb-1.5 whitespace-pre-line text-escola-creme">{c}</p>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => pickCandidate(i, "v1")}
+                        disabled={isV1}
+                        className="flex-1 rounded border border-escola-border px-2 py-0.5 text-[10px] hover:border-escola-coral disabled:opacity-30"
+                      >
+                        {isV1 ? "✓ Frase 1" : "→ Frase 1"}
+                      </button>
+                      <button
+                        onClick={() => pickCandidate(i, "v2")}
+                        disabled={isV2}
+                        className="flex-1 rounded border border-escola-border px-2 py-0.5 text-[10px] hover:border-escola-coral disabled:opacity-30"
+                      >
+                        {isV2 ? "✓ Frase 2" : "→ Frase 2"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* 3. MÚSICA */}

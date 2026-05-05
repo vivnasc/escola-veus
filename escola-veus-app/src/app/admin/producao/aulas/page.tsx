@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import COURSES from "@/data/courses";
 import PromptEditor from "@/components/admin/PromptEditor";
+import { QaPromptEditor } from "@/components/admin/QaPromptEditor";
 
 type AulaStatus = { script: boolean; audio: boolean; video: boolean };
 type AulaEntry = {
@@ -17,7 +18,7 @@ type AulaEntry = {
 
 export default function AulasPage() {
   const [open, setOpen] = useState<string | null>(COURSES[0]?.slug ?? null);
-  const [tab, setTab] = useState<"cursos" | "prompts">("cursos");
+  const [tab, setTab] = useState<"cursos" | "prompts" | "qa">("cursos");
   const [aulasStatus, setAulasStatus] = useState<AulaEntry[] | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(false);
 
@@ -89,7 +90,7 @@ export default function AulasPage() {
       </div>
 
       <nav className="mb-6 flex gap-1 border-b border-escola-border">
-        {(["cursos", "prompts"] as const).map((t) => (
+        {(["cursos", "prompts", "qa"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -99,12 +100,15 @@ export default function AulasPage() {
                 : "border-transparent text-escola-creme-50 hover:text-escola-creme"
             }`}
           >
-            {t === "cursos" ? "Cursos" : "Prompts"}
+            {t === "cursos" && "Cursos"}
+            {t === "prompts" && "Prompts"}
+            {t === "qa" && "Q&A (tom)"}
           </button>
         ))}
       </nav>
 
       {tab === "prompts" && <PromptEditor collection="aulas" />}
+      {tab === "qa" && <QaPromptEditor />}
 
       {tab === "cursos" && (
       <div className="space-y-2">
@@ -159,11 +163,13 @@ export default function AulasPage() {
                         {mod.subLessons.map((sub) => {
                           const aula = findAulaByKey(c.slug, mod.number, sub.letter);
                           return (
-                            <div
+                            <Link
                               key={sub.letter}
-                              className="flex items-center gap-1 rounded border border-escola-border bg-escola-bg px-2 py-1"
+                              href={`/admin/producao/aulas/preview/${c.slug}/${mod.number}/${sub.letter.toLowerCase()}`}
+                              className="group flex items-center gap-1.5 rounded border border-escola-border bg-escola-bg px-2 py-1 hover:border-escola-dourado/50"
+                              title={`Abrir preview de ${sub.letter} — ${sub.title}`}
                             >
-                              <span className="text-[10px] text-escola-creme">
+                              <span className="flex h-5 w-5 items-center justify-center rounded bg-escola-dourado/10 font-serif text-[11px] font-semibold text-escola-dourado group-hover:bg-escola-dourado group-hover:text-escola-bg">
                                 {sub.letter}
                               </span>
                               <Pill
@@ -177,7 +183,10 @@ export default function AulasPage() {
                                 ok={!!aula?.status.video}
                                 value={aula ? (aula.status.video ? "✓" : "×") : "—"}
                               />
-                            </div>
+                              <span className="ml-auto text-[10px] text-escola-creme-50 group-hover:text-escola-dourado">
+                                abrir →
+                              </span>
+                            </Link>
                           );
                         })}
                       </div>

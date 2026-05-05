@@ -93,7 +93,7 @@ export default function CadernoPage() {
     return (
       <div className="mx-auto flex min-h-[60dvh] max-w-lg flex-col items-center justify-center px-4 text-center" style={themeStyle}>
         <p className="mb-3 text-sm text-escola-creme-50">
-          Este modulo faz parte do curso completo.
+          Este módulo faz parte do curso completo.
         </p>
         <Link
           href="/subscrever"
@@ -118,7 +118,7 @@ export default function CadernoPage() {
         href={`/cursos/${slug}/${moduloNum}`}
         className="mb-6 inline-flex items-center gap-1 text-xs text-escola-creme-50 hover:text-escola-creme"
       >
-        <span>&larr;</span> Modulo {moduloNum}
+        <span>&larr;</span> Módulo {moduloNum}
       </Link>
 
       {/* Header */}
@@ -133,7 +133,7 @@ export default function CadernoPage() {
           {mod.workbook}
         </h1>
         <p className="mt-2 text-sm text-escola-creme-50">
-          Modulo {moduloNum} &middot; {course.title}
+          Módulo {moduloNum} &middot; {course.title}
         </p>
       </header>
 
@@ -188,13 +188,13 @@ export default function CadernoPage() {
       <div className="mt-8">
         {completed ? (
           <div className="text-center">
-            <p className="mb-3 text-xs text-escola-creme-50">Modulo completado</p>
+            <p className="mb-3 text-xs text-escola-creme-50">Módulo completado</p>
             <Link
               href={`/cursos/${slug}/${moduloNum}/completo`}
               className="inline-block rounded-lg px-6 py-3 text-sm font-medium"
               style={{ backgroundColor: "rgba(var(--t-primary-rgb), 0.1)", color: "var(--t-primary)" }}
             >
-              Ver conclusao
+              Ver conclusão
             </Link>
           </div>
         ) : (
@@ -203,7 +203,7 @@ export default function CadernoPage() {
             className="w-full rounded-lg px-6 py-3 text-sm font-medium text-escola-bg transition-opacity hover:opacity-90"
             style={{ backgroundColor: "var(--t-primary)" }}
           >
-            Completar modulo
+            Completar módulo
           </button>
         )}
       </div>

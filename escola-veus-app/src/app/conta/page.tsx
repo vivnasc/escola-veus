@@ -9,7 +9,7 @@ export default function ContaPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60dvh] items-center justify-center">
-        <p className="text-sm text-escola-creme-50">A carregar...</p>
+        <p className="text-sm text-escola-creme-50">A carregar…</p>
       </div>
     );
   }

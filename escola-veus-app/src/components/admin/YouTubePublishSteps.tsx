@@ -28,6 +28,7 @@ export function YouTubePublishSteps({
   thumbnailUrl,
   channel = "ag",
   channelLabel,
+  kind = "long",
 }: {
   videoUrl: string;
   title: string;
@@ -36,10 +37,12 @@ export function YouTubePublishSteps({
   thumbnailUrl?: string | null;
   channel?: Channel;
   channelLabel?: string;
+  // "long" (~GB) = ficheiro não passa pelo Web Share, instruímos download manual.
+  // "short" (~10MB) = partilha ficheiro directo via canShare+files no mobile.
+  kind?: "long" | "short";
 }) {
   const [copied, setCopied] = useState<string | null>(null);
   const [shareMsg, setShareMsg] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
 
   const canShare =
     typeof navigator !== "undefined" && typeof navigator.share === "function";
@@ -52,27 +55,22 @@ export function YouTubePublishSteps({
     } catch { /* ignore */ }
   };
 
-  const downloadBlob = async (url: string, filename: string) => {
-    setBusy(true);
-    try {
-      const res = await fetch(url);
-      const blob = await res.blob();
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(a.href);
-    } catch {
-      // Fallback: abre o URL directo — o browser descarrega.
-      window.open(url, "_blank");
-    } finally {
-      setBusy(false);
-    }
-  };
+  // URL para download forçado. Em vez do ?download= do Supabase (que o
+  // Safari iOS ignora para video/mp4 — reproduz sempre inline), usamos um
+  // proxy nosso que re-serve com Content-Type: application/octet-stream.
+  // Assim o Safari não reconhece como vídeo e descarrega normalmente.
+  const downloadHref = (url: string, name: string) =>
+    `/api/admin/ancient-ground/download?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}`;
 
-  const nativeShare = async () => {
+  // Download agora usa anchor HTML directo no JSX (em vez de JS-triggered
+  // click). Essencial para iOS/PWA: anchor com target="_blank" abre no
+  // Safari externo (sai da PWA), onde o long-press no vídeo funciona e
+  // permite "Save Video" para as Fotos. Em Android e desktop, o
+  // ?download=<nome> força Content-Disposition: attachment e descarrega
+  // directamente sem preview.
+
+  const nativeShareFile = async () => {
+    // Só faz sentido para shorts (<50MB). Longos não passam pelo Web Share.
     setShareMsg("A preparar ficheiro...");
     try {
       const res = await fetch(videoUrl);
@@ -93,6 +91,24 @@ export function YouTubePublishSteps({
       if (!/abort|cancel/i.test(msg)) setShareMsg(`Erro: ${msg}`);
     } finally {
       setTimeout(() => setShareMsg(null), 3000);
+    }
+  };
+
+  const nativeShareLink = async () => {
+    // Para longos: partilha só o URL (WhatsApp/email/etc). YouTube app não
+    // aceita URLs como fonte de upload — para isso é mesmo baixar e upload
+    // manual da galeria.
+    try {
+      if (canShare) {
+        await navigator.share({ title, text: description.slice(0, 200), url: videoUrl });
+      } else {
+        await navigator.clipboard.writeText(videoUrl);
+        setShareMsg("Link copiado.");
+        setTimeout(() => setShareMsg(null), 2500);
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (!/abort|cancel/i.test(msg)) setShareMsg(`Erro: ${msg}`);
     }
   };
 
@@ -118,36 +134,73 @@ export function YouTubePublishSteps({
           Guardar ficheiros no teu dispositivo
         </p>
         <div className="flex flex-wrap gap-2 text-xs">
-          <button
-            onClick={() => downloadBlob(videoUrl, filename)}
-            disabled={busy}
-            className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg disabled:opacity-50"
+          {/* Anchor directo em vez de button — essencial para iOS/PWA. No
+              iOS o anchor com target="_blank" abre no Safari externo (sai
+              da PWA), onde o long-press funciona. O ?download forca
+              Content-Disposition no Android e desktop.  */}
+          <a
+            href={downloadHref(videoUrl, filename)}
+            download={filename}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded bg-escola-dourado px-3 py-2 font-semibold text-escola-bg no-underline"
           >
             ⬇ MP4 (vídeo)
-          </button>
-          {canShare && (
+          </a>
+          {canShare && kind === "short" && (
             <button
-              onClick={nativeShare}
+              onClick={nativeShareFile}
               className="rounded border border-escola-dourado px-3 py-2 font-semibold text-escola-dourado"
-              title="No mobile abre o sheet de partilha (YouTube, TikTok, IG)"
+              title="No mobile abre o sheet de partilha (YouTube Shorts, TikTok, IG Reels)"
             >
               ↗ Partilhar MP4
             </button>
           )}
-          {thumbnailUrl && (
+          {canShare && kind === "long" && (
             <button
-              onClick={() => downloadBlob(thumbnailUrl, `${slug}-thumb.png`)}
+              onClick={nativeShareLink}
               className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40"
+              title="Partilha só o link (WhatsApp/email). YouTube não aceita URL como upload — usa ⬇ MP4."
+            >
+              ↗ Partilhar link
+            </button>
+          )}
+          {thumbnailUrl && (
+            <a
+              href={downloadHref(thumbnailUrl, `${slug}-thumb.png`)}
+              download={`${slug}-thumb.png`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded border border-escola-border px-3 py-2 text-escola-creme hover:border-escola-dourado/40 no-underline"
             >
               ⬇ Thumbnail
-            </button>
+            </a>
           )}
         </div>
         {shareMsg && <p className="mt-2 text-[10px] text-escola-creme-50">{shareMsg}</p>}
-        <p className="mt-2 text-[10px] text-escola-creme-50">
-          📱 Mobile: &quot;Partilhar MP4&quot; abre o sheet nativo → YouTube / TikTok / IG.
-          💻 Desktop: usa &quot;⬇ MP4&quot; e arrasta para o Studio.
-        </p>
+        {kind === "long" ? (
+          <div className="mt-2 space-y-2 rounded border border-escola-coral/30 bg-escola-coral/5 p-2 text-[11px] text-escola-creme-50">
+            <p>
+              Carrega <strong className="text-escola-creme">⬇ MP4</strong> — o ficheiro passa pelo nosso proxy que força download (evita o preview inline do Safari iOS). Guarda em:
+            </p>
+            <ul className="list-disc space-y-0.5 pl-4">
+              <li><strong className="text-escola-creme">iPhone/iPad:</strong> &quot;Save to Files&quot; (vai para a app Ficheiros). 2-5 min.</li>
+              <li><strong className="text-escola-creme">Android:</strong> pasta Transferências, automático.</li>
+              <li><strong className="text-escola-creme">Desktop:</strong> pasta Downloads.</li>
+            </ul>
+            <p>Depois:</p>
+            <ol className="list-decimal space-y-0.5 pl-4">
+              <li>Abre a app <strong className="text-escola-creme">YouTube</strong> (não Studio) → <strong className="text-escola-creme">+</strong> → <strong className="text-escola-creme">Upload a video</strong>.</li>
+              <li>Escolhe o MP4 dos Ficheiros / Transferências / Downloads.</li>
+              <li>Volta cá e copia título/descrição/tags dos passos 3 abaixo.</li>
+            </ol>
+          </div>
+        ) : (
+          <p className="mt-2 text-[10px] text-escola-creme-50">
+            📱 Mobile: <strong>↗ Partilhar MP4</strong> abre o sheet nativo → YouTube Shorts / TikTok / IG Reels envia o ficheiro directo.
+            💻 Desktop: usa <strong>⬇ MP4</strong> e arrasta para o Studio.
+          </p>
+        )}
       </div>
 
       {/* Passo 2: Abrir YouTube Studio */}

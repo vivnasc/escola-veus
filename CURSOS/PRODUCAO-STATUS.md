@@ -1,13 +1,67 @@
 # Escola dos Véus — Estado da Produção
 
-**Última actualização:** 2026-04-21 (sessão 7 — Shotstack → FFmpeg, piscar resolvido)
+**Última actualização:** 2026-04-24 (sessão 8 pt. 2 — autonomia editorial + render MP4 Mock B)
 
 > Ficheiro único de continuidade entre sessões. Ler no início de cada sessão nova.
 > Actualizar no fim. Histórico antigo em `_arquivo-historico/INDEX.md`.
 
 ---
 
-## Última sessão (7 — 2026-04-21)
+## Última sessão (8 pt. 2 — 2026-04-24)
+
+**Autonomia editorial no preview Mock B + pipeline HTML→MP4 (Puppeteer + FFmpeg em GitHub Actions) + espaço do aluno completo.**
+
+Ver `CURSOS/CONTINUIDADE-SESSAO-8.md` para o plano original. Esta 2ª parte fechou todos os pendentes em vez de apenas aprovar o formato.
+
+### Autonomia editorial no preview admin (`/admin/producao/aulas/preview/[slug]/[m]/[sub]`)
+
+Tudo o que entra num vídeo edita-se na UI admin e grava em Supabase sem deploy. O render só lê o que Vivianne aprovou. Padrão inspirado em `/admin/producao/funil` tab Prompts.
+
+- **Texto** dos 5 campos do script — textareas com autosave debounced. Override em `course-assets/admin/aulas-config/<slug>/m<N>-<letter>.json`.
+- **Quebra em blocos** manual dentro de cada acto (juntar/dividir à mão; default parte em ~220 chars nos pontos finais).
+- **Timing** por slide + multiplicador global (0.5x–2x).
+- **Faixa Ancient Ground** por sub-aula (override) ou por curso (default). Picker lista `audios/albums/ancient-ground/*.mp3` com play inline.
+- **Volume em dB** por acto (defaults: pergunta/situação −18dB → gesto −15dB → frase −14dB).
+- **Preview do mix no browser**: `<audio>` da AG toca por baixo dos slides, volume muda com o slide corrente. Sample audível antes de gastar workflow.
+
+### Render pipeline HTML→MP4
+
+- `tools/render-course-slide/render.mjs` — Puppeteer captura cada slide como PNG 1920×1080 (template `slide-template.mjs` espelha `SlidePreview.tsx`), FFmpeg concat com durações + AG em loop + volume modulado por acto + fade-in/out.
+- `.github/workflows/render-course-slide.yml` — dispatch com `jobId`; lê manifest de `course-assets/render-jobs/<jobId>.json`.
+- `POST /api/admin/aulas/render-submit` + `GET /api/admin/aulas/render-status` (padrão AG).
+- Output: `course-assets/curso-<slug>/videos/m<N>-<letter>.mp4`. Botão "Render MP4" com polling 4s até `done`.
+- `GITHUB_DISPATCH_TOKEN` (PAT, scope `workflow`) e `SUPABASE_SERVICE_ROLE_KEY` já existentes na Vercel/GitHub.
+
+### `/api/courses/lesson` — preferência Mock B
+
+HEAD no MP4 Mock B; se 200, devolve URL pública. Senão fallback legacy `course-videos/courses/{slug}/m{N}/{letter}.mp4` (signed URL 2h).
+
+### Q&A: instruções extras editáveis sem deploy
+
+- Tab **Q&A (tom)** em `/admin/producao/aulas` — textarea com extras anexadas ao fim do system prompt base (em `src/lib/course-context.ts`).
+- Override em `course-assets/admin/aulas-qa-prompt.json`, carregado a cada pergunta por `/api/courses/ask` (via `src/lib/qa-extras.ts`).
+- Movido do nível de sub-aula para o nível de módulo (a conversa é por módulo).
+
+### Espaço do aluno — polimento
+
+- **`territoryStage`** (serif itálico) no topo da página do módulo, além do card expansível do manual.
+- **Barra de progresso** em `/cursos/<slug>` mostra X/N sub-aulas (granular) em vez de só X/N módulos.
+- **Botão "Gerar certificado e concluir curso"** aparece quando todas as sub-aulas estão completas.
+- **Links de materiais**: "Manual (PDF)" e "Cadernos preenchidos (PDF)" na página do curso.
+- **Novo endpoint** `GET /api/courses/cadernos?slug=...` gera PDF com todas as reflexões/caderno guardadas em `escola_journal`, agrupadas por módulo. Template em `src/lib/pdf/cadernos-template.tsx`.
+
+### Regras invioláveis reforçadas
+
+- **Vivianne decide a faixa AG**, não o Claude. Sem faixa, o botão Render fica desactivado.
+- **Sem render sem preview aprovado.** Overrides gravam antes; só depois a UI permite disparar o workflow.
+- **ZERO travessões (—) em conteúdo de curso.** Scripts, manuais, cadernos, Q&A: nada de em-dash. Usar ponto final ou vírgula. Aplica-se a todos os cursos e a todas as branches. Regra permanente.
+- **Acentuação PT-PT obrigatória em tudo o que é visível à aluna.** Páginas, botões, mensagens de erro, slides, prompts, e-mails. Sem letras soltas (nao, so, modulo, video, proxima…). Esta regra é permanente e pré-condição de qualquer commit. Se o agente gerar texto sem acentos, o commit é considerado defeituoso e tem de ser corrigido antes de ir para `main`.
+- **Identidade visual partilhada nos slides de aulas:** fundo `#141428` (roxo escuro da Escola) em todos os cursos. Tipografia única em todos os actos de conteúdo (Cormorant Garamond regular; pergunta em italic; frase final em DM Serif Display maior — esses são as únicas variações). A diferença entre actos vive no label do acto e na cor de acento do curso. Marca "Escola dos Véus" presente no canto inferior direito de cada slide de conteúdo. Esta base não muda entre cursos.
+- **Faixas Ancient Ground vivem no bucket `audios`** (não em `course-assets`), em `albums/ancient-ground/`. A API canónica é `/api/admin/music/list-album?album=ancient-ground`. Qualquer pipeline que precise de música deve consumir esta API, não duplicar a lógica.
+
+---
+
+## Sessão anterior (7, 2026-04-21)
 
 **Migração Shotstack → FFmpeg nos 3 pipelines de vídeo. Piscar dos Ancient Ground resolvido determinisiticamente.**
 

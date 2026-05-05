@@ -4,6 +4,12 @@ import { useState, useEffect, useCallback, useRef, forwardRef } from "react";
 import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import runwayMotionPrompts from "@/data/runway-motion-prompts.json";
+import {
+  CLIP_THEMES,
+  CLIP_THEME_LABELS,
+  parseClipTheme,
+  type ClipTheme,
+} from "@/components/admin/ClipUploader";
 
 const MOTION_PROMPTS = runwayMotionPrompts as Record<string, string>;
 
@@ -20,6 +26,7 @@ type PoolClip = {
   url: string;
   thumbUrl: string;
   createdAt: string | null;
+  theme: ClipTheme;
 };
 
 type MusicTrack = {
@@ -130,6 +137,7 @@ export default function ShortsPage() {
   // fora (Runway ilimitado). Preenche imageUrl+clipUrl dum slot de uma só vez.
   const [poolClips, setPoolClips] = useState<PoolClip[]>([]);
   const [poolQuery, setPoolQuery] = useState("");
+  const [poolThemeFilter, setPoolThemeFilter] = useState<ClipTheme | "all">("all");
   const [loadingPool, setLoadingPool] = useState(false);
 
   const [albums, setAlbums] = useState<AlbumItem[]>([]);
@@ -140,6 +148,7 @@ export default function ShortsPage() {
   const [loadingTracks, setLoadingTracks] = useState(false);
 
   const [suggesting, setSuggesting] = useState(false);
+  const [suggestError, setSuggestError] = useState<string | null>(null);
 
   const [engine, setEngine] = useState<"ffmpeg" | "shotstack">("ffmpeg");
   const overlay1Ref = useRef<HTMLDivElement>(null);
@@ -210,12 +219,18 @@ export default function ShortsPage() {
       .finally(() => setLoadingImages(false));
   }, []);
 
-  // Load biblioteca partilhada de clips (mesma pool que AG consome)
+  // Load biblioteca partilhada de clips (Loranne+AG partilham a mesma pool)
   useEffect(() => {
     setLoadingPool(true);
     fetch("/api/admin/shorts/list-clips-ag", { cache: "no-store" })
       .then((r) => r.json())
-      .then((d) => setPoolClips(d.clips || []))
+      .then((d) => {
+        const rows: PoolClip[] = (d.clips || []).map((c: Omit<PoolClip, "theme">) => ({
+          ...c,
+          theme: parseClipTheme(c.name),
+        }));
+        setPoolClips(rows);
+      })
       .catch(() => setPoolClips([]))
       .finally(() => setLoadingPool(false));
   }, []);
@@ -260,9 +275,17 @@ export default function ShortsPage() {
       )
     : tracks;
 
-  const filteredPoolClips = poolQuery.trim()
-    ? poolClips.filter((c) => c.name.toLowerCase().includes(poolQuery.toLowerCase()))
-    : poolClips.slice(0, 60);
+  const filteredPoolClips = (() => {
+    const base = poolClips.filter((c) => {
+      if (poolThemeFilter !== "all" && c.theme !== poolThemeFilter) return false;
+      if (poolQuery.trim() && !c.name.toLowerCase().includes(poolQuery.toLowerCase())) return false;
+      return true;
+    });
+    return poolQuery.trim() || poolThemeFilter !== "all" ? base : base.slice(0, 60);
+  })();
+
+  const poolThemeCounts: Record<string, number> = {};
+  for (const c of poolClips) poolThemeCounts[c.theme] = (poolThemeCounts[c.theme] || 0) + 1;
 
   const updateSlot = (slotIdx: number, patch: Partial<SlotState>) => {
     setState((prev) => {
@@ -366,12 +389,21 @@ export default function ShortsPage() {
 
   // ── Suggest verses + captions ───────────────────────────────────────────────
 
+  const suggestAbortRef = useRef<AbortController | null>(null);
+
   const runSuggest = useCallback(async (silent = false) => {
     if (!state.album || !state.trackName) {
       if (!silent) alert("Escolhe álbum e faixa primeiro.");
       return;
     }
+    // Cancela pedido anterior se ainda estiver em vôo (evita race: resposta
+    // da faixa antiga chegar depois da nova e sobrescrever as legendas).
+    suggestAbortRef.current?.abort();
+    const ac = new AbortController();
+    suggestAbortRef.current = ac;
+
     setSuggesting(true);
+    setSuggestError(null);
     try {
       const res = await fetch("/api/admin/shorts/suggest", {
         method: "POST",
@@ -381,8 +413,11 @@ export default function ShortsPage() {
           trackName: state.trackName,
           theme: state.theme,
         }),
+        signal: ac.signal,
       });
+      if (ac.signal.aborted) return;
       const data = await res.json();
+      if (ac.signal.aborted) return;
       if (data.erro) throw new Error(data.erro);
       updateState({
         verses: [data.verses?.[0] || "", data.verses?.[1] || ""],
@@ -394,9 +429,23 @@ export default function ShortsPage() {
         youtubeDescription: data.youtubeDescription || "",
       });
     } catch (err) {
+      if ((err as Error)?.name === "AbortError") return;
+      // Limpa TUDO para não ficar com legendas de uma faixa anterior
+      updateState({
+        verses: ["", ""],
+        candidates: [],
+        albumTitle: "",
+        trackTitle: "",
+        tiktokCaption: "",
+        youtubeTitle: "",
+        youtubeDescription: "",
+      });
+      setSuggestError(err instanceof Error ? err.message : String(err));
       if (!silent) alert(`Erro: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
-      setSuggesting(false);
+      // só desliga o spinner se este pedido é o actual — senão pode apagar
+      // o loading do pedido novo que acabou de arrancar
+      if (suggestAbortRef.current === ac) setSuggesting(false);
     }
   }, [state.album, state.trackName, state.theme, updateState]);
 
@@ -602,10 +651,10 @@ export default function ShortsPage() {
         </h2>
         <div className="flex gap-2">
           <Link
-            href="/admin/producao/shorts/biblioteca"
+            href="/admin/producao/clips-paisagem"
             className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-coral"
           >
-            Biblioteca de clips
+            → Clips de paisagem
           </Link>
           <Link
             href="/admin/producao/shorts/nomear"
@@ -706,29 +755,59 @@ export default function ShortsPage() {
         )}
       </section>
 
-      {/* ── 1b. PICKER DA BIBLIOTECA PARTILHADA (ALTERNATIVA) ── */}
+      {/* ── 1b. PICKER DE CLIPS DE PAISAGEM (ALTERNATIVA) ── */}
       <section className="rounded-lg border border-escola-border bg-escola-bg-card p-4">
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-escola-dourado">
-            1b. (alternativa) Escolher da biblioteca Runway
+            1b. (alternativa) Escolher clip de paisagem
           </h3>
           <Link
-            href="/admin/producao/shorts/biblioteca"
+            href="/admin/producao/clips-paisagem"
             className="text-[10px] text-escola-coral hover:text-escola-coral/80"
           >
-            → Upload / gerir biblioteca
+            → Gerir clips de paisagem
           </Link>
         </div>
         <p className="mb-3 text-xs text-escola-creme-50">
-          Clips Runway já gerados (teus ou partilhados com AG). Clica para
-          preencher o próximo slot — salta a geração paga (secção 2). Para
-          fazer upload de novos clips, usa a biblioteca.
+          Clips já existentes (partilhados com AG). Clica para preencher o
+          próximo slot e salta a geração paga da secção 2. Para fazer upload
+          de novos clips, vai a <strong>Clips de paisagem</strong>.
         </p>
+        <div className="mb-3 flex flex-wrap gap-1">
+          <button
+            onClick={() => setPoolThemeFilter("all")}
+            className={`rounded border px-2 py-0.5 text-[10px] ${
+              poolThemeFilter === "all"
+                ? "border-escola-coral bg-escola-coral/20 text-escola-coral"
+                : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            Todos ({poolClips.length})
+          </button>
+          {CLIP_THEMES.map((t) => {
+            const n = poolThemeCounts[t] || 0;
+            if (n === 0) return null;
+            const active = poolThemeFilter === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setPoolThemeFilter(t)}
+                className={`rounded border px-2 py-0.5 text-[10px] ${
+                  active
+                    ? "border-escola-coral bg-escola-coral/20 text-escola-coral"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+              >
+                {CLIP_THEME_LABELS[t]} ({n})
+              </button>
+            );
+          })}
+        </div>
         <input
           type="text"
           value={poolQuery}
           onChange={(e) => setPoolQuery(e.target.value)}
-          placeholder="Filtrar (ex: loranne, ag, mar, floresta...)"
+          placeholder="Pesquisa livre no nome"
           className="mb-3 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
         />
         {loadingPool ? (
@@ -766,6 +845,9 @@ export default function ShortsPage() {
                       playsInline
                       className="h-full w-full object-cover"
                     />
+                    <span className="absolute left-1 top-1 rounded bg-black/70 px-1 text-[9px] font-semibold text-escola-dourado">
+                      {CLIP_THEME_LABELS[c.theme]}
+                    </span>
                     <span className="absolute inset-x-0 bottom-0 truncate bg-black/70 px-1 text-[9px] text-white">
                       {c.name}
                     </span>
@@ -882,6 +964,14 @@ export default function ShortsPage() {
                   album: e.target.value,
                   trackUrl: "",
                   trackName: "",
+                  musicStartSec: 0,
+                  verses: ["", ""],
+                  candidates: [],
+                  albumTitle: "",
+                  trackTitle: "",
+                  tiktokCaption: "",
+                  youtubeTitle: "",
+                  youtubeDescription: "",
                 })
               }
               className="w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme"
@@ -922,6 +1012,15 @@ export default function ShortsPage() {
                           trackUrl: t.url,
                           trackName: t.name,
                           musicStartSec: 0,
+                          // Limpa legendas antigas imediatamente para ver
+                          // regeneração em progresso em vez de texto stale
+                          verses: ["", ""],
+                          candidates: [],
+                          albumTitle: "",
+                          trackTitle: "",
+                          tiktokCaption: "",
+                          youtubeTitle: "",
+                          youtubeDescription: "",
                         })
                       }
                       showStartPicker={state.includeMusic}
@@ -954,8 +1053,17 @@ export default function ShortsPage() {
           </p>
         ) : (
           <p className="mb-3 text-xs text-escola-creme-50">
-            Clica em &quot;Sugerir&quot; para extrair da letra da faixa escolhida em #3.
+            Escolhe álbum + faixa em #3 e as frases aparecem aqui sozinhas.
           </p>
+        )}
+
+        {suggestError && (
+          <div className="mb-3 rounded border border-red-900 bg-red-950/40 p-2 text-xs text-red-300">
+            <strong>Sem letra para esta faixa:</strong> {suggestError}
+            <br />
+            Verifica se o nome da pasta Supabase coincide com o slug em{" "}
+            <code>loranne-lyrics/</code>. Escreve a frase à mão abaixo ou muda de faixa.
+          </div>
         )}
 
         <div className="mb-3 flex items-center gap-2">
@@ -1104,20 +1212,31 @@ export default function ShortsPage() {
           <ShortResult url={renderResult} title={state.title || state.trackName || "short"} />
         )}
 
-        <div className="mb-3 flex flex-wrap items-center gap-4 text-xs">
-          <label className="flex cursor-pointer items-center gap-1.5">
-            <input
-              type="checkbox"
-              checked={state.includeMusic}
-              onChange={(e) => updateState({ includeMusic: e.target.checked })}
+        <div className="mb-3 flex flex-wrap items-center gap-3 text-xs">
+          <button
+            type="button"
+            onClick={() => updateState({ includeMusic: !state.includeMusic })}
+            aria-pressed={state.includeMusic}
+            className={`flex min-h-[44px] items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-colors ${
+              state.includeMusic
+                ? "border-escola-coral bg-escola-coral/10 text-escola-coral"
+                : "border-escola-border bg-escola-bg text-escola-creme-50"
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 rounded-full border ${
+                state.includeMusic
+                  ? "border-escola-coral bg-escola-coral"
+                  : "border-escola-border"
+              }`}
             />
-            <span className="text-escola-creme">
-              Incluir música{" "}
-              <span className="text-escola-creme-50">
-                (formato validado: música Loranne liga ao Apple Music via DistroKid)
-              </span>
-            </span>
-          </label>
+            {state.includeMusic ? "Com música" : "Sem música"}
+          </button>
+          <span className="text-escola-creme-50">
+            {state.includeMusic
+              ? "música Loranne liga ao Apple Music via DistroKid"
+              : "vídeo silencioso — pões música no TikTok/IG"}
+          </span>
         </div>
 
         <div className="mb-3 flex items-center gap-4 text-xs">
@@ -1261,7 +1380,7 @@ export default function ShortsPage() {
               : "Gerar thumbnail"}
         </button>
         <p className="mt-2 text-xs text-escola-creme-50">
-          Render via Shotstack (~10–20s). 1080×1920 JPG guardado no bucket <code>escola-shorts/thumbs/</code>.
+          Render via Shotstack (~10–20s). 1080×1920 JPG guardado junto das thumbs da biblioteca.
         </p>
       </section>
 

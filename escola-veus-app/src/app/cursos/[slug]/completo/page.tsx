@@ -87,7 +87,7 @@ export default function CursoCompletoPage() {
       </div>
 
       <h1 className="mb-2 font-serif text-3xl font-semibold text-escola-creme">
-        Atravessaste este territorio.
+        Atravessaste este território.
       </h1>
 
       <p className="mb-2 font-serif text-xl text-escola-dourado">
@@ -126,7 +126,7 @@ export default function CursoCompletoPage() {
             href={`/cursos/${nextCourse.slug}`}
             className="rounded-lg bg-escola-dourado px-6 py-3 text-sm font-medium text-escola-bg transition-opacity hover:opacity-90"
           >
-            Proximo: {nextCourse.title}
+            Próximo: {nextCourse.title}
           </Link>
         )}
 
@@ -134,7 +134,7 @@ export default function CursoCompletoPage() {
           href="/"
           className="rounded-lg border border-escola-border px-6 py-3 text-sm text-escola-creme-50 transition-colors hover:text-escola-creme"
         >
-          Voltar ao inicio
+          Voltar ao início
         </Link>
       </div>
     </div>

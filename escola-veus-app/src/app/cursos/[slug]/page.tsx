@@ -7,13 +7,20 @@ import { getCategoryForCourse } from "@/data/course-categories";
 import { getTerritoryStyle } from "@/data/territory-themes";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProgress } from "@/hooks/useProgress";
+import { hasManual } from "@/data/course-manuals";
 
 export default function CursoPage() {
   const params = useParams();
   const slug = params.slug as string;
   const { user } = useAuth();
-  const { courseProgress, isModuleCompleted, isModuleAccessible, startCourse, loading } =
-    useProgress(slug);
+  const {
+    courseProgress,
+    isModuleCompleted,
+    isModuleAccessible,
+    isSublessonCompleted,
+    startCourse,
+    loading,
+  } = useProgress(slug);
 
   const course = getCourseBySlug(slug);
   if (!course) {
@@ -31,6 +38,16 @@ export default function CursoPage() {
   const progressPct = Math.round((completedCount / totalModules) * 100);
   const isStarted = !!courseProgress;
   const isComplete = !!courseProgress?.completed_at;
+
+  // Contagem granular ao nivel da sub-aula (X de 24 por ex.).
+  const allSubs = course.modules.flatMap((m) =>
+    m.subLessons.map((sl) => ({ module: m.number, letter: sl.letter })),
+  );
+  const totalSubs = allSubs.length;
+  const doneSubs = allSubs.filter((s) => isSublessonCompleted(s.module, s.letter)).length;
+  const subPct = totalSubs > 0 ? Math.round((doneSubs / totalSubs) * 100) : 0;
+  const hasSubProgress = isStarted && totalSubs > 0;
+  const allSubsComplete = hasSubProgress && doneSubs === totalSubs;
 
   const handleStart = async () => {
     await startCourse();
@@ -61,30 +78,50 @@ export default function CursoPage() {
         </p>
       </header>
 
-      {/* Progress bar (if started) */}
-      {isStarted && !isComplete && (
+      {/* Progress bar (if started): sub-aulas (granular) + modulos (marcos). */}
+      {hasSubProgress && !isComplete && (
         <div className="mb-6">
           <div className="mb-1 flex items-center justify-between">
             <span className="text-xs text-escola-creme-50">
-              {completedCount} de {totalModules} módulos
+              {doneSubs} de {totalSubs} sub-aulas · {completedCount} de {totalModules} módulos
             </span>
-            <span className="text-xs font-medium" style={{ color: "var(--t-primary)" }}>{progressPct}%</span>
+            <span className="text-xs font-medium" style={{ color: "var(--t-primary)" }}>
+              {subPct}%
+            </span>
           </div>
           <div className="h-1.5 overflow-hidden rounded-full bg-escola-border">
             <div
               className="h-full rounded-full transition-all"
-              style={{ width: `${progressPct}%`, backgroundColor: "var(--t-primary)" }}
+              style={{ width: `${subPct}%`, backgroundColor: "var(--t-primary)" }}
             />
           </div>
+          {allSubsComplete && !isComplete && (
+            <Link
+              href={`/cursos/${slug}/completo`}
+              className="mt-3 block rounded-lg px-4 py-2.5 text-center text-sm font-medium text-escola-bg transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "var(--t-primary)" }}
+            >
+              Gerar certificado e concluir curso
+            </Link>
+          )}
         </div>
       )}
 
       {isComplete && (
-        <div className="mb-6 rounded-xl border p-4 text-center" style={{ borderColor: "rgba(var(--t-primary-rgb), 0.3)", backgroundColor: "rgba(var(--t-primary-rgb), 0.05)" }}>
-          <p className="text-sm font-medium" style={{ color: "var(--t-primary)" }}>Curso completo</p>
+        <div
+          className="mb-6 rounded-xl border p-4 text-center"
+          style={{
+            borderColor: "rgba(var(--t-primary-rgb), 0.3)",
+            backgroundColor: "rgba(var(--t-primary-rgb), 0.05)",
+          }}
+        >
+          <p className="text-sm font-medium" style={{ color: "var(--t-primary)" }}>
+            Curso completo
+          </p>
           <Link
             href={`/cursos/${slug}/completo`}
-            className="mt-1 text-xs text-escola-creme-50 hover:text-escola-creme"
+            className="mt-3 inline-block rounded-lg px-4 py-2 text-xs font-medium text-escola-bg transition-opacity hover:opacity-90"
+            style={{ backgroundColor: "var(--t-primary)" }}
           >
             Ver certificado &rarr;
           </Link>
@@ -202,6 +239,83 @@ export default function CursoPage() {
           );
         })}
       </div>
+
+      {/* Materiais: manual PDF + cadernos (quando existem) */}
+      {isStarted && hasManual(slug) && (
+        <section className="mt-10">
+          <h2 className="mb-4 font-serif text-lg font-medium text-escola-creme">
+            Materiais
+          </h2>
+          <div className="space-y-2">
+            <a
+              href={`/api/courses/manual?slug=${encodeURIComponent(slug)}`}
+              target="_blank"
+              rel="noopener"
+              className="flex items-center gap-3 rounded-xl border border-escola-border bg-escola-card p-4 transition-colors hover:border-escola-dourado/40"
+            >
+              <span
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                style={{ backgroundColor: "rgba(var(--t-primary-rgb), 0.1)" }}
+              >
+                <svg
+                  className="h-4 w-4"
+                  style={{ color: "var(--t-primary)" }}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm text-escola-creme">Manual do curso (PDF)</p>
+                <p className="mt-0.5 text-xs text-escola-creme-50">
+                  Companheiro de leitura dos 8 módulos, com o teu nome no rodapé.
+                </p>
+              </div>
+            </a>
+
+            <a
+              href={`/api/courses/cadernos?slug=${encodeURIComponent(slug)}`}
+              target="_blank"
+              rel="noopener"
+              className="flex items-center gap-3 rounded-xl border border-escola-border bg-escola-card p-4 transition-colors hover:border-escola-dourado/40"
+            >
+              <span
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                style={{ backgroundColor: "rgba(var(--t-primary-rgb), 0.1)" }}
+              >
+                <svg
+                  className="h-4 w-4"
+                  style={{ color: "var(--t-primary)" }}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm text-escola-creme">Cadernos preenchidos (PDF)</p>
+                <p className="mt-0.5 text-xs text-escola-creme-50">
+                  As tuas respostas e reflexões ao longo dos módulos, juntas num
+                  ficheiro.
+                </p>
+              </div>
+            </a>
+          </div>
+        </section>
+      )}
 
       {/* YouTube hooks */}
       {course.youtubeHooks && course.youtubeHooks.length > 0 && (

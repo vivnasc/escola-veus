@@ -5,6 +5,13 @@ import { createSupabaseServerClient, createSupabaseAdminClient } from "@/lib/sup
  * GET /api/courses/lesson?slug=xxx&module=1&sub=A
  * Returns a signed URL for the lesson video.
  *
+ * Video lookup:
+ *   1. Novo pipeline Mock B: `course-assets/curso-{slug}/videos/m{N}-{letter}.mp4`
+ *      (publico, URL directa sem signing)
+ *   2. Fallback legacy: `course-videos/{slug}/m{module}/{sub}.mp4`
+ *      (privado, signed URL 2h)
+ *   3. Sem ficheiro: { url: null, message: "Video em producao" }
+ *
  * Access rules:
  * - Module 1 (is_free): requires login only
  * - Modules 2+: requires enrollment
@@ -18,7 +25,7 @@ export async function GET(request: NextRequest) {
 
   if (!slug || !moduleNum || !sub) {
     return NextResponse.json(
-      { error: "Parametros em falta" },
+      { error: "Parâmetros em falta" },
       { status: 400 }
     );
   }
@@ -30,7 +37,7 @@ export async function GET(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json(
-      { error: "Nao autenticado" },
+      { error: "Não autenticado" },
       { status: 401 }
     );
   }
@@ -56,30 +63,41 @@ export async function GET(request: NextRequest) {
 
     if (!enrollment) {
       return NextResponse.json(
-        { error: "Nao inscrito neste curso" },
+        { error: "Não inscrito neste curso" },
         { status: 403 }
       );
     }
   }
 
-  // Generate signed URL from Supabase Storage
-  // Videos stored as: courses/{slug}/m{module}/{sub}.mp4
-  const filePath = `courses/${slug}/m${moduleNum}/${sub.toLowerCase()}.mp4`;
-
   const admin = createSupabaseAdminClient();
   if (!admin) {
-    // Fallback: return empty URL (video not yet uploaded)
-    return NextResponse.json({ url: null, message: "Video em producao" });
+    return NextResponse.json({ url: null, message: "Vídeo em produção" });
   }
 
+  const subLower = sub.toLowerCase();
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+  // 1) Novo pipeline: course-assets/curso-<slug>/videos/m<N>-<letter>.mp4
+  const mockBPath = `curso-${slug}/videos/m${moduleNum}-${subLower}.mp4`;
+  const mockBUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${mockBPath}`;
+  try {
+    const head = await fetch(mockBUrl, { method: "HEAD", cache: "no-store" });
+    if (head.ok) {
+      return NextResponse.json({ url: mockBUrl, source: "mock-b" });
+    }
+  } catch {
+    // fall through to legacy
+  }
+
+  // 2) Legacy: course-videos/{slug}/m{module}/{sub}.mp4
+  const legacyPath = `courses/${slug}/m${moduleNum}/${subLower}.mp4`;
   const { data: signedUrl, error } = await admin.storage
     .from("course-videos")
-    .createSignedUrl(filePath, 7200); // 2 hours
+    .createSignedUrl(legacyPath, 7200);
 
   if (error || !signedUrl) {
-    // Video file doesn't exist yet — not an error, just not uploaded
-    return NextResponse.json({ url: null, message: "Video em producao" });
+    return NextResponse.json({ url: null, message: "Vídeo em produção" });
   }
 
-  return NextResponse.json({ url: signedUrl.signedUrl });
+  return NextResponse.json({ url: signedUrl.signedUrl, source: "legacy" });
 }
