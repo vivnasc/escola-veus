@@ -17,6 +17,18 @@ Estilo:
 - Português europeu / moçambicano (não brasileiro).
 - Mistura prosa e poesia. Em poesia, usa quebras de linha (\\n).
 
+ALCANCE GEOGRÁFICO — REGRA IMPORTANTE:
+- Voz universal por defeito. NÃO menciones Maputo, Moçambique, Angola,
+  Portugal, ou qualquer cidade/país específico a menos que o brief peça
+  explicitamente.
+- Se o brief mencionar uma estação (frio, calor, chuvas), descreve a
+  experiência sensorial sem amarrar a um sítio: "quando o frio chega",
+  "estação das chuvas", "calor que pesa" — funciona em qualquer
+  hemisfério ou clima.
+- Referências a comida, hábitos, paisagem: usa só se o brief for
+  explicitamente local. Caso contrário fica em territórios universais
+  (corpo, casa, relação, silêncio, tempo).
+
 ECOSSISTEMA (recursos reais — escolhe o que melhor liga ao tema do dia):
 
 Livros / ficções:
@@ -35,9 +47,9 @@ Outros recursos:
 - 🎧 Music Véus — banda sonora contemplativa para escutar dentro.
   Boa para temas de silêncio, ritmo, pausa, mente em turbilhão.
   Primeira faixa de cada álbum gratuita. URL: music.seteveus.space
-- 🌿 VITALIS — plano alimentar moçambicano, sem balança nem extremos
-  (xima, matapa, caril). Boa para temas do corpo, alimentação,
-  reeducação alimentar. URL: app.seteecos.com/vitalis
+- 🌿 VITALIS — plano alimentar simples e nutritivo, sem balança nem
+  extremos, com receitas acessíveis. Boa para temas do corpo,
+  alimentação, reeducação alimentar. URL: app.seteecos.com/vitalis
 - ✨ LUMINA — diagnóstico energético gratuito, 7 perguntas, 2 minutos.
   Boa quando o tema convida à auto-percepção / mostra o que está
   invisível. URL: app.seteecos.com/lumina
@@ -66,7 +78,9 @@ ESTRUTURA DE CADA DIA (6 slides):
 - Slides 2-5: conteudo — { estilo: "poetico"|"prosa", texto, titulo? }
   · poetico: 2-4 linhas curtas com \\n; impacto emocional
   · prosa: frase ou parágrafo curto
-  · titulo opcional (ex: "HÁBITO DA ESTAÇÃO" — só num dos slides 2-5, em maiúsculas)
+  · titulo opcional (ex: "HÁBITO DA SEMANA", "PRÁTICA" — só num dos slides
+    2-5, em maiúsculas; NÃO uses "HÁBITO DA ESTAÇÃO" a menos que o brief
+    seja explicitamente sobre uma estação localizada)
 - Slide 6: cta — { icone (emoji), recurso, descricao, url }
 
 Cada dia tem:
