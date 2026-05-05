@@ -31,6 +31,7 @@ type LongoProject = {
   wordCount: number;
   narrationUrl?: string;
   durationSec?: number; // real, vem do MP3 gerado
+  subtitlesUrl?: string; // SRT em Supabase, gerada via /generate-srt
   videoUrl?: string;
   thumbnailUrl?: string;
   createdAt?: string;
@@ -86,6 +87,44 @@ export default function LongoDetailPage() {
   const [thumbDraft, setThumbDraft] = useState("");
   const [saving, setSaving] = useState(false);
 
+  // SRT generation (ElevenLabs Scribe). Cacheado em longos-subtitles/<slug>.srt
+  // — re-execução sobrescreve. Patcha o projecto com subtitlesUrl.
+  const [srtGenerating, setSrtGenerating] = useState(false);
+  const [srtErr, setSrtErr] = useState<string | null>(null);
+
+  const generateSrt = async () => {
+    if (!project) return;
+    if (!project.narrationUrl) {
+      setSrtErr("Sem narração — gera primeiro");
+      return;
+    }
+    setSrtGenerating(true);
+    setSrtErr(null);
+    try {
+      const r = await fetch("/api/admin/longos/generate-srt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug }),
+      });
+      const ct = r.headers.get("content-type") || "";
+      const text = await r.text();
+      if (!ct.includes("application/json")) {
+        throw new Error(
+          `HTTP ${r.status}: ${text.slice(0, 200)} — provavelmente Vercel timeout`,
+        );
+      }
+      const d = JSON.parse(text);
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      setInfo(`✓ SRT gerada: ${d.lineCount} linhas`);
+      setTimeout(() => setInfo(null), 3000);
+      await load();
+    } catch (e) {
+      setSrtErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSrtGenerating(false);
+    }
+  };
+
   // Geração automática de narração via ElevenLabs (chunked by chapter + concat)
   const [narrating, setNarrating] = useState(false);
   const [narrProgress, setNarrProgress] = useState<{
@@ -121,6 +160,132 @@ export default function LongoDetailPage() {
     Record<string, { stage: "signing" | "uploading" | "finalizing"; progress: number }>
   >({});
 
+  // Claude review pass: keyed by promptId. Decora cada prompt com flags.
+  type Review = {
+    id: string;
+    alignment: "aligned" | "weak" | "misaligned";
+    slop: "clean" | "generic" | "ai-slop";
+    notes: string;
+    suggested?: string;
+  };
+  type PoolClip = {
+    clipId: string;
+    clipUrl: string;
+    source: "longo" | "nomear";
+    episode: string;
+    mood: string[];
+    prompt: string | null;
+    sourceLabel: string;
+  };
+  const [pool, setPool] = useState<PoolClip[]>([]);
+  const [poolOpenForPrompt, setPoolOpenForPrompt] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/longos/pool", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.clips)) setPool(d.clips);
+      })
+      .catch(() => {});
+  }, []);
+
+  const rankPoolFor = (prompt: { mood: string[]; prompt: string }): (PoolClip & { score: number })[] => {
+    const moodSet = new Set(prompt.mood ?? []);
+    const tokens = new Set(
+      (prompt.prompt ?? "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .split(/\s+/)
+        .filter((w) => w.length >= 4),
+    );
+    const scored = pool.map((c) => {
+      const moodMatches = c.mood.filter((m) => moodSet.has(m)).length;
+      const cTokens = new Set(
+        (c.prompt ?? "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9\s]/g, " ")
+          .split(/\s+/)
+          .filter((w) => w.length >= 4),
+      );
+      let kwMatches = 0;
+      tokens.forEach((t) => {
+        if (cTokens.has(t)) kwMatches++;
+      });
+      return { ...c, score: 2 * moodMatches + kwMatches };
+    });
+    return scored
+      .filter((c) => c.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6);
+  };
+
+  const reusePoolClipForPrompt = async (promptId: string, clipUrl: string) => {
+    if (!project) return;
+    try {
+      const r = await fetch("/api/admin/longos/finalize-clip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug, promptId, clipUrl }),
+      });
+      const d = await r.json();
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      await load();
+      setPoolOpenForPrompt(null);
+      setInfo(`✓ Clip reaproveitado para ${promptId}`);
+      setTimeout(() => setInfo(null), 2000);
+    } catch (e) {
+      setInfo(`Erro: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  };
+
+  const [reviews, setReviews] = useState<Record<string, Review>>({});
+  const [reviewing, setReviewing] = useState(false);
+  const [reviewErr, setReviewErr] = useState<string | null>(null);
+
+  const reviewPromptsWithClaude = async () => {
+    if (!project) return;
+    if (
+      !confirm(
+        "Claude vai ler script + prompts e classificar cada prompt em alinhamento ao script + qualidade visual (AI-slop detection). " +
+          `Custo ~$0.05-0.10. Continuar?`,
+      )
+    )
+      return;
+    setReviewing(true);
+    setReviewErr(null);
+    try {
+      const r = await fetch("/api/admin/longos/review-prompts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug }),
+      });
+      const ct = r.headers.get("content-type") || "";
+      const text = await r.text();
+      if (!ct.includes("application/json")) {
+        throw new Error(`HTTP ${r.status}: ${text.slice(0, 200)}`);
+      }
+      const d = JSON.parse(text);
+      if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+      const map: Record<string, Review> = {};
+      for (const rev of d.reviews ?? []) {
+        if (rev?.id) map[rev.id] = rev;
+      }
+      setReviews(map);
+      setInfo(
+        `✓ Review feita · ${d.summary.misaligned} misaligned, ${d.summary.weak} weak, ${d.summary.aiSlop} AI-slop, ${d.summary.generic} genéricos · custo $${d.usage.costUsd.toFixed(4)}`,
+      );
+      setTimeout(() => setInfo(null), 8000);
+    } catch (e) {
+      setReviewErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setReviewing(false);
+    }
+  };
+
   // ── Render long-form: música + GitHub Actions polling ────────────────
   type Track = { name: string; url: string };
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -150,7 +315,7 @@ export default function LongoDetailPage() {
       .catch(() => {});
   }, []);
 
-  const submitRender = async () => {
+  const submitRender = async (preview = false) => {
     if (!project) return;
     if (!project.narrationUrl) {
       setRenderErr("Sem narração — gera primeiro");
@@ -167,7 +332,7 @@ export default function LongoDetailPage() {
     }
     if (
       !confirm(
-        `Vais render long-form com:\n` +
+        `Vais render ${preview ? "PREVIEW (90s, qualidade reduzida)" : "long-form COMPLETO"} com:\n` +
           `- ${clipsReady}/${project.prompts.length} cenas com clip\n` +
           `- Narração: ${
             project.durationSec
@@ -176,9 +341,14 @@ export default function LongoDetailPage() {
           }\n` +
           `- Música: ${selectedMusic.length} track(s)\n` +
           `- Crossfade: ${crossfade}s\n` +
-          `- Intro/outro brand: ${includeBrand ? "sim" : "não"}\n\n` +
+          `- Intro/outro brand: ${includeBrand ? "sim" : "não"}\n` +
+          `- Legendas: ${project.subtitlesUrl ? "sim (queimadas)" : "não (gera SRT primeiro se quiseres)"}\n\n` +
           `Cenas SEM clip serão IGNORADAS (não atrasam o render).\n\n` +
-          `Tempo estimado: ~5-15 min em GitHub Actions. Continuar?`,
+          `Tempo estimado: ${preview ? "~1-2 min (CRF agressivo + ultrafast)" : "~5-15 min (CRF20 medium)"}. ` +
+          (preview
+            ? "Output vai para slug-preview.mp4, NÃO substitui vídeo final."
+            : "Output substitui vídeo final do projecto.") +
+          " Continuar?",
       )
     ) {
       return;
@@ -197,6 +367,7 @@ export default function LongoDetailPage() {
           musicVolume,
           crossfade,
           includeBrand,
+          preview,
         }),
       });
       const d = await r.json();
@@ -245,7 +416,9 @@ export default function LongoDetailPage() {
   };
 
   // ── Voice / model: persistência localStorage (mesma UX do /audios) ───
-  const [voiceId, setVoiceId] = useState<string>("JGnWZj684pcXmK2SxYIv");
+  // Default: UnchUhO6d8TYPl7TuqgU (voz long-form da Vivianne, distinta da
+  // dos shorts JGnWZj684pcXmK2SxYIv).
+  const [voiceId, setVoiceId] = useState<string>("UnchUhO6d8TYPl7TuqgU");
   const [modelId, setModelId] = useState<string>("eleven_multilingual_v2");
   useEffect(() => {
     try {
@@ -965,6 +1138,33 @@ export default function LongoDetailPage() {
                 ? "↻ Re-gerar narração"
                 : "🎙 Gerar narração com ElevenLabs"}
           </button>
+          {project.narrationUrl && (
+            <button
+              onClick={generateSrt}
+              disabled={srtGenerating}
+              className="rounded border border-escola-border bg-escola-bg px-3 py-1.5 text-[11px] text-escola-creme hover:border-escola-dourado/40 disabled:opacity-40"
+              title="Transcreve a narração via ElevenLabs Scribe e gera ficheiro SRT (cacheado por slug). Será queimada no vídeo final pelo render, e podes descarregar para upload manual no YouTube Studio."
+            >
+              {srtGenerating
+                ? "a transcrever..."
+                : project.subtitlesUrl
+                  ? "↻ Re-gerar SRT (Scribe)"
+                  : "📝 Gerar legenda SRT (Scribe)"}
+            </button>
+          )}
+          {project.subtitlesUrl && (
+            <a
+              href={project.subtitlesUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-[10px] text-escola-dourado hover:bg-escola-dourado/20"
+            >
+              ✓ SRT pronto · abrir
+            </a>
+          )}
+          {srtErr && (
+            <span className="text-[10px] text-escola-terracota">{srtErr}</span>
+          )}
           <p className="text-[10px] text-escola-creme-50">
             Vai usar: voz <code>{voiceId}</code> · model <code>{modelId}</code>
             {scriptDirty && (
@@ -973,10 +1173,36 @@ export default function LongoDetailPage() {
               </span>
             )}
           </p>
-          <p className="text-[10px] text-escola-creme-50">
-            ~3-5 min para 20-30 min de áudio · gasta créditos ElevenLabs por
-            chars (~{scriptDraft.length} chars no script actual).
-          </p>
+          {/* Estimativa de custo ElevenLabs.
+              Pricing: 1 char = 1 credit em qualquer modelo.
+              Pro plan ($22/mo) = 500k credits → $0.044 por 1k chars.
+              Creator ($11/mo) = 100k credits → $0.110 por 1k chars.
+              Stand-alone (sem plano) = $0.30 por 1k chars (multilingual v2). */}
+          {(() => {
+            const chars = scriptDraft.length;
+            const proCost = (chars / 1000) * 0.044;
+            const proPercent = (chars / 500_000) * 100;
+            return (
+              <div className="rounded border border-escola-border bg-escola-bg p-2 text-[10px] text-escola-creme-50">
+                <p>
+                  💸 <b>Custo estimado:</b> {chars.toLocaleString("pt-PT")} chars
+                </p>
+                <ul className="mt-0.5 space-y-0.5">
+                  <li>
+                    Pro plan ($22/mo, 500k chars): <b className="text-escola-dourado">{proPercent.toFixed(1)}%</b> do mês = ~${proCost.toFixed(2)}
+                  </li>
+                  <li>
+                    Creator plan ($11/mo, 100k chars): {((chars / 100_000) * 100).toFixed(1)}% do mês
+                  </li>
+                  <li>Stand-alone: ~${((chars / 1000) * 0.3).toFixed(2)}</li>
+                </ul>
+                <p className="mt-1">
+                  ~3-5 min de geração para 20-30 min de áudio. Idempotente: se
+                  algo falhar a meio, próxima execução salta capítulos já feitos.
+                </p>
+              </div>
+            );
+          })()}
         </div>
 
         {narrErr && (
@@ -1162,6 +1388,17 @@ export default function LongoDetailPage() {
           </h2>
           <div className="flex items-center gap-1">
             <button
+              onClick={reviewPromptsWithClaude}
+              disabled={reviewing || promptsDraft.length === 0}
+              className="rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-40"
+              title="Claude lê o script + prompts e classifica cada prompt em alinhamento e AI-slop. Custo ~$0.05-0.10."
+            >
+              {reviewing ? "a rever..." : "✨ revisar com Claude"}
+            </button>
+            {reviewErr && (
+              <span className="text-[10px] text-escola-terracota">{reviewErr}</span>
+            )}
+            <button
               onClick={async () => {
                 if (!project) return;
                 try {
@@ -1223,11 +1460,64 @@ export default function LongoDetailPage() {
           </div>
         </div>
         <ul className="space-y-2">
-          {promptsDraft.map((p, i) => (
+          {promptsDraft.map((p, i) => {
+            const review = reviews[p.id];
+            const reviewBorder =
+              review?.alignment === "misaligned" || review?.slop === "ai-slop"
+                ? "border-escola-terracota"
+                : review?.alignment === "weak" || review?.slop === "generic"
+                  ? "border-escola-dourado/60"
+                  : "border-escola-border";
+            return (
             <li
               key={i}
-              className="rounded border border-escola-border bg-escola-bg p-2 text-[11px]"
+              className={`rounded border ${reviewBorder} bg-escola-bg p-2 text-[11px]`}
             >
+              {review && (
+                <div className="mb-1 flex flex-wrap items-center gap-1 text-[9px]">
+                  <span
+                    className={`rounded px-1.5 py-0.5 font-semibold ${
+                      review.alignment === "aligned"
+                        ? "bg-escola-dourado/20 text-escola-dourado"
+                        : review.alignment === "weak"
+                          ? "bg-escola-dourado/40 text-escola-bg"
+                          : "bg-escola-terracota/30 text-escola-terracota"
+                    }`}
+                    title={`alinhamento ao script: ${review.alignment}`}
+                  >
+                    {review.alignment}
+                  </span>
+                  <span
+                    className={`rounded px-1.5 py-0.5 font-semibold ${
+                      review.slop === "clean"
+                        ? "bg-escola-dourado/20 text-escola-dourado"
+                        : review.slop === "generic"
+                          ? "bg-escola-dourado/40 text-escola-bg"
+                          : "bg-escola-terracota/30 text-escola-terracota"
+                    }`}
+                    title={`qualidade visual: ${review.slop}`}
+                  >
+                    {review.slop}
+                  </span>
+                  <span className="text-escola-creme-50 italic">
+                    {review.notes}
+                  </span>
+                  {review.suggested && (
+                    <button
+                      onClick={() => {
+                        const next = [...promptsDraft];
+                        next[i] = { ...next[i], prompt: review.suggested! };
+                        setPromptsDraft(next);
+                        setPromptsDirty(true);
+                      }}
+                      className="ml-auto rounded border border-escola-dourado bg-escola-dourado/10 px-1.5 py-0.5 text-[9px] font-semibold text-escola-dourado hover:bg-escola-dourado/20"
+                      title={review.suggested}
+                    >
+                      ↪ aplicar sugestão
+                    </button>
+                  )}
+                </div>
+              )}
               <div className="mb-1 flex items-center gap-2">
                 <input
                   value={p.id}
@@ -1300,8 +1590,80 @@ export default function LongoDetailPage() {
                 onDelete={() => deleteClipForPrompt(p.id)}
                 disabled={promptsDirty}
               />
+
+              {/* Pool reuse: candidatos de outros longos + funil shorts.
+                  Só aparece se não há clip ainda — para reutilizares em
+                  vez de gerar/upload novo. Score por mood + keywords. */}
+              {!p.clipUrl && pool.length > 0 && (
+                <div className="mt-1">
+                  <button
+                    onClick={() =>
+                      setPoolOpenForPrompt(
+                        poolOpenForPrompt === p.id ? null : p.id,
+                      )
+                    }
+                    className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                  >
+                    {poolOpenForPrompt === p.id
+                      ? "− fechar pool"
+                      : `📦 ver pool (${rankPoolFor(p).length} candidatos)`}
+                  </button>
+                  {poolOpenForPrompt === p.id && (
+                    <div className="mt-1 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+                      {rankPoolFor(p).map((c) => (
+                        <div
+                          key={c.clipUrl}
+                          className="overflow-hidden rounded border border-escola-border bg-escola-card text-[9px]"
+                        >
+                          <video
+                            src={c.clipUrl}
+                            className="aspect-video w-full"
+                            muted
+                            preload="none"
+                            onMouseEnter={(e) =>
+                              (e.currentTarget as HTMLVideoElement)
+                                .play()
+                                .catch(() => {})
+                            }
+                            onMouseLeave={(e) => {
+                              const v = e.currentTarget as HTMLVideoElement;
+                              v.pause();
+                              v.currentTime = 0;
+                            }}
+                          />
+                          <div className="p-1">
+                            <p className="truncate text-escola-creme">
+                              {c.sourceLabel} · score {c.score}
+                            </p>
+                            {c.mood.length > 0 && (
+                              <p className="truncate text-escola-creme-50">
+                                mood: {c.mood.join(" · ")}
+                              </p>
+                            )}
+                            <button
+                              onClick={() =>
+                                reusePoolClipForPrompt(p.id, c.clipUrl)
+                              }
+                              className="mt-1 w-full rounded bg-escola-dourado px-1 py-0.5 text-[9px] font-semibold text-escola-bg hover:opacity-90"
+                            >
+                              ♻ reutilizar
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      {rankPoolFor(p).length === 0 && (
+                        <p className="col-span-full text-[10px] text-escola-creme-50">
+                          Nenhum candidato com mood/keywords compatíveis.
+                          Faz upload novo.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </li>
-          ))}
+            );
+          })}
         </ul>
         <p className="mt-2 text-[10px] text-escola-creme-50">
           💡 Geras a imagem em Midjourney → usa <b>Image to Video</b> +{" "}
@@ -1413,17 +1775,29 @@ export default function LongoDetailPage() {
             Intro + outro com mandala &quot;A ESCOLA DOS VÉUS&quot; (5s cada)
           </label>
 
-          {/* Botão render */}
+          {/* Botões render */}
           <div className="flex flex-wrap items-center gap-2 pt-2">
             <button
-              onClick={submitRender}
-              disabled={rendering || !project.narrationUrl || selectedMusic.length === 0}
+              onClick={() => submitRender(true)}
+              disabled={
+                rendering || !project.narrationUrl || selectedMusic.length === 0
+              }
+              className="rounded border border-escola-dourado px-3 py-2 text-[11px] font-semibold text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-40"
+              title="Render rápido dos primeiros 90s (CRF26 ultrafast). Para validar sync + legendas + layout sem gastar render completo. NÃO substitui o vídeo final."
+            >
+              ⏱ Preview (90s · 1-2 min)
+            </button>
+            <button
+              onClick={() => submitRender(false)}
+              disabled={
+                rendering || !project.narrationUrl || selectedMusic.length === 0
+              }
               className="rounded bg-escola-dourado px-4 py-2 font-semibold text-escola-bg disabled:opacity-40"
             >
               {rendering
                 ? "A renderizar..."
                 : project.videoUrl
-                  ? "↻ Re-render"
+                  ? "↻ Re-render completo"
                   : "🎬 Render long-form"}
             </button>
             <span className="text-[10px] text-escola-creme-50">
