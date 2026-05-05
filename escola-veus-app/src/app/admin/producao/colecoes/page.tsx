@@ -83,11 +83,12 @@ export default function ColecoesIndex() {
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
           <h2 className="mb-2 font-serif text-2xl font-semibold text-escola-creme">
-            Colecções de carrossel
+            Carrosséis
           </h2>
           <p className="text-sm text-escola-creme-50">
-            Cada colecção é uma série temática (ex: "A Estação dos Véus", "Lua Cheia", "Maternidade")
-            com N dias × 6 slides cada. Dás um brief, o Claude escreve, tu refinas.
+            Cada carrossel é uma série temática (ex: A Estação dos Véus, Lua Cheia,
+            Maternidade) com N dias × 6 slides para status do WhatsApp / IG. Dás um
+            brief, o Claude escreve, tu refinas, geras MP4 com música ou voz.
           </p>
         </div>
         <div className="flex shrink-0 gap-2">
@@ -107,12 +108,33 @@ export default function ColecoesIndex() {
         </div>
       </div>
 
+      {/* Card fixo da Estação dos Véus (legado, sempre presente) */}
+      <ul className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <li className="group rounded-xl border border-escola-dourado/30 bg-escola-card p-4 transition-colors hover:border-escola-dourado/60">
+          <div className="flex items-baseline justify-between gap-2">
+            <Link
+              href="/admin/producao/carrossel-veus"
+              className="text-sm font-semibold text-escola-creme hover:text-escola-dourado"
+            >
+              A Estação dos Véus
+            </Link>
+            <span className="rounded bg-escola-dourado/20 px-2 py-0.5 text-[10px] text-escola-dourado">
+              colecção fixa
+            </span>
+          </div>
+          <p className="mt-1 line-clamp-2 text-xs italic text-escola-creme-50">
+            7 véus do livro Os 7 Véus do Despertar — a colecção original, sempre disponível.
+          </p>
+          <div className="mt-3 text-[10px] text-escola-creme-50">7 dias · texto fixo editável</div>
+        </li>
+      </ul>
+
       {loading ? (
-        <p className="text-sm text-escola-creme-50">A carregar…</p>
+        <p className="text-sm text-escola-creme-50">A carregar as tuas colecções…</p>
       ) : items.length === 0 ? (
         <div className="rounded-lg border border-dashed border-escola-border p-8 text-center">
           <p className="mb-3 text-sm text-escola-creme-50">
-            Ainda não há colecções. A primeira é uma boa.
+            As tuas colecções aparecem aqui. Cria a primeira — ou usa a Estação dos Véus em cima.
           </p>
           <button
             onClick={() => setShowNew(true)}

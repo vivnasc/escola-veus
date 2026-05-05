@@ -89,6 +89,51 @@ export default function CalendarioPage() {
         />
       </div>
 
+      {/* As minhas colecções já existentes */}
+      {(existing.length > 0 || true) && (
+        <section className="mb-8">
+          <h3 className="mb-3 border-b border-escola-border pb-2 font-serif text-lg text-escola-dourado">
+            As minhas colecções ({existing.length + 1})
+          </h3>
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <li className="rounded-xl border border-escola-dourado/30 bg-escola-card p-4">
+              <div className="mb-2 flex items-baseline justify-between gap-2">
+                <Link
+                  href="/admin/producao/carrossel-veus"
+                  className="text-sm font-semibold text-escola-creme hover:text-escola-dourado"
+                >
+                  A Estação dos Véus
+                </Link>
+                <span className="rounded bg-escola-dourado/20 px-2 py-0.5 text-[10px] text-escola-dourado">
+                  fixa
+                </span>
+              </div>
+              <p className="text-xs italic text-escola-creme-50">
+                7 véus do livro · sempre disponível
+              </p>
+            </li>
+            {existing.map((it) => (
+              <li
+                key={it.id}
+                className="rounded-xl border border-escola-border bg-escola-card p-4 hover:border-escola-dourado/40"
+              >
+                <Link
+                  href={`/admin/producao/colecoes/${it.id}`}
+                  className="block text-sm font-semibold text-escola-creme hover:text-escola-dourado"
+                >
+                  {it.title}
+                </Link>
+                <p className="mt-1 text-xs text-escola-creme-50">abrir editor →</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <h3 className="mb-3 border-b border-escola-border pb-2 font-serif text-lg text-escola-dourado">
+        Sugestões por semana (52)
+      </h3>
+
       <div className="space-y-8">
         {Array.from(byMonth.entries()).map(([month, weeks]) => (
           <section key={month}>
