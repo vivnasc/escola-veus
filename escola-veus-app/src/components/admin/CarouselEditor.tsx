@@ -14,12 +14,15 @@ export function EditModal({
   onClose,
   onSaveDia,
   onSaveSlide,
+  onResetToOriginal,
 }: {
   dia: Dia;
   slideIdx: number; // -1 = editar dia (veu+subtitulo); >=0 = editar slide
   onClose: () => void;
   onSaveDia: (patch: Partial<Dia>) => void;
   onSaveSlide: (patch: Partial<SlideType>) => void;
+  /** Se passado, mostra "↩ repor original" que reverte SÓ este slide ao default. */
+  onResetToOriginal?: () => void;
 }) {
   const isDia = slideIdx === -1;
   const slide = isDia ? null : dia.slides[slideIdx];
@@ -175,19 +178,37 @@ export function EditModal({
           )}
         </div>
 
-        <div className="mt-5 flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40"
-          >
-            Cancelar
-          </button>
-          <button
-            onClick={save}
-            className="rounded bg-escola-dourado/90 px-4 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado"
-          >
-            Guardar
-          </button>
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-2">
+          {onResetToOriginal ? (
+            <button
+              onClick={() => {
+                if (confirm("Repor este slide ao texto original? Vais perder a edição.")) {
+                  onResetToOriginal();
+                  onClose();
+                }
+              }}
+              className="rounded border border-red-700/40 px-3 py-1.5 text-xs text-red-300 hover:border-red-500"
+              title="Reverter SÓ este slide ao texto original (não toca nos outros)"
+            >
+              ↩ repor original
+            </button>
+          ) : (
+            <span />
+          )}
+          <div className="flex gap-2">
+            <button
+              onClick={onClose}
+              className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={save}
+              className="rounded bg-escola-dourado/90 px-4 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado"
+            >
+              Guardar
+            </button>
+          </div>
         </div>
       </div>
     </div>

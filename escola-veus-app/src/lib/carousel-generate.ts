@@ -165,3 +165,104 @@ Chama a tool save_collection com a colecção completa. Não escrevas mais nada.
 
   return { dias, usage: res.usage };
 }
+
+/**
+ * Regera UM slide específico, mantendo coerência com o resto do dia.
+ * `tipo` força o tipo de saída (capa | conteudo | cta). `hint` é uma
+ * instrução opcional do utilizador (ex: "mais íntimo", "menciona café").
+ */
+export async function gerarSlideComClaude(opts: {
+  apiKey: string;
+  dia: Dia;
+  slideIdx: number; // 0-based
+  hint?: string;
+}): Promise<{ slide: import("./carousel-types").Slide; usage: unknown }> {
+  const { apiKey, dia, slideIdx } = opts;
+  const slideAtual = dia.slides[slideIdx];
+  if (!slideAtual) throw new Error("slideIdx fora do range");
+
+  const tipo = slideAtual.tipo;
+  const client = new Anthropic({ apiKey });
+
+  const contextoOutrosSlides = dia.slides
+    .map((s, i) => {
+      if (i === slideIdx) return `[${i + 1}] (este — vais regenerar)`;
+      if (s.tipo === "capa") return `[${i + 1}] capa: ${s.linha1} / ${s.linha2}`;
+      if (s.tipo === "conteudo") return `[${i + 1}] ${s.estilo}: ${s.texto.replace(/\n+/g, " ")}`;
+      return `[${i + 1}] cta: ${s.recurso} → ${s.url}`;
+    })
+    .join("\n");
+
+  const userMessage = `Regera o slide ${slideIdx + 1} do Dia ${dia.numero} — ${dia.veu}.
+Subtítulo do dia: "${dia.subtitulo}"
+Tipo do slide a regerar: ${tipo}
+
+Contexto dos outros slides do dia (mantém coerência):
+${contextoOutrosSlides}
+
+${opts.hint ? `Instrução extra: ${opts.hint}\n` : ""}
+Devolve apenas o slide regerado via tool save_slide. Mantém o tipo "${tipo}".`;
+
+  const slideToolSchemas: Record<string, unknown> = {
+    capa: {
+      type: "object",
+      properties: {
+        tipo: { type: "string", enum: ["capa"] },
+        linha1: { type: "string" },
+        linha2: { type: "string" },
+      },
+      required: ["tipo", "linha1", "linha2"],
+    },
+    conteudo: {
+      type: "object",
+      properties: {
+        tipo: { type: "string", enum: ["conteudo"] },
+        estilo: { type: "string", enum: ["poetico", "prosa"] },
+        texto: { type: "string" },
+        titulo: { type: "string" },
+      },
+      required: ["tipo", "estilo", "texto"],
+    },
+    cta: {
+      type: "object",
+      properties: {
+        tipo: { type: "string", enum: ["cta"] },
+        icone: { type: "string" },
+        recurso: { type: "string" },
+        descricao: { type: "string" },
+        url: { type: "string" },
+      },
+      required: ["tipo", "icone", "recurso", "descricao", "url"],
+    },
+  };
+
+  const res = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: SYSTEM_PROMPT,
+    tools: [
+      {
+        name: "save_slide",
+        description: "Guarda o slide regerado.",
+        input_schema: {
+          type: "object",
+          properties: { slide: slideToolSchemas[tipo] },
+          required: ["slide"],
+        } as never,
+      },
+    ],
+    tool_choice: { type: "tool", name: "save_slide" },
+    messages: [{ role: "user", content: userMessage }],
+  });
+
+  const toolUseBlock = res.content.find((b) => b.type === "tool_use");
+  if (!toolUseBlock || toolUseBlock.type !== "tool_use") {
+    throw new Error("Claude não devolveu tool_use.");
+  }
+  const input = toolUseBlock.input as { slide?: import("./carousel-types").Slide };
+  if (!input.slide || input.slide.tipo !== tipo) {
+    throw new Error("Slide regerado tem tipo errado.");
+  }
+
+  return { slide: input.slide, usage: res.usage };
+}
