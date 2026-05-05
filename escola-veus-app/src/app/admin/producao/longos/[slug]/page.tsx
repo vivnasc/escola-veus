@@ -121,6 +121,129 @@ export default function LongoDetailPage() {
     Record<string, { stage: "signing" | "uploading" | "finalizing"; progress: number }>
   >({});
 
+  // ── Render long-form: música + GitHub Actions polling ────────────────
+  type Track = { name: string; url: string };
+  const [tracks, setTracks] = useState<Track[]>([]);
+  const [selectedMusic, setSelectedMusic] = useState<string[]>([]);
+  const [musicVolume, setMusicVolume] = useState(0.15);
+  const [crossfade, setCrossfade] = useState(1.0);
+  const [includeBrand, setIncludeBrand] = useState(true);
+  const [rendering, setRendering] = useState(false);
+  const [renderProgress, setRenderProgress] = useState<{
+    status: string;
+    phase?: string;
+    progress?: number;
+    videoUrl?: string;
+    error?: string;
+  } | null>(null);
+  const [renderErr, setRenderErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/music/list-album?album=ancient-ground", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d.tracks)) {
+          setTracks(d.tracks);
+          if (d.tracks.length > 0) setSelectedMusic([d.tracks[0].url]);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const submitRender = async () => {
+    if (!project) return;
+    if (!project.narrationUrl) {
+      setRenderErr("Sem narração — gera primeiro");
+      return;
+    }
+    const clipsReady = (project.prompts ?? []).filter((p) => p.clipUrl).length;
+    if (clipsReady === 0) {
+      setRenderErr("Nenhum prompt tem clip MJ Video carregado");
+      return;
+    }
+    if (selectedMusic.length === 0) {
+      setRenderErr("Escolhe pelo menos 1 track de música");
+      return;
+    }
+    if (
+      !confirm(
+        `Vais render long-form com:\n` +
+          `- ${clipsReady}/${project.prompts.length} cenas com clip\n` +
+          `- Narração: ${
+            project.durationSec
+              ? `${Math.round(project.durationSec / 60)} min`
+              : "duração desconhecida"
+          }\n` +
+          `- Música: ${selectedMusic.length} track(s)\n` +
+          `- Crossfade: ${crossfade}s\n` +
+          `- Intro/outro brand: ${includeBrand ? "sim" : "não"}\n\n` +
+          `Cenas SEM clip serão IGNORADAS (não atrasam o render).\n\n` +
+          `Tempo estimado: ~5-15 min em GitHub Actions. Continuar?`,
+      )
+    ) {
+      return;
+    }
+
+    setRendering(true);
+    setRenderErr(null);
+    setRenderProgress({ status: "queued", progress: 0 });
+    try {
+      const r = await fetch("/api/admin/longos/render-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: project.slug,
+          musicUrls: selectedMusic,
+          musicVolume,
+          crossfade,
+          includeBrand,
+        }),
+      });
+      const d = await r.json();
+      if (!r.ok || !d.jobId) {
+        throw new Error(d.erro || `HTTP ${r.status}`);
+      }
+      // Poll até done/failed
+      while (true) {
+        await new Promise((resolve) => setTimeout(resolve, 12000));
+        try {
+          const sr = await fetch(
+            `/api/admin/longos/render-status?jobId=${encodeURIComponent(d.jobId)}`,
+            { cache: "no-store" },
+          );
+          const sd = await sr.json();
+          if (sd.erro) {
+            setRenderProgress({ status: "polling-error", error: sd.erro });
+            continue;
+          }
+          setRenderProgress({
+            status: sd.status,
+            phase: sd.phase,
+            progress: sd.progress,
+            videoUrl: sd.videoUrl,
+            error: sd.error,
+          });
+          if (sd.status === "done") {
+            await load();
+            break;
+          }
+          if (sd.status === "failed") {
+            throw new Error(sd.error || "Render falhou");
+          }
+        } catch (e) {
+          setRenderProgress({
+            status: "polling-error",
+            error: e instanceof Error ? e.message : String(e),
+          });
+        }
+      }
+    } catch (e) {
+      setRenderErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setRendering(false);
+    }
+  };
+
   // ── Voice / model: persistência localStorage (mesma UX do /audios) ───
   const [voiceId, setVoiceId] = useState<string>("JGnWZj684pcXmK2SxYIv");
   const [modelId, setModelId] = useState<string>("eleven_multilingual_v2");
@@ -1106,6 +1229,155 @@ export default function LongoDetailPage() {
             </>
           )}
         </p>
+      </section>
+
+      {/* ── Render final long-form ──────────────────────────────── */}
+      <section className="rounded-xl border border-escola-dourado/40 bg-escola-dourado/5 p-4">
+        <h2 className="mb-2 text-sm font-semibold text-escola-dourado">
+          🎬 Render long-form (1920×1080)
+        </h2>
+        {project.videoUrl ? (
+          <div className="mb-3 space-y-2">
+            <video
+              src={project.videoUrl}
+              controls
+              preload="metadata"
+              className="aspect-video w-full max-w-2xl rounded border border-escola-dourado/40"
+            />
+            <p className="text-[10px] text-escola-creme-50">
+              <code>{project.videoUrl}</code>
+            </p>
+          </div>
+        ) : (
+          <p className="mb-3 text-[11px] text-escola-creme-50">
+            Sem render ainda. Quando narração + ≥1 clip estão prontos, gera o
+            MP4 final aqui (corre em GitHub Actions, ~5-15 min).
+          </p>
+        )}
+
+        <div className="space-y-3 text-xs">
+          {/* Música */}
+          <div>
+            <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+              Música de fundo (Ancient Ground · loop com ducking)
+            </label>
+            <select
+              value={selectedMusic[0] ?? ""}
+              onChange={(e) =>
+                setSelectedMusic(e.target.value ? [e.target.value] : [])
+              }
+              className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
+            >
+              <option value="">— escolhe uma faixa —</option>
+              {tracks.map((t) => (
+                <option key={t.url} value={t.url}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
+            <div className="mt-1 flex items-center gap-2">
+              <span className="text-[10px] text-escola-creme-50">Volume:</span>
+              <input
+                type="range"
+                min="0"
+                max="0.4"
+                step="0.01"
+                value={musicVolume}
+                onChange={(e) => setMusicVolume(parseFloat(e.target.value))}
+                className="flex-1 max-w-xs"
+              />
+              <span className="text-[10px] text-escola-creme">
+                {Math.round(musicVolume * 100)}%
+              </span>
+            </div>
+          </div>
+
+          {/* Crossfade */}
+          <div className="flex items-center gap-2 text-[11px]">
+            <label className="text-escola-creme-50 w-32 shrink-0">
+              Crossfade entre clips
+            </label>
+            <input
+              type="range"
+              min="0.5"
+              max="3.0"
+              step="0.1"
+              value={crossfade}
+              onChange={(e) => setCrossfade(parseFloat(e.target.value))}
+              className="flex-1 max-w-xs"
+            />
+            <span className="w-12 text-right text-escola-creme">
+              {crossfade.toFixed(1)}s
+            </span>
+            <span className="text-[10px] text-escola-creme-50">
+              (1.0-1.5s contemplativo, &gt;2s arrastado)
+            </span>
+          </div>
+
+          {/* Brand */}
+          <label className="flex items-center gap-2 text-[11px] text-escola-creme">
+            <input
+              type="checkbox"
+              checked={includeBrand}
+              onChange={(e) => setIncludeBrand(e.target.checked)}
+            />
+            Intro + outro com mandala &quot;A ESCOLA DOS VÉUS&quot; (5s cada)
+          </label>
+
+          {/* Botão render */}
+          <div className="flex flex-wrap items-center gap-2 pt-2">
+            <button
+              onClick={submitRender}
+              disabled={rendering || !project.narrationUrl || selectedMusic.length === 0}
+              className="rounded bg-escola-dourado px-4 py-2 font-semibold text-escola-bg disabled:opacity-40"
+            >
+              {rendering
+                ? "A renderizar..."
+                : project.videoUrl
+                  ? "↻ Re-render"
+                  : "🎬 Render long-form"}
+            </button>
+            <span className="text-[10px] text-escola-creme-50">
+              {(project.prompts ?? []).filter((p) => p.clipUrl).length}/
+              {(project.prompts ?? []).length} cenas com clip
+              {project.narrationUrl ? " · narração ✓" : " · ✗ sem narração"}
+            </span>
+          </div>
+
+          {renderErr && (
+            <p className="text-xs text-escola-terracota">{renderErr}</p>
+          )}
+
+          {renderProgress && (
+            <div className="rounded border border-escola-dourado/40 bg-escola-card p-2">
+              <div className="mb-1 flex items-center justify-between text-[10px]">
+                <span className="text-escola-dourado">
+                  {renderProgress.status === "done"
+                    ? "✓ Render terminado"
+                    : renderProgress.status === "failed"
+                      ? "✗ Render falhou"
+                      : `Status: ${renderProgress.status}${renderProgress.phase ? ` · ${renderProgress.phase}` : ""}`}
+                </span>
+                <span className="text-escola-creme-50">
+                  {typeof renderProgress.progress === "number"
+                    ? `${renderProgress.progress}%`
+                    : ""}
+                </span>
+              </div>
+              <div className="h-1.5 overflow-hidden rounded bg-escola-bg">
+                <div
+                  className="h-full bg-escola-dourado transition-all"
+                  style={{ width: `${renderProgress.progress ?? 0}%` }}
+                />
+              </div>
+              {renderProgress.error && (
+                <p className="mt-1 text-[10px] text-escola-terracota">
+                  {renderProgress.error}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </section>
 
       <details className="rounded border border-escola-border bg-escola-card/40 p-3 text-[10px] text-escola-creme-50">
