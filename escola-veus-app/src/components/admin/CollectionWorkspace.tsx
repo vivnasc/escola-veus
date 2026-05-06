@@ -152,10 +152,37 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
     [audios]
   );
 
-  // Polling do job
+  // Quais dias já têm vídeo gerado (cruza historicalJobs)
+  const completedDays = useMemo(() => {
+    const set = new Set<number>();
+    for (const job of historicalJobs) {
+      for (const v of job.videos || []) {
+        const m = v.file.match(/dia-(\d+)/);
+        if (m) set.add(Number(m[1]));
+      }
+    }
+    return set;
+  }, [historicalJobs]);
+
+  // Dias que ainda faltam render
+  const missingDays = useMemo(
+    () => dias.map((d) => d.numero).filter((n) => !completedDays.has(n)),
+    [dias, completedDays]
+  );
+
+  // Polling do job — quando "done", junta ao histórico para ficarem visíveis
+  // imediatamente em "Vídeos gerados" sem precisar refresh
   useEffect(() => {
     if (!renderJob?.jobId) return;
-    if (renderJob.status === "done" || renderJob.status === "failed") return;
+    if (renderJob.status === "done" || renderJob.status === "failed") {
+      if (renderJob.status === "done" && (renderJob.videos?.length ?? 0) > 0) {
+        setHistoricalJobs((prev) => {
+          const filtered = prev.filter((j) => j.jobId !== renderJob.jobId);
+          return [renderJob, ...filtered];
+        });
+      }
+      return;
+    }
     const id = setInterval(async () => {
       try {
         const r = await fetch(
@@ -166,7 +193,7 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
       } catch {}
     }, 5000);
     return () => clearInterval(id);
-  }, [renderJob?.jobId, renderJob?.status]);
+  }, [renderJob?.jobId, renderJob?.status, renderJob?.videos?.length]);
 
   function setRef(key: string, el: HTMLDivElement | null) {
     if (el) refs.current.set(key, el);
@@ -461,17 +488,36 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
             </button>
           )}
           <button
-            onClick={() => submitRender()}
+            onClick={() => {
+              if (missingDays.length === 0) {
+                if (!confirm(`Todos os ${totalDias} vídeos já existem. Regerar tudo (substitui)?`)) return;
+                submitRender();
+              } else if (missingDays.length === totalDias) {
+                submitRender();
+              } else {
+                submitRender({ dias: missingDays });
+              }
+            }}
             disabled={
               busy === "submit-render" ||
               (renderJob !== null && renderJob.status !== "done" && renderJob.status !== "failed")
             }
             className="rounded bg-escola-violeta/80 px-4 py-2 text-sm font-semibold text-escola-creme hover:bg-escola-violeta disabled:opacity-40"
-            title={`Gera ${totalDias} vídeo${totalDias === 1 ? "" : "s"} de uma vez (todos os dias) com música Ancient Ground`}
+            title={
+              missingDays.length === totalDias
+                ? `Gera os ${totalDias} vídeos da colecção`
+                : missingDays.length === 0
+                ? `Todos os vídeos já existem — clicar regenera tudo`
+                : `Só gera os ${missingDays.length} que faltam (dias ${missingDays.join(", ")}); ${completedDays.size} já existem`
+            }
           >
             {busy === "submit-render"
               ? "A submeter…"
-              : `▶ Gerar ${totalDias} vídeo${totalDias === 1 ? "" : "s"} (toda a colecção)`}
+              : missingDays.length === 0
+              ? `↻ Regerar ${totalDias} vídeos`
+              : missingDays.length === totalDias
+              ? `▶ Gerar ${totalDias} vídeos (toda a colecção)`
+              : `▶ Gerar os ${missingDays.length} que faltam (de ${totalDias})`}
           </button>
           <button
             onClick={downloadAllZip}
@@ -588,11 +634,16 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
             <details key={dia.numero} className="rounded border border-escola-border bg-escola-bg" open>
               <summary className="cursor-pointer list-none px-4 py-3 text-sm">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <div>
-                    <span className="text-escola-creme">Dia {dia.numero}</span>{" "}
+                  <div className="flex flex-wrap items-baseline gap-3">
+                    <span className="text-escola-creme">Dia {dia.numero}</span>
                     <span className="text-escola-dourado">{dia.veu}</span>
+                    {completedDays.has(dia.numero) && (
+                      <span className="rounded bg-green-700/30 px-2 py-0.5 text-[10px] text-green-300">
+                        ✓ vídeo pronto
+                      </span>
+                    )}
                     {!withoutVoice && (
-                      <span className="ml-3 text-xs text-escola-creme-50">
+                      <span className="text-xs text-escola-creme-50">
                         {dia.slides.filter((_, i) => audios[audioKey(dia.numero, i + 1)]?.url).length}/{dia.slides.length} vozes
                       </span>
                     )}
@@ -614,6 +665,9 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
+                        if (completedDays.has(dia.numero)) {
+                          if (!confirm(`Dia ${dia.numero} já tem vídeo. Regerar (substitui)?`)) return;
+                        }
                         submitRender({ dias: [dia.numero] });
                       }}
                       disabled={
@@ -622,7 +676,7 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
                       }
                       className="rounded bg-escola-violeta/30 px-3 py-1 text-xs font-semibold text-escola-creme hover:bg-escola-violeta/50 disabled:opacity-30"
                     >
-                      ▶ Gerar vídeo deste dia
+                      {completedDays.has(dia.numero) ? "↻ Regerar este dia" : "▶ Gerar vídeo deste dia"}
                     </button>
                   </div>
                 </div>
