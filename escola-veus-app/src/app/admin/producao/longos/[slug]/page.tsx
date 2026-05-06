@@ -1388,6 +1388,40 @@ export default function LongoDetailPage() {
           </h2>
           <div className="flex items-center gap-1">
             <button
+              onClick={async () => {
+                if (!project) return;
+                if (
+                  !confirm(
+                    "Auto-atribuir o melhor clip da pool a TODAS as cenas sem clip?\n\n" +
+                      "Pondera mood overlap + keyword overlap. Sem custo (não chama Claude). " +
+                      "Cada clip é usado no máximo uma vez (dedupe). " +
+                      "Vais poder rever e trocar individualmente depois.",
+                  )
+                )
+                  return;
+                try {
+                  const r = await fetch("/api/admin/longos/auto-attach-pool", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ slug: project.slug }),
+                  });
+                  const d = await r.json();
+                  if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+                  setInfo(
+                    `🪄 ${d.attached.length} cenas atribuídas (de ${d.total - (d.total - (d.attached.length + d.skipped.length))} sem clip · pool ${d.poolSize}). ${d.skipped.length} sem candidato.`,
+                  );
+                  setTimeout(() => setInfo(null), 8000);
+                  await load();
+                } catch (e) {
+                  setInfo(`Erro: ${e instanceof Error ? e.message : String(e)}`);
+                }
+              }}
+              className="rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-0.5 text-[10px] font-semibold text-escola-dourado hover:bg-escola-dourado/20"
+              title="Para cada cena sem clip, atribui o melhor candidato da pool por score mood+keywords. Dedup: cada clip usado uma vez. Sem custo Claude."
+            >
+              🪄 auto-atribuir pool
+            </button>
+            <button
               onClick={reviewPromptsWithClaude}
               disabled={reviewing || promptsDraft.length === 0}
               className="rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-40"

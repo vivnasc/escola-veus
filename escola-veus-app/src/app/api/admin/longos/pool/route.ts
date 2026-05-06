@@ -64,53 +64,66 @@ export async function GET() {
   };
   const clips: Clip[] = [];
 
-  // ── 1. Longos clips ────────────────────────────────────────────────
-  // longos-clips/<slug>/<promptId>.mp4 (recursivo: list slug folders, depois files)
+  // ── 1. Longos clips (paralelo) ─────────────────────────────────────
+  // Antes: serial — list folders → for each folder, list + download. Para 20
+  // longos eram ~40 round-trips em série = 8s+. Agora todas as folders são
+  // listadas + project JSONs descarregados em paralelo (Promise.all). Total
+  // tempo = max(qualquer call), não soma.
   try {
     const { data: slugDirs } = await supabase.storage
       .from("course-assets")
       .list("longos-clips", { limit: 200 });
     if (Array.isArray(slugDirs)) {
-      for (const dir of slugDirs) {
-        if (!dir.name) continue;
-        const { data: files } = await supabase.storage
-          .from("course-assets")
-          .list(`longos-clips/${dir.name}`, { limit: 500 });
-        if (!Array.isArray(files)) continue;
+      const slugNames = slugDirs.map((d) => d.name).filter(Boolean);
 
-        // Tenta obter metadata do projecto longo (mood/prompt das cenas)
-        let projPrompts: Map<string, { mood: string[]; prompt: string }> = new Map();
-        try {
-          const { data: projData } = await supabase.storage
-            .from("course-assets")
-            .download(`admin/longos/${dir.name}.json`);
-          if (projData) {
-            const proj = JSON.parse(await projData.text());
-            for (const p of proj.prompts ?? []) {
-              if (p?.id) {
-                projPrompts.set(p.id, {
-                  mood: Array.isArray(p.mood) ? p.mood : [],
-                  prompt: p.prompt ?? "",
-                });
+      // 2 chamadas por slug em paralelo: list files + download project JSON
+      const perSlug = await Promise.all(
+        slugNames.map(async (slug) => {
+          const [filesRes, projRes] = await Promise.all([
+            supabase.storage
+              .from("course-assets")
+              .list(`longos-clips/${slug}`, { limit: 500 }),
+            supabase.storage
+              .from("course-assets")
+              .download(`admin/longos/${slug}.json`)
+              .catch(() => ({ data: null })),
+          ]);
+
+          // Parse project JSON (best-effort)
+          const projPrompts = new Map<string, { mood: string[]; prompt: string }>();
+          if (projRes.data) {
+            try {
+              const proj = JSON.parse(await projRes.data.text());
+              for (const p of proj.prompts ?? []) {
+                if (p?.id) {
+                  projPrompts.set(p.id, {
+                    mood: Array.isArray(p.mood) ? p.mood : [],
+                    prompt: p.prompt ?? "",
+                  });
+                }
               }
+            } catch {
+              /* ignore */
             }
           }
-        } catch {
-          /* projecto pode não existir */
-        }
 
+          return { slug, files: filesRes.data ?? [], projPrompts };
+        }),
+      );
+
+      for (const { slug, files, projPrompts } of perSlug) {
         for (const f of files) {
           if (!/\.mp4$/i.test(f.name)) continue;
           const promptId = f.name.replace(/\.mp4$/i, "");
           const meta = projPrompts.get(promptId);
           clips.push({
             clipId: promptId,
-            clipUrl: `${supabaseUrl}/storage/v1/object/public/course-assets/longos-clips/${dir.name}/${f.name}`,
+            clipUrl: `${supabaseUrl}/storage/v1/object/public/course-assets/longos-clips/${slug}/${f.name}`,
             source: "longo",
-            episode: dir.name,
+            episode: slug,
             mood: meta?.mood ?? [],
             prompt: meta?.prompt ?? null,
-            sourceLabel: `longo · ${dir.name}`,
+            sourceLabel: `longo · ${slug}`,
           });
         }
       }
