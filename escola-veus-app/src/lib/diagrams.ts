@@ -13,7 +13,7 @@
  *   - anel:      central pulsa; periféricos rodam à volta lentamente
  */
 
-export type DiagramType = "circulo" | "triade" | "pareado" | "sequencia" | "anel";
+export type DiagramType = "circulo" | "triade" | "pareado" | "sequencia" | "anel" | "horizonte";
 
 export type Diagram = {
   type: DiagramType;
@@ -186,6 +186,28 @@ function svgAnel(central: string, terms: string[], accent: string): string {
   ${footer()}`;
 }
 
+// ─── 6. HORIZONTE ─────────────────────────────────────────────────────────
+// Marca decorativa para slides sem padrão de diagrama. NÃO destaca
+// palavras. Apenas um ornamento que dá presença visual sem competir
+// com o texto. Uma linha horizontal com pontos terminais e um ponto
+// central, na cor de acento.
+function svgHorizonte(accent: string): string {
+  const w = 400, h = 80;
+  const cx = w / 2, cy = h / 2;
+  const halfLine = 140;
+  return `${header(w, h)}
+    <g>
+      ${animFadeIn("0.2s", "1s")}
+      <line x1="${cx - halfLine}" y1="${cy}" x2="${cx + halfLine}" y2="${cy}" stroke="${accent}" stroke-width="0.8" opacity="0.7"/>
+      <circle cx="${cx - halfLine}" cy="${cy}" r="3" fill="${accent}" opacity="0.8"/>
+      <circle cx="${cx + halfLine}" cy="${cy}" r="3" fill="${accent}" opacity="0.8"/>
+      <circle cx="${cx}" cy="${cy}" r="2" fill="${accent}" opacity="0.6"/>
+      <circle cx="${cx - 70}" cy="${cy}" r="1.5" fill="${accent}" opacity="0.5"/>
+      <circle cx="${cx + 70}" cy="${cy}" r="1.5" fill="${accent}" opacity="0.5"/>
+    </g>
+  ${footer()}`;
+}
+
 export function renderDiagram(d: Diagram, accent: string): string {
   switch (d.type) {
     case "circulo":   return svgCirculo(d.terms[0] ?? "", accent);
@@ -193,6 +215,7 @@ export function renderDiagram(d: Diagram, accent: string): string {
     case "pareado":   return svgPareado(d.terms, accent);
     case "sequencia": return svgSequencia(d.terms, accent);
     case "anel":      return svgAnel(d.central ?? "", d.terms, accent);
+    case "horizonte": return svgHorizonte(accent);
     default:          return "";
   }
 }
@@ -203,4 +226,5 @@ export const DIAGRAM_LABELS: Record<DiagramType, string> = {
   pareado: "Pólos — antes / linha que desenha / depois",
   sequencia: "Passagem — passos a descer em escada",
   anel: "Órbita — central pulsa, periféricos rodam",
+  horizonte: "Horizonte — ornamento decorativo (sem palavras)",
 };

@@ -131,9 +131,8 @@ export function inferDiagram(
   const triad = detectTriad(text);
   if (triad) return { type: "triade", terms: [triad[0], triad[1], triad[2]] };
 
-  // SEM fallback universal: extrair uma palavra "forte" automaticamente
-  // tem o problema de a palavra escolhida raramente ser A chave da
-  // mensagem. Slides narrativos sem padrão claro ficam sem diagrama —
-  // melhor que destacar a palavra errada.
-  return null;
+  // 5. Fallback universal: ornamento decorativo (não destaca palavra
+  //    nenhuma — apenas dá presença visual). Usado em slides narrativos
+  //    sem padrão claro.
+  return { type: "horizonte", terms: [] };
 }
