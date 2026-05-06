@@ -173,6 +173,12 @@ export default function AulasPage() {
                     >
                       🎬 Render bulk (MP4 de todas as sub-aulas)
                     </Link>
+                    <Link
+                      href={`/admin/producao/aulas/diagramas/${c.slug}`}
+                      className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
+                    >
+                      ◊ Diagramas Claude (sugestões de infografias)
+                    </Link>
                     <span className="text-escola-creme-50">
                       A Claude lê tudo e propõe correcções; tu aceitas ou rejeitas.
                     </span>
