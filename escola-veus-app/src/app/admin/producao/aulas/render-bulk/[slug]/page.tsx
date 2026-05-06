@@ -17,10 +17,11 @@ type Job = {
   jobId: string | null;
   status: JobStatus;
   error?: string;
+  dispatchedAt?: number;
 };
 
 type LiveStatus = {
-  status: "queued" | "running" | "done" | "error" | "not_found";
+  status: "queued" | "running" | "done" | "error" | "not_found" | "timeout";
   videoUrl?: string | null;
   error?: string | null;
 };
@@ -122,7 +123,12 @@ export default function RenderBulkPage({
         throw new Error(`HTTP ${r.status}: ${text.slice(0, 120)}`);
       }
       if (!r.ok) throw new Error(j.erro ?? `HTTP ${r.status}`);
-      setJobs(j.jobs ?? []);
+      const now = Date.now();
+      const stamped: Job[] = (j.jobs ?? []).map((job) => ({
+        ...job,
+        dispatchedAt: job.status === "dispatched" ? now : undefined,
+      }));
+      setJobs(stamped);
     } catch (err) {
       setRequestError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -149,7 +155,14 @@ export default function RenderBulkPage({
 
   function lancarSoErros() {
     const failedSubs = jobs
-      .filter((j) => j.status === "error" || (j.status === "dispatched" && j.jobId && liveByJob.get(j.jobId)?.status === "error"))
+      .filter((j) => {
+        if (j.status === "error") return true;
+        if (j.status === "dispatched" && j.jobId) {
+          const live = liveByJob.get(j.jobId);
+          return live?.status === "error" || live?.status === "timeout";
+        }
+        return false;
+      })
       .map((j) => ({ module: j.module, sub: j.sub }));
     if (failedSubs.length === 0) return;
     void lancar(failedSubs);
@@ -162,13 +175,33 @@ export default function RenderBulkPage({
     const dispatched = jobs.filter((j) => j.status === "dispatched" && j.jobId);
     if (dispatched.length === 0) return;
 
+    // Limite após o qual um job preso em queued/running é considerado
+    // morto (workflow GitHub Actions falhou em step antes do render.mjs
+    // poder escrever 'error' no result.json). Render típico = 3-5min,
+    // 10min é largo.
+    const STUCK_TIMEOUT_MS = 10 * 60 * 1000;
+
     async function tick() {
       const updates = await Promise.all(
         dispatched.map(async (j) => {
           const current = liveByJob.get(j.jobId!);
-          if (current && (current.status === "done" || current.status === "error")) {
-            return null; // já terminado, não voltar a perguntar
+          if (current && (current.status === "done" || current.status === "error" || current.status === "timeout")) {
+            return null; // terminado
           }
+
+          // Timeout: se passou tempo demais em queued/running, presumir morto
+          const dispatchedAt = j.dispatchedAt ?? Date.now();
+          const ageMs = Date.now() - dispatchedAt;
+          if (ageMs > STUCK_TIMEOUT_MS) {
+            return [
+              j.jobId!,
+              {
+                status: "timeout" as const,
+                error: `Job em queued/running há ${Math.round(ageMs / 60000)}min — workflow GitHub Actions provavelmente falhou em step antes do render. Tenta novamente.`,
+              } satisfies LiveStatus,
+            ] as const;
+          }
+
           try {
             const r = await fetch(`/api/admin/aulas/render-status?jobId=${j.jobId}`);
             if (!r.ok) return null;
@@ -226,6 +259,7 @@ export default function RenderBulkPage({
     const live = j.jobId ? liveByJob.get(j.jobId) : undefined;
     if (live?.status === "done") counts.done++;
     else if (live?.status === "error") counts.error++;
+    else if (live?.status === "timeout") counts.error++;
     else if (live?.status === "running") counts.running++;
     else counts.queued++;
   }
@@ -383,6 +417,7 @@ export default function RenderBulkPage({
                     if (j.status === "error") return { label: "✗ falhou ao despachar", color: "text-red-400" };
                     if (live?.status === "done") return { label: "✓ pronto", color: "text-escola-dourado" };
                     if (live?.status === "error") return { label: "✗ erro no render", color: "text-red-400" };
+                    if (live?.status === "timeout") return { label: "✗ workflow morreu (timeout)", color: "text-red-400" };
                     if (live?.status === "running") return { label: "⚙ a renderizar…", color: "text-escola-creme" };
                     return { label: "⌛ na fila", color: "text-escola-creme-50" };
                   })();
