@@ -10,7 +10,7 @@ import rotation from "../../src/data/weekly-social/weekly-rotation.ts";
 import loranne from "../../src/lib/loranne.ts";
 import brandConfig from "../../src/data/weekly-social/brand-config.ts";
 
-const { pickWeeklyLoranne, pickWeeklyAG } = rotation;
+const { pickWeeklyLoranne, pickWeeklyAG, getTrackTitle, getAlbumTitle } = rotation;
 const { ALL_LYRICS } = loranne;
 const { BRANDS, DAY_ORDER } = brandConfig;
 
@@ -51,9 +51,12 @@ BRANDS.loranne.publishDays.forEach((day, i) => {
   const entry = pickWeeklyLoranne(week, dayIdx);
   const lyrics = ALL_LYRICS[`${entry.albumSlug}/${entry.trackNumber}`] ?? "";
   const verse = firstStrongLine(lyrics);
+  const trackTitle = getTrackTitle(entry.albumSlug, entry.trackNumber);
+  const albumTitle = getAlbumTitle(entry.albumSlug);
   console.log(
-    `  ${DAY_NAMES[day].padEnd(8)} → ${albumLabel(entry.albumSlug).padEnd(28)} faixa ${entry.trackNumber}`,
+    `  ${DAY_NAMES[day].padEnd(8)} → "${trackTitle}" · ${albumTitle}`,
   );
+  console.log(`            (${entry.albumSlug}/${entry.trackNumber})`);
   console.log(`            "${verse}"\n`);
 });
 

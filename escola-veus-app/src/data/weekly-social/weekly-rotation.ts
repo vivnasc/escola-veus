@@ -17,6 +17,54 @@
 
 import { ALL_LYRICS } from "@/lib/loranne";
 import type { RaizTema } from "@/lib/ag-raizes-temas";
+import trackTitlesJson from "./loranne-track-titles.json";
+
+/**
+ * Mapa albumSlug → trackNumber (string) → título da faixa, extraído de
+ * loranne-lyrics/albums.ts via scripts/weekly/extract-titles. Útil para
+ * legendas dos posts ("Faixa X · Álbum Y").
+ */
+export const LORANNE_TRACK_TITLES: Record<string, Record<string, string>> =
+  trackTitlesJson as Record<string, Record<string, string>>;
+
+/**
+ * Título legível do álbum (slug → "Título"). Para legendas / metadata.
+ * Subset hand-curado dos 13 álbuns produzidos. Atualiza quando adicionas
+ * álbuns ao allowlist.
+ */
+export const LORANNE_ALBUM_TITLES: Record<string, string> = {
+  "incenso-frequencia": "Frequência",
+  "incenso-salto-bonito": "Salto Bonito",
+  "livro-filosofico": "Filosófico",
+  "espelho-ilusao": "Ilusão",
+  "fibra-sangue-aceso": "Sangue Aceso",
+  "eter-raiz-vermelha": "Raiz Vermelha",
+  "sangue-raiz": "Heritage",
+  "sangue-mae": "Mãe",
+  "nua-inteira": "Inteira",
+  "nua-por-dentro": "Por Dentro",
+  "nua-boa": "Boa",
+  "nua-duas-vozes": "Duas Vozes",
+  "grao-o-tear": "O Tear",
+};
+
+export function getTrackTitle(albumSlug: string, trackNumber: number): string {
+  return (
+    LORANNE_TRACK_TITLES[albumSlug]?.[String(trackNumber)] ||
+    `Faixa ${trackNumber}`
+  );
+}
+
+export function getAlbumTitle(albumSlug: string): string {
+  return (
+    LORANNE_ALBUM_TITLES[albumSlug] ||
+    albumSlug
+      .split("-")
+      .slice(1)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ")
+  );
+}
 
 // ─── Loranne — score & filter ──────────────────────────────────────────────
 
