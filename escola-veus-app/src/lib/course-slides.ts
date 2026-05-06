@@ -37,6 +37,9 @@ export type Slide =
       label: string;
       texto: string;
       duracao: number;
+      // Palavra-eco do acto anterior. Aparece em fade muito subtil no
+      // canto, primeiro slide de cada novo acto. Cria continuidade.
+      eco?: string;
     }
   | {
       // Pull-quote entre actos: a última frase forte do acto anterior em
@@ -253,6 +256,29 @@ export function buildSlideDeckFromConfig(
     "gesto",
   ]);
 
+  // Palavra-mãe do último bloco de cada acto, para usar como eco no
+  // primeiro slide do acto seguinte.
+  const ecoByActoIdx: Record<number, string> = {};
+
+  function extractKeyWord(text: string): string {
+    // Heurística simples: pega na palavra mais longa (>=5 chars), preferindo
+    // substantivos comuns no texto. Filtra stop-words PT.
+    const STOP = new Set([
+      "para", "como", "que", "quando", "porque", "onde", "depois", "antes",
+      "sobre", "entre", "ainda", "mais", "menos", "estás", "está", "estar",
+      "tens", "teu", "teus", "tua", "tuas", "isto", "isso", "aquilo", "também",
+      "muito", "pouco", "agora", "nunca", "sempre", "talvez",
+    ]);
+    const words = text
+      .toLowerCase()
+      .replace(/[.,!?;:«»()"]/g, "")
+      .split(/\s+/)
+      .filter((w) => w.length >= 5 && !STOP.has(w));
+    if (words.length === 0) return "";
+    // Última palavra "forte" (mais perto do fim da frase tem mais peso narrativo)
+    return words[words.length - 1];
+  }
+
   for (let actoIdx = 0; actoIdx < ACTOS.length; actoIdx++) {
     const { acto, romano, label } = ACTOS[actoIdx];
 
@@ -270,8 +296,10 @@ export function buildSlideDeckFromConfig(
         ? override.filter((b) => b && b.trim().length > 0).map((b) => b.trim())
         : defaultBlocksForActo(acto, sectionTexts[acto]);
 
-    for (const b of blocks) {
+    blocks.forEach((b, i) => {
       const base = acto === "frase" ? 8 : durationFor(b);
+      // Eco: só no primeiro slide de cada acto (não no primeiro acto).
+      const eco = i === 0 && actoIdx > 0 ? ecoByActoIdx[actoIdx - 1] : undefined;
       slides.push({
         tipo: "conteudo",
         acto,
@@ -279,7 +307,13 @@ export function buildSlideDeckFromConfig(
         label,
         texto: b,
         duracao: Math.max(3, Math.round(base * timingMul)),
+        ...(eco ? { eco } : {}),
       });
+    });
+
+    // Guarda a palavra-mãe deste acto para o eco do seguinte
+    if (blocks.length > 0) {
+      ecoByActoIdx[actoIdx] = extractKeyWord(blocks[blocks.length - 1]);
     }
 
     // Não inserir pull-quote/pausa se o acto não tem conteúdo escrito.

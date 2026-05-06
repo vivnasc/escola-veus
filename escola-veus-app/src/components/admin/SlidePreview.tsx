@@ -226,6 +226,28 @@ export function SlidePreview({
             />
           )}
 
+          {/* Eco: palavra-mãe do acto anterior em fade muito subtil no canto
+              superior direito. Cria continuidade entre actos. */}
+          {slide.tipo === "conteudo" && "eco" in slide && slide.eco && (
+            <div
+              className="absolute right-[6%] top-[6%] text-right"
+              style={{ color: accent, fontFamily: '"Cormorant Garamond", Georgia, serif' }}
+            >
+              <div
+                className="text-[10px] uppercase"
+                style={{ opacity: 0.4, letterSpacing: "4px" }}
+              >
+                de antes
+              </div>
+              <div
+                className="font-serif text-base italic"
+                style={{ opacity: 0.4 }}
+              >
+                {slide.eco}
+              </div>
+            </div>
+          )}
+
           {/* Marca da Escola — assinatura discreta no canto inferior direito,
               acima de uma linha horizontal fina. Aparece em todos os slides
               de conteúdo (não no title/end/fecho). */}

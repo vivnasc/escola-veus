@@ -18,6 +18,15 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
       ? `<div class="acto-label" style="color:${accent}">${slide.romano} · ${slide.label}</div>`
       : "";
 
+  // Eco: palavra-mãe do acto anterior, no canto superior direito em fade.
+  const ecoLabel =
+    slide.tipo === "conteudo" && slide.eco
+      ? `<div class="escola-eco" style="color:${accent}">
+           <div class="eco-meta">de antes</div>
+           <div class="eco-word">${esc(slide.eco)}</div>
+         </div>`
+      : "";
+
   let body = "";
   if (slide.tipo === "title") {
     body = `
@@ -225,6 +234,26 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
     width: 1px;
     opacity: 0.35;
   }
+  /* Eco: palavra-mãe do acto anterior, em fade no canto superior direito. */
+  .escola-eco {
+    position: absolute;
+    right: 6%;
+    top: 6%;
+    text-align: right;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    opacity: 0.4;
+  }
+  .escola-eco .eco-meta {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .escola-eco .eco-word {
+    font-size: 32px;
+    font-style: italic;
+    margin-top: 4px;
+  }
   /* Marca da Escola dos Véus, canto inferior direito. Linha fina por cima
      do nome dá peso editorial. */
   .escola-mark {
@@ -253,6 +282,7 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
     ${slide.tipo !== "fecho" ? ambientParticles(1920, 1080, accent) : ""}
     ${slide.tipo === "conteudo" ? ambientPresence(accent) : ""}
     ${actoLabel}
+    ${ecoLabel}
     <div class="body-center">${body}</div>
     ${footer ? `<div class="footer">${esc(footer)}</div>` : ""}
     ${
