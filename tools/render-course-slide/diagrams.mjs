@@ -35,15 +35,33 @@ function animDraw(length, begin = "0s", dur = "1.2s") {
 }
 
 function svgCirculo(term, accent) {
-  const w = 900, h = 360, cx = w / 2, cy = h / 2;
-  const fontSize = term.length <= 6 ? 180 : term.length <= 10 ? 140 : 100;
+  const w = 900, h = 560, cx = w / 2;
+  const fontSize = term.length <= 6 ? 168 : term.length <= 10 ? 132 : 96;
+  const yOrnTop = 70, yLabel = 110, yLineTop = 145;
+  const yWord = 305, yLineBot = 405, yOrnBot = 460;
+  const longLineLen = 360, shortLineLen = 100;
   return `${header(w, h)}
-    <g>
-      ${animFadeIn("0.1s", "1.2s")}
-      <text x="${cx}" y="${cy + fontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${fontSize}" font-style="italic" fill="${accent}">
-        ${esc(term)}
-        ${animBreath("1.5s", "5s")}
-      </text>
+    <g>${animFadeIn("0s", "0.7s")}
+      <text x="${cx}" y="${yOrnTop}" text-anchor="middle" font-family='${FONT_SERIF}' font-size="28" fill="${accent}" opacity="0.55">❦</text>
+    </g>
+    <g>${animFadeIn("0.2s", "0.7s")}
+      <text x="${cx}" y="${yLabel}" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="6" fill="${accent}" opacity="0.7">ÂNCORA</text>
+    </g>
+    <g>${animFadeIn("0.4s", "0.9s")}
+      <line x1="${cx - longLineLen / 2}" y1="${yLineTop}" x2="${cx + longLineLen / 2}" y2="${yLineTop}" stroke="${accent}" stroke-width="0.7" opacity="0.6"/>
+      <circle cx="${cx - longLineLen / 2}" cy="${yLineTop}" r="2.5" fill="${accent}" opacity="0.8"/>
+      <circle cx="${cx + longLineLen / 2}" cy="${yLineTop}" r="2.5" fill="${accent}" opacity="0.8"/>
+    </g>
+    <g>${animFadeIn("0.7s", "1.1s")}
+      <text x="${cx}" y="${yWord}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${fontSize}" font-style="italic" fill="${accent}">${esc(term)}${animBreath("2s", "5s")}</text>
+    </g>
+    <g>${animFadeIn("1.2s", "0.8s")}
+      <line x1="${cx - shortLineLen}" y1="${yLineBot}" x2="${cx - 14}" y2="${yLineBot}" stroke="${accent}" stroke-width="0.7" opacity="0.6"/>
+      <line x1="${cx + 14}" y1="${yLineBot}" x2="${cx + shortLineLen}" y2="${yLineBot}" stroke="${accent}" stroke-width="0.7" opacity="0.6"/>
+      <circle cx="${cx}" cy="${yLineBot}" r="3" fill="none" stroke="${accent}" stroke-width="0.8" opacity="0.85"/>
+    </g>
+    <g>${animFadeIn("1.5s", "0.7s")}
+      <text x="${cx}" y="${yOrnBot}" text-anchor="middle" font-family='${FONT_SERIF}' font-size="22" fill="${accent}" opacity="0.5">✦</text>
     </g>
   ${footer()}`;
 }
