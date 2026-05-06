@@ -9,6 +9,7 @@ import {
   type SlideDeck,
 } from "@/lib/course-slides";
 import type { LessonScript } from "@/data/course-scripts/ouro-proprio";
+import { DIAGRAM_LABELS, type Diagram, type DiagramType } from "@/lib/diagrams";
 
 /**
  * Editor contextual do slide corrente. Em vez de cinco textareas todas
@@ -306,6 +307,124 @@ export function CurrentSlideEditor({
       {slide.tipo === "end" && (
         <p className="text-xs italic text-escola-creme-50">
           Cartão final — &ldquo;Escola dos Véus · seteveus.space&rdquo; (fixo).
+        </p>
+      )}
+
+      {slide.tipo === "conteudo" && (
+        <DiagramPicker
+          slideIdx={slideIdx}
+          config={config}
+          onConfigChange={onConfigChange}
+        />
+      )}
+    </div>
+  );
+}
+
+function DiagramPicker({
+  slideIdx,
+  config,
+  onConfigChange,
+}: {
+  slideIdx: number;
+  config: LessonConfig;
+  onConfigChange: (next: LessonConfig) => void;
+}) {
+  const key = String(slideIdx);
+  const current = config.diagrams?.[key];
+
+  function setDiagram(next: Diagram | null) {
+    const diagrams = { ...(config.diagrams ?? {}) };
+    if (next == null) delete diagrams[key];
+    else diagrams[key] = next;
+    onConfigChange({
+      ...config,
+      diagrams: Object.keys(diagrams).length === 0 ? undefined : diagrams,
+    });
+  }
+
+  function setType(type: DiagramType | "") {
+    if (!type) return setDiagram(null);
+    // Inicializa com termos vazios suficientes para o tipo escolhido
+    const counts: Record<DiagramType, number> = {
+      circulo: 1,
+      triade: 3,
+      pareado: 2,
+      sequencia: 3,
+      anel: 4,
+    };
+    const n = counts[type];
+    const terms = current?.terms?.length === n ? current.terms : Array(n).fill("");
+    setDiagram({
+      type,
+      terms,
+      central: type === "anel" ? (current?.central ?? "") : undefined,
+    });
+  }
+
+  function setTerm(idx: number, value: string) {
+    if (!current) return;
+    const terms = [...(current.terms ?? [])];
+    terms[idx] = value;
+    setDiagram({ ...current, terms });
+  }
+
+  return (
+    <div className="mt-5 rounded-lg border border-escola-border bg-escola-bg/40 p-3">
+      <div className="mb-2 flex items-center justify-between">
+        <label className="text-[10px] uppercase tracking-wider text-escola-dourado">
+          Diagrama (opcional)
+        </label>
+        {current && (
+          <button
+            onClick={() => setDiagram(null)}
+            className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+          >
+            ↩ remover
+          </button>
+        )}
+      </div>
+      <select
+        value={current?.type ?? ""}
+        onChange={(e) => setType(e.target.value as DiagramType | "")}
+        className="mb-3 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-xs text-escola-creme focus:border-escola-dourado/50 focus:outline-none"
+      >
+        <option value="">— Sem diagrama —</option>
+        {(Object.keys(DIAGRAM_LABELS) as DiagramType[]).map((t) => (
+          <option key={t} value={t}>
+            {DIAGRAM_LABELS[t]}
+          </option>
+        ))}
+      </select>
+
+      {current?.type === "anel" && (
+        <div className="mb-2">
+          <label className="mb-1 block text-[10px] text-escola-creme-50">Palavra central</label>
+          <input
+            value={current.central ?? ""}
+            onChange={(e) => setDiagram({ ...current, central: e.target.value })}
+            className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme focus:border-escola-dourado/50 focus:outline-none"
+          />
+        </div>
+      )}
+
+      {current && (
+        <div className="grid grid-cols-2 gap-2">
+          {current.terms.map((t, i) => (
+            <input
+              key={i}
+              value={t}
+              placeholder={`Termo ${i + 1}`}
+              onChange={(e) => setTerm(i, e.target.value)}
+              className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-xs text-escola-creme focus:border-escola-dourado/50 focus:outline-none"
+            />
+          ))}
+        </div>
+      )}
+      {current && (
+        <p className="mt-2 text-[10px] text-escola-creme-50">
+          O diagrama aparece por baixo do texto deste slide. SVG inline na cor
+          do território, idêntico no preview e no MP4 renderizado.
         </p>
       )}
     </div>
