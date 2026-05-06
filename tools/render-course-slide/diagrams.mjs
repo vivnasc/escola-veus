@@ -117,22 +117,6 @@ function svgAnel(central, terms, accent) {
   ${footer()}`;
 }
 
-function svgHorizonte(accent) {
-  const w = 400, h = 80, cx = w / 2, cy = h / 2;
-  const halfLine = 140;
-  return `${header(w, h)}
-    <g>
-      ${animFadeIn("0.2s", "1s")}
-      <line x1="${cx - halfLine}" y1="${cy}" x2="${cx + halfLine}" y2="${cy}" stroke="${accent}" stroke-width="0.8" opacity="0.7"/>
-      <circle cx="${cx - halfLine}" cy="${cy}" r="3" fill="${accent}" opacity="0.8"/>
-      <circle cx="${cx + halfLine}" cy="${cy}" r="3" fill="${accent}" opacity="0.8"/>
-      <circle cx="${cx}" cy="${cy}" r="2" fill="${accent}" opacity="0.6"/>
-      <circle cx="${cx - 70}" cy="${cy}" r="1.5" fill="${accent}" opacity="0.5"/>
-      <circle cx="${cx + 70}" cy="${cy}" r="1.5" fill="${accent}" opacity="0.5"/>
-    </g>
-  ${footer()}`;
-}
-
 export function renderDiagram(d, accent) {
   if (!d || !d.type) return "";
   switch (d.type) {
@@ -141,7 +125,6 @@ export function renderDiagram(d, accent) {
     case "pareado":   return svgPareado(d.terms ?? [], accent);
     case "sequencia": return svgSequencia(d.terms ?? [], accent);
     case "anel":      return svgAnel(d.central ?? "", d.terms ?? [], accent);
-    case "horizonte": return svgHorizonte(accent);
     default:          return "";
   }
 }

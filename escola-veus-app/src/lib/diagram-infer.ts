@@ -131,8 +131,10 @@ export function inferDiagram(
   const triad = detectTriad(text);
   if (triad) return { type: "triade", terms: [triad[0], triad[1], triad[2]] };
 
-  // 5. Fallback universal: ornamento decorativo (não destaca palavra
-  //    nenhuma — apenas dá presença visual). Usado em slides narrativos
-  //    sem padrão claro.
-  return { type: "horizonte", terms: [] };
+  // SEM fallback. Diagrama é representação de relação entre conceitos —
+  // não é decoração. Slides narrativos sem estrutura clara ficam sem
+  // diagrama. A vida visual desses slides vive nas outras camadas:
+  // tipografia (capitular, glifos, marca), ambiente (partículas,
+  // ondas, pétalas, silhueta), texto (typewriter, eco, pull-quote).
+  return null;
 }
