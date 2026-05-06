@@ -8,6 +8,7 @@ import {
   type Diagram,
   type DiagramType,
 } from "@/lib/diagrams";
+import { ambientParticles, ambientPresence } from "@/lib/slide-ambient";
 
 /**
  * Galeria local de diagramas — vês todos os 5 templates no fundo roxo da
@@ -130,12 +131,71 @@ export default function DiagramasPreviewPage() {
               </div>
 
               <div className="grid gap-4 p-4 lg:grid-cols-[1fr_320px]">
-                {/* SVG renderizado no fundo da Escola */}
+                {/* Slide simulado: fundo roxo, partículas no fundo, silhueta
+                    a respirar, fio vertical à esquerda, marca da Escola
+                    no canto, diagrama centrado. Tudo o que vai estar no
+                    slide real. */}
                 <div
-                  className="flex aspect-video items-center justify-center rounded-lg p-8"
+                  className="relative aspect-video overflow-hidden rounded-lg"
                   style={{ backgroundColor: "#141428" }}
-                  dangerouslySetInnerHTML={{ __html: renderDiagram(d, accent) }}
-                />
+                >
+                  <div
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{ pointerEvents: "none" }}
+                    dangerouslySetInnerHTML={{ __html: ambientParticles(1920, 1080, accent) }}
+                  />
+                  <div
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{ pointerEvents: "none" }}
+                    dangerouslySetInnerHTML={{ __html: ambientPresence(accent) }}
+                  />
+
+                  {/* Fio vertical à esquerda */}
+                  <div
+                    className="absolute"
+                    style={{
+                      left: "4%",
+                      top: "12%",
+                      bottom: "12%",
+                      width: "1px",
+                      backgroundColor: accent,
+                      opacity: 0.35,
+                    }}
+                  />
+
+                  {/* Label do acto (placeholder) */}
+                  <div
+                    className="absolute left-[6%] top-[6%] text-[8px] uppercase"
+                    style={{ color: accent, letterSpacing: "3px" }}
+                  >
+                    III · REVELAÇÃO
+                  </div>
+
+                  {/* Diagrama centrado */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center px-[10%]"
+                    dangerouslySetInnerHTML={{ __html: renderDiagram(d, accent) }}
+                  />
+
+                  {/* Marca da Escola no canto inferior direito */}
+                  <div
+                    className="absolute right-[6%] bottom-[6%]"
+                    style={{ color: accent, fontFamily: '"Nunito", sans-serif' }}
+                  >
+                    <div
+                      className="ml-auto mb-1 h-px w-12"
+                      style={{ backgroundColor: accent, opacity: 0.4 }}
+                    />
+                    <div
+                      className="text-[8px] uppercase"
+                      style={{ opacity: 0.6, letterSpacing: "5px" }}
+                    >
+                      Escola dos Véus
+                    </div>
+                  </div>
+                </div>
 
                 {/* Inputs para os termos */}
                 <div className="space-y-3">
