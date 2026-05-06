@@ -29,10 +29,23 @@ function diaForVideo(job: Job, file: string): Dia | undefined {
 
 function captionForJob(job: Job, file: string): string {
   const dia = diaForVideo(job, file);
-  if (!dia) {
-    return `${slugFromJobId(job.jobId)} · ${file.replace(".mp4", "")}`;
-  }
-  return captionFor(dia, job.dias?.length ?? 7);
+  if (dia) return captionFor(dia, job.dias?.length ?? 7);
+
+  // Fallback para vídeos antigos sem manifest enriquecido — usa slug + nº dia
+  const slug = slugFromJobId(job.jobId).replace(/-/g, " ");
+  const m = file.match(/dia-(\d+)/);
+  const dayLabel = m ? `Dia ${m[1]}/7` : file.replace(".mp4", "");
+  return [
+    "Olá.",
+    "",
+    `Hoje vamos falar de ${slug}.`,
+    "",
+    `E tu — como te relacionas com este tema?`,
+    "",
+    dayLabel,
+    "",
+    "seteveus.space",
+  ].join("\n");
 }
 
 async function fetchAsBlob(url: string): Promise<Blob> {
