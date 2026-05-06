@@ -40,10 +40,10 @@ function sb() {
 }
 
 export async function POST(req: NextRequest) {
-  const runwayKey = process.env.RUNWAYML_API_SECRET;
+  const runwayKey = process.env.RUNWAY_API_KEY;
   if (!runwayKey) {
     return NextResponse.json(
-      { erro: "RUNWAYML_API_SECRET não configurada" },
+      { erro: "RUNWAY_API_KEY não configurada" },
       { status: 500 },
     );
   }

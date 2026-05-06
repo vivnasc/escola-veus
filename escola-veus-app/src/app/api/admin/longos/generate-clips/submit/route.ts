@@ -106,13 +106,13 @@ async function submitRunway(
 
 export async function POST(req: NextRequest) {
   const falKey = process.env.FAL_KEY;
-  const runwayKey = process.env.RUNWAYML_API_SECRET;
+  const runwayKey = process.env.RUNWAY_API_KEY;
   if (!falKey) {
     return NextResponse.json({ erro: "FAL_KEY não configurada" }, { status: 500 });
   }
   if (!runwayKey) {
     return NextResponse.json(
-      { erro: "RUNWAYML_API_SECRET não configurada" },
+      { erro: "RUNWAY_API_KEY não configurada" },
       { status: 500 },
     );
   }
