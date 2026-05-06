@@ -18,29 +18,36 @@ export function deriveText(dia: Dia, slide: SlideType): string {
 }
 
 /**
- * Legenda sugerida para o post (WhatsApp/IG).
+ * Legenda sugerida para o POST (WhatsApp/IG/FB) — não é transcrição do
+ * vídeo. Estrutura conversacional: saudação + "hoje vamos falar de X" +
+ * subtítulo + pergunta provocadora + CTA. Editável depois.
  */
 export function captionFor(dia: Dia, totalDias: number = 7): string {
-  const capa = dia.slides.find((s) => s.tipo === "capa") as Extract<SlideType, { tipo: "capa" }> | undefined;
+  const veuLower = dia.veu.toLowerCase();
   const cta = dia.slides.find((s) => s.tipo === "cta") as Extract<SlideType, { tipo: "cta" }> | undefined;
-  const conteudos = dia.slides.filter(
-    (s): s is Extract<SlideType, { tipo: "conteudo" }> => s.tipo === "conteudo"
-  );
-  const primeiraProsa = conteudos.find((c) => c.estilo === "prosa")?.texto || conteudos[0]?.texto || "";
+  const habito = dia.slides.find(
+    (s) => s.tipo === "conteudo" && (s as Extract<SlideType, { tipo: "conteudo" }>).titulo
+  ) as Extract<SlideType, { tipo: "conteudo" }> | undefined;
 
-  return [
-    `${dia.veu} · Dia ${dia.numero}/${totalDias}`,
-    `— ${dia.subtitulo}`,
+  // Pergunta/convite: se houver hábito, usa-o como prática; senão, pergunta genérica.
+  const pergunta = habito
+    ? `E se experimentasses esta semana: ${habito.texto.replace(/\n+/g, " ")}`
+    : `E tu — como te relacionas com ${veuLower}?`;
+
+  const lines = [
+    "Olá.",
     "",
-    capa ? `${capa.linha1}\n${capa.linha2}` : "",
+    `Hoje vamos falar de ${veuLower}.`,
+    dia.subtitulo ? `_${dia.subtitulo}_` : "",
     "",
-    primeiraProsa.replace(/\n+/g, " ").slice(0, 280),
+    pergunta,
+    "",
+    `Dia ${dia.numero}/${totalDias} · ${dia.veu}`,
     "",
     cta ? `${cta.recurso}\n${cta.url}` : "",
-  ]
-    .filter((s) => s !== null && s !== undefined)
-    .join("\n")
-    .trim();
+  ];
+
+  return lines.filter((l) => l !== null && l !== undefined).join("\n").replace(/\n{3,}/g, "\n\n").trim();
 }
 
 export function audioKey(dia: number, slide: number): string {

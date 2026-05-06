@@ -8,8 +8,11 @@ export const maxDuration = 30;
  * GET /api/admin/colecoes/videos/list
  *
  * Lista todos os render-jobs concluídos lendo Supabase Storage:
- * course-assets/render-jobs/*-result.json. Filtra os que estão `done`
- * e têm videos[]. Retorna ordenado do mais recente para o mais antigo.
+ * course-assets/render-jobs/*-result.json. Filtra os que estão `done` +
+ * têm videos[]. Para cada job tenta também ler o manifest
+ * (course-assets/render-jobs/<jobId>.json) e juntar a propriedade
+ * `content.dias` para podermos gerar legendas client-side.
+ * Retorna ordenado do mais recente para o mais antigo.
  */
 export async function GET() {
   const admin = createSupabaseAdminClient();
@@ -22,7 +25,6 @@ export async function GET() {
     return NextResponse.json({ erro: "NEXT_PUBLIC_SUPABASE_URL em falta" }, { status: 500 });
   }
 
-  // Lista os ficheiros do prefixo render-jobs/
   const { data: files, error } = await admin.storage
     .from("course-assets")
     .list("render-jobs", { limit: 1000, sortBy: { column: "created_at", order: "desc" } });
@@ -31,7 +33,6 @@ export async function GET() {
 
   const resultFiles = (files || []).filter((f) => f.name.endsWith("-result.json"));
 
-  // Lê cada result.json em paralelo (públicos)
   const jobs = await Promise.all(
     resultFiles.map(async (f) => {
       try {
@@ -39,6 +40,22 @@ export async function GET() {
         const r = await fetch(url, { cache: "no-store" });
         if (!r.ok) return null;
         const data = await r.json();
+        if (data?.status !== "done" || !Array.isArray(data?.videos) || data.videos.length === 0) {
+          return null;
+        }
+        // Tenta enriquecer com manifest (para podermos gerar legendas)
+        const manifestName = f.name.replace(/-result\.json$/, ".json");
+        try {
+          const mUrl = `${base}/storage/v1/object/public/course-assets/render-jobs/${encodeURIComponent(manifestName)}?t=${Date.now()}`;
+          const mRes = await fetch(mUrl, { cache: "no-store" });
+          if (mRes.ok) {
+            const manifest = await mRes.json();
+            if (manifest?.content?.dias) {
+              data.dias = manifest.content.dias;
+              data.campanha = manifest.content.campanha;
+            }
+          }
+        } catch {}
         return data;
       } catch {
         return null;
@@ -46,10 +63,7 @@ export async function GET() {
     })
   );
 
-  // Só os done com vídeos
-  const done = jobs.filter(
-    (j) => j && j.status === "done" && Array.isArray(j.videos) && j.videos.length > 0
-  );
+  const done = jobs.filter((j) => !!j);
 
   return NextResponse.json({ items: done });
 }

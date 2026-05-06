@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import JSZip from "jszip";
+import type { Dia } from "@/lib/carousel-types";
+import { captionFor } from "@/lib/carousel-helpers";
 
 type Video = { file: string; url: string; sizeBytes: number };
 type Job = {
@@ -9,14 +12,66 @@ type Job = {
   status: string;
   videos: Video[];
   completedAt?: string;
-  musicUrl?: string | null;
-  musicVolume?: number;
+  campanha?: string;
+  dias?: Dia[]; // se foi um collection com content override
 };
+
+function slugFromJobId(jobId: string) {
+  return jobId.replace(/-\d+$/, "");
+}
+
+function diaForVideo(job: Job, file: string): Dia | undefined {
+  const m = file.match(/dia-(\d+)/);
+  if (!m || !job.dias) return undefined;
+  const num = Number(m[1]);
+  return job.dias.find((d) => d.numero === num);
+}
+
+function captionForJob(job: Job, file: string): string {
+  const dia = diaForVideo(job, file);
+  if (dia) return captionFor(dia, job.dias?.length ?? 7);
+
+  // Fallback para vídeos antigos sem manifest enriquecido — usa slug + nº dia
+  const slug = slugFromJobId(job.jobId).replace(/-/g, " ");
+  const m = file.match(/dia-(\d+)/);
+  const dayLabel = m ? `Dia ${m[1]}/7` : file.replace(".mp4", "");
+  return [
+    "Olá.",
+    "",
+    `Hoje vamos falar de ${slug}.`,
+    "",
+    `E tu — como te relacionas com este tema?`,
+    "",
+    dayLabel,
+    "",
+    "seteveus.space",
+  ].join("\n");
+}
+
+async function fetchAsBlob(url: string): Promise<Blob> {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`fetch ${url} → ${r.status}`);
+  return r.blob();
+}
+
+function triggerDownload(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
 
 export default function VideosPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
+  const [downloading, setDownloading] = useState<string | null>(null);
+  const [editedCaptions, setEditedCaptions] = useState<Record<string, string>>({});
+  const [copied, setCopied] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -32,29 +87,73 @@ export default function VideosPage() {
     })();
   }, []);
 
-  // achata: cada vídeo passa a ser uma entrada (mesmo job pode ter vários dias)
-  const all = jobs.flatMap((j) =>
-    j.videos.map((v) => ({
-      ...v,
-      jobId: j.jobId,
-      completedAt: j.completedAt,
-    }))
-  );
+  function captionKey(jobId: string, file: string) {
+    return `${jobId}::${file}`;
+  }
+  function getCaption(job: Job, file: string) {
+    const k = captionKey(job.jobId, file);
+    return editedCaptions[k] ?? captionForJob(job, file);
+  }
+
+  async function copyCaption(job: Job, file: string) {
+    const text = getCaption(job, file);
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(captionKey(job.jobId, file));
+      setTimeout(() => setCopied(null), 1800);
+    } catch {
+      alert("Não consegui copiar — selecciona à mão.");
+    }
+  }
+
+  async function downloadVideoAndCaption(job: Job, video: Video) {
+    const k = captionKey(job.jobId, video.file);
+    setDownloading(k);
+    try {
+      const slug = slugFromJobId(job.jobId);
+      const baseName = `${slug}-${video.file.replace(".mp4", "")}`;
+      // 1. mp4
+      const mp4 = await fetchAsBlob(video.url);
+      triggerDownload(mp4, `${baseName}.mp4`);
+      // 2. legenda .txt
+      const txt = new Blob([getCaption(job, video.file)], { type: "text/plain;charset=utf-8" });
+      triggerDownload(txt, `${baseName}.txt`);
+    } catch (e) {
+      alert(`Falhou: ${e instanceof Error ? e.message : String(e)}`);
+    } finally {
+      setDownloading(null);
+    }
+  }
+
+  async function downloadJobAsZip(job: Job) {
+    const k = `zip-${job.jobId}`;
+    setDownloading(k);
+    try {
+      const zip = new JSZip();
+      const slug = slugFromJobId(job.jobId);
+      const folder = zip.folder(slug)!;
+      for (const v of job.videos) {
+        const baseName = v.file.replace(".mp4", "");
+        const mp4 = await fetchAsBlob(v.url);
+        folder.file(`${baseName}.mp4`, mp4);
+        folder.file(`${baseName}.txt`, getCaption(job, v.file));
+      }
+      const blob = await zip.generateAsync({ type: "blob" });
+      triggerDownload(blob, `${slug}.zip`);
+    } catch (e) {
+      alert(`ZIP falhou: ${e instanceof Error ? e.message : String(e)}`);
+    } finally {
+      setDownloading(null);
+    }
+  }
 
   const filtered = filter
-    ? all.filter(
-        (v) =>
-          v.jobId.toLowerCase().includes(filter.toLowerCase()) ||
-          v.file.toLowerCase().includes(filter.toLowerCase())
+    ? jobs.filter(
+        (j) =>
+          j.jobId.toLowerCase().includes(filter.toLowerCase()) ||
+          (j.campanha || "").toLowerCase().includes(filter.toLowerCase())
       )
-    : all;
-
-  // Agrupar por jobId (= colecção + timestamp)
-  const byJob = new Map<string, typeof filtered>();
-  for (const v of filtered) {
-    if (!byJob.has(v.jobId)) byJob.set(v.jobId, []);
-    byJob.get(v.jobId)!.push(v);
-  }
+    : jobs;
 
   return (
     <div>
@@ -71,11 +170,12 @@ export default function VideosPage() {
         </h2>
         <p className="text-sm text-escola-creme-50">
           Todos os carrosséis em vídeo gerados pela Action — agregados do Supabase, qualquer
-          browser. Reproduz na página, descarrega ou copia o link directo.
+          browser. Cada vídeo traz a legenda sugerida (editável). Descarrega vídeo + legenda
+          juntos ou a colecção inteira em ZIP.
         </p>
         <input
           type="text"
-          placeholder="filtrar por nome / job (ex: 'maternidade', 'estacao')"
+          placeholder="filtrar por nome / job"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           className="mt-3 w-full rounded border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme placeholder:text-escola-creme-50"
@@ -91,52 +191,100 @@ export default function VideosPage() {
           </p>
         </div>
       ) : (
-        <div className="space-y-8">
-          {Array.from(byJob.entries()).map(([jobId, vids]) => {
-            // Tenta extrair nome amigável do jobId (slug-timestamp)
-            const slug = jobId.replace(/-\d+$/, "");
+        <div className="space-y-10">
+          {filtered.map((job) => {
+            const slug = slugFromJobId(job.jobId);
+            const totalSize = job.videos.reduce((a, v) => a + v.sizeBytes, 0);
             return (
-              <section key={jobId}>
-                <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-escola-border pb-2 text-sm">
-                  <div>
-                    <span className="text-escola-creme">{slug}</span>{" "}
-                    <code className="text-[10px] text-escola-creme-50">{jobId}</code>
+              <section key={job.jobId} className="rounded-lg border border-escola-border bg-escola-card p-4">
+                <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-escola-border pb-2">
+                  <div className="min-w-0">
+                    <p className="font-serif text-base text-escola-creme">
+                      {job.campanha || slug}
+                    </p>
+                    <p className="text-[10px] text-escola-creme-50">
+                      {job.videos.length} vídeo{job.videos.length === 1 ? "" : "s"} ·{" "}
+                      {(totalSize / 1024 / 1024).toFixed(1)} MB ·{" "}
+                      {job.completedAt && new Date(job.completedAt).toLocaleString("pt-PT")}
+                    </p>
                   </div>
-                  {vids[0].completedAt && (
-                    <span className="text-[10px] text-escola-creme-50">
-                      {new Date(vids[0].completedAt).toLocaleString("pt-PT")}
-                    </span>
-                  )}
+                  <button
+                    onClick={() => downloadJobAsZip(job)}
+                    disabled={!!downloading}
+                    className="rounded bg-escola-dourado/90 px-3 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
+                  >
+                    {downloading === `zip-${job.jobId}`
+                      ? "a gerar ZIP…"
+                      : `↓ Colecção (ZIP) — vídeos + legendas`}
+                  </button>
                 </header>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                  {vids.map((v) => (
-                    <div
-                      key={v.file}
-                      className="overflow-hidden rounded border border-escola-border bg-escola-card"
-                    >
-                      <video
-                        src={v.url}
-                        controls
-                        playsInline
-                        preload="metadata"
-                        className="aspect-[9/16] w-full bg-black"
-                      />
-                      <div className="flex items-center justify-between gap-1 p-2 text-[10px]">
-                        <span className="text-escola-creme">
-                          {v.file.replace(".mp4", "")}
-                        </span>
-                        <a
-                          href={v.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          download
-                          className="rounded bg-escola-bg px-2 py-0.5 text-escola-creme-50 hover:text-escola-dourado"
-                        >
-                          ↓ {(v.sizeBytes / 1024 / 1024).toFixed(1)}MB
-                        </a>
+
+                <div className="space-y-4">
+                  {job.videos.map((v) => {
+                    const k = captionKey(job.jobId, v.file);
+                    const dia = diaForVideo(job, v.file);
+                    return (
+                      <div key={v.file} className="rounded border border-escola-border bg-escola-bg p-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-[180px_1fr]">
+                          <video
+                            src={v.url}
+                            controls
+                            playsInline
+                            preload="metadata"
+                            className="aspect-[9/16] w-full rounded border border-escola-border bg-black"
+                          />
+                          <div className="flex flex-col gap-2">
+                            <div className="flex items-baseline justify-between gap-2">
+                              <p className="text-sm text-escola-creme">
+                                {dia ? (
+                                  <>
+                                    Dia {dia.numero} · <span className="text-escola-dourado">{dia.veu}</span>
+                                  </>
+                                ) : (
+                                  v.file.replace(".mp4", "")
+                                )}
+                              </p>
+                              <span className="text-[10px] text-escola-creme-50">
+                                {(v.sizeBytes / 1024 / 1024).toFixed(1)} MB
+                              </span>
+                            </div>
+                            <textarea
+                              value={getCaption(job, v.file)}
+                              onChange={(e) =>
+                                setEditedCaptions((prev) => ({ ...prev, [k]: e.target.value }))
+                              }
+                              rows={6}
+                              className="w-full rounded border border-escola-border bg-escola-card p-2 text-xs text-escola-creme"
+                            />
+                            <div className="flex flex-wrap gap-2">
+                              <button
+                                onClick={() => copyCaption(job, v.file)}
+                                className="rounded bg-escola-dourado/90 px-3 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado"
+                              >
+                                {copied === k ? "✓ copiada" : "⧉ copiar legenda"}
+                              </button>
+                              <button
+                                onClick={() => downloadVideoAndCaption(job, v)}
+                                disabled={!!downloading}
+                                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40 disabled:opacity-40"
+                              >
+                                {downloading === k ? "a descarregar…" : "↓ Vídeo + legenda"}
+                              </button>
+                              <a
+                                href={v.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                download
+                                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-dourado/40"
+                              >
+                                ↓ Só MP4
+                              </a>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
             );
