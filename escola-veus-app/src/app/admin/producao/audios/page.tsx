@@ -219,6 +219,7 @@ export default function AudioBulkPage() {
             modelId,
             title: script.titulo,
             folder,
+            scriptId: script.id, // pasta curso-* extrai prefixo m{N}-{letter}- do id
             // v3 rejeita language_code — nao enviar mesmo se preenchido
             languageCode: modelId === "eleven_v3" ? undefined : (languageCode || undefined),
           }),

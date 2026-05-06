@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
       modelId = "eleven_multilingual_v2",
       title,
       folder = "youtube",
+      scriptId, // opcional — usado para inferir prefixo m{N}-{letter}- quando folder começa por "curso-"
       languageCode, // opcional — se omitido, voice decide sotaque
     } = await req.json();
 
@@ -133,7 +134,16 @@ export async function POST(req: NextRequest) {
       .replace(/^-+|-+$/g, "")
       .slice(0, 60);
 
-    const filePath = `${folder}/${slug}-${Date.now()}.mp3`;
+    // Em pastas de curso (curso-<slug>), prefixa o ficheiro com m{N}-{letter}-
+    // para que /api/courses/audio o consiga encontrar por (module, sub).
+    // O scriptId tem o formato "<curso>-m<N><letter>" (ex.: "ouro-proprio-m1a").
+    let prefix = "";
+    if (folder.startsWith("curso-") && typeof scriptId === "string") {
+      const m = scriptId.match(/-m(\d+)([a-zA-Z])$/);
+      if (m) prefix = `m${m[1]}-${m[2].toLowerCase()}-`;
+    }
+
+    const filePath = `${folder}/${prefix}${slug}-${Date.now()}.mp3`;
     const { error } = await supabase.storage
       .from("course-assets")
       .upload(filePath, new Uint8Array(audioBuffer), {

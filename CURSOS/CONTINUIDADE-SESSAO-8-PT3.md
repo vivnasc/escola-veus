@@ -76,6 +76,54 @@ Fundo `#141428` (roxo Escola), tipografia única Cormorant Garamond regular (ita
 
 ---
 
+## Bugs descobertos no fim da sessão (fixes locais commitados, falta deploy)
+
+A Vivianne entrou no espaço da aluna e reportou 4 problemas. Diagnóstico + fix
+ficaram feitos no branch — só falta a Vercel desbloquear amanhã para deployar.
+
+### A. "Vídeo em produção" em todos os módulos ✅ commitado
+`/api/courses/lesson` usava `HEAD` para confirmar a presença do MP4 público no
+bucket `course-assets`. O Storage da Supabase nem sempre devolve 200 em HEAD
+para ficheiros públicos (devolve não-2xx mesmo com ficheiro presente). Fix:
+substituir HEAD por `GET` com header `Range: bytes=0-0` que devolve 206 Partial
+Content quando o ficheiro existe sem descarregar tudo.
+
+### B. Manual PDF "Autenticação necessária" ✅ commitado
+`/api/courses/manual` parseava cookies à mão à procura de
+`sb-<ref>-auth-token`. A Supabase SSR usa nomes chunked
+`sb-<ref>-auth-token.0`, `.1`, `.2` para JWTs grandes — o parse manual nunca
+encontrava o cookie e devolvia 401. Fix: usar `createSupabaseServerClient()`
+(que lida com chunked nativamente). Mantido fallback Bearer token para
+clientes API.
+
+### C. Cadernos PDF mesmo bug ✅ commitado
+Aplicado o mesmo fix em `/api/courses/cadernos` (era cópia do parse manual
+antigo).
+
+### D. Áudios não aparecem ✅ commitado
+Mismatch de naming. O gerador (`/api/admin/audio-bulk/generate-one`) gravava
+em `course-assets/curso-<slug>/<slug-do-titulo>-<ts>.mp3`. A rota da aluna
+(`/api/courses/audio`) procurava por prefixo `m<N>-<letter>-`. Fix: o gerador
+agora aceita `scriptId` (ex.: `ouro-proprio-m1a`), extrai `m1-a-` por regex e
+prefixa o ficheiro. A página bulk passa `scriptId: script.id`. Áudios
+**antigos** ficam órfãos — re-gerar quando for prioridade ou re-nomear via
+SQL.
+
+### E. YouTube hooks não batem com vídeos reais ⚠️ verificado, pendente decisão
+`courses.ts` define 3 `youtubeHooks` fictícios por curso (ex.: para
+ouro-proprio: "Porque sentes culpa quando gastas dinheiro em ti mesma?"). Os
+scripts **reais** que existem em `nomear-scripts.ts` são outros (8 títulos
+para ouro-proprio, ex.: "A culpa que chega antes da compra", "O extracto que
+te lê de volta", "A vergonha que inventa desculpas", etc.).
+
+A Vivianne tem que decidir caso a caso quais 3 hooks promover por curso na
+landing. Os títulos reais por curso estão em `src/data/nomear-scripts.ts`
+filtrando por `curso: "<slug>"`. Não fiz a edição porque mexe em copy
+público — proposta para próxima sessão: criar `/admin/cursos/hooks` que mostra
+os 3 hooks actuais lado a lado com os scripts reais e permite picker.
+
+---
+
 ## O que está PENDENTE (próxima sessão)
 
 ### 1. **Generator de scripts via Claude para os outros 19 cursos** ← bloqueia tudo

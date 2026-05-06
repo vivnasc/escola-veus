@@ -78,11 +78,19 @@ export async function GET(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
   // 1) Novo pipeline: course-assets/curso-<slug>/videos/m<N>-<letter>.mp4
+  // Em vez de HEAD (Supabase Storage público nem sempre devolve 200 em
+  // HEAD), uso GET com Range bytes=0-0 que devolve 206 Partial Content
+  // se o ficheiro existe e 404 se não existe. Confirma a presença sem
+  // descarregar o vídeo inteiro.
   const mockBPath = `curso-${slug}/videos/m${moduleNum}-${subLower}.mp4`;
   const mockBUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${mockBPath}`;
   try {
-    const head = await fetch(mockBUrl, { method: "HEAD", cache: "no-store" });
-    if (head.ok) {
+    const probe = await fetch(mockBUrl, {
+      method: "GET",
+      headers: { Range: "bytes=0-0" },
+      cache: "no-store",
+    });
+    if (probe.status === 206 || probe.status === 200) {
       return NextResponse.json({ url: mockBUrl, source: "mock-b" });
     }
   } catch {
