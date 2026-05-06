@@ -21,6 +21,7 @@ import { pipeline } from "node:stream/promises";
 import path from "node:path";
 import puppeteer from "puppeteer";
 import { renderSlideHtml } from "./slide-template.mjs";
+import { renderDiagram } from "./diagrams.mjs";
 
 const SUPABASE_URL = requireEnv("SUPABASE_URL");
 const SERVICE_KEY = requireEnv("SUPABASE_SERVICE_ROLE_KEY");
@@ -133,7 +134,9 @@ async function renderPngs(deck, accent, pngDir) {
 
   for (let i = 0; i < deck.slides.length; i++) {
     const slide = deck.slides[i];
-    const html = renderSlideHtml({ slide, deck, accent });
+    const diagram = deck.diagrams?.[String(i)];
+    const diagramSvg = diagram ? renderDiagram(diagram, accent) : "";
+    const html = renderSlideHtml({ slide, deck, accent, diagramSvg });
     await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });
     // Font loading: wait up to 2s
     await page.evaluateHandle("document.fonts.ready");
@@ -171,29 +174,49 @@ function effectiveTotalDuration(deck) {
 }
 
 function buildVolumeFilterChain(deck, volumeDb) {
-  // Cadeia de volume=volume=XdB:enable='between(t,T0,T1)' — fora da janela
-  // de cada slide, o volume passa unchanged. Os T0/T1 já contam com os
-  // overlaps xfade entre slides.
-  const filters = [];
-  for (let i = 0; i < deck.slides.length; i++) {
-    const s = deck.slides[i];
-    const t0 = absoluteStart(deck, i);
-    const t1 = t0 + s.duracao;
-
-    let db;
-    if (s.tipo === "title" || s.tipo === "end") db = -20;
-    else if (s.tipo === "fecho") db = -60; // quase mute nos 2s de fecho
-    else if (s.tipo === "acto-marker") db = -20;
-    else if (s.tipo === "conteudo" && s.acto) {
-      db = volumeDb?.[s.acto];
-      if (typeof db !== "number") db = -18;
-    } else {
-      db = -20;
-    }
-
-    filters.push(`volume=volume=${db}dB:enable='between(t,${t0.toFixed(3)},${t1.toFixed(3)})'`);
-  }
+  // Cadeia de volume=volume=XdB:enable='between(t,T0,T1)'. Cada filtro só
+  // aplica na sua janela; fora dela, o sinal passa unchanged.
+  //
+  // CRÍTICO: as janelas TÊM de ser disjuntas. Se duas se sobrepõem (zona
+  // xfade), os filtros encadeados multiplicam-se e a música cai
+  // dramaticamente (ex: -18 + -15 = -33dB). Daí cada slide ocupar até ao
+  // INÍCIO do seguinte, não até ao fim nominal (que sobrepõe XFADE_DUR).
+  //
+  // Markers e fecho/title/end usam o MESMO volume do próximo slide de
+  // conteúdo, para evitar saltos de 2dB perceptíveis a cada transição.
   const total = effectiveTotalDuration(deck);
+  const n = deck.slides.length;
+
+  // Pré-calcula o volume "alvo" de cada slide (nivelado: marker e fecho
+  // herdam o do conteúdo que os rodeia).
+  function rawDb(s) {
+    if (s.tipo === "fecho") return -60;
+    if (s.tipo === "conteudo" && s.acto) {
+      const db = volumeDb?.[s.acto];
+      return typeof db === "number" ? db : -18;
+    }
+    return null;
+  }
+  const dbs = deck.slides.map(rawDb);
+  // Para cada null (marker/title/end), procura o vizinho de conteúdo mais
+  // próximo (à frente prioritário, atrás como fallback).
+  function nearestContentDb(idx) {
+    for (let j = idx + 1; j < n; j++) if (dbs[j] != null && deck.slides[j].tipo === "conteudo") return dbs[j];
+    for (let j = idx - 1; j >= 0; j--) if (dbs[j] != null && deck.slides[j].tipo === "conteudo") return dbs[j];
+    return -18;
+  }
+  const finalDbs = dbs.map((d, i) => (d == null ? nearestContentDb(i) : d));
+
+  const filters = [];
+  for (let i = 0; i < n; i++) {
+    const t0 = absoluteStart(deck, i);
+    // Fim do segmento = início do próximo slide (não t0 + duração, que
+    // sobreporia XFADE_DUR ao seguinte). Para o último slide, vai até total.
+    const t1 = i < n - 1 ? absoluteStart(deck, i + 1) : total;
+    if (t1 <= t0) continue;
+    filters.push(`volume=volume=${finalDbs[i]}dB:enable='between(t,${t0.toFixed(3)},${t1.toFixed(3)})'`);
+  }
+
   filters.push(`afade=t=in:st=0:d=2`);
   filters.push(`afade=t=out:st=${Math.max(0, total - 3).toFixed(3)}:d=3`);
   return filters.join(",");
@@ -304,10 +327,25 @@ async function uploadLargeToSupabase(pathInBucket, filePath, contentType) {
   const fileSize = info.size;
   const CHUNK_SIZE = 6 * 1024 * 1024;
 
+  // O TUS endpoint do Supabase recusa overwrite com 409 mesmo com
+  // `upsert true` na metadata (testado). Solução robusta: apagar o
+  // ficheiro existente antes do upload. 404 (não existia) é ignorado.
+  try {
+    const delRes = await fetch(
+      `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${pathInBucket}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${SERVICE_KEY}` },
+      },
+    );
+    if (delRes.ok) {
+      console.log(`[render-course-slide] apagado ficheiro existente em ${pathInBucket}`);
+    }
+  } catch {
+    // ignora — provavelmente não existia
+  }
+
   const b64 = (s) => Buffer.from(s, "utf-8").toString("base64");
-  // O `upsert true` TEM de vir no Upload-Metadata para o Supabase aceitar
-  // overwrite — o header `x-upsert` sozinho NÃO é honrado pelo TUS endpoint
-  // (devolve 409 "The resource already exists" se o ficheiro já lá estiver).
   const metadata = [
     `bucketName ${b64(BUCKET)}`,
     `objectName ${b64(pathInBucket)}`,

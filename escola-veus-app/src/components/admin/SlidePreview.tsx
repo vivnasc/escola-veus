@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Slide, SlideDeck } from "@/lib/course-slides";
 import { getTerritoryTheme } from "@/data/territory-themes";
 import { parseEmphasis } from "@/lib/emphasis";
+import { renderDiagram, type Diagram } from "@/lib/diagrams";
 
 // Injecta DM Serif Display + Nunito uma unica vez (Cormorant ja esta global).
 function useSlideFonts() {
@@ -38,12 +39,16 @@ export function SlidePreview({
   onIndexChange,
   onPlayingChange,
   controlledIndex,
+  diagrams,
 }: {
   deck: SlideDeck;
   onIndexChange?: (idx: number, slide: Slide) => void;
   onPlayingChange?: (playing: boolean) => void;
   /** Se passado, sincroniza o index interno com este valor (modo controlado). */
   controlledIndex?: number;
+  /** Diagramas por slide (chave = índice). Se presente para o slide actual,
+   *  renderiza SVG por baixo do texto. */
+  diagrams?: Record<string, Diagram>;
 }) {
   useSlideFonts();
   const [index, setIndex] = useState(0);
@@ -160,11 +165,14 @@ export function SlidePreview({
         <div
           key={index}
           className="relative h-full w-full overflow-hidden"
-          style={{
-            backgroundColor: "#141428",
-            color: "#f0ece6",
-            animation: "escolaSlideIn 0.9s cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
+          style={
+            {
+              backgroundColor: "#141428",
+              color: "#f0ece6",
+              animation: "escolaSlideIn 0.9s cubic-bezier(0.22, 1, 0.36, 1)",
+              ["--escola-accent" as string]: accent,
+            } as React.CSSProperties
+          }
         >
           {/* Label do acto — canto superior esquerdo */}
           {showActoLabel && "romano" in slide && (
@@ -180,19 +188,40 @@ export function SlidePreview({
             </div>
           )}
 
-          {/* Marca da Escola — assinatura discreta no canto inferior direito.
-              Aparece em todos os slides de conteúdo (não no title/end/fecho). */}
+          {/* Fio vertical na margem esquerda (assinatura visual de identidade
+              da Escola). Aparece em todos os slides de conteúdo. */}
           {slide.tipo !== "title" && slide.tipo !== "end" && slide.tipo !== "fecho" && (
             <div
-              className="absolute right-[6%] bottom-[6%] text-[10px] uppercase"
+              className="absolute"
               style={{
-                color: accent,
-                opacity: 0.55,
-                letterSpacing: "4px",
-                fontFamily: '"Nunito", sans-serif',
+                left: "4%",
+                top: "12%",
+                bottom: "12%",
+                width: "1px",
+                backgroundColor: accent,
+                opacity: 0.35,
               }}
+            />
+          )}
+
+          {/* Marca da Escola — assinatura discreta no canto inferior direito,
+              acima de uma linha horizontal fina. Aparece em todos os slides
+              de conteúdo (não no title/end/fecho). */}
+          {slide.tipo !== "title" && slide.tipo !== "end" && slide.tipo !== "fecho" && (
+            <div
+              className="absolute right-[6%] bottom-[6%]"
+              style={{ color: accent, fontFamily: '"Nunito", sans-serif' }}
             >
-              Escola dos Véus
+              <div
+                className="ml-auto mb-1 h-px w-12"
+                style={{ backgroundColor: accent, opacity: 0.4 }}
+              />
+              <div
+                className="text-[10px] uppercase"
+                style={{ opacity: 0.6, letterSpacing: "5px" }}
+              >
+                Escola dos Véus
+              </div>
             </div>
           )}
 
@@ -250,10 +279,19 @@ export function SlidePreview({
               <div className="text-center" style={{ maxWidth: "78%" }}>
                 <p
                   style={contentStyleFor(slide.acto, slide.texto.length)}
-                  className="whitespace-pre-line"
+                  className="whitespace-pre-line escola-conteudo"
                 >
-                  {parseEmphasis(slide.texto, accent)}
+                  {parseEmphasis(slide.texto, accent, { dividers: true })}
                 </p>
+                {diagrams?.[String(index)] && (
+                  <div
+                    className="mt-8 mx-auto"
+                    style={{ maxWidth: "min(90%, 720px)" }}
+                    dangerouslySetInnerHTML={{
+                      __html: renderDiagram(diagrams[String(index)], accent),
+                    }}
+                  />
+                )}
                 {slide.acto === "frase" && (
                   <div
                     className="mx-auto mt-6 h-px w-10"
@@ -382,6 +420,18 @@ export function SlidePreview({
       </p>
 
       <style>{`
+        /* Capitular (drop cap) na primeira letra de cada bloco de conteúdo:
+           letra grande em DM Serif Display na cor de acento, alinhada à
+           altura das primeiras 2 linhas. Funciona bem em blocos com 2+
+           linhas; em blocos curtos parece só tipografia ornamental. */
+        .escola-conteudo::first-letter {
+          font-family: "DM Serif Display", Georgia, serif;
+          font-size: 2.4em;
+          line-height: 0.9;
+          float: left;
+          margin: 0.05em 0.12em 0 0;
+          color: var(--escola-accent);
+        }
         /* Entrada do slide: fade + ligeiro deslize para cima. A curva easeOutExpo
            dá a sensação de pousar suavemente, sem pressa. */
         @keyframes escolaSlideIn {

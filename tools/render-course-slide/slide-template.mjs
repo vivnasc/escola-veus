@@ -4,7 +4,7 @@
  * layout). Qualquer mudanca la deve ser reflectida aqui.
  */
 
-export function renderSlideHtml({ slide, deck, accent }) {
+export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
   const footer =
     slide.tipo === "title" || slide.tipo === "end" || slide.tipo === "fecho"
       ? ""
@@ -32,14 +32,18 @@ export function renderSlideHtml({ slide, deck, accent }) {
       </div>
     `;
   } else if (slide.tipo === "conteudo") {
-    const align = slide.acto === "frase" ? "center" : (slide.acto === "pergunta" || slide.acto === "revelacao" ? "center" : "left");
     const len = (slide.texto ?? "").length;
     const sizeClass = len > 280 ? "vlong" : len > 200 ? "long" : "";
-    const html = emphasisToHtml(slide.texto, accent);
+    // Glifos divisores entre frases — pausa visual.
+    const html = emphasisToHtml(slide.texto, accent, { dividers: true });
+    const diagramHtml = diagramSvg
+      ? `<div style="margin-top:48px;display:flex;justify-content:center">${diagramSvg}</div>`
+      : "";
     body = `
-      <div class="conteudo-wrap ${align === "center" ? "text-center" : "text-left"}">
-        <p class="acto-${slide.acto} ${sizeClass}">${html}</p>
+      <div class="conteudo-wrap text-center">
+        <p class="acto-${slide.acto} ${sizeClass} escola-conteudo">${html}</p>
         ${slide.acto === "frase" ? `<div class="accent-line" style="background:${accent};margin-top:24px"></div>` : ""}
+        ${diagramHtml}
       </div>
     `;
   } else if (slide.tipo === "fecho") {
@@ -165,28 +169,61 @@ export function renderSlideHtml({ slide, deck, accent }) {
     font-family: 'Nunito', sans-serif;
     opacity: 0.6;
   }
-  /* Marca da Escola dos Véus, canto inferior direito. Mesma cor do acento
-     do curso, opacidade reduzida — assinatura, não distração. */
+  /* Capitular (drop cap) na primeira letra do bloco de conteúdo. */
+  .escola-conteudo::first-letter {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 2.4em;
+    line-height: 0.9;
+    float: left;
+    margin: 0.05em 0.12em 0 0;
+    color: var(--escola-accent);
+  }
+  /* Fio vertical na margem esquerda, identidade da Escola. */
+  .escola-rail {
+    position: absolute;
+    left: 4%;
+    top: 12%;
+    bottom: 12%;
+    width: 1px;
+    opacity: 0.35;
+  }
+  /* Marca da Escola dos Véus, canto inferior direito. Linha fina por cima
+     do nome dá peso editorial. */
   .escola-mark {
     position: absolute;
     right: 6%;
     bottom: 6%;
-    font-size: 18px;
-    letter-spacing: 6px;
-    text-transform: uppercase;
     font-family: 'Nunito', sans-serif;
-    opacity: 0.55;
+    text-align: right;
+  }
+  .escola-mark .rule {
+    height: 1px;
+    width: 80px;
+    margin: 0 0 6px auto;
+    opacity: 0.4;
+  }
+  .escola-mark .name {
+    font-size: 18px;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    opacity: 0.6;
   }
 </style>
 </head>
-<body>
+<body style="--escola-accent: ${accent}">
   <div class="stage">
     ${actoLabel}
     <div class="body-center">${body}</div>
     ${footer ? `<div class="footer">${esc(footer)}</div>` : ""}
-    ${slide.tipo !== "title" && slide.tipo !== "end" && slide.tipo !== "fecho"
-      ? `<div class="escola-mark" style="color:${accent}">Escola dos Véus</div>`
-      : ""}
+    ${
+      slide.tipo !== "title" && slide.tipo !== "end" && slide.tipo !== "fecho"
+        ? `<div class="escola-rail" style="background:${accent}"></div>
+           <div class="escola-mark" style="color:${accent}">
+             <div class="rule" style="background:${accent}"></div>
+             <div class="name">Escola dos Véus</div>
+           </div>`
+        : ""
+    }
   </div>
 </body>
 </html>`;
