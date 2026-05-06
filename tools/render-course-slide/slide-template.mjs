@@ -48,6 +48,31 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
         ${diagramHtml}
       </div>
     `;
+  } else if (slide.tipo === "pull-quote") {
+    body = `
+      <div class="conteudo-wrap text-center">
+        <p style="font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-size:88px;line-height:1.25;color:${accent}">
+          «&nbsp;${emphasisToHtml(slide.texto, accent)}&nbsp;»
+        </p>
+      </div>
+    `;
+  } else if (slide.tipo === "pausa") {
+    body = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <svg viewBox="0 0 200 280" width="320" height="448" style="opacity:0.5">
+          <g fill="none" stroke="${accent}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="100" cy="60" r="22"/>
+            <path d="M 100 82 L 100 100 M 70 110 Q 100 100 130 110"/>
+            <path d="M 70 110 Q 60 160 75 200"/>
+            <path d="M 130 110 Q 140 160 125 200"/>
+            <path d="M 75 200 Q 100 230 125 200 Q 150 230 130 240 L 70 240 Q 50 230 75 200"/>
+            <path d="M 80 130 Q 95 165 100 175 Q 105 165 120 130"/>
+            <animateTransform attributeName="transform" type="scale" values="1;1.04;1" dur="5s" repeatCount="indefinite" additive="sum"/>
+          </g>
+        </svg>
+        <p style="margin-top:32px;font-family:'Nunito',sans-serif;font-size:18px;letter-spacing:10px;text-transform:uppercase;color:${accent};opacity:0.7">respira</p>
+      </div>
+    `;
   } else if (slide.tipo === "fecho") {
     body = "";
   } else if (slide.tipo === "end") {

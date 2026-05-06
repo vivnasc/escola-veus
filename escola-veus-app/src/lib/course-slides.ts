@@ -38,6 +38,21 @@ export type Slide =
       texto: string;
       duracao: number;
     }
+  | {
+      // Pull-quote entre actos: a última frase forte do acto anterior em
+      // grande, sozinha. Cria pausa narrativa entre actos.
+      tipo: "pull-quote";
+      acto: Acto;
+      texto: string;
+      duracao: number;
+    }
+  | {
+      // Pausa activa: ecrã com a silhueta a respirar grande, sem texto.
+      // Inserido depois de actos pesados (situação, revelação) para a
+      // aluna respirar antes de avançar.
+      tipo: "pausa";
+      duracao: number;
+    }
   | { tipo: "fecho"; duracao: number }
   | { tipo: "end"; texto: string; subtexto: string; duracao: number };
 
@@ -225,7 +240,22 @@ export function buildSlideDeckFromConfig(
     frase: script.fraseFinal,
   };
 
-  for (const { acto, romano, label } of ACTOS) {
+  // Actos onde se insere uma PAUSA (silhueta a respirar, sem texto) depois
+  // do conteúdo, antes do próximo acto. Reserva-se para os pesados.
+  const ACTOS_COM_PAUSA = new Set<Acto>(["situacao", "revelacao"]);
+
+  // Actos onde se insere um PULL-QUOTE entre o último bloco e a pausa/marker
+  // seguinte. Faz sentido em todos excepto Frase (que já é monumento por si).
+  const ACTOS_COM_PULL_QUOTE = new Set<Acto>([
+    "pergunta",
+    "situacao",
+    "revelacao",
+    "gesto",
+  ]);
+
+  for (let actoIdx = 0; actoIdx < ACTOS.length; actoIdx++) {
+    const { acto, romano, label } = ACTOS[actoIdx];
+
     slides.push({
       tipo: "acto-marker",
       acto,
@@ -249,6 +279,32 @@ export function buildSlideDeckFromConfig(
         label,
         texto: b,
         duracao: Math.max(3, Math.round(base * timingMul)),
+      });
+    }
+
+    // Não inserir pull-quote/pausa se o acto não tem conteúdo escrito.
+    const hasContent = blocks.length > 0;
+    const isLastActo = actoIdx === ACTOS.length - 1;
+
+    if (hasContent && !isLastActo && ACTOS_COM_PULL_QUOTE.has(acto)) {
+      // Pull-quote: última frase do último bloco do acto. Se a frase
+      // ficar muito curta (<25 chars), usa o bloco inteiro.
+      const lastBlock = blocks[blocks.length - 1];
+      const sentences = lastBlock.split(/(?<=[.?!])\s+/).filter(Boolean);
+      const lastSentence = sentences[sentences.length - 1] ?? lastBlock;
+      const quote = lastSentence.length >= 25 ? lastSentence : lastBlock;
+      slides.push({
+        tipo: "pull-quote",
+        acto,
+        texto: quote.trim(),
+        duracao: Math.max(6, Math.round(8 * timingMul)),
+      });
+    }
+
+    if (hasContent && !isLastActo && ACTOS_COM_PAUSA.has(acto)) {
+      slides.push({
+        tipo: "pausa",
+        duracao: Math.max(4, Math.round(5 * timingMul)),
       });
     }
   }

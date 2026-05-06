@@ -322,6 +322,57 @@ export function SlidePreview({
               </div>
             )}
 
+            {slide.tipo === "pull-quote" && (
+              <div className="text-center" style={{ maxWidth: "78%" }}>
+                <p
+                  style={{
+                    fontFamily: '"DM Serif Display", Georgia, serif',
+                    fontStyle: "italic",
+                    fontSize: "clamp(28px, 4.6vw, 64px)",
+                    lineHeight: 1.25,
+                    color: accent,
+                  }}
+                >
+                  «&nbsp;{parseEmphasis(slide.texto, accent, { typewriter: true })}&nbsp;»
+                </p>
+              </div>
+            )}
+
+            {slide.tipo === "pausa" && (
+              <div
+                className="flex flex-col items-center justify-center"
+                style={{ animation: "escolaPausaBreath 5s ease-in-out infinite" }}
+              >
+                <svg
+                  viewBox="0 0 200 280"
+                  width="240"
+                  height="336"
+                  style={{ opacity: 0.5 }}
+                >
+                  <g
+                    fill="none"
+                    stroke={accent}
+                    strokeWidth={1.6}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx={100} cy={60} r={22} />
+                    <path d="M 100 82 L 100 100 M 70 110 Q 100 100 130 110" />
+                    <path d="M 70 110 Q 60 160 75 200" />
+                    <path d="M 130 110 Q 140 160 125 200" />
+                    <path d="M 75 200 Q 100 230 125 200 Q 150 230 130 240 L 70 240 Q 50 230 75 200" />
+                    <path d="M 80 130 Q 95 165 100 175 Q 105 165 120 130" />
+                  </g>
+                </svg>
+                <p
+                  className="mt-6 text-[10px] uppercase"
+                  style={{ color: accent, letterSpacing: "8px", opacity: 0.7 }}
+                >
+                  respira
+                </p>
+              </div>
+            )}
+
             {slide.tipo === "fecho" && null}
 
             {slide.tipo === "end" && (
@@ -452,6 +503,10 @@ export function SlidePreview({
         @keyframes escolaWordIn {
           from { opacity: 0; transform: translateY(4px); filter: blur(3px); }
           to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes escolaPausaBreath {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.04); }
         }
         /* Capitular (drop cap) na primeira letra de cada bloco de conteúdo:
            letra grande em DM Serif Display na cor de acento, alinhada à
