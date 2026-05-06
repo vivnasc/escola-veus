@@ -1030,7 +1030,29 @@ export default function LongoDetailPage() {
       });
       const d = await r.json();
       if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
-      await load();
+      // Patch local state em vez de recarregar a página inteira — assim
+      // a scroll position fica preservada (user não tem de rolar de novo
+      // a cada delete). O server já apagou e patchou o manifest, fazer
+      // load() era redundante e custoso em UX.
+      setProject((prev) =>
+        prev
+          ? {
+              ...prev,
+              prompts: prev.prompts.map((p) =>
+                p.id === promptId
+                  ? { ...p, clipUrl: undefined, clipDurationSec: undefined }
+                  : p,
+              ),
+            }
+          : prev,
+      );
+      setPromptsDraft((prev) =>
+        prev.map((p) =>
+          p.id === promptId
+            ? { ...p, clipUrl: undefined, clipDurationSec: undefined }
+            : p,
+        ),
+      );
       setInfo(`✓ Clip ${promptId} apagado`);
       setTimeout(() => setInfo(null), 2000);
     } catch (e) {
