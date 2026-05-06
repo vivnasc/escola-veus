@@ -191,36 +191,54 @@ export default function LongoDetailPage() {
       .catch(() => {});
   }, []);
 
-  const rankPoolFor = (prompt: { mood: string[]; prompt: string }): (PoolClip & { score: number })[] => {
-    const moodSet = new Set(prompt.mood ?? []);
-    const tokens = new Set(
-      (prompt.prompt ?? "")
+  // Stop words: descritores genéricos comuns em prompts MJ-style que
+  // criam falsos positivos no overlap (ex: "warm light" aparece em
+  // metade dos prompts mas não diz nada visualmente).
+  const POOL_STOP = new Set([
+    // articles, prepositions, common
+    "the", "a", "an", "and", "or", "of", "in", "on", "at", "to", "for", "with",
+    "from", "as", "by", "is", "are", "was", "were", "be", "been", "being",
+    "that", "this", "these", "those", "it", "its", "their",
+    // generic visual descriptors (qualquer prompt usa)
+    "very", "slow", "slowly", "static", "camera", "soft", "warm", "warmly",
+    "light", "lights", "shadow", "shadows", "holds", "steady", "gently",
+    "still", "subtle", "gentle", "quiet", "silent", "calm",
+    // generic photo/cinema terms
+    "scene", "image", "frame", "shot", "view", "angle", "depth", "field",
+    "shallow", "macro", "leica", "lens", "feel", "tone", "mood",
+    "cinematic", "atmospheric", "moody", "hyperrealistic",
+    "color", "colors", "palette", "muted", "rich",
+    // numbers/sizes generic
+    "single", "lone", "alone", "small", "large",
+    // pose/movement generic
+    "drift", "drifts", "drifting", "resting", "sitting",
+  ]);
+  const tokenizePool = (s: string): Set<string> =>
+    new Set(
+      s
         .toLowerCase()
         .normalize("NFD")
         .replace(/[̀-ͯ]/g, "")
         .replace(/[^a-z0-9\s]/g, " ")
         .split(/\s+/)
-        .filter((w) => w.length >= 4),
+        .filter((w) => w.length >= 4 && !POOL_STOP.has(w)),
     );
+  const rankPoolFor = (prompt: { mood: string[]; prompt: string }): (PoolClip & { score: number })[] => {
+    const moodSet = new Set(prompt.mood ?? []);
+    const tokens = tokenizePool(prompt.prompt ?? "");
     const scored = pool.map((c) => {
       const moodMatches = c.mood.filter((m) => moodSet.has(m)).length;
-      const cTokens = new Set(
-        (c.prompt ?? "")
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[̀-ͯ]/g, "")
-          .replace(/[^a-z0-9\s]/g, " ")
-          .split(/\s+/)
-          .filter((w) => w.length >= 4),
-      );
+      const cTokens = tokenizePool(c.prompt ?? "");
       let kwMatches = 0;
       tokens.forEach((t) => {
         if (cTokens.has(t)) kwMatches++;
       });
       return { ...c, score: 2 * moodMatches + kwMatches };
     });
+    // Threshold mais apertado: score >= 3 (1 mood + 1 keyword OU 3 keywords).
+    // Score=1 (uma palavra qualquer em comum) era ruído.
     return scored
-      .filter((c) => c.score > 0)
+      .filter((c) => c.score >= 3)
       .sort((a, b) => b.score - a.score)
       .slice(0, 6);
   };
@@ -1610,6 +1628,222 @@ export default function LongoDetailPage() {
           funcionam com modelo v3). Capítulos começam com <code>## </code>.
           Guarda antes de gerar narração.
         </p>
+      </section>
+
+      {/* 📊 Plano de geração — sumário sempre visível com custo previsto */}
+      <section className="rounded-xl border border-escola-dourado/40 bg-escola-dourado/5 p-4">
+        <h2 className="mb-2 text-sm font-semibold text-escola-dourado">
+          📊 Plano de geração
+        </h2>
+        {(() => {
+          const total = promptsDraft.length;
+          const reused = promptsDraft.filter((p) => p.clipUrl).length;
+          const missing = total - reused;
+          // Custo: fal.ai $0.04 + Runway $0.50 = $0.55 por clip novo
+          const costPerClip = 0.55;
+          const totalCost = missing * costPerClip;
+          return (
+            <div className="space-y-2 text-xs">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                <div className="rounded border border-escola-border bg-escola-bg p-2">
+                  <p className="text-[10px] uppercase text-escola-creme-50">Total cenas</p>
+                  <p className="text-lg font-semibold text-escola-creme">{total}</p>
+                </div>
+                <div className="rounded border border-escola-border bg-escola-bg p-2">
+                  <p className="text-[10px] uppercase text-escola-creme-50">♻ pool</p>
+                  <p className="text-lg font-semibold text-green-400">{reused}</p>
+                </div>
+                <div className="rounded border border-escola-border bg-escola-bg p-2">
+                  <p className="text-[10px] uppercase text-escola-creme-50">🎬 a gerar</p>
+                  <p className="text-lg font-semibold text-escola-terracota">
+                    {missing}
+                  </p>
+                </div>
+                <div className="rounded border border-escola-border bg-escola-bg p-2">
+                  <p className="text-[10px] uppercase text-escola-creme-50">Custo previsto</p>
+                  <p className="text-lg font-semibold text-escola-dourado">
+                    ${totalCost.toFixed(2)}
+                  </p>
+                </div>
+              </div>
+              <p className="text-[10px] text-escola-creme-50">
+                Custo = {missing} × $0.55 (fal.ai $0.04 imagem + Runway $0.50 clip
+                10s). Não inclui Claude review (~$0.20 fixo se rodares validação).
+              </p>
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                <button
+                  onClick={async () => {
+                    if (!project) return;
+                    if (
+                      !confirm(
+                        `Validar com Claude os ${reused} clips atribuídos da pool?\n\n` +
+                          `Claude classifica cada match e descola os fracos. Custo ~$0.20.`,
+                      )
+                    )
+                      return;
+                    setInfo("✓ Claude a validar matches da pool...");
+                    try {
+                      const r = await fetch(
+                        "/api/admin/longos/review-pool-matches",
+                        {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ slug: project.slug }),
+                        },
+                      );
+                      const d = await r.json();
+                      if (!r.ok || d.erro)
+                        throw new Error(d.erro || `HTTP ${r.status}`);
+                      setInfo(
+                        `✓ ${d.kept} OK · ${d.detached.length} descolados (Claude considerou fracos)`,
+                      );
+                      setTimeout(() => setInfo(null), 8000);
+                      await load();
+                    } catch (e) {
+                      setInfo(
+                        `Erro: ${e instanceof Error ? e.message : String(e)}`,
+                      );
+                    }
+                  }}
+                  disabled={reused === 0}
+                  className="rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-1 text-[10px] text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-40"
+                  title="Claude valida cada clip da pool atribuído. Descola os matches fracos para regerar. ~$0.20."
+                >
+                  ✓ validar pool com Claude (~$0.20)
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!project) return;
+                    const unclipped = promptsDraft
+                      .filter((p) => !p.clipUrl)
+                      .map((p) => p.id);
+                    if (unclipped.length === 0) {
+                      setInfo("Todos os prompts têm clip — nada para rever");
+                      setTimeout(() => setInfo(null), 4000);
+                      return;
+                    }
+                    if (
+                      !confirm(
+                        `Rever ${unclipped.length} prompts sem clip com Claude?\n\n` +
+                          `Detecta AI-slop, alinhamento com script, sugere fixes. ` +
+                          `Custo ~$${(0.002 * unclipped.length).toFixed(3)} (~$0.05 típico).`,
+                      )
+                    )
+                      return;
+                    setInfo(`📝 Claude a rever ${unclipped.length} prompts...`);
+                    try {
+                      const r = await fetch("/api/admin/longos/review-prompts", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          slug: project.slug,
+                          onlyIds: unclipped,
+                        }),
+                      });
+                      const d = await r.json();
+                      if (!r.ok || d.erro)
+                        throw new Error(d.erro || `HTTP ${r.status}`);
+                      setReviews((prev) => ({
+                        ...prev,
+                        ...(d.reviewsByPrompt ?? {}),
+                      }));
+                      setInfo(
+                        `📝 Reviews aplicados (${unclipped.length} prompts). Vê notas/sugestões na lista; corrige antes de gerar clips.`,
+                      );
+                      setTimeout(() => setInfo(null), 10000);
+                    } catch (e) {
+                      setInfo(
+                        `Erro: ${e instanceof Error ? e.message : String(e)}`,
+                      );
+                    }
+                  }}
+                  disabled={missing === 0}
+                  className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-creme disabled:opacity-40"
+                  title="Claude revê só os prompts sem clip (alinhamento + AI-slop). Mostra reviews na lista de prompts. ~$0.04 típico."
+                >
+                  📝 rever só prompts sem clip
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!project) return;
+                    if (missing === 0) {
+                      setInfo("Sem clips para gerar — todos atribuídos");
+                      setTimeout(() => setInfo(null), 4000);
+                      return;
+                    }
+                    if (
+                      !confirm(
+                        `Gerar ${missing} clips faltantes?\n\n` +
+                          `fal.ai imagens + Runway vídeos.\n` +
+                          `Custo: $${totalCost.toFixed(2)}.\n` +
+                          `Tempo: ~${Math.ceil(missing / 5) * 0.5 + missing * 0.6} min.\n` +
+                          `Não fechar a página até ao fim.`,
+                      )
+                    )
+                      return;
+                    setInfo(`🎨 A gerar ${missing} imagens + clips...`);
+                    try {
+                      const rs = await fetch(
+                        "/api/admin/longos/generate-clips/submit",
+                        {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ slug: project.slug }),
+                        },
+                      );
+                      const ds = await rs.json();
+                      if (!rs.ok || ds.erro)
+                        throw new Error(ds.erro || `submit HTTP ${rs.status}`);
+                      setInfo(
+                        `🎬 ${ds.submitted} submetidos a Runway (${ds.failed.length} falhas). A polling...`,
+                      );
+                      let attempts = 0;
+                      const MAX = 60;
+                      while (attempts < MAX) {
+                        await new Promise((r) => setTimeout(r, 20000));
+                        attempts++;
+                        const rp = await fetch(
+                          "/api/admin/longos/generate-clips/poll",
+                          {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ slug: project.slug }),
+                          },
+                        );
+                        const dp = await rp.json();
+                        if (!rp.ok || dp.erro)
+                          throw new Error(dp.erro || `poll HTTP ${rp.status}`);
+                        setInfo(
+                          `⏳ ${dp.completed} prontos · ${dp.pending} em curso · ${dp.failed.length} falhas (${attempts}/${MAX})`,
+                        );
+                        if (dp.pending === 0) {
+                          setInfo(
+                            `✓ Concluído. ${dp.totalUnclipped} ficaram sem clip (Runway falhou). Re-corre se quiseres tentar de novo.`,
+                          );
+                          setTimeout(() => setInfo(null), 15000);
+                          await load();
+                          return;
+                        }
+                      }
+                      throw new Error(
+                        `Timeout: ${MAX} polls (${(MAX * 20) / 60} min) sem completar todos`,
+                      );
+                    } catch (e) {
+                      setInfo(
+                        `Erro: ${e instanceof Error ? e.message : String(e)}`,
+                      );
+                    }
+                  }}
+                  disabled={missing === 0}
+                  className="rounded border border-escola-dourado bg-escola-dourado px-2 py-1 text-[10px] font-semibold text-escola-bg hover:opacity-90 disabled:opacity-40"
+                  title={`fal.ai (~$0.04) + Runway (~$0.50) por clip × ${missing} = $${totalCost.toFixed(2)}`}
+                >
+                  🎬 gerar {missing} clips faltantes (~${totalCost.toFixed(2)})
+                </button>
+              </div>
+            </div>
+          );
+        })()}
       </section>
 
       {/* Prompts (editáveis) */}
