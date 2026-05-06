@@ -125,6 +125,35 @@ export default function VideosPage() {
     }
   }
 
+  async function deleteVideo(jobId: string, file: string) {
+    if (!confirm(`Apagar ${file} (do job ${jobId})? Não dá para recuperar.`)) return;
+    const k = `del-${jobId}-${file}`;
+    setDownloading(k);
+    try {
+      const r = await fetch("/api/admin/colecoes/videos/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId, file }),
+      });
+      if (!r.ok) {
+        const data = await r.json();
+        throw new Error(data.erro || `HTTP ${r.status}`);
+      }
+      // Remove do estado
+      setJobs((prev) =>
+        prev
+          .map((j) =>
+            j.jobId === jobId ? { ...j, videos: j.videos.filter((v) => v.file !== file) } : j
+          )
+          .filter((j) => j.videos.length > 0)
+      );
+    } catch (e) {
+      alert(`Falhou: ${e instanceof Error ? e.message : String(e)}`);
+    } finally {
+      setDownloading(null);
+    }
+  }
+
   async function downloadJobAsZip(job: Job) {
     const k = `zip-${job.jobId}`;
     setDownloading(k);
@@ -215,7 +244,7 @@ export default function VideosPage() {
                   >
                     {downloading === `zip-${job.jobId}`
                       ? "a gerar ZIP…"
-                      : `↓ Colecção (ZIP) — vídeos + legendas`}
+                      : `↓ ZIP (vídeos + legendas)`}
                   </button>
                 </header>
 
@@ -279,6 +308,14 @@ export default function VideosPage() {
                               >
                                 ↓ Só MP4
                               </a>
+                              <button
+                                onClick={() => deleteVideo(job.jobId, v.file)}
+                                disabled={!!downloading}
+                                className="ml-auto rounded border border-red-700/40 px-3 py-1.5 text-xs text-red-300 hover:border-red-500 hover:bg-red-900/20 disabled:opacity-30"
+                                title="Apagar este vídeo do Supabase (irreversível)"
+                              >
+                                {downloading === `del-${job.jobId}-${v.file}` ? "a apagar…" : "🗑 Apagar"}
+                              </button>
                             </div>
                           </div>
                         </div>
