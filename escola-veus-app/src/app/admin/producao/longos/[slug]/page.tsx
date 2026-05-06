@@ -251,40 +251,34 @@ export default function LongoDetailPage() {
   // Estado da pipeline "🚀 Preparar TODOS os clips":
   //   idle → attaching → reviewing → submitting → polling → done | error
   const [prepareStatus, setPrepareStatus] = useState<
-    "idle" | "attaching" | "reviewing" | "submitting" | "polling" | "done" | "error"
+    | "idle"
+    | "attaching"
+    | "reviewing"
+    | "reviewing-prompts"
+    | "submitting"
+    | "polling"
+    | "done"
+    | "error"
+    | "blocked"
   >("idle");
   const [prepareProgress, setPrepareProgress] = useState<string>("");
   const [prepareErr, setPrepareErr] = useState<string | null>(null);
 
   const prepareAllClips = async () => {
     if (!project) return;
-    // Aviso: se ainda não revistes prompts, gerar clips agora pode
-    // gastar $15-25 em material baseado em prompts AI-slop ou
-    // desalinhados com o script. Pede confirmação dupla.
-    const reviewedCount = Object.keys(reviews).length;
-    if (reviewedCount === 0) {
-      if (
-        !confirm(
-          "⚠ Ainda não revistes os prompts com Claude.\n\n" +
-            "Sem revisão, podes gastar $15-25 a gerar imagens + clips para prompts " +
-            "que não servem (AI-slop, desalinhados com o script). " +
-            "Recomendado: cancelar agora, clicar '✨ revisar com Claude' primeiro " +
-            "(custa ~$0.10), corrigir os prompts fracos, e só depois clicar 🚀.\n\n" +
-            "Continuar mesmo sem revisão?",
-        )
-      )
-        return;
-    }
     if (
       !confirm(
         "Preparar TODOS os clips automaticamente?\n\n" +
-          "Pipeline:\n" +
-          "  1. 🪄 Auto-atribuir pool (grátis)\n" +
+          "Pipeline (ordem optimizada):\n" +
+          "  1. 🪄 Auto-atribuir pool (grátis, ~30s)\n" +
           "  2. ✓ Claude valida matches da pool (~$0.20)\n" +
-          "  3. 🎨 fal.ai gera imagens para cenas sem clip (~$0.04 cada)\n" +
-          "  4. 🎬 Runway anima imagens (~$0.50 cada)\n" +
-          "  5. ⏳ Polling até todos prontos (~5-10 min)\n\n" +
-          "Custo estimado: ~$15-25. Não fechar a página até ao fim.",
+          "  3. 📝 Claude revê SÓ prompts ainda sem clip (~$0.04)\n" +
+          "       → se algum for AI-slop ou misaligned, pára e mostra\n" +
+          "  4. 🎨 fal.ai gera imagens (~$0.04 cada)\n" +
+          "  5. 🎬 Runway anima imagens (~$0.50 cada)\n" +
+          "  6. ⏳ Polling até todos prontos (~5-10 min)\n\n" +
+          "Custo estimado total: ~$10-20 (depende da cobertura da pool).\n" +
+          "Não fechar a página até ao fim.",
       )
     )
       return;
@@ -319,7 +313,57 @@ export default function LongoDetailPage() {
         `✓ Validação: ${d2.kept} mantidos, ${d2.detached.length} descolados.`,
       );
 
-      // 3. Submit fal.ai + Runway
+      // 3. Re-load projecto para saber QUAIS prompts ficaram sem clip
+      //    (depois de auto-attach + validation, alguns clips foram
+      //    descolados — só queremos rever esses, poupa $$).
+      await load();
+      const refreshed = await fetch(`/api/admin/longos/load?slug=${project.slug}`, {
+        cache: "no-store",
+      });
+      const refreshedData = await refreshed.json();
+      const refreshedPrompts: { id: string; clipUrl?: string }[] =
+        refreshedData?.project?.prompts ?? [];
+      const unclippedIds = refreshedPrompts
+        .filter((p) => !p.clipUrl)
+        .map((p) => p.id);
+
+      if (unclippedIds.length > 0) {
+        setPrepareStatus("reviewing-prompts");
+        setPrepareProgress(
+          `📝 Claude a rever ${unclippedIds.length} prompts sem clip...`,
+        );
+        const rRev = await fetch("/api/admin/longos/review-prompts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: project.slug, onlyIds: unclippedIds }),
+        });
+        const dRev = await rRev.json();
+        if (!rRev.ok || dRev.erro)
+          throw new Error(dRev.erro || `review-prompts HTTP ${rRev.status}`);
+
+        // Bloqueia se algum dos prompts sem clip for AI-slop ou misaligned —
+        // não vamos gastar $14 a gerar visuais para prompt mau.
+        const reviewsByPrompt: Record<string, Review> = dRev.reviewsByPrompt ?? {};
+        // Guarda os reviews no state para que apareçam na UI normal
+        setReviews((prev) => ({ ...prev, ...reviewsByPrompt }));
+        const blockers: Review[] = Object.values(reviewsByPrompt).filter(
+          (r) => r.alignment === "misaligned" || r.slop === "ai-slop",
+        );
+        if (blockers.length > 0) {
+          setPrepareStatus("blocked");
+          setPrepareErr(
+            `⚠ ${blockers.length} prompts são misaligned ou AI-slop. ` +
+              `Vê os reviews na lista e corrige (botão 'aplicar sugestão' por prompt). ` +
+              `Depois clica 🚀 outra vez.`,
+          );
+          setPrepareProgress(
+            `⚠ Bloqueado: ${blockers.length} prompts precisam fix antes de gerar.`,
+          );
+          return;
+        }
+      }
+
+      // 4. Submit fal.ai + Runway
       setPrepareStatus("submitting");
       setPrepareProgress("🎨 A gerar imagens fal.ai + submeter a Runway...");
       const r3 = await fetch("/api/admin/longos/generate-clips/submit", {
@@ -1663,9 +1707,14 @@ export default function LongoDetailPage() {
             </button>
             <button
               onClick={prepareAllClips}
-              disabled={prepareStatus !== "idle" && prepareStatus !== "done" && prepareStatus !== "error"}
+              disabled={
+                prepareStatus !== "idle" &&
+                prepareStatus !== "done" &&
+                prepareStatus !== "error" &&
+                prepareStatus !== "blocked"
+              }
               className="rounded border border-escola-dourado bg-escola-dourado/20 px-2 py-0.5 text-[10px] font-bold text-escola-dourado hover:bg-escola-dourado/30 disabled:opacity-40"
-              title="Pipeline completa: pool match → Claude valida → fal.ai imagens → Runway clips. ~$15-25, ~10 min. Não fechar a página."
+              title="Pipeline: pool → Claude valida → revê só prompts sem clip → bloqueia se algum AI-slop → fal.ai+Runway. ~$10-20, ~10 min."
             >
               🚀 preparar TODOS os clips
             </button>
