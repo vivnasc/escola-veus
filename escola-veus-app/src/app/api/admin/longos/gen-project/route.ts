@@ -30,6 +30,7 @@ type ImgPrompt = {
   category: string;
   mood: string[];
   prompt: string;
+  motion?: string;
 };
 
 const SEED_PROMPTS = (funilSeed.prompts as ImgPrompt[]) ?? [];
@@ -184,6 +185,16 @@ PROMPTS DE IMAGEM:
 - Moods em PT, 2-3 por prompt
 - IDs: \`longo-<slug>-<NN>-<slug-cena>\`
 
+MOTION (animação Runway image-to-video):
+- 1 frase curta em inglês descrevendo a câmara/movimento desta cena específica
+- Estilo Corvo Seco: muito lento, contemplativo, nunca brusco. Exemplos:
+  • "very slow push-in toward the wallet, dust motes floating in beam of light"
+  • "gentle tilt up from hands to face, breath visible as soft fog"
+  • "barely perceptible parallax drift, candle flame flickers, paper rustles"
+  • "static shot, slow zoom on ring's stone, subtle reflection shift"
+- NÃO repitas a mesma motion em cenas seguidas (alternar push-in / drift / tilt / static)
+- NÃO uses motion brusco: "fast", "rapid", "shake", "zoom out quickly" — proibidos
+
 CAPÍTULOS:
 - Cada capítulo tem título curto (2-5 palavras) + frase-âncora (uma linha)
 - Aparecem como cards no vídeo entre secções da narração`,
@@ -250,7 +261,7 @@ Devolve JSON com:
 - thumbnailText: 2-4 palavras impactantes para a thumbnail (UPPERCASE pronto)
 - capitulos: array de { titulo (2-5 palavras), ancora (1 frase, 1 linha) }
 - script: markdown completo. Cada capítulo começa com "## <titulo capitulo>". Texto da narração com tags [calm]/[pause]/[long pause]/[thoughtful]. NÃO incluas instruções de palco — apenas o que vai ser lido em voz alta + tags.
-- prompts: array de prompts de imagem no formato { id, category, mood (array PT), prompt (EN) }. IDs sequenciais começando em <slug>-01.
+- prompts: array de prompts de imagem no formato { id, category, mood (array PT), prompt (EN), motion (EN, 1 frase curta de movimento de câmara para Runway image-to-video) }. IDs sequenciais começando em <slug>-01.
 
 Responde APENAS com JSON válido.`;
 
@@ -304,8 +315,9 @@ Responde APENAS com JSON válido.`;
                     category: { type: "string" },
                     mood: { type: "array", items: { type: "string" } },
                     prompt: { type: "string" },
+                    motion: { type: "string" },
                   },
-                  required: ["id", "category", "mood", "prompt"],
+                  required: ["id", "category", "mood", "prompt", "motion"],
                   additionalProperties: false,
                 },
               },

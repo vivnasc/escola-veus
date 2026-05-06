@@ -33,6 +33,7 @@ type Project = {
 type ProjectPrompt = {
   id: string;
   prompt?: string;
+  motion?: string;
   clipUrl?: string;
   imageUrl?: string;
   runwayTaskId?: string;
@@ -196,10 +197,14 @@ export async function POST(req: NextRequest) {
             return { id: p.id, error: `Upload imagem: ${imgErr.message}` };
           }
           const supabaseImageUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${imgPath}`;
-          // 3. Submeter a Runway com a imagem do Supabase
+          // 3. Submeter a Runway com motion da própria cena (cada prompt tem
+          //    motion específico do gen-project; só caímos no DEFAULT_MOTION
+          //    se a cena foi gerada antes do schema motion existir, ou se o
+          //    user limpou o campo a editar).
+          const sceneMotion = (p.motion ?? "").trim() || motionPrompt;
           const taskId = await submitRunway(
             supabaseImageUrl,
-            motionPrompt,
+            sceneMotion,
             runwayKey,
           );
           if (!taskId) {

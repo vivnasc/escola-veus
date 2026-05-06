@@ -24,6 +24,7 @@ type LongoProject = {
     category: string;
     mood: string[];
     prompt: string;
+    motion?: string;
     clipUrl?: string;
     clipDurationSec?: number;
   }[];
@@ -150,6 +151,7 @@ export default function LongoDetailPage() {
       category: string;
       mood: string[];
       prompt: string;
+      motion?: string;
       clipUrl?: string;
       clipDurationSec?: number;
     }[]
@@ -2106,7 +2108,21 @@ export default function LongoDetailPage() {
                   setPromptsDirty(true);
                 }}
                 rows={3}
+                placeholder="prompt de imagem (EN)"
                 className="w-full rounded border border-escola-border bg-escola-card px-1.5 py-1 text-[10px] text-escola-creme"
+              />
+              <input
+                type="text"
+                value={p.motion ?? ""}
+                onChange={(e) => {
+                  const next = [...promptsDraft];
+                  next[i] = { ...next[i], motion: e.target.value };
+                  setPromptsDraft(next);
+                  setPromptsDirty(true);
+                }}
+                placeholder="🎬 motion (EN, 1 frase câmara para Runway). Vazio = default 'very slow drift'"
+                className="mt-1 w-full rounded border border-escola-border bg-escola-card px-1.5 py-1 text-[10px] text-escola-creme-50"
+                title="Movimento de câmara desta cena para Runway image-to-video. Ex: 'very slow push-in toward the wallet, dust motes floating in beam of light'."
               />
 
               {/* Clip MJ Video slot — upload + preview + delete */}
