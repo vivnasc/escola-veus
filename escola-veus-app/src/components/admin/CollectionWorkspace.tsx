@@ -461,6 +461,19 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
             </button>
           )}
           <button
+            onClick={() => submitRender()}
+            disabled={
+              busy === "submit-render" ||
+              (renderJob !== null && renderJob.status !== "done" && renderJob.status !== "failed")
+            }
+            className="rounded bg-escola-violeta/80 px-4 py-2 text-sm font-semibold text-escola-creme hover:bg-escola-violeta disabled:opacity-40"
+            title={`Gera ${totalDias} vídeo${totalDias === 1 ? "" : "s"} de uma vez (todos os dias) com música Ancient Ground`}
+          >
+            {busy === "submit-render"
+              ? "A submeter…"
+              : `▶ Gerar ${totalDias} vídeo${totalDias === 1 ? "" : "s"} (toda a colecção)`}
+          </button>
+          <button
             onClick={downloadAllZip}
             disabled={busy !== null}
             className="rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
