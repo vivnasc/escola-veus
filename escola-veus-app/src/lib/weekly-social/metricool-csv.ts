@@ -1,7 +1,11 @@
-// Constrói CSV Metricool a partir de uma lista de posts planeados.
-//
-// Header confirmado pela utilizadora (Maio 2026) — Planning > Calendar > Import CSV.
-// Estratégia: 1 linha por (post × plataforma), permite caption + hora distinta.
+/**
+ * Metricool CSV builder — header confirmado pela utilizadora (Maio 2026,
+ * Planning > Calendar > Import CSV). 87 colunas, 1 linha por
+ * (post × plataforma) para permitir caption + hora distintas por canal.
+ */
+
+import type { PlatformCaptions } from "./captions";
+import type { ScheduleSlot } from "./schedule";
 
 export const CSV_HEADER = [
   "Text", "Date", "Time", "Draft", "Facebook", "Twitter/X", "LinkedIn", "GBP",
@@ -40,9 +44,20 @@ export const CSV_HEADER = [
   "LinkedIn Poll Duration", "LinkedIn Show link preview",
   "LinkedIn Images as Carousel",
   "Threads Reply Control", "Threads Is Spoiler", "Threads Post Type",
-];
+] as const;
 
-export function csvEscape(v) {
+type Platform = "instagram" | "tiktok" | "youtube";
+
+export type CsvPost = {
+  id: string;
+  videoUrl: string | null;
+  thumbnailUrl: string | null;
+  trackTitle?: string;
+  captions: PlatformCaptions;
+  schedule: Record<Platform, ScheduleSlot>;
+};
+
+export function csvEscape(v: string | number | null | undefined): string {
   if (v === null || v === undefined) return "";
   const s = String(v);
   if (s.includes('"') || s.includes(",") || s.includes("\n") || s.includes("\r")) {
@@ -51,27 +66,18 @@ export function csvEscape(v) {
   return s;
 }
 
-/**
- * Constrói uma linha CSV para 1 (post × plataforma).
- *
- * post: {
- *   date, time, videoUrl, thumbnailUrl, captions: { instagram, tiktok, youtube: {title, description} },
- *   trackTitle?, albumTitle?, brandSlug
- * }
- * platform: "instagram" | "tiktok" | "youtube"
- */
-export function buildRow(post, platform) {
-  const row = new Array(CSV_HEADER.length).fill("");
-  const col = (name, value) => {
+export function buildRow(post: CsvPost, platform: Platform): string {
+  const row = new Array<string>(CSV_HEADER.length).fill("");
+  const col = (name: typeof CSV_HEADER[number], value: string) => {
     const idx = CSV_HEADER.indexOf(name);
-    if (idx >= 0) row[idx] = value ?? "";
+    if (idx >= 0) row[idx] = value;
   };
 
-  col("Date", post.date);
-  col("Time", post.time);
+  const slot = post.schedule[platform];
+  col("Date", slot.date);
+  col("Time", slot.time);
   col("Draft", "FALSE");
 
-  // Plataforma flags
   col("Instagram", platform === "instagram" ? "TRUE" : "FALSE");
   col("TikTok", platform === "tiktok" ? "TRUE" : "FALSE");
   col("Youtube", platform === "youtube" ? "TRUE" : "FALSE");
@@ -83,7 +89,6 @@ export function buildRow(post, platform) {
   col("Threads", "FALSE");
   col("Bluesky", "FALSE");
 
-  // Vídeo
   col("Picture Url 1", post.videoUrl || "");
   if (post.thumbnailUrl) col("Video Thumbnail Url", post.thumbnailUrl);
 
@@ -108,24 +113,12 @@ export function buildRow(post, platform) {
   return row.map(csvEscape).join(",");
 }
 
-export function buildCsv(posts) {
+export function buildCsv(posts: CsvPost[]): string {
   const lines = [CSV_HEADER.map(csvEscape).join(",")];
   for (const post of posts) {
-    for (const platform of ["instagram", "tiktok", "youtube"]) {
+    for (const platform of ["instagram", "tiktok", "youtube"] as const) {
       lines.push(buildRow(post, platform));
     }
   }
   return lines.join("\r\n") + "\r\n";
-}
-
-/**
- * Divide um CSV em chunks de N posts (por causa do limite de 50 do Metricool).
- * Cada chunk = N posts × 3 plataformas = ≤50 linhas (default chunkPosts=15).
- */
-export function chunkCsvs(posts, chunkPosts = 15) {
-  const chunks = [];
-  for (let i = 0; i < posts.length; i += chunkPosts) {
-    chunks.push(buildCsv(posts.slice(i, i + chunkPosts)));
-  }
-  return chunks;
 }

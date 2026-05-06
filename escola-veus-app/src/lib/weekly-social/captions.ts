@@ -1,20 +1,35 @@
-// Constrói legendas finais por plataforma a partir dos resultados do
-// suggest/suggest-ag, injectando título da faixa+álbum (Loranne) ou label
-// (AG) — ajuda as pessoas a encontrarem a música em music.seteveus.space.
-
-import brandConfigMod from "../../../src/data/weekly-social/brand-config.ts";
-const { expandHashtags } = brandConfigMod;
-
 /**
- * Loranne caption builder.
- *
- * suggestResult: { verses[], tiktokCaption, youtubeTitle, youtubeDescription, ... }
- * brand: BRANDS.loranne
- * meta: { trackTitle, albumTitle, theme }
- *
- * Devolve { instagram, tiktok, youtube: { title, description } }.
+ * Caption builders — injecta título de faixa+álbum (Loranne) ou label (AG)
+ * + hashtags da brand sobre o output do suggest/suggest-ag.
  */
-export function buildLoranneCaptions(suggestResult, brand, meta) {
+
+import { expandHashtags, type BrandConfig } from "@/data/weekly-social/brand-config";
+
+export type PlatformCaptions = {
+  instagram: string;
+  tiktok: string;
+  youtube: { title: string; description: string };
+};
+
+export type LoranneSuggest = {
+  verses?: string[];
+  tiktokCaption?: string;
+  youtubeTitle?: string;
+  youtubeDescription?: string;
+};
+
+export type AGSuggest = {
+  versos?: string[];
+  tiktokCaption?: string;
+  youtubeTitle?: string;
+  youtubeDescription?: string;
+};
+
+export function buildLoranneCaptions(
+  suggestResult: LoranneSuggest,
+  brand: BrandConfig,
+  meta: { trackTitle: string; albumTitle: string; theme: string | null },
+): PlatformCaptions {
   const { trackTitle, albumTitle, theme } = meta;
   const v1 = suggestResult.verses?.[0] || "";
   const v2 = suggestResult.verses?.[1] || "";
@@ -25,7 +40,6 @@ export function buildLoranneCaptions(suggestResult, brand, meta) {
   const ttTags = expandHashtags(brand.hashtagsByPlatform.tiktok, theme).join(" ");
   const ytTags = expandHashtags(brand.hashtagsByPlatform.youtube, theme).join(" ");
 
-  // Instagram — verso 1, verso 2, track tag, CTA, hashtags.
   const instagram = [
     [v1, v2].filter(Boolean).join("\n"),
     "",
@@ -35,24 +49,22 @@ export function buildLoranneCaptions(suggestResult, brand, meta) {
     igTags,
   ].filter((l) => l !== undefined).join("\n");
 
-  // TikTok — usa o que `suggest` já devolveu mas substitui hashtags pelo
-  // pool da brand (mais completo que o do route) e injecta trackTag.
   const ttBase = (suggestResult.tiktokCaption || "")
     .split("\n")
-    .filter((l) => !l.startsWith("#")) // remove hashtags antigas
+    .filter((l) => !l.startsWith("#"))
     .join("\n")
     .trim();
   const tiktok = [ttBase, "", trackTag, "", ttTags].filter(Boolean).join("\n");
 
-  // YouTube — usa título do route (já tem track + album), mas garante que
-  // o trackTag aparece também na descrição.
-  const ytTitle = suggestResult.youtubeTitle || `"${trackTitle}" · ${albumTitle} · Loranne #Shorts`;
+  const ytTitle = suggestResult.youtubeTitle ||
+    `"${trackTitle}" · ${albumTitle} · Loranne #Shorts`;
   const ytDescBase = (suggestResult.youtubeDescription || "")
     .split("\n")
     .filter((l) => !l.startsWith("#"))
     .join("\n")
     .trim();
-  const ytDesc = [ytDescBase, "", trackTag, cta, "", ytTags].filter(Boolean).join("\n");
+  const ytDesc = [ytDescBase, "", trackTag, cta, "", ytTags]
+    .filter(Boolean).join("\n");
 
   return {
     instagram,
@@ -61,14 +73,11 @@ export function buildLoranneCaptions(suggestResult, brand, meta) {
   };
 }
 
-/**
- * Ancient Ground caption builder.
- *
- * suggestResult: { versos[], tiktokCaption, youtubeTitle, youtubeDescription }
- * brand: BRANDS["ancient-ground"]
- * meta: { label, trackNumber, temas }
- */
-export function buildAGCaptions(suggestResult, brand, meta) {
+export function buildAGCaptions(
+  suggestResult: AGSuggest,
+  brand: BrandConfig,
+  meta: { label: string; trackNumber: number; temas: readonly string[] },
+): PlatformCaptions {
   const { label, trackNumber } = meta;
   const v1 = suggestResult.versos?.[0] || "";
   const v2 = suggestResult.versos?.[1] || "";
