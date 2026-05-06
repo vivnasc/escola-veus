@@ -154,18 +154,17 @@ export default function VideosPage() {
     }
   }
 
-  async function downloadJobAsZip(job: Job) {
-    const k = `zip-${job.jobId}`;
+  async function downloadCollectionZip(slug: string, items: Array<{ file: string; url: string; sizeBytes: number; sourceJob: Job }>) {
+    const k = `zip-${slug}`;
     setDownloading(k);
     try {
       const zip = new JSZip();
-      const slug = slugFromJobId(job.jobId);
       const folder = zip.folder(slug)!;
-      for (const v of job.videos) {
+      for (const v of items) {
         const baseName = v.file.replace(".mp4", "");
         const mp4 = await fetchAsBlob(v.url);
         folder.file(`${baseName}.mp4`, mp4);
-        folder.file(`${baseName}.txt`, getCaption(job, v.file));
+        folder.file(`${baseName}.txt`, getCaption(v.sourceJob, v.file));
       }
       const blob = await zip.generateAsync({ type: "blob" });
       triggerDownload(blob, `${slug}.zip`);
@@ -183,6 +182,36 @@ export default function VideosPage() {
           (j.campanha || "").toLowerCase().includes(filter.toLowerCase())
       )
     : jobs;
+
+  // Agrupa por slug (= colecção). Vídeo do mesmo dia em jobs diferentes:
+  // mantém o mais recente (último na ordem).
+  type CollectedVideo = Video & { sourceJob: Job };
+  const bySlug = new Map<string, { campanha: string; videos: CollectedVideo[]; latestAt?: string }>();
+  for (const job of filtered) {
+    const slug = slugFromJobId(job.jobId);
+    if (!bySlug.has(slug)) {
+      bySlug.set(slug, { campanha: job.campanha || slug, videos: [], latestAt: job.completedAt });
+    }
+    const entry = bySlug.get(slug)!;
+    if (job.completedAt && (!entry.latestAt || job.completedAt > entry.latestAt)) {
+      entry.latestAt = job.completedAt;
+    }
+    if (job.campanha) entry.campanha = job.campanha;
+    for (const v of job.videos || []) {
+      const idx = entry.videos.findIndex((x) => x.file === v.file);
+      const enriched: CollectedVideo = { ...v, sourceJob: job };
+      if (idx >= 0) entry.videos[idx] = enriched;
+      else entry.videos.push(enriched);
+    }
+  }
+  // Ordena vídeos por dia número
+  for (const entry of bySlug.values()) {
+    entry.videos.sort((a, b) => {
+      const na = Number(a.file.match(/dia-(\d+)/)?.[1] ?? 0);
+      const nb = Number(b.file.match(/dia-(\d+)/)?.[1] ?? 0);
+      return na - nb;
+    });
+  }
 
   return (
     <div>
@@ -221,35 +250,35 @@ export default function VideosPage() {
         </div>
       ) : (
         <div className="space-y-10">
-          {filtered.map((job) => {
-            const slug = slugFromJobId(job.jobId);
-            const totalSize = job.videos.reduce((a, v) => a + v.sizeBytes, 0);
+          {Array.from(bySlug.entries()).map(([slug, entry]) => {
+            const totalSize = entry.videos.reduce((a, v) => a + v.sizeBytes, 0);
             return (
-              <section key={job.jobId} className="rounded-lg border border-escola-border bg-escola-card p-4">
+              <section key={slug} className="rounded-lg border border-escola-border bg-escola-card p-4">
                 <header className="mb-3 flex flex-wrap items-baseline justify-between gap-2 border-b border-escola-border pb-2">
                   <div className="min-w-0">
                     <p className="font-serif text-base text-escola-creme">
-                      {job.campanha || slug}
+                      {entry.campanha}
                     </p>
                     <p className="text-[10px] text-escola-creme-50">
-                      {job.videos.length} vídeo{job.videos.length === 1 ? "" : "s"} ·{" "}
+                      {entry.videos.length} vídeo{entry.videos.length === 1 ? "" : "s"} ·{" "}
                       {(totalSize / 1024 / 1024).toFixed(1)} MB ·{" "}
-                      {job.completedAt && new Date(job.completedAt).toLocaleString("pt-PT")}
+                      último: {entry.latestAt && new Date(entry.latestAt).toLocaleString("pt-PT")}
                     </p>
                   </div>
                   <button
-                    onClick={() => downloadJobAsZip(job)}
+                    onClick={() => downloadCollectionZip(slug, entry.videos)}
                     disabled={!!downloading}
                     className="rounded bg-escola-dourado/90 px-3 py-1.5 text-xs font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
                   >
-                    {downloading === `zip-${job.jobId}`
+                    {downloading === `zip-${slug}`
                       ? "a gerar ZIP…"
-                      : `↓ ZIP (vídeos + legendas)`}
+                      : `↓ ZIP (${entry.videos.length} vídeos + legendas)`}
                   </button>
                 </header>
 
                 <div className="space-y-4">
-                  {job.videos.map((v) => {
+                  {entry.videos.map((v) => {
+                    const job = v.sourceJob;
                     const k = captionKey(job.jobId, v.file);
                     const dia = diaForVideo(job, v.file);
                     return (

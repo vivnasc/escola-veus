@@ -330,7 +330,10 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
       const contentChanged =
         !!originalDias && JSON.stringify(dias) !== JSON.stringify(originalDias);
       // Para colecções dinâmicas (sem originalDias) enviamos sempre o content.
-      const sendContent = !originalDias || contentChanged;
+      // Para colecções fixas (com originalDias), enviamos sempre também — assim
+      // o manifest tem dias[] e a página de vídeos consegue gerar legendas.
+      const sendContent = true;
+      void contentChanged;
 
       const r = await fetch("/api/admin/carrossel-veus/render-submit", {
         method: "POST",
