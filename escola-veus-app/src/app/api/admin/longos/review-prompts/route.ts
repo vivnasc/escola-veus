@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: { slug?: string };
+  let body: { slug?: string; onlyIds?: string[] };
   try {
     body = await req.json();
   } catch {
@@ -64,6 +64,10 @@ export async function POST(req: NextRequest) {
   if (!slug || !/^[a-z0-9][a-z0-9-]{0,80}$/.test(slug)) {
     return NextResponse.json({ erro: "slug inválido" }, { status: 400 });
   }
+  // onlyIds: filtra a um subset (útil quando só queres rever prompts sem
+  // clipUrl, e.g. depois de auto-attach pool, para não pagar review em
+  // prompts cujo clip já está atribuído da pool).
+  const onlyIds = Array.isArray(body.onlyIds) ? new Set(body.onlyIds) : null;
 
   const supabase = sb();
   if (!supabase) {
@@ -87,9 +91,19 @@ export async function POST(req: NextRequest) {
   }
 
   const script = proj.script ?? "";
-  const prompts = Array.isArray(proj.prompts) ? proj.prompts : [];
+  const allPrompts = Array.isArray(proj.prompts) ? proj.prompts : [];
+  const prompts = onlyIds
+    ? allPrompts.filter((p) => onlyIds.has(p.id))
+    : allPrompts;
   if (prompts.length === 0) {
-    return NextResponse.json({ erro: "Sem prompts para rever" }, { status: 400 });
+    return NextResponse.json(
+      {
+        erro: onlyIds
+          ? "Nenhum prompt corresponde aos onlyIds fornecidos"
+          : "Sem prompts para rever",
+      },
+      { status: 400 },
+    );
   }
 
   const client = new Anthropic({ apiKey });
