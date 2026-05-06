@@ -248,6 +248,119 @@ export default function LongoDetailPage() {
   const [reviewing, setReviewing] = useState(false);
   const [reviewErr, setReviewErr] = useState<string | null>(null);
 
+  // Estado da pipeline "🚀 Preparar TODOS os clips":
+  //   idle → attaching → reviewing → submitting → polling → done | error
+  const [prepareStatus, setPrepareStatus] = useState<
+    "idle" | "attaching" | "reviewing" | "submitting" | "polling" | "done" | "error"
+  >("idle");
+  const [prepareProgress, setPrepareProgress] = useState<string>("");
+  const [prepareErr, setPrepareErr] = useState<string | null>(null);
+
+  const prepareAllClips = async () => {
+    if (!project) return;
+    if (
+      !confirm(
+        "Preparar TODOS os clips automaticamente?\n\n" +
+          "Pipeline:\n" +
+          "  1. 🪄 Auto-atribuir pool (grátis)\n" +
+          "  2. ✓ Claude valida matches da pool (~$0.20)\n" +
+          "  3. 🎨 fal.ai gera imagens para cenas sem clip (~$0.04 cada)\n" +
+          "  4. 🎬 Runway anima imagens (~$0.50 cada)\n" +
+          "  5. ⏳ Polling até todos prontos (~5-10 min)\n\n" +
+          "Custo estimado: ~$15-25. Não fechar a página até ao fim.",
+      )
+    )
+      return;
+
+    setPrepareErr(null);
+    try {
+      // 1. Auto-attach pool
+      setPrepareStatus("attaching");
+      setPrepareProgress("🪄 A atribuir pool...");
+      const r1 = await fetch("/api/admin/longos/auto-attach-pool", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug }),
+      });
+      const d1 = await r1.json();
+      if (!r1.ok || d1.erro) throw new Error(d1.erro || `auto-attach HTTP ${r1.status}`);
+      setPrepareProgress(
+        `🪄 ${d1.attached.length} cenas atribuídas da pool.`,
+      );
+
+      // 2. Claude review
+      setPrepareStatus("reviewing");
+      setPrepareProgress("✓ Claude a validar matches da pool...");
+      const r2 = await fetch("/api/admin/longos/review-pool-matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug }),
+      });
+      const d2 = await r2.json();
+      if (!r2.ok || d2.erro) throw new Error(d2.erro || `review HTTP ${r2.status}`);
+      setPrepareProgress(
+        `✓ Validação: ${d2.kept} mantidos, ${d2.detached.length} descolados.`,
+      );
+
+      // 3. Submit fal.ai + Runway
+      setPrepareStatus("submitting");
+      setPrepareProgress("🎨 A gerar imagens fal.ai + submeter a Runway...");
+      const r3 = await fetch("/api/admin/longos/generate-clips/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug }),
+      });
+      const d3 = await r3.json();
+      if (!r3.ok || d3.erro) throw new Error(d3.erro || `submit HTTP ${r3.status}`);
+      if (d3.submitted === 0 && d3.totalUnclipped === 0) {
+        setPrepareStatus("done");
+        setPrepareProgress(`✓ Tudo pronto — ${project.promptCount} clips OK.`);
+        await load();
+        return;
+      }
+      setPrepareProgress(
+        `🎬 ${d3.submitted} clips submetidos a Runway. ${d3.failed.length} falhas.`,
+      );
+
+      // 4. Polling até pending=0
+      setPrepareStatus("polling");
+      let attempts = 0;
+      const MAX_ATTEMPTS = 60; // 60 × 20s = 20 min máximo
+      while (attempts < MAX_ATTEMPTS) {
+        await new Promise((r) => setTimeout(r, 20000));
+        attempts++;
+        const r4 = await fetch("/api/admin/longos/generate-clips/poll", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: project.slug }),
+        });
+        const d4 = await r4.json();
+        if (!r4.ok || d4.erro) {
+          throw new Error(d4.erro || `poll HTTP ${r4.status}`);
+        }
+        setPrepareProgress(
+          `⏳ ${d4.completed} prontos · ${d4.pending} em curso · ${d4.failed.length} falhas (tentativa ${attempts}/${MAX_ATTEMPTS})`,
+        );
+        if (d4.pending === 0) {
+          setPrepareStatus("done");
+          setPrepareProgress(
+            `✓ Concluído. ${d4.totalUnclipped} ainda sem clip (Runway falhou). Re-corre 'Preparar TODOS' para tentar de novo nesses.`,
+          );
+          await load();
+          return;
+        }
+      }
+      throw new Error(
+        `Timeout — ${MAX_ATTEMPTS} tentativas (~${(MAX_ATTEMPTS * 20) / 60} min) sem completar todos. Recarrega a página e clica de novo para continuar.`,
+      );
+    } catch (e) {
+      setPrepareStatus("error");
+      const msg = e instanceof Error ? e.message : String(e);
+      setPrepareErr(msg);
+      setPrepareProgress(`❌ ${msg}`);
+    }
+  };
+
   const reviewPromptsWithClaude = async () => {
     if (!project) return;
     if (
@@ -1531,6 +1644,19 @@ export default function LongoDetailPage() {
             >
               🛟 scan clips
             </button>
+            <button
+              onClick={prepareAllClips}
+              disabled={prepareStatus !== "idle" && prepareStatus !== "done" && prepareStatus !== "error"}
+              className="rounded border border-escola-dourado bg-escola-dourado/20 px-2 py-0.5 text-[10px] font-bold text-escola-dourado hover:bg-escola-dourado/30 disabled:opacity-40"
+              title="Pipeline completa: pool match → Claude valida → fal.ai imagens → Runway clips. ~$15-25, ~10 min. Não fechar a página."
+            >
+              🚀 preparar TODOS os clips
+            </button>
+            {prepareProgress && (
+              <span className={`text-[10px] ${prepareStatus === "error" ? "text-escola-terracota" : "text-escola-creme-50"}`}>
+                {prepareProgress}
+              </span>
+            )}
             {promptsDirty && (
               <>
                 <button
