@@ -5,6 +5,7 @@ import type { Slide, SlideDeck } from "@/lib/course-slides";
 import { getTerritoryTheme } from "@/data/territory-themes";
 import { parseEmphasis } from "@/lib/emphasis";
 import { renderDiagram, type Diagram } from "@/lib/diagrams";
+import { ambientParticles, ambientPresence } from "@/lib/slide-ambient";
 
 // Injecta DM Serif Display + Nunito uma unica vez (Cormorant ja esta global).
 function useSlideFonts() {
@@ -186,6 +187,26 @@ export function SlidePreview({
             >
               {slide.romano} · {slide.label}
             </div>
+          )}
+
+          {/* Camada ambiente: partículas a flutuar no fundo. Atrás de tudo. */}
+          {slide.tipo !== "fecho" && (
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{ pointerEvents: "none" }}
+              dangerouslySetInnerHTML={{ __html: ambientParticles(1920, 1080, accent) }}
+            />
+          )}
+
+          {/* Presença contemplativa — silhueta que respira. Watermark a 18%. */}
+          {slide.tipo === "conteudo" && (
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{ pointerEvents: "none" }}
+              dangerouslySetInnerHTML={{ __html: ambientPresence(accent) }}
+            />
           )}
 
           {/* Fio vertical na margem esquerda (assinatura visual de identidade

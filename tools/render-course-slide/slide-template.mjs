@@ -4,6 +4,8 @@
  * layout). Qualquer mudanca la deve ser reflectida aqui.
  */
 
+import { ambientParticles, ambientPresence } from "./slide-ambient.mjs";
+
 export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
   const footer =
     slide.tipo === "title" || slide.tipo === "end" || slide.tipo === "fecho"
@@ -212,6 +214,8 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
 </head>
 <body style="--escola-accent: ${accent}">
   <div class="stage">
+    ${slide.tipo !== "fecho" ? ambientParticles(1920, 1080, accent) : ""}
+    ${slide.tipo === "conteudo" ? ambientPresence(accent) : ""}
     ${actoLabel}
     <div class="body-center">${body}</div>
     ${footer ? `<div class="footer">${esc(footer)}</div>` : ""}
