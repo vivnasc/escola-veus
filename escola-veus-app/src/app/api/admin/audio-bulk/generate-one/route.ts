@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     const {
       text,
       voiceId,
-      modelId = "eleven_multilingual_v2",
+      modelId = "eleven_v3",
       title,
       folder = "youtube",
       languageCode, // opcional — se omitido, voice decide sotaque

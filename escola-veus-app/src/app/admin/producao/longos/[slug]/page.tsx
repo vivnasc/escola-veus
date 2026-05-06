@@ -613,13 +613,16 @@ export default function LongoDetailPage() {
   // Default: UnchUhO6d8TYPl7TuqgU (voz long-form da Vivianne, distinta da
   // dos shorts JGnWZj684pcXmK2SxYIv).
   const [voiceId, setVoiceId] = useState<string>("UnchUhO6d8TYPl7TuqgU");
-  const [modelId, setModelId] = useState<string>("eleven_multilingual_v2");
+  const [modelId, setModelId] = useState<string>("eleven_v3");
   useEffect(() => {
     try {
       const v = localStorage.getItem("longos-voice");
       const m = localStorage.getItem("longos-model");
       if (v) setVoiceId(v);
-      if (m) setModelId(m);
+      // Migração v2 → v3: ignora valor antigo guardado se for o default
+      // anterior (eleven_multilingual_v2). v3 é agora o default por
+      // pedido — suporta tags [calm]/[pause] que os scripts usam.
+      if (m && m !== "eleven_multilingual_v2") setModelId(m);
     } catch {
       /* SSR / privacy mode */
     }
@@ -1287,11 +1290,11 @@ export default function LongoDetailPage() {
                 onChange={(e) => setModelId(e.target.value)}
                 className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
               >
+                <option value="eleven_v3">
+                  v3 (expressivo, suporta [calm]/[thoughtful], default)
+                </option>
                 <option value="eleven_multilingual_v2">
                   Multilingual v2 (PT natural, sem tags emoção)
-                </option>
-                <option value="eleven_v3">
-                  v3 (expressivo, suporta [calm]/[thoughtful], beta)
                 </option>
               </select>
               <p className="mt-1 text-[10px] text-escola-creme-50">

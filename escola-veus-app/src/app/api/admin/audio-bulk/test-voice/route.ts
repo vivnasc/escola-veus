@@ -26,7 +26,7 @@ function processTextForModel(rawText: string, modelId: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { text, voiceId, modelId = "eleven_multilingual_v2", languageCode } = await req.json();
+    const { text, voiceId, modelId = "eleven_v3", languageCode } = await req.json();
 
     if (!text || !voiceId) {
       return NextResponse.json({ erro: "text e voiceId obrigatorios" }, { status: 400 });
