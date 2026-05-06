@@ -1,18 +1,16 @@
 /**
- * Composições tipográficas para os slides das aulas. Nenhum shape
- * geométrico — as palavras SÃO o visual. Hierarquia por escala, italic
- * e posição. Espaço negativo é protagonista. Mantém em sincronia com
- * tools/render-course-slide/diagrams.mjs.
+ * Composições tipográficas ANIMADAS para os slides das aulas. SMIL nativo
+ * SVG (sem JS, sem libs externas, suporte universal em browser e Puppeteer).
  *
- * Inspiração: páginas de livro de Mary Oliver, capas Penguin Classics,
- * cartões de Wim Wenders. Não infografia.
+ * Filosofia: não há voz. As coisas têm de respirar visualmente.
  *
- * 5 composições:
- *   - circulo:   palavra única ENORME, sem mais nada
- *   - triade:    três palavras como haiku (3 linhas, escalas diferentes)
- *   - pareado:   dois conceitos empilhados com hairline a separar
- *   - sequencia: palavras em escada ascendente, numerais inline pequenos
- *   - anel:      central HUGE; periféricos como tags pequenas em letterspacing largo
+ * 5 composições, todas com animação à entrada + algo a "viver" ao longo
+ * do tempo:
+ *   - circulo:   palavra aparece com scale-in, depois pulsa muito ligeiro
+ *   - triade:    três palavras revelam-se em cascata (haiku temporal)
+ *   - pareado:   ANTES → palavra → hairline desenha-se → DEPOIS → palavra
+ *   - sequencia: passos descem em escada, um a um (i → ii → iii → iv)
+ *   - anel:      central pulsa; periféricos rodam à volta lentamente
  */
 
 export type DiagramType = "circulo" | "triade" | "pareado" | "sequencia" | "anel";
@@ -32,70 +30,95 @@ const CREME_DIM = "#a8a298";
 function header(width: number, height: number) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" style="max-width:100%;height:auto;display:block">`;
 }
-function footer() {
-  return `</svg>`;
-}
+function footer() { return `</svg>`; }
 function esc(s: string): string {
-  return String(s ?? "").replace(/[&<>"']/g, (c) =>
-    ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-    })[c] as string,
-  );
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c] as string));
+}
+
+// ─── Helpers de animação SMIL ─────────────────────────────────────────────
+
+/** Fade + rise à entrada, depois fica. */
+function animFadeIn(begin = "0s", dur = "1s") {
+  return `
+    <animate attributeName="opacity" from="0" to="1" begin="${begin}" dur="${dur}" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" from="0 12" to="0 0" begin="${begin}" dur="${dur}" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1"/>`;
+}
+
+/** Pulsação muito subtil (0.5% scale up/down) em loop. */
+function animBreath(begin = "1.5s", dur = "5s") {
+  return `<animate attributeName="opacity" values="1;0.92;1" begin="${begin}" dur="${dur}" repeatCount="indefinite"/>`;
+}
+
+/** Linha que se desenha (strokeDashoffset). */
+function animDraw(length: number, begin = "0s", dur = "1.2s") {
+  return `<animate attributeName="stroke-dashoffset" from="${length}" to="0" begin="${begin}" dur="${dur}" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1"/>`;
 }
 
 // ─── 1. ÂNCORA ────────────────────────────────────────────────────────────
-// Uma palavra. Enorme. Italic. Cor de acento. Nada mais.
 function svgCirculo(term: string, accent: string): string {
-  const w = 900, h = 360;
-  const cx = w / 2, cy = h / 2;
-  // Tamanho dinâmico: palavras curtas ficam maiores
+  const w = 900, h = 360, cx = w / 2, cy = h / 2;
   const fontSize = term.length <= 6 ? 180 : term.length <= 10 ? 140 : 100;
   return `${header(w, h)}
-    <text x="${cx}" y="${cy + fontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${fontSize}" font-style="italic" fill="${accent}">${esc(term)}</text>
+    <g opacity="0">
+      ${animFadeIn("0.1s", "1.2s")}
+      <text x="${cx}" y="${cy + fontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${fontSize}" font-style="italic" fill="${accent}">
+        ${esc(term)}
+        ${animBreath("1.5s", "5s")}
+      </text>
+    </g>
   ${footer()}`;
 }
 
 // ─── 2. CONSTELAÇÃO ───────────────────────────────────────────────────────
-// Três palavras como haiku: 3 linhas com escalas diferentes, alinhamentos
-// diferentes (esquerda · centro grande · direita). Lê-se de cima para baixo.
 function svgTriade(terms: string[], accent: string): string {
-  const w = 900, h = 540;
-  const cx = w / 2;
+  const w = 900, h = 540, cx = w / 2;
   const labels = [terms[0] ?? "", terms[1] ?? "", terms[2] ?? ""];
   return `${header(w, h)}
-    <text x="160" y="120" text-anchor="start" font-family='${FONT_SERIF}' font-size="42" fill="${CREME_DIM}">${esc(labels[0])}</text>
-    <text x="${cx}" y="320" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="96" font-style="italic" fill="${accent}">${esc(labels[1])}</text>
-    <text x="${w - 160}" y="480" text-anchor="end" font-family='${FONT_SERIF}' font-size="42" font-style="italic" fill="${CREME_DIM}">${esc(labels[2])}</text>
+    <g opacity="0">
+      ${animFadeIn("0s", "0.9s")}
+      <text x="160" y="120" text-anchor="start" font-family='${FONT_SERIF}' font-size="42" fill="${CREME_DIM}">${esc(labels[0])}</text>
+    </g>
+    <g opacity="0">
+      ${animFadeIn("0.6s", "1.1s")}
+      <text x="${cx}" y="320" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="96" font-style="italic" fill="${accent}">
+        ${esc(labels[1])}
+        ${animBreath("2.2s", "5s")}
+      </text>
+    </g>
+    <g opacity="0">
+      ${animFadeIn("1.2s", "0.9s")}
+      <text x="${w - 160}" y="480" text-anchor="end" font-family='${FONT_SERIF}' font-size="42" font-style="italic" fill="${CREME_DIM}">${esc(labels[2])}</text>
+    </g>
   ${footer()}`;
 }
 
 // ─── 3. PÓLOS ─────────────────────────────────────────────────────────────
-// Dois conceitos empilhados verticalmente. Hairline a separar. Sans wide
-// labels. O segundo é o "depois", em italic e na cor de acento.
 function svgPareado(terms: string[], accent: string): string {
   const w = 900, h = 460;
   const left = terms[0] ?? "";
   const right = terms[1] ?? "";
   const cx = w / 2;
+  const lineLen = 160; // entre x=cx-80 e x=cx+80
   return `${header(w, h)}
-    <text x="${cx}" y="100" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="8" fill="${CREME_DIM}">ANTES</text>
-    <text x="${cx}" y="180" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="76" fill="${CREME}">${esc(left)}</text>
-
-    <line x1="${cx - 80}" y1="240" x2="${cx + 80}" y2="240" stroke="${accent}" stroke-width="0.8" opacity="0.8"/>
-
-    <text x="${cx}" y="300" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="8" fill="${accent}" opacity="0.9">DEPOIS</text>
-    <text x="${cx}" y="380" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="76" font-style="italic" fill="${accent}">${esc(right)}</text>
+    <g opacity="0">
+      ${animFadeIn("0s", "0.8s")}
+      <text x="${cx}" y="100" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="8" fill="${CREME_DIM}">ANTES</text>
+      <text x="${cx}" y="180" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="76" fill="${CREME}">${esc(left)}</text>
+    </g>
+    <line x1="${cx - 80}" y1="240" x2="${cx + 80}" y2="240" stroke="${accent}" stroke-width="0.8" opacity="0.8" stroke-dasharray="${lineLen}" stroke-dashoffset="${lineLen}">
+      ${animDraw(lineLen, "0.9s", "1s")}
+    </line>
+    <g opacity="0">
+      ${animFadeIn("1.6s", "0.9s")}
+      <text x="${cx}" y="300" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="8" fill="${accent}" opacity="0.9">DEPOIS</text>
+      <text x="${cx}" y="380" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="76" font-style="italic" fill="${accent}">${esc(right)}</text>
+    </g>
   ${footer()}`;
 }
 
 // ─── 4. PASSAGEM ──────────────────────────────────────────────────────────
-// Palavras em escada ascendente. Numerais romanos inline antes de cada
-// palavra, na cor de acento, italic, pequenos. Cada palavra alterna
-// posição vertical (sobe à medida que avança). Sem linhas.
 function svgSequencia(terms: string[], accent: string): string {
   const items = terms.slice(0, 5).filter((t) => t && t.trim().length > 0);
   const n = items.length || 2;
@@ -106,12 +129,15 @@ function svgSequencia(terms: string[], accent: string): string {
 
   const lines = items
     .map((t, i) => {
-      // Cada linha indenta progressivamente para criar a sensação de escada
       const x = 120 + i * 80;
       const y = 100 + i * lineH;
+      const begin = `${(i * 0.5).toFixed(2)}s`;
       return `
-      <text x="${x}" y="${y}" font-family='${FONT_SERIF}' font-style="italic" font-size="22" fill="${accent}" opacity="0.85">${ROMANS[i] ?? i + 1}.</text>
-      <text x="${x + 50}" y="${y}" font-family='${FONT_DISPLAY}' font-size="58" font-style="italic" fill="${CREME}">${esc(t)}</text>`;
+      <g opacity="0">
+        ${animFadeIn(begin, "0.9s")}
+        <text x="${x}" y="${y}" font-family='${FONT_SERIF}' font-style="italic" font-size="22" fill="${accent}" opacity="0.85">${ROMANS[i] ?? i + 1}.</text>
+        <text x="${x + 50}" y="${y}" font-family='${FONT_DISPLAY}' font-size="58" font-style="italic" fill="${CREME}">${esc(t)}</text>
+      </g>`;
     })
     .join("");
 
@@ -119,17 +145,12 @@ function svgSequencia(terms: string[], accent: string): string {
 }
 
 // ─── 5. ÓRBITA ────────────────────────────────────────────────────────────
-// Central enorme. Periféricos como pequenas tags em sans com letterspacing
-// largo, distribuídas à volta sem círculos. As tags estão em órbita SOBRE
-// a palavra central — comem o espaço onde poderia haver geometria.
 function svgAnel(central: string, terms: string[], accent: string): string {
-  const w = 1000, h = 700;
-  const cx = w / 2, cy = h / 2;
+  const w = 1000, h = 700, cx = w / 2, cy = h / 2;
   const items = terms.slice(0, 6).filter((t) => t && t.trim().length > 0);
   const n = items.length || 1;
   const radius = 280;
 
-  // Periféricos como pequenas tags sans em letterspacing largo
   const outer = items
     .map((t, i) => {
       const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
@@ -139,37 +160,43 @@ function svgAnel(central: string, terms: string[], accent: string): string {
     })
     .join("");
 
-  // Central HUGE em italic display
-  const centralFontSize =
-    central.length <= 8 ? 130 : central.length <= 14 ? 100 : 80;
+  const centralFontSize = central.length <= 8 ? 130 : central.length <= 14 ? 100 : 80;
 
   return `${header(w, h)}
-    ${outer}
-    <text x="${cx}" y="${cy + centralFontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${centralFontSize}" font-style="italic" fill="${accent}">${esc(central)}</text>
+    <g opacity="0" transform="translate(${cx} ${cy})">
+      ${animFadeIn("0.8s", "1.2s")}
+      <g>
+        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="120s" repeatCount="indefinite"/>
+        <g transform="translate(${-cx} ${-cy})">
+          ${outer}
+        </g>
+      </g>
+    </g>
+    <g opacity="0">
+      ${animFadeIn("0s", "1s")}
+      <text x="${cx}" y="${cy + centralFontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${centralFontSize}" font-style="italic" fill="${accent}">
+        ${esc(central)}
+        ${animBreath("1.8s", "5s")}
+      </text>
+    </g>
   ${footer()}`;
 }
 
 export function renderDiagram(d: Diagram, accent: string): string {
   switch (d.type) {
-    case "circulo":
-      return svgCirculo(d.terms[0] ?? "", accent);
-    case "triade":
-      return svgTriade(d.terms, accent);
-    case "pareado":
-      return svgPareado(d.terms, accent);
-    case "sequencia":
-      return svgSequencia(d.terms, accent);
-    case "anel":
-      return svgAnel(d.central ?? "", d.terms, accent);
-    default:
-      return "";
+    case "circulo":   return svgCirculo(d.terms[0] ?? "", accent);
+    case "triade":    return svgTriade(d.terms, accent);
+    case "pareado":   return svgPareado(d.terms, accent);
+    case "sequencia": return svgSequencia(d.terms, accent);
+    case "anel":      return svgAnel(d.central ?? "", d.terms, accent);
+    default:          return "";
   }
 }
 
 export const DIAGRAM_LABELS: Record<DiagramType, string> = {
-  circulo: "Âncora (palavra única, gigante, italic)",
-  triade: "Constelação (3 palavras em haiku, escalas diferentes)",
-  pareado: "Pólos (antes / depois empilhados, hairline separa)",
-  sequencia: "Passagem (palavras em escada com numerais romanos)",
-  anel: "Órbita (central gigante, periféricos como tags sans)",
+  circulo: "Âncora — palavra única que respira",
+  triade: "Constelação — 3 palavras em cascata",
+  pareado: "Pólos — antes / linha que desenha / depois",
+  sequencia: "Passagem — passos a descer em escada",
+  anel: "Órbita — central pulsa, periféricos rodam",
 };
