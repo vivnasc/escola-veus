@@ -1,18 +1,18 @@
 /**
- * Composições editoriais minimais para os slides das aulas. Tudo SVG
- * inline. Mantém em sincronia com tools/render-course-slide/diagrams.mjs.
+ * Composições tipográficas para os slides das aulas. Nenhum shape
+ * geométrico — as palavras SÃO o visual. Hierarquia por escala, italic
+ * e posição. Espaço negativo é protagonista. Mantém em sincronia com
+ * tools/render-course-slide/diagrams.mjs.
  *
- * Filosofia (terceira iteração): TIPOGRAFIA é o protagonista. As "formas"
- * são caligráficas, não geométricas — flourishes, hairlines, ornamentos.
- * Nada de caixas a fechar palavras. Mais ar, mais peso editorial, menos
- * mapa conceptual. Como abertura de capítulo, não como slide-deck.
+ * Inspiração: páginas de livro de Mary Oliver, capas Penguin Classics,
+ * cartões de Wim Wenders. Não infografia.
  *
- * 5 templates, todos pensados para servir o texto contemplativo:
- *   - circulo:   uma palavra-âncora com flourishes calligráficos acima/abaixo
- *   - triade:    três palavras em constelação, ornamento delicado ao centro
- *   - pareado:   dois pólos com hairline ornamentado entre eles
- *   - sequencia: palavras numa linha de tempo curva (i. ii. iii.)
- *   - anel:      conceito central + palavras em órbita livre (não circular)
+ * 5 composições:
+ *   - circulo:   palavra única ENORME, sem mais nada
+ *   - triade:    três palavras como haiku (3 linhas, escalas diferentes)
+ *   - pareado:   dois conceitos empilhados com hairline a separar
+ *   - sequencia: palavras em escada ascendente, numerais inline pequenos
+ *   - anel:      central HUGE; periféricos como tags pequenas em letterspacing largo
  */
 
 export type DiagramType = "circulo" | "triade" | "pareado" | "sequencia" | "anel";
@@ -24,8 +24,10 @@ export type Diagram = {
 };
 
 const FONT_SERIF = '"Cormorant Garamond", Georgia, serif';
+const FONT_DISPLAY = '"DM Serif Display", Georgia, serif';
 const FONT_SANS = '"Nunito", sans-serif';
 const CREME = "#f0ece6";
+const CREME_DIM = "#a8a298";
 
 function header(width: number, height: number) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" style="max-width:100%;height:auto;display:block">`;
@@ -45,195 +47,106 @@ function esc(s: string): string {
   );
 }
 
-/** Flourish caligráfico horizontal centrado. Curva em S com pontos terminais. */
-function flourishHorizontal(cx: number, cy: number, width: number, accent: string, flip = false): string {
-  const half = width / 2;
-  const sign = flip ? -1 : 1;
-  const x1 = cx - half;
-  const x2 = cx + half;
-  const c1x = cx - half / 2.5;
-  const c1y = cy + sign * 8;
-  const c2x = cx + half / 2.5;
-  const c2y = cy - sign * 8;
-  const path = `M ${x1} ${cy} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${cx} ${cy} S ${x2} ${cy}, ${x2} ${cy}`;
-  return `
-    <path d="${path}" fill="none" stroke="${accent}" stroke-width="0.8" opacity="0.7" stroke-linecap="round"/>
-    <circle cx="${x1}" cy="${cy}" r="2" fill="${accent}" opacity="0.7"/>
-    <circle cx="${x2}" cy="${cy}" r="2" fill="${accent}" opacity="0.7"/>
-    <circle cx="${cx}" cy="${cy}" r="1.5" fill="${accent}" opacity="0.5"/>`;
-}
-
-/** Pequeno ornamento triangular (3 pontos formando triângulo equilátero). */
-function ornamentTriangle(cx: number, cy: number, size: number, accent: string): string {
-  const r = size;
-  const top = { x: cx, y: cy - r };
-  const bl = { x: cx - r * 0.866, y: cy + r * 0.5 };
-  const br = { x: cx + r * 0.866, y: cy + r * 0.5 };
-  return `
-    <circle cx="${top.x}" cy="${top.y}" r="2" fill="${accent}" opacity="0.7"/>
-    <circle cx="${bl.x.toFixed(1)}" cy="${bl.y.toFixed(1)}" r="2" fill="${accent}" opacity="0.7"/>
-    <circle cx="${br.x.toFixed(1)}" cy="${br.y.toFixed(1)}" r="2" fill="${accent}" opacity="0.7"/>`;
-}
-
-// ─── 1. CÍRCULO ───────────────────────────────────────────────────────────
-// Palavra grande italic, com flourishes caligráficos acima e abaixo. Sem
-// círculo a fechar a palavra.
+// ─── 1. ÂNCORA ────────────────────────────────────────────────────────────
+// Uma palavra. Enorme. Italic. Cor de acento. Nada mais.
 function svgCirculo(term: string, accent: string): string {
-  const w = 720, h = 360;
+  const w = 900, h = 360;
   const cx = w / 2, cy = h / 2;
+  // Tamanho dinâmico: palavras curtas ficam maiores
+  const fontSize = term.length <= 6 ? 180 : term.length <= 10 ? 140 : 100;
   return `${header(w, h)}
-    ${flourishHorizontal(cx, cy - 80, 220, accent, false)}
-    <text x="${cx}" y="${cy + 22}" text-anchor="middle" font-family='${FONT_SERIF}' font-size="84" font-style="italic" fill="${CREME}" font-weight="500">${esc(term)}</text>
-    ${flourishHorizontal(cx, cy + 80, 220, accent, true)}
+    <text x="${cx}" y="${cy + fontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${fontSize}" font-style="italic" fill="${accent}">${esc(term)}</text>
   ${footer()}`;
 }
 
-// ─── 2. TRÍADE ────────────────────────────────────────────────────────────
-// Três palavras em constelação. Sem círculos a fechar nada. Ornamento
-// triangular delicado ao centro a sugerir a relação.
+// ─── 2. CONSTELAÇÃO ───────────────────────────────────────────────────────
+// Três palavras como haiku: 3 linhas com escalas diferentes, alinhamentos
+// diferentes (esquerda · centro grande · direita). Lê-se de cima para baixo.
 function svgTriade(terms: string[], accent: string): string {
-  const w = 800, h = 460;
+  const w = 900, h = 540;
   const cx = w / 2;
-  const top = { x: cx, y: 90 };
-  const bl = { x: 160, y: 380 };
-  const br = { x: w - 160, y: 380 };
   const labels = [terms[0] ?? "", terms[1] ?? "", terms[2] ?? ""];
-  const pts = [top, bl, br];
-
-  // Ornamento ao centro
-  const centerOrnament = ornamentTriangle(cx, 270, 14, accent);
-
-  // Hairlines muito ténues do centro a cada vértice
-  const lines = pts
-    .map((p) => `<line x1="${cx}" y1="270" x2="${p.x}" y2="${p.y - 5}" stroke="${accent}" stroke-width="0.4" opacity="0.25" stroke-dasharray="1 6"/>`)
-    .join("");
-
-  // Palavras grandes
-  const nodes = pts
-    .map((p, i) => {
-      const dy = i === 0 ? 8 : 22;
-      return `<text x="${p.x}" y="${p.y + dy}" text-anchor="middle" font-family='${FONT_SERIF}' font-size="44" font-style="italic" fill="${CREME}">${esc(labels[i])}</text>`;
-    })
-    .join("");
-
-  return `${header(w, h)}${lines}${centerOrnament}${nodes}${footer()}`;
+  return `${header(w, h)}
+    <text x="160" y="120" text-anchor="start" font-family='${FONT_SERIF}' font-size="42" fill="${CREME_DIM}">${esc(labels[0])}</text>
+    <text x="${cx}" y="320" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="96" font-style="italic" fill="${accent}">${esc(labels[1])}</text>
+    <text x="${w - 160}" y="480" text-anchor="end" font-family='${FONT_SERIF}' font-size="42" font-style="italic" fill="${CREME_DIM}">${esc(labels[2])}</text>
+  ${footer()}`;
 }
 
-// ─── 3. PAREADO ───────────────────────────────────────────────────────────
-// Dois pólos. Hairline vertical com terminal caligráfico (S-curve nas pontas).
+// ─── 3. PÓLOS ─────────────────────────────────────────────────────────────
+// Dois conceitos empilhados verticalmente. Hairline a separar. Sans wide
+// labels. O segundo é o "depois", em italic e na cor de acento.
 function svgPareado(terms: string[], accent: string): string {
-  const w = 880, h = 320;
+  const w = 900, h = 460;
   const left = terms[0] ?? "";
   const right = terms[1] ?? "";
   const cx = w / 2;
-  const yTop = 80, yBot = h - 80, yMid = h / 2;
-
-  // Hairline vertical com swashes nas pontas e ornamento no meio
-  const vline = `<line x1="${cx}" y1="${yTop + 10}" x2="${cx}" y2="${yBot - 10}" stroke="${accent}" stroke-width="0.5" opacity="0.5"/>`;
-  const swashTop = `<path d="M ${cx - 14} ${yTop} Q ${cx} ${yTop + 8}, ${cx + 14} ${yTop}" fill="none" stroke="${accent}" stroke-width="0.7" opacity="0.7" stroke-linecap="round"/>`;
-  const swashBot = `<path d="M ${cx - 14} ${yBot} Q ${cx} ${yBot - 8}, ${cx + 14} ${yBot}" fill="none" stroke="${accent}" stroke-width="0.7" opacity="0.7" stroke-linecap="round"/>`;
-  const midDot = `<circle cx="${cx}" cy="${yMid}" r="2.5" fill="${accent}" opacity="0.7"/>`;
-
   return `${header(w, h)}
-    ${vline}${swashTop}${swashBot}${midDot}
-    <text x="${cx - 70}" y="${yMid - 50}" text-anchor="end" font-family='${FONT_SANS}' font-size="11" letter-spacing="6" fill="${accent}" opacity="0.65">ANTES</text>
-    <text x="${cx - 70}" y="${yMid + 22}" text-anchor="end" font-family='${FONT_SERIF}' font-size="62" fill="${CREME}">${esc(left)}</text>
-    <text x="${cx + 70}" y="${yMid - 50}" text-anchor="start" font-family='${FONT_SANS}' font-size="11" letter-spacing="6" fill="${accent}" opacity="0.65">DEPOIS</text>
-    <text x="${cx + 70}" y="${yMid + 22}" text-anchor="start" font-family='${FONT_SERIF}' font-size="62" font-style="italic" fill="${CREME}">${esc(right)}</text>
+    <text x="${cx}" y="100" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="8" fill="${CREME_DIM}">ANTES</text>
+    <text x="${cx}" y="180" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="76" fill="${CREME}">${esc(left)}</text>
+
+    <line x1="${cx - 80}" y1="240" x2="${cx + 80}" y2="240" stroke="${accent}" stroke-width="0.8" opacity="0.8"/>
+
+    <text x="${cx}" y="300" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="8" fill="${accent}" opacity="0.9">DEPOIS</text>
+    <text x="${cx}" y="380" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="76" font-style="italic" fill="${accent}">${esc(right)}</text>
   ${footer()}`;
 }
 
-// ─── 4. SEQUÊNCIA ─────────────────────────────────────────────────────────
-// Palavras numa linha curva (subtil). Numerais romanos pequenos por cima.
-// Sem círculos. Hairline curvo a fazer de baseline.
+// ─── 4. PASSAGEM ──────────────────────────────────────────────────────────
+// Palavras em escada ascendente. Numerais romanos inline antes de cada
+// palavra, na cor de acento, italic, pequenos. Cada palavra alterna
+// posição vertical (sobe à medida que avança). Sem linhas.
 function svgSequencia(terms: string[], accent: string): string {
   const items = terms.slice(0, 5).filter((t) => t && t.trim().length > 0);
   const n = items.length || 2;
-  const w = Math.min(1200, 260 * n + 80);
-  const h = 280;
-  const padX = 100;
-  const cy = h / 2;
-  const span = w - padX * 2;
-  const step = n > 1 ? span / (n - 1) : 0;
-
-  // Baseline curva (arc muito ligeiro, como uma respiração)
-  const baselinePath = `M ${padX - 20} ${cy + 50} Q ${w / 2} ${cy + 70}, ${w - padX + 20} ${cy + 50}`;
-  const baseline = `<path d="${baselinePath}" fill="none" stroke="${accent}" stroke-width="0.5" opacity="0.45" stroke-dasharray="2 5"/>`;
-
-  // Pontos onde cada palavra "pousa" na linha
-  const dots = items
-    .map((_, i) => {
-      const x = padX + step * i;
-      // y aproximado seguindo a curva (parabólico simplificado)
-      const t = i / Math.max(1, n - 1);
-      const yOnCurve = cy + 50 + Math.sin(t * Math.PI) * 20;
-      return `<circle cx="${x}" cy="${yOnCurve.toFixed(1)}" r="2" fill="${accent}" opacity="0.7"/>`;
-    })
-    .join("");
-
+  const w = 1100;
+  const lineH = 100;
+  const h = lineH * (n + 1) + 60;
   const ROMANS = ["i", "ii", "iii", "iv", "v"];
-  const nodes = items
+
+  const lines = items
     .map((t, i) => {
-      const x = padX + step * i;
+      // Cada linha indenta progressivamente para criar a sensação de escada
+      const x = 120 + i * 80;
+      const y = 100 + i * lineH;
       return `
-      <text x="${x}" y="${cy - 30}" text-anchor="middle" font-family='${FONT_SERIF}' font-style="italic" font-size="20" fill="${accent}" opacity="0.85">${ROMANS[i] ?? i + 1}.</text>
-      <text x="${x}" y="${cy + 14}" text-anchor="middle" font-family='${FONT_SERIF}' font-size="38" font-style="italic" fill="${CREME}">${esc(t)}</text>`;
+      <text x="${x}" y="${y}" font-family='${FONT_SERIF}' font-style="italic" font-size="22" fill="${accent}" opacity="0.85">${ROMANS[i] ?? i + 1}.</text>
+      <text x="${x + 50}" y="${y}" font-family='${FONT_DISPLAY}' font-size="58" font-style="italic" fill="${CREME}">${esc(t)}</text>`;
     })
     .join("");
 
-  return `${header(w, h)}${baseline}${dots}${nodes}${footer()}`;
+  return `${header(w, h)}${lines}${footer()}`;
 }
 
-// ─── 5. ANEL ──────────────────────────────────────────────────────────────
-// Conceito central grande italic; palavras em órbita livre (posições
-// regulares mas sem círculos a fechá-las). Arco parcial outer como horizonte.
+// ─── 5. ÓRBITA ────────────────────────────────────────────────────────────
+// Central enorme. Periféricos como pequenas tags em sans com letterspacing
+// largo, distribuídas à volta sem círculos. As tags estão em órbita SOBRE
+// a palavra central — comem o espaço onde poderia haver geometria.
 function svgAnel(central: string, terms: string[], accent: string): string {
-  const w = 800, h = 700;
+  const w = 1000, h = 700;
   const cx = w / 2, cy = h / 2;
-  const rOuter = 280;
   const items = terms.slice(0, 6).filter((t) => t && t.trim().length > 0);
   const n = items.length || 1;
+  const radius = 280;
 
-  // Arco exterior (3/4 do círculo, sugere incompletude)
-  const arcStart = -Math.PI * 0.6;
-  const arcEnd = Math.PI * 1.6;
-  const startX = cx + Math.cos(arcStart) * (rOuter + 20);
-  const startY = cy + Math.sin(arcStart) * (rOuter + 20);
-  const endX = cx + Math.cos(arcEnd) * (rOuter + 20);
-  const endY = cy + Math.sin(arcEnd) * (rOuter + 20);
-  const largeArc = arcEnd - arcStart > Math.PI ? 1 : 0;
-  const horizon = `<path d="M ${startX.toFixed(1)} ${startY.toFixed(1)} A ${rOuter + 20} ${rOuter + 20} 0 ${largeArc} 1 ${endX.toFixed(1)} ${endY.toFixed(1)}" fill="none" stroke="${accent}" stroke-width="0.4" opacity="0.3" stroke-dasharray="2 8"/>`;
-
-  // Palavras periféricas — sem círculos
+  // Periféricos como pequenas tags sans em letterspacing largo
   const outer = items
     .map((t, i) => {
       const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
-      const x = cx + Math.cos(angle) * rOuter;
-      const y = cy + Math.sin(angle) * rOuter;
-      return `<text x="${x.toFixed(1)}" y="${(y + 8).toFixed(1)}" text-anchor="middle" font-family='${FONT_SERIF}' font-size="26" fill="${CREME}">${esc(t)}</text>`;
+      const x = cx + Math.cos(angle) * radius;
+      const y = cy + Math.sin(angle) * radius;
+      return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" font-family='${FONT_SANS}' font-size="13" letter-spacing="5" fill="${CREME_DIM}">${esc(t.toUpperCase())}</text>`;
     })
     .join("");
 
-  // Pontos minúsculos entre o centro e cada palavra (sugerem "raio")
-  const rays = items
-    .map((_, i) => {
-      const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
-      const segs = [0.45, 0.62, 0.78];
-      return segs
-        .map((s) => {
-          const x = cx + Math.cos(angle) * rOuter * s;
-          const y = cy + Math.sin(angle) * rOuter * s;
-          return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.3" fill="${accent}" opacity="${0.3 + s * 0.3}"/>`;
-        })
-        .join("");
-    })
-    .join("");
+  // Central HUGE em italic display
+  const centralFontSize =
+    central.length <= 8 ? 130 : central.length <= 14 ? 100 : 80;
 
-  // Centro: palavra grande italic, sem círculo a fechá-la
-  const center = `
-    <text x="${cx}" y="${cy + 18}" text-anchor="middle" font-family='${FONT_SERIF}' font-size="56" font-style="italic" fill="${CREME}" font-weight="500">${esc(central)}</text>`;
-
-  return `${header(w, h)}${horizon}${rays}${outer}${center}${footer()}`;
+  return `${header(w, h)}
+    ${outer}
+    <text x="${cx}" y="${cy + centralFontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${centralFontSize}" font-style="italic" fill="${accent}">${esc(central)}</text>
+  ${footer()}`;
 }
 
 export function renderDiagram(d: Diagram, accent: string): string {
@@ -254,9 +167,9 @@ export function renderDiagram(d: Diagram, accent: string): string {
 }
 
 export const DIAGRAM_LABELS: Record<DiagramType, string> = {
-  circulo: "Âncora (palavra com flourishes acima/abaixo)",
-  triade: "Constelação (3 palavras + ornamento central)",
-  pareado: "Pólos (antes / depois com hairline ornamental)",
-  sequencia: "Passagem (i. ii. iii. numa linha curva)",
-  anel: "Órbita (1 central + palavras em horizonte)",
+  circulo: "Âncora (palavra única, gigante, italic)",
+  triade: "Constelação (3 palavras em haiku, escalas diferentes)",
+  pareado: "Pólos (antes / depois empilhados, hairline separa)",
+  sequencia: "Passagem (palavras em escada com numerais romanos)",
+  anel: "Órbita (central gigante, periféricos como tags sans)",
 };
