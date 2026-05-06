@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 /**
  * /admin/producao/longos/[slug]
@@ -77,8 +77,10 @@ function splitScriptByChapters(script: string): { titulo: string; texto: string 
 export default function LongoDetailPage() {
   const params = useParams<{ slug: string }>();
   const slug = params?.slug as string;
+  const router = useRouter();
 
   const [project, setProject] = useState<LongoProject | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
@@ -868,6 +870,50 @@ export default function LongoDetailPage() {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
+  const deleteProject = async (opts: {
+    keepNarration: boolean;
+    keepClips: boolean;
+  }) => {
+    if (!project) return;
+    const parts = ["manifest", "SRT", "vídeos finais/preview"];
+    if (!opts.keepClips) parts.push("clips MJ");
+    if (!opts.keepNarration) parts.push("narração MP3");
+    const summary = parts.join(", ");
+    const confirmMsg =
+      `APAGAR projecto "${project.titulo}"?\n\n` +
+      `Vai apagar: ${summary}.\n` +
+      (opts.keepNarration ? "Mantém narração MP3.\n" : "") +
+      (opts.keepClips ? "Mantém clips MJ.\n" : "") +
+      `\nIrreversível. Confirmas?`;
+    if (!window.confirm(confirmMsg)) return;
+    setDeleting(true);
+    setInfo("A apagar projecto...");
+    try {
+      const r = await fetch("/api/admin/longos/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: project.slug,
+          keepNarration: opts.keepNarration,
+          keepClips: opts.keepClips,
+        }),
+      });
+      const ct = r.headers.get("content-type") || "";
+      if (!ct.includes("application/json")) {
+        throw new Error(`Resposta não-JSON (${r.status})`);
+      }
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.erro || `HTTP ${r.status}`);
+      setInfo(
+        `✓ Apagado: ${d.deleted.manifest} manifest, ${d.deleted.clips} clips, ${d.deleted.audios} audios, ${d.deleted.subtitles} SRT, ${d.deleted.videos} vídeos`,
+      );
+      setTimeout(() => router.push("/admin/producao/longos"), 1500);
+    } catch (e) {
+      setInfo(`Erro: ${e instanceof Error ? e.message : String(e)}`);
+      setDeleting(false);
+    }
+  };
+
   if (loading) return <p className="text-xs text-escola-creme-50">A carregar...</p>;
   if (err)
     return (
@@ -929,6 +975,26 @@ export default function LongoDetailPage() {
             className="rounded border border-escola-border bg-escola-card px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
           >
             ⬇ Script .md
+          </button>
+          <button
+            onClick={() =>
+              deleteProject({ keepNarration: true, keepClips: true })
+            }
+            disabled={deleting}
+            title="Apagar manifest + SRT + vídeos finais. Mantém narração MP3 e clips MJ (úteis para regenerar)."
+            className="rounded border border-escola-border bg-escola-card px-2 py-1 text-escola-creme-50 hover:text-escola-terracota disabled:opacity-40"
+          >
+            🗑 Apagar (mantém narr+clips)
+          </button>
+          <button
+            onClick={() =>
+              deleteProject({ keepNarration: false, keepClips: false })
+            }
+            disabled={deleting}
+            title="APAGA TUDO: manifest, narração, clips MJ, SRT, vídeos. Irreversível."
+            className="rounded border border-escola-terracota bg-escola-card px-2 py-1 text-escola-terracota hover:bg-escola-terracota hover:text-escola-creme disabled:opacity-40"
+          >
+            🗑 Apagar TUDO
           </button>
         </div>
       </div>
