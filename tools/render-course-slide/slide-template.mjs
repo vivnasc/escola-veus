@@ -5,6 +5,7 @@
  */
 
 import { ambientParticles, ambientPresence } from "./slide-ambient.mjs";
+import { detectGesto, renderGesto } from "./slide-gestures.mjs";
 
 export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
   const footer =
@@ -41,10 +42,20 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
     const diagramHtml = diagramSvg
       ? `<div style="margin-top:48px;display:flex;justify-content:center">${diagramSvg}</div>`
       : "";
+    // Gesto visualizado no acto IV se nenhum diagrama foi escolhido para
+    // este slide e o texto contém uma palavra-chave de gesto.
+    let gestoHtml = "";
+    if (slide.acto === "gesto" && !diagramSvg) {
+      const g = detectGesto(slide.texto);
+      if (g) {
+        gestoHtml = `<div style="margin-top:36px;display:flex;justify-content:center">${renderGesto(g, accent, 240)}</div>`;
+      }
+    }
     body = `
       <div class="conteudo-wrap text-center">
         <p class="acto-${slide.acto} ${sizeClass} escola-conteudo">${html}</p>
         ${slide.acto === "frase" ? `<div class="accent-line" style="background:${accent};margin-top:24px"></div>` : ""}
+        ${gestoHtml}
         ${diagramHtml}
       </div>
     `;

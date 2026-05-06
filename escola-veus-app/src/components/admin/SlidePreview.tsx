@@ -6,6 +6,7 @@ import { getTerritoryTheme } from "@/data/territory-themes";
 import { parseEmphasis } from "@/lib/emphasis";
 import { renderDiagram, type Diagram } from "@/lib/diagrams";
 import { ambientParticles, ambientPresence } from "@/lib/slide-ambient";
+import { detectGesto, renderGesto } from "@/lib/slide-gestures";
 
 // Injecta DM Serif Display + Nunito uma unica vez (Cormorant ja esta global).
 function useSlideFonts() {
@@ -313,6 +314,19 @@ export function SlidePreview({
                     }}
                   />
                 )}
+                {slide.tipo === "conteudo" &&
+                  slide.acto === "gesto" &&
+                  !diagrams?.[String(index)] &&
+                  (() => {
+                    const g = detectGesto(slide.texto);
+                    return g ? (
+                      <div
+                        className="mt-6 mx-auto"
+                        style={{ width: "180px" }}
+                        dangerouslySetInnerHTML={{ __html: renderGesto(g, accent, 180) }}
+                      />
+                    ) : null;
+                  })()}
                 {slide.acto === "frase" && (
                   <div
                     className="mx-auto mt-6 h-px w-10"
