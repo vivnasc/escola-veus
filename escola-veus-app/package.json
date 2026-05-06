@@ -8,7 +8,13 @@
     "start": "next start",
     "lint": "next lint",
     "remotion:studio": "remotion studio src/remotion/index.ts",
-    "remotion:render": "remotion render src/remotion/index.ts VideoComposition"
+    "remotion:render": "remotion render src/remotion/index.ts VideoComposition",
+    "weekly": "tsx scripts/weekly/weekly.mjs",
+    "weekly:plan": "tsx scripts/weekly/plan.mjs",
+    "weekly:render": "tsx scripts/weekly/render.mjs",
+    "weekly:package": "tsx scripts/weekly/package.mjs",
+    "weekly:preview": "tsx scripts/weekly/preview-week.mjs",
+    "weekly:rotation": "tsx scripts/weekly/print-rotation.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",
