@@ -142,7 +142,10 @@ export async function POST(req: NextRequest) {
   const fewShotPrompts = pickFewShot();
   const fewShotScript = getFewShotScript().slice(0, 2500);
 
-  const client = new Anthropic({ apiKey });
+  // maxRetries=4 → SDK retries 429 e 5xx automaticamente com backoff
+  // exponencial. Importante porque temos visto 500s rápidos (<2s) da
+  // Anthropic; geralmente são transitórios e passam à 2ª/3ª tentativa.
+  const client = new Anthropic({ apiKey, maxRetries: 4 });
 
   const system = [
     {
@@ -257,8 +260,15 @@ Responde APENAS com JSON válido.`;
     // adaptive já produz output muito bom para este caso (geração
     // criativa estruturada).
     const stream = client.messages.stream({
-      model: "claude-sonnet-4-6",
-      max_tokens: 16000,
+      // Opus 4.7: melhor escrita criativa e menos AI-slop que Sonnet 4.6.
+      // Foi feita a mudança também porque víamos 500s repetíveis em <2s no
+      // Sonnet 4.6 com este schema (output_config.format complexo, 50-70
+      // prompts em array de objects). Custo ~3× (Sonnet $0.50 → Opus $1.50
+      // por geração) mas vale para conteúdo contemplativo de 20-30 min.
+      model: "claude-opus-4-7",
+      // 4.7 conta tokens diferente (text português gera mais tokens) — mais
+      // headroom para evitar truncamento mid-thought.
+      max_tokens: 24000,
       system,
       messages: [{ role: "user", content: userMessage }],
       output_config: {
@@ -348,14 +358,15 @@ Responde APENAS com JSON válido.`;
     const slug = slugify(parsed.slug || titulo);
     const prompts = Array.isArray(parsed.prompts) ? parsed.prompts : [];
 
-    // Custo (Sonnet 4.6: $3/MTok in, $15/MTok out; cache read: $0.30/MTok)
+    // Custo Opus 4.7: $5/MTok in, $25/MTok out; cache read $0.50/MTok;
+    // cache write 5min $6.25/MTok (= 1.25× input).
     const usage = response.usage;
-    const inCost = ((usage.input_tokens || 0) * 3) / 1_000_000;
-    const outCost = ((usage.output_tokens || 0) * 15) / 1_000_000;
+    const inCost = ((usage.input_tokens || 0) * 5) / 1_000_000;
+    const outCost = ((usage.output_tokens || 0) * 25) / 1_000_000;
     const cacheReadCost =
-      ((usage.cache_read_input_tokens || 0) * 0.3) / 1_000_000;
+      ((usage.cache_read_input_tokens || 0) * 0.5) / 1_000_000;
     const cacheWriteCost =
-      ((usage.cache_creation_input_tokens || 0) * 3.75) / 1_000_000;
+      ((usage.cache_creation_input_tokens || 0) * 6.25) / 1_000_000;
     const costUsd = inCost + outCost + cacheReadCost + cacheWriteCost;
 
     // Não estimamos duração. Duração real vem do MP3 quando a narração for
@@ -382,7 +393,33 @@ Responde APENAS com JSON válido.`;
       },
     });
   } catch (e) {
+    // Logging detalhado para diagnosticar 500s da Anthropic. Antes só
+    // tínhamos e.message — agora também extraímos status, type da API e
+    // request_id (essencial para abrir ticket à Anthropic).
+    if (e instanceof Anthropic.APIError) {
+      const err = e as unknown as {
+        status?: number;
+        message?: string;
+        type?: string;
+        request_id?: string;
+      };
+      const detail = {
+        status: err.status,
+        type: err.type,
+        message: err.message,
+        requestId: err.request_id,
+      };
+      console.error("[gen-project] Anthropic APIError:", JSON.stringify(detail));
+      return NextResponse.json(
+        {
+          erro: `Anthropic ${detail.status}${detail.type ? ` (${detail.type})` : ""}: ${detail.message}`,
+          requestId: detail.requestId,
+        },
+        { status: 500 },
+      );
+    }
     const msg = e instanceof Error ? e.message : String(e);
+    console.error("[gen-project] Erro não-API:", msg);
     return NextResponse.json({ erro: msg }, { status: 500 });
   }
 }
