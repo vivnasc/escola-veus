@@ -6,6 +6,7 @@ import { getTerritoryTheme } from "@/data/territory-themes";
 import { parseEmphasis } from "@/lib/emphasis";
 import { renderDiagram, type Diagram } from "@/lib/diagrams";
 import { ambientParticles, ambientPresence } from "@/lib/slide-ambient";
+import { detectGesto, renderGesto } from "@/lib/slide-gestures";
 
 // Injecta DM Serif Display + Nunito uma unica vez (Cormorant ja esta global).
 function useSlideFonts() {
@@ -225,6 +226,28 @@ export function SlidePreview({
             />
           )}
 
+          {/* Eco: palavra-mãe do acto anterior em fade muito subtil no canto
+              superior direito. Cria continuidade entre actos. */}
+          {slide.tipo === "conteudo" && "eco" in slide && slide.eco && (
+            <div
+              className="absolute right-[6%] top-[6%] text-right"
+              style={{ color: accent, fontFamily: '"Cormorant Garamond", Georgia, serif' }}
+            >
+              <div
+                className="text-[10px] uppercase"
+                style={{ opacity: 0.4, letterSpacing: "4px" }}
+              >
+                de antes
+              </div>
+              <div
+                className="font-serif text-base italic"
+                style={{ opacity: 0.4 }}
+              >
+                {slide.eco}
+              </div>
+            </div>
+          )}
+
           {/* Marca da Escola — assinatura discreta no canto inferior direito,
               acima de uma linha horizontal fina. Aparece em todos os slides
               de conteúdo (não no title/end/fecho). */}
@@ -302,7 +325,7 @@ export function SlidePreview({
                   style={contentStyleFor(slide.acto, slide.texto.length)}
                   className="whitespace-pre-line escola-conteudo"
                 >
-                  {parseEmphasis(slide.texto, accent, { dividers: true })}
+                  {parseEmphasis(slide.texto, accent, { dividers: true, typewriter: true })}
                 </p>
                 {diagrams?.[String(index)] && (
                   <div
@@ -313,12 +336,76 @@ export function SlidePreview({
                     }}
                   />
                 )}
+                {slide.tipo === "conteudo" &&
+                  slide.acto === "gesto" &&
+                  !diagrams?.[String(index)] &&
+                  (() => {
+                    const g = detectGesto(slide.texto);
+                    return g ? (
+                      <div
+                        className="mt-6 mx-auto"
+                        style={{ width: "180px" }}
+                        dangerouslySetInnerHTML={{ __html: renderGesto(g, accent, 180) }}
+                      />
+                    ) : null;
+                  })()}
                 {slide.acto === "frase" && (
                   <div
                     className="mx-auto mt-6 h-px w-10"
                     style={{ backgroundColor: accent }}
                   />
                 )}
+              </div>
+            )}
+
+            {slide.tipo === "pull-quote" && (
+              <div className="text-center" style={{ maxWidth: "78%" }}>
+                <p
+                  style={{
+                    fontFamily: '"DM Serif Display", Georgia, serif',
+                    fontStyle: "italic",
+                    fontSize: "clamp(28px, 4.6vw, 64px)",
+                    lineHeight: 1.25,
+                    color: accent,
+                  }}
+                >
+                  «&nbsp;{parseEmphasis(slide.texto, accent, { typewriter: true })}&nbsp;»
+                </p>
+              </div>
+            )}
+
+            {slide.tipo === "pausa" && (
+              <div
+                className="flex flex-col items-center justify-center"
+                style={{ animation: "escolaPausaBreath 5s ease-in-out infinite" }}
+              >
+                <svg
+                  viewBox="0 0 200 280"
+                  width="240"
+                  height="336"
+                  style={{ opacity: 0.5 }}
+                >
+                  <g
+                    fill="none"
+                    stroke={accent}
+                    strokeWidth={1.6}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx={100} cy={60} r={22} />
+                    <path d="M 100 82 L 100 100 M 70 110 Q 100 100 130 110" />
+                    <path d="M 70 110 Q 60 160 75 200" />
+                    <path d="M 130 110 Q 140 160 125 200" />
+                    <path d="M 75 200 Q 100 230 125 200 Q 150 230 130 240 L 70 240 Q 50 230 75 200" />
+                    <path d="M 80 130 Q 95 165 100 175 Q 105 165 120 130" />
+                  </g>
+                </svg>
+                <p
+                  className="mt-6 text-[10px] uppercase"
+                  style={{ color: accent, letterSpacing: "8px", opacity: 0.7 }}
+                >
+                  respira
+                </p>
               </div>
             )}
 
@@ -441,6 +528,22 @@ export function SlidePreview({
       </p>
 
       <style>{`
+        /* Cada palavra do conteúdo aparece em sequência (typewriter). Sem
+           voz a ler, esta animação simula a leitura humana e dá ritmo
+           pedagógico ao slide. */
+        .escola-word {
+          opacity: 0;
+          display: inline-block;
+          animation: escolaWordIn 0.5s ease-out forwards;
+        }
+        @keyframes escolaWordIn {
+          from { opacity: 0; transform: translateY(4px); filter: blur(3px); }
+          to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes escolaPausaBreath {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.04); }
+        }
         /* Capitular (drop cap) na primeira letra de cada bloco de conteúdo:
            letra grande em DM Serif Display na cor de acento, alinhada à
            altura das primeiras 2 linhas. Funciona bem em blocos com 2+

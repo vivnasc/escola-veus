@@ -5,6 +5,7 @@
  */
 
 import { ambientParticles, ambientPresence } from "./slide-ambient.mjs";
+import { detectGesto, renderGesto } from "./slide-gestures.mjs";
 
 export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
   const footer =
@@ -15,6 +16,15 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
   const actoLabel =
     (slide.tipo === "acto-marker" || slide.tipo === "conteudo") && slide.romano
       ? `<div class="acto-label" style="color:${accent}">${slide.romano} · ${slide.label}</div>`
+      : "";
+
+  // Eco: palavra-mãe do acto anterior, no canto superior direito em fade.
+  const ecoLabel =
+    slide.tipo === "conteudo" && slide.eco
+      ? `<div class="escola-eco" style="color:${accent}">
+           <div class="eco-meta">de antes</div>
+           <div class="eco-word">${esc(slide.eco)}</div>
+         </div>`
       : "";
 
   let body = "";
@@ -41,11 +51,46 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
     const diagramHtml = diagramSvg
       ? `<div style="margin-top:48px;display:flex;justify-content:center">${diagramSvg}</div>`
       : "";
+    // Gesto visualizado no acto IV se nenhum diagrama foi escolhido para
+    // este slide e o texto contém uma palavra-chave de gesto.
+    let gestoHtml = "";
+    if (slide.acto === "gesto" && !diagramSvg) {
+      const g = detectGesto(slide.texto);
+      if (g) {
+        gestoHtml = `<div style="margin-top:36px;display:flex;justify-content:center">${renderGesto(g, accent, 240)}</div>`;
+      }
+    }
     body = `
       <div class="conteudo-wrap text-center">
         <p class="acto-${slide.acto} ${sizeClass} escola-conteudo">${html}</p>
         ${slide.acto === "frase" ? `<div class="accent-line" style="background:${accent};margin-top:24px"></div>` : ""}
+        ${gestoHtml}
         ${diagramHtml}
+      </div>
+    `;
+  } else if (slide.tipo === "pull-quote") {
+    body = `
+      <div class="conteudo-wrap text-center">
+        <p style="font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-size:88px;line-height:1.25;color:${accent}">
+          «&nbsp;${emphasisToHtml(slide.texto, accent)}&nbsp;»
+        </p>
+      </div>
+    `;
+  } else if (slide.tipo === "pausa") {
+    body = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <svg viewBox="0 0 200 280" width="320" height="448" style="opacity:0.5">
+          <g fill="none" stroke="${accent}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="100" cy="60" r="22"/>
+            <path d="M 100 82 L 100 100 M 70 110 Q 100 100 130 110"/>
+            <path d="M 70 110 Q 60 160 75 200"/>
+            <path d="M 130 110 Q 140 160 125 200"/>
+            <path d="M 75 200 Q 100 230 125 200 Q 150 230 130 240 L 70 240 Q 50 230 75 200"/>
+            <path d="M 80 130 Q 95 165 100 175 Q 105 165 120 130"/>
+            <animateTransform attributeName="transform" type="scale" values="1;1.04;1" dur="5s" repeatCount="indefinite" additive="sum"/>
+          </g>
+        </svg>
+        <p style="margin-top:32px;font-family:'Nunito',sans-serif;font-size:18px;letter-spacing:10px;text-transform:uppercase;color:${accent};opacity:0.7">respira</p>
       </div>
     `;
   } else if (slide.tipo === "fecho") {
@@ -189,6 +234,26 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
     width: 1px;
     opacity: 0.35;
   }
+  /* Eco: palavra-mãe do acto anterior, em fade no canto superior direito. */
+  .escola-eco {
+    position: absolute;
+    right: 6%;
+    top: 6%;
+    text-align: right;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    opacity: 0.4;
+  }
+  .escola-eco .eco-meta {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .escola-eco .eco-word {
+    font-size: 32px;
+    font-style: italic;
+    margin-top: 4px;
+  }
   /* Marca da Escola dos Véus, canto inferior direito. Linha fina por cima
      do nome dá peso editorial. */
   .escola-mark {
@@ -217,6 +282,7 @@ export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
     ${slide.tipo !== "fecho" ? ambientParticles(1920, 1080, accent) : ""}
     ${slide.tipo === "conteudo" ? ambientPresence(accent) : ""}
     ${actoLabel}
+    ${ecoLabel}
     <div class="body-center">${body}</div>
     ${footer ? `<div class="footer">${esc(footer)}</div>` : ""}
     ${

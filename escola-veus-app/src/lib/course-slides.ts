@@ -37,6 +37,24 @@ export type Slide =
       label: string;
       texto: string;
       duracao: number;
+      // Palavra-eco do acto anterior. Aparece em fade muito subtil no
+      // canto, primeiro slide de cada novo acto. Cria continuidade.
+      eco?: string;
+    }
+  | {
+      // Pull-quote entre actos: a última frase forte do acto anterior em
+      // grande, sozinha. Cria pausa narrativa entre actos.
+      tipo: "pull-quote";
+      acto: Acto;
+      texto: string;
+      duracao: number;
+    }
+  | {
+      // Pausa activa: ecrã com a silhueta a respirar grande, sem texto.
+      // Inserido depois de actos pesados (situação, revelação) para a
+      // aluna respirar antes de avançar.
+      tipo: "pausa";
+      duracao: number;
     }
   | { tipo: "fecho"; duracao: number }
   | { tipo: "end"; texto: string; subtexto: string; duracao: number };
@@ -225,7 +243,45 @@ export function buildSlideDeckFromConfig(
     frase: script.fraseFinal,
   };
 
-  for (const { acto, romano, label } of ACTOS) {
+  // Actos onde se insere uma PAUSA (silhueta a respirar, sem texto) depois
+  // do conteúdo, antes do próximo acto. Reserva-se para os pesados.
+  const ACTOS_COM_PAUSA = new Set<Acto>(["situacao", "revelacao"]);
+
+  // Actos onde se insere um PULL-QUOTE entre o último bloco e a pausa/marker
+  // seguinte. Faz sentido em todos excepto Frase (que já é monumento por si).
+  const ACTOS_COM_PULL_QUOTE = new Set<Acto>([
+    "pergunta",
+    "situacao",
+    "revelacao",
+    "gesto",
+  ]);
+
+  // Palavra-mãe do último bloco de cada acto, para usar como eco no
+  // primeiro slide do acto seguinte.
+  const ecoByActoIdx: Record<number, string> = {};
+
+  function extractKeyWord(text: string): string {
+    // Heurística simples: pega na palavra mais longa (>=5 chars), preferindo
+    // substantivos comuns no texto. Filtra stop-words PT.
+    const STOP = new Set([
+      "para", "como", "que", "quando", "porque", "onde", "depois", "antes",
+      "sobre", "entre", "ainda", "mais", "menos", "estás", "está", "estar",
+      "tens", "teu", "teus", "tua", "tuas", "isto", "isso", "aquilo", "também",
+      "muito", "pouco", "agora", "nunca", "sempre", "talvez",
+    ]);
+    const words = text
+      .toLowerCase()
+      .replace(/[.,!?;:«»()"]/g, "")
+      .split(/\s+/)
+      .filter((w) => w.length >= 5 && !STOP.has(w));
+    if (words.length === 0) return "";
+    // Última palavra "forte" (mais perto do fim da frase tem mais peso narrativo)
+    return words[words.length - 1];
+  }
+
+  for (let actoIdx = 0; actoIdx < ACTOS.length; actoIdx++) {
+    const { acto, romano, label } = ACTOS[actoIdx];
+
     slides.push({
       tipo: "acto-marker",
       acto,
@@ -240,8 +296,10 @@ export function buildSlideDeckFromConfig(
         ? override.filter((b) => b && b.trim().length > 0).map((b) => b.trim())
         : defaultBlocksForActo(acto, sectionTexts[acto]);
 
-    for (const b of blocks) {
+    blocks.forEach((b, i) => {
       const base = acto === "frase" ? 8 : durationFor(b);
+      // Eco: só no primeiro slide de cada acto (não no primeiro acto).
+      const eco = i === 0 && actoIdx > 0 ? ecoByActoIdx[actoIdx - 1] : undefined;
       slides.push({
         tipo: "conteudo",
         acto,
@@ -249,6 +307,38 @@ export function buildSlideDeckFromConfig(
         label,
         texto: b,
         duracao: Math.max(3, Math.round(base * timingMul)),
+        ...(eco ? { eco } : {}),
+      });
+    });
+
+    // Guarda a palavra-mãe deste acto para o eco do seguinte
+    if (blocks.length > 0) {
+      ecoByActoIdx[actoIdx] = extractKeyWord(blocks[blocks.length - 1]);
+    }
+
+    // Não inserir pull-quote/pausa se o acto não tem conteúdo escrito.
+    const hasContent = blocks.length > 0;
+    const isLastActo = actoIdx === ACTOS.length - 1;
+
+    if (hasContent && !isLastActo && ACTOS_COM_PULL_QUOTE.has(acto)) {
+      // Pull-quote: última frase do último bloco do acto. Se a frase
+      // ficar muito curta (<25 chars), usa o bloco inteiro.
+      const lastBlock = blocks[blocks.length - 1];
+      const sentences = lastBlock.split(/(?<=[.?!])\s+/).filter(Boolean);
+      const lastSentence = sentences[sentences.length - 1] ?? lastBlock;
+      const quote = lastSentence.length >= 25 ? lastSentence : lastBlock;
+      slides.push({
+        tipo: "pull-quote",
+        acto,
+        texto: quote.trim(),
+        duracao: Math.max(6, Math.round(8 * timingMul)),
+      });
+    }
+
+    if (hasContent && !isLastActo && ACTOS_COM_PAUSA.has(acto)) {
+      slides.push({
+        tipo: "pausa",
+        duracao: Math.max(4, Math.round(5 * timingMul)),
       });
     }
   }
