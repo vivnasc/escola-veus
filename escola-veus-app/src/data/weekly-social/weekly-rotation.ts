@@ -96,7 +96,6 @@ export const LORANNE_AVAILABLE_ALBUMS: readonly string[] = Object.freeze([
   "nua-inteira",
   "nua-por-dentro",
   "nua-boa",
-  "nua-pele",
   "nua-duas-vozes",
   "grao-o-tear",
 ]);
@@ -252,6 +251,34 @@ function deterministicIndex(weekNumber: number, slotIndex: number, mod: number):
   return Math.abs(h) % mod;
 }
 
+/**
+ * Shuffle determinístico de um array dado uma seed.
+ * Fisher-Yates com PRNG mulberry32 alimentado por seed.
+ */
+function deterministicShuffle<T>(arr: readonly T[], seed: number): T[] {
+  const a = [...arr];
+  let state = (seed * 2654435761) >>> 0;
+  const next = () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(next() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/**
+ * Estratégia: por cada semana, baralha a lista de álbuns disponíveis
+ * deterministicamente. Para cada dia, escolhe o álbum N do shuffle e a
+ * faixa N rotativa dentro desse álbum. Garantia: 7 dias = 7 álbuns
+ * distintos por semana. Ao longo de várias semanas todas as faixas
+ * são visitadas.
+ */
 export function pickWeeklyLoranne(
   weekNumber: number,
   dayIndex: number,
@@ -261,19 +288,37 @@ export function pickWeeklyLoranne(
       "LORANNE_ROTATION está vazia — verifica filtros em weekly-rotation.ts.",
     );
   }
-  const idx = deterministicIndex(weekNumber, dayIndex, LORANNE_ROTATION.length);
-  return LORANNE_ROTATION[idx];
+  // Agrupa por álbum, ordena álbuns por melhor track score (estabilidade).
+  const byAlbum = new Map<string, LoranneRotationEntry[]>();
+  for (const e of LORANNE_ROTATION) {
+    if (!byAlbum.has(e.albumSlug)) byAlbum.set(e.albumSlug, []);
+    byAlbum.get(e.albumSlug)!.push(e);
+  }
+  const albums = [...byAlbum.keys()].sort();
+
+  // Shuffle por semana. dayIndex mod albums.length para nunca rebentar
+  // (mesmo se houver mais dias que álbuns).
+  const shuffled = deterministicShuffle(albums, weekNumber);
+  const albumSlug = shuffled[dayIndex % shuffled.length];
+
+  // Dentro do álbum, rotaciona faixas globalmente por (weekNumber × 7 + dayIndex).
+  const tracks = byAlbum.get(albumSlug)!;
+  // Ordena por trackNumber para previsibilidade.
+  tracks.sort((a, b) => a.trackNumber - b.trackNumber);
+  const trackIdx = (weekNumber * 7 + dayIndex) % tracks.length;
+  return tracks[trackIdx];
 }
 
+/**
+ * AG: 3 slots/semana. Garante 3 labels distintos baralhando o pool por semana.
+ */
 export function pickWeeklyAG(
   weekNumber: number,
   slotIndex: number,
 ): AGRotationEntry {
-  // Filtra entries com temas válidos (segurança contra typos).
-  const valid = AG_ROTATION.filter((e) => e.temas.every((t) => typeof t === "string" && t.length > 0));
-  if (valid.length === 0) {
+  if (AG_ROTATION.length === 0) {
     throw new Error("AG_ROTATION está vazia.");
   }
-  const idx = deterministicIndex(weekNumber, slotIndex, valid.length);
-  return valid[idx];
+  const shuffled = deterministicShuffle(AG_ROTATION, weekNumber + 100); // offset para descorrelacionar de Loranne
+  return shuffled[slotIndex % shuffled.length];
 }
