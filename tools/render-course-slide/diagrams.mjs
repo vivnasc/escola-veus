@@ -24,7 +24,7 @@ function esc(s) {
 
 function animFadeIn(begin = "0s", dur = "1s") {
   return `
-    <animate attributeName="opacity" from="0" to="1" begin="${begin}" dur="${dur}" fill="freeze"/>
+    <animate attributeName="opacity" values="0;1" begin="${begin}" dur="${dur}" fill="freeze"/>
     <animateTransform attributeName="transform" type="translate" from="0 12" to="0 0" begin="${begin}" dur="${dur}" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1"/>`;
 }
 function animBreath(begin = "1.5s", dur = "5s") {

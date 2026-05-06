@@ -117,23 +117,30 @@ export function inferDiagram(
     if (word) return { type: "circulo", terms: [word] };
   }
 
-  // 2. Pergunta primeiro bloco curto: âncora com palavra-chave
+  // 2. Sequência se houver passos numerados (sobretudo em Gesto) — testa
+  //    PRIMEIRO porque é o padrão mais específico.
+  const steps = detectSteps(text);
+  if (steps) return { type: "sequencia", terms: steps };
+
+  // 3. Pareado se há opostos óbvios
+  const opposites = detectOpposites(text);
+  if (opposites) return { type: "pareado", terms: [opposites[0], opposites[1]] };
+
+  // 4. Tríade se há "X, Y e Z"
+  const triad = detectTriad(text);
+  if (triad) return { type: "triade", terms: [triad[0], triad[1], triad[2]] };
+
+  // 5. Pergunta primeiro bloco curto: âncora com palavra-chave
   if (acto === "pergunta" && isFirstBlock && text.length < 180) {
     const word = topConcept(text);
     if (word && word.length >= 5) return { type: "circulo", terms: [word] };
   }
 
-  // 3. Sequência se houver passos numerados (sobretudo em Gesto)
-  const steps = detectSteps(text);
-  if (steps) return { type: "sequencia", terms: steps };
-
-  // 4. Pareado se há opostos óbvios
-  const opposites = detectOpposites(text);
-  if (opposites) return { type: "pareado", terms: [opposites[0], opposites[1]] };
-
-  // 5. Tríade se há "X, Y e Z"
-  const triad = detectTriad(text);
-  if (triad) return { type: "triade", terms: [triad[0], triad[1], triad[2]] };
+  // 6. FALLBACK universal: âncora com a palavra mais carregada do bloco.
+  //    Garante que praticamente todos os slides de conteúdo ganham um
+  //    diagrama subtil, mesmo quando o texto não tem padrão claro.
+  const word = topConcept(text);
+  if (word && word.length >= 5) return { type: "circulo", terms: [word] };
 
   return null;
 }
