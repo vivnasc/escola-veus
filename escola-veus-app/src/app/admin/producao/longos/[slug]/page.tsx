@@ -804,6 +804,13 @@ export default function LongoDetailPage() {
     //   - Antes de chamar ElevenLabs, fazemos HEAD ao Supabase para ver se
     //     o ficheiro já existe (ex: browser fechou anteriormente). Se sim,
     //     reutiliza o URL → ZERO custo adicional ElevenLabs.
+    //
+    // REQUEST STITCHING: tracking dos últimos request IDs (máx 3, mais
+    // recente primeiro) para passar ao próximo capítulo + previousText
+    // (últimas 1000 chars do capítulo anterior) + nextText (primeiras 1000
+    // do seguinte). Eleven usa estes para manter consistência de voz/tom
+    // → narração contínua sem cortes audíveis na junção dos capítulos.
+    const previousRequestIds: string[] = [];
     for (let i = 0; i < chapters.length; i++) {
       const ch = chapters[i];
       setNarrProgress({
@@ -825,6 +832,9 @@ export default function LongoDetailPage() {
           const head = await fetch(existingUrl, { method: "HEAD", cache: "no-store" });
           if (head.ok) {
             chunkUrls.push(existingUrl);
+            // Limpa context — ficheiro existente não tem requestId conhecido,
+            // stitching para chunks não-adjacentes piora em vez de melhorar.
+            previousRequestIds.length = 0;
             continue; // skip ElevenLabs — resume!
           }
         } catch {
@@ -833,6 +843,9 @@ export default function LongoDetailPage() {
       }
 
       try {
+        const prevText = i > 0 ? chapters[i - 1].texto : undefined;
+        const nextText =
+          i < chapters.length - 1 ? chapters[i + 1].texto : undefined;
         const r = await fetch("/api/admin/audio-bulk/generate-one", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -843,18 +856,34 @@ export default function LongoDetailPage() {
             title: keyName,
             keyName, // ← fixo, sem timestamp
             folder: "longos-audios",
+            previousRequestIds:
+              previousRequestIds.length > 0 ? [...previousRequestIds] : undefined,
+            previousText: prevText,
+            nextText,
           }),
         });
         const d = await r.json();
         if (!r.ok || d.erro || !d.audioUrl) {
           chunkErrors.push(`cap${i + 1} (${ch.titulo}): ${d.erro || `HTTP ${r.status}`}`);
+          // Falha → limpa context para o próximo (stitching para chunk
+          // que não foi gerado dá pior resultado que sem stitching)
+          previousRequestIds.length = 0;
           continue;
         }
         chunkUrls.push(d.audioUrl);
+        // Adiciona requestId à lista (mais recente primeiro, máx 3)
+        if (d.requestId) {
+          previousRequestIds.unshift(d.requestId);
+          if (previousRequestIds.length > 3) previousRequestIds.length = 3;
+        } else {
+          // Sem requestId (ex: API antiga em cache) → não estraga o próximo
+          // mas também não melhora; mantém o que já tinhamos.
+        }
       } catch (e) {
         chunkErrors.push(
           `cap${i + 1} (${ch.titulo}): ${e instanceof Error ? e.message : String(e)}`,
         );
+        previousRequestIds.length = 0;
       }
     }
 
