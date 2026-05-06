@@ -179,6 +179,12 @@ export default function AulasPage() {
                     >
                       ◊ Diagramas Claude (sugestões de infografias)
                     </Link>
+                    <Link
+                      href="/admin/producao/aulas/diagramas-preview"
+                      className="rounded border border-escola-border px-2 py-1 text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+                    >
+                      ◊ Galeria local (testar visual sem custo)
+                    </Link>
                     <span className="text-escola-creme-50">
                       A Claude lê tudo e propõe correcções; tu aceitas ou rejeitas.
                     </span>
