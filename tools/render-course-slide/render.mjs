@@ -304,10 +304,25 @@ async function uploadLargeToSupabase(pathInBucket, filePath, contentType) {
   const fileSize = info.size;
   const CHUNK_SIZE = 6 * 1024 * 1024;
 
+  // O TUS endpoint do Supabase recusa overwrite com 409 mesmo com
+  // `upsert true` na metadata (testado). Solução robusta: apagar o
+  // ficheiro existente antes do upload. 404 (não existia) é ignorado.
+  try {
+    const delRes = await fetch(
+      `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${pathInBucket}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${SERVICE_KEY}` },
+      },
+    );
+    if (delRes.ok) {
+      console.log(`[render-course-slide] apagado ficheiro existente em ${pathInBucket}`);
+    }
+  } catch {
+    // ignora — provavelmente não existia
+  }
+
   const b64 = (s) => Buffer.from(s, "utf-8").toString("base64");
-  // O `upsert true` TEM de vir no Upload-Metadata para o Supabase aceitar
-  // overwrite — o header `x-upsert` sozinho NÃO é honrado pelo TUS endpoint
-  // (devolve 409 "The resource already exists" se o ficheiro já lá estiver).
   const metadata = [
     `bucketName ${b64(BUCKET)}`,
     `objectName ${b64(pathInBucket)}`,
