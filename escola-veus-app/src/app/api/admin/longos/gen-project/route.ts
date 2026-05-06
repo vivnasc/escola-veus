@@ -90,6 +90,7 @@ export async function POST(req: NextRequest) {
     duracaoAlvo?: number;
     tom?: string;
     seedFromEpId?: string;
+    model?: "sonnet" | "opus";
   };
   try {
     body = await req.json();
@@ -98,6 +99,12 @@ export async function POST(req: NextRequest) {
   }
   const seedFromEpId = (body.seedFromEpId || "").trim();
   const tom = body.tom || "contemplativo";
+  // Sonnet 4.6 = barato e rápido (~$0.10-0.20/projecto, 30-60s) mas tem
+  // tido 500s repetíveis com este schema. Opus 4.7 = mais caro mas mais
+  // robusto (~$0.50-0.80/projecto, 1-3 min). Default Sonnet; UI tem
+  // botão "tentar com Opus" se falhar.
+  const modelChoice = body.model === "opus" ? "opus" : "sonnet";
+  const modelId = modelChoice === "opus" ? "claude-opus-4-7" : "claude-sonnet-4-6";
 
   // ── Modo "expandir ep funil" ──────────────────────────────────────────
   // Em vez de tema livre, parte dum mini-ep dos 122 do funil Nomear (~1:30
@@ -260,14 +267,9 @@ Responde APENAS com JSON válido.`;
     // adaptive já produz output muito bom para este caso (geração
     // criativa estruturada).
     const stream = client.messages.stream({
-      // Opus 4.7: melhor escrita criativa e menos AI-slop que Sonnet 4.6.
-      // Foi feita a mudança também porque víamos 500s repetíveis em <2s no
-      // Sonnet 4.6 com este schema (output_config.format complexo, 50-70
-      // prompts em array de objects). Custo ~3× (Sonnet $0.50 → Opus $1.50
-      // por geração) mas vale para conteúdo contemplativo de 20-30 min.
-      model: "claude-opus-4-7",
-      // 4.7 conta tokens diferente (text português gera mais tokens) — mais
-      // headroom para evitar truncamento mid-thought.
+      model: modelId,
+      // Headroom para 50-70 prompts + script 2500-4000 palavras. Opus 4.7
+      // conta tokens um pouco diferente que Sonnet 4.6 — 24k cobre ambos.
       max_tokens: 24000,
       system,
       messages: [{ role: "user", content: userMessage }],
@@ -358,15 +360,21 @@ Responde APENAS com JSON válido.`;
     const slug = slugify(parsed.slug || titulo);
     const prompts = Array.isArray(parsed.prompts) ? parsed.prompts : [];
 
-    // Custo Opus 4.7: $5/MTok in, $25/MTok out; cache read $0.50/MTok;
-    // cache write 5min $6.25/MTok (= 1.25× input).
+    // Pricing por modelo (USD por 1M tokens):
+    //   Sonnet 4.6: $3 in / $15 out / $0.30 cache read / $3.75 cache write 5m
+    //   Opus 4.7:   $5 in / $25 out / $0.50 cache read / $6.25 cache write 5m
+    const PRICING = {
+      sonnet: { in: 3, out: 15, cacheRead: 0.3, cacheWrite: 3.75 },
+      opus: { in: 5, out: 25, cacheRead: 0.5, cacheWrite: 6.25 },
+    } as const;
+    const p = PRICING[modelChoice];
     const usage = response.usage;
-    const inCost = ((usage.input_tokens || 0) * 5) / 1_000_000;
-    const outCost = ((usage.output_tokens || 0) * 25) / 1_000_000;
+    const inCost = ((usage.input_tokens || 0) * p.in) / 1_000_000;
+    const outCost = ((usage.output_tokens || 0) * p.out) / 1_000_000;
     const cacheReadCost =
-      ((usage.cache_read_input_tokens || 0) * 0.5) / 1_000_000;
+      ((usage.cache_read_input_tokens || 0) * p.cacheRead) / 1_000_000;
     const cacheWriteCost =
-      ((usage.cache_creation_input_tokens || 0) * 6.25) / 1_000_000;
+      ((usage.cache_creation_input_tokens || 0) * p.cacheWrite) / 1_000_000;
     const costUsd = inCost + outCost + cacheReadCost + cacheWriteCost;
 
     // Não estimamos duração. Duração real vem do MP3 quando a narração for
@@ -378,6 +386,8 @@ Responde APENAS com JSON válido.`;
       titulo,
       slug,
       tema,
+      model: modelChoice,
+      modelId,
       thumbnailText: parsed.thumbnailText || titulo.toUpperCase(),
       capitulos: parsed.capitulos || [],
       script: parsed.script || "",
