@@ -39,6 +39,70 @@ export default function RenderBulkPage({
   const [excludeM1A, setExcludeM1A] = useState(true);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Faixa AG do curso: a UI mostra a actual + permite escolher outra
+  // antes de disparar o render.
+  const [tracks, setTracks] = useState<Array<{ name: string; url: string }>>([]);
+  const [tracksLoading, setTracksLoading] = useState(true);
+  const [defaultTrack, setDefaultTrack] = useState<string | null>(null);
+  const [trackSaving, setTrackSaving] = useState(false);
+  const [playingName, setPlayingName] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Carrega faixas + default actual ao montar
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const [tr, df] = await Promise.all([
+          fetch("/api/admin/music/list-album?album=ancient-ground"),
+          fetch(`/api/admin/aulas/course-defaults?slug=${slug}`),
+        ]);
+        const trJ = await tr.json();
+        const dfJ = await df.json();
+        if (!alive) return;
+        setTracks(trJ.tracks ?? []);
+        setDefaultTrack(dfJ.defaults?.agTrack ?? null);
+      } finally {
+        if (alive) setTracksLoading(false);
+      }
+    })();
+    return () => {
+      alive = false;
+      audioRef.current?.pause();
+    };
+  }, [slug]);
+
+  function togglePlay(t: { name: string; url: string }) {
+    if (!audioRef.current) audioRef.current = new Audio();
+    if (playingName === t.name) {
+      audioRef.current.pause();
+      setPlayingName(null);
+      return;
+    }
+    audioRef.current.src = t.url;
+    audioRef.current.play().catch(() => {});
+    setPlayingName(t.name);
+    audioRef.current.onended = () => setPlayingName(null);
+  }
+
+  async function escolherFaixa(name: string) {
+    setTrackSaving(true);
+    try {
+      const r = await fetch("/api/admin/aulas/course-defaults", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug,
+          defaults: { agTrack: name },
+        }),
+      });
+      if (!r.ok) throw new Error("save failed");
+      setDefaultTrack(name);
+    } finally {
+      setTrackSaving(false);
+    }
+  }
+
   async function lancar(only?: Array<{ module: number; sub: string }>) {
     setDispatching(true);
     setRequestError(null);
@@ -182,15 +246,88 @@ export default function RenderBulkPage({
         · FFmpeg). {totalSubs} sub-aulas no total.
       </p>
 
+      {/* Painel de escolha da faixa AG do curso — pré-condição do render. */}
+      <div className="mt-6 rounded-xl border border-escola-border bg-escola-card p-5">
+        <div className="mb-2 flex items-center justify-between">
+          <h2 className="text-sm font-medium text-escola-creme">
+            🎵 Faixa Ancient Ground deste curso
+          </h2>
+          <span className="text-[11px] text-escola-creme-50">
+            {trackSaving && "A guardar…"}
+            {!trackSaving && defaultTrack && (
+              <>activa: <span className="text-escola-creme">{defaultTrack}</span></>
+            )}
+            {!trackSaving && !defaultTrack && (
+              <span className="text-red-400">nenhuma escolhida</span>
+            )}
+          </span>
+        </div>
+        <p className="mb-3 text-[11px] text-escola-creme-50">
+          A faixa por defeito do curso vai para todas as 24 sub-aulas. Em
+          sub-aulas individuais podes ainda fazer override no editor contextual.
+        </p>
+        {tracksLoading && (
+          <p className="text-xs text-escola-creme-50">A carregar faixas…</p>
+        )}
+        {!tracksLoading && tracks.length === 0 && (
+          <p className="text-xs text-escola-creme-50">
+            Nenhuma faixa em <code>audios/albums/ancient-ground/</code>.
+          </p>
+        )}
+        {!tracksLoading && tracks.length > 0 && (
+          <div className="max-h-72 space-y-1 overflow-y-auto rounded border border-escola-border bg-escola-bg p-2">
+            {tracks.map((t) => {
+              const selected = defaultTrack === t.name;
+              return (
+                <label
+                  key={t.name}
+                  className={`flex cursor-pointer items-center gap-2 rounded px-2 py-1.5 text-xs transition-colors ${
+                    selected ? "bg-escola-dourado/10" : "hover:bg-white/5"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="ag-track-bulk"
+                    checked={selected}
+                    onChange={() => void escolherFaixa(t.name)}
+                    className="h-4 w-4 shrink-0 accent-escola-dourado"
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      togglePlay(t);
+                    }}
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-escola-border text-[11px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+                    title={playingName === t.name ? "Pausa" : "Tocar amostra"}
+                  >
+                    {playingName === t.name ? "⏸" : "▶"}
+                  </button>
+                  <span className="flex-1 truncate text-escola-creme">{t.name}</span>
+                  {selected && (
+                    <span className="text-[9px] uppercase tracking-wider text-escola-dourado">
+                      activa
+                    </span>
+                  )}
+                </label>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
       <div className="mt-6 mb-6 flex flex-wrap items-center gap-3">
         <button
           onClick={lancarTodos}
-          disabled={dispatching}
+          disabled={dispatching || !defaultTrack}
           className="rounded-lg bg-escola-dourado px-4 py-2 text-sm font-medium text-escola-bg transition-opacity hover:opacity-90 disabled:opacity-40"
+          title={!defaultTrack ? "Escolhe uma faixa AG primeiro" : ""}
         >
           {dispatching
             ? "A despachar…"
-            : `🎬 Renderizar ${excludeM1A ? totalSubs - 1 : totalSubs} sub-aulas`}
+            : !defaultTrack
+              ? "Escolhe uma faixa AG primeiro"
+              : `🎬 Renderizar ${excludeM1A ? totalSubs - 1 : totalSubs} sub-aulas`}
         </button>
         <label className="flex items-center gap-1.5 text-[11px] text-escola-creme-50">
           <input
