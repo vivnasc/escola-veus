@@ -25,9 +25,33 @@ function splitSentences(text: string): string[] {
 export function parseEmphasis(
   text: string,
   accentColor: string,
-  options: { dividers?: boolean } = {},
+  options: { dividers?: boolean; typewriter?: boolean; secondsPerWord?: number } = {},
 ): React.ReactNode[] {
   const sentences = options.dividers ? splitSentences(text) : [text];
+  const typewriter = options.typewriter ?? false;
+  const stepSec = options.secondsPerWord ?? 0.09;
+  // Contador global de palavras revealed (para staggered animation-delay).
+  let wordIdx = 0;
+
+  function renderText(s: string): React.ReactNode[] {
+    if (!typewriter) return [s];
+    // Quebrar em palavras preservando espaços; cada palavra num span com
+    // animation-delay crescente.
+    const tokens = s.split(/(\s+)/);
+    return tokens.map((tok, i) => {
+      if (/^\s+$/.test(tok)) return tok;
+      const delay = (wordIdx++ * stepSec).toFixed(2);
+      return (
+        <span
+          key={`w${i}-${delay}`}
+          className="escola-word"
+          style={{ animationDelay: `${delay}s` }}
+        >
+          {tok}
+        </span>
+      );
+    });
+  }
 
   function renderSentence(s: string, baseKey: string): React.ReactNode[] {
     const out: React.ReactNode[] = [];
@@ -36,18 +60,21 @@ export function parseEmphasis(
     let i = 0;
     EMPH_RE.lastIndex = 0;
     while ((match = EMPH_RE.exec(s)) !== null) {
-      if (match.index > last) out.push(s.slice(last, match.index));
+      if (match.index > last) out.push(...renderText(s.slice(last, match.index)));
+      // Os <em> também recebem animação por palavra
+      const emText = match[1];
+      const emInner = renderText(emText);
       out.push(
         <em
           key={`${baseKey}-e${i++}`}
           style={{ color: accentColor, fontStyle: "italic", fontWeight: 500 }}
         >
-          {match[1]}
+          {emInner}
         </em>,
       );
       last = match.index + match[0].length;
     }
-    if (last < s.length) out.push(s.slice(last));
+    if (last < s.length) out.push(...renderText(s.slice(last)));
     return out;
   }
 

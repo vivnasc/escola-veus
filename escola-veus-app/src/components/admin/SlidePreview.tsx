@@ -302,7 +302,7 @@ export function SlidePreview({
                   style={contentStyleFor(slide.acto, slide.texto.length)}
                   className="whitespace-pre-line escola-conteudo"
                 >
-                  {parseEmphasis(slide.texto, accent, { dividers: true })}
+                  {parseEmphasis(slide.texto, accent, { dividers: true, typewriter: true })}
                 </p>
                 {diagrams?.[String(index)] && (
                   <div
@@ -441,6 +441,18 @@ export function SlidePreview({
       </p>
 
       <style>{`
+        /* Cada palavra do conteúdo aparece em sequência (typewriter). Sem
+           voz a ler, esta animação simula a leitura humana e dá ritmo
+           pedagógico ao slide. */
+        .escola-word {
+          opacity: 0;
+          display: inline-block;
+          animation: escolaWordIn 0.5s ease-out forwards;
+        }
+        @keyframes escolaWordIn {
+          from { opacity: 0; transform: translateY(4px); filter: blur(3px); }
+          to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
         /* Capitular (drop cap) na primeira letra de cada bloco de conteúdo:
            letra grande em DM Serif Display na cor de acento, alinhada à
            altura das primeiras 2 linhas. Funciona bem em blocos com 2+
