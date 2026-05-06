@@ -551,10 +551,20 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
                 onClick={generateAllVoices}
                 disabled={generatingAll}
                 className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme disabled:opacity-40"
+                title="Gera todas as vozes que ainda faltam, em sequência"
               >
                 {generatingAll
                   ? `${progress?.done ?? 0}/${progress?.total ?? totalSlides}`
-                  : "↻ gerar todas as que faltam"}
+                  : "↻ gerar todas as vozes que faltam"}
+              </button>
+            )}
+            {withoutVoice && (
+              <button
+                disabled
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme-50 opacity-40"
+                title="Desmarca 'Sem voz' acima para gerar narrações"
+              >
+                ↻ gerar todas as vozes (sem voz activo)
               </button>
             )}
           </div>
