@@ -18,6 +18,7 @@ import {
 } from "@/data/course-scripts/ouro-proprio";
 import { getCourseBySlug } from "@/data/courses";
 import type { Diagram } from "@/lib/diagrams";
+import { inferDiagram } from "@/lib/diagram-infer";
 
 export type Acto = "pergunta" | "situacao" | "revelacao" | "gesto" | "frase";
 
@@ -363,6 +364,22 @@ export function buildSlideDeckFromConfig(
 
   const totalDurationSec = slides.reduce((s, sl) => s + sl.duracao, 0);
 
+  // Diagramas: começa com os manuais (config.diagrams). Para slides de
+  // conteúdo onde NÃO há manual, tenta inferir um automaticamente a partir
+  // do texto. Heurísticas conservadoras em diagram-infer.ts — slides
+  // sem padrão claro ficam sem diagrama.
+  const finalDiagrams: Record<string, Diagram> = { ...(config?.diagrams ?? {}) };
+  // Track do primeiro bloco de cada acto
+  const firstBlockSeen = new Set<Acto>();
+  slides.forEach((s, i) => {
+    if (s.tipo !== "conteudo") return;
+    if (finalDiagrams[String(i)]) return; // override manual ganha
+    const isFirstBlock = !firstBlockSeen.has(s.acto);
+    firstBlockSeen.add(s.acto);
+    const inferred = inferDiagram(s.acto, s.texto, isFirstBlock);
+    if (inferred) finalDiagrams[String(i)] = inferred;
+  });
+
   return {
     courseSlug,
     courseTitle: course.title,
@@ -371,7 +388,7 @@ export function buildSlideDeckFromConfig(
     subTitle: script.title,
     totalDurationSec,
     slides,
-    diagrams: config?.diagrams,
+    diagrams: Object.keys(finalDiagrams).length > 0 ? finalDiagrams : undefined,
   };
 }
 

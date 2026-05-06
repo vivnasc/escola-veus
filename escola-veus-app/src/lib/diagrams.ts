@@ -38,11 +38,15 @@ function esc(s: string): string {
 }
 
 // ─── Helpers de animação SMIL ─────────────────────────────────────────────
+// NOTA: SMIL não dispara em SVG injectado via innerHTML depois do parse
+// inicial. Por isso TODOS os elementos começam em opacity 1 (visíveis por
+// defeito); a animação faz override se conseguir disparar. Se não disparar,
+// pelo menos o conteúdo é visível.
 
-/** Fade + rise à entrada, depois fica. */
+/** Fade + rise à entrada, depois fica. Não usa opacity 0 inicial. */
 function animFadeIn(begin = "0s", dur = "1s") {
   return `
-    <animate attributeName="opacity" from="0" to="1" begin="${begin}" dur="${dur}" fill="freeze"/>
+    <animate attributeName="opacity" values="0;1" begin="${begin}" dur="${dur}" fill="freeze"/>
     <animateTransform attributeName="transform" type="translate" from="0 12" to="0 0" begin="${begin}" dur="${dur}" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1"/>`;
 }
 
@@ -61,7 +65,7 @@ function svgCirculo(term: string, accent: string): string {
   const w = 900, h = 360, cx = w / 2, cy = h / 2;
   const fontSize = term.length <= 6 ? 180 : term.length <= 10 ? 140 : 100;
   return `${header(w, h)}
-    <g opacity="0">
+    <g>
       ${animFadeIn("0.1s", "1.2s")}
       <text x="${cx}" y="${cy + fontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${fontSize}" font-style="italic" fill="${accent}">
         ${esc(term)}
@@ -76,18 +80,18 @@ function svgTriade(terms: string[], accent: string): string {
   const w = 900, h = 540, cx = w / 2;
   const labels = [terms[0] ?? "", terms[1] ?? "", terms[2] ?? ""];
   return `${header(w, h)}
-    <g opacity="0">
+    <g>
       ${animFadeIn("0s", "0.9s")}
       <text x="160" y="120" text-anchor="start" font-family='${FONT_SERIF}' font-size="42" fill="${CREME_DIM}">${esc(labels[0])}</text>
     </g>
-    <g opacity="0">
+    <g>
       ${animFadeIn("0.6s", "1.1s")}
       <text x="${cx}" y="320" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="96" font-style="italic" fill="${accent}">
         ${esc(labels[1])}
         ${animBreath("2.2s", "5s")}
       </text>
     </g>
-    <g opacity="0">
+    <g>
       ${animFadeIn("1.2s", "0.9s")}
       <text x="${w - 160}" y="480" text-anchor="end" font-family='${FONT_SERIF}' font-size="42" font-style="italic" fill="${CREME_DIM}">${esc(labels[2])}</text>
     </g>
@@ -102,7 +106,7 @@ function svgPareado(terms: string[], accent: string): string {
   const cx = w / 2;
   const lineLen = 160; // entre x=cx-80 e x=cx+80
   return `${header(w, h)}
-    <g opacity="0">
+    <g>
       ${animFadeIn("0s", "0.8s")}
       <text x="${cx}" y="100" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="8" fill="${CREME_DIM}">ANTES</text>
       <text x="${cx}" y="180" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="76" fill="${CREME}">${esc(left)}</text>
@@ -110,7 +114,7 @@ function svgPareado(terms: string[], accent: string): string {
     <line x1="${cx - 80}" y1="240" x2="${cx + 80}" y2="240" stroke="${accent}" stroke-width="0.8" opacity="0.8" stroke-dasharray="${lineLen}" stroke-dashoffset="${lineLen}">
       ${animDraw(lineLen, "0.9s", "1s")}
     </line>
-    <g opacity="0">
+    <g>
       ${animFadeIn("1.6s", "0.9s")}
       <text x="${cx}" y="300" text-anchor="middle" font-family='${FONT_SANS}' font-size="11" letter-spacing="8" fill="${accent}" opacity="0.9">DEPOIS</text>
       <text x="${cx}" y="380" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="76" font-style="italic" fill="${accent}">${esc(right)}</text>
@@ -133,7 +137,7 @@ function svgSequencia(terms: string[], accent: string): string {
       const y = 100 + i * lineH;
       const begin = `${(i * 0.5).toFixed(2)}s`;
       return `
-      <g opacity="0">
+      <g>
         ${animFadeIn(begin, "0.9s")}
         <text x="${x}" y="${y}" font-family='${FONT_SERIF}' font-style="italic" font-size="22" fill="${accent}" opacity="0.85">${ROMANS[i] ?? i + 1}.</text>
         <text x="${x + 50}" y="${y}" font-family='${FONT_DISPLAY}' font-size="58" font-style="italic" fill="${CREME}">${esc(t)}</text>
@@ -163,7 +167,7 @@ function svgAnel(central: string, terms: string[], accent: string): string {
   const centralFontSize = central.length <= 8 ? 130 : central.length <= 14 ? 100 : 80;
 
   return `${header(w, h)}
-    <g opacity="0" transform="translate(${cx} ${cy})">
+    <g transform="translate(${cx} ${cy})">
       ${animFadeIn("0.8s", "1.2s")}
       <g>
         <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="120s" repeatCount="indefinite"/>
@@ -172,7 +176,7 @@ function svgAnel(central: string, terms: string[], accent: string): string {
         </g>
       </g>
     </g>
-    <g opacity="0">
+    <g>
       ${animFadeIn("0s", "1s")}
       <text x="${cx}" y="${cy + centralFontSize / 3}" text-anchor="middle" font-family='${FONT_DISPLAY}' font-size="${centralFontSize}" font-style="italic" fill="${accent}">
         ${esc(central)}
