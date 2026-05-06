@@ -1,0 +1,233 @@
+/**
+ * Rotação semanal determinística para Loranne + Ancient Ground.
+ *
+ * - **Loranne**: derivada de `ALL_LYRICS` (loranne.ts). Filtra curso-/livro-,
+ *   pontua cada faixa com o `scoreLine` do `suggest/route.ts` (top-3 lines),
+ *   limita 3 faixas por álbum (diversidade), e ordena por score. Resultado:
+ *   pool ≥50 entries (album, trackNumber).
+ *
+ * - **Ancient Ground**: lista hardcoded de tripletes de temas raízes
+ *   (combinações cinematicamente coesas) + sugestão de track AG.
+ *
+ * Selecção semanal: `pickWeeklyLoranne(weekNumber, dayIndex)` e
+ * `pickWeeklyAG(weekNumber, slotIndex)` — determinístico, varia por semana.
+ *
+ * Server-only: importa `loranne.ts` que carrega ~MB de letras.
+ */
+
+import { ALL_LYRICS } from "@/lib/loranne";
+import type { RaizTema } from "@/lib/ag-raizes-temas";
+
+// ─── Loranne — score & filter ──────────────────────────────────────────────
+
+const EMOTION_WORDS = [
+  "coracao", "coração", "alma", "amor", "sagrado", "fogo", "luz", "voz",
+  "pele", "veu", "véu", "veus", "véus", "nome", "verdade", "liberdade",
+  "mae", "mãe", "filha", "saudade", "silencio", "silêncio", "memoria",
+  "memória", "raiz", "terra", "chao", "chão", "agua", "água", "corpo",
+  "ferida", "cicatriz", "grito", "canto", "respira", "abraco", "abraço",
+  "sonho", "perda", "caminho", "porta", "abre", "escuta", "ouve",
+  "casa", "ninho", "fim", "comeco", "começo", "inteira", "inteiro",
+  "sozinha", "sozinho", "sangue", "ventre", "peito", "mao", "mão",
+];
+
+const PRONOUNS_START =
+  /^(eu |tu |nos |nós |voce |você |ela |ele |vem |sou |es |és |amo |vejo |sinto |ouco |ouço |vou |choro |rio |vivo |volto |abro |fecho |tenho |quero |posso |preciso |esta |está )/i;
+
+function stripDiacritics(s: string): string {
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+function scoreLine(line: string): number {
+  const trimmed = line.trim();
+  if (!trimmed) return -999;
+  if (/^\[.*\]$/.test(trimmed)) return -999;
+  if (/^\(.+\)$/.test(trimmed)) return -500;
+  const lower = stripDiacritics(trimmed.toLowerCase());
+
+  let score = 0;
+  const len = trimmed.length;
+  if (len >= 25 && len <= 70) score += 3;
+  else if (len >= 15 && len <= 90) score += 1;
+  else if (len > 90) score -= 2;
+  else if (len < 10) score -= 2;
+
+  if (PRONOUNS_START.test(trimmed)) score += 2;
+
+  let emoHits = 0;
+  for (const w of EMOTION_WORDS) {
+    if (lower.includes(stripDiacritics(w))) emoHits++;
+  }
+  score += Math.min(emoHits, 3) * 2;
+
+  if (/[?!]$/.test(trimmed)) score += 1;
+  if (/,/.test(trimmed)) score += 0.5;
+  if (/^(oh+|ah+|ooh+|uuh+|na+)(\s|$)/i.test(trimmed)) score -= 3;
+
+  return score;
+}
+
+function scoreTrack(lyrics: string): number {
+  const lines = lyrics
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0 && !/^\[.*\]$/.test(l));
+  if (lines.length < 4) return -1000; // letras curtas demais
+  const scored = lines.map(scoreLine).sort((a, b) => b - a);
+  const top3 = scored.slice(0, 3);
+  return top3.reduce((s, n) => s + n, 0);
+}
+
+// Albuns excluídos da rotação social Loranne — material de cursos/livro,
+// não da identidade musical da artista.
+const EXCLUDED_PREFIXES = ["curso-", "livro-"];
+
+export type LoranneRotationEntry = {
+  albumSlug: string;
+  trackNumber: number;
+  /** Score acumulado (top-3 line scores) — útil para inspecção. */
+  score: number;
+};
+
+function buildLoranneRotation(): LoranneRotationEntry[] {
+  type Scored = { albumSlug: string; trackNumber: number; score: number };
+  const all: Scored[] = [];
+
+  for (const [key, lyrics] of Object.entries(ALL_LYRICS)) {
+    const [albumSlug, trackStr] = key.split("/");
+    if (!albumSlug || !trackStr) continue;
+    if (EXCLUDED_PREFIXES.some((p) => albumSlug.startsWith(p))) continue;
+    const trackNumber = parseInt(trackStr, 10);
+    if (!Number.isFinite(trackNumber)) continue;
+    const score = scoreTrack(lyrics);
+    if (score < 8) continue; // limiar de qualidade
+    all.push({ albumSlug, trackNumber, score });
+  }
+
+  // Ordena por score desc, mas limita 3 faixas por álbum (diversidade).
+  all.sort((a, b) => b.score - a.score);
+  const perAlbum = new Map<string, number>();
+  const filtered: Scored[] = [];
+  const MAX_PER_ALBUM = 3;
+  for (const t of all) {
+    const used = perAlbum.get(t.albumSlug) ?? 0;
+    if (used >= MAX_PER_ALBUM) continue;
+    perAlbum.set(t.albumSlug, used + 1);
+    filtered.push(t);
+  }
+
+  // Limita a top 80 (suficiente para >1 ano sem repetição: 7×52=364 / 80 ≈ 4.5x).
+  return filtered.slice(0, 80);
+}
+
+/** Pool Loranne resolvido em module-load. Ordenado por score desc. */
+export const LORANNE_ROTATION: readonly LoranneRotationEntry[] = Object.freeze(
+  buildLoranneRotation(),
+);
+
+// ─── Ancient Ground — tripletes de temas raízes ────────────────────────────
+
+export type AGRotationEntry = {
+  /** 3 temas para os 3 clips do short (variedade visual em 30s). */
+  temas: [RaizTema, RaizTema, RaizTema];
+  /** Faixa AG sugerida (1-100). Configurável. */
+  trackNumber: number;
+  /** Etiqueta humana — mood/foco do triplete. */
+  label: string;
+};
+
+/**
+ * 40 tripletes — combinações cinematicamente coesas.
+ * Padrões usados:
+ *  - Energia comunitária: batuque + danca + crianca
+ *  - Sabedoria/transmissão: anciao + transmissao + machamba
+ *  - Trabalho da terra: machamba + trabalho-coletivo + casa
+ *  - Sagrado/rito: rito + anciao + casa
+ *  - Mar/pesca: pesca + gente-paisagem + aldeia
+ *  - Mercado/cor: mercado + danca + crianca
+ *  - Retrato/intimidade: retrato + casa + transmissao
+ *  - Aldeia/wide: aldeia + gente-paisagem + retrato
+ */
+export const AG_ROTATION: readonly AGRotationEntry[] = Object.freeze([
+  { temas: ["batuque", "danca", "crianca"],                  trackNumber: 12, label: "Energia comunitária" },
+  { temas: ["anciao", "transmissao", "machamba"],            trackNumber: 5,  label: "Sabedoria que passa" },
+  { temas: ["machamba", "trabalho-coletivo", "casa"],        trackNumber: 8,  label: "Terra e lar" },
+  { temas: ["rito", "anciao", "casa"],                       trackNumber: 22, label: "Sagrado quotidiano" },
+  { temas: ["pesca", "gente-paisagem", "aldeia"],            trackNumber: 14, label: "Costa e vida" },
+  { temas: ["mercado", "danca", "crianca"],                  trackNumber: 31, label: "Mercado e cor" },
+  { temas: ["retrato", "casa", "transmissao"],               trackNumber: 7,  label: "Intimidade e herança" },
+  { temas: ["aldeia", "gente-paisagem", "retrato"],          trackNumber: 19, label: "Aldeia e rosto" },
+  { temas: ["artesanato", "transmissao", "anciao"],          trackNumber: 11, label: "Mãos que ensinam" },
+  { temas: ["batuque", "rito", "anciao"],                    trackNumber: 28, label: "Tambor e ancestralidade" },
+
+  { temas: ["danca", "gente-paisagem", "aldeia"],            trackNumber: 4,  label: "Movimento" },
+  { temas: ["crianca", "aldeia", "gente-paisagem"],          trackNumber: 17, label: "Futuro no presente" },
+  { temas: ["machamba", "anciao", "rito"],                   trackNumber: 23, label: "Terra como altar" },
+  { temas: ["pesca", "trabalho-coletivo", "anciao"],         trackNumber: 9,  label: "Mar comum" },
+  { temas: ["casa", "retrato", "anciao"],                    trackNumber: 33, label: "Lar interior" },
+  { temas: ["danca", "batuque", "rito"],                     trackNumber: 41, label: "Cerimónia" },
+  { temas: ["mercado", "artesanato", "transmissao"],         trackNumber: 6,  label: "Ofício e troca" },
+  { temas: ["gente-paisagem", "pesca", "retrato"],           trackNumber: 25, label: "Silhueta na água" },
+  { temas: ["aldeia", "casa", "rito"],                       trackNumber: 38, label: "Comunidade ao entardecer" },
+  { temas: ["crianca", "transmissao", "machamba"],           trackNumber: 13, label: "Aprender com a terra" },
+
+  { temas: ["anciao", "retrato", "casa"],                    trackNumber: 44, label: "Olhar antigo" },
+  { temas: ["batuque", "danca", "aldeia"],                   trackNumber: 16, label: "Praça em festa" },
+  { temas: ["transmissao", "artesanato", "crianca"],         trackNumber: 27, label: "Mãos pequenas" },
+  { temas: ["pesca", "aldeia", "casa"],                      trackNumber: 35, label: "Regresso da praia" },
+  { temas: ["machamba", "gente-paisagem", "casa"],           trackNumber: 2,  label: "Caminho de volta" },
+  { temas: ["rito", "casa", "retrato"],                      trackNumber: 49, label: "Lume interior" },
+  { temas: ["danca", "crianca", "aldeia"],                   trackNumber: 21, label: "Roda livre" },
+  { temas: ["trabalho-coletivo", "machamba", "anciao"],      trackNumber: 3,  label: "Comunhão na lavoura" },
+  { temas: ["artesanato", "casa", "retrato"],                trackNumber: 36, label: "Ofício silencioso" },
+  { temas: ["pesca", "anciao", "rito"],                      trackNumber: 47, label: "Velho do mar" },
+
+  { temas: ["mercado", "gente-paisagem", "aldeia"],          trackNumber: 10, label: "Vida em fluxo" },
+  { temas: ["batuque", "anciao", "transmissao"],             trackNumber: 29, label: "Ritmo herdado" },
+  { temas: ["casa", "crianca", "rito"],                      trackNumber: 18, label: "Lar sagrado" },
+  { temas: ["transmissao", "pesca", "gente-paisagem"],       trackNumber: 42, label: "Aprender o mar" },
+  { temas: ["aldeia", "rito", "anciao"],                     trackNumber: 1,  label: "Memória da praça" },
+  { temas: ["danca", "retrato", "mercado"],                  trackNumber: 26, label: "Dança e rosto" },
+  { temas: ["machamba", "transmissao", "crianca"],           trackNumber: 39, label: "Semente em mãos novas" },
+  { temas: ["trabalho-coletivo", "pesca", "aldeia"],         trackNumber: 15, label: "Rede que une" },
+  { temas: ["rito", "transmissao", "anciao"],                trackNumber: 32, label: "Passagem" },
+  { temas: ["retrato", "anciao", "rito"],                    trackNumber: 50, label: "Face do tempo" },
+]);
+
+// ─── Selecção determinística por semana ────────────────────────────────────
+
+/**
+ * Pseudo-random determinístico baseado em weekNumber + slotIndex.
+ * Varia por semana, sem depender de Math.random.
+ */
+function deterministicIndex(weekNumber: number, slotIndex: number, mod: number): number {
+  // Mistura simples — primes para evitar colisões em padrões curtos.
+  const h = (weekNumber * 31 + slotIndex * 17 + 7) | 0;
+  return Math.abs(h) % mod;
+}
+
+export function pickWeeklyLoranne(
+  weekNumber: number,
+  dayIndex: number,
+): LoranneRotationEntry {
+  if (LORANNE_ROTATION.length === 0) {
+    throw new Error(
+      "LORANNE_ROTATION está vazia — verifica filtros em weekly-rotation.ts.",
+    );
+  }
+  const idx = deterministicIndex(weekNumber, dayIndex, LORANNE_ROTATION.length);
+  return LORANNE_ROTATION[idx];
+}
+
+export function pickWeeklyAG(
+  weekNumber: number,
+  slotIndex: number,
+): AGRotationEntry {
+  // Filtra entries com temas válidos (segurança contra typos).
+  const valid = AG_ROTATION.filter((e) => e.temas.every((t) => typeof t === "string" && t.length > 0));
+  if (valid.length === 0) {
+    throw new Error("AG_ROTATION está vazia.");
+  }
+  const idx = deterministicIndex(weekNumber, slotIndex, valid.length);
+  return valid[idx];
+}

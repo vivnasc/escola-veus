@@ -22,7 +22,8 @@ import { NOVOS_LYRICS } from "@loranne/lyrics-novos";
  * evitamo-lo e usamos so os maps de letras.
  */
 
-const ALL_LYRICS: Record<string, string> = {
+/** Map "albumSlug/trackNumber" → lyrics. Server-only — vide aviso acima. */
+export const ALL_LYRICS: Record<string, string> = {
   ...COSMIC_LYRICS,
   ...ESPELHO_LYRICS,
   ...NO_LYRICS,
