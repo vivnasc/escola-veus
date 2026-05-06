@@ -461,6 +461,19 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
             </button>
           )}
           <button
+            onClick={() => submitRender()}
+            disabled={
+              busy === "submit-render" ||
+              (renderJob !== null && renderJob.status !== "done" && renderJob.status !== "failed")
+            }
+            className="rounded bg-escola-violeta/80 px-4 py-2 text-sm font-semibold text-escola-creme hover:bg-escola-violeta disabled:opacity-40"
+            title={`Gera ${totalDias} vídeo${totalDias === 1 ? "" : "s"} de uma vez (todos os dias) com música Ancient Ground`}
+          >
+            {busy === "submit-render"
+              ? "A submeter…"
+              : `▶ Gerar ${totalDias} vídeo${totalDias === 1 ? "" : "s"} (toda a colecção)`}
+          </button>
+          <button
             onClick={downloadAllZip}
             disabled={busy !== null}
             className="rounded bg-escola-dourado/90 px-4 py-2 text-sm font-semibold text-escola-bg hover:bg-escola-dourado disabled:opacity-40"
@@ -551,10 +564,20 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
                 onClick={generateAllVoices}
                 disabled={generatingAll}
                 className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme disabled:opacity-40"
+                title="Gera todas as vozes que ainda faltam, em sequência"
               >
                 {generatingAll
                   ? `${progress?.done ?? 0}/${progress?.total ?? totalSlides}`
-                  : "↻ gerar todas as que faltam"}
+                  : "↻ gerar todas as vozes que faltam"}
+              </button>
+            )}
+            {withoutVoice && (
+              <button
+                disabled
+                className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme-50 opacity-40"
+                title="Desmarca 'Sem voz' acima para gerar narrações"
+              >
+                ↻ gerar todas as vozes (sem voz activo)
               </button>
             )}
           </div>
