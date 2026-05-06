@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Slide, SlideDeck } from "@/lib/course-slides";
 import { getTerritoryTheme } from "@/data/territory-themes";
 import { parseEmphasis } from "@/lib/emphasis";
+import { renderDiagram, type Diagram } from "@/lib/diagrams";
 
 // Injecta DM Serif Display + Nunito uma unica vez (Cormorant ja esta global).
 function useSlideFonts() {
@@ -38,12 +39,16 @@ export function SlidePreview({
   onIndexChange,
   onPlayingChange,
   controlledIndex,
+  diagrams,
 }: {
   deck: SlideDeck;
   onIndexChange?: (idx: number, slide: Slide) => void;
   onPlayingChange?: (playing: boolean) => void;
   /** Se passado, sincroniza o index interno com este valor (modo controlado). */
   controlledIndex?: number;
+  /** Diagramas por slide (chave = índice). Se presente para o slide actual,
+   *  renderiza SVG por baixo do texto. */
+  diagrams?: Record<string, Diagram>;
 }) {
   useSlideFonts();
   const [index, setIndex] = useState(0);
@@ -278,6 +283,15 @@ export function SlidePreview({
                 >
                   {parseEmphasis(slide.texto, accent, { dividers: true })}
                 </p>
+                {diagrams?.[String(index)] && (
+                  <div
+                    className="mt-8 mx-auto"
+                    style={{ maxWidth: "min(90%, 720px)" }}
+                    dangerouslySetInnerHTML={{
+                      __html: renderDiagram(diagrams[String(index)], accent),
+                    }}
+                  />
+                )}
                 {slide.acto === "frase" && (
                   <div
                     className="mx-auto mt-6 h-px w-10"

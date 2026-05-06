@@ -4,7 +4,7 @@
  * layout). Qualquer mudanca la deve ser reflectida aqui.
  */
 
-export function renderSlideHtml({ slide, deck, accent }) {
+export function renderSlideHtml({ slide, deck, accent, diagramSvg = "" }) {
   const footer =
     slide.tipo === "title" || slide.tipo === "end" || slide.tipo === "fecho"
       ? ""
@@ -36,10 +36,14 @@ export function renderSlideHtml({ slide, deck, accent }) {
     const sizeClass = len > 280 ? "vlong" : len > 200 ? "long" : "";
     // Glifos divisores entre frases — pausa visual.
     const html = emphasisToHtml(slide.texto, accent, { dividers: true });
+    const diagramHtml = diagramSvg
+      ? `<div style="margin-top:48px;display:flex;justify-content:center">${diagramSvg}</div>`
+      : "";
     body = `
       <div class="conteudo-wrap text-center">
         <p class="acto-${slide.acto} ${sizeClass} escola-conteudo">${html}</p>
         ${slide.acto === "frase" ? `<div class="accent-line" style="background:${accent};margin-top:24px"></div>` : ""}
+        ${diagramHtml}
       </div>
     `;
   } else if (slide.tipo === "fecho") {

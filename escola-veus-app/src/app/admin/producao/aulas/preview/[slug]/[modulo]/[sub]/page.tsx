@@ -301,6 +301,7 @@ export default function AulaPreviewPage({
         <SlidePreview
           deck={deck}
           controlledIndex={currentIdx}
+          diagrams={config.diagrams}
           onIndexChange={(i, s) => {
             setCurrentIdx(i);
             setCurrentSlide(s);

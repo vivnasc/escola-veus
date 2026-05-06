@@ -17,6 +17,7 @@ import {
   type LessonScript,
 } from "@/data/course-scripts/ouro-proprio";
 import { getCourseBySlug } from "@/data/courses";
+import type { Diagram } from "@/lib/diagrams";
 
 export type Acto = "pergunta" | "situacao" | "revelacao" | "gesto" | "frase";
 
@@ -48,6 +49,8 @@ export type SlideDeck = {
   subTitle: string;
   totalDurationSec: number;
   slides: Slide[];
+  /** Diagramas por slide (chave = índice). Propagado do config. */
+  diagrams?: Record<string, Diagram>;
 };
 
 export type LessonConfig = {
@@ -75,6 +78,9 @@ export type LessonConfig = {
   agTrack?: string;
   // Volume por acto em dB. Defaults em DEFAULT_VOLUMES.
   volumeDb?: Partial<Record<Acto, number>>;
+  // Infografias por slide. Chave = índice do slide (string). Cada slide
+  // pode ter, no máximo, um diagrama (que aparece por baixo do texto).
+  diagrams?: Record<string, Diagram>;
 };
 
 export const DEFAULT_VOLUMES: Record<Acto, number> = {
@@ -275,6 +281,7 @@ export function buildSlideDeckFromConfig(
     subTitle: script.title,
     totalDurationSec,
     slides,
+    diagrams: config?.diagrams,
   };
 }
 

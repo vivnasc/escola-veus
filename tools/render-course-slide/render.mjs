@@ -21,6 +21,7 @@ import { pipeline } from "node:stream/promises";
 import path from "node:path";
 import puppeteer from "puppeteer";
 import { renderSlideHtml } from "./slide-template.mjs";
+import { renderDiagram } from "./diagrams.mjs";
 
 const SUPABASE_URL = requireEnv("SUPABASE_URL");
 const SERVICE_KEY = requireEnv("SUPABASE_SERVICE_ROLE_KEY");
@@ -133,7 +134,9 @@ async function renderPngs(deck, accent, pngDir) {
 
   for (let i = 0; i < deck.slides.length; i++) {
     const slide = deck.slides[i];
-    const html = renderSlideHtml({ slide, deck, accent });
+    const diagram = deck.diagrams?.[String(i)];
+    const diagramSvg = diagram ? renderDiagram(diagram, accent) : "";
+    const html = renderSlideHtml({ slide, deck, accent, diagramSvg });
     await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });
     // Font loading: wait up to 2s
     await page.evaluateHandle("document.fonts.ready");
