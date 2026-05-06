@@ -12,7 +12,12 @@
 import rotation from "../../src/data/weekly-social/weekly-rotation.ts";
 import loranne from "../../src/lib/loranne.ts";
 
-const { LORANNE_ROTATION, AG_ROTATION } = rotation;
+const {
+  LORANNE_ROTATION,
+  AG_ROTATION,
+  LORANNE_AVAILABLE_ALBUMS,
+  findProductionSuggestions,
+} = rotation;
 const { ALL_LYRICS } = loranne;
 
 function pickFirstStrongLine(lyrics) {
@@ -49,9 +54,25 @@ LORANNE_ROTATION.forEach((e, i) => {
 });
 
 console.log("\n──────────────────────────────────────────────────────────────────");
-console.log(`  Cobertura: ${albumCount.size} álbuns distintos`);
-const top = [...albumCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
-for (const [slug, n] of top) console.log(`    · ${albumLabel(slug)}: ${n} faixas`);
+console.log(`  Cobertura: ${albumCount.size}/${LORANNE_AVAILABLE_ALBUMS.length} álbuns disponíveis`);
+const top = [...albumCount.entries()].sort((a, b) => b[1] - a[1]);
+for (const [slug, n] of top) console.log(`    · ${albumLabel(slug).padEnd(30)} ${n} faixas`);
+
+const missing = LORANNE_AVAILABLE_ALBUMS.filter((s) => !albumCount.has(s));
+if (missing.length > 0) {
+  console.log(`\n  ⚠ Álbuns no allowlist sem letras passíveis:`);
+  for (const slug of missing) console.log(`    · ${albumLabel(slug)}  (verifica slug em loranne-lyrics/)`);
+}
+
+console.log("\n──────────────────────────────────────────────────────────────────");
+console.log("  SUGESTÕES — álbuns com letras fortes que valeria produzir:");
+console.log("──────────────────────────────────────────────────────────────────");
+const sugg = findProductionSuggestions();
+sugg.forEach((s, i) => {
+  console.log(
+    `${String(i + 1).padStart(3)}. [${s.topTrackScore.toString().padStart(4)}]  ${albumLabel(s.albumSlug).padEnd(35)} ${s.trackCount} faixas com score≥8`,
+  );
+});
 
 console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 console.log(`  ANCIENT GROUND ROTATION — ${AG_ROTATION.length} tripletes`);

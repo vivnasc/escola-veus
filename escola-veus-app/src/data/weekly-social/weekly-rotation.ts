@@ -78,9 +78,28 @@ function scoreTrack(lyrics: string): number {
   return top3.reduce((s, n) => s + n, 0);
 }
 
-// Albuns excluídos da rotação social Loranne — material de cursos/livro,
-// não da identidade musical da artista.
-const EXCLUDED_PREFIXES = ["curso-", "livro-"];
+// Allowlist Loranne — apenas álbuns com MP3 produzido em Supabase. Confirmar
+// com Vivianne antes de adicionar. Quando um álbum novo é gravado, juntar
+// aqui o slug — o pool resolve-se em module-load e a rotação alarga sem
+// mais nada.
+//
+// Total esperado (Maio 2026): ~84 faixas em 14 álbuns.
+export const LORANNE_AVAILABLE_ALBUMS: readonly string[] = Object.freeze([
+  "incenso-frequencia",
+  "incenso-salto-bonito",
+  "livro-filosofico",
+  "espelho-ilusao",
+  "fibra-sangue-aceso",
+  "eter-raiz-vermelha",
+  "sangue-raiz",
+  "sangue-mae",
+  "nua-inteira",
+  "nua-por-dentro",
+  "nua-boa",
+  "nua-pele",
+  "nua-duas-vozes",
+  "grao-o-tear",
+]);
 
 export type LoranneRotationEntry = {
   albumSlug: string;
@@ -92,32 +111,59 @@ export type LoranneRotationEntry = {
 function buildLoranneRotation(): LoranneRotationEntry[] {
   type Scored = { albumSlug: string; trackNumber: number; score: number };
   const all: Scored[] = [];
+  const allowed = new Set(LORANNE_AVAILABLE_ALBUMS);
 
   for (const [key, lyrics] of Object.entries(ALL_LYRICS)) {
     const [albumSlug, trackStr] = key.split("/");
     if (!albumSlug || !trackStr) continue;
-    if (EXCLUDED_PREFIXES.some((p) => albumSlug.startsWith(p))) continue;
+    if (!allowed.has(albumSlug)) continue;
     const trackNumber = parseInt(trackStr, 10);
     if (!Number.isFinite(trackNumber)) continue;
     const score = scoreTrack(lyrics);
-    if (score < 8) continue; // limiar de qualidade
+    if (score < 6) continue; // limiar mais relaxado, pool é constrained
     all.push({ albumSlug, trackNumber, score });
   }
 
-  // Ordena por score desc, mas limita 3 faixas por álbum (diversidade).
+  // Ordena por score desc. Sem cap por álbum (pool já é pequeno).
   all.sort((a, b) => b.score - a.score);
-  const perAlbum = new Map<string, number>();
-  const filtered: Scored[] = [];
-  const MAX_PER_ALBUM = 3;
-  for (const t of all) {
-    const used = perAlbum.get(t.albumSlug) ?? 0;
-    if (used >= MAX_PER_ALBUM) continue;
-    perAlbum.set(t.albumSlug, used + 1);
-    filtered.push(t);
+  return all;
+}
+
+/**
+ * Sugestões de álbuns que valeria produzir a seguir — top scores fora do
+ * allowlist. Não usado no runtime; útil só para o `print-rotation` reportar.
+ */
+export type ProductionSuggestion = {
+  albumSlug: string;
+  topTrackScore: number;
+  trackCount: number;
+};
+
+export function findProductionSuggestions(): ProductionSuggestion[] {
+  const allowed = new Set(LORANNE_AVAILABLE_ALBUMS);
+  const byAlbum = new Map<string, { topScore: number; count: number }>();
+
+  for (const [key, lyrics] of Object.entries(ALL_LYRICS)) {
+    const [albumSlug] = key.split("/");
+    if (!albumSlug) continue;
+    if (allowed.has(albumSlug)) continue;
+    if (albumSlug.startsWith("curso-") || albumSlug.startsWith("livro-")) continue;
+    const score = scoreTrack(lyrics);
+    if (score < 8) continue;
+    const cur = byAlbum.get(albumSlug) ?? { topScore: 0, count: 0 };
+    if (score > cur.topScore) cur.topScore = score;
+    cur.count += 1;
+    byAlbum.set(albumSlug, cur);
   }
 
-  // Limita a top 80 (suficiente para >1 ano sem repetição: 7×52=364 / 80 ≈ 4.5x).
-  return filtered.slice(0, 80);
+  return [...byAlbum.entries()]
+    .map(([slug, v]) => ({
+      albumSlug: slug,
+      topTrackScore: v.topScore,
+      trackCount: v.count,
+    }))
+    .sort((a, b) => b.topTrackScore - a.topTrackScore)
+    .slice(0, 12);
 }
 
 /** Pool Loranne resolvido em module-load. Ordenado por score desc. */
