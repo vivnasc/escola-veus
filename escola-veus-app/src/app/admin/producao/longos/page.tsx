@@ -35,6 +35,8 @@ type GenResult = {
   titulo: string;
   slug: string;
   tema: string;
+  model?: "sonnet" | "opus";
+  modelId?: string;
   thumbnailText: string;
   capitulos: { titulo: string; ancora: string }[];
   script: string;
@@ -61,6 +63,9 @@ export default function LongosPage() {
   const [seedMode, setSeedMode] = useState<"funil" | "novo">("funil");
   const [seedFromEpId, setSeedFromEpId] = useState<string>("");
   const [generating, setGenerating] = useState(false);
+  // Default Sonnet (mais barato + rápido). Se der 500, UI mostra botão
+  // "tentar com Opus" que troca o estado e re-tenta.
+  const [model, setModel] = useState<"sonnet" | "opus">("sonnet");
 
   // Lista plana dos 122 mini-eps + trailer para o dropdown.
   const funilEps = useMemo(() => {
@@ -146,7 +151,7 @@ export default function LongosPage() {
     reload();
   }, [reload]);
 
-  const generate = async () => {
+  const generate = async (overrideModel?: "sonnet" | "opus") => {
     if (seedMode === "funil") {
       if (!seedFromEpId) {
         setGenErr("Escolhe um ep do funil para expandir");
@@ -156,14 +161,17 @@ export default function LongosPage() {
       setGenErr("Preenche o tema primeiro");
       return;
     }
+    const useModel = overrideModel || model;
+    if (overrideModel) setModel(overrideModel);
     setGenerating(true);
     setGenErr(null);
     setPreview(null);
     try {
-      const payload =
+      const basePayload =
         seedMode === "funil" && seedFromEpId
           ? { seedFromEpId, tema: tema.trim() || undefined }
           : { tema: tema.trim() };
+      const payload = { ...basePayload, model: useModel };
       const r = await fetch("/api/admin/longos/gen-project", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -321,9 +329,47 @@ export default function LongosPage() {
               </p>
             </div>
           )}
+          {/* Selector de modelo: Sonnet barato vs Opus robusto */}
+          <div>
+            <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+              Modelo Claude
+            </label>
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
+              <button
+                type="button"
+                onClick={() => setModel("sonnet")}
+                disabled={generating}
+                className={`rounded border px-3 py-1 ${
+                  model === "sonnet"
+                    ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+              >
+                ⚡ Sonnet 4.6 · ~$0.10-0.20 · 30-60s
+              </button>
+              <button
+                type="button"
+                onClick={() => setModel("opus")}
+                disabled={generating}
+                className={`rounded border px-3 py-1 ${
+                  model === "opus"
+                    ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                    : "border-escola-border text-escola-creme-50 hover:text-escola-creme"
+                }`}
+              >
+                💎 Opus 4.7 · ~$0.50-0.80 · 1-3 min
+              </button>
+            </div>
+            <p className="mt-1 text-[10px] text-escola-creme-50">
+              Sonnet é 3-5× mais barato e rápido. Opus escreve melhor (mais
+              nuance, menos AI-slop) e é mais robusto a 500s da Anthropic. Se
+              Sonnet falhar, vais ver botão para tentar com Opus.
+            </p>
+          </div>
+
           <div className="flex flex-wrap items-center gap-2 text-xs">
             <button
-              onClick={generate}
+              onClick={() => generate()}
               disabled={
                 generating ||
                 (seedMode === "funil" ? !seedFromEpId : !tema.trim())
@@ -331,17 +377,28 @@ export default function LongosPage() {
               className="rounded bg-escola-dourado px-4 py-1.5 text-xs font-semibold text-escola-bg disabled:opacity-40"
             >
               {generating
-                ? "A gerar (1-3 min — Claude com adaptive thinking)..."
-                : "✨ Gerar projecto"}
+                ? `A gerar com ${model === "opus" ? "Opus 4.7" : "Sonnet 4.6"} (${
+                    model === "opus" ? "1-3 min" : "30-60s"
+                  })...`
+                : `✨ Gerar com ${model === "opus" ? "Opus 4.7" : "Sonnet 4.6"}`}
             </button>
             {genErr && (
               <span className="text-xs text-escola-terracota">{genErr}</span>
             )}
+            {/* Fallback: se Sonnet falhou, oferece tentar com Opus */}
+            {genErr && !generating && model === "sonnet" && (
+              <button
+                onClick={() => generate("opus")}
+                className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1 text-xs text-escola-dourado hover:bg-escola-dourado/20"
+              >
+                💎 Tentar com Opus 4.7
+              </button>
+            )}
           </div>
           <p className="text-[10px] text-escola-creme-50">
-            Claude decide o comprimento natural ao tema (tipicamente 2500-4000 palavras
-            → 20-30 min de narração contemplativa). Duração real fica conhecida só
-            depois da narração ElevenLabs ser gerada. Sonnet 4.6 · ~$0.10-0.15/projecto.
+            Claude decide o comprimento natural ao tema (tipicamente 2500-4000
+            palavras → 20-30 min de narração contemplativa). Duração real fica
+            conhecida só depois da narração ElevenLabs ser gerada.
           </p>
         </div>
 
