@@ -258,6 +258,23 @@ export default function LongoDetailPage() {
 
   const prepareAllClips = async () => {
     if (!project) return;
+    // Aviso: se ainda não revistes prompts, gerar clips agora pode
+    // gastar $15-25 em material baseado em prompts AI-slop ou
+    // desalinhados com o script. Pede confirmação dupla.
+    const reviewedCount = Object.keys(reviews).length;
+    if (reviewedCount === 0) {
+      if (
+        !confirm(
+          "⚠ Ainda não revistes os prompts com Claude.\n\n" +
+            "Sem revisão, podes gastar $15-25 a gerar imagens + clips para prompts " +
+            "que não servem (AI-slop, desalinhados com o script). " +
+            "Recomendado: cancelar agora, clicar '✨ revisar com Claude' primeiro " +
+            "(custa ~$0.10), corrigir os prompts fracos, e só depois clicar 🚀.\n\n" +
+            "Continuar mesmo sem revisão?",
+        )
+      )
+        return;
+    }
     if (
       !confirm(
         "Preparar TODOS os clips automaticamente?\n\n" +
