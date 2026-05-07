@@ -100,48 +100,59 @@ clientes API.
 Aplicado o mesmo fix em `/api/courses/cadernos` (era cópia do parse manual
 antigo).
 
-### D. Áudios não aparecem ✅ commitado
+### D. Áudios não aparecem ✅ commitado + endpoint de rename para os antigos
 Mismatch de naming. O gerador (`/api/admin/audio-bulk/generate-one`) gravava
 em `course-assets/curso-<slug>/<slug-do-titulo>-<ts>.mp3`. A rota da aluna
-(`/api/courses/audio`) procurava por prefixo `m<N>-<letter>-`. Fix: o gerador
-agora aceita `scriptId` (ex.: `ouro-proprio-m1a`), extrai `m1-a-` por regex e
-prefixa o ficheiro. A página bulk passa `scriptId: script.id`. Áudios
-**antigos** ficam órfãos — re-gerar quando for prioridade ou re-nomear via
-SQL.
+(`/api/courses/audio`) procurava por prefixo `m<N>-<letter>-`.
 
-### E. YouTube hooks não batem com vídeos reais ⚠️ verificado, pendente decisão
-`courses.ts` define 3 `youtubeHooks` fictícios por curso (ex.: para
-ouro-proprio: "Porque sentes culpa quando gastas dinheiro em ti mesma?"). Os
-scripts **reais** que existem em `nomear-scripts.ts` são outros (8 títulos
-para ouro-proprio, ex.: "A culpa que chega antes da compra", "O extracto que
-te lê de volta", "A vergonha que inventa desculpas", etc.).
+**Fixes:**
+- O gerador agora aceita `scriptId` (ex.: `ouro-proprio-m1a`), extrai `m1-a-`
+  por regex e prefixa o ficheiro. A página bulk passa `scriptId: script.id`.
+- **Novo:** `POST /api/admin/aulas/audio-rename` `{ slug, dryRun }` lista os
+  MP3 já existentes em `curso-<slug>/`, faz match do filename com
+  `nomear-scripts.ts` (slug do título), infere o prefixo `m{N}-{letter}-` do
+  id e faz copy + delete para o nome novo. Botão "↺ Renomear áudios antigos"
+  na página `/admin/producao/audios` aparece quando a pasta começa por
+  `curso-`. Mostra plano (dryRun) antes de aplicar.
 
-A Vivianne tem que decidir caso a caso quais 3 hooks promover por curso na
-landing. Os títulos reais por curso estão em `src/data/nomear-scripts.ts`
-filtrando por `curso: "<slug>"`. Não fiz a edição porque mexe em copy
-público — proposta para próxima sessão: criar `/admin/cursos/hooks` que mostra
-os 3 hooks actuais lado a lado com os scripts reais e permite picker.
+### E. YouTube hooks não batem com vídeos reais ✅ resolvido com helper
+Em vez de editar 20 arrays inline em `courses.ts`, criei
+`src/lib/youtube-hooks.ts` que devolve hooks via `getYoutubeHooksForCourse()`:
+
+- Lê `nomear-scripts.ts`, filtra por `curso: <slug>` e exclui scripts com
+  prefixo `M<num>.<letra>` (esses são as gravações de aula, não hooks).
+- Devolve os primeiros 3 títulos reais. Se o curso não tem scripts em
+  nomear-scripts, fallback para o array `youtubeHooks` em `courses.ts`.
+- A página `/cursos/[slug]` agora chama o helper em vez de aceder
+  `course.youtubeHooks` directamente. Single source of truth: as gravações
+  reais.
 
 ---
 
 ## O que está PENDENTE (próxima sessão)
 
-### 1. **Generator de scripts via Claude para os outros 19 cursos** ← bloqueia tudo
-Apenas Ouro Próprio tem `course-scripts/ouro-proprio.ts` com os 5 campos × 24 sub-aulas. `getBaseScript()` em `src/lib/course-slides.ts:155` está hardcoded a devolver scripts só para `ouro-proprio`.
+### 1. **Generator de scripts via Claude para os outros 19 cursos** ✅ implementado
+- `POST /api/admin/aulas/generate-scripts` `{ slug, module }` — chama
+  sonnet-4-6 com prompt caching ephemeral 1h. System: `TONE_GUIDELINES` +
+  estrutura dos 5 actos + 2 exemplos completos de Ouro Próprio (m1a + m4a) +
+  regras estritas (PT-PT, zero travessões, sem "voce", terça-feira não
+  transcendência). User: meta do curso (title/subtitle/arco/diferencial) +
+  módulo + 3 sub-aulas. Output JSON estrito.
+- Guarda em `course-assets/admin/aulas-config/<slug>/m<N>-<letter>.json`
+  (campo `script`) preservando o resto do override (blockSplits, agTrack,
+  diagramas, volumes).
+- `resolveScript()` em `course-slides.ts` agora constrói o script inteiramente
+  do override quando `getBaseScript` devolve null (curso sem hardcoded). Exige
+  os 5 campos preenchidos.
+- UI: `/admin/producao/aulas/gerar/[slug]` com botão por módulo + "Gerar
+  todos os módulos (sequencial)" + preview link por sub-aula gerada. Link
+  "⚡ Gerar scripts via Claude" na página hub `/admin/producao/aulas` quando
+  abres um curso.
 
-**Plano que ficou desenhado mas não implementado:**
-
-a) `POST /api/admin/aulas/generate-scripts` — body `{slug, module}`. Para as 3 sub-aulas do módulo, chama Claude (sonnet-4-6, prompt cached 1h) com:
-- System: `TONE_GUIDELINES` de `course-guidelines.ts` + 2 exemplos completos de Ouro Próprio (ex.: m1a + m4a) + regras (PT-PT, zero travessões, terça-feira não transcendência)
-- User: meta do curso de `courses.ts` (slug, title, subtitle, arcoEmocional, diferencial, território de `territory-themes`) + título e descrição das 3 sub-aulas
-- Output: JSON `[{ subLetter, perguntaInicial, situacaoHumana, revelacaoPadrao, gestoConsciencia, fraseFinal }]`
-- Guardar em `course-assets/admin/aulas-config/<slug>/m<N>-<letter>.json` (mesmo path que overrides)
-
-b) Modificar `resolveScript()` em `course-slides.ts` para construir o script inteiramente do override quando não há base hardcoded — actualmente devolve `null` se `getBaseScript` devolver null.
-
-c) `/admin/producao/aulas/gerar/[slug]` — UI com 8 botões "Gerar M1", "Gerar M2"... para cada curso, com progresso e preview de cada sub-aula gerada.
-
-**Custo estimado:** ~€0.15 por curso (24 sub-aulas) com prompt caching. Total para 19 cursos = €3.
+**Custo real esperado:** ~€0.015/módulo (cache 1h activa). €0.12 por curso
+(8 módulos), €2.30 para os 19 cursos. Primeira chamada por curso é mais cara
+(cache write); chamadas seguintes na mesma hora pagam só cache read (10×
+mais barato).
 
 ### 2. M3·B de Ouro Próprio com timeout
 O `Install FFmpeg` step morreu com `TypeError: fetch failed`. Vivianne pode:
