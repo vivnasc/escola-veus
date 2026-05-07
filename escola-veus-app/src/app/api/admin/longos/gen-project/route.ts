@@ -30,6 +30,7 @@ type ImgPrompt = {
   category: string;
   mood: string[];
   prompt: string;
+  motion?: string;
 };
 
 const SEED_PROMPTS = (funilSeed.prompts as ImgPrompt[]) ?? [];
@@ -184,6 +185,16 @@ PROMPTS DE IMAGEM:
 - Moods em PT, 2-3 por prompt
 - IDs: \`longo-<slug>-<NN>-<slug-cena>\`
 
+MOTION (animação Runway image-to-video):
+- 1 frase curta em inglês descrevendo a câmara/movimento desta cena específica
+- Estilo Corvo Seco: muito lento, contemplativo, nunca brusco. Exemplos:
+  • "very slow push-in toward the wallet, dust motes floating in beam of light"
+  • "gentle tilt up from hands to face, breath visible as soft fog"
+  • "barely perceptible parallax drift, candle flame flickers, paper rustles"
+  • "static shot, slow zoom on ring's stone, subtle reflection shift"
+- NÃO repitas a mesma motion em cenas seguidas (alternar push-in / drift / tilt / static)
+- NÃO uses motion brusco: "fast", "rapid", "shake", "zoom out quickly" — proibidos
+
 CAPÍTULOS:
 - Cada capítulo tem título curto (2-5 palavras) + frase-âncora (uma linha)
 - Aparecem como cards no vídeo entre secções da narração`,
@@ -230,19 +241,27 @@ CAPÍTULOS:
 ${seedSection}
 ESPECIFICAÇÕES:
 - Tom: ${tom}
-- Comprimento NATURAL ao tema (não forces tamanho). Tipicamente 2500-4000
-  palavras → 20-30 min de leitura contemplativa com [pause]s. Se o tema
-  for denso, aproxima-te de 4000. Se for íntimo e simples, 2500 está bem.
-  NUNCA estiques só para chegar a um número.
+- COMPRIMENTO MÍNIMO: 3500 palavras. Target: 4000-4500. Razão: ElevenLabs v3
+  lê a ~137 wpm (calibrado em narrações reais). Para um longo de 22-28 min
+  contemplativo, precisamos 3000+ palavras de texto + [pause]s a esticar
+  o tempo efectivo. Abaixo de 3500 palavras o vídeo fica curto demais para
+  reter audiência YouTube long-form. NUNCA entregar menos de 3500.
+- Como atingir 4000+ sem estiques: aprofunda o tema em mais ângulos. Mesma
+  ideia voltada de 4-5 perspectivas em vez de 2-3. Dá mais exemplos
+  concretos do quotidiano da mulher (objectos, gestos, frases que ouviu).
+  Adiciona micro-cenas com observações sensoriais (cheiro, peso, textura).
+- USO INTENSIVO DE [pause]: Pelo menos 1 [pause] ou [short pause] a cada
+  3-4 frases. [long pause] em transições entre secções. Estes tags são lidos
+  pela ElevenLabs como silêncio real (~0.5-1.5s) e empurram o tempo para
+  cima. Não temas "carregar" no [pause] — é o ritmo Corvo Seco.
 - VOZ: 2ª pessoa feminino (tu, tua, tuas). Nunca "muitas mulheres",
   "todas nós", "vocês". É íntimo, individual, dirigido àquela ouvinte.
-- Capítulos: 4-6 secções, ritmo de respiração (não didáctico)
-- Cenas visuais: 50-70 prompts de imagem (1 a cada ~20-30s de narração).
-  Cada prompt = 1 cena ÚNICA. NÃO repitas variações da mesma imagem.
-  Razão: cada prompt vai ser animado em MJ Video (Image-to-Video + 3
-  extends = ~15-20s de clip). Para 25 min de narração, precisamos de
-  ~80-100 clips × 15s. Daí 50-70 prompts (cada com 1-2 variações de MJ
-  extend) cobre a duração sem freezes longos.
+- Capítulos: 5-7 secções (era 4-6), cada uma com 600-800 palavras de
+  narração. Ritmo de respiração, não didáctico.
+- Cenas visuais: 60-80 prompts de imagem (era 50-70) — 1 a cada ~20-25s
+  de narração. Cada prompt = 1 cena ÚNICA. NÃO repitas variações da mesma.
+  Cada cena vai ser animada via Runway image-to-video (10s clip) — para
+  cobrir 25+ min com crossfades, precisamos 60-80 cenas distintas.
 
 Devolve JSON com:
 - titulo: 4-7 palavras evocativas (pode ser uma frase, não um sumário)
@@ -250,7 +269,7 @@ Devolve JSON com:
 - thumbnailText: 2-4 palavras impactantes para a thumbnail (UPPERCASE pronto)
 - capitulos: array de { titulo (2-5 palavras), ancora (1 frase, 1 linha) }
 - script: markdown completo. Cada capítulo começa com "## <titulo capitulo>". Texto da narração com tags [calm]/[pause]/[long pause]/[thoughtful]. NÃO incluas instruções de palco — apenas o que vai ser lido em voz alta + tags.
-- prompts: array de prompts de imagem no formato { id, category, mood (array PT), prompt (EN) }. IDs sequenciais começando em <slug>-01.
+- prompts: array de prompts de imagem no formato { id, category, mood (array PT), prompt (EN), motion (EN, 1 frase curta de movimento de câmara para Runway image-to-video) }. IDs sequenciais começando em <slug>-01.
 
 Responde APENAS com JSON válido.`;
 
@@ -304,8 +323,9 @@ Responde APENAS com JSON válido.`;
                     category: { type: "string" },
                     mood: { type: "array", items: { type: "string" } },
                     prompt: { type: "string" },
+                    motion: { type: "string" },
                   },
-                  required: ["id", "category", "mood", "prompt"],
+                  required: ["id", "category", "mood", "prompt", "motion"],
                   additionalProperties: false,
                 },
               },

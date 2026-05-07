@@ -24,6 +24,7 @@ type LongoProject = {
     category: string;
     mood: string[];
     prompt: string;
+    motion?: string;
     clipUrl?: string;
     clipDurationSec?: number;
   }[];
@@ -150,6 +151,7 @@ export default function LongoDetailPage() {
       category: string;
       mood: string[];
       prompt: string;
+      motion?: string;
       clipUrl?: string;
       clipDurationSec?: number;
     }[]
@@ -613,13 +615,16 @@ export default function LongoDetailPage() {
   // Default: UnchUhO6d8TYPl7TuqgU (voz long-form da Vivianne, distinta da
   // dos shorts JGnWZj684pcXmK2SxYIv).
   const [voiceId, setVoiceId] = useState<string>("UnchUhO6d8TYPl7TuqgU");
-  const [modelId, setModelId] = useState<string>("eleven_multilingual_v2");
+  const [modelId, setModelId] = useState<string>("eleven_v3");
   useEffect(() => {
     try {
       const v = localStorage.getItem("longos-voice");
       const m = localStorage.getItem("longos-model");
       if (v) setVoiceId(v);
-      if (m) setModelId(m);
+      // Migração v2 → v3: ignora valor antigo guardado se for o default
+      // anterior (eleven_multilingual_v2). v3 é agora o default por
+      // pedido — suporta tags [calm]/[pause] que os scripts usam.
+      if (m && m !== "eleven_multilingual_v2") setModelId(m);
     } catch {
       /* SSR / privacy mode */
     }
@@ -1025,7 +1030,29 @@ export default function LongoDetailPage() {
       });
       const d = await r.json();
       if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
-      await load();
+      // Patch local state em vez de recarregar a página inteira — assim
+      // a scroll position fica preservada (user não tem de rolar de novo
+      // a cada delete). O server já apagou e patchou o manifest, fazer
+      // load() era redundante e custoso em UX.
+      setProject((prev) =>
+        prev
+          ? {
+              ...prev,
+              prompts: prev.prompts.map((p) =>
+                p.id === promptId
+                  ? { ...p, clipUrl: undefined, clipDurationSec: undefined }
+                  : p,
+              ),
+            }
+          : prev,
+      );
+      setPromptsDraft((prev) =>
+        prev.map((p) =>
+          p.id === promptId
+            ? { ...p, clipUrl: undefined, clipDurationSec: undefined }
+            : p,
+        ),
+      );
       setInfo(`✓ Clip ${promptId} apagado`);
       setTimeout(() => setInfo(null), 2000);
     } catch (e) {
@@ -1287,11 +1314,11 @@ export default function LongoDetailPage() {
                 onChange={(e) => setModelId(e.target.value)}
                 className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme"
               >
+                <option value="eleven_v3">
+                  v3 (expressivo, suporta [calm]/[thoughtful], default)
+                </option>
                 <option value="eleven_multilingual_v2">
                   Multilingual v2 (PT natural, sem tags emoção)
-                </option>
-                <option value="eleven_v3">
-                  v3 (expressivo, suporta [calm]/[thoughtful], beta)
                 </option>
               </select>
               <p className="mt-1 text-[10px] text-escola-creme-50">
@@ -2103,7 +2130,21 @@ export default function LongoDetailPage() {
                   setPromptsDirty(true);
                 }}
                 rows={3}
+                placeholder="prompt de imagem (EN)"
                 className="w-full rounded border border-escola-border bg-escola-card px-1.5 py-1 text-[10px] text-escola-creme"
+              />
+              <input
+                type="text"
+                value={p.motion ?? ""}
+                onChange={(e) => {
+                  const next = [...promptsDraft];
+                  next[i] = { ...next[i], motion: e.target.value };
+                  setPromptsDraft(next);
+                  setPromptsDirty(true);
+                }}
+                placeholder="🎬 motion (EN, 1 frase câmara para Runway). Vazio = default 'very slow drift'"
+                className="mt-1 w-full rounded border border-escola-border bg-escola-card px-1.5 py-1 text-[10px] text-escola-creme-50"
+                title="Movimento de câmara desta cena para Runway image-to-video. Ex: 'very slow push-in toward the wallet, dust motes floating in beam of light'."
               />
 
               {/* Clip MJ Video slot — upload + preview + delete */}
