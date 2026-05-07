@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "remotion:studio": "remotion studio src/remotion/index.ts",
-    "remotion:render": "remotion render src/remotion/index.ts VideoComposition"
+    "remotion:render": "remotion render src/remotion/index.ts VideoComposition",
+    "weekly:preview": "tsx scripts/weekly/preview-week.mjs",
+    "weekly:rotation": "tsx scripts/weekly/print-rotation.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",
@@ -37,6 +39,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "tailwindcss": "^4.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.0"
   }
 }
