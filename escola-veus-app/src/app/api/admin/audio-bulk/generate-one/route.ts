@@ -43,11 +43,16 @@ export async function POST(req: NextRequest) {
     const {
       text,
       voiceId,
-      modelId = "eleven_multilingual_v2",
+      modelId = "eleven_v3",
       title,
       folder = "youtube",
       scriptId, // opcional — usado para inferir prefixo m{N}-{letter}- quando folder começa por "curso-"
       languageCode, // opcional — se omitido, voice decide sotaque
+      // Nome de ficheiro fixo (sem timestamp) — útil para idempotência:
+      // re-chamadas com o mesmo keyName sobrescrevem em vez de criar
+      // múltiplos ficheiros. Usado pelos longos para resume de narração
+      // (skip chunks que já existem em Supabase).
+      keyName,
     } = await req.json();
 
     if (!text || !voiceId) {
@@ -134,6 +139,18 @@ export async function POST(req: NextRequest) {
       .replace(/^-+|-+$/g, "")
       .slice(0, 60);
 
+    // keyName: nome fixo (idempotente) \u2014 \u00fatil para resume. Sanitizado igual
+    // ao slug. Sem keyName \u2192 mant\u00e9m comportamento legado com timestamp.
+    const cleanKeyName = typeof keyName === "string" && keyName
+      ? keyName
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9-]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 80)
+      : null;
+
     // Em pastas de curso (curso-<slug>), prefixa o ficheiro com m{N}-{letter}-
     // para que /api/courses/audio o consiga encontrar por (module, sub).
     // O scriptId tem o formato "<curso>-m<N><letter>" (ex.: "ouro-proprio-m1a").
@@ -143,7 +160,9 @@ export async function POST(req: NextRequest) {
       if (m) prefix = `m${m[1]}-${m[2].toLowerCase()}-`;
     }
 
-    const filePath = `${folder}/${prefix}${slug}-${Date.now()}.mp3`;
+    const filePath = cleanKeyName
+      ? `${folder}/${cleanKeyName}.mp3`
+      : `${folder}/${prefix}${slug}-${Date.now()}.mp3`;
     const { error } = await supabase.storage
       .from("course-assets")
       .upload(filePath, new Uint8Array(audioBuffer), {

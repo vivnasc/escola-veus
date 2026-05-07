@@ -1456,6 +1456,19 @@ function ThumbnailSection({
   const [frameT, setFrameT] = useState(defaultFrameT);
   const previewRef = useRef<HTMLVideoElement>(null);
 
+  // Texto da thumbnail: default = título do ep extraído de epLabel ("ep01 — A
+  // culpa" → "A culpa"). User pode editar antes de gerar (override por episódio).
+  const defaultTitulo = useMemo(
+    () =>
+      epLabel.includes("—") ? epLabel.split("—").slice(1).join("—").trim() : epLabel,
+    [epLabel],
+  );
+  const [tituloOverride, setTituloOverride] = useState(defaultTitulo);
+  // Reset quando muda de ep
+  useEffect(() => {
+    setTituloOverride(defaultTitulo);
+  }, [defaultTitulo]);
+
   // Ajusta default quando videoUrl aparece (depois de render)
   useEffect(() => {
     setFrameT(videoUrl ? 10 : 2.5);
@@ -1523,15 +1536,42 @@ function ThumbnailSection({
         </div>
       )}
 
+      <div className="mb-3">
+        <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+          Texto da thumbnail (editável)
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={tituloOverride}
+            onChange={(e) => setTituloOverride(e.target.value)}
+            placeholder={defaultTitulo}
+            maxLength={60}
+            className="flex-1 rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-xs text-escola-creme"
+          />
+          {tituloOverride !== defaultTitulo && (
+            <button
+              onClick={() => setTituloOverride(defaultTitulo)}
+              className="rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+              title="Voltar ao título do ep"
+            >
+              ↺ default
+            </button>
+          )}
+        </div>
+        <p className="mt-1 text-[10px] text-escola-creme-50">
+          {tituloOverride.length}/60 chars · default: <code>{defaultTitulo}</code>.
+          Será UPPERCASE automaticamente. Wrap a 18 chars/linha.
+        </p>
+      </div>
+
       <div className="flex flex-wrap items-center gap-2 text-xs">
         <button
           onClick={async () => {
             setThumbGenerating(true);
             setThumbErr(null);
             try {
-              const titulo = epLabel.includes("—")
-                ? epLabel.split("—").slice(1).join("—").trim()
-                : epLabel;
+              const titulo = tituloOverride.trim() || defaultTitulo;
               const r = await fetch("/api/admin/funil/generate-thumbnail", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

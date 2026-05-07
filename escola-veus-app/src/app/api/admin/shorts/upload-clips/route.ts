@@ -24,11 +24,15 @@ export const dynamic = "force-dynamic";
 // Body: { name: string }  (nome do ficheiro em /clips/ sem pasta)
 //   Remove o MP4 e o PNG thumb (se existir) do bucket.
 
-const BUCKET = "escola-shorts"; // legado — biblioteca Loranne+AG
+const BUCKET = "escola-shorts"; // legado — pool partilhada Loranne+AG
 
+// Categorias válidas — alinha com src/lib/paisagem-categorias.ts (taxonomia
+// do thinkdiffusion-prompts.json). Copiado aqui para não pagar import no hot
+// path da API.
 const VALID_THEMES = new Set([
-  "mar", "rio", "floresta", "plantas", "ceu",
-  "deserto", "montanha", "noite", "cidade", "abstracto", "outro",
+  "mar", "mar2", "praia", "praia2", "rio", "chuva",
+  "savana", "terra", "flora", "jardim", "caminho",
+  "ceu", "noite", "nevoeiro", "fogo", "outro",
 ]);
 
 type SignItem = {

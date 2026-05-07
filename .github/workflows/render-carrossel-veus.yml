@@ -1,0 +1,84 @@
+name: Render Carrossel Véus
+
+# Disparado por /api/admin/carrossel-veus/render-submit. As 42 vozes JÁ
+# foram geradas via Vercel (/api/admin/carrossel-veus/generate-voice) e
+# estão em Supabase. O manifest em course-assets/render-jobs/<jobId>.json
+# tem os URLs. Aqui só fazemos: Puppeteer (PNGs) → ffmpeg (MP4).
+
+on:
+  workflow_dispatch:
+    inputs:
+      jobId:
+        description: "ID do job (lê manifest em course-assets/render-jobs/<jobId>.json)"
+        required: true
+        type: string
+      dias:
+        description: "Dias a renderizar separados por espaço (ex: \"3\" ou \"1 4 7\"). Vazio = todos."
+        required: false
+        type: string
+        default: ""
+
+run-name: "render-carrossel-veus: ${{ inputs.jobId }}${{ inputs.dias != '' && format(' (dias {0})', inputs.dias) || '' }}"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+        with:
+          ffmpeg-version: "release"
+
+      - name: Install Puppeteer system libs (Chromium)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ca-certificates fonts-liberation libasound2t64 libatk-bridge2.0-0 libatk1.0-0 \
+            libc6 libcairo2 libcups2 libdbus-1-3 libdrm2 libexpat1 libfontconfig1 libgbm1 \
+            libgcc1 libglib2.0-0 libgtk-3-0 libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 \
+            libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 \
+            libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 lsb-release \
+            wget xdg-utils || true
+
+      - name: Install dependencies (carrossel-veus)
+        working-directory: carrossel-veus
+        run: npm ci
+
+      - name: Override content.json from manifest (if user edited texts)
+        working-directory: carrossel-veus
+        run: |
+          MANIFEST_URL="${{ secrets.SUPABASE_URL }}/storage/v1/object/public/course-assets/render-jobs/${{ inputs.jobId }}.json"
+          curl -s "$MANIFEST_URL" -o /tmp/manifest.json
+          if jq -e '.content != null and (.content.dias | type == "array") and (.content.dias | length > 0)' /tmp/manifest.json >/dev/null 2>&1; then
+            jq '.content' /tmp/manifest.json > content.json
+            echo "✓ content.json substituído pelo do manifest (edições do utilizador)"
+            jq '.dias | length' content.json
+          else
+            echo "→ manifest sem content; mantém content.json do repo"
+          fi
+
+      - name: Generate slides (PNG via Puppeteer)
+        working-directory: carrossel-veus
+        run: npm run slides
+
+      - name: Render videos (ffmpeg + manifest)
+        working-directory: carrossel-veus
+        env:
+          MANIFEST_URL: "${{ secrets.SUPABASE_URL }}/storage/v1/object/public/course-assets/render-jobs/${{ inputs.jobId }}.json"
+        run: node montar-videos.mjs ${{ inputs.dias }}
+
+      - name: Upload result to Supabase
+        env:
+          JOB_ID: ${{ inputs.jobId }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node tools/render-carrossel-veus/upload-result.mjs

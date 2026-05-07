@@ -20,7 +20,7 @@ const SAMPLE_TEXT = "Há uma culpa que não é culpa. [pause] É uma voz antiga 
 export default function AudioBulkPage() {
   // Config
   const [voiceId, setVoiceId] = useState(DEFAULT_VOICE_ID);
-  const [modelId, setModelId] = useState("eleven_multilingual_v2");
+  const [modelId, setModelId] = useState("eleven_v3");
   const [folder, setFolder] = useState("youtube");
   // language code opcional — vazio = voice decide sotaque original (evita pt-BR forcado)
   const [languageCode, setLanguageCode] = useState("");
@@ -387,8 +387,8 @@ export default function AudioBulkPage() {
               onChange={(e) => setModelId(e.target.value)}
               className="w-full rounded-lg border border-escola-border bg-escola-bg px-3 py-2 text-sm text-escola-creme focus:border-escola-dourado focus:outline-none"
             >
+              <option value="eleven_v3">v3 (expressivo, tags, default)</option>
               <option value="eleven_multilingual_v2">Multilingual v2 (PT natural)</option>
-              <option value="eleven_v3">v3 (expressivo, tags)</option>
               <option value="eleven_turbo_v2_5">Turbo v2.5 (rápido, mais barato)</option>
             </select>
           </div>

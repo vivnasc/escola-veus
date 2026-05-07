@@ -14,12 +14,15 @@ type Tab = { href: string; label: string; exact?: boolean };
 const TABS_CURSOS: Tab[] = [
   { href: "/admin/producao/aulas", label: "Aulas" },
   { href: "/admin/producao/funil", label: "Funil" },
+  { href: "/admin/producao/longos", label: "Longos" },
   { href: "/admin/producao/shorts/nomear", label: "Shorts Funil" },
   { href: "/admin/producao/audios", label: "Áudios" },
+  { href: "/admin/producao/colecoes", label: "Carrosséis" },
 ];
 
 const TABS_AG: Tab[] = [
   { href: "/admin/producao/ancient-ground", label: "Prompts + Clips", exact: true },
+  { href: "/admin/producao/ancient-ground/raizes", label: "Raízes (imagens)" },
   { href: "/admin/producao/ancient-ground/montagem", label: "Vídeo longo (60 min)" },
   { href: "/admin/producao/ancient-ground/shorts", label: "Shorts AG" },
 ];

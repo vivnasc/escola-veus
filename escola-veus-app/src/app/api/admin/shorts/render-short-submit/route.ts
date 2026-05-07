@@ -40,9 +40,7 @@ export async function POST(req: NextRequest) {
   if (!Array.isArray(clips) || clips.length === 0) {
     return NextResponse.json({ erro: "clips[] obrigatorio." }, { status: 400 });
   }
-  if (!musicUrl) {
-    return NextResponse.json({ erro: "musicUrl obrigatorio." }, { status: 400 });
-  }
+  const hasMusic = !!musicUrl;
 
   const admin = createSupabaseAdminClient();
   if (!admin) {
@@ -58,8 +56,8 @@ export async function POST(req: NextRequest) {
     slug,
     clips,
     clipDuration,
-    musicUrl,
-    musicVolume,
+    musicUrl: hasMusic ? musicUrl : null,
+    musicVolume: hasMusic ? musicVolume : 0,
     overlayPngs: overlayPngs || null,
     overlayStart: overlayStart || null,
     overlayEnd: overlayEnd || null,

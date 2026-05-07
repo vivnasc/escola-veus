@@ -1,0 +1,49 @@
+name: Render Longo
+
+# Disparado pelo admin UI (/api/admin/longos/render-submit) via
+# workflow_dispatch. Manifest (clips + narração + música) em
+# course-assets/longo-render-jobs/<jobId>.json.
+#
+# Long-form 15-30 min com clips MJ Video extend (15-20s cada), narração
+# ElevenLabs (~3000-4000 palavras), música Ancient Ground em loop com
+# ducking. Output: 1920×1080 MP4 em course-assets/longos-videos/.
+
+on:
+  workflow_dispatch:
+    inputs:
+      jobId:
+        description: "ID único do longo render job"
+        required: true
+        type: string
+
+run-name: "render-longo: ${{ inputs.jobId }}"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90 # long-form pode demorar — 30 min vídeo × CRF20 medium
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install FFmpeg + DejaVu
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu
+          ffmpeg -version | head -3
+          ffmpeg -hide_banner -filters 2>&1 | grep -q "\\bdrawtext\\b" \
+            || (echo "ERRO: drawtext ausente" && exit 1)
+          test -f /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf \
+            || (echo "ERRO: DejaVuSerif.ttf ausente" && exit 1)
+
+      - name: Render
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        working-directory: tools/render-longo
+        run: node render.mjs "${{ inputs.jobId }}"

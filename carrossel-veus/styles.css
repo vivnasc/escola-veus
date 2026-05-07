@@ -1,0 +1,382 @@
+:root {
+  --ink: #1a1614;
+  --ivory: #ede4d3;
+  --parchment-dark: #c9bfa9;
+  --deep: #0a0907;
+  --deep-warm: #14100c;
+  --terracotta: #b85c38;
+  --terracotta-dim: rgba(184, 92, 56, 0.6);
+  --gold: #c9a961;
+  --gold-dim: rgba(201, 169, 97, 0.4);
+  --mist: rgba(237, 228, 211, 0.65);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 1080px;
+  height: 1920px;
+  overflow: hidden;
+  font-feature-settings: "liga", "kern", "dlig";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* ─── Texturas reutilizáveis ────────────────────────────────────────── */
+
+.grain {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 400px 400px;
+  mix-blend-mode: overlay;
+  opacity: 0.45;
+}
+.slide.dark .grain { mix-blend-mode: screen; opacity: 0.18; }
+
+.vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at center, transparent 40%, rgba(0,0,0,0.55) 100%);
+}
+.slide.light .vignette {
+  background: radial-gradient(ellipse 90% 70% at center, transparent 50%, rgba(60, 35, 15, 0.18) 100%);
+}
+
+.glow-gold {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 50% at 50% 35%, rgba(201, 169, 97, 0.10) 0%, transparent 70%);
+}
+.glow-terra {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(184, 92, 56, 0.10) 0%, transparent 70%);
+}
+
+/* ─── Base do slide ─────────────────────────────────────────────────── */
+
+.slide {
+  position: relative;
+  width: 1080px; height: 1920px;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.slide .content {
+  position: relative; z-index: 2;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  padding: 110px 110px;
+}
+
+/* dingbat / ornamentos */
+.dingbat {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  display: inline-block;
+  letter-spacing: 0.6em;
+  opacity: 0.85;
+}
+
+/* hairline rule */
+.rule {
+  display: block;
+  background: var(--gold);
+  opacity: 0.55;
+}
+
+/* ─── CAPA ───────────────────────────────────────────────────────────── */
+
+.slide.capa {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 35%, #1f1812 0%, #0a0907 70%),
+    var(--deep);
+  color: var(--ivory);
+}
+.slide.capa.dark { /* helper dark — afecta grain + vignette */ }
+
+.slide.capa .content {
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 150px;
+  padding-bottom: 200px;
+}
+
+.slide.capa .ghost-num {
+  position: absolute;
+  top: 280px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 720px;
+  line-height: 1;
+  color: rgba(201, 169, 97, 0.05);
+  letter-spacing: -0.05em;
+  user-select: none;
+  z-index: 1;
+}
+
+.slide.capa .top {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 36px; width: 100%;
+}
+.slide.capa .romano-rule {
+  display: flex; align-items: center; justify-content: center;
+  gap: 28px; width: 100%;
+}
+.slide.capa .romano-rule .rule {
+  height: 1px; flex: 1; max-width: 220px;
+}
+.slide.capa .romano {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400; font-size: 22px;
+  letter-spacing: 0.55em;
+  color: var(--gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.slide.capa .veu {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 180px;
+  line-height: 0.95;
+  text-align: center;
+  letter-spacing: -0.025em;
+  color: var(--ivory);
+  white-space: nowrap;
+}
+
+.slide.capa .subtitulo {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--mist);
+  max-width: 720px;
+}
+
+.slide.capa .ornament {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 28px;
+  color: var(--gold);
+  letter-spacing: 1.2em;
+  opacity: 0.8;
+  margin-top: 8px;
+}
+
+.slide.capa .abertura {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 56px;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--ivory);
+  max-width: 820px;
+}
+
+.slide.capa .footer {
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.slide.capa .footer .marca {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300; font-size: 18px;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+}
+.slide.capa .footer .rule { width: 80px; height: 1px; }
+
+/* ─── CONTEÚDO ──────────────────────────────────────────────────────── */
+
+.slide.conteudo {
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 50%, #efe7d6 0%, #d8cfb8 100%),
+    var(--ivory);
+  color: var(--ink);
+}
+
+.slide.conteudo .content {
+  justify-content: space-between;
+  padding-top: 110px;
+  padding-bottom: 110px;
+}
+
+.slide.conteudo .meta-top {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400; font-size: 18px;
+  letter-spacing: 0.45em;
+  color: rgba(26, 22, 20, 0.4);
+  text-transform: uppercase;
+}
+.slide.conteudo .meta-top .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 32px;
+  letter-spacing: 0;
+  color: rgba(184, 92, 56, 0.55);
+  text-transform: none;
+}
+
+.slide.conteudo .corpo {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  width: 100%;
+  text-align: center;
+  gap: 44px;
+  padding: 0 20px;
+}
+
+/* poético */
+.slide.conteudo.poetico .corpo .ornament {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 56px;
+  color: var(--terracotta);
+  opacity: 0.7;
+  line-height: 1;
+}
+.slide.conteudo.poetico .texto {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 72px;
+  line-height: 1.3;
+  color: var(--ink);
+  white-space: pre-line;
+  max-width: 820px;
+  letter-spacing: -0.005em;
+}
+
+/* prosa */
+.slide.conteudo.prosa .titulo-pequeno {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  display: flex; align-items: center; gap: 24px;
+}
+.slide.conteudo.prosa .titulo-pequeno::before,
+.slide.conteudo.prosa .titulo-pequeno::after {
+  content: ""; height: 1px; width: 64px; background: var(--terracotta); opacity: 0.5;
+}
+.slide.conteudo.prosa .texto {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 1.42;
+  color: var(--ink);
+  white-space: pre-line;
+  max-width: 800px;
+  letter-spacing: -0.005em;
+}
+.slide.conteudo.prosa .texto.longo {
+  font-size: 44px;
+}
+
+.slide.conteudo .meta-bot {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+.slide.conteudo .meta-bot .ornament {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 24px;
+  color: var(--terracotta);
+  letter-spacing: 0.8em;
+  opacity: 0.6;
+}
+.slide.conteudo .meta-bot .marca {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300; font-size: 16px;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: rgba(26, 22, 20, 0.35);
+}
+
+/* ─── CTA ──────────────────────────────────────────────────────────── */
+
+.slide.cta {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, #1c140e 0%, #08070a 80%),
+    var(--deep);
+  color: var(--ivory);
+}
+
+.slide.cta .content {
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 180px;
+  padding-bottom: 180px;
+}
+
+.slide.cta .icon-ring {
+  position: relative;
+  width: 220px; height: 220px;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide.cta .icon-ring::before,
+.slide.cta .icon-ring::after {
+  content: ""; position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0.35;
+}
+.slide.cta .icon-ring::after {
+  inset: 16px; opacity: 0.18;
+}
+.slide.cta .icone {
+  font-size: 96px; line-height: 1;
+}
+
+.slide.cta .corpo {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 28px; text-align: center; max-width: 800px;
+}
+
+.slide.cta .recurso {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 78px;
+  line-height: 1.1;
+  color: var(--ivory);
+  letter-spacing: -0.01em;
+}
+
+.slide.cta .descricao {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.45;
+  color: var(--mist);
+  max-width: 720px;
+}
+
+.slide.cta .url-block {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  width: 100%; max-width: 720px;
+}
+.slide.cta .url-block .rule { width: 100%; height: 1px; }
+.slide.cta .url {
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+  font-weight: 400; font-size: 30px;
+  color: var(--terracotta);
+  letter-spacing: 0.04em;
+}
+
+.slide.cta .espiral-bg {
+  position: absolute;
+  bottom: -120px; right: -120px;
+  font-size: 600px; line-height: 1;
+  color: var(--gold);
+  opacity: 0.04;
+  z-index: 1;
+  user-select: none;
+}

@@ -23,6 +23,11 @@ const TRACKS_CURSOS: Track[] = [
     label: "Áudios",
     desc: "Geração ElevenLabs em massa para Funil (Nomear) e Aulas (cursos).",
   },
+  {
+    href: "/admin/producao/carrossel-veus",
+    label: "Carrossel Véus (status)",
+    desc: "42 slides verticais (7 dias × 6) para status diário do WhatsApp — A Estação dos Véus.",
+  },
 ];
 
 const TRACKS_AG: Track[] = [

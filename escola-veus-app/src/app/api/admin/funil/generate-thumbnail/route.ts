@@ -149,11 +149,24 @@ export async function POST(req: NextRequest) {
     );
 
     // ── Texto: brand pequeno dourado cima + título grande cream centro ──
-    const tituloLines = wrapLines(titulo.toUpperCase(), 22);
-    const tituloFontsize =
-      tituloLines.length >= 3 ? 72 :
-      tituloLines.length === 2 ? 88 :
-      104;
+    // wrap a 18 chars (conservador para não estourar 1280px em bold);
+    // fontsize reduzido para caber títulos longos ("VERGONHA QUE INVENTA
+    // DESCULPAS" = 29 chars → 2 linhas de ~14 chars a 72px caber em 1280).
+    const tituloLines = wrapLines(titulo.toUpperCase(), 18);
+    const longestLine = tituloLines.reduce(
+      (max, ln) => Math.max(max, ln.length),
+      0,
+    );
+    // Escala dinâmica: baseada no nº de linhas E no comprimento da linha maior.
+    // Mais linhas OU linha longa → fonte menor.
+    let tituloFontsize: number;
+    if (tituloLines.length >= 3) {
+      tituloFontsize = longestLine > 14 ? 52 : 60;
+    } else if (tituloLines.length === 2) {
+      tituloFontsize = longestLine > 16 ? 64 : longestLine > 12 ? 72 : 80;
+    } else {
+      tituloFontsize = longestLine > 16 ? 76 : longestLine > 12 ? 88 : 96;
+    }
 
     const drawBrand =
       `drawtext=fontfile='${fontRegular}':` +
