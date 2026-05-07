@@ -156,6 +156,12 @@ export default function AulasPage() {
                 <>
                   <div className="flex flex-wrap items-center gap-2 border-t border-escola-border bg-escola-bg/50 px-4 py-2 text-[11px]">
                     <Link
+                      href={`/admin/producao/aulas/gerar/${c.slug}`}
+                      className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
+                    >
+                      ⚡ Gerar scripts via Claude (5 actos × N sub-aulas)
+                    </Link>
+                    <Link
                       href={`/admin/producao/aulas/editar/${c.slug}`}
                       className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
                     >

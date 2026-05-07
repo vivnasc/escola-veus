@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import * as React from "react";
 import { createClient } from "@supabase/supabase-js";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { ManualPDF } from "@/lib/pdf/manual-template";
 import { OURO_PROPRIO_MANUAL } from "@/data/course-manuals/ouro-proprio";
 
@@ -58,49 +59,49 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  // Auth: get user from Supabase cookies or Authorization header
-  const authHeader = req.headers.get("authorization");
-  let token = authHeader?.replace("Bearer ", "");
-
-  // Try Supabase SSR cookies (format: sb-{ref}-auth-token)
-  if (!token) {
-    for (const cookie of req.cookies.getAll()) {
-      if (cookie.name.startsWith("sb-") && cookie.name.endsWith("-auth-token")) {
-        try {
-          const parsed = JSON.parse(cookie.value);
-          token = parsed?.access_token || parsed?.[0]?.access_token;
-        } catch {
-          token = cookie.value;
-        }
-        if (token) break;
-      }
-    }
-  }
-
-  if (!token) {
-    return NextResponse.json(
-      { error: "Autenticação necessária. Usa ?preview=admin para preview." },
-      { status: 401 }
-    );
-  }
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { global: { headers: { Authorization: `Bearer ${token}` } } }
-  );
-
+  // Auth via Supabase SSR (lida com cookies chunked sb-<ref>-auth-token.0, .1)
+  // automaticamente — substitui o parse manual que falhava por causa do
+  // sufixo .N nos nomes dos cookies.
+  const supabase = await createSupabaseServerClient();
   const {
     data: { user },
     error: authError,
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
-    return NextResponse.json(
-      { error: "Sessão inválida. Usa ?preview=admin para preview." },
-      { status: 401 }
+    // Fallback: tentar Bearer token explícito (clientes API)
+    const authHeader = req.headers.get("authorization");
+    const bearerToken = authHeader?.replace("Bearer ", "");
+    if (!bearerToken) {
+      return NextResponse.json(
+        { error: "Autenticação necessária. Usa ?preview=admin para preview." },
+        { status: 401 }
+      );
+    }
+    // Re-cria cliente com Bearer
+    const supabaseBearer = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { global: { headers: { Authorization: `Bearer ${bearerToken}` } } }
     );
+    const { data: bearerData, error: bearerError } = await supabaseBearer.auth.getUser();
+    if (bearerError || !bearerData.user) {
+      return NextResponse.json(
+        { error: "Sessão inválida. Usa ?preview=admin para preview." },
+        { status: 401 }
+      );
+    }
+    return generatePdf(bearerData.user, manual);
   }
+
+  return generatePdf(user, manual);
+}
+
+async function generatePdf(
+  user: { id: string; email?: string; user_metadata?: { full_name?: string } },
+  manual: typeof OURO_PROPRIO_MANUAL,
+) {
+  const supabase = await createSupabaseServerClient();
 
   // Get profile for student name
   const { data: profile } = await supabase

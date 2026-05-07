@@ -8,6 +8,7 @@ import { getTerritoryStyle } from "@/data/territory-themes";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProgress } from "@/hooks/useProgress";
 import { hasManual } from "@/data/course-manuals";
+import { getYoutubeHooksForCourse } from "@/lib/youtube-hooks";
 
 export default function CursoPage() {
   const params = useParams();
@@ -317,14 +318,17 @@ export default function CursoPage() {
         </section>
       )}
 
-      {/* YouTube hooks */}
-      {course.youtubeHooks && course.youtubeHooks.length > 0 && (
+      {/* YouTube hooks — prefere títulos reais de nomear-scripts.ts. */}
+      {(() => {
+        const hooks = getYoutubeHooksForCourse(course);
+        if (!hooks || hooks.length === 0) return null;
+        return (
         <section className="mt-10">
           <h2 className="mb-4 font-serif text-lg font-medium text-escola-creme">
             Vídeos gratuitos no YouTube
           </h2>
           <div className="space-y-2">
-            {course.youtubeHooks.map((hook: { title: string; durationMin: number }, i: number) => (
+            {hooks.map((hook: { title: string; durationMin: number }, i: number) => (
               <div key={i} className="rounded-xl border border-escola-border bg-escola-card p-4">
                 <div className="flex items-center gap-3">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-500/10">
@@ -341,7 +345,8 @@ export default function CursoPage() {
             ))}
           </div>
         </section>
-      )}
+        );
+      })()}
 
       {/* Start CTA (if not started) */}
       {!isStarted && user && (

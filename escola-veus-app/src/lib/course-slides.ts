@@ -187,6 +187,8 @@ export function getBaseScript(
 
 /**
  * Aplica o `script` override (strings vazias/undefined caem para o base).
+ * Se não houver base hardcoded (cursos 2-20), constrói o script inteiramente
+ * do override desde que tenha os 5 campos preenchidos.
  */
 export function resolveScript(
   courseSlug: string,
@@ -195,18 +197,39 @@ export function resolveScript(
   scriptOverride?: LessonConfig["script"],
 ): LessonScript | null {
   const base = getBaseScript(courseSlug, moduleNumber, subLetter);
-  if (!base) return null;
-  if (!scriptOverride) return base;
-  const merged: LessonScript = {
-    ...base,
-    title: (scriptOverride.title ?? "").trim() || base.title,
-    perguntaInicial: (scriptOverride.perguntaInicial ?? "").trim() || base.perguntaInicial,
-    situacaoHumana: (scriptOverride.situacaoHumana ?? "").trim() || base.situacaoHumana,
-    revelacaoPadrao: (scriptOverride.revelacaoPadrao ?? "").trim() || base.revelacaoPadrao,
-    gestoConsciencia: (scriptOverride.gestoConsciencia ?? "").trim() || base.gestoConsciencia,
-    fraseFinal: (scriptOverride.fraseFinal ?? "").trim() || base.fraseFinal,
+  if (base) {
+    if (!scriptOverride) return base;
+    const merged: LessonScript = {
+      ...base,
+      title: (scriptOverride.title ?? "").trim() || base.title,
+      perguntaInicial: (scriptOverride.perguntaInicial ?? "").trim() || base.perguntaInicial,
+      situacaoHumana: (scriptOverride.situacaoHumana ?? "").trim() || base.situacaoHumana,
+      revelacaoPadrao: (scriptOverride.revelacaoPadrao ?? "").trim() || base.revelacaoPadrao,
+      gestoConsciencia: (scriptOverride.gestoConsciencia ?? "").trim() || base.gestoConsciencia,
+      fraseFinal: (scriptOverride.fraseFinal ?? "").trim() || base.fraseFinal,
+    };
+    return merged;
+  }
+  // Sem base: construir do override (curso gerado por Claude). Exige os 5
+  // campos preenchidos — caso contrário devolve null e o fallback vai correr.
+  if (!scriptOverride) return null;
+  const pergunta = (scriptOverride.perguntaInicial ?? "").trim();
+  const situacao = (scriptOverride.situacaoHumana ?? "").trim();
+  const revelacao = (scriptOverride.revelacaoPadrao ?? "").trim();
+  const gesto = (scriptOverride.gestoConsciencia ?? "").trim();
+  const frase = (scriptOverride.fraseFinal ?? "").trim();
+  if (!pergunta || !situacao || !revelacao || !gesto || !frase) return null;
+  return {
+    moduleNumber,
+    subLetter: subLetter.toUpperCase(),
+    title: (scriptOverride.title ?? "").trim() || `M${moduleNumber}·${subLetter.toUpperCase()}`,
+    perguntaInicial: pergunta,
+    situacaoHumana: situacao,
+    revelacaoPadrao: revelacao,
+    gestoConsciencia: gesto,
+    fraseFinal: frase,
+    status: "draft",
   };
-  return merged;
 }
 
 export function buildSlideDeckFromConfig(

@@ -11,7 +11,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import * as React from "react";
-import { createClient } from "@supabase/supabase-js";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { CadernosPDF } from "@/lib/pdf/cadernos-template";
 import { getCourseBySlug } from "@/data/courses";
 
@@ -25,37 +25,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Curso não encontrado" }, { status: 404 });
   }
 
-  const authHeader = req.headers.get("authorization");
-  let token = authHeader?.replace("Bearer ", "");
-  if (!token) {
-    for (const cookie of req.cookies.getAll()) {
-      if (cookie.name.startsWith("sb-") && cookie.name.endsWith("-auth-token")) {
-        try {
-          const parsed = JSON.parse(cookie.value);
-          token = parsed?.access_token || parsed?.[0]?.access_token;
-        } catch {
-          token = cookie.value;
-        }
-        if (token) break;
-      }
-    }
-  }
-  if (!token) {
-    return NextResponse.json({ error: "Autenticação necessária" }, { status: 401 });
-  }
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { global: { headers: { Authorization: `Bearer ${token}` } } },
-  );
-
+  // Auth via Supabase SSR (lida com cookies chunked sb-<ref>-auth-token.0, .1).
+  const supabase = await createSupabaseServerClient();
   const {
     data: { user },
     error: authError,
   } = await supabase.auth.getUser();
   if (authError || !user) {
-    return NextResponse.json({ error: "Sessão inválida" }, { status: 401 });
+    return NextResponse.json({ error: "Autenticação necessária" }, { status: 401 });
   }
 
   const { data: rows, error: qErr } = await supabase

@@ -219,6 +219,7 @@ export default function AudioBulkPage() {
             modelId,
             title: script.titulo,
             folder,
+            scriptId: script.id, // pasta curso-* extrai prefixo m{N}-{letter}- do id
             // v3 rejeita language_code — nao enviar mesmo se preenchido
             languageCode: modelId === "eleven_v3" ? undefined : (languageCode || undefined),
           }),
@@ -621,6 +622,45 @@ export default function AudioBulkPage() {
               >
                 🔍 Verificar Supabase (pasta {folder})
               </button>
+
+              {folder.startsWith("curso-") && (
+                <button
+                  onClick={async () => {
+                    if (!confirm(`Renomear áudios em ${folder}/ adicionando prefixo m{N}-{letter}-?\n\nÉ feito copy + delete (não atómico). Vai mostrar plano primeiro (dry-run).`)) return;
+                    const slug = folder.replace(/^curso-/, "");
+                    try {
+                      const dry = await fetch("/api/admin/aulas/audio-rename", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ slug, dryRun: true }),
+                      }).then((r) => r.json());
+                      if (!dry.ok) {
+                        alert(`Erro: ${dry.erro ?? "desconhecido"}`);
+                        return;
+                      }
+                      const summary = `Plano:\n- ${dry.toRename} ficheiros para renomear\n- ${dry.alreadyPrefixed} já com prefixo (skip)\n- ${dry.noMatch} sem match (skip)\n\nAplicar agora?`;
+                      if (!confirm(summary)) return;
+                      const apply = await fetch("/api/admin/aulas/audio-rename", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ slug, dryRun: false }),
+                      }).then((r) => r.json());
+                      alert(
+                        apply.ok
+                          ? `OK: ${apply.renamed} renomeados, ${apply.skipped} skip, ${apply.failed ?? 0} erros`
+                          : `Falha parcial: ${apply.renamed ?? 0} renomeados, ${apply.failed ?? 0} erros`,
+                      );
+                    } catch (err) {
+                      alert(`Erro: ${err instanceof Error ? err.message : "desconhecido"}`);
+                    }
+                  }}
+                  disabled={generating}
+                  className="rounded-lg border border-amber-700/50 px-3 py-2 text-xs text-amber-200 hover:bg-amber-900/20 disabled:opacity-40"
+                  title="Adiciona prefixo m{N}-{letter}- aos áudios antigos (gerados antes do fix). Match por título via nomear-scripts.ts."
+                >
+                  ↺ Renomear áudios antigos ({folder})
+                </button>
+              )}
 
               {doneCount > 0 && (
                 <button
