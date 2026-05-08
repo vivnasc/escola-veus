@@ -1,12 +1,21 @@
 /**
  * Template PDF para manuais de curso — Escola dos Veus
  *
+ * Estrutura do PDF:
+ *   1. Capa (com nome da aluna como proprietária)
+ *   2. Antes de começares (intro + disclaimer)
+ *   3. Mapa do curso
+ *   4. Capítulos (livro-companheiro): texto expansivo, sem perguntas
+ *   5. Folha de transição: "Caderno de Exercícios"
+ *   6. Para cada capítulo: perguntas + linhas para escrever
+ *   7. Encerramento
+ *
  * Identidade visual:
- * - Fundo: #1A1A2E (azul-marinho profundo)
- * - Texto: #F5F0E6 (creme)
- * - Acentos: #C9A96E (dourado), #C4745A (terracota)
- * - Tipografia: Cormorant Garamond (serifada)
- * - Rodape: nome da aluna como licenca
+ *   - Fundo: #1A1A2E (azul-marinho profundo)
+ *   - Texto: #F5F0E6 (creme)
+ *   - Acentos: #C9A96E (dourado), #C4745A (terracota), #8B5CF6 (violeta)
+ *   - Tipografia: Cormorant Garamond
+ *   - Rodapé: nome da aluna como licença
  */
 
 import * as React from "react";
@@ -43,7 +52,6 @@ const C = {
 // ─── STYLES ────────────────────────────────────────────────────────────────
 
 const s = StyleSheet.create({
-  // Page
   page: {
     backgroundColor: C.fundo,
     paddingTop: 60,
@@ -126,6 +134,20 @@ const s = StyleSheet.create({
     backgroundColor: C.dourado,
     marginTop: 30,
   },
+  coverOwnerLabel: {
+    fontSize: 9,
+    color: C.cremeApagado,
+    letterSpacing: 2,
+    textTransform: "uppercase",
+    marginTop: 60,
+    marginBottom: 6,
+  },
+  coverOwnerName: {
+    fontSize: 14,
+    color: C.creme,
+    fontStyle: "italic",
+    textAlign: "center",
+  },
 
   // Section titles
   sectionTitle: {
@@ -152,52 +174,51 @@ const s = StyleSheet.create({
     fontSize: 9.5,
     color: C.cremeApagado,
     fontStyle: "italic",
-    marginBottom: 24,
+    marginBottom: 20,
     paddingLeft: 2,
   },
+  chapterSummary: {
+    fontSize: 11,
+    color: C.cremeSuave,
+    fontStyle: "italic",
+    lineHeight: 1.7,
+    marginBottom: 22,
+    paddingLeft: 12,
+    borderLeftWidth: 1,
+    borderLeftColor: C.dourado,
+  },
 
-  // Body text
+  // Body text (book paragraphs)
   body: {
     fontSize: 11.5,
     color: C.creme,
-    lineHeight: 1.7,
-    marginBottom: 16,
+    lineHeight: 1.75,
+    marginBottom: 14,
     textAlign: "justify",
   },
 
-  // Reflection questions
-  questionsTitle: {
-    fontSize: 13,
-    fontWeight: 600,
-    color: C.terracota,
-    marginTop: 20,
-    marginBottom: 14,
-    letterSpacing: 0.5,
+  // Reflection questions (in workbook anexo)
+  workbookChapterTitle: {
+    fontSize: 18,
+    fontWeight: 700,
+    color: C.dourado,
+    marginBottom: 4,
   },
   questionItem: {
     fontSize: 11,
     color: C.cremeSuave,
     lineHeight: 1.6,
+    marginTop: 18,
     marginBottom: 8,
     paddingLeft: 12,
   },
   questionBullet: {
     color: C.dourado,
   },
-
-  // Writing space
-  writingTitle: {
-    fontSize: 13,
-    fontWeight: 600,
-    color: C.douradoQuente,
-    marginTop: 28,
-    marginBottom: 16,
-    letterSpacing: 0.5,
-  },
   writingLine: {
     borderBottomWidth: 0.5,
     borderBottomColor: C.superficie,
-    height: 28,
+    height: 24,
     marginBottom: 0,
   },
 
@@ -207,7 +228,7 @@ const s = StyleSheet.create({
     height: 1,
     backgroundColor: C.dourado,
     alignSelf: "center",
-    marginVertical: 30,
+    marginVertical: 28,
   },
 
   // Course map
@@ -237,14 +258,8 @@ const s = StyleSheet.create({
     color: C.creme,
     fontWeight: 600,
   },
-  mapModuleDesc: {
-    fontSize: 9.5,
-    color: C.cremeApagado,
-    fontStyle: "italic",
-    marginTop: 2,
-  },
 
-  // Intro disclaimer
+  // Disclaimer
   disclaimer: {
     fontSize: 9.5,
     color: C.cremeApagado,
@@ -255,6 +270,38 @@ const s = StyleSheet.create({
     borderColor: C.superficie,
     borderRadius: 4,
   },
+
+  // Workbook divider page (entre livro e caderno)
+  workbookDividerPage: {
+    backgroundColor: C.fundo,
+    paddingHorizontal: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+  },
+  workbookDividerLabel: {
+    fontSize: 10,
+    color: C.cremeApagado,
+    letterSpacing: 3,
+    textTransform: "uppercase",
+    marginBottom: 14,
+  },
+  workbookDividerTitle: {
+    fontSize: 32,
+    fontWeight: 700,
+    color: C.dourado,
+    textAlign: "center",
+    letterSpacing: 1.5,
+    marginBottom: 20,
+  },
+  workbookDividerIntro: {
+    fontSize: 12,
+    color: C.cremeSuave,
+    fontStyle: "italic",
+    textAlign: "center",
+    lineHeight: 1.7,
+    paddingHorizontal: 30,
+  },
 });
 
 // ─── FOOTER COMPONENT ──────────────────────────────────────────────────────
@@ -263,7 +310,7 @@ function Footer({ studentName }: { studentName: string }) {
   return (
     <View style={s.footer} fixed>
       <Text style={s.footerLicense}>
-        Licenciado para {studentName} — Uso pessoal e intransmissivel
+        Licenciado a {studentName} — Uso pessoal e intransmissível
       </Text>
       <Text
         style={s.footerPage}
@@ -275,7 +322,7 @@ function Footer({ studentName }: { studentName: string }) {
   );
 }
 
-// ─── COVER PAGE ─────────────────────────────────────────────────────────────
+// ─── COVER PAGE ────────────────────────────────────────────────────────────
 
 function CoverPage({
   manual,
@@ -287,28 +334,20 @@ function CoverPage({
   return (
     <Page size="A4" style={{ backgroundColor: C.fundo }}>
       <View style={s.coverPage}>
-        <Text style={s.coverSchool}>Sete Veus</Text>
+        <Text style={s.coverSchool}>Sete Véus</Text>
         <View style={s.coverLine} />
         <Text style={s.coverTitle}>{manual.courseTitle}</Text>
         <Text style={s.coverSubtitle}>{manual.courseSubtitle}</Text>
         <Text style={s.coverTerritory}>{manual.territory}</Text>
         <View style={s.coverLineBottom} />
-        <Text
-          style={{
-            fontSize: 9,
-            color: C.cremeApagado,
-            marginTop: 40,
-            fontStyle: "italic",
-          }}
-        >
-          Manual de {studentName}
-        </Text>
+        <Text style={s.coverOwnerLabel}>Pertence a</Text>
+        <Text style={s.coverOwnerName}>{studentName}</Text>
       </View>
     </Page>
   );
 }
 
-// ─── INTRO PAGE ─────────────────────────────────────────────────────────────
+// ─── INTRO PAGE ────────────────────────────────────────────────────────────
 
 function IntroPage({
   manual,
@@ -328,7 +367,7 @@ function IntroPage({
   );
 }
 
-// ─── COURSE MAP PAGE ────────────────────────────────────────────────────────
+// ─── COURSE MAP PAGE ───────────────────────────────────────────────────────
 
 function CourseMapPage({
   manual,
@@ -348,7 +387,7 @@ function CourseMapPage({
           marginBottom: 28,
         }}
       >
-        Oito modulos. Oito formas de olhar para o dinheiro. Marca cada um a
+        Oito módulos. Oito formas de olhar para o dinheiro. Marca cada um à
         medida que avanças.
       </Text>
       {manual.chapters.map((ch) => (
@@ -356,7 +395,7 @@ function CourseMapPage({
           <View style={s.mapCheckbox} />
           <View style={{ flex: 1 }}>
             <Text style={s.mapModuleNumber}>
-              MODULO {ch.moduleNumber}
+              MÓDULO {ch.moduleNumber}
             </Text>
             <Text style={s.mapModuleTitle}>{ch.title}</Text>
           </View>
@@ -367,46 +406,29 @@ function CourseMapPage({
   );
 }
 
-// ─── CHAPTER PAGES ──────────────────────────────────────────────────────────
+// ─── BOOK CHAPTER PAGES ────────────────────────────────────────────────────
 
-function ChapterPages({
+function BookChapterPages({
   chapter,
   studentName,
 }: {
   chapter: ManualChapter;
   studentName: string;
 }) {
-  const writingLines = 10;
-
   return (
     <Page size="A4" style={s.page} wrap>
-      {/* Chapter header */}
-      <Text style={s.chapterNumber}>
-        Modulo {chapter.moduleNumber}
-      </Text>
+      <Text style={s.chapterNumber}>Módulo {chapter.moduleNumber}</Text>
       <Text style={s.chapterTitle}>{chapter.title}</Text>
       <Text style={s.territoryNote}>{chapter.territoryStage}</Text>
 
-      {/* Summary */}
-      <Text style={s.body}>{chapter.summary}</Text>
+      {/* Resumo curto a abrir o capítulo */}
+      <Text style={s.chapterSummary}>{chapter.summary}</Text>
 
-      <View style={s.divider} />
-
-      {/* Reflection questions */}
-      <Text style={s.questionsTitle}>Perguntas de reflexao</Text>
-      {chapter.reflectionQuestions.map((q, i) => (
-        <Text key={i} style={s.questionItem}>
-          <Text style={s.questionBullet}>~ </Text>
-          {q}
+      {/* Texto expansivo (parágrafo a parágrafo) */}
+      {chapter.bookText.map((para, i) => (
+        <Text key={i} style={s.body}>
+          {para}
         </Text>
-      ))}
-
-      {/* Writing space */}
-      <Text style={s.writingTitle} break>
-        As tuas palavras
-      </Text>
-      {Array.from({ length: writingLines }).map((_, i) => (
-        <View key={i} style={s.writingLine} />
       ))}
 
       <Footer studentName={studentName} />
@@ -414,7 +436,62 @@ function ChapterPages({
   );
 }
 
-// ─── CLOSING PAGE ───────────────────────────────────────────────────────────
+// ─── WORKBOOK DIVIDER PAGE ─────────────────────────────────────────────────
+
+function WorkbookDividerPage({ studentName }: { studentName: string }) {
+  return (
+    <Page size="A4" style={{ backgroundColor: C.fundo }}>
+      <View style={s.workbookDividerPage}>
+        <Text style={s.workbookDividerLabel}>Anexo</Text>
+        <Text style={s.workbookDividerTitle}>Caderno de Exercícios</Text>
+        <View style={s.coverLineBottom} />
+        <Text style={[s.workbookDividerIntro, { marginTop: 30 }]}>
+          As perguntas dos oito módulos, com espaço para escreveres à mão.{"\n"}
+          Lê o capítulo primeiro. Depois volta aqui, sem pressa.
+        </Text>
+      </View>
+      <Footer studentName={studentName} />
+    </Page>
+  );
+}
+
+// ─── WORKBOOK CHAPTER PAGES ────────────────────────────────────────────────
+
+function WorkbookChapterPages({
+  chapter,
+  studentName,
+}: {
+  chapter: ManualChapter;
+  studentName: string;
+}) {
+  // Linhas em branco a seguir a cada pergunta — mais próximas do que a aluna
+  // efectivamente escreve à mão (4 linhas / pergunta).
+  const linesPerQuestion = 4;
+
+  return (
+    <Page size="A4" style={s.page} wrap>
+      <Text style={s.chapterNumber}>Módulo {chapter.moduleNumber}</Text>
+      <Text style={s.workbookChapterTitle}>{chapter.title}</Text>
+      <Text style={s.territoryNote}>Perguntas de reflexão</Text>
+
+      {chapter.reflectionQuestions.map((q, i) => (
+        <View key={i} wrap={false}>
+          <Text style={s.questionItem}>
+            <Text style={s.questionBullet}>{i + 1}.   </Text>
+            {q}
+          </Text>
+          {Array.from({ length: linesPerQuestion }).map((_, j) => (
+            <View key={j} style={s.writingLine} />
+          ))}
+        </View>
+      ))}
+
+      <Footer studentName={studentName} />
+    </Page>
+  );
+}
+
+// ─── CLOSING PAGE ──────────────────────────────────────────────────────────
 
 function ClosingPage({
   manual,
@@ -441,7 +518,7 @@ function ClosingPage({
             textTransform: "uppercase",
           }}
         >
-          Sete Veus
+          Sete Véus
         </Text>
         <Text
           style={{
@@ -451,7 +528,7 @@ function ClosingPage({
             marginTop: 6,
           }}
         >
-          Ve o que estava invisivel.
+          Vê o que estava invisível.
         </Text>
         <Text
           style={{
@@ -460,7 +537,7 @@ function ClosingPage({
             marginTop: 12,
           }}
         >
-          seteveus.space
+          escolaveus.com
         </Text>
       </View>
       <Footer studentName={studentName} />
@@ -468,7 +545,7 @@ function ClosingPage({
   );
 }
 
-// ─── MAIN DOCUMENT ──────────────────────────────────────────────────────────
+// ─── MAIN DOCUMENT ─────────────────────────────────────────────────────────
 
 export function ManualPDF({
   manual,
@@ -480,20 +557,33 @@ export function ManualPDF({
   return (
     <Document
       title={`${manual.courseTitle} — Manual`}
-      author="Sete Veus"
+      author="Sete Véus"
       subject={manual.courseSubtitle}
-      creator="Escola dos Veus"
+      creator="Escola dos Véus"
     >
       <CoverPage manual={manual} studentName={studentName} />
       <IntroPage manual={manual} studentName={studentName} />
       <CourseMapPage manual={manual} studentName={studentName} />
+
+      {/* Livro-companheiro: 8 capítulos com texto expansivo */}
       {manual.chapters.map((chapter) => (
-        <ChapterPages
-          key={chapter.moduleNumber}
+        <BookChapterPages
+          key={`book-${chapter.moduleNumber}`}
           chapter={chapter}
           studentName={studentName}
         />
       ))}
+
+      {/* Anexo destacável */}
+      <WorkbookDividerPage studentName={studentName} />
+      {manual.chapters.map((chapter) => (
+        <WorkbookChapterPages
+          key={`workbook-${chapter.moduleNumber}`}
+          chapter={chapter}
+          studentName={studentName}
+        />
+      ))}
+
       <ClosingPage manual={manual} studentName={studentName} />
     </Document>
   );
