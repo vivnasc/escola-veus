@@ -9,6 +9,7 @@ type AuthState = {
   session: Session | null;
   loading: boolean;
   isSubscribed: boolean;
+  isAdmin: boolean;
   signOut: () => Promise<void>;
 };
 
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthState>({
   session: null,
   loading: true,
   isSubscribed: false,
+  isAdmin: false,
   signOut: async () => {},
 });
 
@@ -25,12 +27,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      if (session?.user) checkSubscription(session.user.id);
+      if (session?.user) loadProfile(session.user.id);
       setLoading(false);
     });
 
@@ -38,21 +41,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        if (session?.user) checkSubscription(session.user.id);
-        else setIsSubscribed(false);
+        if (session?.user) loadProfile(session.user.id);
+        else {
+          setIsSubscribed(false);
+          setIsAdmin(false);
+        }
       }
     );
 
     return () => subscription.unsubscribe();
   }, []);
 
-  async function checkSubscription(userId: string) {
+  async function loadProfile(userId: string) {
     const { data } = await supabase
       .from("profiles")
-      .select("subscription_status")
+      .select("subscription_status, is_admin")
       .eq("id", userId)
       .single();
     setIsSubscribed(data?.subscription_status === "active");
+    setIsAdmin(data?.is_admin === true);
   }
 
   async function signOut() {
@@ -60,10 +67,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setSession(null);
     setIsSubscribed(false);
+    setIsAdmin(false);
   }
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, isSubscribed, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, isSubscribed, isAdmin, signOut }}>
       {children}
     </AuthContext.Provider>
   );
