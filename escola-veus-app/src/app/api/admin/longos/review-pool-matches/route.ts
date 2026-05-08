@@ -249,14 +249,31 @@ export async function POST(req: NextRequest) {
 
   const userMessage =
     `Para cada par (prompt do longo) vs (clip da pool reaproveitado), classifica\n` +
-    `a fidelidade visual:\n\n` +
-    `- "aligned": clip mostra essencialmente o que o prompt pede (objecto/cena central\n` +
-    `  + atmosfera/mood compatíveis). Reaproveitar é OK.\n` +
-    `- "weak": partilha alguns elementos mas o foco visual é diferente; reaproveitar\n` +
-    `  cria desconexão entre narração e imagem.\n` +
-    `- "misaligned": completamente diferente; o clip não serve este prompt.\n\n` +
-    `Sê estrito — preferimos descolar e regerar do que enganar o espectador. Em\n` +
-    `dúvida classifica como "weak".\n\n` +
+    `a fidelidade visual.\n\n` +
+    `REGRA CENTRAL: pergunta-te "qual é o ASSUNTO PRINCIPAL de cada um?". Se o\n` +
+    `assunto principal é diferente, é WEAK ou MISALIGNED — mesmo que partilhem\n` +
+    `palavras incidentais (ex: ambos mencionam "kitchen" mas um é sobre uma\n` +
+    `cadeira em primeiro plano e o outro é uma cozinha geral → o assunto é\n` +
+    `cadeira vs cozinha → não combinam).\n\n` +
+    `Categorias:\n` +
+    `- "aligned": ambos mostram o MESMO objecto/cena no centro do enquadramento,\n` +
+    `  com atmosfera compatível. Substituir um pelo outro não estranha.\n` +
+    `- "weak": partilham elementos mas o foco visual primário é diferente.\n` +
+    `  Espectador atento nota a desconexão entre o que a narração nomeia e o\n` +
+    `  que a imagem mostra.\n` +
+    `- "misaligned": completamente diferente — temas, objectos ou tom incompatíveis.\n\n` +
+    `EXEMPLOS de classificação correcta:\n` +
+    `1. Prompt: "empty wooden chair turned toward an old kitchen table, folded\n` +
+    `   shawl on its back" — Clip: "cozinha antiga, mesa servida, panela a\n` +
+    `   fumegar" → WEAK. Ambos têm cozinha mas assunto é cadeira vs cozinha geral.\n` +
+    `2. Prompt: "single ring with opaque stone resting on velvet" — Clip:\n` +
+    `   "anel antigo em mesa de madeira, luz dourada" → ALIGNED. Ambos: anel\n` +
+    `   como assunto central.\n` +
+    `3. Prompt: "rain on window pane, blurry city outside" — Clip: "veu de\n` +
+    `   seda no vento, mar ao fundo" → MISALIGNED. Tema, objectos e tom\n` +
+    `   completamente distintos.\n\n` +
+    `Sê ESTRITO. Preferimos descolar e regerar do que enganar o espectador.\n` +
+    `Em dúvida → "weak". Só "aligned" se tens a certeza que o clip serve.\n\n` +
     `Pares (${reviewable.length}):\n\n` +
     reviewable
       .map(
@@ -269,7 +286,7 @@ export async function POST(req: NextRequest) {
           `   Mood original: [${r.clipMood.join(", ")}]`,
       )
       .join("\n\n") +
-    `\n\nDevolve JSON com array "reviews": cada item { id, alignment, reason (1 frase curta) }.`;
+    `\n\nDevolve JSON com array "reviews": cada item { id, alignment, reason (1 frase, identifica explicitamente o ASSUNTO PRINCIPAL de ambos para justificar a classificação) }.`;
 
   let reviews: Review[];
   try {

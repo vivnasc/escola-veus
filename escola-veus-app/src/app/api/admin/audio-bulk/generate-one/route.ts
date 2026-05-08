@@ -7,8 +7,20 @@ export const maxDuration = 300;
  *
  * Generates ONE audio via ElevenLabs and uploads to Supabase.
  *
- * Body: { text, voiceId, modelId?, title, folder? }
- * Returns: { audioUrl, durationSec, sizeBytes, charsUsed }
+ * Body: {
+ *   text, voiceId, modelId?, title, folder?, keyName?,
+ *   languageCode?,
+ *   previousText?, nextText?, previousRequestIds?
+ * }
+ * Returns: { audioUrl, durationSec, sizeBytes, charsUsed, requestId }
+ *
+ * REQUEST STITCHING (long-form): para narração multi-capítulo, passa o
+ * `requestId` da chamada anterior em `previousRequestIds` (array, máx 3,
+ * mais recente primeiro) + `previousText` (últimos 200 chars do capítulo
+ * anterior) + `nextText` (primeiros 200 chars do capítulo seguinte).
+ * Eleven usa estes para condicionar o modelo na voz/tom do chunk anterior
+ * → narração contínua sem cortes audíveis.
+ * Ref: https://elevenlabs.io/docs/api-reference/text-to-speech/request-stitching
  */
 
 /**
@@ -53,6 +65,10 @@ export async function POST(req: NextRequest) {
       // múltiplos ficheiros. Usado pelos longos para resume de narração
       // (skip chunks que já existem em Supabase).
       keyName,
+      // Request stitching para long-form (ver doc no topo)
+      previousRequestIds,
+      previousText,
+      nextText,
     } = await req.json();
 
     if (!text || !voiceId) {
@@ -80,6 +96,24 @@ export async function POST(req: NextRequest) {
       body.language_code = languageCode;
     }
 
+    // Request stitching: passar previous_request_ids + previous_text + next_text
+    // para o modelo manter consistência de voz entre chunks. Eleven aceita até
+    // 3 IDs (mais recente primeiro). Sem isto, cada capítulo soa como uma
+    // "tomada" diferente — pequenas derivas de tom + sotaque audíveis na junção.
+    if (
+      Array.isArray(previousRequestIds) &&
+      previousRequestIds.length > 0
+    ) {
+      body.previous_request_ids = previousRequestIds.slice(0, 3);
+    }
+    if (typeof previousText === "string" && previousText.trim()) {
+      // Eleven aceita até 1000 chars; cortamos por segurança.
+      body.previous_text = previousText.slice(-1000);
+    }
+    if (typeof nextText === "string" && nextText.trim()) {
+      body.next_text = nextText.slice(0, 1000);
+    }
+
     // v3 suporta with-timestamps (duracao exacta via alignment)
     const useTimestamps = modelId === "eleven_v3";
     const endpoint = useTimestamps
@@ -99,6 +133,10 @@ export async function POST(req: NextRequest) {
         { status: 500 },
       );
     }
+
+    // request-id da resposta — guardar para passar ao próximo chunk
+    // (request stitching). Eleven devolve no header 'request-id'.
+    const requestId = res.headers.get("request-id") || null;
 
     let audioBuffer: ArrayBuffer;
     let durationSec: number | null = null;
@@ -181,6 +219,7 @@ export async function POST(req: NextRequest) {
       durationSec,
       sizeBytes: audioBuffer.byteLength,
       charsUsed: processedText.length,
+      requestId,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
