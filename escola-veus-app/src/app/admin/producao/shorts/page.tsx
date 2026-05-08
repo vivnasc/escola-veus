@@ -10,7 +10,6 @@ import {
   parseClipTheme,
   type ClipTheme,
 } from "@/components/admin/ClipUploader";
-import WeeklyBulkPanel from "@/components/admin/WeeklyBulkPanel";
 
 const MOTION_PROMPTS = runwayMotionPrompts as Record<string, string>;
 
@@ -646,7 +645,6 @@ export default function ShortsPage() {
 
   return (
     <div className="space-y-6">
-      <WeeklyBulkPanel brand="loranne" />
       <div className="flex items-center justify-between">
         <h2 className="font-serif text-lg text-escola-creme">
           Shorts · TikTok & YouTube (30s vertical)

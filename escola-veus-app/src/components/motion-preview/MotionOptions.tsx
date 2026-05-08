@@ -14,7 +14,7 @@
 
 import React from "react";
 
-// ─── LORANNE A — Mandala respirante ────────────────────────────────────────
+// ─── LORANNE A — Mandala respirante (só mandala, sem pontos) ───────────────
 export function LoranneMandalaA({ accent = "#D4A853" }: { accent?: string }) {
   return (
     <div className="relative h-full w-full overflow-hidden bg-gradient-to-b from-[#1a0a2a] via-[#2a1240] to-[#100620]">
@@ -61,23 +61,26 @@ export function LoranneMandalaA({ accent = "#D4A853" }: { accent?: string }) {
             );
           })}
         </g>
+        {/* segunda camada de pétalas mais perto do centro */}
+        <g fill={accent} opacity="0.6">
+          {Array.from({ length: 8 }).map((_, i) => {
+            const a = (i * Math.PI) / 4 + Math.PI / 8;
+            return (
+              <ellipse
+                key={`pet2-${i}`}
+                cx={50 + Math.cos(a) * 12}
+                cy={50 + Math.sin(a) * 12}
+                rx="1.8"
+                ry="0.8"
+                transform={`rotate(${(i * 45)} ${50 + Math.cos(a) * 12} ${50 + Math.sin(a) * 12})`}
+              />
+            );
+          })}
+        </g>
         {/* centro brilhante */}
         <circle cx="50" cy="50" r="3" fill={accent} opacity="0.9" />
+        <circle cx="50" cy="50" r="1.5" fill="#fff" opacity="0.8" />
       </svg>
-      {/* alguns pontos dourados subtis a flutuar */}
-      {Array.from({ length: 15 }).map((_, i) => (
-        <div
-          key={i}
-          className="absolute h-1 w-1 rounded-full motion-particle"
-          style={{
-            left: `${(i * 13) % 100}%`,
-            top: `${(i * 37) % 100}%`,
-            background: accent,
-            opacity: 0.4,
-            animationDelay: `${i * 0.4}s`,
-          }}
-        />
-      ))}
     </div>
   );
 }

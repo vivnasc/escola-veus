@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, forwardRef } from "react";
 import Link from "next/link";
 import * as htmlToImage from "html-to-image";
 import { ShareVideoActions } from "@/components/admin/ShareVideoActions";
-import WeeklyBulkPanel from "@/components/admin/WeeklyBulkPanel";
 import {
   RAIZES_TEMAS,
   RAIZES_TEMA_LABELS,
@@ -364,7 +363,6 @@ export default function AncientGroundShortsPage() {
 
   return (
     <div className="space-y-6">
-      <WeeklyBulkPanel brand="ancient-ground" />
       <div className="flex items-center justify-between">
         <h2 className="font-serif text-lg text-escola-creme">
           Shorts Ancient Ground · 30s vertical (reusa clips Runway já pagos)
