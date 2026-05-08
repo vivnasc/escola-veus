@@ -61,8 +61,7 @@ export function ensureCormorantRegistered(): void {
   Font.register({
     family: "Cormorant",
     fonts: FONTS.map((f) => {
-      const src = fs.readFileSync(path.join(FONT_DIR, f.file));
-      // @react-pdf/font aceita Buffer em src (chunked into Uint8Array internamente)
+      const src = path.join(FONT_DIR, f.file);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const entry: any = { src, fontWeight: f.fontWeight };
       if ("fontStyle" in f) entry.fontStyle = f.fontStyle;
