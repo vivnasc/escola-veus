@@ -18,6 +18,7 @@ const TABS_CURSOS: Tab[] = [
   { href: "/admin/producao/shorts/nomear", label: "Shorts Funil" },
   { href: "/admin/producao/audios", label: "Áudios" },
   { href: "/admin/producao/colecoes", label: "Carrosséis" },
+  { href: "/admin/producao/bulk-semanal", label: "Bulk semanal" },
 ];
 
 const TABS_AG: Tab[] = [
@@ -25,6 +26,7 @@ const TABS_AG: Tab[] = [
   { href: "/admin/producao/ancient-ground/raizes", label: "Raízes (imagens)" },
   { href: "/admin/producao/ancient-ground/montagem", label: "Vídeo longo (60 min)" },
   { href: "/admin/producao/ancient-ground/shorts", label: "Shorts AG" },
+  { href: "/admin/producao/bulk-semanal", label: "Bulk semanal" },
 ];
 
 export default function ProducaoLayout({ children }: { children: React.ReactNode }) {

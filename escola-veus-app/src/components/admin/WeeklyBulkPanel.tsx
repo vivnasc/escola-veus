@@ -64,9 +64,15 @@ function isoWeekNow(): number {
   return Math.ceil(((dt.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
 }
 
-export default function WeeklyBulkPanel({ brand }: { brand: BrandSlug }) {
+export default function WeeklyBulkPanel({
+  brand,
+  defaultOpen = false,
+}: {
+  brand: BrandSlug;
+  defaultOpen?: boolean;
+}) {
   const brandLabel = brand === "loranne" ? "Loranne" : "Ancient Ground";
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [week, setWeek] = useState<number>(isoWeekNow());
   const [year] = useState<number>(new Date().getFullYear());
   const [preview, setPreview] = useState<PreviewLoranne[] | PreviewAG[] | null>(null);
