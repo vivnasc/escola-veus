@@ -1,5 +1,5 @@
 /**
- * Template PDF dos cadernos preenchidos — Escola dos Veus.
+ * Template PDF dos cadernos preenchidos — Escola dos Véus.
  *
  * Modelo misto:
  *   1. Capa com nome da aluna e data

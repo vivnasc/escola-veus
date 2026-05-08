@@ -317,39 +317,75 @@ export default function CursoPage() {
             </a>
 
             {isAdminEmail(user?.email) && (
-              <a
-                href={`/api/courses/certificate?slug=${encodeURIComponent(slug)}&preview=admin`}
-                target="_blank"
-                rel="noopener"
-                className="flex items-center gap-3 rounded-xl border border-dashed border-escola-dourado/40 bg-escola-card p-4 transition-colors hover:border-escola-dourado"
-              >
-                <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
-                  style={{ backgroundColor: "rgba(201, 169, 110, 0.12)" }}
+              <>
+                <a
+                  href={`/api/courses/certificate?slug=${encodeURIComponent(slug)}&preview=admin`}
+                  target="_blank"
+                  rel="noopener"
+                  className="flex items-center gap-3 rounded-xl border border-dashed border-escola-dourado/40 bg-escola-card p-4 transition-colors hover:border-escola-dourado"
                 >
-                  <svg
-                    className="h-4 w-4 text-escola-dourado"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
+                  <span
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                    style={{ backgroundColor: "rgba(201, 169, 110, 0.12)" }}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 5.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-.34-.014-.677-.042-1.012z"
-                    />
-                  </svg>
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm text-escola-creme">
-                    Preview certificado <span className="text-xs text-escola-creme-50">(admin)</span>
-                  </p>
-                  <p className="mt-0.5 text-xs text-escola-creme-50">
-                    PDF dummy para testares formato — código VEU-PREVIEW.
-                  </p>
-                </div>
-              </a>
+                    <svg
+                      className="h-4 w-4 text-escola-dourado"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 5.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-.34-.014-.677-.042-1.012z"
+                      />
+                    </svg>
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm text-escola-creme">
+                      Preview certificado <span className="text-xs text-escola-creme-50">(admin)</span>
+                    </p>
+                    <p className="mt-0.5 text-xs text-escola-creme-50">
+                      PDF dummy para testares formato — código VEU-PREVIEW.
+                    </p>
+                  </div>
+                </a>
+
+                <a
+                  href={`/api/courses/cadernos?slug=${encodeURIComponent(slug)}&preview=admin`}
+                  target="_blank"
+                  rel="noopener"
+                  className="flex items-center gap-3 rounded-xl border border-dashed border-escola-dourado/40 bg-escola-card p-4 transition-colors hover:border-escola-dourado"
+                >
+                  <span
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                    style={{ backgroundColor: "rgba(201, 169, 110, 0.12)" }}
+                  >
+                    <svg
+                      className="h-4 w-4 text-escola-dourado"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm text-escola-creme">
+                      Preview cadernos vazio <span className="text-xs text-escola-creme-50">(admin)</span>
+                    </p>
+                    <p className="mt-0.5 text-xs text-escola-creme-50">
+                      Estrutura do PDF como aparece sem nada escrito ainda.
+                    </p>
+                  </div>
+                </a>
+              </>
             )}
           </div>
         </section>

@@ -1,5 +1,5 @@
 /**
- * Template PDF para manuais de curso — Escola dos Veus
+ * Template PDF para manuais de curso — Escola dos Véus
  *
  * Estrutura do PDF:
  *   1. Capa (com nome da aluna como proprietária)
