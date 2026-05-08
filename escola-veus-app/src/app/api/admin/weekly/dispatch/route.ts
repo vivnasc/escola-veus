@@ -4,7 +4,7 @@ import { type BrandSlug } from "@/data/weekly-social/brand-config";
 import { loadPlan, savePlan } from "@/lib/weekly-social/plan-storage";
 import { currentYear } from "@/lib/weekly-social/schedule";
 import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
-import { runRenderShortSubmit } from "@/app/api/admin/shorts/render-short-submit/route";
+import { runRenderShortSubmit } from "@/lib/shorts/render-short-core";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;

@@ -13,8 +13,8 @@ import { pickLoranneClips, pickAGClips, findTrackUrl } from "@/lib/weekly-social
 import { savePlan } from "@/lib/weekly-social/plan-storage";
 import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
-import { runSuggest } from "@/app/api/admin/shorts/suggest/route";
-import { runSuggestAG } from "@/app/api/admin/shorts/suggest-ag/route";
+import { runSuggest } from "@/lib/shorts/suggest-core";
+import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120; // 7 + 3 chamadas Claude — pode demorar 60-90s
