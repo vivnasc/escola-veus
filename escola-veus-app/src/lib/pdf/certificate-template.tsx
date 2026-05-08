@@ -15,49 +15,10 @@ import {
   Text,
   View,
   StyleSheet,
-  Font,
 } from "@react-pdf/renderer";
 
-Font.register({
-  family: "Cormorant",
-  fonts: [
-    {
-      src: "https://fonts.gstatic.com/s/cormorantgaramond/v16/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.ttf",
-      fontWeight: 400,
-    },
-    {
-      src: "https://fonts.gstatic.com/s/cormorantgaramond/v16/co3YmX5slCNuHLi8bLeY9MK7whWMhyjQEl5fsA.ttf",
-      fontWeight: 400,
-      fontStyle: "italic",
-    },
-    {
-      src: "https://fonts.gstatic.com/s/cormorantgaramond/v16/co3WmX5slCNuHLi8bLeY9MK7whWMhyjYrEPjuw-NxBk.ttf",
-      fontWeight: 600,
-    },
-  ],
-});
-
-Font.register({
-  family: "SerifFallback",
-  fonts: [
-    {
-      src: "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf",
-      fontWeight: 400,
-    },
-    {
-      src: "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf",
-      fontWeight: 400,
-      fontStyle: "italic",
-    },
-    {
-      src: "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf",
-      fontWeight: 600,
-    },
-  ],
-});
-
-const FONT_FAMILY =
-  process.env.NODE_ENV === "production" ? "Cormorant" : "SerifFallback";
+// Times-Roman built-in (PDF standard 14). Ver nota em manual-template.tsx.
+const FONT_FAMILY = "Times-Roman";
 
 const C = {
   fundo: "#1A1A2E",
