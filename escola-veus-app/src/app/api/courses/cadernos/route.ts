@@ -49,18 +49,28 @@ export async function GET(req: NextRequest) {
   const studentName = user.user_metadata?.full_name || user.email || "Aluna";
   const entries = (rows ?? []).filter((r) => (r.content ?? "").trim().length > 0);
 
-  const element = React.createElement(CadernosPDF, { course, studentName, entries });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const buffer = await renderToBuffer(element as any);
+  try {
+    const element = React.createElement(CadernosPDF, { course, studentName, entries });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const buffer = await renderToBuffer(element as any);
 
-  const filename = `${course.title.replace(/\s+/g, "-")}_Cadernos_${studentName.replace(/\s+/g, "-")}.pdf`;
+    const filename = `${course.title.replace(/\s+/g, "-")}_Cadernos_${studentName.replace(/\s+/g, "-")}.pdf`;
 
-  return new NextResponse(new Uint8Array(buffer), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${filename}"`,
-      "Cache-Control": "private, no-cache",
-    },
-  });
+    return new NextResponse(new Uint8Array(buffer), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${filename}"`,
+        "Cache-Control": "private, no-cache",
+      },
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : undefined;
+    console.error("[cadernos] render failed:", err);
+    return NextResponse.json(
+      { error: "PDF render falhou", message, stack },
+      { status: 500 }
+    );
+  }
 }
