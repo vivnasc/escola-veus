@@ -164,7 +164,8 @@ async function generatePdf(
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${filename}"`,
+        // inline → abre no viewer do browser (com botão "Save" para descarregar)
+        "Content-Disposition": `inline; filename="${filename}"`,
         "Cache-Control": "private, no-cache",
       },
     });
