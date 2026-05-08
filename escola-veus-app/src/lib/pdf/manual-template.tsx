@@ -537,7 +537,7 @@ function ClosingPage({
             marginTop: 12,
           }}
         >
-          escolaveus.com
+          escola.seteveus.space
         </Text>
       </View>
       <Footer studentName={studentName} />
