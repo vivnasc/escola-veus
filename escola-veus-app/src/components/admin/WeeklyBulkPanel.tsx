@@ -34,6 +34,7 @@ type WeeklyPost = {
   verses: string[];
   captions: { instagram: string; tiktok: string; youtube: { title: string; description: string } };
   videoUrl: string | null;
+  thumbnailUrl: string | null;
   jobId: string | null;
   status: "planned" | "queued" | "rendering" | "done" | "failed";
   errorMessage?: string;
@@ -319,19 +320,11 @@ export default function WeeklyBulkPanel({ brand }: { brand: BrandSlug }) {
                   />
                 </div>
               )}
-              <ul className="mt-3 space-y-1.5 text-[11px]">
+              <div className="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {statusEntry.plan.posts.map((p) => (
-                  <li key={p.id} className="flex items-center justify-between gap-2">
-                    <span className="truncate">
-                      <span className="font-semibold text-escola-creme">{DAY_LABELS[p.day]}</span>
-                      <span className="ml-2 text-escola-creme-50">
-                        {p.trackTitle || p.label}
-                      </span>
-                    </span>
-                    <PostStatusPill status={p.status} />
-                  </li>
+                  <PostCard key={p.id} post={p} />
                 ))}
-              </ul>
+              </div>
             </div>
           )}
 
@@ -368,5 +361,69 @@ function PostStatusPill({ status }: { status: WeeklyPost["status"] }) {
     <span className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] uppercase ${color[status]}`}>
       {status}
     </span>
+  );
+}
+
+function PostCard({ post }: { post: WeeklyPost }) {
+  const title = post.trackTitle || post.label || post.id;
+  const subtitle = post.albumTitle || (post.temas?.join(" + ")) || "";
+  return (
+    <div className="overflow-hidden rounded border border-escola-border bg-escola-bg-card">
+      <div className="aspect-[9/16] bg-black">
+        {post.videoUrl ? (
+          <video
+            src={post.videoUrl}
+            poster={post.thumbnailUrl || undefined}
+            controls
+            preload="metadata"
+            className="h-full w-full"
+          />
+        ) : post.thumbnailUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={post.thumbnailUrl} alt={title} className="h-full w-full object-cover opacity-60" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-[10px] text-escola-creme-50">
+            {post.status === "rendering" ? "a renderizar…" :
+             post.status === "queued" ? "em fila" :
+             post.status === "failed" ? "falhou" : "sem vídeo"}
+          </div>
+        )}
+      </div>
+      <div className="p-2">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <div className="text-[11px] font-semibold text-escola-creme">
+              {DAY_LABELS[post.day]} · {title}
+            </div>
+            {subtitle && (
+              <div className="truncate text-[10px] text-escola-creme-50">{subtitle}</div>
+            )}
+          </div>
+          <PostStatusPill status={post.status} />
+        </div>
+        {post.errorMessage && (
+          <div className="mt-1 text-[10px] text-red-300">✗ {post.errorMessage}</div>
+        )}
+        {post.videoUrl && (
+          <div className="mt-2 flex flex-wrap gap-2 text-[10px]">
+            <a
+              href={post.videoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-escola-creme-50 hover:text-escola-dourado"
+            >
+              ↗ abrir
+            </a>
+            <a
+              href={post.videoUrl}
+              download
+              className="text-escola-creme-50 hover:text-escola-dourado"
+            >
+              ↓ download
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
