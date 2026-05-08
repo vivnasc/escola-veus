@@ -87,8 +87,8 @@ export function VideoPlayer({
     return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
-  // No video available — show territory fallback
-  if (!loading && !videoUrl) {
+  // No video available OR video failed to load — show territory fallback
+  if (!loading && (!videoUrl || error)) {
     return (
       <div className="relative mb-6 flex aspect-video items-center justify-center overflow-hidden rounded-xl border border-[var(--t-primary,#C9A96E)]/20 bg-escola-card">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-escola-bg/80" />
@@ -150,6 +150,7 @@ export function VideoPlayer({
         }}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
+        onError={() => setError(true)}
         onEnded={() => {
           setPlaying(false);
           if (!completeFired && onComplete) {
