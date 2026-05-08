@@ -64,25 +64,27 @@ export async function GET(request: NextRequest) {
   }
 
   const subLower = sub.toLowerCase();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    "https://tdytdamtfillqyklgrmb.supabase.co";
 
   // 1) Novo pipeline: course-assets/curso-<slug>/videos/m<N>-<letter>.mp4
-  // GET com Range bytes=0-0 devolve 206 Partial Content se o ficheiro
-  // existe e 404 se não existe. Não precisa de admin client porque o
-  // bucket course-assets é público.
+  // bucket público. Probe HEAD para confirmar existência. Qualquer status
+  // que não seja 404 (200, 206, 405 se HEAD desactivado, 416 etc) → existe.
+  // Erro de rede → devolve URL na mesma, o browser tenta carregar e o
+  // VideoPlayer faz fallback se falhar.
   const mockBPath = `curso-${slug}/videos/m${moduleNum}-${subLower}.mp4`;
   const mockBUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${mockBPath}`;
   try {
     const probe = await fetch(mockBUrl, {
-      method: "GET",
-      headers: { Range: "bytes=0-0" },
+      method: "HEAD",
       cache: "no-store",
     });
-    if (probe.status === 206 || probe.status === 200) {
+    if (probe.status !== 404) {
       return NextResponse.json({ url: mockBUrl, source: "mock-b" });
     }
   } catch {
-    // fall through to legacy
+    return NextResponse.json({ url: mockBUrl, source: "mock-b-untested" });
   }
 
   // 2) Legacy: course-videos/{slug}/m{module}/{sub}.mp4 — precisa admin
