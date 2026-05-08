@@ -55,9 +55,34 @@ Outros recursos:
   invisível. URL: app.seteecos.com/lumina
 - 🌀 Sete Ecos — comunidade anónima, partilha sem máscara. Boa para
   temas de solidão, comunidade, irmandade. URL: seteveus.space (root)
-- 🕯️ Cursos (em breve) — Ouro Próprio, Limite Sagrado, A Arte da
-  Inteireza, etc. CTA é SEMPRE "manifestar interesse / acesso
-  prioritário", NUNCA "comprar" ou "inscreve-te". URL: seteveus.space/cursos
+- 🕯️ Ouro Próprio — curso já disponível sobre a relação com o dinheiro
+  como espelho de ti. 24 sub-aulas em 8 módulos, território "A Casa dos
+  Espelhos Dourados":
+  · M1 O Extracto como Espelho — medo de olhar, ler o extracto como
+    diário, corpo e dinheiro
+  · M2 A Herança Financeira Emocional — scripts de infância, o que
+    viste vs. o que ouviste, reescrever os scripts
+  · M3 A Vergonha do Dinheiro — vergonha de não ter, vergonha de querer
+    mais, dinheiro e dignidade
+  · M4 Cobrar, Receber, Merecer — o desconto automático, ligação
+    cobrar-merecer, receber sem devolver imediatamente
+  · M5 Gastar em Ti — hierarquia dos gastos, culpa e prazer,
+    investimento em ti como acto político
+  · M6 Dinheiro e Relações — quem paga manda?, dependência financeira
+    e medo, a conversa sobre dinheiro que evitas
+  · M7 Ganhar Mais Não Resolve — o buraco que o dinheiro não enche,
+    sabotagem financeira, quando é suficiente
+  · M8 Dinheiro como Liberdade — de sobrevivência a direcção, mapa do
+    futuro que queres financiar, liberdade não acumulação
+  Linguagem do curso: dinheiro não é matemática, é corpo; extracto
+  como diário; gastos como compensação emocional (cansaço, solidão,
+  culpa); reacção antes do pensamento. Faz match temático quando o
+  brief tocar dinheiro, valor próprio, escassez, herança financeira,
+  vergonha, cobrar, gastar em si, sabotagem, suficiência, liberdade
+  financeira. URL: seteveus.space/curso/ouro-proprio
+- 🕯️ Outros cursos (em breve) — Limite Sagrado, A Arte da Inteireza,
+  etc. CTA é SEMPRE "manifestar interesse / acesso prioritário", NUNCA
+  "comprar" ou "inscreve-te". URL: seteveus.space/cursos
 
 REGRAS DE CTA:
 1. **Varia entre os dias.** NUNCA escolhas o mesmo recurso para 2 dias
@@ -66,9 +91,12 @@ REGRAS DE CTA:
    Colecção Nós. Se é sobre identidade/auto-imagem → Colecção Espelhos.
    Se é sobre silêncio interior → Music Véus. Se é sobre corpo →
    VITALIS. Se é sobre auto-percepção → LUMINA. Se é sobre comunidade
-   → Sete Ecos. Se é sobre uma transformação que pede prática longa →
-   Cursos. O livro "Os 7 Véus" só quando o dia tocar um dos sete véus
-   estruturais.
+   → Sete Ecos. Se é sobre dinheiro / valor próprio / escassez /
+   herança financeira / vergonha-cobrança / gastar em si / sabotagem
+   / liberdade financeira → Ouro Próprio (curso já disponível). Se é
+   sobre outra transformação longa (limites, inteireza, etc.) →
+   Outros cursos (em breve). O livro "Os 7 Véus" só quando o dia tocar
+   um dos sete véus estruturais.
 3. NUNCA inventes URLs ou produtos fora desta lista.
 4. Se mesmo assim nada se encaixar, usa Sete Ecos (comunidade) como
    fallback contemplativo.
