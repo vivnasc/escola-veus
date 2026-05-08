@@ -145,5 +145,65 @@
     "5": "Tinta e Papel",
     "6": "Rhythm of Making",
     "7": "A Peça Pronta"
+  },
+  "incenso-acende": {
+    "1": "Pequena Chama",
+    "2": "Coming Back",
+    "3": "Movimento",
+    "4": "Cinco Passos",
+    "5": "Volta",
+    "6": "Aftercare",
+    "7": "Sair de Casa",
+    "8": "Batimento",
+    "9": "Cá Estou",
+    "10": "What Stays"
+  },
+  "incenso-coro": {
+    "1": "Alguém Está Acordada",
+    "2": "You Are Not the First",
+    "3": "A Casa de Outra",
+    "4": "WhatsApp at 4 a.m.",
+    "5": "Não Sozinha",
+    "6": "Held",
+    "7": "Tia",
+    "8": "Sisters Without Names",
+    "9": "Eu Sou Porque Tu És",
+    "10": "What the Coro Leaves"
+  },
+  "incenso-milagre": {
+    "1": "Já Não Pedia",
+    "2": "The Coffee Was Warm",
+    "3": "A Pessoa Certa no Autocarro",
+    "4": "The Job I Didn't Apply For",
+    "5": "Misericórdia",
+    "6": "Quiet Mercy",
+    "7": "Vizinho",
+    "8": "When the Light Came Back",
+    "9": "Sem Eu Pedir",
+    "10": "What I Didn't Have to Earn"
+  },
+  "incenso-amen": {
+    "1": "Empurrar a Água",
+    "2": "Letting Go of the Rope",
+    "3": "A Maré Sobe",
+    "4": "The Diagnosis Is True",
+    "5": "Amen",
+    "6": "The Yes That Doesn't Hurt",
+    "7": "Pousar",
+    "8": "Soft Power",
+    "9": "Sim",
+    "10": "What Surrender Tastes Like"
+  },
+  "incenso-aleluia": {
+    "1": "Riso Antigo",
+    "2": "The First Smile",
+    "3": "A Boca Lembrou-se",
+    "4": "Dancing in the Kitchen",
+    "5": "Festa Pequena",
+    "6": "Joy Without Reason",
+    "7": "Cantar Alto",
+    "8": "Suor é Oração",
+    "9": "Aleluia",
+    "10": "What Joy Leaves"
   }
 }
