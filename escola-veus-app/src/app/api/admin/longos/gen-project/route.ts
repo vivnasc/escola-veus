@@ -179,11 +179,19 @@ ESTRUTURA DO SCRIPT (long-form contemplativo, voz própria da Vivianne):
 - Constrói por aproximação: a mesma ideia voltada de 3 ângulos diferentes em vez de explicada uma vez.
 - Final-assinatura da Vivianne: devolução ao corpo, tipo "Antes de fechar o vídeo, respira fundo. O que ouviste é tua memória, não tua história." (variação livre da fórmula, mas sempre a devolver-lhe a sua própria autoridade — nunca "espero que tenha gostado, subscreve aí")
 
-PROMPTS DE IMAGEM:
+PROMPTS DE IMAGEM (Midjourney):
 - Inglês, 2-3 linhas, ≤350 chars
 - Começa com objecto/cena central → descreve luz → fundo/atmosfera → tom emocional
 - Moods em PT, 2-3 por prompt
 - IDs: \`longo-<slug>-<NN>-<slug-cena>\`
+- **OBRIGATÓRIO terminar com params Midjourney**: \`--ar 16:9 --v 7 --style raw --s 50\`
+  - \`--ar 16:9\`: aspect ratio horizontal long-form (1920×1080)
+  - \`--v 7\`: versão actual MJ (Vivianne edita se usar outra)
+  - \`--style raw\`: menos estilizado, mais fotográfico (apto para contemplativo)
+  - \`--s 50\`: stylize baixo, foco em realismo
+- Exemplo: "old leather wallet on worn counter, warm pendant lamp, dust in beam,
+  muted sepia palette, contemplative still life, Leica 50mm, hyperrealistic, 8k
+  --ar 16:9 --v 7 --style raw --s 50"
 
 MOTION (animação Runway image-to-video):
 - 1 frase curta em inglês descrevendo a câmara/movimento desta cena específica
