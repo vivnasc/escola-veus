@@ -201,84 +201,105 @@ function makeYouTubeDescription(
   ].join("\n");
 }
 
+export type SuggestInput = {
+  albumSlug?: string;
+  trackNumber?: number;
+  trackName?: string;
+  theme?: string;
+  lyrics?: string;
+  trackLabel?: string;
+};
+
+export type SuggestResult = {
+  albumSlug?: string;
+  albumTitle: string;
+  trackNumber: number | null;
+  trackTitle: string;
+  verses: [string, string];
+  candidates: string[];
+  tiktokCaption: string;
+  youtubeTitle: string;
+  youtubeDescription: string;
+};
+
+/**
+ * Núcleo do `suggest` extraído como função pure server-side.
+ * Útil para chamadas internas (weekly/plan) sem passar pelo Vercel auth gate.
+ *
+ * Lança Error com mensagem legível em casos de input inválido — caller
+ * decide se traduz para HTTP 400/404 ou para o seu próprio formato.
+ */
+export function runSuggest(input: SuggestInput): SuggestResult {
+  const { albumSlug, trackNumber: tn, trackName, theme, lyrics: rawLyrics, trackLabel } = input;
+
+  let lyrics = "";
+  let trackTitle = "";
+  let albumTitle = "";
+  let finalTrackNumber: number | null = typeof tn === "number" ? tn : null;
+
+  if (albumSlug) {
+    const n = finalTrackNumber ?? (trackName ? parseTrackNumber(trackName) : null);
+    if (!n) {
+      throw new Error("trackNumber ou trackName valido obrigatorio com albumSlug.");
+    }
+    const found = getTrackLyrics(albumSlug, n);
+    if (!found) {
+      throw new Error(`Nao encontrei letra para ${albumSlug}/${n}.`);
+    }
+    lyrics = found.lyrics;
+    trackTitle = found.trackTitle;
+    albumTitle = found.albumTitle;
+    finalTrackNumber = found.trackNumber;
+  } else if (rawLyrics && typeof rawLyrics === "string") {
+    lyrics = rawLyrics;
+    trackTitle = trackLabel || "";
+    albumTitle = "";
+  } else {
+    throw new Error("albumSlug + trackNumber/trackName obrigatorios (ou lyrics legacy).");
+  }
+
+  if (!lyrics.trim()) {
+    throw new Error(`Faixa "${trackTitle}" nao tem letra em loranne-lyrics/ (possivelmente instrumental).`);
+  }
+
+  const allLines = lyrics
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0 && !/^\[.*\]$/.test(l));
+  const candidates = pickCandidates(lyrics, 6);
+  const [v1, v2] = pickTwoVerses(candidates, allLines);
+
+  const seed = `${albumSlug || ""}/${finalTrackNumber || ""}`;
+  return {
+    albumSlug,
+    albumTitle,
+    trackNumber: finalTrackNumber,
+    trackTitle,
+    verses: [v1, v2],
+    candidates,
+    tiktokCaption: makeTikTokCaption(v1, v2, theme, seed),
+    youtubeTitle: makeYouTubeTitle(trackTitle || "Loranne", albumTitle || "", v1),
+    youtubeDescription: makeYouTubeDescription(
+      trackTitle || "Loranne",
+      albumTitle || "",
+      v1,
+      v2,
+      theme,
+      seed,
+    ),
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { albumSlug, trackNumber: tn, trackName, theme, lyrics: rawLyrics, trackLabel } = body || {};
-
-    let lyrics = "";
-    let trackTitle = "";
-    let albumTitle = "";
-    let finalTrackNumber = typeof tn === "number" ? tn : null;
-
-    if (albumSlug) {
-      const n = finalTrackNumber ?? (trackName ? parseTrackNumber(trackName) : null);
-      if (!n) {
-        return NextResponse.json(
-          { erro: "trackNumber ou trackName valido obrigatorio com albumSlug." },
-          { status: 400 },
-        );
-      }
-      const found = getTrackLyrics(albumSlug, n);
-      if (!found) {
-        return NextResponse.json(
-          { erro: `Nao encontrei letra para ${albumSlug}/${n}.` },
-          { status: 404 },
-        );
-      }
-      lyrics = found.lyrics;
-      trackTitle = found.trackTitle;
-      albumTitle = found.albumTitle;
-      finalTrackNumber = found.trackNumber;
-    } else if (rawLyrics && typeof rawLyrics === "string") {
-      // Fallback legacy
-      lyrics = rawLyrics;
-      trackTitle = trackLabel || "";
-      albumTitle = "";
-    } else {
-      return NextResponse.json(
-        { erro: "albumSlug + trackNumber/trackName obrigatorios (ou lyrics legacy)." },
-        { status: 400 },
-      );
-    }
-
-    if (!lyrics.trim()) {
-      return NextResponse.json(
-        {
-          erro: `Faixa "${trackTitle}" nao tem letra em loranne-lyrics/ (possivelmente instrumental).`,
-        },
-        { status: 404 },
-      );
-    }
-
-    const allLines = lyrics
-      .split(/\r?\n/)
-      .map((l) => l.trim())
-      .filter((l) => l.length > 0 && !/^\[.*\]$/.test(l));
-    const candidates = pickCandidates(lyrics, 6);
-    const [v1, v2] = pickTwoVerses(candidates, allLines);
-
-    const seed = `${albumSlug || ""}/${finalTrackNumber || ""}`;
-    return NextResponse.json({
-      albumSlug,
-      albumTitle,
-      trackNumber: finalTrackNumber,
-      trackTitle,
-      verses: [v1, v2],
-      candidates,
-      tiktokCaption: makeTikTokCaption(v1, v2, theme, seed),
-      youtubeTitle: makeYouTubeTitle(trackTitle || "Loranne", albumTitle || "", v1),
-      youtubeDescription: makeYouTubeDescription(
-        trackTitle || "Loranne",
-        albumTitle || "",
-        v1,
-        v2,
-        theme,
-        seed,
-      ),
-    });
+    return NextResponse.json(runSuggest(body || {}));
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    return NextResponse.json({ erro: `Excepcao: ${msg}` }, { status: 500 });
+    // Heurística: 404 quando não encontrou letra/track; 400 quando input inválido.
+    const status = /Nao encontrei|nao tem letra/.test(msg) ? 404
+      : /obrigatorio|valido/.test(msg) ? 400
+      : 500;
+    return NextResponse.json({ erro: msg }, { status });
   }
 }

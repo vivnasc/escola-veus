@@ -21,8 +21,28 @@ export const maxDuration = 30;
  * }
  * Returns: { jobId }
  */
-export async function POST(req: NextRequest) {
-  const body = await req.json();
+export type RenderShortInput = {
+  title?: string;
+  slug?: string;
+  clips: string[];
+  clipDuration?: number;
+  musicUrl?: string;
+  musicVolume?: number;
+  overlayPngs?: unknown;
+  overlayStart?: unknown;
+  overlayEnd?: unknown;
+  thumbnailUrl?: string;
+  seo?: unknown;
+};
+
+/**
+ * Núcleo do `render-short-submit` extraído como função pure server-side.
+ * Útil para chamadas internas (weekly/dispatch) sem passar pelo Vercel
+ * auth gate.
+ *
+ * Lança Error com mensagem legível em casos de input/config inválidos.
+ */
+export async function runRenderShortSubmit(input: RenderShortInput): Promise<{ jobId: string }> {
   const {
     title,
     slug: rawSlug,
@@ -35,16 +55,16 @@ export async function POST(req: NextRequest) {
     overlayEnd,
     thumbnailUrl,
     seo,
-  } = body || {};
+  } = input || {};
 
   if (!Array.isArray(clips) || clips.length === 0) {
-    return NextResponse.json({ erro: "clips[] obrigatorio." }, { status: 400 });
+    throw new Error("clips[] obrigatorio.");
   }
   const hasMusic = !!musicUrl;
 
   const admin = createSupabaseAdminClient();
   if (!admin) {
-    return NextResponse.json({ erro: "SUPABASE_SERVICE_ROLE_KEY nao configurada." }, { status: 500 });
+    throw new Error("SUPABASE_SERVICE_ROLE_KEY nao configurada.");
   }
 
   const slug = sanitiseSlug(rawSlug || title || "short");
@@ -74,7 +94,7 @@ export async function POST(req: NextRequest) {
       upsert: true,
     });
   if (upErr) {
-    return NextResponse.json({ erro: `Upload manifest falhou: ${upErr.message}` }, { status: 500 });
+    throw new Error(`Upload manifest falhou: ${upErr.message}`);
   }
 
   // Pseudo-result inicial
@@ -101,10 +121,7 @@ export async function POST(req: NextRequest) {
   const token = process.env.GITHUB_DISPATCH_TOKEN;
 
   if (!token) {
-    return NextResponse.json(
-      { erro: "GITHUB_DISPATCH_TOKEN nao configurada." },
-      { status: 500 }
-    );
+    throw new Error("GITHUB_DISPATCH_TOKEN nao configurada.");
   }
 
   const dispatchUrl = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowFile}/dispatches`;
@@ -121,13 +138,21 @@ export async function POST(req: NextRequest) {
 
   if (!ghRes.ok) {
     const errText = await ghRes.text();
-    return NextResponse.json(
-      { erro: `GitHub dispatch falhou (${ghRes.status}): ${errText.slice(0, 400)}` },
-      { status: 502 }
-    );
+    throw new Error(`GitHub dispatch falhou (${ghRes.status}): ${errText.slice(0, 400)}`);
   }
 
-  return NextResponse.json({ jobId });
+  return { jobId };
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    return NextResponse.json(await runRenderShortSubmit(body || {}));
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    const status = /obrigatorio|valido/.test(msg) ? 400 : /GitHub dispatch/.test(msg) ? 502 : 500;
+    return NextResponse.json({ erro: msg }, { status });
+  }
 }
 
 function sanitiseSlug(s: string): string {

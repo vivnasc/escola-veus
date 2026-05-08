@@ -138,134 +138,129 @@ function clamp(s: string, max: number): string {
   return s.slice(0, max - 1).trimEnd() + "…";
 }
 
+export type SuggestAGInput = {
+  temas?: string[];
+  categorias?: string[];
+  trackNumber?: number;
+};
+
+/**
+ * Núcleo do `suggest-ag` extraído como função pure server-side.
+ * Útil para chamadas internas (weekly/plan) sem passar pelo Vercel auth gate.
+ */
+export async function runSuggestAG(input: SuggestAGInput): Promise<SuggestResponse> {
+  const inputTemas = input.temas ?? input.categorias;
+
+  if (!Array.isArray(inputTemas) || inputTemas.length === 0) {
+    throw new Error("temas[] obrigatório (uma por clip raízes).");
+  }
+
+  const cleanTemas = inputTemas.filter((t): t is RaizTema =>
+    (RAIZES_TEMAS as readonly string[]).includes(t),
+  );
+  if (cleanTemas.length === 0) {
+    throw new Error("Nenhum tema raízes reconhecido. Os clips devem ter prefixo de tema (ex: batuque-01.mp4).");
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    throw new Error("ANTHROPIC_API_KEY não configurada.");
+  }
+
+  const client = new Anthropic({ apiKey });
+
+  const system = [
+    {
+      type: "text" as const,
+      text: buildSystemPrompt(),
+      cache_control: { type: "ephemeral" as const },
+    },
+  ];
+
+  const userMessage = buildUserMessage(
+    cleanTemas,
+    typeof input.trackNumber === "number" ? input.trackNumber : null,
+  );
+
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-6",
+    max_tokens: 2500,
+    system,
+    messages: [{ role: "user", content: userMessage }],
+    output_config: {
+      format: {
+        type: "json_schema",
+        schema: {
+          type: "object",
+          properties: {
+            versos: {
+              type: "array",
+              items: { type: "string" },
+              minItems: 6,
+              maxItems: 10,
+            },
+            tiktokCaption: { type: "string" },
+            youtubeTitle: { type: "string" },
+            youtubeDescription: { type: "string" },
+          },
+          required: ["versos", "tiktokCaption", "youtubeTitle", "youtubeDescription"],
+          additionalProperties: false,
+        },
+      },
+    },
+  });
+
+  const textBlock = response.content.find((b) => b.type === "text");
+  if (!textBlock || textBlock.type !== "text") {
+    throw new Error("Claude não devolveu text block");
+  }
+
+  let parsed: Partial<SuggestResponse>;
+  try {
+    parsed = JSON.parse(textBlock.text);
+  } catch {
+    throw new Error(`JSON inválido: ${textBlock.text.slice(0, 200)}`);
+  }
+
+  const versos = (Array.isArray(parsed.versos) ? parsed.versos : [])
+    .filter((v): v is string => typeof v === "string" && v.trim().length > 0)
+    .slice(0, 10);
+
+  if (versos.length === 0) {
+    throw new Error("Claude devolveu lista de versos vazia.");
+  }
+
+  const tiktokCaption = clamp(
+    typeof parsed.tiktokCaption === "string" ? parsed.tiktokCaption : "",
+    AG_CAPTION_RULES.tiktokMaxChars,
+  );
+  let youtubeTitle = typeof parsed.youtubeTitle === "string" ? parsed.youtubeTitle : "";
+  if (!youtubeTitle.toLowerCase().includes("#shorts")) {
+    youtubeTitle = `${youtubeTitle} #Shorts`;
+  }
+  youtubeTitle = clamp(youtubeTitle, AG_CAPTION_RULES.youtubeTitleMaxChars);
+  const youtubeDescription = clamp(
+    typeof parsed.youtubeDescription === "string" ? parsed.youtubeDescription : "",
+    AG_CAPTION_RULES.youtubeDescriptionMaxChars,
+  );
+
+  return {
+    versos,
+    tiktokCaption,
+    youtubeTitle,
+    youtubeDescription,
+    usage: {
+      input: response.usage.input_tokens,
+      output: response.usage.output_tokens,
+      cached: response.usage.cache_read_input_tokens || 0,
+    },
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as {
-      temas?: string[];
-      // backwards-compat com chamadas antigas durante a migração
-      categorias?: string[];
-      trackNumber?: number;
-    };
-    const inputTemas = body.temas ?? body.categorias;
-
-    if (!Array.isArray(inputTemas) || inputTemas.length === 0) {
-      return NextResponse.json(
-        { erro: "temas[] obrigatório (uma por clip raízes)." },
-        { status: 400 },
-      );
-    }
-
-    // Aceita só temas raízes válidos. Desconhecidos são descartados; se ficar
-    // a lista vazia, devolve erro claro (em vez de gerar com contexto inútil).
-    const cleanTemas = inputTemas.filter((t): t is RaizTema =>
-      (RAIZES_TEMAS as readonly string[]).includes(t),
-    );
-    if (cleanTemas.length === 0) {
-      return NextResponse.json(
-        {
-          erro:
-            "Nenhum tema raízes reconhecido. Os clips devem ter prefixo de tema (ex: batuque-01.mp4).",
-        },
-        { status: 400 },
-      );
-    }
-
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json(
-        { erro: "ANTHROPIC_API_KEY não configurada." },
-        { status: 500 },
-      );
-    }
-
-    const client = new Anthropic({ apiKey });
-
-    const system = [
-      {
-        type: "text" as const,
-        text: buildSystemPrompt(),
-        cache_control: { type: "ephemeral" as const },
-      },
-    ];
-
-    const userMessage = buildUserMessage(
-      cleanTemas,
-      typeof body.trackNumber === "number" ? body.trackNumber : null,
-    );
-
-    const response = await client.messages.create({
-      model: "claude-sonnet-4-6",
-      max_tokens: 2500,
-      system,
-      messages: [{ role: "user", content: userMessage }],
-      output_config: {
-        format: {
-          type: "json_schema",
-          schema: {
-            type: "object",
-            properties: {
-              versos: {
-                type: "array",
-                items: { type: "string" },
-                minItems: 6,
-                maxItems: 10,
-              },
-              tiktokCaption: { type: "string" },
-              youtubeTitle: { type: "string" },
-              youtubeDescription: { type: "string" },
-            },
-            required: ["versos", "tiktokCaption", "youtubeTitle", "youtubeDescription"],
-            additionalProperties: false,
-          },
-        },
-      },
-    });
-
-    const textBlock = response.content.find((b) => b.type === "text");
-    if (!textBlock || textBlock.type !== "text") {
-      throw new Error("Claude não devolveu text block");
-    }
-
-    let parsed: Partial<SuggestResponse>;
-    try {
-      parsed = JSON.parse(textBlock.text);
-    } catch {
-      throw new Error(`JSON inválido: ${textBlock.text.slice(0, 200)}`);
-    }
-
-    const versos = (Array.isArray(parsed.versos) ? parsed.versos : [])
-      .filter((v): v is string => typeof v === "string" && v.trim().length > 0)
-      .slice(0, 10);
-
-    if (versos.length === 0) {
-      throw new Error("Claude devolveu lista de versos vazia.");
-    }
-
-    const tiktokCaption = clamp(
-      typeof parsed.tiktokCaption === "string" ? parsed.tiktokCaption : "",
-      AG_CAPTION_RULES.tiktokMaxChars,
-    );
-    let youtubeTitle = typeof parsed.youtubeTitle === "string" ? parsed.youtubeTitle : "";
-    if (!youtubeTitle.toLowerCase().includes("#shorts")) {
-      youtubeTitle = `${youtubeTitle} #Shorts`;
-    }
-    youtubeTitle = clamp(youtubeTitle, AG_CAPTION_RULES.youtubeTitleMaxChars);
-    const youtubeDescription = clamp(
-      typeof parsed.youtubeDescription === "string" ? parsed.youtubeDescription : "",
-      AG_CAPTION_RULES.youtubeDescriptionMaxChars,
-    );
-
-    return NextResponse.json({
-      versos,
-      tiktokCaption,
-      youtubeTitle,
-      youtubeDescription,
-      usage: {
-        input: response.usage.input_tokens,
-        output: response.usage.output_tokens,
-        cached: response.usage.cache_read_input_tokens || 0,
-      },
-    });
+    const body = (await req.json()) as SuggestAGInput;
+    return NextResponse.json(await runSuggestAG(body));
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ erro: msg }, { status: 500 });
