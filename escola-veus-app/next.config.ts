@@ -42,6 +42,13 @@ const nextConfig: NextConfig = {
       "./node_modules/@ffmpeg-installer/**/*",
       "./node_modules/@ffmpeg-installer/linux-x64/**/*",
     ],
+
+    // PDFs (manual, certificado, cadernos): registo Font do @react-pdf por
+    // path absoluto aos TTFs bundled. Sem isto o ficheiro nao viaja para o
+    // serverless e a fonte nao carrega.
+    "/api/courses/manual": ["./assets/fonts/cormorant/*.ttf"],
+    "/api/courses/certificate": ["./assets/fonts/cormorant/*.ttf"],
+    "/api/courses/cadernos": ["./assets/fonts/cormorant/*.ttf"],
   },
 };
 

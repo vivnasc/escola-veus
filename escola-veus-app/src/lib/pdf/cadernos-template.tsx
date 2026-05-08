@@ -20,9 +20,11 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 import type { CourseData } from "@/types/course";
+import { ensureCormorantRegistered, CORMORANT_FAMILY } from "./fonts";
 
-// Times-Roman built-in (PDF standard 14). Ver nota em manual-template.tsx.
-const FONT_FAMILY = "Times-Roman";
+ensureCormorantRegistered();
+
+const FONT_FAMILY = CORMORANT_FAMILY;
 
 const C = {
   fundo: "#1A1A2E",
