@@ -14,7 +14,6 @@ import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { CertificatePDF } from "@/lib/pdf/certificate-template";
 import { ensureCormorantRegistered, getCormorantRegisterError } from "@/lib/pdf/fonts";
 import { getCourseBySlug } from "@/data/courses";
-import { isAdminEmail } from "@/lib/admin";
 
 export async function GET(request: NextRequest) {
   const slug = request.nextUrl.searchParams.get("slug");
@@ -35,23 +34,18 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json(
-      { error: "Não autenticado" },
-      { status: 401 }
-    );
-  }
-
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
 
-  // Admin preview mode — não precisa completar curso, devolve PDF dummy
-  if (preview === "admin" && isAdminEmail(user.email)) {
+  // Admin preview mode — não precisa de auth (mesmo padrão do manual route)
+  if (preview === "admin") {
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!serviceKey) {
+      return NextResponse.json(
+        { error: "SUPABASE_SERVICE_ROLE_KEY em falta" },
+        { status: 500 }
+      );
+    }
     return generatePdf({
       studentName: "Aluna de Exemplo",
       courseTitle: course.title,
@@ -64,7 +58,20 @@ export async function GET(request: NextRequest) {
       certificateCode: "VEU-PREVIEW",
       verifyUrl: `${baseUrl}/verificar/VEU-PREVIEW`,
       filename: `Certificado-PREVIEW-${slug}.pdf`,
+      inline: true,
     });
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json(
+      { error: "Não autenticado" },
+      { status: 401 }
+    );
   }
 
   // Modo real: aluna que completou
@@ -108,6 +115,7 @@ async function generatePdf(opts: {
   certificateCode: string;
   verifyUrl: string;
   filename: string;
+  inline?: boolean;
 }) {
   try {
     ensureCormorantRegistered();
@@ -131,10 +139,11 @@ async function generatePdf(opts: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const buffer = await renderToBuffer(element as any);
 
+    const disposition = opts.inline ? "inline" : "attachment";
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${opts.filename}"`,
+        "Content-Disposition": `${disposition}; filename="${opts.filename}"`,
       },
     });
   } catch (err) {
