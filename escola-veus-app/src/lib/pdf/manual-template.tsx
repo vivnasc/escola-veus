@@ -21,14 +21,11 @@ import type {
   ManualContent,
   ManualChapter,
 } from "@/data/course-manuals/ouro-proprio";
+import { ensureCormorantRegistered, CORMORANT_FAMILY } from "./fonts";
 
-// ─── FONTS ─────────────────────────────────────────────────────────────────
+ensureCormorantRegistered();
 
-// Times-Roman é PDF standard 14: built-in no @react-pdf/renderer, não precisa
-// de registo nem de fetch. Usar até bundlearmos uma fonte custom (Cormorant via
-// outputFileTracingIncludes) — fontes via Google Fonts a runtime falham com
-// "Unknown font format" no serverless da Vercel.
-const FONT_FAMILY = "Times-Roman";
+const FONT_FAMILY = CORMORANT_FAMILY;
 
 // ─── COLORS ────────────────────────────────────────────────────────────────
 
