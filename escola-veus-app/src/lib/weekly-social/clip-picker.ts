@@ -64,3 +64,29 @@ export function findTrackUrl(
   }
   return null;
 }
+
+/**
+ * Extrai os números de faixa a partir dos nomes de ficheiro.
+ * Ex: "faixa-08.mp3" → 8, "01-titulo.mp3" → 1.
+ */
+export function extractTrackNumbers(albumTracks: TrackLike[]): number[] {
+  const numbers = new Set<number>();
+  for (const t of albumTracks) {
+    const m = t.name.match(/(?:faixa|track)[-_]?(\d+)|^(\d+)[-_.]/i);
+    const n = m ? parseInt(m[1] || m[2], 10) : null;
+    if (Number.isFinite(n) && n! >= 1) numbers.add(n!);
+  }
+  return [...numbers].sort((a, b) => a - b);
+}
+
+/** Devolve o número mais próximo de target dentro de available. */
+export function closestTrackNumber(available: number[], target: number): number | null {
+  if (available.length === 0) return null;
+  let best = available[0];
+  let bestDist = Math.abs(best - target);
+  for (const n of available.slice(1)) {
+    const d = Math.abs(n - target);
+    if (d < bestDist) { best = n; bestDist = d; }
+  }
+  return best;
+}
