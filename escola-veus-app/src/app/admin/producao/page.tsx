@@ -28,11 +28,6 @@ const TRACKS_CURSOS: Track[] = [
     label: "Carrossel Véus (status)",
     desc: "42 slides verticais (7 dias × 6) para status diário do WhatsApp — A Estação dos Véus.",
   },
-  {
-    href: "/admin/producao/weekly-social",
-    label: "Weekly Social → Metricool",
-    desc: "Gera 1 ZIP por marca por semana com vídeos + CSV pronto para importar no Metricool. Loranne (7/sem) + AG (3/sem) × IG/TT/YT.",
-  },
 ];
 
 const TRACKS_AG: Track[] = [
@@ -50,11 +45,6 @@ const TRACKS_AG: Track[] = [
     href: "/admin/producao/ancient-ground/shorts",
     label: "Shorts AG",
     desc: "30s verticais para o canal AG: reusa clips Runway, música ancient-ground, texto próprio.",
-  },
-  {
-    href: "/admin/producao/weekly-social",
-    label: "Weekly Social → Metricool",
-    desc: "Gera 1 ZIP por marca por semana (Loranne + AG) com vídeos + CSV pronto para Metricool.",
   },
 ];
 

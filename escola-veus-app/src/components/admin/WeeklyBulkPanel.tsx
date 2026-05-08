@@ -1,0 +1,429 @@
+"use client";
+
+/**
+ * WeeklyBulkPanel — gera bulk semanal de shorts para Metricool, filtrado
+ * por marca. Usado no topo das páginas /admin/producao/shorts (Loranne)
+ * e /admin/producao/ancient-ground/shorts.
+ *
+ * Wraps as 4 rotas /api/admin/weekly/{preview,plan,dispatch,status,package}
+ * com filtro `brands` à marca corrente.
+ */
+
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+type BrandSlug = "loranne" | "ancient-ground";
+
+type Schedule = { date: string; time: string; timezone: string };
+
+type PreviewLoranne = {
+  day: string; albumSlug: string; albumTitle: string;
+  trackNumber: number; trackTitle: string; verseSample: string;
+  schedule: Record<"instagram" | "tiktok" | "youtube", Schedule>;
+};
+type PreviewAG = {
+  day: string; label: string; temas: string[]; trackNumber: number;
+  schedule: Record<"instagram" | "tiktok" | "youtube", Schedule>;
+};
+
+type WeeklyPost = {
+  id: string;
+  brandSlug: BrandSlug;
+  day: string;
+  trackTitle?: string; albumTitle?: string;
+  label?: string; temas?: string[];
+  verses: string[];
+  captions: { instagram: string; tiktok: string; youtube: { title: string; description: string } };
+  videoUrl: string | null;
+  thumbnailUrl: string | null;
+  jobId: string | null;
+  status: "planned" | "queued" | "rendering" | "done" | "failed";
+  errorMessage?: string;
+};
+
+type WeeklyPlan = {
+  year: number; week: number; brand: BrandSlug;
+  generatedAt: string; updatedAt: string;
+  posts: WeeklyPost[];
+};
+
+type StatusEntry = {
+  plan: WeeklyPlan | null;
+  summary?: { total: number; done: number; rendering: number; failed: number };
+};
+
+const DAY_LABELS: Record<string, string> = {
+  mon: "Seg", tue: "Ter", wed: "Qua", thu: "Qui", fri: "Sex", sat: "Sáb", sun: "Dom",
+};
+
+function isoWeekNow(): number {
+  const d = new Date();
+  const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayNum = dt.getUTCDay() || 7;
+  dt.setUTCDate(dt.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
+  return Math.ceil(((dt.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+}
+
+export default function WeeklyBulkPanel({ brand }: { brand: BrandSlug }) {
+  const brandLabel = brand === "loranne" ? "Loranne" : "Ancient Ground";
+  const [open, setOpen] = useState(false);
+  const [week, setWeek] = useState<number>(isoWeekNow());
+  const [year] = useState<number>(new Date().getFullYear());
+  const [preview, setPreview] = useState<PreviewLoranne[] | PreviewAG[] | null>(null);
+  const [loadingPreview, setLoadingPreview] = useState(false);
+  const [statusEntry, setStatusEntry] = useState<StatusEntry | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [zip, setZip] = useState<{ url: string; zipName: string; missing: string[] } | null>(null);
+  const [pollOn, setPollOn] = useState(false);
+  const pollTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const brandsParam = `brands=${brand}`;
+
+  const loadPreview = useCallback(async () => {
+    setLoadingPreview(true);
+    setErrors([]);
+    try {
+      const r = await fetch(`/api/admin/weekly/preview?week=${week}&year=${year}`);
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.erro || `HTTP ${r.status}`);
+      setPreview(brand === "loranne" ? j.loranne : j.ag);
+    } catch (e) {
+      setErrors([(e as Error).message]);
+    } finally {
+      setLoadingPreview(false);
+    }
+  }, [week, year, brand]);
+
+  const loadStatus = useCallback(async () => {
+    const r = await fetch(`/api/admin/weekly/status?week=${week}&year=${year}&${brandsParam}`);
+    const j = await r.json();
+    if (r.ok) setStatusEntry(j[brand] ?? null);
+  }, [week, year, brand, brandsParam]);
+
+  useEffect(() => {
+    if (!open) return;
+    void loadPreview();
+    void loadStatus();
+  }, [open, loadPreview, loadStatus]);
+
+  const startPolling = useCallback(() => {
+    if (pollTimer.current) return;
+    setPollOn(true);
+    pollTimer.current = setInterval(() => { void loadStatus(); }, 15_000);
+  }, [loadStatus]);
+
+  const stopPolling = useCallback(() => {
+    if (pollTimer.current) { clearInterval(pollTimer.current); pollTimer.current = null; }
+    setPollOn(false);
+  }, []);
+
+  useEffect(() => () => stopPolling(), [stopPolling]);
+
+  useEffect(() => {
+    if (!statusEntry?.summary) return;
+    if (statusEntry.summary.rendering === 0 && pollOn) stopPolling();
+  }, [statusEntry, pollOn, stopPolling]);
+
+  const generatePlan = useCallback(async () => {
+    setBusy("plan");
+    setErrors([]);
+    try {
+      const r = await fetch("/api/admin/weekly/plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ week, year, brands: [brand] }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.erro || `HTTP ${r.status}`);
+      if (j.errors?.length) setErrors(j.errors.map((e: { message: string }) => e.message));
+      await loadStatus();
+    } catch (e) {
+      setErrors([(e as Error).message]);
+    } finally {
+      setBusy(null);
+    }
+  }, [week, year, brand, loadStatus]);
+
+  const dispatchRenders = useCallback(async () => {
+    setBusy("dispatch");
+    setErrors([]);
+    try {
+      const r = await fetch("/api/admin/weekly/dispatch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ week, year, brands: [brand] }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.erro || `HTTP ${r.status}`);
+      await loadStatus();
+      startPolling();
+    } catch (e) {
+      setErrors([(e as Error).message]);
+    } finally {
+      setBusy(null);
+    }
+  }, [week, year, brand, loadStatus, startPolling]);
+
+  const packageZip = useCallback(async () => {
+    setBusy("package");
+    setErrors([]);
+    try {
+      const r = await fetch("/api/admin/weekly/package", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ week, year, brands: [brand] }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.erro || `HTTP ${r.status}`);
+      const z = j[brand];
+      if (z?.url) setZip({ url: z.url, zipName: z.zipName, missing: z.missing || [] });
+    } catch (e) {
+      setErrors([(e as Error).message]);
+    } finally {
+      setBusy(null);
+    }
+  }, [week, year, brand]);
+
+  const planExists = useMemo(
+    () => Boolean(statusEntry?.plan && statusEntry.plan.posts.length > 0),
+    [statusEntry],
+  );
+
+  return (
+    <section className="rounded-lg border border-escola-dourado/40 bg-escola-card">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between px-4 py-3 text-left"
+      >
+        <div>
+          <span className="text-sm font-semibold text-escola-dourado">
+            {open ? "▾" : "▸"} Bulk semanal → Metricool
+          </span>
+          <span className="ml-2 text-xs text-escola-creme-50">
+            Gera todos os shorts da semana de uma vez · CSV pronto para import
+          </span>
+        </div>
+        {statusEntry?.summary && (
+          <span className="text-xs text-escola-creme-50">
+            sem {statusEntry.plan?.week ?? "?"}: {statusEntry.summary.done}/{statusEntry.summary.total}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div className="border-t border-escola-border p-4 space-y-4">
+          {/* Selector + actions */}
+          <div className="flex flex-wrap items-center gap-2">
+            <label className="text-xs text-escola-creme-50">Semana</label>
+            <input
+              type="number"
+              min={1}
+              max={53}
+              value={week}
+              onChange={(e) => setWeek(parseInt(e.target.value, 10) || 1)}
+              className="w-16 rounded border border-escola-border bg-escola-bg-card px-2 py-1 text-xs text-escola-creme"
+            />
+            <span className="text-xs text-escola-creme-50">de {year}</span>
+            <button
+              onClick={() => { void loadPreview(); void loadStatus(); }}
+              disabled={loadingPreview}
+              className="ml-1 rounded border border-escola-border px-2 py-1 text-xs text-escola-creme hover:border-escola-dourado/40 disabled:opacity-50"
+            >
+              ↻
+            </button>
+            <span className="mx-2 text-escola-border">·</span>
+            <button
+              onClick={generatePlan}
+              disabled={busy !== null}
+              className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
+            >
+              {busy === "plan" ? "..." : "1. Gerar plano"}
+            </button>
+            <button
+              onClick={dispatchRenders}
+              disabled={busy !== null || !planExists}
+              className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
+            >
+              {busy === "dispatch" ? "..." : "2. Renderizar"}
+            </button>
+            <button
+              onClick={packageZip}
+              disabled={busy !== null || !planExists}
+              className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
+            >
+              {busy === "package" ? "..." : "3. Empacotar"}
+            </button>
+            {pollOn && <span className="text-xs text-escola-creme-50">⏱ polling…</span>}
+          </div>
+
+          {/* Errors */}
+          {errors.length > 0 && (
+            <div className="rounded border border-red-700/40 bg-red-950/30 p-2 text-xs text-red-300">
+              {errors.map((e, i) => <div key={i}>✗ {e}</div>)}
+            </div>
+          )}
+
+          {/* Preview da semana (lista compacta) */}
+          {preview && preview.length > 0 && (
+            <div className="rounded border border-escola-border bg-escola-bg-card p-3">
+              <div className="mb-2 text-xs font-semibold text-escola-creme">
+                Preview · {brandLabel} · {preview.length} posts
+              </div>
+              <ul className="space-y-1 text-[11px]">
+                {preview.map((r) => (
+                  <li key={r.day} className="flex flex-wrap items-baseline gap-2">
+                    <span className="w-10 font-semibold text-escola-creme">{DAY_LABELS[r.day]}</span>
+                    <span className="text-escola-creme-50">{r.schedule.youtube.date}</span>
+                    {"trackTitle" in r ? (
+                      <>
+                        <span className="text-escola-dourado">&quot;{r.trackTitle}&quot;</span>
+                        <span className="text-escola-creme-50">· {r.albumTitle}</span>
+                        {r.verseSample && (
+                          <span className="ml-2 italic text-escola-creme-50">
+                            &quot;{r.verseSample}&quot;
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-escola-dourado">{r.label}</span>
+                        <span className="text-escola-creme-50">· {r.temas.join(" + ")}</span>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Status & progresso */}
+          {statusEntry?.plan && statusEntry.plan.posts.length > 0 && (
+            <div className="rounded border border-escola-border bg-escola-bg-card p-3">
+              <div className="mb-2 flex items-center justify-between text-xs">
+                <span className="font-semibold text-escola-creme">
+                  Plano gerado em {new Date(statusEntry.plan.generatedAt).toLocaleString()}
+                </span>
+                {statusEntry.summary && (
+                  <span className="text-escola-creme-50">
+                    {statusEntry.summary.done}/{statusEntry.summary.total} prontos
+                    {statusEntry.summary.rendering > 0 && ` · ${statusEntry.summary.rendering} a renderizar`}
+                    {statusEntry.summary.failed > 0 && ` · ${statusEntry.summary.failed} falhados`}
+                  </span>
+                )}
+              </div>
+              {statusEntry.summary && (
+                <div className="h-1.5 w-full rounded-full bg-escola-border">
+                  <div
+                    className="h-full rounded-full bg-escola-dourado"
+                    style={{ width: `${Math.round((statusEntry.summary.done / Math.max(1, statusEntry.summary.total)) * 100)}%` }}
+                  />
+                </div>
+              )}
+              <div className="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {statusEntry.plan.posts.map((p) => (
+                  <PostCard key={p.id} post={p} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Download */}
+          {zip && (
+            <a
+              href={zip.url}
+              download={zip.zipName}
+              className="block rounded border border-escola-dourado bg-escola-dourado/10 p-3 text-center text-sm font-semibold text-escola-dourado hover:bg-escola-dourado/20"
+            >
+              ↓ Descarregar {zip.zipName}
+              {zip.missing.length > 0 && (
+                <span className="block text-xs text-escola-creme-50">
+                  ⚠ {zip.missing.length} post(s) sem vídeo no CSV
+                </span>
+              )}
+            </a>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function PostStatusPill({ status }: { status: WeeklyPost["status"] }) {
+  const color: Record<WeeklyPost["status"], string> = {
+    planned: "bg-escola-border text-escola-creme-50",
+    queued: "bg-blue-600/30 text-blue-300",
+    rendering: "bg-amber-600/30 text-amber-300",
+    done: "bg-emerald-600/30 text-emerald-300",
+    failed: "bg-red-600/30 text-red-300",
+  };
+  return (
+    <span className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] uppercase ${color[status]}`}>
+      {status}
+    </span>
+  );
+}
+
+function PostCard({ post }: { post: WeeklyPost }) {
+  const title = post.trackTitle || post.label || post.id;
+  const subtitle = post.albumTitle || (post.temas?.join(" + ")) || "";
+  return (
+    <div className="overflow-hidden rounded border border-escola-border bg-escola-bg-card">
+      <div className="aspect-[9/16] bg-black">
+        {post.videoUrl ? (
+          <video
+            src={post.videoUrl}
+            poster={post.thumbnailUrl || undefined}
+            controls
+            preload="metadata"
+            className="h-full w-full"
+          />
+        ) : post.thumbnailUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={post.thumbnailUrl} alt={title} className="h-full w-full object-cover opacity-60" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-[10px] text-escola-creme-50">
+            {post.status === "rendering" ? "a renderizar…" :
+             post.status === "queued" ? "em fila" :
+             post.status === "failed" ? "falhou" : "sem vídeo"}
+          </div>
+        )}
+      </div>
+      <div className="p-2">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <div className="text-[11px] font-semibold text-escola-creme">
+              {DAY_LABELS[post.day]} · {title}
+            </div>
+            {subtitle && (
+              <div className="truncate text-[10px] text-escola-creme-50">{subtitle}</div>
+            )}
+          </div>
+          <PostStatusPill status={post.status} />
+        </div>
+        {post.errorMessage && (
+          <div className="mt-1 text-[10px] text-red-300">✗ {post.errorMessage}</div>
+        )}
+        {post.videoUrl && (
+          <div className="mt-2 flex flex-wrap gap-2 text-[10px]">
+            <a
+              href={post.videoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-escola-creme-50 hover:text-escola-dourado"
+            >
+              ↗ abrir
+            </a>
+            <a
+              href={post.videoUrl}
+              download
+              className="text-escola-creme-50 hover:text-escola-dourado"
+            >
+              ↓ download
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
