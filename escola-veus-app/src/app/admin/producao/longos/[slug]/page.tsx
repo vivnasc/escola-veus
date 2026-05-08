@@ -1943,6 +1943,54 @@ export default function LongoDetailPage() {
                 <button
                   onClick={async () => {
                     if (!project) return;
+                    const empty = promptsDraft.filter(
+                      (p) => !((p.motion ?? "").trim()),
+                    ).length;
+                    if (empty === 0) {
+                      setInfo("Todos os prompts já têm motion.");
+                      setTimeout(() => setInfo(null), 4000);
+                      return;
+                    }
+                    if (
+                      !confirm(
+                        `Gerar motion (movimento de câmara para Runway) para ${empty} cenas vazias com Claude?\n\n` +
+                          `Conservador (Corvo Seco), 1 frase EN por cena. ~$0.05 fixo.`,
+                      )
+                    )
+                      return;
+                    setInfo(`🎬 Claude a gerar motion para ${empty} cenas...`);
+                    try {
+                      const r = await fetch("/api/admin/longos/fill-motion", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ slug: project.slug }),
+                      });
+                      const d = await r.json();
+                      if (!r.ok || d.erro)
+                        throw new Error(d.erro || `HTTP ${r.status}`);
+                      setInfo(
+                        `✓ Motion preenchido em ${d.filled} cenas. Vê na lista (campo motion).`,
+                      );
+                      setTimeout(() => setInfo(null), 8000);
+                      await load();
+                    } catch (e) {
+                      setInfo(
+                        `Erro: ${e instanceof Error ? e.message : String(e)}`,
+                      );
+                    }
+                  }}
+                  disabled={
+                    promptsDraft.filter((p) => !((p.motion ?? "").trim()))
+                      .length === 0
+                  }
+                  className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-creme disabled:opacity-40"
+                  title="Para cada cena com motion vazio, Claude lê (prompt + mood) e gera 1 frase EN específica de movimento de câmara para Runway. Conservador, alterna tipos. ~$0.05."
+                >
+                  🎬 preencher motion via Claude (~$0.05)
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!project) return;
                     if (missing === 0) {
                       setInfo("Sem clips para gerar — todos atribuídos");
                       setTimeout(() => setInfo(null), 4000);
