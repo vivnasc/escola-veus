@@ -13,6 +13,7 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import * as React from "react";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { CadernosPDF } from "@/lib/pdf/cadernos-template";
+import { ensureCormorantRegistered, getCormorantRegisterError } from "@/lib/pdf/fonts";
 import { getCourseBySlug } from "@/data/courses";
 
 export async function GET(req: NextRequest) {
@@ -50,6 +51,14 @@ export async function GET(req: NextRequest) {
   const entries = (rows ?? []).filter((r) => (r.content ?? "").trim().length > 0);
 
   try {
+    ensureCormorantRegistered();
+    const fontErr = getCormorantRegisterError();
+    if (fontErr) {
+      return NextResponse.json(
+        { error: "Cormorant nao bundlou", ...fontErr },
+        { status: 500 }
+      );
+    }
     const element = React.createElement(CadernosPDF, { course, studentName, entries });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const buffer = await renderToBuffer(element as any);

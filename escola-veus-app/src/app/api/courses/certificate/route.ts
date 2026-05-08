@@ -12,6 +12,7 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import * as React from "react";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { CertificatePDF } from "@/lib/pdf/certificate-template";
+import { ensureCormorantRegistered, getCormorantRegisterError } from "@/lib/pdf/fonts";
 import { getCourseBySlug } from "@/data/courses";
 import { isAdminEmail } from "@/lib/admin";
 
@@ -109,6 +110,15 @@ async function generatePdf(opts: {
   filename: string;
 }) {
   try {
+    ensureCormorantRegistered();
+    const fontErr = getCormorantRegisterError();
+    if (fontErr) {
+      return NextResponse.json(
+        { error: "Cormorant nao bundlou", ...fontErr },
+        { status: 500 }
+      );
+    }
+
     const element = React.createElement(CertificatePDF, {
       studentName: opts.studentName,
       courseTitle: opts.courseTitle,
