@@ -56,22 +56,55 @@ export default function MotionPreviewPage() {
   return (
     <div>
       <style jsx global>{`
+        /* Mandala — gira contínua e respira (escala) */
         @keyframes motion-spin-slow { from { transform: translate(-50%,-50%) rotate(0); } to { transform: translate(-50%,-50%) rotate(360deg); } }
-        .motion-spin-slow { animation: motion-spin-slow 60s linear infinite; }
-        @keyframes motion-mandala { 0%,100% { transform: translate(-50%,-50%) scale(1) rotate(0); opacity: 0.8; } 50% { transform: translate(-50%,-50%) scale(1.04) rotate(180deg); opacity: 1; } }
-        .motion-mandala { animation: motion-mandala 12s ease-in-out infinite; transform-origin: center; }
-        @keyframes motion-veu { 0% { transform: translateX(-30%); opacity: 0; } 50% { opacity: 0.4; } 100% { transform: translateX(30%); opacity: 0; } }
-        .motion-veu { animation: motion-veu 8s ease-in-out infinite; }
-        @keyframes motion-particle { 0%,100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(-20px); opacity: 0.7; } }
-        .motion-particle { animation: motion-particle 6s ease-in-out infinite; }
-        @keyframes motion-twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 1; } }
-        .motion-twinkle { animation: motion-twinkle 3s ease-in-out infinite; }
-        @keyframes motion-pan-slow { from { transform: translateX(-5%); } to { transform: translateX(5%); } }
-        .motion-pan-slow { animation: motion-pan-slow 30s ease-in-out infinite alternate; }
-        @keyframes motion-sun { 0% { left: -20%; top: 30%; } 50% { left: 50%; top: 15%; transform: translateX(-50%); } 100% { left: 110%; top: 30%; transform: translateX(-100%); } }
-        .motion-sun { animation: motion-sun 30s ease-in-out infinite; box-shadow: 0 0 60px rgba(255,210,127,0.5); }
-        @keyframes motion-sway { 0%,100% { transform: translateX(0); } 50% { transform: translateX(2%); } }
-        .motion-sway { animation: motion-sway 8s ease-in-out infinite; transform-origin: center; }
+        .motion-spin-slow { animation: motion-spin-slow 30s linear infinite; }
+        @keyframes motion-mandala {
+          0%,100% { transform: translate(-50%,-50%) scale(0.95) rotate(0); opacity: 0.85; }
+          50% { transform: translate(-50%,-50%) scale(1.06) rotate(180deg); opacity: 1; }
+        }
+        .motion-mandala { animation: motion-mandala 6s ease-in-out infinite; transform-origin: center; }
+
+        /* Véus — atravessam ecrã */
+        @keyframes motion-veu { 0% { transform: translateX(-30%); opacity: 0; } 50% { opacity: 0.55; } 100% { transform: translateX(30%); opacity: 0; } }
+        .motion-veu { animation: motion-veu 5s ease-in-out infinite; }
+
+        /* Partícula — flutua subtilmente */
+        @keyframes motion-particle { 0%,100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(-25px); opacity: 0.8; } }
+        .motion-particle { animation: motion-particle 4s ease-in-out infinite; }
+
+        /* Twinkle — pulso de luz */
+        @keyframes motion-twinkle { 0%,100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.3); } }
+        .motion-twinkle { animation: motion-twinkle 2s ease-in-out infinite; }
+        .motion-twinkle-fast { animation: motion-twinkle 1.2s ease-in-out infinite; }
+
+        /* Cosmic clouds */
+        @keyframes motion-cloud-pulse {
+          0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.7; }
+          50% { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+        }
+        .motion-cloud-pulse { animation: motion-cloud-pulse 5s ease-in-out infinite; }
+        @keyframes motion-cloud-drift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30%, 20%) scale(1.2); } }
+        .motion-cloud-drift { animation: motion-cloud-drift 8s ease-in-out infinite; }
+
+        /* AG pan + sway */
+        @keyframes motion-pan-slow { from { transform: translateX(-3%); } to { transform: translateX(3%); } }
+        .motion-pan-slow { animation: motion-pan-slow 12s ease-in-out infinite alternate; }
+        @keyframes motion-sway { 0%,100% { transform: translateX(0) scale(1); } 50% { transform: translateX(2%) scale(1.02); } }
+        .motion-sway { animation: motion-sway 4s ease-in-out infinite; transform-origin: center; }
+
+        /* Sol pulsa no sítio */
+        @keyframes motion-sun-pulse {
+          0%,100% { transform: scale(0.92); filter: brightness(0.9); }
+          50% { transform: scale(1.15); filter: brightness(1.2); }
+        }
+        .motion-sun-pulse { animation: motion-sun-pulse 3s ease-in-out infinite; }
+        @keyframes motion-sun-halo {
+          0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.55; }
+          50% { transform: translate(-50%,-50%) scale(1.4); opacity: 0.9; }
+        }
+        .motion-sun-halo { animation: motion-sun-halo 3s ease-in-out infinite; }
+
         .bg-gradient-radial { background: radial-gradient(ellipse at center, var(--tw-gradient-stops)); }
       `}</style>
 
@@ -80,8 +113,12 @@ export default function MotionPreviewPage() {
           Motion preview
         </h2>
         <p className="mt-1 text-sm text-escola-creme-50">
-          Vê as 4 + 4 opções a animar. Diz-me a letra escolhida (ex: &quot;Loranne A,
-          AG D&quot;) e eu meto na pipeline Remotion.
+          Vê as 4 + 4 opções a animar. Cada short pode usar uma diferente —
+          determinístico por (album, faixa) ou (tema), para variedade entre vídeos.
+        </p>
+        <p className="mt-2 text-xs text-escola-creme-50">
+          ℹ Sync à batida da música é possível (BPM detection + ajuste de
+          velocidade da animação por faixa). Faço quando quiseres.
         </p>
       </div>
 

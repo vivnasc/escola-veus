@@ -17,26 +17,55 @@ import React from "react";
 // ─── LORANNE A — Mandala respirante ────────────────────────────────────────
 export function LoranneMandalaA({ accent = "#D4A853" }: { accent?: string }) {
   return (
-    <div className="relative h-full w-full overflow-hidden bg-gradient-to-b from-[#0a0612] via-[#1a0d2a] to-[#0a0612]">
-      <svg viewBox="0 0 100 100" className="absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 motion-mandala">
-        <g stroke={accent} strokeWidth="0.15" fill="none" opacity="0.45">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <circle key={i} cx="50" cy="50" r={5 + i * 3.5} />
+    <div className="relative h-full w-full overflow-hidden bg-gradient-to-b from-[#1a0a2a] via-[#2a1240] to-[#100620]">
+      {/* mandala principal — bem visível, com brilho */}
+      <svg
+        viewBox="0 0 100 100"
+        className="absolute left-1/2 top-1/2 h-[140%] w-[140%] -translate-x-1/2 -translate-y-1/2 motion-mandala"
+        style={{ filter: `drop-shadow(0 0 8px ${accent}88)` }}
+      >
+        {/* círculos concêntricos */}
+        <g stroke={accent} strokeWidth="0.3" fill="none">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <circle key={i} cx="50" cy="50" r={5 + i * 4} opacity={0.4 + (i % 3) * 0.15} />
           ))}
+        </g>
+        {/* raios */}
+        <g stroke={accent} strokeWidth="0.18" opacity="0.55">
           {Array.from({ length: 24 }).map((_, i) => {
             const a = (i * Math.PI) / 12;
             return (
-              <line key={i} x1="50" y1="50" x2={50 + Math.cos(a) * 45} y2={50 + Math.sin(a) * 45} />
+              <line
+                key={i}
+                x1={50 + Math.cos(a) * 8}
+                y1={50 + Math.sin(a) * 8}
+                x2={50 + Math.cos(a) * 48}
+                y2={50 + Math.sin(a) * 48}
+              />
             );
           })}
-          {Array.from({ length: 8 }).map((_, i) => {
-            const a = (i * Math.PI) / 4;
-            return <circle key={`p${i}`} cx={50 + Math.cos(a) * 25} cy={50 + Math.sin(a) * 25} r="2" />;
+        </g>
+        {/* pétalas */}
+        <g fill={accent} opacity="0.8">
+          {Array.from({ length: 12 }).map((_, i) => {
+            const a = (i * Math.PI) / 6;
+            return (
+              <ellipse
+                key={`pet-${i}`}
+                cx={50 + Math.cos(a) * 22}
+                cy={50 + Math.sin(a) * 22}
+                rx="2.5"
+                ry="1.2"
+                transform={`rotate(${(i * 30)} ${50 + Math.cos(a) * 22} ${50 + Math.sin(a) * 22})`}
+              />
+            );
           })}
         </g>
+        {/* centro brilhante */}
+        <circle cx="50" cy="50" r="3" fill={accent} opacity="0.9" />
       </svg>
-      {/* partículas douradas a flutuar */}
-      {Array.from({ length: 40 }).map((_, i) => (
+      {/* alguns pontos dourados subtis a flutuar */}
+      {Array.from({ length: 15 }).map((_, i) => (
         <div
           key={i}
           className="absolute h-1 w-1 rounded-full motion-particle"
@@ -44,8 +73,8 @@ export function LoranneMandalaA({ accent = "#D4A853" }: { accent?: string }) {
             left: `${(i * 13) % 100}%`,
             top: `${(i * 37) % 100}%`,
             background: accent,
-            opacity: 0.6,
-            animationDelay: `${i * 0.3}s`,
+            opacity: 0.4,
+            animationDelay: `${i * 0.4}s`,
           }}
         />
       ))}
@@ -78,28 +107,49 @@ export function LoranneVeusB({ accent = "#D4A853" }: { accent?: string }) {
   );
 }
 
-// ─── LORANNE C — Pó cósmico ────────────────────────────────────────────────
+// ─── LORANNE C — Pó cósmico (roxo, sem mandala) ────────────────────────────
 export function LoranneCosmicC({ accent = "#D4A853" }: { accent?: string }) {
   return (
-    <div className="relative h-full w-full overflow-hidden bg-gradient-radial from-[#1a0d2a] via-[#0a0612] to-[#000000]">
-      {/* anel central subtil */}
+    <div
+      className="relative h-full w-full overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 50%, #2a1240 0%, #1a0a2a 35%, #0a0612 70%, #000 100%)",
+      }}
+    >
+      {/* nuvens de luz amorfas — sem círculos concêntricos */}
       <div
-        className="absolute left-1/2 top-1/2 h-2/3 w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full border motion-spin-slow"
-        style={{ borderColor: accent, opacity: 0.15 }}
+        className="absolute left-1/2 top-1/2 h-[60%] w-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full motion-cloud-pulse"
+        style={{
+          background: `radial-gradient(circle, ${accent}55 0%, ${accent}22 30%, transparent 60%)`,
+          filter: "blur(20px)",
+        }}
       />
-      {/* estrelas/pó */}
-      {Array.from({ length: 80 }).map((_, i) => {
+      <div
+        className="absolute left-1/3 top-1/3 h-[40%] w-[40%] motion-cloud-drift"
+        style={{
+          background: `radial-gradient(circle, ${accent}33 0%, transparent 60%)`,
+          filter: "blur(30px)",
+          borderRadius: "50%",
+        }}
+      />
+      {/* pó/estrelas — densidade muito superior, várias velocidades */}
+      {Array.from({ length: 120 }).map((_, i) => {
         const size = 1 + (i % 3);
+        const useAccent = i % 4 === 0;
         return (
           <div
             key={i}
-            className="absolute rounded-full motion-twinkle"
+            className={i % 2 === 0 ? "motion-twinkle" : "motion-twinkle-fast"}
             style={{
+              position: "absolute",
               left: `${(i * 17.7) % 100}%`,
               top: `${(i * 23.3) % 100}%`,
               width: `${size}px`,
               height: `${size}px`,
-              background: i % 5 === 0 ? accent : "#fff",
+              borderRadius: "50%",
+              background: useAccent ? accent : "#f0e8ff",
+              boxShadow: useAccent ? `0 0 4px ${accent}` : "0 0 3px #fff",
               animationDelay: `${(i * 0.13) % 4}s`,
             }}
           />
@@ -184,26 +234,55 @@ export function AGCapulanaA() {
   );
 }
 
-// ─── AG B — Sol e horizonte ─────────────────────────────────────────────────
+// ─── AG B — Sol e horizonte (sol pulsa no sítio) ───────────────────────────
 export function AGSolHorizonteB() {
   return (
     <div className="relative h-full w-full overflow-hidden bg-gradient-to-b from-[#5c1810] via-[#a04020] via-30% to-[#1a0a06]">
-      {/* sol a deslocar */}
-      <div
-        className="absolute h-16 w-16 rounded-full motion-sun"
-        style={{ background: "radial-gradient(circle, #FFD27F, #E08020 60%, transparent)" }}
-      />
+      {/* sol fixo, expande/retrai com pulso */}
+      <div className="absolute left-1/2 top-[28%] -translate-x-1/2 -translate-y-1/2">
+        {/* halo grande exterior */}
+        <div
+          className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full motion-sun-halo"
+          style={{ background: "radial-gradient(circle, rgba(255,210,127,0.4) 0%, transparent 70%)" }}
+        />
+        {/* sol central pulsante */}
+        <div
+          className="relative h-20 w-20 rounded-full motion-sun-pulse"
+          style={{
+            background: "radial-gradient(circle, #FFE9A0 0%, #FFA040 50%, #E06010 80%, transparent)",
+            boxShadow: "0 0 60px rgba(255,180,80,0.7)",
+          }}
+        />
+      </div>
+      {/* raios subtis a girar lentamente */}
+      <svg
+        viewBox="0 0 100 100"
+        className="absolute left-1/2 top-[28%] h-[60%] w-[100%] -translate-x-1/2 -translate-y-1/2 motion-spin-slow"
+        style={{ opacity: 0.3 }}
+      >
+        {Array.from({ length: 16 }).map((_, i) => {
+          const a = (i * Math.PI) / 8;
+          return (
+            <line
+              key={i}
+              x1={50 + Math.cos(a) * 18}
+              y1={50 + Math.sin(a) * 18}
+              x2={50 + Math.cos(a) * 38}
+              y2={50 + Math.sin(a) * 38}
+              stroke="#FFD27F"
+              strokeWidth="0.4"
+            />
+          );
+        })}
+      </svg>
       {/* horizonte com baobá */}
       <svg viewBox="0 0 100 200" preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
-        {/* terra */}
         <path d="M 0 130 L 100 130 L 100 200 L 0 200 Z" fill="#1a0806" />
-        {/* baobá silhueta */}
         <g fill="#000000">
           <rect x="48" y="105" width="4" height="25" />
           <ellipse cx="50" cy="100" rx="14" ry="7" />
           <path d="M 40 100 Q 35 90 38 80 M 60 100 Q 65 90 62 80 M 50 95 Q 50 80 53 75" stroke="#000" strokeWidth="0.8" fill="none" />
         </g>
-        {/* horizonte distante */}
         <path d="M 0 128 Q 30 124 60 130 T 100 128" stroke="#3a1a0a" strokeWidth="0.5" fill="none" opacity="0.5" />
       </svg>
     </div>
