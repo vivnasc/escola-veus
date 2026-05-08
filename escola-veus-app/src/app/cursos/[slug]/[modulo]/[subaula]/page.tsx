@@ -17,7 +17,7 @@ export default function SubaulaPage() {
   const slug = params.slug as string;
   const moduloNum = parseInt(params.modulo as string, 10);
   const subaulaLetter = (params.subaula as string).toUpperCase();
-  const { user, isSubscribed } = useAuth();
+  const { user, isSubscribed, isAdmin } = useAuth();
   const { isSublessonCompleted, completeSublesson, startCourse, isModuleAccessible } =
     useProgress(slug);
 
@@ -32,7 +32,7 @@ export default function SubaulaPage() {
   if (!sub) return <NotFound msg="Sub-aula não encontrada." />;
 
   const isFreeTier = mod.number === 1;
-  const hasAccess = isFreeTier || isSubscribed;
+  const hasAccess = isFreeTier || isSubscribed || isAdmin;
   const themeStyle = getTerritoryStyle(slug);
 
   if (!hasAccess) {
