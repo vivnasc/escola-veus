@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient, createSupabaseAdminClient } from "@/lib/supabase-server";
+import { isAdminEmail } from "@/lib/admin";
 
 /**
  * GET /api/courses/lesson?slug=xxx&module=1&sub=A
@@ -42,14 +43,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Check if admin
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("is_admin")
-    .eq("id", user.id)
-    .single();
-
-  const isAdmin = profile?.is_admin === true;
+  const isAdmin = isAdminEmail(user.email);
   const modNum = parseInt(moduleNum, 10);
 
   // For non-free modules, check enrollment

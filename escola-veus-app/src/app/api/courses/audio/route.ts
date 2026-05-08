@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseServerClient, createSupabaseAdminClient } from "@/lib/supabase-server";
+import { isAdminEmail } from "@/lib/admin";
 
 /**
  * GET /api/courses/audio?slug=xxx&module=1&sub=A
@@ -31,12 +32,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("is_admin")
-    .eq("id", user.id)
-    .single();
-  const isAdmin = profile?.is_admin === true;
+  const isAdmin = isAdminEmail(user.email);
 
   if (modNum > 1 && !isAdmin) {
     const { data: enrollment } = await supabase
