@@ -653,6 +653,12 @@ export default function ShortsPage() {
         </h2>
         <div className="flex gap-2">
           <Link
+            href="/admin/producao/shorts/motion-preview"
+            className="rounded border border-escola-coral bg-escola-coral/10 px-3 py-1.5 text-xs font-semibold text-escola-coral hover:bg-escola-coral/20"
+          >
+            ✨ Motion preview
+          </Link>
+          <Link
             href="/admin/producao/clips-paisagem"
             className="rounded border border-escola-border px-3 py-1.5 text-xs text-escola-creme hover:border-escola-coral"
           >

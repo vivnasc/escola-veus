@@ -13,6 +13,8 @@ import { pickLoranneClips, pickAGClips, findTrackUrl } from "@/lib/weekly-social
 import { savePlan } from "@/lib/weekly-social/plan-storage";
 import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
+import { runSuggest } from "@/lib/shorts/suggest-core";
+import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120; // 7 + 3 chamadas Claude — pode demorar 60-90s
@@ -107,28 +109,6 @@ async function listAGRaizesClips() {
   return all;
 }
 
-async function callSuggest(req: NextRequest, body: object): Promise<unknown> {
-  const url = new URL("/api/admin/shorts/suggest", req.nextUrl.origin);
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`suggest ${res.status}: ${(await res.text()).slice(0, 200)}`);
-  return res.json();
-}
-
-async function callSuggestAG(req: NextRequest, body: object): Promise<unknown> {
-  const url = new URL("/api/admin/shorts/suggest-ag", req.nextUrl.origin);
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`suggest-ag ${res.status}: ${(await res.text()).slice(0, 200)}`);
-  return res.json();
-}
-
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as Body;
@@ -160,7 +140,7 @@ export async function POST(req: NextRequest) {
           const albumTitle = getAlbumTitle(entry.albumSlug);
 
           try {
-            const suggest = await callSuggest(req, {
+            const suggest = runSuggest({
               albumSlug: entry.albumSlug,
               trackNumber: entry.trackNumber,
             }) as Parameters<typeof buildLoranneCaptions>[0];
@@ -223,8 +203,8 @@ export async function POST(req: NextRequest) {
         const entry = pickWeeklyAG(week, slotIdx);
         try {
           const clipUrls = pickAGClips(agClipPool, entry.temas, week);
-          const suggest = await callSuggestAG(req, {
-            temas: entry.temas,
+          const suggest = await runSuggestAG({
+            temas: [...entry.temas],
             trackNumber: entry.trackNumber,
           }) as Parameters<typeof buildAGCaptions>[0];
 

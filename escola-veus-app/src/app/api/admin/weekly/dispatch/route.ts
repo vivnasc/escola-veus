@@ -4,6 +4,7 @@ import { type BrandSlug } from "@/data/weekly-social/brand-config";
 import { loadPlan, savePlan } from "@/lib/weekly-social/plan-storage";
 import { currentYear } from "@/lib/weekly-social/schedule";
 import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
+import { runRenderShortSubmit } from "@/lib/shorts/render-short-core";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -23,32 +24,21 @@ type Body = {
   brands?: BrandSlug[];
 };
 
-async function dispatchOne(req: NextRequest, post: WeeklyPost): Promise<{ jobId: string }> {
-  const url = new URL("/api/admin/shorts/render-short-submit", req.nextUrl.origin);
+async function dispatchOne(post: WeeklyPost): Promise<{ jobId: string }> {
   const title = post.brandSlug === "loranne"
     ? `${post.trackTitle} · ${post.albumTitle}`
     : (post.label || post.id);
-  const body = {
+  return runRenderShortSubmit({
     title,
     slug: post.id,
     clips: post.clipUrls,
     clipDuration: 10,
     musicUrl: post.musicUrl,
     musicVolume: 0.9,
-  };
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
   });
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`render-short-submit ${res.status}: ${txt.slice(0, 200)}`);
-  }
-  return res.json() as Promise<{ jobId: string }>;
 }
 
-async function dispatchBrand(req: NextRequest, plan: WeeklyPlan): Promise<{
+async function dispatchBrand(plan: WeeklyPlan): Promise<{
   dispatched: number; alreadyDone: number; errors: { postId: string; message: string }[];
 }> {
   const errors: { postId: string; message: string }[] = [];
@@ -65,7 +55,7 @@ async function dispatchBrand(req: NextRequest, plan: WeeklyPlan): Promise<{
       continue;
     }
     try {
-      const { jobId } = await dispatchOne(req, post);
+      const { jobId } = await dispatchOne(post);
       post.jobId = jobId;
       post.status = "queued";
       post.errorMessage = undefined;
@@ -101,7 +91,7 @@ export async function POST(req: NextRequest) {
         summary[brand] = { erro: "plan inexistente — corre /plan primeiro." };
         continue;
       }
-      summary[brand] = await dispatchBrand(req, plan);
+      summary[brand] = await dispatchBrand(plan);
     }
     return NextResponse.json({ summary });
   } catch (err) {
