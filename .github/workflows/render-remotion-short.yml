@@ -36,9 +36,16 @@ jobs:
             libxdamage1 libxrandr2 libgbm1 libxss1 libasound2 libpangocairo-1.0-0 \
             libpango-1.0-0 libgtk-3-0 fonts-liberation
 
-      - name: Install app dependencies
+      # Bundler webpack resolve `react`/`remotion` a partir das fontes em
+      # escola-veus-app/src/remotion/. Precisa de node_modules no app.
+      - name: Install app deps
         working-directory: escola-veus-app
-        run: npm ci
+        run: npm ci --no-audit --no-fund
+
+      # Bundler+renderer (Chromium pesado) só vivem aqui — nunca no app.
+      - name: Install render-shorts-remotion deps
+        working-directory: tools/render-shorts-remotion
+        run: npm install --no-audit --no-fund
 
       - name: Render
         env:

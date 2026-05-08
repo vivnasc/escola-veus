@@ -7,7 +7,10 @@ const nextConfig: NextConfig = {
   // para tratar este módulo como externo — require nativo a partir de
   // node_modules. Combinado com outputFileTracingIncludes abaixo, assegura
   // que os binários + package.json viajam no deploy serverless.
-  serverExternalPackages: ["@ffmpeg-installer/ffmpeg"],
+  // remotion: usado SÓ via dynamic require em src/remotion/* (entry point
+  // do Remotion CLI/bundler, não é renderizado pela app Next). Externalizar
+  // garante que webpack não tenta bundlar nem trace seus assets.
+  serverExternalPackages: ["@ffmpeg-installer/ffmpeg", "remotion", "@remotion/cli"],
 
   outputFileTracingIncludes: {
     // generate-thumbnail: ffmpeg drawtext com fontfile=<abs-path> dos TTFs
