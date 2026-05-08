@@ -2245,6 +2245,11 @@ export default function LongoDetailPage() {
             )}
           </div>
         </div>
+        {/* Bulk drop de imagens MJ — auto-match por nome */}
+        <BulkImageDropZone
+          prompts={promptsDraft.map((p) => ({ id: p.id, hasImage: !!p.imageUrl }))}
+          onUpload={(promptId, file) => uploadImageForPrompt(promptId, file)}
+        />
         <ul className="space-y-2">
           {promptsDraft.map((p, i) => {
             const review = reviews[p.id];
@@ -2671,6 +2676,178 @@ export default function LongoDetailPage() {
           </li>
         </ol>
       </details>
+    </div>
+  );
+}
+
+// ─── BulkImageDropZone ──────────────────────────────────────────────────────
+// Zona única para arrastar TODAS as imagens MJ de uma vez. Para cada
+// ficheiro, faz auto-match ao promptId por nome (filename CONTÉM ou IGUAL
+// promptId, case-insensitive). Upload paralelo (3 ao mesmo tempo) via o
+// mesmo handler do per-prompt slot (signed URL → PUT → finalize).
+//
+// Os que não dão match aparecem em lista no fim para a Vivianne picar
+// manualmente o promptId.
+
+function BulkImageDropZone({
+  prompts,
+  onUpload,
+}: {
+  prompts: { id: string; hasImage: boolean }[];
+  onUpload: (promptId: string, file: File) => Promise<void> | void;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState({ done: 0, total: 0 });
+  const [unmatched, setUnmatched] = useState<File[]>([]);
+  const [dragOver, setDragOver] = useState(false);
+
+  const matchPrompt = (filename: string): string | null => {
+    const base = filename.replace(/\.[^.]+$/, "").toLowerCase();
+    // 1. Exact match
+    const exact = prompts.find((p) => p.id.toLowerCase() === base);
+    if (exact) return exact.id;
+    // 2. Filename contains promptId
+    const contained = prompts
+      .filter((p) => base.includes(p.id.toLowerCase()))
+      .sort((a, b) => b.id.length - a.id.length)[0];
+    if (contained) return contained.id;
+    // 3. PromptId contains filename (raro, mas para casos onde a Vivianne
+    //    nomeia ficheiro só com a parte distintiva, ex: "voz-antes-da-compra")
+    const containing = prompts
+      .filter((p) => base.length >= 8 && p.id.toLowerCase().includes(base))
+      .sort((a, b) => a.id.length - b.id.length)[0];
+    if (containing) return containing.id;
+    return null;
+  };
+
+  const handleFiles = async (files: File[]) => {
+    const images = files.filter(
+      (f) => f.type.startsWith("image/") || /\.(png|jpe?g|webp)$/i.test(f.name),
+    );
+    if (images.length === 0) return;
+
+    setBusy(true);
+    setUnmatched([]);
+
+    const matched: { file: File; promptId: string }[] = [];
+    const unmatchedNow: File[] = [];
+    for (const f of images) {
+      const id = matchPrompt(f.name);
+      if (id) matched.push({ file: f, promptId: id });
+      else unmatchedNow.push(f);
+    }
+
+    setProgress({ done: 0, total: matched.length });
+
+    const BATCH = 3;
+    for (let i = 0; i < matched.length; i += BATCH) {
+      const batch = matched.slice(i, i + BATCH);
+      await Promise.all(
+        batch.map(async ({ file, promptId }) => {
+          try {
+            await onUpload(promptId, file);
+          } catch {
+            /* erros surgem no info bar global */
+          }
+          setProgress((p) => ({ ...p, done: p.done + 1 }));
+        }),
+      );
+    }
+
+    setUnmatched(unmatchedNow);
+    setBusy(false);
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length > 0) handleFiles(files);
+  };
+
+  const copyIds = () => {
+    const ids = prompts.map((p) => p.id).join("\n");
+    navigator.clipboard.writeText(ids).catch(() => {});
+  };
+
+  return (
+    <div className="mb-3">
+      <div
+        onDrop={onDrop}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        className={`rounded-xl border-2 border-dashed p-4 text-center transition-colors ${
+          dragOver
+            ? "border-escola-dourado bg-escola-dourado/10"
+            : "border-escola-border bg-escola-card/40"
+        }`}
+      >
+        {busy ? (
+          <div>
+            <p className="text-xs text-escola-dourado">
+              📤 A processar {progress.done}/{progress.total} imagens em paralelo...
+            </p>
+            <div className="mt-2 h-1 w-full rounded bg-escola-border">
+              <div
+                className="h-full rounded bg-escola-dourado transition-all"
+                style={{
+                  width: `${
+                    progress.total
+                      ? (progress.done / progress.total) * 100
+                      : 0
+                  }%`,
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-escola-creme">
+              🎨 Arrasta TODAS as imagens MJ aqui (auto-match por nome)
+            </p>
+            <p className="text-[10px] text-escola-creme-50">
+              Para auto-match, nomeia cada imagem com o ID da cena (ex:{" "}
+              <code className="text-escola-dourado">
+                {prompts[0]?.id ?? "longo-01-cena"}.png
+              </code>
+              ). Filenames que contêm o ID também funcionam.
+            </p>
+            <div className="flex justify-center gap-2 text-[10px]">
+              <button
+                onClick={copyIds}
+                className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
+                title="Copia todos os IDs para clipboard. Usa para renomear ficheiros em batch antes de drop."
+              >
+                📋 copiar IDs ({prompts.length})
+              </button>
+              <span className="text-escola-creme-50">
+                já com imagem: {prompts.filter((p) => p.hasImage).length}/{prompts.length}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+      {unmatched.length > 0 && (
+        <div className="mt-2 rounded border border-escola-terracota/40 bg-escola-terracota/5 p-2 text-[10px] text-escola-terracota">
+          <p className="font-semibold">
+            ⚠ {unmatched.length} ficheiros sem match (filename não contém
+            promptId):
+          </p>
+          <ul className="mt-1 list-disc pl-4">
+            {unmatched.slice(0, 10).map((f) => (
+              <li key={f.name}>{f.name}</li>
+            ))}
+            {unmatched.length > 10 && <li>...e mais {unmatched.length - 10}</li>}
+          </ul>
+          <p className="mt-1 text-escola-creme-50">
+            Renomeia (ID copiado para clipboard ajuda) e arrasta de novo. Ou
+            usa o slot 🎨 individual em cada cena.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
