@@ -69,19 +69,13 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  const admin = createSupabaseAdminClient();
-  if (!admin) {
-    return NextResponse.json({ url: null, message: "Vídeo em produção" });
-  }
-
   const subLower = sub.toLowerCase();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
   // 1) Novo pipeline: course-assets/curso-<slug>/videos/m<N>-<letter>.mp4
-  // Em vez de HEAD (Supabase Storage público nem sempre devolve 200 em
-  // HEAD), uso GET com Range bytes=0-0 que devolve 206 Partial Content
-  // se o ficheiro existe e 404 se não existe. Confirma a presença sem
-  // descarregar o vídeo inteiro.
+  // GET com Range bytes=0-0 devolve 206 Partial Content se o ficheiro
+  // existe e 404 se não existe. Não precisa de admin client porque o
+  // bucket course-assets é público.
   const mockBPath = `curso-${slug}/videos/m${moduleNum}-${subLower}.mp4`;
   const mockBUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${mockBPath}`;
   try {
@@ -97,7 +91,15 @@ export async function GET(request: NextRequest) {
     // fall through to legacy
   }
 
-  // 2) Legacy: course-videos/{slug}/m{module}/{sub}.mp4
+  // 2) Legacy: course-videos/{slug}/m{module}/{sub}.mp4 — precisa admin
+  // client para signed URL. Se SERVICE_ROLE_KEY não está definida, devolve
+  // "em produção" só para os ficheiros não encontrados acima (não bloqueia
+  // o pipeline novo).
+  const admin = createSupabaseAdminClient();
+  if (!admin) {
+    return NextResponse.json({ url: null, message: "Vídeo em produção" });
+  }
+
   const legacyPath = `courses/${slug}/m${moduleNum}/${subLower}.mp4`;
   const { data: signedUrl, error } = await admin.storage
     .from("course-videos")
