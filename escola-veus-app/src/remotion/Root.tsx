@@ -16,6 +16,8 @@
 import React from "react";
 import { VideoComposition, calculateTotalFrames, FPS } from "./VideoComposition";
 import type { VideoManifest } from "./VideoComposition";
+import { ShortsComposition, calculateShortsTotalFrames } from "./shorts/ShortsComposition";
+import type { ShortsManifest } from "./shorts/ShortsComposition";
 
 // Dynamic Remotion import — compiles even without remotion installed
 let Composition: React.FC<{
@@ -26,7 +28,8 @@ let Composition: React.FC<{
   fps: number;
   width: number;
   height: number;
-  defaultProps: VideoManifest;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaultProps: any;
 }>;
 
 let REMOTION_AVAILABLE = false;
@@ -117,23 +120,47 @@ const defaultManifest: VideoManifest = {
  * When Remotion is installed, registers the VideoComposition as renderable.
  * Without Remotion, returns null (composition is used as a React component directly).
  */
+const defaultShortsManifest: ShortsManifest = {
+  brand: "loranne",
+  motionVariant: "A",
+  accent: "#D4A853",
+  verses: ["Estas mãos fizeram almoço e relatórios", "Sou a que trabalha e a que chora no carro"],
+  audioUrl: "",
+  audioVolume: 1,
+  trackLabel: "Inteira · Mãos de Mãe",
+  signature: "◯ Loranne",
+  durationSec: 30,
+  fps: 30,
+};
+
 export const Root: React.FC = () => {
   if (!REMOTION_AVAILABLE || !Composition) {
     return null;
   }
 
   return (
-    <Composition
-      id="VideoComposition"
-      component={VideoComposition}
-      durationInFrames={calculateTotalFrames(defaultManifest)}
-      fps={FPS}
-      width={1920}
-      height={1080}
-      defaultProps={defaultManifest}
-    />
+    <>
+      <Composition
+        id="VideoComposition"
+        component={VideoComposition}
+        durationInFrames={calculateTotalFrames(defaultManifest)}
+        fps={FPS}
+        width={1920}
+        height={1080}
+        defaultProps={defaultManifest}
+      />
+      <Composition
+        id="ShortsComposition"
+        component={ShortsComposition}
+        durationInFrames={calculateShortsTotalFrames(defaultShortsManifest)}
+        fps={defaultShortsManifest.fps ?? 30}
+        width={1080}
+        height={1920}
+        defaultProps={defaultShortsManifest}
+      />
+    </>
   );
 };
 
-export { defaultManifest };
+export { defaultManifest, defaultShortsManifest };
 export default Root;

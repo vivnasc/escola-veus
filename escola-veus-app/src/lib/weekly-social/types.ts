@@ -28,7 +28,14 @@ export type WeeklyPost = {
   // Comum
   verses: string[];
   musicUrl: string;
-  clipUrls: string[];
+  /** Variante de motion Remotion (A/B/C/D) — determinístico por (album, faixa)/(temas). */
+  motionVariant: "A" | "B" | "C" | "D";
+  /** Cor de acento (Loranne — varia por álbum). */
+  accent?: string;
+  /** Label da track no signature (Loranne: "Faixa · Álbum"; AG: label triplete). */
+  trackLabel?: string;
+  /** @deprecated — pipeline antigo (FFmpeg). Não usado pelo Remotion render. */
+  clipUrls?: string[];
   captions: PlatformCaptions;
   schedule: Record<Platform, ScheduleSlot>;
   videoUrl: string | null;
