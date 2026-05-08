@@ -21,7 +21,7 @@ export type SublessonProgressData = {
 };
 
 export function useProgress(courseSlug?: string) {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [courseProgress, setCourseProgress] = useState<CourseProgressData | null>(null);
   const [sublessonProgress, setSublessonProgress] = useState<SublessonProgressData[]>([]);
   const [allProgress, setAllProgress] = useState<CourseProgressData[]>([]);
@@ -181,7 +181,9 @@ export function useProgress(courseSlug?: string) {
     courseProgress?.modules_completed?.includes(moduleNumber) ?? false;
 
   // Helper: is a module accessible? (module 1 always, others need previous complete)
+  // Admin bypasses sequential gate.
   const isModuleAccessible = (moduleNumber: number) => {
+    if (isAdmin) return true;
     if (moduleNumber === 1) return true;
     return isModuleCompleted(moduleNumber - 1);
   };

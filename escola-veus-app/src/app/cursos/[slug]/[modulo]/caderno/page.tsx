@@ -16,7 +16,7 @@ export default function CadernoPage() {
   const router = useRouter();
   const slug = params.slug as string;
   const moduloNum = parseInt(params.modulo as string, 10);
-  const { user, isSubscribed } = useAuth();
+  const { user, isSubscribed, isAdmin } = useAuth();
   const { completeModule, isModuleCompleted } = useProgress(slug);
   const [hasContent, setHasContent] = useState(false);
 
@@ -27,7 +27,7 @@ export default function CadernoPage() {
   if (!mod) return <NotFound />;
 
   const isFreeTier = mod.number === 1;
-  const hasAccess = isFreeTier || isSubscribed;
+  const hasAccess = isFreeTier || isSubscribed || isAdmin;
   const themeStyle = getTerritoryStyle(slug);
   const theme = getTerritoryTheme(slug);
   const completed = isModuleCompleted(moduloNum);

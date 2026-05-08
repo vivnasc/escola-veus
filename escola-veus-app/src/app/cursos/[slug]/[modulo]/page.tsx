@@ -14,7 +14,7 @@ export default function ModuloPage() {
   const params = useParams();
   const slug = params.slug as string;
   const moduloNum = parseInt(params.modulo as string, 10);
-  const { user, isSubscribed } = useAuth();
+  const { user, isSubscribed, isAdmin } = useAuth();
   const { isSublessonCompleted, isModuleCompleted, isModuleAccessible, courseProgress } =
     useProgress(slug);
 
@@ -26,7 +26,7 @@ export default function ModuloPage() {
   if (!mod) return <NotFound />;
 
   const isFreeTier = mod.number === 1;
-  const hasAccess = isFreeTier || isSubscribed;
+  const hasAccess = isFreeTier || isSubscribed || isAdmin;
   const accessible = isModuleAccessible(moduloNum);
   const completed = isModuleCompleted(moduloNum);
   const chapter = getManualChapter(slug, moduloNum);
