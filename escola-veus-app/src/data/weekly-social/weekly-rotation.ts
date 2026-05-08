@@ -131,8 +131,9 @@ function scoreTrack(lyrics: string): number {
 // aqui o slug — o pool resolve-se em module-load e a rotação alarga sem
 // mais nada.
 //
-// Total esperado (Maio 2026): ~84 faixas em 14 álbuns.
+// Total esperado (Maio 2026): ~190 faixas em 19 álbuns.
 export const LORANNE_AVAILABLE_ALBUMS: readonly string[] = Object.freeze([
+  // Catálogo inicial (13 álbuns)
   "incenso-frequencia",
   "incenso-salto-bonito",
   "livro-filosofico",
@@ -146,6 +147,15 @@ export const LORANNE_AVAILABLE_ALBUMS: readonly string[] = Object.freeze([
   "nua-boa",
   "nua-duas-vozes",
   "grao-o-tear",
+  // Adicionados Maio 2026 (registo elevadora — Mãos Abertas, Mãos Juntas,
+  // Oferenda, Fôlego, Corpo Aberto + Eter Viagem que sempre existiu mas
+  // não estava no allowlist).
+  "incenso-maos-abertas",
+  "incenso-maos-juntas",
+  "incenso-oferenda",
+  "incenso-folego",
+  "fibra-corpo-aberto",
+  "eter-viagem",
 ]);
 
 export type LoranneRotationEntry = {

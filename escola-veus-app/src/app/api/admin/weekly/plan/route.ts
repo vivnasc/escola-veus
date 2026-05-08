@@ -9,7 +9,7 @@ import {
 } from "@/data/weekly-social/weekly-rotation";
 import { scheduleFor, currentYear } from "@/lib/weekly-social/schedule";
 import { buildLoranneCaptions, buildAGCaptions } from "@/lib/weekly-social/captions";
-import { findTrackUrl } from "@/lib/weekly-social/clip-picker";
+import { findTrackUrl, extractTrackNumbers, closestTrackNumber } from "@/lib/weekly-social/clip-picker";
 import { savePlan } from "@/lib/weekly-social/plan-storage";
 import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
@@ -109,30 +109,50 @@ export async function POST(req: NextRequest) {
       for (const day of brand.publishDays) {
         const dayIdx = DAY_ORDER.indexOf(day);
         const entry = pickWeeklyLoranne(week, dayIdx);
-        const trackTitle = getTrackTitle(entry.albumSlug, entry.trackNumber);
         const albumTitle = getAlbumTitle(entry.albumSlug);
 
         try {
+          // Lista MP3s deste álbum no Supabase. Fallback: se a faixa pedida
+          // não tem MP3 produzido, escolhe a mais próxima do mesmo álbum
+          // (re-extrai versos dessa faixa).
+          const tracks = await listAlbumTracks(entry.albumSlug);
+          if (tracks.length === 0) {
+            throw new Error(`Sem MP3 nenhum em audios/albums/${entry.albumSlug}/`);
+          }
+          let actualTrackNumber = entry.trackNumber;
+          let musicUrl = findTrackUrl(tracks, actualTrackNumber);
+          if (!musicUrl) {
+            const available = extractTrackNumbers(tracks);
+            if (available.length === 0) {
+              throw new Error(`Sem MP3s identificáveis em audios/albums/${entry.albumSlug}/ (filenames sem padrão NN).`);
+            }
+            const fallback = closestTrackNumber(available, entry.trackNumber);
+            if (!fallback) throw new Error(`Não foi possível escolher fallback para ${entry.albumSlug}.`);
+            actualTrackNumber = fallback;
+            musicUrl = findTrackUrl(tracks, actualTrackNumber);
+          }
+          if (!musicUrl) {
+            throw new Error(`MP3 ${entry.albumSlug}/faixa ${entry.trackNumber} (e fallbacks) não encontrado.`);
+          }
+
+          // (Re-)extrai versos+captions usando o trackNumber realmente disponível.
+          const trackTitle = getTrackTitle(entry.albumSlug, actualTrackNumber);
           const suggest = runSuggest({
             albumSlug: entry.albumSlug,
-            trackNumber: entry.trackNumber,
+            trackNumber: actualTrackNumber,
           }) as Parameters<typeof buildLoranneCaptions>[0];
 
-          const tracks = await listAlbumTracks(entry.albumSlug);
-          const musicUrl = findTrackUrl(tracks, entry.trackNumber);
-          if (!musicUrl) throw new Error(`MP3 ${entry.albumSlug}/faixa ${entry.trackNumber} não encontrado em audios/albums/${entry.albumSlug}/`);
-
           const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null });
-          const motionVariant = pickMotionVariant(`loranne/${entry.albumSlug}/${entry.trackNumber}`);
+          const motionVariant = pickMotionVariant(`loranne/${entry.albumSlug}/${actualTrackNumber}`);
           const accent = pickLoranneAccent(entry.albumSlug);
           const trackLabel = `"${trackTitle}" · ${albumTitle}`;
 
           posts.push({
-            id: `loranne-${entry.albumSlug}-f${entry.trackNumber}-w${week}-${day}`,
+            id: `loranne-${entry.albumSlug}-f${actualTrackNumber}-w${week}-${day}`,
             brandSlug: "loranne",
             day,
             albumSlug: entry.albumSlug,
-            trackNumber: entry.trackNumber,
+            trackNumber: actualTrackNumber,
             trackTitle,
             albumTitle,
             verses: (suggest.verses || []).slice(0, 2),
@@ -182,13 +202,26 @@ export async function POST(req: NextRequest) {
             trackNumber: entry.trackNumber,
           }) as Parameters<typeof buildAGCaptions>[0];
 
-          const musicUrl = findTrackUrl(agTracks, entry.trackNumber);
-          if (!musicUrl) throw new Error(`MP3 ancient-ground/faixa ${entry.trackNumber} não encontrado.`);
+          let actualAgTrack = entry.trackNumber;
+          let musicUrl = findTrackUrl(agTracks, actualAgTrack);
+          if (!musicUrl) {
+            const available = extractTrackNumbers(agTracks);
+            if (available.length === 0) {
+              throw new Error(`Sem MP3s identificáveis em audios/albums/ancient-ground/.`);
+            }
+            const fallback = closestTrackNumber(available, entry.trackNumber);
+            if (!fallback) throw new Error(`Não foi possível escolher fallback AG.`);
+            actualAgTrack = fallback;
+            musicUrl = findTrackUrl(agTracks, actualAgTrack);
+          }
+          if (!musicUrl) {
+            throw new Error(`MP3 ancient-ground/faixa ${entry.trackNumber} (e fallbacks) não encontrado.`);
+          }
 
           const captions = buildAGCaptions(suggest, brand, {
-            label: entry.label, trackNumber: entry.trackNumber, temas: entry.temas,
+            label: entry.label, trackNumber: actualAgTrack, temas: entry.temas,
           });
-          const motionVariant = pickMotionVariant(`ag/${entry.temas.join("-")}/${entry.trackNumber}`);
+          const motionVariant = pickMotionVariant(`ag/${entry.temas.join("-")}/${actualAgTrack}`);
           const trackLabel = `Ancient Ground · ${entry.label}`;
 
           posts.push({
@@ -196,7 +229,7 @@ export async function POST(req: NextRequest) {
             brandSlug: "ancient-ground",
             day,
             label: entry.label,
-            trackNumber: entry.trackNumber,
+            trackNumber: actualAgTrack,
             temas: [...entry.temas],
             verses: (suggest.versos || []).slice(0, 2),
             musicUrl,

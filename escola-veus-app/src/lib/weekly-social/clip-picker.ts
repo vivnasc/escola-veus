@@ -55,12 +55,44 @@ export function findTrackUrl(
   trackNumber: number,
 ): string | null {
   const padded = String(trackNumber).padStart(2, "0");
-  const byPrefix = albumTracks.find((t) =>
-    new RegExp(`(^|[^0-9])${padded}([^0-9]|$)`).test(t.name),
-  );
-  if (byPrefix) return byPrefix.url;
+  const unpadded = String(trackNumber);
+  // Tenta primeiro padded (faixa-08), depois unpadded (faixa-8). Ambos com
+  // boundary não-numérico para evitar match parcial (8 dentro de 18, 28, …).
+  for (const num of [padded, unpadded]) {
+    const re = new RegExp(`(^|[^0-9])${num}([^0-9]|$)`);
+    const match = albumTracks.find((t) => re.test(t.name));
+    if (match) return match.url;
+  }
+  // Fallback posicional (1-indexed) — só usar se a lista parece ordenada por
+  // número de faixa.
   if (trackNumber >= 1 && trackNumber <= albumTracks.length) {
     return albumTracks[trackNumber - 1].url;
   }
   return null;
+}
+
+/**
+ * Extrai os números de faixa a partir dos nomes de ficheiro.
+ * Ex: "faixa-08.mp3" → 8, "01-titulo.mp3" → 1.
+ */
+export function extractTrackNumbers(albumTracks: TrackLike[]): number[] {
+  const numbers = new Set<number>();
+  for (const t of albumTracks) {
+    const m = t.name.match(/(?:faixa|track)[-_]?(\d+)|^(\d+)[-_.]/i);
+    const n = m ? parseInt(m[1] || m[2], 10) : null;
+    if (Number.isFinite(n) && n! >= 1) numbers.add(n!);
+  }
+  return [...numbers].sort((a, b) => a - b);
+}
+
+/** Devolve o número mais próximo de target dentro de available. */
+export function closestTrackNumber(available: number[], target: number): number | null {
+  if (available.length === 0) return null;
+  let best = available[0];
+  let bestDist = Math.abs(best - target);
+  for (const n of available.slice(1)) {
+    const d = Math.abs(n - target);
+    if (d < bestDist) { best = n; bestDist = d; }
+  }
+  return best;
 }
