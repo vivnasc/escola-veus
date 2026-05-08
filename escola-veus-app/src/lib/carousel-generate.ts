@@ -79,7 +79,7 @@ Outros recursos:
   culpa); reacção antes do pensamento. Faz match temático quando o
   brief tocar dinheiro, valor próprio, escassez, herança financeira,
   vergonha, cobrar, gastar em si, sabotagem, suficiência, liberdade
-  financeira. URL: seteveus.space/curso/ouro-proprio
+  financeira. URL: seteveus.space
 - 🕯️ Outros cursos (em breve) — Limite Sagrado, A Arte da Inteireza,
   etc. CTA é SEMPRE "manifestar interesse / acesso prioritário", NUNCA
   "comprar" ou "inscreve-te". URL: seteveus.space/cursos
