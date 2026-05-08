@@ -106,11 +106,11 @@ async function submitRunway(
 }
 
 export async function POST(req: NextRequest) {
+  // FAL_KEY é opcional: se todas as cenas tiverem imageUrl uploaded
+  // manualmente (workflow MJ), nem chamamos fal.ai. Só validamos no
+  // momento de gerar fallback (per-prompt) se a key estiver em falta.
   const falKey = process.env.FAL_KEY;
   const runwayKey = process.env.RUNWAY_API_KEY;
-  if (!falKey) {
-    return NextResponse.json({ erro: "FAL_KEY não configurada" }, { status: 500 });
-  }
   if (!runwayKey) {
     return NextResponse.json(
       { erro: "RUNWAY_API_KEY não configurada" },
@@ -175,29 +175,42 @@ export async function POST(req: NextRequest) {
     const results = await Promise.all(
       batch.map(async (p) => {
         try {
-          // 1. fal.ai → imagem
-          const imageUrl = await generateImage(p.prompt ?? "", falKey);
-          if (!imageUrl) {
-            return { id: p.id, error: "fal.ai falhou" };
+          // 1. Imagem: usa a já uploaded em Supabase (se a Vivianne fez
+          //    upload manual via MJ); só chama fal.ai como fallback.
+          let supabaseImageUrl: string | undefined;
+          if (typeof p.imageUrl === "string" && p.imageUrl.trim()) {
+            supabaseImageUrl = p.imageUrl;
+          } else {
+            // Fallback: gerar via fal.ai (caro, opt-out preferindo upload)
+            if (!falKey) {
+              return {
+                id: p.id,
+                error:
+                  "imagem não uploaded (faz upload MJ neste prompt) — FAL_KEY também não configurada para fallback",
+              };
+            }
+            const imageUrl = await generateImage(p.prompt ?? "", falKey);
+            if (!imageUrl) {
+              return { id: p.id, error: "fal.ai falhou (sem imageUrl uploaded — faz upload MJ)" };
+            }
+            const imgRes = await fetch(imageUrl);
+            if (!imgRes.ok) {
+              return { id: p.id, error: `Download imagem ${imgRes.status}` };
+            }
+            const imgPath = `longos-images/${slug}/${p.id}.png`;
+            const imgBuffer = new Uint8Array(await imgRes.arrayBuffer());
+            const { error: imgErr } = await supabase.storage
+              .from("course-assets")
+              .upload(imgPath, imgBuffer, {
+                contentType: "image/png",
+                upsert: true,
+              });
+            if (imgErr) {
+              return { id: p.id, error: `Upload imagem: ${imgErr.message}` };
+            }
+            supabaseImageUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${imgPath}`;
           }
-          // 2. Upload imagem para Supabase
-          const imgRes = await fetch(imageUrl);
-          if (!imgRes.ok) {
-            return { id: p.id, error: `Download imagem ${imgRes.status}` };
-          }
-          const imgPath = `longos-images/${slug}/${p.id}.png`;
-          const imgBuffer = new Uint8Array(await imgRes.arrayBuffer());
-          const { error: imgErr } = await supabase.storage
-            .from("course-assets")
-            .upload(imgPath, imgBuffer, {
-              contentType: "image/png",
-              upsert: true,
-            });
-          if (imgErr) {
-            return { id: p.id, error: `Upload imagem: ${imgErr.message}` };
-          }
-          const supabaseImageUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${imgPath}`;
-          // 3. Submeter a Runway com motion da própria cena (cada prompt tem
+          // 2. Submeter a Runway com motion da própria cena (cada prompt tem
           //    motion específico do gen-project; só caímos no DEFAULT_MOTION
           //    se a cena foi gerada antes do schema motion existir, ou se o
           //    user limpou o campo a editar).
