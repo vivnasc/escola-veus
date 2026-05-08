@@ -25,6 +25,7 @@ type LongoProject = {
     mood: string[];
     prompt: string;
     motion?: string;
+    imageUrl?: string;
     clipUrl?: string;
     clipDurationSec?: number;
   }[];
@@ -152,6 +153,7 @@ export default function LongoDetailPage() {
       mood: string[];
       prompt: string;
       motion?: string;
+      imageUrl?: string;
       clipUrl?: string;
       clipDurationSec?: number;
     }[]
@@ -161,6 +163,13 @@ export default function LongoDetailPage() {
 
   // Per-prompt clip upload status. Key = promptId.
   const [clipUpload, setClipUpload] = useState<
+    Record<string, { stage: "signing" | "uploading" | "finalizing"; progress: number }>
+  >({});
+
+  // Per-prompt image upload status (mesmo pattern do clipUpload).
+  // Imagens vêm de MJ → upload manual → Supabase. generate-clips/submit
+  // usa este imageUrl em vez de chamar fal.ai.
+  const [imageUpload, setImageUpload] = useState<
     Record<string, { stage: "signing" | "uploading" | "finalizing"; progress: number }>
   >({});
 
@@ -1045,6 +1054,118 @@ export default function LongoDetailPage() {
         return next;
       });
       setInfo(`Erro upload ${promptId}: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  };
+
+  // Upload de imagem (MJ ou outra) por prompt — espelha uploadClipForPrompt.
+  // Workflow: MJ gera imagem → user descarrega → arrasta/escolhe ficheiro
+  // → upload directo Supabase (signed URL) → patch projecto com imageUrl.
+  // generate-clips/submit usa este imageUrl em vez de chamar fal.ai.
+  const uploadImageForPrompt = async (promptId: string, file: File) => {
+    if (!project) return;
+    if (!file.type.startsWith("image/") && !/\.(png|jpe?g|webp)$/i.test(file.name)) {
+      setInfo(`Erro: ${file.name} não é imagem`);
+      return;
+    }
+    if (file.size > 50 * 1024 * 1024) {
+      setInfo(`Erro: ${file.name} > 50MB`);
+      return;
+    }
+    const ext = (() => {
+      const m = file.name.toLowerCase().match(/\.(png|jpg|jpeg|webp)$/);
+      return m ? m[1].replace("jpeg", "jpg") : "png";
+    })();
+
+    setImageUpload((prev) => ({
+      ...prev,
+      [promptId]: { stage: "signing", progress: 0 },
+    }));
+
+    try {
+      const signRes = await fetch("/api/admin/longos/upload-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: project.slug, promptId, ext }),
+      });
+      const sign = await signRes.json();
+      if (!signRes.ok || sign.erro || !sign.imageUploadUrl) {
+        throw new Error(sign.erro || `Sign HTTP ${signRes.status}`);
+      }
+
+      setImageUpload((prev) => ({
+        ...prev,
+        [promptId]: { stage: "uploading", progress: 0 },
+      }));
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("PUT", sign.imageUploadUrl);
+        xhr.setRequestHeader("Content-Type", file.type || `image/${ext === "jpg" ? "jpeg" : ext}`);
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            setImageUpload((prev) => ({
+              ...prev,
+              [promptId]: { stage: "uploading", progress: pct },
+            }));
+          }
+        };
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) resolve();
+          else reject(new Error(`Upload ${xhr.status}: ${xhr.responseText.slice(0, 200)}`));
+        };
+        xhr.onerror = () => reject(new Error("Upload network error"));
+        xhr.send(file);
+      });
+
+      setImageUpload((prev) => ({
+        ...prev,
+        [promptId]: { stage: "finalizing", progress: 100 },
+      }));
+      const finRes = await fetch("/api/admin/longos/finalize-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: project.slug,
+          promptId,
+          imageUrl: `${sign.imageUrl}?t=${Date.now()}`,
+        }),
+      });
+      const fin = await finRes.json();
+      if (!finRes.ok || fin.erro) {
+        throw new Error(fin.erro || `Finalize HTTP ${finRes.status}`);
+      }
+
+      setImageUpload((prev) => {
+        const next = { ...prev };
+        delete next[promptId];
+        return next;
+      });
+      // Patch local (preserva scroll — mesma lógica que delete-clip):
+      const newImageUrl = `${sign.imageUrl}?t=${Date.now()}`;
+      setProject((prev) =>
+        prev
+          ? {
+              ...prev,
+              prompts: prev.prompts.map((p) =>
+                p.id === promptId ? { ...p, imageUrl: newImageUrl } : p,
+              ),
+            }
+          : prev,
+      );
+      setPromptsDraft((prev) =>
+        prev.map((p) =>
+          p.id === promptId ? { ...p, imageUrl: newImageUrl } : p,
+        ),
+      );
+      setInfo(`✓ Imagem ${promptId} carregada`);
+      setTimeout(() => setInfo(null), 2000);
+    } catch (e) {
+      setImageUpload((prev) => {
+        const next = { ...prev };
+        delete next[promptId];
+        return next;
+      });
+      setInfo(`Erro upload imagem ${promptId}: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 
@@ -2176,6 +2297,15 @@ export default function LongoDetailPage() {
                 title="Movimento de câmara desta cena para Runway image-to-video. Ex: 'very slow push-in toward the wallet, dust motes floating in beam of light'."
               />
 
+              {/* Image slot (MJ) — upload da imagem que vai ao Runway */}
+              <ImageSlot
+                promptId={p.id}
+                imageUrl={p.imageUrl}
+                upload={imageUpload[p.id]}
+                onUpload={(file) => uploadImageForPrompt(p.id, file)}
+                disabled={promptsDirty}
+              />
+
               {/* Clip MJ Video slot — upload + preview + delete */}
               <ClipSlot
                 promptId={p.id}
@@ -2458,6 +2588,103 @@ export default function LongoDetailPage() {
           </li>
         </ol>
       </details>
+    </div>
+  );
+}
+
+// ─── ImageSlot ──────────────────────────────────────────────────────────────
+// Per-prompt slot para upload de imagem (MJ). Espelha o ClipSlot mas para
+// imagens (PNG/JPG/WEBP). A Vivianne gera as imagens em MJ → drop aqui →
+// Supabase. generate-clips/submit usa este imageUrl em vez de chamar fal.ai.
+
+function ImageSlot({
+  promptId,
+  imageUrl,
+  upload,
+  onUpload,
+  disabled,
+}: {
+  promptId: string;
+  imageUrl?: string;
+  upload?: { stage: "signing" | "uploading" | "finalizing"; progress: number };
+  onUpload: (file: File) => void;
+  disabled?: boolean;
+}) {
+  const inputId = `img-up-${promptId}`;
+  const isBusy = !!upload;
+  return (
+    <div className="mt-2 rounded border border-escola-border bg-escola-card/40 p-2">
+      {imageUrl && !isBusy ? (
+        <div className="flex items-start gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imageUrl}
+            alt={promptId}
+            className="h-16 w-28 shrink-0 rounded border border-escola-border bg-black object-cover"
+          />
+          <div className="flex-1 text-[10px] text-escola-creme-50">
+            <p className="text-escola-dourado">✓ Imagem MJ pronta</p>
+            <div className="mt-1 flex flex-wrap gap-1">
+              <label
+                htmlFor={inputId}
+                className="cursor-pointer rounded border border-escola-border bg-escola-bg px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+              >
+                ↻ trocar
+              </label>
+              <a
+                href={imageUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+              >
+                abrir ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      ) : isBusy ? (
+        <div>
+          <p className="text-[10px] text-escola-dourado">
+            {upload!.stage === "signing"
+              ? "A pedir signed URL..."
+              : upload!.stage === "uploading"
+                ? `A enviar... ${upload!.progress}%`
+                : "A guardar no projecto..."}
+          </p>
+          <div className="mt-1 h-1 w-full rounded bg-escola-border">
+            <div
+              className="h-full rounded bg-escola-dourado transition-all"
+              style={{ width: `${upload!.progress}%` }}
+            />
+          </div>
+        </div>
+      ) : (
+        <label
+          htmlFor={inputId}
+          className={`flex cursor-pointer items-center gap-2 text-[10px] ${
+            disabled
+              ? "cursor-not-allowed opacity-40"
+              : "text-escola-creme-50 hover:text-escola-creme"
+          }`}
+        >
+          <span className="rounded bg-escola-dourado/20 px-2 py-0.5 text-[10px] font-semibold text-escola-dourado">
+            🎨 Upload imagem MJ
+          </span>
+          <span>ou arrasta — Runway anima a imagem que aqui colocares</span>
+        </label>
+      )}
+      <input
+        id={inputId}
+        type="file"
+        accept="image/png,image/jpeg,image/webp,image/*"
+        className="hidden"
+        disabled={isBusy || disabled}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) onUpload(f);
+          e.target.value = "";
+        }}
+      />
     </div>
   );
 }

@@ -88,8 +88,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       pending: 0,
       completed: 0,
-      failed: 0,
+      failed: [],
       total: prompts.length,
+      // Inclui totalUnclipped no early-return para o cliente não mostrar
+      // "Concluído. undefined ficaram sem clip" (bug reportado pela
+      // Vivianne — fal.ai falhou para todos os 56, submit não enfileirou
+      // nada no Runway, polling encontrou 0 pending → caía aqui sem
+      // este campo).
+      totalUnclipped: prompts.filter((p) => !p.clipUrl).length,
       message: "Sem tasks Runway pendentes",
     });
   }
