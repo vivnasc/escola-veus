@@ -14,10 +14,48 @@
 import rotation from "../../src/data/weekly-social/weekly-rotation.ts";
 import loranne from "../../src/lib/loranne.ts";
 import moodsModule from "../../src/data/weekly-social/loranne-moods.ts";
+import trackMetaJson from "../../src/data/weekly-social/loranne-track-meta.json" with { type: "json" };
 
+const TRACK_META = trackMetaJson;
 const { LORANNE_ROTATION, LORANNE_AVAILABLE_ALBUMS, getAlbumTitle, getTrackTitle } = rotation;
 const { ALL_LYRICS } = loranne;
 const { LORANNE_MOODS, MOOD_META } = moodsModule;
+
+// ── Energy/flavor → mood boosts ──────────────────────────────────────────
+// Estes são sinais ESTRUTURAIS (vêm do albums.ts) — peso forte porque
+// reflectem decisão musical da artista, não palpite de letra.
+
+function metaBoosts(albumSlug, trackNumber) {
+  const meta = TRACK_META[albumSlug]?.[String(trackNumber)] || {};
+  const energy = meta.energy;
+  const flavor = meta.flavor;
+  const boosts = {};
+
+  // Anthem energy = elevar (cathartic, triumphant)
+  if (energy === "anthem") boosts["elevar"] = (boosts["elevar"] || 0) + 6;
+  // Gospel flavor = elevar (libertação espiritual)
+  if (flavor === "gospel") boosts["elevar"] = (boosts["elevar"] || 0) + 8;
+  // House flavor = elevar (dance, celebration)
+  if (flavor === "house") boosts["elevar"] = (boosts["elevar"] || 0) + 4;
+
+  // Pulse energy = acordar (rhythm waking up)
+  if (energy === "pulse") boosts["acordar"] = (boosts["acordar"] || 0) + 3;
+
+  // Whisper energy = respirar (quiet, intimate)
+  if (energy === "whisper") boosts["respirar"] = (boosts["respirar"] || 0) + 5;
+
+  // Raw energy = aterrar (intimate, body, present)
+  if (energy === "raw") boosts["aterrar"] = (boosts["aterrar"] || 0) + 4;
+
+  // Steady energy = reunir-se (settling, accepting)
+  if (energy === "steady") boosts["reunir-se"] = (boosts["reunir-se"] || 0) + 2;
+
+  // Marrabenta/folk flavor = aterrar (raiz africana, body)
+  if (flavor === "marrabenta") boosts["aterrar"] = (boosts["aterrar"] || 0) + 3;
+  if (flavor === "folk") boosts["aterrar"] = (boosts["aterrar"] || 0) + 3;
+
+  return boosts;
+}
 
 // ── Heurísticas por mood ────────────────────────────────────────────────
 
@@ -118,11 +156,12 @@ function moodScoreForTrack(albumSlug, trackNumber, lyrics, baseScore) {
   const body = normalize(lyrics);
 
   const scores = {};
+  const boosts = metaBoosts(albumSlug, trackNumber);
 
   for (const mood of LORANNE_MOODS) {
     const kws = MOOD_KEYWORDS[mood];
-    if (!kws) { scores[mood] = 0; continue; }
-    let s = 0;
+    let s = boosts[mood] || 0; // sinal estrutural (energy/flavor)
+    if (!kws) { scores[mood] = s; continue; }
 
     // Título — peso alto
     for (const kw of kws.title) {
