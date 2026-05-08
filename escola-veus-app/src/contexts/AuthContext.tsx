@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { isAdminEmail } from "@/lib/admin";
 
 type AuthState = {
   user: User | null;
@@ -33,6 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setIsAdmin(isAdminEmail(session?.user?.email));
       if (session?.user) loadProfile(session.user.id);
       setLoading(false);
     });
@@ -41,10 +43,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        setIsAdmin(isAdminEmail(session?.user?.email));
         if (session?.user) loadProfile(session.user.id);
         else {
           setIsSubscribed(false);
-          setIsAdmin(false);
         }
       }
     );
@@ -55,11 +57,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function loadProfile(userId: string) {
     const { data } = await supabase
       .from("profiles")
-      .select("subscription_status, is_admin")
+      .select("subscription_status")
       .eq("id", userId)
       .single();
     setIsSubscribed(data?.subscription_status === "active");
-    setIsAdmin(data?.is_admin === true);
   }
 
   async function signOut() {

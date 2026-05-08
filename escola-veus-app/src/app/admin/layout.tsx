@@ -5,8 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { UniverseProvider, useUniverse, type Universe } from "@/contexts/UniverseContext";
 import { useEffect } from "react";
-
-const ADMIN_EMAILS = ["viv.saraiva@gmail.com"];
+import { isAdminEmail } from "@/lib/admin";
 
 // Nav top-level filtrada por universo. Os URLs NÃO mudam (para não partir
 // bookmarks) — só esconde/mostra o que faz sentido em cada universo.
@@ -37,7 +36,7 @@ export default function AdminLayout({
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
+  const isAdmin = isAdminEmail(user?.email);
 
   useEffect(() => {
     if (!loading && !isAdmin) {
