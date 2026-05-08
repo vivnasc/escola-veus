@@ -1943,6 +1943,41 @@ export default function LongoDetailPage() {
                 <button
                   onClick={async () => {
                     if (!project) return;
+                    if (
+                      !confirm(
+                        "Adicionar params Midjourney (--ar 16:9 --v 7 --style raw --s 50) a todos os prompts que não os tenham?\n\nGRÁTIS — só patcha o JSON. Idempotente (não duplica params que já existem).",
+                      )
+                    )
+                      return;
+                    setInfo("📎 a adicionar params MJ...");
+                    try {
+                      const r = await fetch("/api/admin/longos/append-mj-params", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ slug: project.slug }),
+                      });
+                      const d = await r.json();
+                      if (!r.ok || d.erro)
+                        throw new Error(d.erro || `HTTP ${r.status}`);
+                      setInfo(
+                        `✓ ${d.patched}/${d.total} prompts patched com ${d.appliedParams.ar} ${d.appliedParams.v} ${d.appliedParams.style} s${d.appliedParams.s}.`,
+                      );
+                      setTimeout(() => setInfo(null), 8000);
+                      await load();
+                    } catch (e) {
+                      setInfo(
+                        `Erro: ${e instanceof Error ? e.message : String(e)}`,
+                      );
+                    }
+                  }}
+                  className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                  title="Adiciona --ar 16:9 --v 7 --style raw --s 50 a cada prompt que não os tenha. Idempotente (não duplica). Grátis."
+                >
+                  📎 add params MJ aos prompts
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!project) return;
                     const empty = promptsDraft.filter(
                       (p) => !((p.motion ?? "").trim()),
                     ).length;
@@ -1986,7 +2021,7 @@ export default function LongoDetailPage() {
                   className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-creme disabled:opacity-40"
                   title="Para cada cena com motion vazio, Claude lê (prompt + mood) e gera 1 frase EN específica de movimento de câmara para Runway. Conservador, alterna tipos. ~$0.05."
                 >
-                  🎬 preencher motion via Claude (~$0.05)
+                  🎥 preencher motion (Claude ~$0.05)
                 </button>
                 <button
                   onClick={async () => {
@@ -2063,7 +2098,7 @@ export default function LongoDetailPage() {
                   className="rounded border border-escola-dourado bg-escola-dourado px-2 py-1 text-[10px] font-semibold text-escola-bg hover:opacity-90 disabled:opacity-40"
                   title={`fal.ai (~$0.04) + Runway (~$0.50) por clip × ${missing} = $${totalCost.toFixed(2)}`}
                 >
-                  🎬 gerar {missing} clips faltantes (~${totalCost.toFixed(2)})
+                  🎞 gerar {missing} clips Runway (~${totalCost.toFixed(2)})
                 </button>
               </div>
             </div>
