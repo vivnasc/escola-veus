@@ -15,6 +15,7 @@ import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { CadernosPDF } from "@/lib/pdf/cadernos-template";
 import { ensureCormorantRegistered, getCormorantRegisterError } from "@/lib/pdf/fonts";
 import { getCourseBySlug } from "@/data/courses";
+import { getManual } from "@/data/course-manuals";
 
 export async function GET(req: NextRequest) {
   const slug = req.nextUrl.searchParams.get("slug");
@@ -59,7 +60,8 @@ export async function GET(req: NextRequest) {
         { status: 500 }
       );
     }
-    const element = React.createElement(CadernosPDF, { course, studentName, entries });
+    const manual = getManual(slug);
+    const element = React.createElement(CadernosPDF, { course, studentName, entries, manual });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const buffer = await renderToBuffer(element as any);
 

@@ -7,6 +7,10 @@ const MANUALS: Record<string, ManualContent> = {
   "ouro-proprio": OURO_PROPRIO_MANUAL,
 };
 
+export function getManual(courseSlug: string): ManualContent | null {
+  return MANUALS[courseSlug] ?? null;
+}
+
 export function getManualChapter(
   courseSlug: string,
   moduleNumber: number,
