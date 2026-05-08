@@ -1,5 +1,5 @@
 /**
- * Template PDF para certificado de conclusao de curso — Escola dos Veus
+ * Template PDF para certificado de conclusão de curso — Escola dos Véus
  *
  * Identidade visual coerente com manual-template:
  * - Fundo: #1A1A2E
@@ -182,9 +182,9 @@ export function CertificatePDF(props: CertificateProps) {
         <View style={s.borderInner} />
 
         <View style={s.content}>
-          <Text style={s.brand}>SETE VEUS</Text>
+          <Text style={s.brand}>SETE VÉUS</Text>
           <View style={s.divider} />
-          <Text style={s.label}>CERTIFICADO DE CONCLUSAO</Text>
+          <Text style={s.label}>CERTIFICADO DE CONCLUSÃO</Text>
           <View style={s.divider} />
 
           <Text style={s.preName}>Certifica-se que</Text>
@@ -205,7 +205,7 @@ export function CertificatePDF(props: CertificateProps) {
             </Text>
 
             <View style={s.footer}>
-              <Text style={s.certCode}>Codigo: {certificateCode}</Text>
+              <Text style={s.certCode}>Código: {certificateCode}</Text>
               <Text style={s.verifyUrl}>Verificar: {verifyUrl}</Text>
             </View>
           </View>
