@@ -116,6 +116,12 @@ export default function CursoCompletoPage() {
           <p className="mt-1 text-[10px] text-escola-creme-50">
             {new Date().toLocaleDateString("pt-PT", { day: "numeric", month: "long", year: "numeric" })}
           </p>
+          <a
+            href={`/api/courses/certificate?slug=${slug}`}
+            className="mt-4 inline-block w-full rounded-lg border border-escola-dourado/40 px-4 py-2 text-center text-xs text-escola-dourado transition-colors hover:bg-escola-dourado/10"
+          >
+            Descarregar PDF
+          </a>
         </div>
       )}
 

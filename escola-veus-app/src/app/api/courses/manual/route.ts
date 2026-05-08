@@ -14,6 +14,7 @@ import { createClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { ManualPDF } from "@/lib/pdf/manual-template";
 import { OURO_PROPRIO_MANUAL } from "@/data/course-manuals/ouro-proprio";
+import { isAdminEmail } from "@/lib/admin";
 
 const MANUALS: Record<string, typeof OURO_PROPRIO_MANUAL> = {
   "ouro-proprio": OURO_PROPRIO_MANUAL,
@@ -103,15 +104,16 @@ async function generatePdf(
 ) {
   const supabase = await createSupabaseServerClient();
 
-  // Get profile for student name
+  // Get profile for student name and access flag
   const { data: profile } = await supabase
     .from("profiles")
-    .select("email, is_admin, has_mirrors_access")
+    .select("email, has_mirrors_access")
     .eq("id", user.id)
     .single();
 
-  // Check access (admin bypasses)
-  if (!profile?.is_admin && !profile?.has_mirrors_access) {
+  // Check access (admin via email allow-list bypasses)
+  const isAdmin = isAdminEmail(user.email);
+  if (!isAdmin && !profile?.has_mirrors_access) {
     return NextResponse.json(
       { error: "Sem acesso a este curso" },
       { status: 403 }
