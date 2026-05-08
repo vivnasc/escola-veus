@@ -108,6 +108,72 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // SRT obrigatório: render sem legendas é desperdício de tempo. Se a SRT
+  // ainda não foi gerada (gerar narração ≠ gerar SRT — a SRT corre via
+  // ElevenLabs Scribe sobre o MP3), AUTO-GERA agora antes de submeter o
+  // workflow. Se a auto-geração falhar, BLOQUEIA com erro claro.
+  if (!project.subtitlesUrl) {
+    const protocol = req.headers.get("x-forwarded-proto") || "https";
+    const host = req.headers.get("host");
+    if (!host) {
+      return NextResponse.json(
+        {
+          erro:
+            "SRT em falta: não consegui auto-gerar (sem host header). Clica '📝 gerar SRT' antes de render.",
+        },
+        { status: 400 },
+      );
+    }
+    const baseUrl = `${protocol}://${host}`;
+    try {
+      const srtRes = await fetch(`${baseUrl}/api/admin/longos/generate-srt`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug }),
+      });
+      const srtData = await srtRes.json();
+      if (!srtRes.ok || srtData.erro) {
+        return NextResponse.json(
+          {
+            erro: `Falhei a auto-gerar SRT: ${srtData.erro || `HTTP ${srtRes.status}`}. Clica '📝 gerar SRT' manualmente e tenta render de novo.`,
+          },
+          { status: 400 },
+        );
+      }
+      // Re-carrega o projecto para apanhar o novo subtitlesUrl
+      try {
+        const { data: refreshed } = await supabase.storage
+          .from("course-assets")
+          .download(`admin/longos/${slug}.json`);
+        if (refreshed) {
+          project = JSON.parse(await refreshed.text()) as Project;
+        }
+      } catch {
+        /* fall through — vamos usar o subtitlesUrl da resposta SRT abaixo */
+      }
+      // Garantia: se o reload falhou, usa o que SRT response retornou
+      if (!project.subtitlesUrl && srtData.subtitlesUrl) {
+        project.subtitlesUrl = srtData.subtitlesUrl;
+      }
+    } catch (e) {
+      return NextResponse.json(
+        {
+          erro: `Auto-gerar SRT falhou: ${e instanceof Error ? e.message : String(e)}. Clica '📝 gerar SRT' manualmente.`,
+        },
+        { status: 500 },
+      );
+    }
+    // Se mesmo assim ficou sem SRT, bloqueia
+    if (!project.subtitlesUrl) {
+      return NextResponse.json(
+        {
+          erro: "SRT continua em falta após auto-gerar. Clica '📝 gerar SRT' manualmente e tenta render de novo.",
+        },
+        { status: 500 },
+      );
+    }
+  }
+
   // Filtra prompts com clipUrl. A ordem da array dos prompts é a ordem de
   // reprodução. Sem clipUrl → cena ainda não gravada → não entra no render.
   const clipsForRender = (project.prompts ?? [])
