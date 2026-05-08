@@ -55,10 +55,16 @@ export function findTrackUrl(
   trackNumber: number,
 ): string | null {
   const padded = String(trackNumber).padStart(2, "0");
-  const byPrefix = albumTracks.find((t) =>
-    new RegExp(`(^|[^0-9])${padded}([^0-9]|$)`).test(t.name),
-  );
-  if (byPrefix) return byPrefix.url;
+  const unpadded = String(trackNumber);
+  // Tenta primeiro padded (faixa-08), depois unpadded (faixa-8). Ambos com
+  // boundary não-numérico para evitar match parcial (8 dentro de 18, 28, …).
+  for (const num of [padded, unpadded]) {
+    const re = new RegExp(`(^|[^0-9])${num}([^0-9]|$)`);
+    const match = albumTracks.find((t) => re.test(t.name));
+    if (match) return match.url;
+  }
+  // Fallback posicional (1-indexed) — só usar se a lista parece ordenada por
+  // número de faixa.
   if (trackNumber >= 1 && trackNumber <= albumTracks.length) {
     return albumTracks[trackNumber - 1].url;
   }
