@@ -16,7 +16,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Font,
 } from "@react-pdf/renderer";
 import type {
   ManualContent,
@@ -25,57 +24,11 @@ import type {
 
 // ─── FONTS ─────────────────────────────────────────────────────────────────
 
-// Cormorant Garamond via Google Fonts (production)
-Font.register({
-  family: "Cormorant",
-  fonts: [
-    {
-      src: "https://fonts.gstatic.com/s/cormorantgaramond/v16/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.ttf",
-      fontWeight: 400,
-    },
-    {
-      src: "https://fonts.gstatic.com/s/cormorantgaramond/v16/co3YmX5slCNuHLi8bLeY9MK7whWMhyjQEl5fsA.ttf",
-      fontWeight: 400,
-      fontStyle: "italic",
-    },
-    {
-      src: "https://fonts.gstatic.com/s/cormorantgaramond/v16/co3WmX5slCNuHLi8bLeY9MK7whWMhyjYrEPjuw-NxBk.ttf",
-      fontWeight: 600,
-    },
-    {
-      src: "https://fonts.gstatic.com/s/cormorantgaramond/v16/co3WmX5slCNuHLi8bLeY9MK7whWMhyjYrEPjuw-NxBk.ttf",
-      fontWeight: 700,
-    },
-  ],
-});
-
-// Liberation Serif (local fallback — metrically equivalent to Times)
-Font.register({
-  family: "SerifFallback",
-  fonts: [
-    {
-      src: "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf",
-      fontWeight: 400,
-    },
-    {
-      src: "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf",
-      fontWeight: 400,
-      fontStyle: "italic",
-    },
-    {
-      src: "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf",
-      fontWeight: 600,
-    },
-    {
-      src: "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf",
-      fontWeight: 700,
-    },
-  ],
-});
-
-// Use Cormorant in production, SerifFallback locally
-const FONT_FAMILY =
-  process.env.NODE_ENV === "production" ? "Cormorant" : "SerifFallback";
+// Times-Roman é PDF standard 14: built-in no @react-pdf/renderer, não precisa
+// de registo nem de fetch. Usar até bundlearmos uma fonte custom (Cormorant via
+// outputFileTracingIncludes) — fontes via Google Fonts a runtime falham com
+// "Unknown font format" no serverless da Vercel.
+const FONT_FAMILY = "Times-Roman";
 
 // ─── COLORS ────────────────────────────────────────────────────────────────
 
