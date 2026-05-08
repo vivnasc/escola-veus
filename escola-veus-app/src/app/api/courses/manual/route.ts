@@ -45,19 +45,29 @@ export async function GET(req: NextRequest) {
 
     const studentName = "Vivianne dos Santos (Preview)";
 
-    const element = React.createElement(ManualPDF, { manual, studentName });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const buffer = await renderToBuffer(element as any);
-    const filename = `${manual.courseTitle.replace(/\s+/g, "-")}_Manual_PREVIEW.pdf`;
+    try {
+      const element = React.createElement(ManualPDF, { manual, studentName });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const buffer = await renderToBuffer(element as any);
+      const filename = `${manual.courseTitle.replace(/\s+/g, "-")}_Manual_PREVIEW.pdf`;
 
-    return new NextResponse(new Uint8Array(buffer), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `inline; filename="${filename}"`,
-        "Cache-Control": "private, no-cache",
-      },
-    });
+      return new NextResponse(new Uint8Array(buffer), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/pdf",
+          "Content-Disposition": `inline; filename="${filename}"`,
+          "Cache-Control": "private, no-cache",
+        },
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const stack = err instanceof Error ? err.stack : undefined;
+      console.error("[manual] preview render failed:", err);
+      return NextResponse.json(
+        { error: "PDF render falhou", message, stack },
+        { status: 500 }
+      );
+    }
   }
 
   // Auth via Supabase SSR (lida com cookies chunked sb-<ref>-auth-token.0, .1)
@@ -122,23 +132,32 @@ async function generatePdf(
 
   const studentName = user.user_metadata?.full_name || user.email || "Aluna";
 
-  // Generate PDF
-  const element = React.createElement(ManualPDF, {
-    manual,
-    studentName,
-  });
+  try {
+    const element = React.createElement(ManualPDF, {
+      manual,
+      studentName,
+    });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const buffer = await renderToBuffer(element as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const buffer = await renderToBuffer(element as any);
 
-  const filename = `${manual.courseTitle.replace(/\s+/g, "-")}_Manual_${studentName.replace(/\s+/g, "-")}.pdf`;
+    const filename = `${manual.courseTitle.replace(/\s+/g, "-")}_Manual_${studentName.replace(/\s+/g, "-")}.pdf`;
 
-  return new NextResponse(new Uint8Array(buffer), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${filename}"`,
-      "Cache-Control": "private, no-cache",
-    },
-  });
+    return new NextResponse(new Uint8Array(buffer), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${filename}"`,
+        "Cache-Control": "private, no-cache",
+      },
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : undefined;
+    console.error("[manual] render failed:", err);
+    return NextResponse.json(
+      { error: "PDF render falhou", message, stack },
+      { status: 500 }
+    );
+  }
 }

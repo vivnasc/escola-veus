@@ -108,22 +108,32 @@ async function generatePdf(opts: {
   verifyUrl: string;
   filename: string;
 }) {
-  const element = React.createElement(CertificatePDF, {
-    studentName: opts.studentName,
-    courseTitle: opts.courseTitle,
-    courseSubtitle: opts.courseSubtitle,
-    completedDate: opts.completedDate,
-    certificateCode: opts.certificateCode,
-    verifyUrl: opts.verifyUrl,
-  });
+  try {
+    const element = React.createElement(CertificatePDF, {
+      studentName: opts.studentName,
+      courseTitle: opts.courseTitle,
+      courseSubtitle: opts.courseSubtitle,
+      completedDate: opts.completedDate,
+      certificateCode: opts.certificateCode,
+      verifyUrl: opts.verifyUrl,
+    });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const buffer = await renderToBuffer(element as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const buffer = await renderToBuffer(element as any);
 
-  return new NextResponse(new Uint8Array(buffer), {
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${opts.filename}"`,
-    },
-  });
+    return new NextResponse(new Uint8Array(buffer), {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${opts.filename}"`,
+      },
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : undefined;
+    console.error("[certificate] render failed:", err);
+    return NextResponse.json(
+      { error: "PDF render falhou", message, stack },
+      { status: 500 }
+    );
+  }
 }
