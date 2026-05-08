@@ -9,7 +9,7 @@ import {
 } from "@/data/weekly-social/weekly-rotation";
 import { scheduleFor, currentYear } from "@/lib/weekly-social/schedule";
 import { buildLoranneCaptions, buildAGCaptions } from "@/lib/weekly-social/captions";
-import { pickLoranneClips, pickAGClips, findTrackUrl } from "@/lib/weekly-social/clip-picker";
+import { findTrackUrl } from "@/lib/weekly-social/clip-picker";
 import { savePlan } from "@/lib/weekly-social/plan-storage";
 import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
@@ -23,14 +23,17 @@ export const maxDuration = 120; // 7 + 3 chamadas Claude — pode demorar 60-90s
  * POST /api/admin/weekly/plan
  * Body: { week: number, year?: number, brands?: ("loranne"|"ancient-ground")[] }
  *
- * Para cada marca pedida (default: ambas):
- *   1. Determina os posts da semana via rotação determinística.
- *   2. Resolve URLs de música (bucket audios) e clips (escola-shorts).
- *   3. Chama suggest / suggest-ag para versos+captions.
- *   4. Calcula data+hora por plataforma (Maputo CAT).
- *   5. Grava o plan em course-assets/weekly-social/<year>-W<NN>/<brand>-plan.json.
+ * Para cada marca:
+ *   1. Determina os posts via rotação determinística.
+ *   2. Atribui motionVariant (A/B/C/D) determinístico — ciclo entre os 4
+ *      para variedade entre vídeos. Loranne acrescenta accent (cor por
+ *      álbum).
+ *   3. Resolve URL do MP3 (bucket audios/albums/<slug>).
+ *   4. Chama suggest/suggest-ag para versos+captions.
+ *   5. Calcula data+hora por plataforma.
+ *   6. Grava em course-assets/weekly-social/<year>-W<NN>/<brand>-plan.json.
  *
- * Devolve: { plans: { loranne?: WeeklyPlan, "ancient-ground"?: WeeklyPlan }, errors: [] }
+ * Sem clip pools — vídeo é renderizado programaticamente via Remotion.
  */
 
 type Body = {
@@ -41,7 +44,32 @@ type Body = {
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const BUCKET_AUDIOS = "audios";
-const BUCKET_CLIPS = "escola-shorts";
+
+const MOTION_VARIANTS = ["A", "B", "C", "D"] as const;
+
+/** Acentos Loranne por prefixo de álbum — cor que vai para o background. */
+const LORANNE_ALBUM_ACCENTS: Record<string, string> = {
+  eter: "#4A6FA5",
+  sangue: "#B0344A",
+  espelho: "#7E57C2",
+  nua: "#D4A853",
+  incenso: "#A088C0",
+  fibra: "#E07050",
+  grao: "#B08050",
+  livro: "#5060A8",
+};
+
+function pickLoranneAccent(albumSlug: string): string {
+  const prefix = albumSlug.split("-")[0];
+  return LORANNE_ALBUM_ACCENTS[prefix] || "#D4A853";
+}
+
+/** Determinístico: ciclo dos 4 motions por (album, faixa) ou por (temas joined). */
+function pickMotionVariant(seed: string): "A" | "B" | "C" | "D" {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
+  return MOTION_VARIANTS[Math.abs(h) % 4];
+}
 
 async function listAlbumTracks(albumSlug: string) {
   const admin = createSupabaseAdminClient();
@@ -56,57 +84,6 @@ async function listAlbumTracks(albumSlug: string) {
       name: f.name,
       url: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_AUDIOS}/albums/${albumSlug}/${f.name}`,
     }));
-}
-
-async function listLoranneClips() {
-  const admin = createSupabaseAdminClient();
-  if (!admin) throw new Error("SUPABASE_SERVICE_ROLE_KEY não configurada.");
-  const all: { name: string; url: string }[] = [];
-  let offset = 0;
-  while (true) {
-    const { data, error } = await admin.storage
-      .from(BUCKET_CLIPS)
-      .list("clips", { limit: 1000, offset });
-    if (error) throw new Error(`list clips: ${error.message}`);
-    if (!data || data.length === 0) break;
-    for (const f of data) {
-      if (/\.mp4$/i.test(f.name)) {
-        all.push({
-          name: f.name.replace(/\.mp4$/i, ""),
-          url: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_CLIPS}/clips/${f.name}`,
-        });
-      }
-    }
-    if (data.length < 1000) break;
-    offset += 1000;
-  }
-  return all;
-}
-
-async function listAGRaizesClips() {
-  const admin = createSupabaseAdminClient();
-  if (!admin) throw new Error("SUPABASE_SERVICE_ROLE_KEY não configurada.");
-  const all: { name: string; url: string }[] = [];
-  // Lista as pastas (temas) primeiro
-  const { data: folders, error: folderErr } = await admin.storage
-    .from(BUCKET_CLIPS)
-    .list("ag-raizes-clips", { limit: 100 });
-  if (folderErr) throw new Error(`list ag-raizes folders: ${folderErr.message}`);
-  for (const folder of folders || []) {
-    if (folder.name.includes(".")) continue;
-    const { data: files } = await admin.storage
-      .from(BUCKET_CLIPS)
-      .list(`ag-raizes-clips/${folder.name}`, { limit: 500 });
-    for (const f of files || []) {
-      if (/\.mp4$/i.test(f.name)) {
-        all.push({
-          name: f.name.replace(/\.mp4$/i, ""),
-          url: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_CLIPS}/ag-raizes-clips/${folder.name}/${f.name}`,
-        });
-      }
-    }
-  }
-  return all;
 }
 
 export async function POST(req: NextRequest) {
@@ -128,81 +105,78 @@ export async function POST(req: NextRequest) {
     // ─── Loranne ────────────────────────────────────────────────────────
     if (brands.includes("loranne")) {
       const brand = BRANDS.loranne;
-      const loranneClipPool = await listLoranneClips();
-      if (loranneClipPool.length < 3) {
-        errors.push({ brand: "loranne", message: `Pool de clips Loranne tem ${loranneClipPool.length}, precisa ≥3.` });
-      } else {
-        const posts: WeeklyPost[] = [];
-        for (const day of brand.publishDays) {
-          const dayIdx = DAY_ORDER.indexOf(day);
-          const entry = pickWeeklyLoranne(week, dayIdx);
-          const trackTitle = getTrackTitle(entry.albumSlug, entry.trackNumber);
-          const albumTitle = getAlbumTitle(entry.albumSlug);
+      const posts: WeeklyPost[] = [];
+      for (const day of brand.publishDays) {
+        const dayIdx = DAY_ORDER.indexOf(day);
+        const entry = pickWeeklyLoranne(week, dayIdx);
+        const trackTitle = getTrackTitle(entry.albumSlug, entry.trackNumber);
+        const albumTitle = getAlbumTitle(entry.albumSlug);
 
-          try {
-            const suggest = runSuggest({
-              albumSlug: entry.albumSlug,
-              trackNumber: entry.trackNumber,
-            }) as Parameters<typeof buildLoranneCaptions>[0];
+        try {
+          const suggest = runSuggest({
+            albumSlug: entry.albumSlug,
+            trackNumber: entry.trackNumber,
+          }) as Parameters<typeof buildLoranneCaptions>[0];
 
-            const tracks = await listAlbumTracks(entry.albumSlug);
-            const musicUrl = findTrackUrl(tracks, entry.trackNumber);
-            if (!musicUrl) throw new Error(`MP3 ${entry.albumSlug}/faixa ${entry.trackNumber} não encontrado em audios/albums/${entry.albumSlug}/`);
+          const tracks = await listAlbumTracks(entry.albumSlug);
+          const musicUrl = findTrackUrl(tracks, entry.trackNumber);
+          if (!musicUrl) throw new Error(`MP3 ${entry.albumSlug}/faixa ${entry.trackNumber} não encontrado em audios/albums/${entry.albumSlug}/`);
 
-            const clipUrls = pickLoranneClips(loranneClipPool, entry.albumSlug, entry.trackNumber, week);
-            const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null });
+          const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null });
+          const motionVariant = pickMotionVariant(`loranne/${entry.albumSlug}/${entry.trackNumber}`);
+          const accent = pickLoranneAccent(entry.albumSlug);
+          const trackLabel = `"${trackTitle}" · ${albumTitle}`;
 
-            posts.push({
-              id: `loranne-${entry.albumSlug}-f${entry.trackNumber}-w${week}-${day}`,
-              brandSlug: "loranne",
-              day,
-              albumSlug: entry.albumSlug,
-              trackNumber: entry.trackNumber,
-              trackTitle,
-              albumTitle,
-              verses: (suggest.verses || []).slice(0, 2),
-              musicUrl,
-              clipUrls,
-              captions,
-              schedule: Object.fromEntries(
-                ALL_PLATFORMS.map((p) => [p, scheduleFor(year, week, day, brand.hoursByPlatform[p])]),
-              ) as WeeklyPost["schedule"],
-              videoUrl: null,
-              thumbnailUrl: null,
-              jobId: null,
-              status: "planned",
-            });
-          } catch (e) {
-            errors.push({
-              brand: "loranne",
-              postId: `loranne-${entry.albumSlug}-f${entry.trackNumber}-${day}`,
-              message: e instanceof Error ? e.message : String(e),
-            });
-          }
+          posts.push({
+            id: `loranne-${entry.albumSlug}-f${entry.trackNumber}-w${week}-${day}`,
+            brandSlug: "loranne",
+            day,
+            albumSlug: entry.albumSlug,
+            trackNumber: entry.trackNumber,
+            trackTitle,
+            albumTitle,
+            verses: (suggest.verses || []).slice(0, 2),
+            musicUrl,
+            motionVariant,
+            accent,
+            trackLabel,
+            captions,
+            schedule: Object.fromEntries(
+              ALL_PLATFORMS.map((p) => [p, scheduleFor(year, week, day, brand.hoursByPlatform[p])]),
+            ) as WeeklyPost["schedule"],
+            videoUrl: null,
+            thumbnailUrl: null,
+            jobId: null,
+            status: "planned",
+          });
+        } catch (e) {
+          errors.push({
+            brand: "loranne",
+            postId: `loranne-${entry.albumSlug}-f${entry.trackNumber}-${day}`,
+            message: e instanceof Error ? e.message : String(e),
+          });
         }
-
-        const plan: WeeklyPlan = {
-          year, week, brand: "loranne",
-          generatedAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          posts,
-        };
-        await savePlan(plan);
-        plans.loranne = plan;
       }
+
+      const plan: WeeklyPlan = {
+        year, week, brand: "loranne",
+        generatedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        posts,
+      };
+      await savePlan(plan);
+      plans.loranne = plan;
     }
 
     // ─── Ancient Ground ────────────────────────────────────────────────
     if (brands.includes("ancient-ground")) {
       const brand = BRANDS["ancient-ground"];
-      const agClipPool = await listAGRaizesClips();
       const agTracks = await listAlbumTracks("ancient-ground");
       const posts: WeeklyPost[] = [];
       let slotIdx = 0;
       for (const day of brand.publishDays) {
         const entry = pickWeeklyAG(week, slotIdx);
         try {
-          const clipUrls = pickAGClips(agClipPool, entry.temas, week);
           const suggest = await runSuggestAG({
             temas: [...entry.temas],
             trackNumber: entry.trackNumber,
@@ -214,6 +188,8 @@ export async function POST(req: NextRequest) {
           const captions = buildAGCaptions(suggest, brand, {
             label: entry.label, trackNumber: entry.trackNumber, temas: entry.temas,
           });
+          const motionVariant = pickMotionVariant(`ag/${entry.temas.join("-")}/${entry.trackNumber}`);
+          const trackLabel = `Ancient Ground · ${entry.label}`;
 
           posts.push({
             id: `ag-${entry.temas.join("-")}-w${week}-${day}`,
@@ -224,7 +200,8 @@ export async function POST(req: NextRequest) {
             temas: [...entry.temas],
             verses: (suggest.versos || []).slice(0, 2),
             musicUrl,
-            clipUrls,
+            motionVariant,
+            trackLabel,
             captions,
             schedule: Object.fromEntries(
               ALL_PLATFORMS.map((p) => [p, scheduleFor(year, week, day, brand.hoursByPlatform[p])]),

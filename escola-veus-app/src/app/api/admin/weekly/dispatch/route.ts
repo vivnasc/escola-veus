@@ -4,7 +4,7 @@ import { type BrandSlug } from "@/data/weekly-social/brand-config";
 import { loadPlan, savePlan } from "@/lib/weekly-social/plan-storage";
 import { currentYear } from "@/lib/weekly-social/schedule";
 import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
-import { runRenderShortSubmit } from "@/lib/shorts/render-short-core";
+import { runRenderRemotionSubmit } from "@/lib/shorts/render-remotion-core";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -28,13 +28,21 @@ async function dispatchOne(post: WeeklyPost): Promise<{ jobId: string }> {
   const title = post.brandSlug === "loranne"
     ? `${post.trackTitle} · ${post.albumTitle}`
     : (post.label || post.id);
-  return runRenderShortSubmit({
+  const verses: [string, string] = [
+    post.verses?.[0] || "",
+    post.verses?.[1] || "",
+  ];
+  return runRenderRemotionSubmit({
     title,
     slug: post.id,
-    clips: post.clipUrls,
-    clipDuration: 10,
-    musicUrl: post.musicUrl,
-    musicVolume: 0.9,
+    brand: post.brandSlug,
+    motionVariant: post.motionVariant,
+    accent: post.accent,
+    verses,
+    audioUrl: post.musicUrl,
+    audioVolume: 1,
+    trackLabel: post.trackLabel,
+    durationSec: 30,
   });
 }
 

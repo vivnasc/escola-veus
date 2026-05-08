@@ -1,0 +1,56 @@
+name: Render Remotion Short
+
+# Disparado pelo admin UI (/api/admin/shorts/render-remotion-submit) via
+# workflow_dispatch. O manifest (brand, motionVariant, verses, audioUrl,
+# accent, etc.) já foi colocado em Supabase (course-assets/render-jobs/
+# <jobId>.json) pela rota /admin/shorts/render-remotion-submit.
+
+on:
+  workflow_dispatch:
+    inputs:
+      jobId:
+        description: "ID único do short render job"
+        required: true
+        type: string
+
+run-name: "render-remotion-short: ${{ inputs.jobId }}"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Chromium dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 libatk-bridge2.0-0 libdrm2 libxkbcommon0 libxcomposite1 \
+            libxdamage1 libxrandr2 libgbm1 libxss1 libasound2 libpangocairo-1.0-0 \
+            libpango-1.0-0 libgtk-3-0 fonts-liberation
+
+      # Bundler webpack resolve `react`/`remotion` a partir das fontes em
+      # escola-veus-app/src/remotion/. Precisa de node_modules no app.
+      - name: Install app deps
+        working-directory: escola-veus-app
+        run: npm ci --no-audit --no-fund
+
+      # Bundler+renderer (Chromium pesado) só vivem aqui — nunca no app.
+      - name: Install render-shorts-remotion deps
+        working-directory: tools/render-shorts-remotion
+        run: npm install --no-audit --no-fund
+
+      - name: Render
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          JOB_ID: ${{ inputs.jobId }}
+        working-directory: tools/render-shorts-remotion
+        run: node render.mjs
