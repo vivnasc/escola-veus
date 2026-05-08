@@ -13,6 +13,7 @@ import * as React from "react";
 import { createClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { ManualPDF } from "@/lib/pdf/manual-template";
+import { ensureCormorantRegistered, getCormorantRegisterError } from "@/lib/pdf/fonts";
 import { OURO_PROPRIO_MANUAL } from "@/data/course-manuals/ouro-proprio";
 import { isAdminEmail } from "@/lib/admin";
 
@@ -46,6 +47,14 @@ export async function GET(req: NextRequest) {
     const studentName = "Vivianne dos Santos (Preview)";
 
     try {
+      ensureCormorantRegistered();
+      const fontErr = getCormorantRegisterError();
+      if (fontErr) {
+        return NextResponse.json(
+          { error: "Cormorant nao bundlou", ...fontErr },
+          { status: 500 }
+        );
+      }
       const element = React.createElement(ManualPDF, { manual, studentName });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const buffer = await renderToBuffer(element as any);
@@ -133,6 +142,14 @@ async function generatePdf(
   const studentName = user.user_metadata?.full_name || user.email || "Aluna";
 
   try {
+    ensureCormorantRegistered();
+    const fontErr = getCormorantRegisterError();
+    if (fontErr) {
+      return NextResponse.json(
+        { error: "Cormorant nao bundlou", ...fontErr },
+        { status: 500 }
+      );
+    }
     const element = React.createElement(ManualPDF, {
       manual,
       studentName,

@@ -21,9 +21,7 @@ import type {
   ManualContent,
   ManualChapter,
 } from "@/data/course-manuals/ouro-proprio";
-import { ensureCormorantRegistered, CORMORANT_FAMILY } from "./fonts";
-
-ensureCormorantRegistered();
+import { CORMORANT_FAMILY } from "./fonts";
 
 const FONT_FAMILY = CORMORANT_FAMILY;
 
