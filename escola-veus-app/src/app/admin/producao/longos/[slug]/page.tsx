@@ -611,36 +611,11 @@ export default function LongoDetailPage() {
         ({ res: r, data: d } = await submitRender());
       }
 
-      // Auto-alinhamento clips ↔ narração: se algum prompt não tem
-      // startSec/endSec, corre /align-clips antes de submeter o render.
-      // Sem alignment, render.mjs cai num bounce loop uniforme — funciona
-      // mas mismatch quando a narração tem densidade desigual. Auto-corrê-lo
-      // garante que cenas com narração densa ficam mais tempo, breves passam
-      // rápido — sem precisar de Vivianne lembrar de clicar.
-      const projectPrompts = project.prompts || [];
-      const needsAlign =
-        projectPrompts.length > 0 &&
-        !projectPrompts.every(
-          (p) => typeof p.startSec === "number" && typeof p.endSec === "number",
-        );
-      if (needsAlign) {
-        setRenderProgress({ status: "preparing", phase: "align", progress: 8 });
-        const alignRes = await fetch("/api/admin/longos/align-clips", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ slug: project.slug }),
-        });
-        const alignData = await alignRes.json();
-        if (!alignRes.ok || alignData.erro) {
-          // Não bloqueia render — fallback bounce loop é aceitável
-          console.warn(
-            `[align] auto-align falhou: ${alignData.erro || `HTTP ${alignRes.status}`}. Render avança com bounce loop.`,
-          );
-        } else {
-          // Re-tenta render com o projecto alinhado
-          ({ res: r, data: d } = await submitRender());
-        }
-      }
+      // Alignment Claude DESACTIVADO: estava a fazer 1 clip cobrir 30s+
+      // de narração sobre múltiplos tópicos (mismatch grave reportado pela
+      // Vivianne). Render agora usa sempre bounce loop — cada clip 10s
+      // native, sequência cicla. Match com Corvo Seco (visuais flutuam,
+      // não tentam anchor literal).
 
       // SEO opcional — silencioso (best-effort)
       if (r.ok && d.jobId) {

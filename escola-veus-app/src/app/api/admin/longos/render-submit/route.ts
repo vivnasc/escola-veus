@@ -140,17 +140,17 @@ export async function POST(req: NextRequest) {
   // SEO YouTube: opcional, render continua sem. Cliente pode chamar /gen-seo
   // antes para incluir o companion <slug>-seo.json.
 
-  // Filtra prompts com clipUrl. A ordem da array dos prompts é a ordem de
-  // reprodução. Sem clipUrl → cena ainda não gravada → não entra no render.
-  // INCLUI o timing semântico (startSec/endSec) — render.mjs estica/comprime
-  // cada clip para ocupar o intervalo de narração que lhe foi atribuído.
+  // Filtra prompts com clipUrl. Ordem de reprodução = ordem dos prompts.
+  // NÃO passa startSec/endSec — alignment Claude estava a fazer 1 clip
+  // cobrir 30s+ de narração sobre 4 tópicos diferentes (mismatch grave).
+  // Render usa sempre bounce loop: cada clip 10s nativo, sequência cicla
+  // pelos N clips para encher narrSec. Match com Corvo Seco — visuais
+  // flutuam sobre a narração, não anchor literal.
   const clipsForRender = (project.prompts ?? [])
     .filter((p) => p.clipUrl)
     .map((p) => ({
       url: p.clipUrl as string,
       durationSec: p.clipDurationSec ?? 0,
-      startSec: typeof p.startSec === "number" ? p.startSec : undefined,
-      endSec: typeof p.endSec === "number" ? p.endSec : undefined,
     }));
 
   if (clipsForRender.length === 0) {
