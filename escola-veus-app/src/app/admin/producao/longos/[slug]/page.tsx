@@ -501,6 +501,8 @@ export default function LongoDetailPage() {
   const [crossfade, setCrossfade] = useState(1.0);
   const [includeBrand, setIncludeBrand] = useState(true);
   const [rendering, setRendering] = useState(false);
+  // Tracking do jobId em curso para suportar botão cancelar
+  const [currentJobId, setCurrentJobId] = useState<string | null>(null);
   const [renderProgress, setRenderProgress] = useState<{
     status: string;
     phase?: string;
@@ -653,7 +655,8 @@ export default function LongoDetailPage() {
       if (!r.ok || !d.jobId) {
         throw new Error(d.erro || `HTTP ${r.status}`);
       }
-      // Poll até done/failed
+      setCurrentJobId(d.jobId);
+      // Poll até done/failed/cancelled
       while (true) {
         await new Promise((resolve) => setTimeout(resolve, 12000));
         try {
@@ -680,6 +683,10 @@ export default function LongoDetailPage() {
           if (sd.status === "failed") {
             throw new Error(sd.error || "Render falhou");
           }
+          if (sd.status === "cancelled") {
+            setRenderErr("Render cancelado.");
+            break;
+          }
         } catch (e) {
           setRenderProgress({
             status: "polling-error",
@@ -691,6 +698,23 @@ export default function LongoDetailPage() {
       setRenderErr(e instanceof Error ? e.message : String(e));
     } finally {
       setRendering(false);
+      setCurrentJobId(null);
+    }
+  };
+
+  const cancelRender = async () => {
+    if (!currentJobId) return;
+    if (!confirm("Cancelar render em curso? GitHub Actions vai parar (best-effort) e o estado fica 'cancelled'.")) return;
+    try {
+      await fetch("/api/admin/longos/render-cancel", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId: currentJobId }),
+      });
+      setRenderProgress({ status: "cancelled", progress: 0 });
+      setRenderErr("Render cancelado pelo user.");
+    } catch (e) {
+      setRenderErr(`Cancelar falhou: ${e instanceof Error ? e.message : String(e)}`);
     }
   };
 
@@ -2688,6 +2712,15 @@ export default function LongoDetailPage() {
                   ? "↻ Re-render completo"
                   : "🎬 Render long-form"}
             </button>
+            {rendering && currentJobId && (
+              <button
+                onClick={cancelRender}
+                className="rounded border border-escola-terracota bg-escola-terracota/10 px-3 py-2 text-xs font-semibold text-escola-terracota hover:bg-escola-terracota hover:text-escola-creme"
+                title="Cancela o render em curso. Marca status como 'cancelled' e tenta abortar o workflow GitHub Actions (best-effort)."
+              >
+                ✗ Cancelar
+              </button>
+            )}
             <span className="text-[10px] text-escola-creme-50">
               {(project.prompts ?? []).filter((p) => p.clipUrl).length}/
               {(project.prompts ?? []).length} cenas com clip
