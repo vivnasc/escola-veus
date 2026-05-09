@@ -25,6 +25,14 @@ type PreviewAG = {
   schedule: Record<"instagram" | "tiktok" | "youtube", Schedule>;
 };
 
+type RenderJob = {
+  jobId: string | null;
+  videoUrl: string | null;
+  thumbnailUrl: string | null;
+  status: "planned" | "queued" | "rendering" | "done" | "failed";
+  errorMessage?: string;
+};
+
 type WeeklyPost = {
   id: string;
   brandSlug: BrandSlug;
@@ -33,6 +41,8 @@ type WeeklyPost = {
   label?: string; temas?: string[];
   verses: string[];
   captions: { instagram: string; tiktok: string; youtube: { title: string; description: string } };
+  renderJobs?: { clip?: RenderJob; full?: RenderJob };
+  // Legacy / retrocompat — pode estar populado mesmo com renderJobs preenchido (=clip).
   videoUrl: string | null;
   thumbnailUrl: string | null;
   jobId: string | null;
@@ -373,25 +383,71 @@ function PostStatusPill({ status }: { status: WeeklyPost["status"] }) {
 function PostCard({ post }: { post: WeeklyPost }) {
   const title = post.trackTitle || post.label || post.id;
   const subtitle = post.albumTitle || (post.temas?.join(" + ")) || "";
+  const [activeMode, setActiveMode] = useState<"clip" | "full">("clip");
+  const [showCaptions, setShowCaptions] = useState(false);
+
+  const clipJob: RenderJob = post.renderJobs?.clip || {
+    jobId: post.jobId,
+    videoUrl: post.videoUrl,
+    thumbnailUrl: post.thumbnailUrl,
+    status: post.status,
+    errorMessage: post.errorMessage,
+  };
+  const fullJob: RenderJob | undefined = post.renderJobs?.full;
+  const active = activeMode === "full" ? fullJob : clipJob;
+  const aggregateStatus: RenderJob["status"] =
+    [clipJob, fullJob].some((j) => j?.status === "failed") ? "failed"
+    : [clipJob, fullJob].every((j) => !j || j.status === "done") ? "done"
+    : [clipJob, fullJob].some((j) => j?.status === "rendering") ? "rendering"
+    : [clipJob, fullJob].some((j) => j?.status === "queued") ? "queued"
+    : "planned";
+
   return (
     <div className="overflow-hidden rounded border border-escola-border bg-escola-bg-card">
+      {/* Tabs clip/full */}
+      <div className="flex border-b border-escola-border text-[10px]">
+        {(["clip", "full"] as const).map((m) => {
+          const job = m === "full" ? fullJob : clipJob;
+          const exists = !!job;
+          return (
+            <button
+              key={m}
+              onClick={() => exists && setActiveMode(m)}
+              disabled={!exists}
+              className={`flex-1 px-2 py-1.5 transition-colors ${
+                activeMode === m
+                  ? "border-b-2 border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                  : exists
+                  ? "text-escola-creme-50 hover:text-escola-creme"
+                  : "text-escola-creme-50/30"
+              }`}
+            >
+              {m === "clip" ? "Clip 30s" : "Full"}
+              {job?.status === "done" && " ✓"}
+              {job?.status === "rendering" && " ⏱"}
+              {job?.status === "failed" && " ✗"}
+            </button>
+          );
+        })}
+      </div>
+
       <div className="aspect-[9/16] bg-black">
-        {post.videoUrl ? (
+        {active?.videoUrl ? (
           <video
-            src={post.videoUrl}
-            poster={post.thumbnailUrl || undefined}
+            src={active.videoUrl}
+            poster={active.thumbnailUrl || undefined}
             controls
             preload="metadata"
             className="h-full w-full"
           />
-        ) : post.thumbnailUrl ? (
+        ) : active?.thumbnailUrl ? (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={post.thumbnailUrl} alt={title} className="h-full w-full object-cover opacity-60" />
+          <img src={active.thumbnailUrl} alt={title} className="h-full w-full object-cover opacity-60" />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-[10px] text-escola-creme-50">
-            {post.status === "rendering" ? "a renderizar…" :
-             post.status === "queued" ? "em fila" :
-             post.status === "failed" ? "falhou" : "sem vídeo"}
+            {active?.status === "rendering" ? "a renderizar…" :
+             active?.status === "queued" ? "em fila" :
+             active?.status === "failed" ? "falhou" : "sem vídeo"}
           </div>
         )}
       </div>
@@ -405,15 +461,15 @@ function PostCard({ post }: { post: WeeklyPost }) {
               <div className="truncate text-[10px] text-escola-creme-50">{subtitle}</div>
             )}
           </div>
-          <PostStatusPill status={post.status} />
+          <PostStatusPill status={aggregateStatus} />
         </div>
-        {post.errorMessage && (
-          <div className="mt-1 text-[10px] text-red-300">✗ {post.errorMessage}</div>
+        {active?.errorMessage && (
+          <div className="mt-1 text-[10px] text-red-300">✗ {active.errorMessage}</div>
         )}
-        {post.videoUrl && (
+        {active?.videoUrl && (
           <div className="mt-2 flex flex-wrap gap-2 text-[10px]">
             <a
-              href={post.videoUrl}
+              href={active.videoUrl}
               target="_blank"
               rel="noreferrer"
               className="text-escola-creme-50 hover:text-escola-dourado"
@@ -421,7 +477,7 @@ function PostCard({ post }: { post: WeeklyPost }) {
               ↗ abrir
             </a>
             <a
-              href={post.videoUrl}
+              href={active.videoUrl}
               download
               className="text-escola-creme-50 hover:text-escola-dourado"
             >
@@ -429,7 +485,44 @@ function PostCard({ post }: { post: WeeklyPost }) {
             </a>
           </div>
         )}
+        <button
+          onClick={() => setShowCaptions((v) => !v)}
+          className="mt-2 w-full rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+        >
+          {showCaptions ? "▴ esconder legendas" : "▾ ver legendas"}
+        </button>
+        {showCaptions && (
+          <div className="mt-2 space-y-2 text-[10px]">
+            <CaptionBlock label="Instagram" text={post.captions.instagram} />
+            <CaptionBlock label="TikTok" text={post.captions.tiktok} />
+            <CaptionBlock
+              label="YouTube"
+              text={`${post.captions.youtube.title}\n\n${post.captions.youtube.description}`}
+            />
+          </div>
+        )}
       </div>
     </div>
+  );
+}
+
+function CaptionBlock({ label, text }: { label: string; text: string }) {
+  return (
+    <details className="rounded border border-escola-border bg-black/30 p-2">
+      <summary className="cursor-pointer text-escola-dourado">{label}</summary>
+      <pre className="mt-1 max-h-40 overflow-auto whitespace-pre-wrap text-[10px] text-escola-creme">
+        {text}
+      </pre>
+      <button
+        onClick={async () => {
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch {}
+        }}
+        className="mt-1 text-[9px] text-escola-creme-50 hover:text-escola-dourado"
+      >
+        ⧉ copiar
+      </button>
+    </details>
   );
 }
