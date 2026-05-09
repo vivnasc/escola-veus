@@ -24,56 +24,71 @@ const BUCKET = "course-assets";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
 function planToCsvPosts(plan: WeeklyPlan): CsvPost[] {
-  return plan.posts.map((p) => ({
-    id: p.id,
-    videoUrl: p.videoUrl,
-    thumbnailUrl: p.thumbnailUrl,
-    trackTitle: p.trackTitle || p.label,
-    captions: p.captions,
-    schedule: p.schedule,
-  }));
+  return plan.posts.map((p) => {
+    const clipUrl = p.renderJobs?.clip?.videoUrl ?? p.videoUrl ?? null;
+    const fullUrl = p.renderJobs?.full?.videoUrl ?? null;
+    const thumb = p.renderJobs?.clip?.thumbnailUrl ?? p.thumbnailUrl ?? null;
+    return {
+      id: p.id,
+      videoUrl: clipUrl,
+      fullVideoUrl: fullUrl,
+      thumbnailUrl: thumb,
+      trackTitle: p.trackTitle || p.label,
+      captions: p.captions,
+      schedule: p.schedule,
+    };
+  });
 }
 
-function buildReadme(plan: WeeklyPlan, missing: string[]): string {
+function buildReadme(plan: WeeklyPlan, missingClip: string[], missingFull: string[]): string {
   const dn = plan.brand === "loranne" ? "Loranne" : "Ancient Ground";
+  const withFull = plan.posts.filter((p) => p.renderJobs?.full?.videoUrl).length;
   const lines = [
     `${dn} — Semana ${plan.week} de ${plan.year}`,
     "═".repeat(60),
     "",
     `Posts planeados: ${plan.posts.length}`,
-    `Plataformas por post: Instagram Reel · TikTok · YouTube Shorts`,
-    `Linhas no CSV: ${plan.posts.length * 3}`,
+    `Versão clip (30s social): IG Reel · TikTok · YT Shorts`,
+    `Versão full (3-5min): YT canal ${dn}`,
+    `Linhas no CSV: ${plan.posts.length * 3} (social) + ${withFull} (YT canal) = ${plan.posts.length * 3 + withFull}`,
     "",
     "Como importar no Metricool:",
     `  1. Abre Metricool > workspace ${dn}`,
     "  2. Planning > Calendar > Import CSV",
-    "  3. Drag & drop do metricool.csv",
-    "  4. Verifica os horários e clica Import",
+    "  3. Drag & drop do metricool.csv (até 50 linhas; divide se preciso)",
+    "  4. Verifica horários e clica Import",
     "",
   ];
-  if (missing.length > 0) {
-    lines.push("⚠ POSTS SEM VÍDEO:");
-    for (const id of missing) lines.push(`  · ${id}`);
+  if (missingClip.length > 0) {
+    lines.push("⚠ POSTS SEM CLIP:");
+    for (const id of missingClip) lines.push(`  · ${id}`);
     lines.push("");
-    lines.push("Estes entram no CSV com Picture Url 1 vazio.");
+  }
+  if (missingFull.length > 0) {
+    lines.push("ℹ POSTS SEM FULL (não vão para YT canal):");
+    for (const id of missingFull) lines.push(`  · ${id}`);
     lines.push("");
   }
   lines.push(`Gerado em ${new Date().toISOString()}`);
   return lines.join("\n");
 }
 
-async function packBrand(plan: WeeklyPlan): Promise<{ url: string; zipName: string; sizeBytes: number; missing: string[] }> {
+async function packBrand(plan: WeeklyPlan): Promise<{
+  url: string; zipName: string; sizeBytes: number;
+  missing: string[]; missingFull: string[];
+}> {
   const admin = createSupabaseAdminClient();
   if (!admin) throw new Error("SUPABASE_SERVICE_ROLE_KEY não configurada.");
 
   const csvPosts = planToCsvPosts(plan);
   const csv = buildCsv(csvPosts);
-  const missing = plan.posts.filter((p) => !p.videoUrl).map((p) => p.id);
+  const missingClip = csvPosts.filter((p) => !p.videoUrl).map((p) => p.id);
+  const missingFull = csvPosts.filter((p) => !p.fullVideoUrl).map((p) => p.id);
 
   const zip = new JSZip();
   zip.file("metricool.csv", csv);
   zip.file("posts.json", JSON.stringify(plan, null, 2));
-  zip.file("README.txt", buildReadme(plan, missing));
+  zip.file("README.txt", buildReadme(plan, missingClip, missingFull));
 
   const buf = await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" });
   const path = zipStoragePath(plan.year, plan.week, plan.brand);
@@ -85,7 +100,7 @@ async function packBrand(plan: WeeklyPlan): Promise<{ url: string; zipName: stri
   const url = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}?t=${Date.now()}`;
   const w = String(plan.week).padStart(2, "0");
   const zipName = `${plan.brand}-${plan.year}-W${w}.zip`;
-  return { url, zipName, sizeBytes: buf.length, missing };
+  return { url, zipName, sizeBytes: buf.length, missing: missingClip, missingFull };
 }
 
 export async function POST(req: NextRequest) {
@@ -99,7 +114,10 @@ export async function POST(req: NextRequest) {
     const brands: BrandSlug[] = body.brands && body.brands.length > 0
       ? body.brands : ["loranne", "ancient-ground"];
 
-    const result: Record<string, { url?: string; zipName?: string; sizeBytes?: number; missing?: string[]; erro?: string }> = {};
+    const result: Record<string, {
+      url?: string; zipName?: string; sizeBytes?: number;
+      missing?: string[]; missingFull?: string[]; erro?: string;
+    }> = {};
     for (const brand of brands) {
       const plan = await loadPlan(year, week, brand);
       if (!plan) { result[brand] = { erro: "plan inexistente" }; continue; }

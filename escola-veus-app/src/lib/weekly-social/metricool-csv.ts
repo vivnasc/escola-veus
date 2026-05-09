@@ -47,10 +47,16 @@ export const CSV_HEADER = [
 ] as const;
 
 type Platform = "instagram" | "tiktok" | "youtube";
+type CsvLineKind =
+  | { type: "social"; platform: Platform }            // clip → IG Reel / TikTok / YT Shorts
+  | { type: "youtube-canal" };                         // full → YT canal upload (vídeo longo)
 
 export type CsvPost = {
   id: string;
+  /** Clip URL — usado nas linhas social (IG/TT/YT Shorts). */
   videoUrl: string | null;
+  /** Full URL — usado na linha YT canal. Se null, salta a linha YT canal. */
+  fullVideoUrl?: string | null;
   thumbnailUrl: string | null;
   trackTitle?: string;
   captions: PlatformCaptions;
@@ -66,20 +72,22 @@ export function csvEscape(v: string | number | null | undefined): string {
   return s;
 }
 
-export function buildRow(post: CsvPost, platform: Platform): string {
+export function buildRow(post: CsvPost, kind: CsvLineKind): string {
   const row = new Array<string>(CSV_HEADER.length).fill("");
   const col = (name: typeof CSV_HEADER[number], value: string) => {
     const idx = CSV_HEADER.indexOf(name);
     if (idx >= 0) row[idx] = value;
   };
 
+  const isYoutubeCanal = kind.type === "youtube-canal";
+  const platform: Platform = isYoutubeCanal ? "youtube" : kind.platform;
   const slot = post.schedule[platform];
   col("Date", slot.date);
   col("Time", slot.time);
   col("Draft", "FALSE");
 
-  col("Instagram", platform === "instagram" ? "TRUE" : "FALSE");
-  col("TikTok", platform === "tiktok" ? "TRUE" : "FALSE");
+  col("Instagram", platform === "instagram" && !isYoutubeCanal ? "TRUE" : "FALSE");
+  col("TikTok", platform === "tiktok" && !isYoutubeCanal ? "TRUE" : "FALSE");
   col("Youtube", platform === "youtube" ? "TRUE" : "FALSE");
   col("Facebook", "FALSE");
   col("Twitter/X", "FALSE");
@@ -89,23 +97,31 @@ export function buildRow(post: CsvPost, platform: Platform): string {
   col("Threads", "FALSE");
   col("Bluesky", "FALSE");
 
-  col("Picture Url 1", post.videoUrl || "");
+  // YT canal usa o full; resto usa clip.
+  const url = isYoutubeCanal ? (post.fullVideoUrl || "") : (post.videoUrl || "");
+  col("Picture Url 1", url);
   if (post.thumbnailUrl) col("Video Thumbnail Url", post.thumbnailUrl);
 
-  if (platform === "instagram") {
+  if (kind.type === "social" && kind.platform === "instagram") {
     col("Text", post.captions.instagram);
     col("Instagram Post Type", "REEL");
     col("Instagram Show Reel On Feed", "TRUE");
-  } else if (platform === "tiktok") {
+  } else if (kind.type === "social" && kind.platform === "tiktok") {
     col("Text", post.captions.tiktok);
     col("TikTok Title", post.trackTitle || "");
     col("TikTok Post Privacy", "PUBLIC_TO_EVERYONE");
     col("TikTok Auto Add Music", "FALSE");
     col("TikTok is AI generated content", "FALSE");
-  } else if (platform === "youtube") {
+  } else if (kind.type === "social" && kind.platform === "youtube") {
     col("Text", post.captions.youtube.description);
     col("Youtube Video Title", post.captions.youtube.title);
     col("Youtube Video Type", "SHORTS");
+    col("Youtube Video Privacy", "PUBLIC");
+    col("Youtube video for kids", "FALSE");
+  } else if (isYoutubeCanal) {
+    col("Text", post.captions.youtube.description);
+    col("Youtube Video Title", post.captions.youtube.title);
+    col("Youtube Video Type", "VIDEO");
     col("Youtube Video Privacy", "PUBLIC");
     col("Youtube video for kids", "FALSE");
   }
@@ -116,8 +132,13 @@ export function buildRow(post: CsvPost, platform: Platform): string {
 export function buildCsv(posts: CsvPost[]): string {
   const lines = [CSV_HEADER.map(csvEscape).join(",")];
   for (const post of posts) {
+    // 3 linhas social com o clip
     for (const platform of ["instagram", "tiktok", "youtube"] as const) {
-      lines.push(buildRow(post, platform));
+      lines.push(buildRow(post, { type: "social", platform }));
+    }
+    // 1 linha YT canal com o full (se existir)
+    if (post.fullVideoUrl) {
+      lines.push(buildRow(post, { type: "youtube-canal" }));
     }
   }
   return lines.join("\r\n") + "\r\n";

@@ -15,8 +15,14 @@ export type RenderRemotionInput = {
   motionVariant: "A" | "B" | "C" | "D";
   /** Cor de acento (Loranne) — varia por álbum. */
   accent?: string;
-  /** 2 versos para overlay. */
+  /** Modo: "clip" (30-60s social) ou "full" (3-5 min YT canal). */
+  mode?: "clip" | "full";
+  /** 2 versos para overlay (modo estático — AG e fallback Loranne). */
   verses: [string, string];
+  /** Letras inteiras divididas em stanzas (Loranne lyric video). */
+  syncedLyrics?: string[];
+  /** Activa modo lyric video — letras passam em sync. */
+  lyricsSync?: boolean;
   /** URL do MP3 da faixa. */
   audioUrl: string;
   /** Volume áudio (default 1). */
@@ -25,7 +31,7 @@ export type RenderRemotionInput = {
   trackLabel?: string;
   /** Signature (default por marca). */
   signature?: string;
-  /** Duração (default 30s). */
+  /** Duração (default: 30 clip / 240 full). */
   durationSec?: number;
 
   /** Identificadores opcionais (para slug/log). */
@@ -59,22 +65,28 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     throw new Error("SUPABASE_SERVICE_ROLE_KEY nao configurada.");
   }
 
+  const mode = input.mode ?? "clip";
+  const defaultDuration = mode === "full" ? 240 : 30;
+  const slugMode = mode === "full" ? "full" : "clip";
   const slug = sanitiseSlug(input.slug || input.title || `${input.brand}-${input.motionVariant}`);
-  const jobId = `short-${slug}-${Date.now()}`;
+  const jobId = `lyric-${slugMode}-${slug}-${Date.now()}`;
 
   const manifest = {
     jobId,
     title: input.title || "",
     slug,
+    mode,
     brand: input.brand,
     motionVariant: input.motionVariant,
     accent: input.accent || (input.brand === "loranne" ? "#D4A853" : "#FFD27F"),
+    lyricsSync: !!input.lyricsSync,
+    syncedLyrics: input.syncedLyrics || null,
     verses: input.verses,
     audioUrl: input.audioUrl,
     audioVolume: input.audioVolume ?? 1,
     trackLabel: input.trackLabel || "",
     signature: input.signature || (input.brand === "loranne" ? "◯ Loranne" : "Ancient Ground"),
-    durationSec: input.durationSec ?? 30,
+    durationSec: input.durationSec ?? defaultDuration,
     fps: 30,
     createdAt: new Date().toISOString(),
   };

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { type BrandSlug } from "@/data/weekly-social/brand-config";
 import { loadPlan, savePlan } from "@/lib/weekly-social/plan-storage";
 import { currentYear } from "@/lib/weekly-social/schedule";
-import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
+import type { WeeklyPlan, WeeklyPost, RenderMode } from "@/lib/weekly-social/types";
 import { runRenderRemotionSubmit } from "@/lib/shorts/render-remotion-core";
 
 export const dynamic = "force-dynamic";
@@ -13,9 +13,11 @@ export const maxDuration = 60;
  * POST /api/admin/weekly/dispatch
  * Body: { week, year?, brands?: BrandSlug[] }
  *
- * Para cada post sem jobId, dispatcha render-short-submit. Update do plan
- * com jobId+status="queued". Não bloqueia até render done — UI faz polling
- * via /status.
+ * Para cada post sem renderJobs.{clip,full}.videoUrl, dispatcha render
+ * Remotion. 2 jobs por post: clip (30s social) + full (3-5 min YT canal).
+ *
+ * Loranne usa lyricsSync=true (letras passam em sync).
+ * AG usa lyricsSync=false (2 versos estáticos overlay).
  */
 
 type Body = {
@@ -24,7 +26,12 @@ type Body = {
   brands?: BrandSlug[];
 };
 
-async function dispatchOne(post: WeeklyPost): Promise<{ jobId: string }> {
+const MODE_DURATIONS: Record<RenderMode, number> = {
+  clip: 30,
+  full: 240,
+};
+
+async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<{ jobId: string }> {
   const title = post.brandSlug === "loranne"
     ? `${post.trackTitle} · ${post.albumTitle}`
     : (post.label || post.id);
@@ -34,45 +41,72 @@ async function dispatchOne(post: WeeklyPost): Promise<{ jobId: string }> {
   ];
   return runRenderRemotionSubmit({
     title,
-    slug: post.id,
+    slug: `${post.id}-${mode}`,
+    mode,
     brand: post.brandSlug,
     motionVariant: post.motionVariant,
     accent: post.accent,
     verses,
+    syncedLyrics: post.brandSlug === "loranne" ? post.syncedLyrics : undefined,
+    lyricsSync: post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0,
     audioUrl: post.musicUrl,
     audioVolume: 1,
     trackLabel: post.trackLabel,
-    durationSec: 30,
+    durationSec: MODE_DURATIONS[mode],
   });
 }
 
 async function dispatchBrand(plan: WeeklyPlan): Promise<{
-  dispatched: number; alreadyDone: number; errors: { postId: string; message: string }[];
+  dispatched: number;
+  alreadyDone: number;
+  errors: { postId: string; mode: RenderMode; message: string }[];
 }> {
-  const errors: { postId: string; message: string }[] = [];
+  const errors: { postId: string; mode: RenderMode; message: string }[] = [];
   let dispatched = 0;
   let alreadyDone = 0;
 
   for (const post of plan.posts) {
-    if (post.videoUrl && post.status === "done") {
-      alreadyDone++;
-      continue;
+    if (!post.renderJobs) post.renderJobs = {};
+    for (const mode of ["clip", "full"] as RenderMode[]) {
+      const job = post.renderJobs[mode];
+      if (job?.videoUrl && job.status === "done") {
+        alreadyDone++;
+        continue;
+      }
+      if (job?.jobId && job.status !== "failed") {
+        // já dispatchado e ainda em curso — não re-dispatcha
+        continue;
+      }
+      try {
+        const { jobId } = await dispatchOnePostMode(post, mode);
+        post.renderJobs[mode] = {
+          jobId,
+          videoUrl: null,
+          thumbnailUrl: null,
+          status: "queued",
+        };
+        dispatched++;
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        post.renderJobs[mode] = {
+          jobId: null,
+          videoUrl: null,
+          thumbnailUrl: null,
+          status: "failed",
+          errorMessage: msg,
+        };
+        errors.push({ postId: post.id, mode, message: msg });
+      }
     }
-    if (post.jobId && post.status !== "failed") {
-      // já dispatchado e ainda em curso — não re-dispatcha
-      continue;
-    }
-    try {
-      const { jobId } = await dispatchOne(post);
-      post.jobId = jobId;
-      post.status = "queued";
-      post.errorMessage = undefined;
-      dispatched++;
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      post.status = "failed";
-      post.errorMessage = msg;
-      errors.push({ postId: post.id, message: msg });
+
+    // Mantém retrocompat — videoUrl/jobId/status raiz reflectem o clip.
+    const clipJob = post.renderJobs.clip;
+    if (clipJob) {
+      post.videoUrl = clipJob.videoUrl;
+      post.thumbnailUrl = clipJob.thumbnailUrl;
+      post.jobId = clipJob.jobId;
+      post.status = clipJob.status;
+      post.errorMessage = clipJob.errorMessage;
     }
   }
 

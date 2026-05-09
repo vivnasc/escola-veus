@@ -15,6 +15,7 @@ import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
+import { getLoranneStanzas } from "@/lib/shorts/lyrics-stanzas";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120; // 7 + 3 chamadas Claude — pode demorar 60-90s
@@ -147,6 +148,8 @@ export async function POST(req: NextRequest) {
           const accent = pickLoranneAccent(entry.albumSlug);
           const trackLabel = `"${trackTitle}" · ${albumTitle}`;
 
+          const stanzas = getLoranneStanzas(entry.albumSlug, actualTrackNumber);
+
           posts.push({
             id: `loranne-${entry.albumSlug}-f${actualTrackNumber}-w${week}-${day}`,
             brandSlug: "loranne",
@@ -156,11 +159,13 @@ export async function POST(req: NextRequest) {
             trackTitle,
             albumTitle,
             verses: (suggest.verses || []).slice(0, 2),
+            syncedLyrics: stanzas,
             musicUrl,
             motionVariant,
             accent,
             trackLabel,
             captions,
+            renderJobs: {},
             schedule: Object.fromEntries(
               ALL_PLATFORMS.map((p) => [p, scheduleFor(year, week, day, brand.hoursByPlatform[p])]),
             ) as WeeklyPost["schedule"],
@@ -232,6 +237,7 @@ export async function POST(req: NextRequest) {
             trackNumber: actualAgTrack,
             temas: [...entry.temas],
             verses: (suggest.versos || []).slice(0, 2),
+            renderJobs: {},
             musicUrl,
             motionVariant,
             trackLabel,

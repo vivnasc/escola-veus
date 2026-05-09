@@ -13,6 +13,16 @@ export type WeeklyPostStatus =
   | "done"        // mp4 disponível em videoUrl
   | "failed";
 
+export type RenderMode = "clip" | "full";
+
+export type RenderJob = {
+  jobId: string | null;
+  videoUrl: string | null;
+  thumbnailUrl: string | null;
+  status: WeeklyPostStatus;
+  errorMessage?: string;
+};
+
 export type WeeklyPost = {
   id: string;
   brandSlug: BrandSlug;
@@ -27,21 +37,26 @@ export type WeeklyPost = {
   temas?: string[];
   // Comum
   verses: string[];
+  /** Letras inteiras divididas em stanzas para lyric video sync (Loranne). */
+  syncedLyrics?: string[];
   musicUrl: string;
-  /** Variante de motion Remotion (A/B/C/D) — determinístico por (album, faixa)/(temas). */
+  /** Variante de motion Remotion (A/B/C/D). */
   motionVariant: "A" | "B" | "C" | "D";
-  /** Cor de acento (Loranne — varia por álbum). */
   accent?: string;
-  /** Label da track no signature (Loranne: "Faixa · Álbum"; AG: label triplete). */
   trackLabel?: string;
-  /** @deprecated — pipeline antigo (FFmpeg). Não usado pelo Remotion render. */
+  /** Pipeline antigo — não usado pelo Remotion. */
   clipUrls?: string[];
   captions: PlatformCaptions;
   schedule: Record<Platform, ScheduleSlot>;
-  videoUrl: string | null;
-  thumbnailUrl: string | null;
-  jobId: string | null;
-  status: WeeklyPostStatus;
+
+  /** 2 modes — clip (30s social) e full (3-5min YT canal). */
+  renderJobs: Partial<Record<RenderMode, RenderJob>>;
+
+  /** @deprecated — antigos campos para retrocompat. videoUrl=clip videoUrl. */
+  videoUrl?: string | null;
+  thumbnailUrl?: string | null;
+  jobId?: string | null;
+  status?: WeeklyPostStatus;
   errorMessage?: string;
 };
 
