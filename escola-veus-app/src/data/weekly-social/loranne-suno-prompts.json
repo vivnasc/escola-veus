@@ -58,5 +58,65 @@
     "8": "Style: marrabenta with house pulse · warm vocal that opens on chorus · marrabenta guitar pick",
     "9": "Style: marrabenta gospel anthem · powerful chest vocal that never shouts · marrabenta guitar",
     "10": "Style: ambient gospel closing · intimate whisper close-mic · solo felt-piano + warm Hammond p"
+  },
+  "incenso-de-pe": {
+    "1": "Style: gospel build mid-tempo · warm vocal entering at bar 2 (no long instrumental intro) · g",
+    "2": "Style: gospel house · warm vocal entering at bar 2 (no long instrumental intro) · driving fou",
+    "3": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "4": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "5": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "6": "Style: gospel ambient · intimate whisper close-mic · vocal entering at bar 2 · felt-piano + w",
+    "7": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "8": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "9": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "10": "Style: gospel intimate · raw close-mic vocal entering at bar 2 · gospel piano + soft hand-cla"
+  },
+  "incenso-hoje-nao": {
+    "1": "Style: gospel build mid-tempo · warm vocal entering at bar 2 (no long instrumental intro) · g",
+    "2": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "3": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "4": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "5": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "6": "Style: gospel ambient · intimate whisper close-mic · vocal entering at bar 2 · felt-piano + w",
+    "7": "Style: gospel intimate · raw close-mic vocal entering at bar 2 · gospel piano + soft hand-cla",
+    "8": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick (slightly",
+    "9": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "10": "Style: gospel intimate · raw close-mic vocal entering at bar 2 · gospel piano + soft hand-cla"
+  },
+  "incenso-ar": {
+    "1": "Style: gospel ambient · intimate whisper close-mic · vocal entering at bar 2 (no long instrum",
+    "2": "Style: gospel ambient · intimate whisper close-mic · vocal entering at bar 2 · felt-piano + w",
+    "3": "Style: gospel build mid-tempo · warm vocal entering at bar 2 · gospel piano + warm Hammond or",
+    "4": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick (softer,",
+    "5": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts (thi",
+    "6": "Style: gospel intimate · raw close-mic vocal entering at bar 2 · gospel piano + soft hand-cla",
+    "7": "Style: gospel intimate · raw close-mic vocal entering at bar 2 · gospel piano + soft hand-cla",
+    "8": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "9": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "10": "Style: gospel ambient closing · intimate whisper close-mic · vocal entering at bar 2 · solo f"
+  },
+  "incenso-mexe": {
+    "1": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "2": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "3": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick (mimics w",
+    "4": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "5": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "6": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick (walking",
+    "7": "Style: gospel intimate · raw close-mic vocal entering at bar 2 · gospel piano + soft hand-cla",
+    "8": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "9": "Style: contemporary gospel anthem with strong West African colour · warm chest vocal entering",
+    "10": "Style: gospel house closing · warm vocal entering at bar 2 · driving four-on-the-floor kick ("
+  },
+  "incenso-volta-a-mim": {
+    "1": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts (thi",
+    "2": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "3": "Style: gospel intimate · raw close-mic vocal entering at bar 2 · gospel piano + soft hand-cla",
+    "4": "Style: gospel ambient · intimate whisper close-mic · vocal entering at bar 2 · felt-piano + w",
+    "5": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "6": "Style: gospel house · warm vocal entering at bar 2 · driving four-on-the-floor kick · warm si",
+    "7": "Style: gospel intimate · raw close-mic vocal entering at bar 2 · gospel piano + soft hand-cla",
+    "8": "Style: gospel ambient · intimate whisper close-mic · vocal entering at bar 2 · felt-piano + w",
+    "9": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa",
+    "10": "Style: contemporary gospel anthem · warm chest vocal entering at bar 2 that never shouts · wa"
   }
 }

@@ -155,6 +155,12 @@ export const LORANNE_AVAILABLE_ALBUMS: readonly string[] = Object.freeze([
   "incenso-milagre",
   "incenso-amen",
   "incenso-aleluia",
+  // +5 elevadora (segunda leva Novos8may, 9 Mai 2026)
+  "incenso-de-pe",
+  "incenso-hoje-nao",
+  "incenso-ar",
+  "incenso-mexe",
+  "incenso-volta-a-mim",
   // REMOVIDOS por não terem MP3 em audios/albums/<slug>/ no Supabase:
   //   incenso-salto-bonito
   //   incenso-maos-abertas

@@ -1026,5 +1026,595 @@
       "flavor": "gospel-africano",
       "lang": "EN"
     }
+  },
+  "incenso-acende": {
+    "1": {
+      "title": "Pequena Chama",
+      "energy": "whisper",
+      "lang": "PT"
+    },
+    "2": {
+      "title": "Coming Back",
+      "energy": "raw",
+      "lang": "EN"
+    },
+    "3": {
+      "title": "Movimento",
+      "energy": "steady",
+      "lang": "PT"
+    },
+    "4": {
+      "title": "Cinco Passos",
+      "energy": "pulse",
+      "lang": "PT",
+      "flavor": "house"
+    },
+    "5": {
+      "title": "Volta",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "Aftercare",
+      "energy": "whisper",
+      "lang": "EN"
+    },
+    "7": {
+      "title": "Sair de Casa",
+      "energy": "raw",
+      "lang": "PT"
+    },
+    "8": {
+      "title": "Batimento",
+      "energy": "pulse",
+      "lang": "PT",
+      "flavor": "house"
+    },
+    "9": {
+      "title": "Cá Estou",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "What Stays",
+      "energy": "whisper",
+      "lang": "EN"
+    }
+  },
+  "incenso-coro": {
+    "1": {
+      "title": "Alguém Está Acordada",
+      "energy": "whisper",
+      "lang": "PT"
+    },
+    "2": {
+      "title": "You Are Not the First",
+      "energy": "raw",
+      "lang": "EN"
+    },
+    "3": {
+      "title": "A Casa de Outra",
+      "energy": "steady",
+      "lang": "PT"
+    },
+    "4": {
+      "title": "WhatsApp at 4 a.m.",
+      "energy": "raw",
+      "lang": "EN"
+    },
+    "5": {
+      "title": "Não Sozinha",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "Held",
+      "energy": "whisper",
+      "lang": "EN"
+    },
+    "7": {
+      "title": "Tia",
+      "energy": "raw",
+      "lang": "PT"
+    },
+    "8": {
+      "title": "Sisters Without Names",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "house"
+    },
+    "9": {
+      "title": "Eu Sou Porque Tu És",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "What the Coro Leaves",
+      "energy": "whisper",
+      "lang": "EN"
+    }
+  },
+  "incenso-milagre": {
+    "1": {
+      "title": "Já Não Pedia",
+      "energy": "whisper",
+      "lang": "PT"
+    },
+    "2": {
+      "title": "The Coffee Was Warm",
+      "energy": "raw",
+      "lang": "EN"
+    },
+    "3": {
+      "title": "A Pessoa Certa no Autocarro",
+      "energy": "steady",
+      "lang": "PT"
+    },
+    "4": {
+      "title": "The Job I Didn't Apply For",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "house"
+    },
+    "5": {
+      "title": "Misericórdia",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "Quiet Mercy",
+      "energy": "whisper",
+      "lang": "EN"
+    },
+    "7": {
+      "title": "Vizinho",
+      "energy": "raw",
+      "lang": "PT"
+    },
+    "8": {
+      "title": "When the Light Came Back",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "house"
+    },
+    "9": {
+      "title": "Sem Eu Pedir",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "What I Didn't Have to Earn",
+      "energy": "whisper",
+      "lang": "EN"
+    }
+  },
+  "incenso-amen": {
+    "1": {
+      "title": "Empurrar a Água",
+      "energy": "whisper",
+      "lang": "PT"
+    },
+    "2": {
+      "title": "Letting Go of the Rope",
+      "energy": "raw",
+      "lang": "EN"
+    },
+    "3": {
+      "title": "A Maré Sobe",
+      "energy": "steady",
+      "lang": "PT"
+    },
+    "4": {
+      "title": "The Diagnosis Is True",
+      "energy": "raw",
+      "lang": "EN"
+    },
+    "5": {
+      "title": "Amen",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "The Yes That Doesn't Hurt",
+      "energy": "whisper",
+      "lang": "EN"
+    },
+    "7": {
+      "title": "Pousar",
+      "energy": "raw",
+      "lang": "PT"
+    },
+    "8": {
+      "title": "Soft Power",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "house"
+    },
+    "9": {
+      "title": "Sim",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "What Surrender Tastes Like",
+      "energy": "whisper",
+      "lang": "EN"
+    }
+  },
+  "incenso-aleluia": {
+    "1": {
+      "title": "Riso Antigo",
+      "energy": "whisper",
+      "lang": "PT"
+    },
+    "2": {
+      "title": "The First Smile",
+      "energy": "raw",
+      "lang": "EN"
+    },
+    "3": {
+      "title": "A Boca Lembrou-se",
+      "energy": "steady",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "4": {
+      "title": "Dancing in the Kitchen",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "house"
+    },
+    "5": {
+      "title": "Festa Pequena",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "marrabenta"
+    },
+    "6": {
+      "title": "Joy Without Reason",
+      "energy": "whisper",
+      "lang": "EN"
+    },
+    "7": {
+      "title": "Cantar Alto",
+      "energy": "raw",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "8": {
+      "title": "Suor é Oração",
+      "energy": "pulse",
+      "lang": "PT",
+      "flavor": "marrabenta"
+    },
+    "9": {
+      "title": "Aleluia",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "marrabenta"
+    },
+    "10": {
+      "title": "What Joy Leaves",
+      "energy": "whisper",
+      "lang": "EN"
+    }
+  },
+  "incenso-de-pe": {
+    "1": {
+      "title": "Pés no Chão",
+      "energy": "steady",
+      "lang": "PT",
+      "flavor": "gospel-build"
+    },
+    "2": {
+      "title": "This Is the Morning",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "3": {
+      "title": "Abro a Janela",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "4": {
+      "title": "Bebo Água",
+      "energy": "pulse",
+      "lang": "PT",
+      "flavor": "gospel-house"
+    },
+    "5": {
+      "title": "Aqui Vamos",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "Soft Start",
+      "energy": "whisper",
+      "lang": "EN",
+      "flavor": "gospel-ambient"
+    },
+    "7": {
+      "title": "Vou Indo",
+      "energy": "pulse",
+      "lang": "PT",
+      "flavor": "gospel-house"
+    },
+    "8": {
+      "title": "The Body Already Said Yes",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "9": {
+      "title": "De Pé",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "Hoje Eu Fico",
+      "energy": "raw",
+      "lang": "PT",
+      "flavor": "gospel-intimate"
+    }
+  },
+  "incenso-hoje-nao": {
+    "1": {
+      "title": "Hoje Não",
+      "energy": "steady",
+      "lang": "PT",
+      "flavor": "gospel-build"
+    },
+    "2": {
+      "title": "Not Today, Not Like This",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "3": {
+      "title": "A Culpa Pode Esperar",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "4": {
+      "title": "I'm Not Picking Up",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "5": {
+      "title": "Limite Calmo",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "Quiet No",
+      "energy": "whisper",
+      "lang": "EN",
+      "flavor": "gospel-ambient"
+    },
+    "7": {
+      "title": "Não Hoje, Não Assim",
+      "energy": "raw",
+      "lang": "PT",
+      "flavor": "gospel-intimate"
+    },
+    "8": {
+      "title": "Soft Refusal",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "9": {
+      "title": "A Casa É Minha",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "What I'm Not Doing Today",
+      "energy": "raw",
+      "lang": "EN",
+      "flavor": "gospel-intimate"
+    }
+  },
+  "incenso-ar": {
+    "1": {
+      "title": "Lembrar de Respirar",
+      "energy": "whisper",
+      "lang": "PT",
+      "flavor": "gospel-ambient"
+    },
+    "2": {
+      "title": "Slow Breath",
+      "energy": "whisper",
+      "lang": "EN",
+      "flavor": "gospel-ambient"
+    },
+    "3": {
+      "title": "O Peito Alarga",
+      "energy": "steady",
+      "lang": "PT",
+      "flavor": "gospel-build"
+    },
+    "4": {
+      "title": "Inhale, Exhale",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "5": {
+      "title": "Espaço Para o Ar",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "One Long Breath",
+      "energy": "raw",
+      "lang": "EN",
+      "flavor": "gospel-intimate"
+    },
+    "7": {
+      "title": "Caber em Mim",
+      "energy": "raw",
+      "lang": "PT",
+      "flavor": "gospel-intimate"
+    },
+    "8": {
+      "title": "The Lungs Are Older Than the Worry",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "9": {
+      "title": "Ar de Volta",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "Soft Landing",
+      "energy": "whisper",
+      "lang": "EN",
+      "flavor": "gospel-ambient"
+    }
+  },
+  "incenso-mexe": {
+    "1": {
+      "title": "Mexe",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "2": {
+      "title": "Get Up With Me",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "3": {
+      "title": "Anda Comigo",
+      "energy": "pulse",
+      "lang": "PT",
+      "flavor": "gospel-house"
+    },
+    "4": {
+      "title": "Dance Without Asking",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "5": {
+      "title": "Suor Bom",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "Walk It Off",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "7": {
+      "title": "Levanta-te Devagar",
+      "energy": "raw",
+      "lang": "PT",
+      "flavor": "gospel-intimate"
+    },
+    "8": {
+      "title": "Move and the Mood Follows",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "9": {
+      "title": "A Ginga",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "After the Walk",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    }
+  },
+  "incenso-volta-a-mim": {
+    "1": {
+      "title": "Volta a Mim",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "2": {
+      "title": "Coming Home to Myself",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "3": {
+      "title": "A Mulher Debaixo",
+      "energy": "raw",
+      "lang": "PT",
+      "flavor": "gospel-intimate"
+    },
+    "4": {
+      "title": "The Smaller Self",
+      "energy": "whisper",
+      "lang": "EN",
+      "flavor": "gospel-ambient"
+    },
+    "5": {
+      "title": "Reaprendo",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "6": {
+      "title": "The Pleasure of Small Things",
+      "energy": "pulse",
+      "lang": "EN",
+      "flavor": "gospel-house"
+    },
+    "7": {
+      "title": "A Voz Que Tinha Antes",
+      "energy": "raw",
+      "lang": "PT",
+      "flavor": "gospel-intimate"
+    },
+    "8": {
+      "title": "Slow Yes",
+      "energy": "whisper",
+      "lang": "EN",
+      "flavor": "gospel-ambient"
+    },
+    "9": {
+      "title": "Volta Inteira",
+      "energy": "anthem",
+      "lang": "PT",
+      "flavor": "gospel"
+    },
+    "10": {
+      "title": "At Home in My Own Body",
+      "energy": "anthem",
+      "lang": "EN",
+      "flavor": "gospel"
+    }
   }
 }

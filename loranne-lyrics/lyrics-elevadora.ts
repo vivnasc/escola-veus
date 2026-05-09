@@ -4229,4 +4229,4470 @@ What joy leaves
 is a temperature
 what joy leaves
 the door unlocked`,
+  "incenso-de-pe/1": `[Vocal: ONE warm mezzo-contralto female voice, intimate but firm speaking quality on verses,
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, vocal entering on bar 2 — no long instrumental opening
+[Verse 1]
+Pés no chão
+A coisa mais pequena
+A coisa mais pequena que eu sei fazer
+Não é vontade, é gravidade
+Os pés desceram, o chão veio recebê-los
+E eu — eu fui atrás
+Não pensei muito
+Pensar muito é outro dia
+
+
+[Verse 2]
+Está frio o chão de manhã
+Mas isso é a prova de que existo
+Sinto o frio, logo estou aqui
+Sinto o frio, logo a manhã chegou
+Não preciso de ânimo
+Preciso de chão
+E o chão está cá
+Antes de eu ter chegado
+
+
+[Pre-Chorus]
+Não me peças o sorriso
+Não me peças o salto
+Pede-me só os pés
+E eu trago os pés
+
+
+[Chorus]
+Pés no chão
+Pés no chão
+O chão está cá
+Já é alguma coisa
+Pés no chão
+Pés no chão
+Hoje basta este gesto
+Hoje basta começar
+
+
+[Verse 3]
+Vou levantar-me a seguir
+Mas isso é a próxima parte
+Por agora os pés estão no chão
+E o chão não me empurrou
+O chão suportou-me
+O chão é antigo nisto
+O chão fez isto a milhões de mulheres
+Antes de eu cá chegar
+[Chorus: 3-voice harmonies enter, tambourine on the four]
+Pés no chão
+Pés no chão
+O chão está cá
+Já é alguma coisa
+Pés no chão
+Pés no chão
+Hoje basta este gesto
+Hoje basta começar
+
+
+[Bridge: vocal close, harmonies hum underneath, gospel piano carries — opens, does not resolv
+(European Portuguese, Portugal accent:)
+Se os pés estão no chão
+Já fizeste o trabalho da manhã
+O resto é o resto
+O resto vai acontecendo
+Mas os pés no chão
+Os pés no chão
+São o teu sim de hoje
+
+
+[Outro: vocal warm, piano fading]
+Pés no chão
+o chão está cá
+pés no chão
+já é alguma coisa`,
+  "incenso-de-pe/2": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality on verses, fuller on
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, kick entering on bar 2 with vocal — no long instr
+
+
+[Verse 1]
+This is the morning
+And I am in it
+This is the morning
+And it did not ask my opinion
+The light came in through the window
+The kettle started its work
+And I — I was here
+Without having to decide anything yet
+
+
+[Verse 2]
+This is the morning
+And I am dressing
+Not pretty, not for anyone
+Just dressing because the day is here
+The shirt is the shirt I have
+The shoes are the shoes I have
+Nothing about this is a performance
+This is the morning, and I am in it
+
+
+[Pre-Chorus]
+The morning came without my prayer
+The morning came without my consent
+The morning is not asking how I feel
+The morning is just here
+
+
+[Chorus]
+This is the morning
+And I am in it
+This is the morning
+And so are you
+Nothing required, nothing earned
+Just the simple fact of presence
+This is the morning
+And I am in it
+
+
+[Verse 3]
+This is the morning
+And I am drinking water
+This is the morning
+And I am tying my shoes
+The body is doing what the body does
+On Tuesdays and Wednesdays alike
+The body is older than my mood
+The body knows the way
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+This is the morning
+And I am in it
+This is the morning
+And so are you
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+If you are listening to this in your kitchen right now
+Or in your car, or with the light not yet on
+This is the morning
+And you are in it
+That is enough
+That is the whole work for now
+
+
+[Final Chorus: full harmony stack, peaks, never shouted]
+This is the morning
+And I am in it
+This is the morning
+And so are you
+
+
+[Outro: vocal soft, kick fades]
+This is the morning
+and I am in it
+this is the morning`,
+  "incenso-de-pe/3": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+Abro a janela
+A primeira coisa que faço de pé
+A janela tem o seu peso
+A trinco tem a sua canção
+E o ar — o ar entra de uma vez
+Como se estivesse à minha espera
+O ar não me devia nada
+E veio
+
+
+[Verse 2]
+Vejo a rua, vejo a árvore
+Vejo o vizinho que abriu a porta
+Vejo um cão que conheço bem
+Vejo o pão que vai a passar
+Não é vista bonita
+É só vista de manhã
+E é minha por dois minutos
+Antes de tudo começar
+
+
+[Pre-Chorus]
+A janela é uma decisão pequena
+Que tem efeito grande
+A janela diz à manhã
+Que estou cá
+
+
+[Chorus]
+Abro a janela
+E o ar entra
+Abro a janela
+E a manhã chega
+Não preciso de muito
+Preciso da janela aberta
+Hoje começo assim
+Hoje começo respirando
+
+
+[Verse 3]
+A janela traz o som
+Que a casa não tinha
+A janela traz a luz
+Que a casa não fazia
+A janela é a porta da manhã
+Antes da porta da manhã
+A janela é a minha primeira reza
+Sem palavras
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic]
+Abro a janela
+E o ar entra
+Abro a janela
+E a manhã chega
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Se ainda não abriste a tua
+Vai já abrir
+Não para mim, para ti
+A casa precisa do ar de fora
+A casa adoece se ficar fechada
+E tu também, e tu também
+Abre a tua janela hoje
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Abro a janela
+E o ar entra
+Abro a janela
+E a manhã chega
+
+
+[Outro: vocal warm, choir fading, strings linger]
+Abro a janela
+o ar entra
+abro a janela`,
+  "incenso-de-pe/4": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+Bebo água
+A primeira coisa que entra em mim
+Antes do café, antes da notícia
+Antes do que o dia me vai pedir
+A água não tem opinião sobre mim
+A água só me hidrata
+A água é a forma mais simples
+De cuidar de mim ao acordar
+
+
+[Verse 2]
+Lembrei-me anos a esquecer-me
+A esquecer-me do copo da manhã
+A esquecer-me da água do dia
+A esquecer-me de mim como sujeito
+Hoje encho o copo
+Hoje bebo até ao fim
+Hoje sou a primeira pessoa
+Que cuida de mim
+
+
+[Pre-Chorus]
+A água é gesto, não é ideia
+A água é prova, não é símbolo
+Quem bebe água de manhã
+Está a votar em si
+
+
+[Chorus]
+Bebo água
+Trato de mim
+Como trato de outro
+Bebo água
+Bebo água
+A reza mais antiga
+Que o corpo conhece
+Bebo água
+
+
+[Verse 3]
+Vou beber outro copo daqui a uma hora
+Vou beber outro à hora de almoço
+Vou beber outro antes do café da tarde
+Vou beber outro à noite
+A vida é uma sequência
+De copos de água
+E quem se lembra disto
+Está a tratar de si
+
+
+[Chorus]
+Bebo água
+Trato de mim
+Como trato de outro
+Bebo água
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+Se ouves isto agora
+Vai ao copo
+Vai à torneira, vai ao filtro
+Vai à garrafa que tens à mão
+Bebe um copo até ao fim
+Não a meias, até ao fim
+E vê o que se passa no peito
+
+
+[Final Chorus: full harmony stack, sidechained pads peak]
+Bebo água
+Trato de mim
+Como trato de outro
+Bebo água
+
+
+[Outro: vocal soft, kick fades]
+Bebo água
+trato de mim
+bebo água`,
+  "incenso-de-pe/5": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+Aqui vamos
+A palavra que aprendi a usar
+Em vez de "tu consegues"
+Que sempre soou a sermão
+Aqui vamos é diferente
+Aqui vamos é convite
+Aqui vamos é eu de pé
+A deixar a porta aberta atrás de mim
+[Verse 2]
+Não te empurro pelas costas
+Não te puxo pelos braços
+Eu vou — e tu vens se quiseres
+E se hoje não vieres está tudo bem
+Mas eu vou
+Porque parar custa mais
+Do que ir devagar
+E hoje aprendi a ir devagar
+
+
+[Pre-Chorus]
+Aqui vamos não é guerra
+Aqui vamos não é corrida
+Aqui vamos é o passo
+Que cabe no que tens hoje
+
+
+[Chorus]
+Aqui vamos
+Não te empurro, não te puxo
+Aqui vamos
+Vou — e tu vens se quiseres
+A porta fica aberta
+A música fica a tocar
+Aqui vamos
+Aqui vamos
+Cada um ao seu passo
+
+
+[Verse 3]
+Vou pôr o casaco agora
+Vou descer a escada agora
+Vou abrir a porta da rua agora
+Vou pisar a calçada agora
+Não é épico, não é hino
+É só a ordem dos gestos
+Mas se ouvires com atenção
+Há um coro a contar contigo
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic]
+Aqui vamos
+Não te empurro, não te puxo
+Aqui vamos
+Vou — e tu vens se quiseres
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Há uma forma de estar disponível
+Sem estar a obrigar
+Há uma forma de estar à frente
+Sem estar a puxar
+É a forma da que reza ao lado
+É a forma da que canta com a porta aberta
+É a forma do aqui vamos
+Sem coação
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Aqui vamos
+Aqui vamos
+Cada um ao seu passo
+
+
+[Outro: vocal warm, choir fading]
+Aqui vamos
+a porta aberta
+aqui vamos`,
+  "incenso-de-pe/6": `[Vocal: ONE warm mezzo-contralto female voice, very tender on this track, intimate speaking q
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: felt-piano, warm Hammond pad very low, faint kettle steam, vocal entering on bar 2 —
+
+
+[Verse 1]
+A soft start is still a start
+This is what I had not understood
+For years I thought the morning had to be sharp
+The leap, the cold shower, the alarm
+Now I know — the soft start is still a start
+The slow kettle is still a kettle
+The gentle yes is still a yes
+And the day still happens
+
+
+[Verse 2]
+I am sitting at the kitchen window
+With my hands around the cup
+Not doing anything yet
+Not solving anything yet
+The kettle agrees with me
+The light agrees with me
+The morning is doing its work
+While I am doing mine — which is being here
+
+
+[Pre-Chorus]
+The harsh start is not the only start
+The harsh start is the rumour we were told
+A soft start is older
+A soft start is what the body actually wants
+
+
+[Chorus]
+A soft start
+Is still a start
+A soft start
+Lets the day in slowly
+The kettle agrees with me
+The chair agrees with me
+A soft start
+Is still a start
+
+
+[Verse 3]
+I will stand up in a moment
+But not yet, not yet
+The soft start has its own dignity
+Not laziness, not avoidance
+The soft start is the warming
+That precedes the cooking
+And the soup is better
+For having been allowed to warm
+
+
+[Chorus: soft female choir hum enters, faraway]
+A soft start
+Is still a start
+A soft start
+Lets the day in slowly
+
+
+[Bridge: vocal close, choir hums, only piano — opens, does not resolve]
+If you are still in bed
+And the day is asking for you
+You can give the day a soft start
+You don't owe the day a sharp one
+You owe the day your presence
+Eventually
+And eventually is fine
+
+
+[Outro: vocal soft, piano resolves softly to A major]
+A soft start
+is still a start
+the kettle agrees
+soft start`,
+  "incenso-de-pe/7": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+Vou indo
+Pela rua que conheço
+Pela rua que mudou um pouco
+Pela rua que é a mesma de ontem
+Os pés sabem o caminho
+Os pés não me consultam
+Os pés vão e eu vou com eles
+Como uma carta que se entrega
+
+
+[Verse 2]
+Vou indo
+A passada não é grande
+Vou indo
+A passada não é pequena
+É a passada do dia que tenho hoje
+Não a do dia que pensei que ia ter
+Não a do dia que outro tem
+A passada que cabe em mim agora
+
+
+[Pre-Chorus]
+Vou indo
+Não é pressa, é continuação
+Vou indo
+Não é fuga, é trajecto
+
+
+[Chorus]
+Vou indo
+A passada que cabe em mim
+Vou indo
+Cada passo é uma palavra
+Que o corpo escreve no chão
+Vou indo
+Não pergunto até onde
+Pergunto se ainda vou
+E hoje vou
+
+
+[Verse 3]
+Vou indo
+Atravesso a passadeira
+Vou indo
+Cumprimento a senhora do quiosque
+Vou indo
+Cheiro o pão da padaria
+Vou indo
+Sinto o sol no lado direito da cara
+
+
+[Chorus]
+Vou indo
+A passada que cabe em mim
+Vou indo
+Cada passo é uma palavra
+Que o corpo escreve no chão
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+Se estás a ouvir isto a caminho do trabalho
+Se estás a ouvir isto a caminho de qualquer lado
+Vai indo, vai indo
+Não te peço ânimo
+Peço-te continuidade
+A continuidade é mais antiga que o ânimo
+A continuidade é o que faz a vida acontecer
+
+
+[Final Chorus: full harmony stack, sidechained pads peak]
+Vou indo
+A passada que cabe em mim
+Vou indo
+Cada passo é uma palavra
+Que o corpo escreve no chão
+
+
+[Outro: vocal soft, kick fades]
+Vou indo
+não é pressa
+vou indo`,
+  "incenso-de-pe/8": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+The body already said yes
+While the mind was still in committee
+The body got out of bed
+Brushed its teeth, drank the water
+The body opened the door
+Walked down the stairs, hit the street
+The mind is catching up
+Somewhere around the second block
+
+
+[Verse 2]
+The body knows things the mind does not
+The body knows that to wait for clarity
+Is to wait forever, mostly
+The body knows that motion makes the mood
+And not the other way around
+The body has done this for a very long time
+Long before the mind had opinions
+And the body will keep going
+
+
+[Pre-Chorus]
+Trust the body, trust the body
+The body is older than the mind
+The body has the rhythm
+The mind has the commentary
+[Chorus]
+The body already said yes
+The mind is catching up
+The body already said yes
+And the day is happening anyway
+Don't wait for the mind
+The mind takes its time
+The body is doing the work
+The body is doing the work
+
+
+[Verse 3]
+By lunchtime the mind will agree
+Begrudgingly, with footnotes
+But the body will have moved
+Through six small accomplishments
+The body will not need the mind's approval
+The body will not request a vote
+The body just keeps doing
+What the body does
+
+
+[Chorus: full harmony stack, sidechained pads peak, tambourine]
+The body already said yes
+The mind is catching up
+The body already said yes
+And the day is happening anyway
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+If your mind is heavy this morning
+Don't wait for it to clear
+Move first
+Hands first, feet first, mouth first
+The body already said yes when you woke up
+You just didn't notice it yet
+You just didn't notice it yet
+
+
+[Final Chorus: full harmony stack, peaks]
+The body already said yes
+The mind is catching up
+The body already said yes
+And the day is happening anyway
+
+
+[Outro: vocal soft, kick fades]
+The body already said yes
+the mind is catching up
+the body already said yes`,
+  "incenso-de-pe/9": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+De pé
+Não foi épico, não foi heróico
+De pé pela ordem dos gestos
+Pés no chão, copo de água, janela
+De pé como quem aprende um verbo
+Devagar, com sotaque
+Mas de pé
+E o dia recebeu-me
+
+
+[Verse 2]
+De pé pelas que não estão hoje
+De pé pelas que ontem não conseguiram
+De pé pela mulher do quarto andar
+Que ainda está deitada agora
+De pé não é mérito
+De pé é geografia
+Hoje calhei deste lado
+Hoje é o lado de pé
+
+
+[Pre-Chorus]
+De pé não é a única forma
+De estar viva
+De pé é a forma de hoje
+E hoje basta
+
+
+[Chorus]
+De pé
+Não como guerra
+Como verbo
+De pé é o que faço hoje
+De pé é o que canto hoje
+De pé é o que digo hoje
+À que ainda não está
+Que tenho fé que estará amanhã
+
+
+[Verse 3]
+De pé na rua
+De pé na cozinha
+De pé no autocarro
+De pé no escritório
+De pé com cansaço
+De pé com saudade
+De pé com tudo o que o dia traz
+Sem deixar de estar de pé
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic, dje
+De pé
+Não como guerra
+Como verbo
+De pé é o que faço hoje
+De pé é o que canto hoje
+De pé é o que digo hoje
+À que ainda não está
+Que tenho fé que estará amanhã
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising, djembe steady — opens, does
+(European Portuguese, Portugal accent:)
+Se estás de pé agora
+Não te peço orgulho
+Peço-te continuação
+E se ainda estás deitada
+Não te peço pressa
+Peço-te o pé que conseguires
+Hoje, amanhã, na próxima quarta
+Pé que consigas, pé que basta
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+De pé
+De pé
+De pé é o que faço hoje
+De pé é o que canto hoje
+
+
+[Outro: vocal warm, choir fading, djembe lingers]
+De pé
+hoje
+de pé
+para amanhã`,
+  "incenso-de-pe/10": `[Vocal: ONE warm mezzo-contralto female voice, raw and exposed, intimate speaking quality, sl
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano, low fretless bass, vocal entering on bar 2 — no long instrumental openi
+[Verse 1]
+Hoje eu fico
+Fui à rua e voltei
+Vi pessoas, atravessei
+Comi à hora certa
+E agora estou na sala
+Sem fugir para fora
+Sem fugir para dentro
+Hoje eu fico no que é
+
+
+[Verse 2]
+Não tem palmas, não tem prémio
+Esta sala continua a ser sala
+A luz continua a ser a luz
+A tarde continua a ser a tarde
+Mas eu — eu estou cá
+Em vez de fora
+Em vez de longe
+Em vez de na cabeça que me leva sempre
+
+
+[Pre-Chorus]
+Hoje eu fico
+Não como castigo
+Hoje eu fico
+Como exercício de presença
+
+
+[Chorus]
+Hoje eu fico
+Não foi vitória
+Foi escolha pequena
+Hoje eu fico
+A casa recebeu-me
+A tarde recebeu-me
+Hoje eu fico
+E é mais do que ontem
+E é menos do que amanhã
+
+
+[Verse 3]
+Vou jantar daqui a duas horas
+Vou ler um bocadinho antes
+Vou pôr a roupa para amanhã
+Vou apagar a luz quando for tempo
+Não é programa de vida
+É só programa de hoje
+E hoje basta o programa de hoje
+Amanhã faço o de amanhã
+[Chorus: small female choir enters, hand-claps soft]
+Hoje eu fico
+Não foi vitória
+Foi escolha pequena
+Hoje eu fico
+
+
+[Bridge: vocal close, choir hums underneath, only piano — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Se estás a ouvir isto ao fim da tarde
+E aguentaste o dia
+Não te peço orgulho — peço-te ficar
+Não fujas para o telefone
+Não fujas para a comida que não tens fome
+Não fujas para o sono que ainda não é
+Fica os minutos que conseguires
+E vê o que a tarde te dá
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+Hoje eu fico
+foi escolha pequena
+hoje eu fico
+e amanhã fazemos o de amanhã
+
+
+
+
+Notas para o canal YouTube
+Ordem na playlist Elevar: as 10 tracks deste EP funcionam tanto isoladas como em
+sequência. Se quiseres alimentar a playlist em sequência, T1→T10 é a curva natural da
+manhã. Se quiseres alimentar isoladamente, as quatro tracks anthem (T3, T5, T9) e a
+pulse T2 são as que mais prendem ouvinte novo nos primeiros 8 segundos.
+
+Compatibilidade com tracks dos 5 álbuns Elevar: este EP coexiste sem competir. As
+tracks De Pé puxam para fora; as do Acende, Coro, Milagre, Amen, Aleluia
+testemunham. Na playlist, alterna — três De Pé seguidas de duas testemunho cria
+respiração.
+
+CTA Apple Music: "Ouve no Apple Music → music.seteveus.space" — formato já
+estabelecido.
+
+Capa sugerida: ângulo baixo, pés femininos a tocar o chão, luz da janela a entrar de
+lado. Cor #F5A65B na tipografia. Sem rosto.`,
+  "incenso-hoje-nao/1": `[Vocal: ONE warm mezzo-contralto female voice, intimate but firm speaking quality on verses,
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, vocal entering on bar 2 — no long instrumental opening
+
+
+[Verse 1]
+Hoje não
+A primeira frase da manhã
+Hoje não te entrego o dia inteiro
+Hoje não, peso
+Hoje não, voz que me fala dentro
+Hoje não, lista que nunca acaba
+Hoje não, tudo o que tu queres
+Hoje não, tudo de uma vez
+
+
+[Verse 2]
+Não é guerra, não é raiva
+É higiene, é perímetro
+Hoje há sítios onde tu não entras
+Hoje há horas que são minhas
+Não te explico mais
+Não te justifico mais
+Hoje não é palavra completa
+Não precisa de continuação
+
+
+[Pre-Chorus]
+Cada hoje não
+É um hoje sim
+A outra coisa
+Que o dia tem para mim
+
+
+[Chorus]
+Hoje não
+Não te entrego tudo
+Hoje não
+O resto fica para outro dia
+Não é fraqueza, é escolha
+Não é fuga, é foco
+Hoje não
+Hoje não, hoje não
+E é para o teu bem também
+
+
+[Verse 3]
+Hoje não vou pensar nisso
+Hoje não vou falar disso
+Hoje não vou ler aquilo
+Hoje não vou abrir aquela conversa
+Amanhã talvez sim
+Daqui a uma semana talvez sim
+Mas hoje não
+E hoje não basta saber
+
+
+[Chorus: 3-voice harmonies enter, tambourine on the four]
+Hoje não
+Não te entrego tudo
+Hoje não
+O resto fica para outro dia
+
+
+[Bridge: vocal close, harmonies hum underneath, gospel piano carries — opens, does not resolv
+(European Portuguese, Portugal accent:)
+Tu chegaste a um ponto
+Em que aprendeste a guardar
+A dizer que não
+Sem teres de gritar
+Sem teres de explicar
+A dizer que não
+Como se fosse uma coisa simples
+Que finalmente é
+
+
+[Outro: vocal warm, piano fading]
+Hoje não
+o resto fica
+hoje não
+para outro dia`,
+  "incenso-hoje-nao/2": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+Not today, not like this
+The voice that wants me back in bed
+The voice that wants me back in shame
+The voice that wants me back in nothing
+Not today, not like this
+There is a version of today I will not live
+There is a version of today I will not feed
+And the version that wants to be fed knows my name
+
+
+[Verse 2]
+But I'm not picking up
+But I'm not opening that door
+But I'm not entering that room
+Where the voice has set the table for me
+The table is laid for two — me and the voice
+And I'm not eating today
+I'm eating somewhere else
+I'm eating with the version of me that lives
+
+
+[Pre-Chorus]
+Not today, not like this
+Is the most spiritual thing I say
+Not today, not like this
+Is how I keep myself alive
+
+
+[Chorus]
+Not today, not like this
+I'm choosing the version that lets me stay
+Not today, not like this
+The peso doesn't get the wheel today
+I am driving, the peso is in the back
+Quiet, with the seatbelt on
+Not today, not like this
+Not today, not like this
+
+
+[Verse 3]
+The peso has good arguments
+The peso is articulate, even
+The peso has been to school
+The peso is older than me
+But the peso has nowhere to take me
+That I have not already been
+Not today, not like this
+I know the road, I'm not going
+
+
+[Chorus: full harmony stack, sidechained pads peak, key shift to A major on final chorus]
+Not today, not like this
+I'm choosing the version that lets me stay
+Not today, not like this
+The peso doesn't get the wheel today
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+If the voice in your head has good arguments today
+You don't have to win the argument
+You don't have to disprove the voice
+You just don't have to drive where it tells you
+The voice can talk
+The voice can keep talking
+You can drive in another direction
+Listening or not listening, that's your call
+
+
+[Final Chorus: full harmony stack, peaks, never shouted, key in A major]
+Not today, not like this
+I'm choosing the version that lets me stay
+Not today, not like this
+The peso doesn't get the wheel today
+
+
+[Outro: vocal soft, kick fades]
+Not today
+not like this
+I'm driving
+not today`,
+  "incenso-hoje-nao/3": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+A culpa pode esperar
+Eu disse-lhe assim mesmo
+Hoje senta-te na cadeira
+Hoje toma a tua senha
+Hoje há fila à minha porta
+E tu não és a primeira
+Hoje há outras a entrar
+Que andaram à espera demais
+
+
+[Verse 2]
+Quem entra primeiro é o descanso
+Quem entra a seguir é o pão
+Quem entra a seguir é a amiga
+Que me telefonou e eu não atendi
+A culpa fica aí
+Sentada com as mãos no colo
+Pode esperar, sabe esperar
+A culpa tem todo o tempo do mundo
+
+
+[Pre-Chorus]
+A culpa não é urgente
+Embora finja sê-lo
+A culpa pode esperar
+E hoje vai esperar
+
+
+[Chorus]
+A culpa pode esperar
+Tem fila, tem hora marcada
+A culpa pode esperar
+E hoje não é a vez dela
+Hoje é a vez do que me alimenta
+Hoje é a vez do que me reconstrói
+A culpa pode esperar
+Não é hoje a sua hora
+
+
+[Verse 3]
+Aprendi tarde a fazer fila
+A pôr a culpa no fim
+A não a deixar furar
+Como se fosse de família
+Não és de família
+És hábito antigo
+E hoje os hábitos antigos
+Esperam que eu lhes diga
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic]
+A culpa pode esperar
+Tem fila, tem hora marcada
+A culpa pode esperar
+E hoje não é a vez dela
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Não te peço para deitar fora a culpa
+A culpa às vezes ensina coisas verdadeiras
+Mas pede-lhe que tire senha
+Pede-lhe que espere
+Trata-a como tratas um vizinho persistente
+Atende-a quando estiveres pronta
+Não quando ela achar que é hora
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+A culpa pode esperar
+Tem fila, tem hora marcada
+A culpa pode esperar
+E hoje não é a vez dela
+
+
+[Outro: vocal warm, choir fading, strings linger]
+A culpa pode esperar
+hoje não é a vez dela
+a culpa pode esperar`,
+  "incenso-hoje-nao/4": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+I'm not picking up
+Not the phone that buzzed at six this morning
+Not the thought that came at three last night
+Not the message from the person who pulls
+I'm not picking up
+The phone can ring, I am here
+The voicemail is doing its job
+I am doing mine, which is being still
+
+
+[Verse 2]
+There is an art to not picking up
+That nobody teaches the eldest daughter
+There is a freedom in the unanswered
+That nobody told the people-pleaser
+I'm learning it late, but I'm learning
+That every call I do not pick up
+Is a call I make to myself
+Hello, you, you're still here
+
+
+[Pre-Chorus]
+The phone is not the priority
+The thought is not the priority
+The priority is the woman with the phone
+And she is choosing not to pick up
+
+
+[Chorus]
+I'm not picking up
+Not the phone, not the thought
+Not today
+I'm not picking up
+The voicemail handles it
+The thought returns tomorrow
+And tomorrow I'll see
+But not today, not today
+
+
+[Verse 3]
+Some calls are real emergencies
+This one is not, this one is just loud
+Some thoughts are real warnings
+This one is just the loop, this one is recycled
+The art of not picking up
+Is the art of knowing the difference
+And today I know the difference
+And today I'm not picking up
+
+
+[Chorus: full harmony stack, sidechained pads peak, tambourine]
+I'm not picking up
+Not the phone, not the thought
+Not today
+I'm not picking up
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+If something is calling you right now
+And it doesn't have to be answered today
+Let it go to voicemail
+Let it go to tomorrow
+The world will not end
+You will check it later
+And later you will be more able
+Or maybe you will be more able to ignore it entirely
+
+
+[Final Chorus: full harmony stack, peaks]
+I'm not picking up
+Not the phone, not the thought
+Not today
+I'm not picking up
+
+
+[Outro: vocal soft, kick fades]
+I'm not picking up
+not today
+I'm not picking up`,
+  "incenso-hoje-nao/5": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+Aprendi tarde
+A pôr o limite sem ruído
+Anos a explicar
+Anos a justificar
+Anos a fazer reuniões com o limite
+Como se ele tivesse de o autorizar
+Hoje não, hoje o limite é informação
+Não pedido de licença
+
+
+[Verse 2]
+O limite calmo é poderoso
+O limite calmo não precisa de prova
+O limite calmo diz a frase
+E não fica à espera de aplauso
+Há quem aceite
+Há quem não aceite
+E o limite mantém-se na mesma
+Porque o limite é meu, não é debate
+
+
+[Pre-Chorus]
+O limite calmo é diferente da fúria
+A fúria gasta-se, o limite calmo fica
+A fúria pede plateia, o limite calmo só pede chão
+E hoje há chão suficiente
+
+
+[Chorus]
+Aqui termino
+Não em fúria, em saúde
+Aqui é o meu limite calmo
+Não te explico, não me defendo
+Aqui é onde a minha casa começa
+Aqui é onde tu entras só com licença
+Aqui termino, aqui termino
+E não preciso de discutir
+
+
+[Verse 3]
+O limite calmo é a herança
+Que vou deixar a quem vier depois de mim
+Não a fúria, que cansa
+Não o silêncio, que doi
+O limite calmo, dito com a voz da mulher
+Que aprendeu a respirar antes de falar
+E que diz a frase com a forma certa
+Da primeira vez
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic]
+Aqui termino
+Não em fúria, em saúde
+Aqui é o meu limite calmo
+Não te explico, não me defendo
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Não te peço para gritares
+Nem para deixares de gritar
+Peço-te que descubras o teu limite calmo
+Aquele que não precisa de adrenalina
+Aquele que se diz com a mesma voz
+Com que pedes a senha no talho
+Limite calmo, limite calmo
+É o aprendizado de uma vida
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Aqui termino
+Aqui é o meu limite calmo
+Aqui termino
+E não preciso de discutir
+
+
+[Outro: vocal warm, choir fading]
+Aqui termino
+limite calmo
+aqui termino
+em saúde`,
+  "incenso-hoje-nao/6": `[Vocal: ONE warm mezzo-contralto female voice, very tender on this track, intimate speaking q
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: felt-piano, warm Hammond pad very low, vocal entering on bar 2 — no long instrumental
+
+
+[Verse 1]
+There is a no that needs a stage
+That wants the audience, that wants the witness
+That wants to be remembered
+That wants to be quoted
+And there is a quiet no
+That nobody will ever hear
+That is said into the room
+At seven in the evening, alone
+
+
+[Verse 2]
+The quiet no is the harder no
+The quiet no is the more honest no
+The loud no still cares about being seen
+The quiet no doesn't need to be seen
+It just needs to be said
+Even if only the wall hears it
+And the wall does hear it
+And the room rearranges itself slightly
+
+
+[Pre-Chorus]
+The quiet no is a private architecture
+The quiet no rebuilds the house from inside
+The quiet no does not require renovation announcements
+The quiet no just changes the floor plan
+
+
+[Chorus]
+The quiet no
+Is the no that lets me sleep tonight
+The quiet no
+Is the no that protects what I am building
+Nobody applauds
+Nobody objects
+The quiet no walks through the room
+And rearranges what was loud into what is calm
+
+
+[Verse 3]
+I am learning to say it
+At my own kitchen table
+When nobody is here
+When nobody is asking
+The quiet no I owe to nobody
+The quiet no I owe to me
+The quiet no is the practice
+That makes the loud no, when needed, possible
+
+
+[Chorus: soft female choir hum enters, faraway]
+The quiet no
+Is the no that lets me sleep tonight
+The quiet no
+Is the no that protects what I am building
+
+
+[Bridge: vocal close, choir hums, only piano — opens, does not resolve]
+There is a no you have not said yet
+That nobody is waiting for you to say
+That you can say tonight
+With nobody around
+With the curtains closed
+And the saying will be real
+Even with no witnesses
+Even with no witnesses
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+The quiet no
+the no that lets me sleep
+the quiet no
+that nobody hears`,
+  "incenso-hoje-nao/7": `[Vocal: ONE warm mezzo-contralto female voice, raw and exposed but firm, intimate speaking qu
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano, low fretless bass, vocal entering on bar 2 — no long instrumental openi
+
+
+[Verse 1]
+Não hoje, não assim
+A frase que aprendi a dizer
+Sem treinar antes ao espelho
+Sem ensaiar com a amiga
+Não hoje, não assim
+Veio-me natural à terceira tentativa
+Depois de duzentas a engolir
+Antes de a deixar sair
+
+
+[Verse 2]
+Não tem mais palavras
+Não tem mais explicação
+Não hoje, não assim é frase fechada
+Não responde a perguntas
+Não pede aprovação
+Não fica a aguardar
+A frase pousa no ar
+E a sala arruma-se à volta dela
+
+
+[Pre-Chorus]
+Não hoje, não assim
+É curta e é inteira
+Não preciso de continuar
+A frase já fez o trabalho
+
+
+[Chorus]
+Não hoje, não assim
+É a frase mais curta
+Que aprendi a dizer inteira
+Não hoje, não assim
+Não te peço perdão
+Não te ofereço alternativa
+Hoje, não assim
+E o resto é silêncio bom
+[Verse 3]
+Há quem aceite à primeira
+Há quem precise de a ouvir três vezes
+Eu digo as três vezes
+Sem subir a voz, sem mudar o tom
+A repetição é minha amiga
+A repetição é minha saúde
+Não hoje, não assim, não hoje, não assim
+E na quarta vez já não preciso
+
+
+[Chorus: small female choir enters, hand-claps soft]
+Não hoje, não assim
+É a frase mais curta
+Que aprendi a dizer inteira
+Não hoje, não assim
+
+
+[Bridge: vocal close, choir hums underneath, only piano — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+A frase mais difícil
+É a frase mais curta
+Quanto mais palavras tu pões
+Mais o limite se desfaz
+Não hoje, não assim
+É como se diz com economia
+A economia é firmeza
+A economia é dignidade
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+Não hoje
+não assim
+e o resto é silêncio bom`,
+  "incenso-hoje-nao/8": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+Soft refusal
+Is not the no that breaks the table
+It is the no that walks past the table
+And lets the table be
+Soft refusal does not enter the argument
+Soft refusal does not need to win
+Soft refusal turns the corner
+And the argument loses its target
+
+
+[Verse 2]
+I have learned soft refusal
+Late, in my forties, in the kitchen
+After a lifetime of explaining
+After a lifetime of negotiating
+The soft refusal is the body that just leaves
+Without leaving the room
+The body that says, with its shoulders
+That the conversation is over without saying so
+
+
+[Pre-Chorus]
+Soft refusal moves the world
+More than the loud one ever did
+Soft refusal is the river
+Bending around the rock that wanted to stop it
+
+
+[Chorus]
+Soft refusal
+Moves the world more than the loud one
+Soft refusal
+Is the woman who said no with her shoulders
+Without changing her face
+Without raising her voice
+Without losing the room
+But losing the conversation
+That she was never in
+
+
+[Verse 3]
+You can practise soft refusal
+At the kitchen table on a Tuesday
+You can say no with the smallest motion
+You can say no with the longer pause
+The other person may not even know
+That you have refused
+But you will know
+And the body will know
+And the body will sleep tonight
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+Soft refusal
+Moves the world more than the loud one
+Soft refusal
+Is the woman who said no with her shoulders
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+The next time the conversation pulls you
+Where you do not want to go
+Try the soft refusal
+The shoulders, the pause, the smaller word
+You will not have to win
+You will just have to leave
+And the leaving will be enough
+And the leaving will be the answer
+
+
+[Final Chorus: full harmony stack, peaks]
+Soft refusal
+Moves the world more than the loud one
+Soft refusal
+Is the woman who said no with her shoulders
+
+
+[Outro: vocal soft, kick fades]
+Soft refusal
+moves the world
+soft refusal
+the shoulders said no`,
+  "incenso-hoje-nao/9": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+A casa é minha
+A frase demorou anos
+A frase parecia presunção
+A frase parecia ingratidão
+A casa é minha
+Foram anos a construir esta frase
+A pousar tijolo a tijolo
+Até finalmente a poder dizer
+
+
+[Verse 2]
+Há cómodos onde tu não entras
+Há horas que são minhas
+Há conversas que ficam à porta
+Há temas que dormem na rua
+Não te peço para saíres
+Digo-te onde tu não entras
+A diferença é grande
+A diferença é tudo
+
+
+[Pre-Chorus]
+A casa é minha
+Não é desafio
+A casa é minha
+É facto, é geografia
+
+
+[Chorus]
+A casa é minha
+Não te peço para saíres
+A casa é minha
+Digo-te onde tu não entras
+Não é guerra, é planta
+Não é briga, é arquitectura
+A casa é minha
+A casa é minha
+E há sítios onde só eu vou
+
+
+[Verse 3]
+Esta casa tem cómodos
+Que ainda estou a descobrir
+Esta casa tem janelas
+Que ainda estou a abrir
+Esta casa tem vozes
+Que ainda estou a ouvir
+A casa é minha — e eu a habito
+Cada vez mais inteira
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic, dje
+A casa é minha
+Não te peço para saíres
+A casa é minha
+Digo-te onde tu não entras
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising, djembe steady — opens, does
+(European Portuguese, Portugal accent:)
+Há uma casa que é tua
+E que tu ainda não habitas inteira
+Há cómodos que tens a outros emprestados
+Há cómodos que tens a memórias antigas
+Há cómodos que tens à culpa, à espera
+Vai recuperá-los um a um
+Não te peço para expulsar ninguém
+Peço-te que reorganizes a tua planta
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+A casa é minha
+A casa é minha
+A casa é minha
+E há sítios onde só eu vou
+
+
+[Outro: vocal warm, choir fading, djembe lingers]
+A casa é minha
+geografia
+a casa é minha
+arquitectura`,
+  "incenso-hoje-nao/10": `[Vocal: ONE warm mezzo-contralto female voice, raw and exposed, intimate speaking quality, sl
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano, low fretless bass, vocal entering on bar 2 — no long instrumental openi
+
+
+[Verse 1]
+I keep two lists now
+The list of what I'm doing today
+And the list of what I'm not doing today
+And the second list is longer
+That used to scare me
+That used to feel like failure
+Now it feels like discernment
+The longer list is the wisdom
+
+
+[Verse 2]
+I'm not answering that email today
+I'm not having that conversation today
+I'm not visiting that place today
+I'm not eating that food today
+I'm not opening that book today
+I'm not checking that account today
+I'm not feeling guilty about any of this
+That's a separate list, also being managed
+
+
+[Pre-Chorus]
+What I'm not doing today
+Is the active list
+What I'm not doing today
+Is the work nobody sees
+
+
+[Chorus]
+What I'm not doing today
+Is the longer list
+And I'm at peace with both
+What I'm not doing today
+Is what keeps me whole tomorrow
+The yes is the easy part
+The no is the architecture
+The no is the slow gardening
+That nobody applauds
+
+
+[Verse 3]
+By Friday the lists will have changed
+The not-list might shrink
+The not-list might grow
+Both are fine
+The lists are alive
+The lists are mine
+The lists are honest
+And tonight, the lists let me sleep
+
+
+[Chorus: small female choir enters, hand-claps soft]
+What I'm not doing today
+Is the longer list
+And I'm at peace with both
+What I'm not doing today
+Is what keeps me whole tomorrow
+
+
+[Bridge: vocal close, choir hums underneath, only piano — opens, does not resolve]
+Make your own list tonight
+Of what you're not doing tomorrow
+Don't apologize on the page
+Don't justify on the page
+Just make the list
+And see how the chest changes shape
+When the no is given the same dignity
+As the yes
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+What I'm not doing today
+the longer list
+what I'm not doing today
+and I'm at peace
+
+
+
+
+Notas para o canal YouTube
+Posicionamento da playlist: EP2 entra a seguir ao De Pé na curva diária. Se a playlist
+Elevar tem ordem implícita "manhã → meio-dia → tarde", as tracks Hoje Não funcionam
+bem em qualquer ponto onde o ouvinte está a aguentar pressão (chefe, família, culpa).
+T2, T4, T8 são pulse-house e mantêm a energia; T1, T3, T5, T9 são tracks declarativas
+que servem como pontos de afirmação no carro.
+
+Tracks-âncora deste EP (puxam ouvinte novo): T3 A Culpa Pode Esperar, T5 Limite
+Calmo, T9 A Casa É Minha (anthems PT) e T2 Not Today, Not Like This, T4 I'm Not
+Picking Up (pulses EN para alcance internacional).
+
+Coexistência com De Pé: os dois EPs alternam-se bem. De Pé empurra para fora
+(acção); Hoje Não estabelece o perímetro (limite). Juntos cobrem a manhã da pessoa
+que precisa.
+
+Capa sugerida: mão feminina em close-up a fechar uma porta com gesto calmo (não
+com força). Cor #7B9EA8 na tipografia. Sem rosto, mantém a estética Loranne.`,
+  "incenso-ar/1": `[Vocal: ONE warm mezzo-contralto female voice, very tender on this track, intimate speaking q
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+[Intro: felt-piano, warm Hammond pad very low, faint inhale, vocal entering on bar 2 — no lon
+
+
+[Verse 1]
+(inhale)
+Lembrei-me de respirar
+(exhale)
+A primeira respiração consciente
+Em quantas horas — não sei
+O peito tinha esquecido
+(inhale)
+A barriga tinha esquecido
+(exhale)
+E eu também tinha esquecido
+Que era pessoa que precisava
+
+
+[Verse 2]
+(inhale)
+Devagar — devagar
+(exhale)
+O ar entrou como amigo
+A casa do peito recebeu-o
+A casa do peito alargou
+(inhale)
+Não sabia que estava tão fechada
+(exhale)
+Não sabia que estava à espera
+(inhale)
+E o ar — o ar estava lá
+
+
+[Pre-Chorus]
+Lembrar de respirar
+É a meditação mais simples
+A medicina mais antiga
+A reza sem palavras
+
+
+[Chorus]
+Lembrei-me de respirar
+E o peito alargou-se
+Lembrei-me de respirar
+Estava à espera há horas
+O ar é generoso
+O ar não cobra
+O ar entra quando o convido
+E o convite é só lembrar
+
+
+[Verse 3]
+(inhale)
+Vou pôr alarme no telefone
+(exhale)
+Para lembrar a próxima
+Daqui a uma hora — outra respiração
+Daqui a duas — outra
+(inhale)
+A vida é uma sequência
+(exhale)
+De respirações lembradas
+A vida começa a cada uma
+
+
+[Chorus: soft female choir hum enters, faraway]
+Lembrei-me de respirar
+E o peito alargou-se
+Lembrei-me de respirar
+Estava à espera há horas
+
+
+[Bridge: vocal close, choir hums, only piano — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+(inhale)
+Se ainda não respiraste fundo hoje
+(exhale)
+Faz uma agora — comigo
+(audible inhale, 4 seconds)
+(audible exhale, 6 seconds)
+E mais uma — comigo
+(audible inhale, 4 seconds)
+(audible exhale, 6 seconds)
+Já fizeste duas — já é o trabalho da manhã
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+(inhale)
+Lembrei-me de respirar
+(exhale)
+e o peito alargou-se
+(inhale)
+lembrei-me
+(exhale)`,
+  "incenso-ar/2": `[Vocal: ONE warm mezzo-contralto female voice, very tender on this track, intimate speaking q
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: felt-piano, warm Hammond pad very low, slow audible breathing, vocal entering on bar
+
+
+[Verse 1]
+(slow inhale)
+Slow breath
+(slow exhale)
+The kind that says you're allowed
+To take your time
+(slow inhale)
+The kind that doesn't measure
+(slow exhale)
+The kind that doesn't count
+The kind that just lets the lungs
+Be lungs
+
+
+[Verse 2]
+(slow inhale)
+The fast breath was for the running
+(slow exhale)
+The shallow breath was for the hiding
+The slow breath is for the staying
+The slow breath is for the now
+(slow inhale)
+You don't have to be anywhere
+(slow exhale)
+You don't have to do anything
+For the duration of this breath
+You are home
+
+
+[Pre-Chorus]
+Slow breath
+Is the older medicine
+Slow breath
+Is what the body wants when nothing else works
+
+
+[Chorus]
+Slow breath
+The kind that says you're allowed
+To take your time
+Slow breath
+The kind that does its work
+Without making a fuss
+Slow breath
+The lungs are old, the lungs know
+The lungs were here before the worry
+
+
+[Verse 3]
+(slow inhale)
+The worry will come back
+(slow exhale)
+But not for the next four seconds
+(slow inhale)
+The worry will return
+(slow exhale)
+But not for these six
+The slow breath is a small island
+In the long sea of the worried day
+And you can visit the island
+As often as you remember
+
+
+[Chorus: soft female choir hum enters, faraway]
+Slow breath
+The kind that says you're allowed
+To take your time
+Slow breath
+The kind that does its work
+
+
+[Bridge: vocal close, choir hums, only piano — opens, does not resolve]
+(audible slow inhale, 4 seconds)
+(audible slow exhale, 6 seconds)
+And again, with me
+(audible slow inhale, 4 seconds)
+(audible slow exhale, 6 seconds)
+That was real
+That was real
+The body did the work
+The body always does the work
+
+
+[Outro: vocal soft, piano fading, slow breathing continues]
+(slow inhale)
+Slow breath
+(slow exhale)
+the lungs know
+(slow inhale)
+slow breath
+(slow exhale)`,
+  "incenso-ar/3": `[Vocal: ONE warm mezzo-contralto female voice, intimate but firm speaking quality on verses,
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, vocal entering on bar 2 — no long instrumental opening
+
+
+[Verse 1]
+O peito alarga
+Não por minha vontade
+Por sua sabedoria antiga
+O peito sabe o caminho
+Há quanto tempo não alargava
+Anos de respiração curta
+Anos de espreitar pelo lado
+Hoje — hoje finalmente
+
+
+[Verse 2]
+Não força nada
+Não puxa nada
+Apenas permite
+Apenas convida
+O peito alarga porque o peito é assim
+Quando o deixam ser
+Quando o deixam ter o seu ritmo
+Quando o deixam ter o seu tempo
+
+
+[Pre-Chorus]
+O peito alarga
+Como o céu alarga
+Não há técnica
+Há permissão
+
+
+[Chorus]
+O peito alarga
+Lentamente, sem permissão de ninguém
+O peito alarga
+O peito sabe o caminho
+Não preciso de respirar bem
+Preciso de respirar inteiro
+O peito alarga
+Quando lhe dou licença
+
+
+[Verse 3]
+Hoje conto com o peito
+Que durante anos não contei
+Hoje deixo-o ser orgânico
+Em vez de mecânico
+O peito conhece-me melhor
+Do que eu me conheço
+O peito é o sítio onde a vida
+Acontece em silêncio
+
+
+[Chorus: 3-voice harmonies enter, tambourine on the four]
+O peito alarga
+Lentamente, sem permissão de ninguém
+O peito alarga
+O peito sabe o caminho
+
+
+[Bridge: vocal close, harmonies hum underneath, gospel piano carries — opens, does not resolv
+(European Portuguese, Portugal accent:)
+Põe a mão no peito agora
+Por cinco segundos
+Não para o controlar
+Para o reconhecer
+Está aí — debaixo da mão
+A bater, a alargar, a descansar
+Está vivo
+Tem sido fiel sem te apresentares
+
+
+[Outro: vocal warm, piano fading]
+O peito alarga
+sem permissão
+o peito alarga
+sabe o caminho`,
+  "incenso-ar/4": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with breathing-rhythm sidechain, Hammond stabs, vocal entering on bar
+
+
+[Verse 1]
+Inhale, exhale
+The only choreography I need today
+Inhale, exhale
+The dance the lungs were doing all along
+While I was busy
+While I was distracted
+The lungs kept dancing
+And the body stayed alive
+
+
+[Verse 2]
+Today I am dancing with my lungs
+Today I am following their lead
+The kick is the heart, the sidechain is the breath
+The body and the music are in time
+For once, for once
+I'm not trying to override the body
+I'm trying to keep up
+And keeping up is enough
+
+
+[Pre-Chorus]
+Inhale, exhale
+The first dance I ever knew
+Inhale, exhale
+The dance my body wants to keep doing
+
+
+[Chorus]
+Inhale, exhale
+The only choreography I need today
+Inhale, exhale
+The lungs lead, I follow
+The mind can sit this one out
+The mind can take a break
+The body is doing the choreography
+That has worked since the first breath
+
+
+[Verse 3]
+At a red light, inhale, exhale
+At a meeting, inhale, exhale
+In a difficult conversation, inhale, exhale
+In the elevator before the call, inhale, exhale
+The choreography is portable
+The choreography is private
+The choreography is mine
+And the choreography is enough
+
+
+[Chorus: full harmony stack, sidechained pads peak with breath rhythm]
+Inhale, exhale
+The only choreography I need today
+Inhale, exhale
+The lungs lead, I follow
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+You know the choreography
+You have been doing it since you were born
+You don't need a new dance
+You need to remember the dance you have
+Inhale, inhale, exhale
+On the kick, on the kick, off the kick
+That is the dance
+And the body remembers
+
+
+[Final Chorus: full harmony stack, peaks]
+Inhale, exhale
+The only choreography I need today
+Inhale, exhale
+The lungs lead, I follow
+
+
+[Outro: vocal soft, kick fades, sidechain breath continues]
+Inhale, exhale
+the lungs lead
+inhale, exhale`,
+  "incenso-ar/5": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses but never
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell (gentle), vocal entering on bar 2
+
+
+[Verse 1]
+Faço espaço para o ar
+Dentro de mim
+Anos a comprimir
+Anos a engolir
+Anos a dizer-me que não havia tempo
+Para uma respiração inteira
+Hoje há tempo
+Hoje há espaço
+
+
+[Verse 2]
+Tirei coisas para fora
+Para o ar caber
+A culpa pequena
+A urgência fingida
+A pressa de provar
+A obrigação de explicar
+Saíram como hóspedes mal-educados
+Que ficaram tempo demais
+
+
+[Pre-Chorus]
+Faço espaço dentro
+Não é arrumação
+É demolição
+Para o ar circular outra vez
+
+
+[Chorus]
+Faço espaço para o ar
+E o ar — o ar fica
+Faço espaço para mim
+E eu — eu fico
+A casa de dentro tem janelas
+Eu é que as fechei sem dar conta
+Hoje abro-as uma a uma
+Hoje deixo o ar entrar inteiro
+
+
+[Verse 3]
+Aprendi tarde
+Que respirar era arte
+Que ter espaço dentro era prática
+Não era condição natural
+A vida moderna comprime
+A vida moderna preenche
+A vida moderna não te diz
+Que o ar é também alimento
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic]
+Faço espaço para o ar
+E o ar — o ar fica
+Faço espaço para mim
+E eu — eu fico
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Vê-te como casa
+Não como agenda, como casa
+Tem cómodos, tem ar, tem janelas
+E os cómodos precisam de ser ventilados
+Não os deixes fechados
+A vida não te leva os cómodos
+Tu é que os fechas
+E tu é que os podes abrir
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Faço espaço para o ar
+E o ar fica
+Faço espaço para mim
+E eu fico
+
+
+[Outro: vocal warm, choir fading]
+Faço espaço
+para o ar
+faço espaço
+para mim`,
+  "incenso-ar/6": `[Vocal: ONE warm mezzo-contralto female voice, raw and exposed, intimate speaking quality, sl
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano, low fretless bass, audible long breath, vocal entering on bar 2 — no lo
+
+
+[Verse 1]
+(long inhale, long exhale)
+One long breath at three in the afternoon
+Changed the temperature of the room
+Changed the temperature of my Wednesday
+Changed the temperature of my year, perhaps
+Nobody told me it could do that
+I had been short-breathing for so long
+That I forgot the long one was an option
+The long one is always an option
+
+
+[Verse 2]
+(long inhale, long exhale)
+The long one is the medicine
+The long one is the reset
+The long one is the small interruption
+That changes the algorithm of the day
+At a desk, in traffic, at the table
+In a difficult conversation, in front of the screen
+The long one is portable
+And the long one is free
+
+
+[Pre-Chorus]
+One long breath
+Costs nothing
+One long breath
+Changes everything
+
+
+[Chorus]
+One long breath
+Changes the temperature
+Of the whole afternoon
+One long breath
+Is the smallest revolution
+Available to a body
+That has been compressed
+For a very long time
+
+
+[Verse 3]
+I'm taking long breaths now
+At hours I never used to
+Before answering the phone
+Before opening the email
+Before walking into the room
+The breath buys me three seconds of clarity
+And three seconds is more than zero
+And three seconds is everything
+
+
+[Chorus: small female choir enters, hand-claps soft, key shift to C major on final chorus]
+One long breath
+Changes the temperature
+Of the whole afternoon
+One long breath
+Is the smallest revolution
+
+
+[Bridge: vocal close, choir hums underneath, only piano — opens, does not resolve]
+(audible long inhale, 6 seconds)
+(audible long exhale, 8 seconds)
+That was a long breath
+You took one with me
+The afternoon is slightly different now
+You will not feel it as a miracle
+You will feel it as a small softness
+That you cannot quite explain
+And that is the work, that is the work
+
+
+[Outro: vocal soft, piano fading, choir lingers, long breaths continue]
+One long breath
+the smallest revolution
+one long breath`,
+  "incenso-ar/7": `[Vocal: ONE warm mezzo-contralto female voice, raw and exposed, intimate speaking quality, sl
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano, low fretless bass, vocal entering on bar 2 — no long instrumental openi
+
+
+[Verse 1]
+Hoje cabe em mim
+O dia que tenho
+Não o dia que pensei que ia ter
+Não o dia da outra mulher na fotografia
+O dia que tenho
+Cabe no peito que tenho
+No tempo que tenho
+Na disponibilidade que tenho
+
+
+[Verse 2]
+Caber em mim é uma decisão
+Não é resignação
+Caber em mim é dizer ao excesso
+Que ele não pertence aqui
+Caber em mim é alargar
+O perímetro do que aceito
+Caber em mim é encolher
+O perímetro do que persigo
+
+
+[Pre-Chorus]
+Caber em mim é matemática
+De aceitar o tamanho real
+Em vez do tamanho aspiracional
+Que me prometeram noutro lado
+
+
+[Chorus]
+Hoje cabe em mim
+O dia, o ar, eu mesma
+Hoje cabe em mim
+O que era para caber
+Não estiquei a pele
+Não cortei o coração
+Hoje cabe em mim
+E a paz é fisicamente notável
+
+
+[Verse 3]
+Há dias que não vão caber
+Há dias que vão transbordar
+Mas hoje — hoje é dia de caber
+E vou habitar este caber inteiro
+Não preciso de ser maior
+Não preciso de ser melhor
+Preciso de ser do tamanho
+Que sou hoje
+
+
+[Chorus: small female choir enters, hand-claps soft]
+Hoje cabe em mim
+O dia, o ar, eu mesma
+Hoje cabe em mim
+O que era para caber
+
+
+[Bridge: vocal close, choir hums underneath, only piano — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Mede o teu tamanho hoje
+Não em metros, em capacidade
+Quanto cabe em ti hoje
+Sem te machucares
+Talvez seja menos do que ontem
+Talvez seja mais do que amanhã
+Não importa
+Cabe o que cabe — e tu habitas o que cabe
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+Hoje cabe em mim
+o ar, eu mesma
+hoje cabe em mim`,
+  "incenso-ar/8": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+The lungs are older than the worry
+The lungs were here first
+Before the diagnosis, before the disappointment
+Before the news that broke last week
+The lungs were doing their work
+Quietly, without applause
+And the lungs will keep doing their work
+After the worry has had its day
+
+
+[Verse 2]
+Tonight the worry feels like the truth
+Tonight the worry feels like all there is
+But the lungs disagree, kindly
+The lungs say — I'm still here
+And the lungs are not lying
+And the lungs have been here every Tuesday
+For decades, for centuries through your line
+The lungs are older, the lungs know
+
+
+[Pre-Chorus]
+The worry will go to bed
+Or rearrange itself
+Or pack up entirely
+While the lungs continue, while the lungs continue
+
+
+[Chorus]
+The lungs are older than the worry
+The lungs were here first
+The lungs will be here last
+The worry is loud, the lungs are quiet
+The worry is fast, the lungs are patient
+The worry will exhaust itself eventually
+And the lungs will still be doing their work
+That is the longest comfort
+
+
+[Verse 3]
+Put your hand on your chest tonight
+Feel the lungs at their long work
+They are not arguing with the worry
+They are not even noticing it
+They are just rising and falling
+Rising and falling, rising and falling
+And you can join them
+You can join them without permission
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+The lungs are older than the worry
+The lungs were here first
+The lungs will be here last
+The worry is loud, the lungs are quiet
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+The thing in your head tonight
+Did not exist five years ago
+Will not exist five years from now
+But the lungs — the lungs are still going
+Five years before, five years from now
+The lungs are the long story
+The worry is the chapter
+And the lungs read every chapter without alarm
+
+
+[Final Chorus: full harmony stack, peaks]
+The lungs are older than the worry
+The lungs were here first
+The lungs will be here last
+The worry is loud, the lungs are quiet
+
+
+[Outro: vocal soft, kick fades]
+The lungs are older
+than the worry
+the lungs were here first
+the lungs will be here last`,
+  "incenso-ar/9": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+O ar de volta
+Não como prémio
+Não como recompensa por mérito
+Apenas — voltou
+Tinha-me ido sem avisar
+Anos com a respiração curta
+Anos a explicar a si mesma
+Que era assim, que tinha de ser
+
+
+[Verse 2]
+E numa terça à tarde
+Sem motivo, sem aviso
+O peito alargou de uma vez
+E o ar entrou inteiro
+Como quem volta a casa
+Sem ter pedido perdão
+Como quem se senta à mesa
+Como se nunca tivesse saído
+
+
+[Pre-Chorus]
+O ar de volta é graça
+Não é técnica
+O ar de volta é graça
+Não é mérito
+
+
+[Chorus]
+O ar de volta
+Não me prometeu nada
+E voltou
+O ar de volta
+A entrar pelo peito
+Como entrava antes de tudo
+O ar de volta
+Sem termos discutido
+Sem nos termos despedido bem
+
+
+[Verse 3]
+Saúdo o ar de volta
+Como saúdo um amigo
+Que esteve ausente sem explicar
+E que nem peço explicação
+Está aqui — basta isso
+Está aqui — e eu reparo
+Está aqui — e eu agradeço
+Está aqui — e eu canto
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic, dje
+O ar de volta
+Não me prometeu nada
+E voltou
+O ar de volta
+A entrar pelo peito
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising, djembe steady — opens, does
+(European Portuguese, Portugal accent:)
+Talvez o teu ar ainda não tenha voltado
+E eu não te prometo o regresso
+O ar não é justo
+O ar é antigo
+Mas há gestos que o convidam
+Janela aberta, mãos no peito, frase devagar
+Não te prometo o regresso
+Prometo-te os gestos do convite
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+O ar de volta
+e voltou
+o ar de volta
+sem me prometer nada
+
+
+[Outro: vocal warm, choir fading, djembe lingers]
+O ar de volta
+graça
+o ar de volta
+não pedi e veio`,
+  "incenso-ar/10": `[Vocal: ONE warm mezzo-contralto female voice, very tender on this track, intimate speaking q
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: solo felt-piano, warm Hammond pad very low, slow audible breathing, vocal entering on
+
+
+[Verse 1]
+(slow inhale, slow exhale)
+Soft landing
+The breath came back during the afternoon
+And by the evening I was sitting here
+With both feet on the ground
+And the chest doing its work
+Without my supervision
+This is the destination
+That nobody promised me
+
+
+[Verse 2]
+(slow inhale, slow exhale)
+The day is doing its work
+Without me — I am at the kitchen window
+The phone is silent, or maybe it's not
+I am not checking
+The body is breathing slow now
+After the long day of breathing fast
+The body is allowed
+The body has earned this
+
+
+[Pre-Chorus]
+Soft landing
+Not the high, not the low
+Soft landing
+The middle place where the body sits
+
+
+[Chorus]
+Soft landing
+The breath is back
+The day is doing its work without me
+Soft landing
+The chest is open
+The shoulders are lower
+Soft landing
+The version of evening
+Where I let the world be
+
+
+[Verse 3]
+(slow inhale, slow exhale)
+This is the landing the body wanted
+Not the crash, not the conquest
+The slow descent
+With nothing burning, nothing celebrated
+Tomorrow the breath may be short again
+But tonight, the breath is long
+And I will sleep with the long breath
+And the body will continue
+
+
+[Chorus: soft female choir hum enters, faraway]
+Soft landing
+The breath is back
+The day is doing its work without me
+Soft landing
+The chest is open
+
+
+[Bridge: vocal close, choir hums, only piano — opens, does not resolve]
+(audible slow inhale, 6 seconds)
+(audible slow exhale, 8 seconds)
+You may not have arrived yet
+You may still be in the high or the low
+But the soft landing is real
+The soft landing is reachable
+Not by force, by patience
+Tomorrow, the next day, eventually
+Soft landing is what the body returns to
+When you let the body lead
+
+
+[Outro: vocal soft, piano fading, slow breathing continues, choir lingers]
+(slow inhale, slow exhale)
+Soft landing
+the breath is back
+soft landing
+the body breathes slow
+
+
+
+
+Notas para o canal YouTube
+Posicionamento da playlist: EP3 entra como bálsamo. Funciona em qualquer hora do
+dia onde a ansiedade está activa — antes de uma reunião, depois de uma chamada
+difícil, à noite quando a coisa pesa. Diferentemente de De Pé (manhã) e Hoje Não (limite
+contra pressão), Ar é a respiração de fundo da playlist.
+
+Tracks-âncora deste EP: T1 Lembrar de Respirar, T5 Espaço Para o Ar, T9 Ar de Volta
+(PT — anthems suaves muito cantáveis); T2 Slow Breath, T8 The Lungs Are Older Than
+the Worry (EN — para alcance internacional).
+
+Capa sugerida: ângulo lateral, peito feminino em primeiro plano (vestido, decote alto),
+mão pousada no peito a sentir a respiração, luz suave. Cor #A8C4B5 na tipografia. Sem
+rosto.`,
+  "incenso-mexe/1": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+Mexe
+A primeira ordem que dou a mim mesma
+Não pensa, mexe
+Não decide, mexe
+Não espera vontade, mexe
+A vontade não chega antes
+A vontade chega depois
+Mexe primeiro, e a vontade vem
+
+
+[Verse 2]
+Levanto, ando até à porta
+Toco no batente, volto
+Já mexi
+Já mexi e não morri
+A primeira vez é assim
+Pequena, ridícula, suficiente
+A primeira vez é a porta
+Que abre todas as outras
+
+
+[Pre-Chorus]
+Mexe não é exercício
+Mexe não é projeto
+Mexe é o gesto mais antigo
+Que o corpo conhece bem
+
+
+[Chorus]
+Mexe
+Eu mexo, vem comigo
+Mexe
+A casa está cansada de te ver parada
+Não te peço a corrida
+Não te peço o ginásio
+Mexe
+Apenas mexe
+E o resto vai aprendendo
+
+
+[Verse 3]
+Lavo a louça e mexe
+Estendo a roupa e mexe
+Vou ao quintal e mexe
+Subo as escadas e mexe
+A vida inteira é mexe
+Em cada passo, em cada gesto
+Tu sabes mexer-te
+Lembra-te que tu sabes
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic, dje
+Mexe
+Eu mexo, vem comigo
+Mexe
+A casa está cansada de te ver parada
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising, djembe steady — opens, does
+(European Portuguese, Portugal accent:)
+Estás a ouvir isto sentada
+Levanta-te agora — só por dois segundos
+Se voltares a sentar-te logo está bem
+Mas levanta-te agora
+Não pelo programa, pelo gesto
+Os teus joelhos sabem o que fazer
+A tua coluna sabe o que fazer
+Confia no que sabe sem ti
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Mexe
+Eu mexo, vem comigo
+Mexe
+A casa está cansada
+
+
+[Outro: vocal warm, choir fading, djembe lingers]
+Mexe
+vem comigo
+mexe
+e o resto vai aprendendo`,
+  "incenso-mexe/2": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+Get up with me
+I'm not asking you to lead
+I'm not asking you to follow
+Just walk beside me, that's enough
+I'm putting my shoes on right now
+I'm putting my jacket on right now
+I'm putting my keys in the pocket right now
+And I'm walking — and you can walk with me
+
+
+[Verse 2]
+You don't have to talk
+You don't have to think
+You just have to put one foot in front of the other
+And keep doing it for ten minutes
+We can walk to the corner
+We can walk to the next corner
+We can walk to the bench, and sit
+The point is the walking, not the destination
+
+
+[Pre-Chorus]
+Get up with me
+The hardest part is the first step
+Get up with me
+And the second step is easier
+
+
+[Chorus]
+Get up with me
+I'm not asking you to lead
+I'm asking you to walk beside
+Get up with me
+I'm doing this anyway
+You can do it too, with me
+Or you can do it later, alone
+But the door is open, and I'm walking now
+
+
+[Verse 3]
+This is what we needed
+A walking partner who doesn't need conversation
+A walking partner who doesn't grade you
+A walking partner who just walks
+The body doesn't need motivation
+The body needs company
+And company can be a song
+Company can be this song
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+Get up with me
+I'm not asking you to lead
+I'm asking you to walk beside
+Get up with me
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+You're sitting somewhere right now
+The chair is comfortable
+The chair has been comfortable for too long
+Get up — just for the duration of this bridge
+Just walk to the kitchen, to the window, to the door
+You don't have to leave the house
+You just have to stop being one with the chair
+The chair will still be there
+
+
+[Final Chorus: full harmony stack, peaks]
+Get up with me
+I'm not asking you to lead
+I'm asking you to walk beside
+Get up with me
+
+
+[Outro: vocal soft, kick fades]
+Get up with me
+walk beside
+get up with me
+the door is open`,
+  "incenso-mexe/3": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, footstep texture, vocal entering on bar 2, kick f
+
+
+[Verse 1]
+Anda comigo
+Saí de casa há quinze minutos
+Estou na rua de baixo
+A passada é rápida mas não é corrida
+Anda comigo
+Não tenho destino
+Tenho rua, tenho passos
+Tenho ar a entrar pelo peito
+
+
+[Verse 2]
+Não me importa para onde vamos
+Importa-me que vamos juntas
+Mesmo sem nos vermos
+Mesmo sem nos falarmos
+Tu na tua rua, eu na minha
+Mas a passada é a mesma
+A música é a mesma
+E isso já é estarmos juntas
+[Pre-Chorus]
+Anda comigo
+Não te peço explicação
+Anda comigo
+Não te peço companhia eterna
+Apenas — esta hora
+
+
+[Chorus]
+Anda comigo
+Não tenho mapa, tenho passada
+Anda comigo
+A rua é boa para nós duas
+Não preciso da tua palavra
+Preciso da tua presença
+Anda comigo
+E a manhã arruma-se à volta de nós
+
+
+[Verse 3]
+Quando voltarmos a casa
+Vamos chegar diferentes
+Não diferentes mulheres
+A mesma mulher mais arejada
+A passada arruma a cabeça
+A passada arruma o peito
+A passada faz o que terapias antigas
+Demoraram anos a fazer
+
+
+[Chorus]
+Anda comigo
+Não tenho mapa, tenho passada
+Anda comigo
+A rua é boa para nós duas
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going, footsteps surge — opens, does not re
+Há um quarteirão à tua espera
+Um quarteirão pequeno, conhecido, gasto
+Nem sequer precisa de ser bonito
+Anda à volta dele uma vez, devagar
+Não é exercício
+É comemoração de teres pernas
+E hoje as pernas estão a postos
+E as pernas têm saudade
+
+
+[Final Chorus: full harmony stack, sidechained pads peak]
+Anda comigo
+Não tenho mapa, tenho passada
+Anda comigo
+A rua é boa para nós duas
+
+
+[Outro: vocal soft, kick fades, footsteps lingering]
+Anda comigo
+a rua é boa
+anda comigo
+a manhã arruma-se`,
+  "incenso-mexe/4": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, hand-claps polyrhythmic, vocal entering on bar 2,
+
+
+[Verse 1]
+Dance without asking
+The body knew before the music started
+The hips were already moving slightly
+Before the bar count began
+Dance without asking
+Permission is for performance
+This is not performance
+This is the body remembering itself
+
+
+[Verse 2]
+Nobody is watching
+And nobody needs to be
+The kitchen is the dance floor
+The corridor is the dance floor
+The bedroom mirror is the dance floor
+The bathroom is the dance floor
+Anywhere with two square metres
+Is the dance floor
+
+
+[Pre-Chorus]
+Dance without asking
+Nobody is the judge
+Dance without asking
+The body has its own grammar
+And the grammar is fine
+
+
+[Chorus]
+Dance without asking
+The body knew before the music started
+Dance without asking
+The hips are wiser than the head
+The body knows the rhythm
+The body has always known the rhythm
+Dance without asking
+And see what comes loose
+
+
+[Verse 3]
+Three minutes will change the chest
+Three minutes will rearrange the day
+The body will sweat just enough
+To remember it has skin
+The lungs will work harder for once
+And the lungs are pleased about that
+Dance without asking
+And the body will thank you tonight
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+Dance without asking
+The body knew before the music started
+Dance without asking
+The hips are wiser than the head
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+Right now, where you are
+Wherever you are, however you are
+Move one part of the body for ten seconds
+Hand, foot, hip, shoulder
+You don't have to do it well
+You don't have to do it pretty
+You just have to do it
+And the body will remember the rest
+
+
+[Final Chorus: full harmony stack, peaks]
+Dance without asking
+The body knew before the music started
+Dance without asking
+The hips are wiser than the head
+
+
+[Outro: vocal soft, kick fades]
+Dance without asking
+the body knew
+dance without asking`,
+  "incenso-mexe/5": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+Suor bom
+A camisola colada à testa
+A nuca quente
+A respiração funda
+Suor bom
+O suor de ter caminhado
+O suor de ter dançado
+O suor de ter trabalhado o corpo
+
+
+[Verse 2]
+Há suor que é pânico
+E há suor que é prova
+O primeiro veio comigo durante anos
+O segundo aprendi tarde
+O suor bom é vitamina
+O suor bom é purga
+O suor bom é a confissão do corpo
+De que esteve a viver
+
+
+[Pre-Chorus]
+Suor bom não é vergonha
+Suor bom é assinatura
+Suor bom é o nome
+Que o corpo deixa no dia
+
+
+[Chorus]
+Suor bom
+O suor que prova
+Que estive a viver
+Suor bom
+A roupa molhada
+A pele quente
+O coração rápido
+Tudo prova de existência
+Suor bom
+
+
+[Verse 3]
+Anos a fugir do suor
+Anos a desodorizar a vida
+Hoje aceito o suor
+Como aceito a chuva
+Vem do corpo, vem do esforço
+Vem do trabalho honesto da carne
+Que carregou a vida pelas escadas
+Que pôs a roupa a estender ao sol
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic, dje
+Suor bom
+O suor que prova
+Que estive a viver
+Suor bom
+A roupa molhada
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising, djembe steady — opens, does
+(European Portuguese, Portugal accent:)
+Suor é água que sai
+Suor é água que entrou outro dia
+Suor é circulação
+Suor é confirmação
+A pessoa que sua hoje
+É a pessoa que se moveu hoje
+E a pessoa que se moveu hoje
+Vai dormir melhor esta noite
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Suor bom
+o suor que prova
+suor bom
+estive a viver
+
+
+[Outro: vocal warm, choir fading, djembe lingers]
+Suor bom
+assinatura
+suor bom
+estive a viver`,
+  "incenso-mexe/6": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, footstep texture, vocal entering on bar 2, kick f
+
+
+[Verse 1]
+Walk it off
+The phrase used to annoy me
+It sounded like dismissal
+Like nothing matters, like get over it
+Now I understand it differently
+Walk it off is digestion
+Walk it off is metabolism
+Walk it off is what the body does
+
+
+[Verse 2]
+The argument with my colleague
+The terrible message at noon
+The thing my mother said three days ago
+That has been sitting in the chest
+Walk it off
+For thirty minutes
+The body sorts what the head couldn't
+The body files what the head left scattered
+
+
+[Pre-Chorus]
+Walk it off is not denial
+Walk it off is dignity
+Walk it off is the ancient remedy
+That worked when nothing else did
+
+
+[Chorus]
+Walk it off
+Not denial — digestion
+Walk it off
+The body sorts the day
+The streets are the therapist
+The pavement is the couch
+Walk it off
+And the chest is lighter at the corner
+
+
+[Verse 3]
+I walked off three things this week
+A worry that had no answer
+A grief that had no shape
+A tiredness that had no name
+None of them were solved
+But all of them got smaller
+Smaller doesn't mean gone
+Smaller means manageable
+
+
+[Chorus]
+Walk it off
+Not denial — digestion
+Walk it off
+The body sorts the day
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+You have something to walk off this week
+You know what it is
+You don't have to name it to walk it off
+The body knows the name
+And the body wants the walk
+Twenty minutes, thirty
+The streets are wiser than your group chat
+The streets digest in silence
+
+
+[Final Chorus: full harmony stack, sidechained pads peak]
+Walk it off
+Not denial — digestion
+Walk it off
+The body sorts the day
+
+
+[Outro: vocal soft, kick fades]
+Walk it off
+the body sorts
+walk it off
+the chest is lighter`,
+  "incenso-mexe/7": `[Vocal: ONE warm mezzo-contralto female voice, raw and exposed, intimate speaking quality, sl
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano, low fretless bass, vocal entering on bar 2 — no long instrumental openi
+
+
+[Verse 1]
+Levanta-te devagar
+Não como quem foge
+Como quem aceita o convite
+Sem se esforçar para parecer entusiasmado
+Levanta-te devagar
+A coluna agradece o devagar
+Os joelhos agradecem o devagar
+A cabeça agradece o devagar
+
+
+[Verse 2]
+Não tens de superar nada
+Não tens de provar a ninguém
+Tens de te encontrar de pé
+Naquela posição familiar e antiga
+Vertical, com os pés no chão
+Como há milhões de antepassados
+Antes de te terem dito
+Que tinhas de fazer mais
+
+
+[Pre-Chorus]
+Levanta-te devagar
+A vida não é pressa
+Levanta-te devagar
+O dia tem horas suficientes
+
+
+[Chorus]
+Levanta-te devagar
+Não tens de te superar
+Tens de te encontrar de pé
+Levanta-te devagar
+A passada vem depois
+A passada espera por ti
+Levanta-te devagar
+E o dia vai começando a teu ritmo
+
+
+[Verse 3]
+Vou levantar-me hoje sete vezes
+Da cama, da cadeira, do sofá
+Cada vez vou ser devagar
+Cada vez vou agradecer aos joelhos
+Cada vez vou notar o privilégio
+Da pessoa que ainda se levanta
+Sem ajuda, com tempo, com música
+Levantar-se devagar é privilégio agradecido
+
+
+[Chorus: small female choir enters, hand-claps soft]
+Levanta-te devagar
+Não tens de te superar
+Tens de te encontrar de pé
+Levanta-te devagar
+
+
+[Bridge: vocal close, choir hums underneath, only piano — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Se estás na cama agora
+Não te peço para saltares
+Peço-te três centímetros
+Os primeiros três centímetros
+Que separam estar deitada de estar sentada
+A cama não te vai engolir nesses três
+A cama não vai contar-se de ti
+Os três centímetros são teus
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+Levanta-te devagar
+encontra-te de pé
+levanta-te devagar
+não há pressa`,
+  "incenso-mexe/8": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+Move and the mood follows
+This is the order of operations
+That nobody told me when I was young
+I waited for the mood to come first
+And it did not come, not for years
+Then I started moving anyway
+And the mood — eventually — followed
+Like a slow dog catching up
+
+
+[Verse 2]
+Walk first, want later
+Stand first, decide later
+Step first, feel later
+The body has the gift of motion
+The mood has the gift of arrival
+And the mood arrives by walking
+Not by sitting and considering
+Whether to walk
+
+
+[Pre-Chorus]
+The mood is not the boss
+The mood is the passenger
+Move and the mood follows
+Move and the mood arrives
+
+
+[Chorus]
+Move and the mood follows
+The mood doesn't lead
+The body leads
+Move and the mood follows
+The order is body first
+The mood catches up later
+And the mood will catch up
+The mood always catches up
+
+
+[Verse 3]
+This is the secret nobody printed
+On the front of the magazine
+This is the secret the elderly women know
+Who get up at six and walk to the bakery
+This is the secret the mothers know
+Who clean the kitchen before they cry
+This is the secret the body always knew
+And waited for the mind to figure out
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+Move and the mood follows
+The mood doesn't lead
+The body leads
+Move and the mood follows
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+If the mood is not here this morning
+Don't wait for it
+Move first
+Walk to the kettle, walk to the door
+Walk to the corner, walk back
+By the time you sit down again
+The mood will be slightly different
+And slightly different is everything
+
+
+[Final Chorus: full harmony stack, peaks]
+Move and the mood follows
+The mood doesn't lead
+The body leads
+Move and the mood follows
+
+
+[Outro: vocal soft, kick fades]
+Move and the mood follows
+the body leads
+move and the mood follows
+the order matters`,
+  "incenso-mexe/9": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, djembe, timbila, vocal entering o
+
+
+[Verse 1]
+A ginga voltou
+Não a aprendi em aulas
+Não veio de um curso
+Não veio de um espelho
+A ginga voltou no quadril
+Quando a música bateu na rua
+A ginga é mais antiga que a minha mãe
+A ginga é mais antiga que a avó da avó
+
+
+[Verse 2]
+Foi tirada à força um tempo
+Por escolas que ensinavam o andar reto
+Por chefes que ensinavam o sentar formal
+Por séculos que ensinavam vergonha do corpo
+Mas a ginga é água
+A água lembra o caminho
+E hoje, hoje voltou ao quadril
+Sem me ter pedido autorização
+
+
+[Pre-Chorus]
+A ginga é herança
+Não é frivolidade
+A ginga é a forma do corpo africano
+A ler o ritmo do mundo
+
+
+[Chorus]
+A ginga voltou
+Não a aprendi nas aulas
+Aprendi-a no sangue
+A ginga voltou
+A passada bonita, o quadril vivo
+O ombro a contar a sua versão da canção
+A ginga voltou
+E a rua reconheceu-me
+
+
+[Verse 3]
+Levam séculos a tirar a ginga
+A ginga volta numa terça
+Levam séculos a ensinar o reto
+A ginga volta numa quarta
+A ginga é forma de resistência
+A ginga é forma de memória
+A ginga é forma de eu dizer ao mundo
+Que ainda não me converteram inteira
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic, dje
+A ginga voltou
+Não a aprendi nas aulas
+Aprendi-a no sangue
+A ginga voltou
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising, djembe steady — opens, does
+(European Portuguese, Portugal accent:)
+Se há ginga na tua família
+Sabes do que estou a falar
+Se foi tirada da tua família
+Também sabes — pelo lado da ausência
+A ginga reaprende-se
+Não com técnica, com permissão
+Põe a música e deixa o corpo
+Lembrar-se daquilo que ele sempre soube
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted, djembe + timbila + Hammond
+A ginga voltou
+A ginga voltou
+A passada bonita
+A rua reconheceu-me
+
+
+[Outro: vocal warm, choir fading, djembe and timbila lingering]
+A ginga voltou
+no sangue
+a ginga voltou
+e ficou`,
+  "incenso-mexe/10": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+After the walk
+The day is a different day
+The chest is lighter, the head is quieter
+The thing I was carrying is smaller now
+After the walk
+I am at the kitchen window
+With water, with patience
+With the small smile of a woman who moved
+
+
+[Verse 2]
+I didn't fix anything
+The job is still the job
+The grief is still the grief
+The body in the mirror is still the same body
+But after the walk
+The relationship I have with all those things
+Has shifted by exactly five degrees
+And five degrees is enough
+
+
+[Pre-Chorus]
+After the walk
+The mood arrived, finally
+After the walk
+The mood was waiting at the corner
+With my name on a piece of paper
+
+
+[Chorus]
+After the walk
+The day is a different day
+After the walk
+I didn't fix anything — I just moved
+The body is the medicine
+The streets are the dosage
+After the walk
+The afternoon has shape again
+
+
+[Verse 3]
+Tomorrow I will walk again
+Maybe shorter, maybe longer
+The walk does not need consistency
+The walk needs repetition
+And repetition does not mean perfection
+Repetition means showing up
+Showing up at the door with the shoes on
+That is the whole work, that is the whole work
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+After the walk
+The day is a different day
+After the walk
+I didn't fix anything — I just moved
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+You don't have to walk for an hour
+You don't have to walk fast
+You have to walk
+Some days for ten minutes
+Some days for thirty
+Some days you walk to the corner and back
+And that counts, and that counts
+That counts as the work being done
+
+
+[Final Chorus: full harmony stack, peaks]
+After the walk
+The day is a different day
+After the walk
+I didn't fix anything — I just moved
+
+
+[Outro: vocal soft, kick fades]
+After the walk
+the day is different
+after the walk
+the body is the medicine
+
+
+
+
+Notas para o canal YouTube
+Posicionamento da playlist: EP4 entra como o ponto de maior energia da playlist
+Elevar. Funciona melhor à hora de maior queda — meio da tarde, quando o corpo está
+parado no escritório, ou ao fim da tarde quando a pessoa precisa de tirar o peso do dia.
+Diferente dos outros EPs, este é para mover o corpo.
+
+Tracks-âncora deste EP: T1 Mexe, T5 Suor Bom, T9 A Ginga (anthems PT — muito
+cantáveis e com identidade africana clara); T2 Get Up With Me, T4 Dance Without
+Asking (pulse EN — para playlists internacionais de movimento/exercício).
+
+Capa sugerida: silhueta feminina de costas, em movimento, contornos suaves a soltar
+suor (não graphic, contemplativo). Cor #D67A55 na tipografia. Sem rosto, mantém
+estética Loranne.
+
+Cross-listing: as tracks deste EP funcionam excelentes em playlists secundárias de
+"Movimento Suave" ou "Caminhada Matinal" no YouTube — alcance além da playlist
+Elevar principal.`,
+  "incenso-volta-a-mim/1": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses but never
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+[Intro: gospel piano with rich chords, Hammond organ swell (gentle), vocal entering on bar 2
+
+
+[Verse 1]
+Volta a mim
+Não à mulher das fotografias antigas
+Não à dos anos antes do casamento
+Não à dos anos antes do filho
+Volta a mim
+À que sou agora
+Que tem o corpo destes anos
+Que tem a voz destes anos
+
+
+[Verse 2]
+Andei muito tempo a tentar voltar
+À versão anterior
+Como quem procura uma chave
+Numa porta que já não existe
+Hoje aprendi que a chave é outra
+A chave abre a porta de hoje
+A mulher que voltou
+É mais nova porque é mais inteira
+
+
+[Pre-Chorus]
+Volta a mim não é nostalgia
+Volta a mim é descoberta
+Volta a mim é encontrar quem sou
+Por baixo dos papéis que joguei
+
+
+[Chorus]
+Volta a mim
+Não a quem fui
+À que sou agora
+Volta a mim
+Com a história, com as cicatrizes
+Com a textura das décadas
+Volta a mim
+A mulher inteira que ficou
+Quando os papéis se foram caindo
+
+
+[Verse 3]
+Mãe sou ainda
+Mas mãe não é o nome todo
+Mulher de alguém sou ainda
+Mas isso não é o nome todo
+Filha sou ainda
+Mas isso não é o nome todo
+Volta a mim — ao nome de baixo
+Que é apenas o meu
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic]
+Volta a mim
+Não a quem fui
+À que sou agora
+Volta a mim
+Com a história, com as cicatrizes
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Não te peço para voltares atrás
+Atrás é mentira, atrás é fotografia
+Pede-te para voltares para baixo
+Para a mulher que está debaixo dos papéis
+Que tu jogas no mundo todos os dias
+Ela está aí, ela esperou-te
+E ela não está zangada
+Ela está aliviada
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Volta a mim
+À que sou agora
+Volta a mim
+A mulher inteira que ficou
+
+
+[Outro: vocal warm, choir fading]
+Volta a mim
+descoberta
+volta a mim
+inteira`,
+  "incenso-volta-a-mim/2": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+Coming home to myself
+Not to the apartment, not to the city
+To the body — this exact body
+With the lines and the gravity
+Coming home is interior
+Coming home is the inside of the chest
+Coming home is the woman saying
+Welcome back, you took your time
+
+
+[Verse 2]
+The job did not give me back
+The mother did not give me back
+The lover did not give me back
+The grief did not give me back
+I gave myself back, eventually
+With small motions over many months
+Cup by cup, walk by walk
+Decision by small decision
+
+
+[Pre-Chorus]
+Coming home is not arrival
+Coming home is practice
+Coming home happens at three p.m.
+On a Wednesday, with no fanfare
+
+
+[Chorus]
+Coming home to myself
+Not the way I was
+The way I am now
+Coming home to myself
+With the new shape, with the slower pace
+With the things I let go
+And the things I picked up
+On the long road of being absent
+
+
+[Verse 3]
+The me who left is not the me who comes back
+The me who comes back has been somewhere
+The me who comes back has spent years
+Doing the work of dispersal
+And now does the work of return
+Slowly, with a different posture
+Coming home is gathering
+Coming home is reassembling
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+Coming home to myself
+Not the way I was
+The way I am now
+Coming home to myself
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+You may have been gone for years
+Years inside a marriage that needed you
+Years inside a job that drained you
+Years inside a sadness that swallowed you
+Coming home is not blame
+Coming home is reassembly
+And you are allowed to come home
+Slowly, with the wisdom of the road
+
+
+[Final Chorus: full harmony stack, peaks]
+Coming home to myself
+Not the way I was
+The way I am now
+Coming home to myself
+
+
+[Outro: vocal soft, kick fades]
+Coming home
+the way I am now
+coming home
+welcome back`,
+  "incenso-volta-a-mim/3": `[Vocal: ONE warm mezzo-contralto female voice, raw and exposed, intimate speaking quality, sl
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano, low fretless bass, vocal entering on bar 2 — no long instrumental openi
+
+
+[Verse 1]
+Há uma mulher debaixo
+De todos os papéis que joguei
+Não é menina
+Não é versão antiga
+É a mulher debaixo
+A que respira sem ser observada
+A que sente sem ter de explicar
+A que existe antes da função
+
+
+[Verse 2]
+Levei décadas a cobri-la
+Não com más intenções
+Com o trabalho que a vida pedia
+Com os papéis que precisavam ser jogados
+Mãe foi um deles
+Profissional foi outro
+Filha foi outro, esposa foi outro
+E ela — ela esperou debaixo
+
+
+[Pre-Chorus]
+Hoje toco-lhe na cara
+Hoje aprendo o nome dela
+Hoje deixo-a falar comigo
+Antes de o dia me chamar para o palco
+
+
+[Chorus]
+A mulher debaixo
+Dos papéis que joguei
+A que ainda não sabia
+Que estava à minha espera
+Não me cobra ausência
+Não me pede desculpa
+Apenas — está aqui
+A respirar à minha frente
+Há quanto tempo, há quanto tempo
+
+
+[Verse 3]
+Ela é menos espectacular
+Do que as personagens que joguei
+Ela é mais lenta, mais quieta
+Ela tem menos opiniões
+Ela tem mais paciência
+Ela tem mais ar
+Ela é quem sou na verdade
+Quando ninguém precisa de mim
+
+
+[Chorus: small female choir enters, hand-claps soft]
+A mulher debaixo
+Dos papéis que joguei
+A que ainda não sabia
+Que estava à minha espera
+
+
+[Bridge: vocal close, choir hums underneath, only piano — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Há uma mulher debaixo dos teus papéis
+Que não é a do espelho de manhã
+Que não é a da fotografia de família
+É a que existia antes
+E que continuará a existir depois
+Vai-lhe bater à porta esta noite
+E vê o que ela tem para te dizer
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+A mulher debaixo
+estava à espera
+a mulher debaixo
+respira agora`,
+  "incenso-volta-a-mim/4": `[Vocal: ONE warm mezzo-contralto female voice, very tender on this track, intimate speaking q
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: felt-piano, warm Hammond pad very low, vocal entering on bar 2 — no long instrumental
+
+
+[Verse 1]
+The smaller self
+Is the one I am with no audience
+The one with the cup of tea, alone
+The one who watches the sky for no reason
+The one who reads the sentence twice
+Not because I missed it
+But because I liked it
+And there is nobody to impress
+
+
+[Verse 2]
+The smaller self is quiet
+The smaller self does not announce
+The smaller self does not perform
+The smaller self does not curate
+The smaller self takes the long way home
+The smaller self picks up a leaf
+The smaller self does not photograph anything
+And does not regret not photographing
+
+
+[Pre-Chorus]
+The smaller self is not less of me
+The smaller self is more
+The bigger self was the costume
+The smaller self is the body underneath
+
+
+[Chorus]
+The smaller self
+Is not less of me
+It is more
+The smaller self
+Is the woman who is not selling
+Is the woman who is not posting
+Is the woman who is not climbing
+And finally
+Is the woman who can be found
+
+
+[Verse 3]
+I will go back to the bigger self tomorrow
+I have to, the world wants the bigger one
+The world pays the bigger one
+The world likes the bigger one
+But every day I will return
+For an hour or two
+To the smaller self
+Where I actually live
+
+
+[Chorus: soft female choir hum enters, faraway]
+The smaller self
+Is not less of me
+It is more
+The smaller self
+Is the woman who can be found
+
+
+[Bridge: vocal close, choir hums, only piano — opens, does not resolve]
+You have a smaller self
+That nobody at work has met
+That nobody on social media has met
+That maybe even the people closest to you
+Have only met in glimpses
+Spend an hour with her this week
+She has been waiting
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+The smaller self
+is more
+the smaller self
+the woman who can be found`,
+  "incenso-volta-a-mim/5": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+Reaprendo
+A respirar fundo
+Reaprendo
+A comer devagar
+Reaprendo
+A dizer não sem ensaiar
+Reaprendo
+A ler um livro até ao fim
+
+
+[Verse 2]
+Reaprendo a chorar quando faz falta
+Reaprendo a rir alto sem vergonha
+Reaprendo a dizer "não sei"
+E a deixar a frase ficar sem completar
+Reaprendo a olhar para o tecto
+Sem culpa de não estar a produzir
+Reaprendo a estar comigo
+Sem ter de ter resultados
+
+
+[Pre-Chorus]
+Reaprender não é começar do zero
+Reaprender é reconhecer
+O que sempre soube
+Por debaixo do que esqueci
+
+
+[Chorus]
+Reaprendo
+Não é começar do zero
+É lembrar-me
+Do que sempre soube
+A criança em mim sabia
+A avó em mim sabia
+Reaprendo do sítio antigo
+Onde o saber estava guardado
+
+
+[Verse 3]
+Reaprendo a tocar nas plantas com gentileza
+Reaprendo a notar o cheiro do café
+Reaprendo a ouvir a outra pessoa
+Sem preparar a resposta enquanto fala
+Reaprendo o olhar nos olhos
+Sem desviar para o telefone
+Reaprendo o estar aqui
+A presença é a primeira reaprendizagem
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic]
+Reaprendo
+Não é começar do zero
+É lembrar-me
+Do que sempre soube
+[Bridge: vocal close, choir hums underneath, warm strings rising — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+Reaprender é a forma adulta de aprender
+Não é menos digno que o aprender da menina
+É mais — porque é deliberado
+Porque sabes do que precisas agora
+Porque sabes o que perdeste no caminho
+Reaprende sem pressa
+Reaprende sem performance
+Cada coisa reaprendida é uma vitória sem palmas
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Reaprendo
+Não é começar do zero
+Reaprendo
+Lembro-me
+
+
+[Outro: vocal warm, choir fading]
+Reaprendo
+o que sempre soube
+reaprendo
+do sítio antigo`,
+  "incenso-volta-a-mim/6": `[Vocal: ONE warm mezzo-contralto female voice, intimate speaking quality opening, fuller on c
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: deep house pads with Hammond stabs, vocal entering on bar 2, kick from bar 4 — no lon
+
+
+[Verse 1]
+The pleasure of small things
+Is what came back first
+The hot tea in the morning, with milk
+The shirt fresh out of the wash
+The book at exactly the right page
+The walk where the light hit the wall
+These were here before I was lost
+These were here all along, waiting
+
+
+[Verse 2]
+The big pleasures are tourists
+They arrive, they shine, they leave
+They take photographs on the way out
+The small pleasures are residents
+They live in the kitchen, in the corridor
+They are not impressed by themselves
+They are just there, doing their work
+Of making a Tuesday survivable
+
+
+[Pre-Chorus]
+The pleasure of small things
+Is the pleasure that lasts
+The big pleasures are tourists
+The small pleasures are family
+
+
+[Chorus]
+The pleasure of small things
+Is the pleasure that lasts
+The big pleasures are tourists
+The small pleasures are family
+The hot tea, the clean shirt
+The right book, the soft light
+These are the way back to the self
+The architecture of return
+
+
+[Verse 3]
+I keep a small list now
+Not of accomplishments
+Of small pleasures noticed
+The way the orange peeled in one piece
+The way the cat sat in the patch of sun
+The way the friend laughed at the joke
+The way the neighbour waved across the street
+This is the list of homecoming
+
+
+[Chorus: full harmony stack, sidechained pads peak]
+The pleasure of small things
+Is the pleasure that lasts
+The big pleasures are tourists
+The small pleasures are family
+
+
+[Bridge: vocal opens, harmonies stack, kick keeps going — opens, does not resolve]
+Make your list today
+Three small pleasures noticed
+Don't make them sound poetic
+Don't make them sound deep
+Just notice them — that is the work
+That is the only work that this returning needs
+The noticing is the practice
+The noticing is the path
+
+
+[Final Chorus: full harmony stack, peaks]
+The pleasure of small things
+Is the pleasure that lasts
+The big pleasures are tourists
+The small pleasures are family
+
+
+[Outro: vocal soft, kick fades]
+The pleasure of small things
+the architecture of return
+the pleasure of small things
+family, not tourist`,
+  "incenso-volta-a-mim/7": `[Vocal: ONE warm mezzo-contralto female voice, raw and exposed, intimate speaking quality, sl
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano, low fretless bass, vocal entering on bar 2 — no long instrumental openi
+
+
+[Verse 1]
+A voz que tinha antes
+Dos chefes que ensinaram
+Dos consensos que pesavam
+Dos cuidados de quem não era eu
+A voz que tinha antes
+De aprender a moderar
+De aprender a domesticar
+De aprender a apresentar
+
+
+[Verse 2]
+Essa voz não morreu
+Está debaixo da civilizada
+Está à espera de licença
+Que talvez eu não tenha de pedir
+Hoje aprendo a dar-lhe ar
+Em pequenos momentos
+Numa frase à amiga
+Numa anotação que não publico
+
+
+[Pre-Chorus]
+A voz debaixo da civilizada
+Não é selvagem
+É exacta
+É a voz que diz o nome verdadeiro
+[Chorus]
+A voz que tinha antes
+Dos chefes, dos consensos, dos cuidados
+A voz que ainda está aqui
+Debaixo da civilizada
+Não a uso em todo o lado
+Sei escolher a hora e o sítio
+Mas sei que ela é minha
+E que ela me conhece melhor
+
+
+[Verse 3]
+Hoje escrevi sem editar
+Hoje falei sem ensaiar
+Hoje pensei alto sem corrigir
+Hoje fui exacta em vez de educada
+A voz que tinha antes
+Reaparece nos pequenos espaços
+Nas margens da agenda
+Nas pausas entre as funções
+
+
+[Chorus: small female choir enters, hand-claps soft]
+A voz que tinha antes
+A voz que ainda está aqui
+A voz que tinha antes
+Debaixo da civilizada
+
+
+[Bridge: vocal close, choir hums underneath, only piano — opens, does not resolve]
+(European Portuguese, Portugal accent:)
+A tua voz antes ainda existe
+Não está perdida — está organizada
+Sob camadas de adaptação úteis
+Que não te peço para deitar fora
+Mas há momentos, há sítios
+Onde podes deixá-la falar
+E ela vai dizer-te coisas
+Que tu já tinhas esquecido de saber
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+A voz que tinha antes
+ainda está aqui
+a voz que tinha antes
+debaixo da civilizada`,
+  "incenso-volta-a-mim/8": `[Vocal: ONE warm mezzo-contralto female voice, very tender on this track, intimate speaking q
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: felt-piano, warm Hammond pad very low, vocal entering on bar 2 — no long instrumental
+
+
+[Verse 1]
+The slow yes
+Is the yes that takes time
+That sits at the table
+That checks with the body
+The fast yes used to live in my mouth
+Before the question even finished
+The fast yes was a reflex
+A trained smile, a trained sentence
+
+
+[Verse 2]
+Now the yes takes longer
+Now the yes goes through committee
+Now the yes asks the body first
+Now the yes checks the calendar
+The slow yes is suspicious of pressure
+The slow yes does not honour urgency
+The slow yes asks — is this for me
+Or is this for someone else's deadline
+[Pre-Chorus]
+The slow yes
+Is the yes I trust now
+The fast yes was always somebody else
+Speaking through my voice
+
+
+[Chorus]
+The slow yes
+Is the yes I trust now
+The slow yes
+Is the woman returning
+She does not say yes to be liked
+She does not say yes to be peaceful
+She says yes when the body says yes
+And the body knows
+
+
+[Verse 3]
+Sometimes the slow yes is no
+Sometimes the slow yes is "let me think"
+Sometimes the slow yes is "tomorrow"
+Sometimes the slow yes is silence, then yes
+The slow yes has many forms
+But all of them belong to me
+Not to the asking person
+Not to the asking moment
+
+
+[Chorus: soft female choir hum enters, faraway]
+The slow yes
+Is the yes I trust now
+The slow yes
+Is the woman returning
+
+
+[Bridge: vocal close, choir hums, only piano — opens, does not resolve]
+There is a yes coming for you this week
+That you don't have to give immediately
+You can take a breath
+You can take an hour
+You can take a day
+The asking can wait
+And if the asking can't wait
+The answer is probably no
+
+
+[Outro: vocal soft, piano fading, choir lingers]
+The slow yes
+the woman returning
+the slow yes
+that I trust now`,
+  "incenso-volta-a-mim/9": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: European Portuguese (Lisbon accent), NOT Brazilian, NOT African]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+
+
+[Verse 1]
+Volta inteira
+Não em peças, não em fases
+Não na manhã uma e à tarde outra
+Não na semana uma e ao domingo outra
+Volta inteira
+A mulher que sou agora
+A mulher que sou aqui
+A mulher que sou hoje
+
+
+[Verse 2]
+Não quero a vida em compartimentos
+Não quero pôr a alma na prateleira durante o dia
+E só ser eu à noite
+Quando ninguém vê
+Quero a alma na sala de reunião
+Quero a alma na fila do supermercado
+Quero a alma a falar com o filho
+Quero a alma inteira em todo o lado
+
+
+[Pre-Chorus]
+Volta inteira é projeto longo
+Não me prometo perfeição
+Prometo-me direção
+A mesma mulher em todo o lado
+
+
+[Chorus]
+Volta inteira
+Não em peças, não em fases
+A mulher inteira que voltou
+E que ficou
+Não a hospedo, não a visito
+Sou ela em todos os quartos
+Volta inteira
+Sem compartimentos secretos
+Sem versão para o trabalho, sem versão para casa
+
+
+[Verse 3]
+Custa mais ser inteira
+Do que ser fragmentada
+Custa mais o consenso interior
+Do que o desempenho de várias mulheres
+Mas a vida que se vive depois
+Tem outra textura
+Tem outra cor
+Tem outra duração
+
+
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic, dje
+Volta inteira
+Não em peças, não em fases
+A mulher inteira que voltou
+E que ficou
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising, djembe steady — opens, does
+(European Portuguese, Portugal accent:)
+Não te prometo a inteireza imediata
+Prometo-te o caminho
+Cada vez que dizes a verdade no trabalho
+Estás a voltar inteira
+Cada vez que mostras o cansaço em casa
+Estás a voltar inteira
+Cada vez que dizes não sem pedir desculpa
+Estás a voltar inteira
+A inteireza é prática diária
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+Volta inteira
+A mulher que voltou
+Volta inteira
+E que ficou
+
+
+[Outro: vocal warm, choir fading, djembe lingers]
+Volta inteira
+sem compartimentos
+volta inteira
+em todos os quartos`,
+  "incenso-volta-a-mim/10": `[Vocal: ONE warm mezzo-contralto female voice leading, full chest voice on choruses, breathy
+[CRITICAL: subtle international English accent, NOT American, NOT exaggerated British]
+[Persona: Loranne — contemporary organic-electronic, AwakeSoul lineage, contemplative and tra
+
+
+[Intro: gospel piano with rich chords, Hammond organ swell, vocal entering on bar 2 — no long
+[Verse 1]
+At home in my own body
+Not metaphor — the actual house
+The skin is the front door
+The chest is the kitchen
+The belly is the long room where I live most
+The legs are the corridors I walk through every day
+For decades I was a tenant
+Now I am the owner
+
+
+[Verse 2]
+The deed was always mine
+But I had given it to others to manage
+To diet culture, to medical descriptions
+To the gaze that wanted me smaller
+To the lover who did not know my body
+As well as I know my body now
+At forty, at fifty, at the age I am
+I have read the deed myself
+
+
+[Pre-Chorus]
+At home in my own body
+Is not arrival
+Is not destination
+At home in my own body is daily occupation
+
+
+[Chorus]
+At home in my own body
+Not metaphor
+The actual house
+The actual key
+The skin holds me, the lungs hold me
+The bones hold me, the blood holds me
+And I — I hold the body
+Not the body holds the woman, the woman holds the body
+With kindness, with attention
+With the care I never gave
+
+
+[Verse 3]
+I will live here until I don't
+Whatever decades remain
+I will not leave the body for the mind's vacations
+I will not abandon the body for the screen
+I will be here, in the house, in the body
+The kitchen will be lived in
+The bedroom will be slept in
+The corridors will be walked
+[Chorus: full female chorus enters, Hammond blooms, tambourine + hand-claps polyrhythmic, war
+At home in my own body
+Not metaphor
+The actual house
+The actual key
+
+
+[Bridge: vocal close, choir hums underneath, warm strings rising — opens, does not resolve]
+You are at home in your body
+Even if you do not feel it yet
+The body has not left
+The body has been waiting
+For you to return as the owner, not the tenant
+You can begin the renovation today
+With one act of kindness toward the actual house
+That carries you through the world
+
+
+[Final Chorus: 6-voice chorus layered, peak warmth, never shouted]
+At home in my own body
+Not metaphor
+The actual house
+The actual key
+
+
+[Outro: vocal warm, choir fading]
+At home in my own body
+the actual house
+at home in my own body
+the actual key
+
+
+
+
+Notas para o canal YouTube
+Posicionamento da playlist: EP5 é o fechamento da colecção dos cinco EPs.
+Funciona como sequência longa para quem ouve do princípio ao fim, mas as tracks
+isoladas funcionam em qualquer ponto da playlist Elevar. Track 1 (Volta a Mim) e Track
+10 (At Home in My Own Body) são pontos de retorno frequente — pessoas que voltam à
+playlist nos dias mais difíceis.
+
+Tracks-âncora deste EP: T1 Volta a Mim, T5 Reaprendo, T9 Volta Inteira (anthems PT
+— refrões cantáveis); T2 Coming Home to Myself, T10 At Home in My Own Body
+(anthem/pulse EN — alcance internacional).
+
+Capa sugerida: ângulo lateral, mulher em close-up, mão pousada sobre o próprio peito,
+olhos fechados ou desfocados (sem identificação clara). Cor #9B7BA0 na tipografia.
+Sem rosto, mantém estética Loranne.
+
+Cross-listing: este EP funciona muito bem em playlists secundárias de "Volta a Si",
+"Reencontro", "Identidade Feminina" no YouTube — alcance além da playlist Elevar
+principal.`,
 };
