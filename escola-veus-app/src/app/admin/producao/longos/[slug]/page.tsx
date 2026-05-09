@@ -28,6 +28,8 @@ type LongoProject = {
     imageUrl?: string;
     clipUrl?: string;
     clipDurationSec?: number;
+    startSec?: number;
+    endSec?: number;
   }[];
   promptCount: number;
   wordCount: number;
@@ -607,10 +609,36 @@ export default function LongoDetailPage() {
         ({ res: r, data: d } = await submitRender());
       }
 
-      // Alignment Claude removido — render.mjs faz sync uniforme com slow
-      // motion (pattern do funil). Não precisamos mais de chamar /align-clips
-      // antes do render. Endpoint /align-clips continua disponível para
-      // experimentos futuros mas não é blocker.
+      // Auto-alinhamento clips ↔ narração: se algum prompt não tem
+      // startSec/endSec, corre /align-clips antes de submeter o render.
+      // Sem alignment, render.mjs cai num bounce loop uniforme — funciona
+      // mas mismatch quando a narração tem densidade desigual. Auto-corrê-lo
+      // garante que cenas com narração densa ficam mais tempo, breves passam
+      // rápido — sem precisar de Vivianne lembrar de clicar.
+      const projectPrompts = project.prompts || [];
+      const needsAlign =
+        projectPrompts.length > 0 &&
+        !projectPrompts.every(
+          (p) => typeof p.startSec === "number" && typeof p.endSec === "number",
+        );
+      if (needsAlign) {
+        setRenderProgress({ status: "preparing", phase: "align", progress: 8 });
+        const alignRes = await fetch("/api/admin/longos/align-clips", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: project.slug }),
+        });
+        const alignData = await alignRes.json();
+        if (!alignRes.ok || alignData.erro) {
+          // Não bloqueia render — fallback bounce loop é aceitável
+          console.warn(
+            `[align] auto-align falhou: ${alignData.erro || `HTTP ${alignRes.status}`}. Render avança com bounce loop.`,
+          );
+        } else {
+          // Re-tenta render com o projecto alinhado
+          ({ res: r, data: d } = await submitRender());
+        }
+      }
 
       // SEO opcional — silencioso (best-effort)
       if (r.ok && d.jobId) {
