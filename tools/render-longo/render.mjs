@@ -307,32 +307,59 @@ async function main() {
     const native = nativeClipDurations[i];
     const target = finalClipDuration;
     const stretchedPath = path.join(WORK_DIR, `clip-${i}-aligned.mp4`);
+
     if (Math.abs(native - target) < 0.3) {
+      // Já tem ~ a duração certa
       await new Promise((resolve, reject) => {
         const p = spawn("cp", [clipPaths[i], stretchedPath]);
         p.on("error", reject);
         p.on("exit", (c) => (c === 0 ? resolve() : reject(new Error("cp falhou"))));
       });
     } else if (native > target) {
+      // Trim
       await runFfmpeg([
         "-y", "-i", clipPaths[i], "-t", target.toFixed(3),
         "-c", "copy", "-avoid_negative_ts", "1", stretchedPath,
       ]);
     } else {
-      // Slow motion via setpts — mantém movimento contínuo, sem freeze
-      const r = target / native;
-      await runFfmpeg([
-        "-y", "-i", clipPaths[i],
-        "-vf", `setpts=${r.toFixed(3)}*PTS`,
-        "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
-        stretchedPath,
-      ]);
+      // ESTENDER via BOOMERANG (forward + reverse) em vez de slow motion.
+      // Slow motion 2× faz drift parecer congelado (Vivianne reportou que
+      // 'voz fica muito mais rápida que as imagens'). Boomerang preserva
+      // velocidade natural — clip vai e volta, dá impressão de oscilação
+      // contemplativa (breathing camera) sem perder pace.
+      //
+      // Boomerang dá 2× native automaticamente. Para targets entre native
+      // e 2×native, faz boomerang depois trim. Para >2×, faz boomerang +
+      // slow leve (target/(2×native)), max 1.5× (slow ainda gentil).
+      const boomDuration = native * 2;
+      if (target <= boomDuration + 0.1) {
+        // Boomerang + trim a target
+        await runFfmpeg([
+          "-y", "-i", clipPaths[i],
+          "-filter_complex",
+          `[0:v]split[v0][v1];[v1]reverse[v1r];[v0][v1r]concat=n=2:v=1:a=0,trim=duration=${target.toFixed(3)},setpts=PTS-STARTPTS[out]`,
+          "-map", "[out]",
+          "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
+          stretchedPath,
+        ]);
+      } else {
+        // Boomerang depois slow leve para chegar ao target
+        const slowR = target / boomDuration;
+        await runFfmpeg([
+          "-y", "-i", clipPaths[i],
+          "-filter_complex",
+          `[0:v]split[v0][v1];[v1]reverse[v1r];[v0][v1r]concat=n=2:v=1:a=0,setpts=${slowR.toFixed(3)}*PTS[out]`,
+          "-map", "[out]",
+          "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
+          stretchedPath,
+        ]);
+      }
     }
     clipPaths[i] = stretchedPath;
     clipDurations[i] = target;
   }
   console.log(
-    `[sync] clips esticados: total=${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
+    `[sync] clips esticados (boomerang): total=${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
       `(narração ${narrSec.toFixed(1)}s)`,
   );
 
