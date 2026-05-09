@@ -221,7 +221,7 @@ export async function runSuggestAG(input: SuggestAGInput): Promise<SuggestAGResu
 
   // Descrição YT SEO — hook + verso + sobre AG + hashtags.
   const seoHook = `${themeLabel ? themeLabel + " · " : ""}Ancient Ground — música ambient instrumental gravada em Moçambique. Para meditar, dormir, trabalhar, contemplar.`;
-  const aboutAG = "Ancient Ground é o projecto instrumental de Vivianne Nascimento. Música contemplativa enraizada em África: capulanas, baobás, oceano Índico, savana. Sem voz — só presença.";
+  const aboutAG = "Ancient Ground é um projecto instrumental enraizado em África: capulanas, baobás, oceano Índico, savana. Música contemplativa, sem voz — só presença.";
   const claudeDesc = typeof parsed.youtubeDescription === "string" ? parsed.youtubeDescription : "";
   const youtubeDescription = clamp(
     [seoHook, "", claudeDesc, "", aboutAG].filter(Boolean).join("\n"),

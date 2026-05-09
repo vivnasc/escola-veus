@@ -137,7 +137,6 @@ function buildHashtags(theme?: string): string {
     "#palops",
     "#lusofonia",
     "#musicaafricana",
-    "#vivianneNascimento",
   ].filter(Boolean);
   return tags.join(" ");
 }
@@ -186,7 +185,7 @@ function makeYouTubeDescription(
   //   4. Sobre Loranne
   //   5. Hashtags (5-15 — só os primeiros 3 ficam clickable)
   const seoHook = `${trackTitle} de Loranne — lyric video do álbum ${albumTitle}. Música contemplativa em português, registo elevadora.`;
-  const aboutLoranne = "Loranne é o projecto musical de Vivianne Nascimento. Música em português e inglês, gravada em Maputo, Moçambique. Lyric videos com letras em sync, para meditar, conduzir, voltar a si.";
+  const aboutLoranne = "Loranne é um projecto musical contemporâneo. Música em português e inglês, gravada em Maputo, Moçambique. Lyric videos com letras em sync, para meditar, conduzir, voltar a si.";
 
   return [
     seoHook,
