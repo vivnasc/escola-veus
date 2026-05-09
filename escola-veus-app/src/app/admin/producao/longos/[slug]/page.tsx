@@ -2024,6 +2024,42 @@ export default function LongoDetailPage() {
                 <button
                   onClick={async () => {
                     if (!project) return;
+                    if (
+                      !confirm(
+                        "Alinhar clips com a narração via Claude?\n\n" +
+                          "Cada clip vai ter uma duração calculada para coincidir com a frase de narração que ilustra. Cenas que a voz aprofunda ficam mais tempo; menções rápidas passam rápido.\n\n" +
+                          "Custo: ~$0.30 (Claude lê script + SRT + 56 prompts).\n\n" +
+                          "Próximo render usa este alinhamento — clips com duração variável (boomerang para esticar onde preciso).",
+                      )
+                    )
+                      return;
+                    setInfo("🎯 Claude a alinhar clips com narração...");
+                    try {
+                      const r = await fetch("/api/admin/longos/align-clips", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ slug: project.slug }),
+                      });
+                      const d = await r.json();
+                      if (!r.ok || d.erro)
+                        throw new Error(d.erro || `HTTP ${r.status}`);
+                      setInfo(
+                        `✓ ${d.aligned}/${d.total} alinhados · narração ${(d.totalDurationSec / 60).toFixed(1)} min. Re-render para aplicar.`,
+                      );
+                      setTimeout(() => setInfo(null), 10000);
+                      await load();
+                    } catch (e) {
+                      setInfo(`Erro: ${e instanceof Error ? e.message : String(e)}`);
+                    }
+                  }}
+                  className="rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-1 text-[10px] text-escola-dourado hover:bg-escola-dourado/20"
+                  title="Claude lê script + SRT + prompts e calcula duração variável por cena. Cada clip aparece pelo tempo que a voz dedica à sua secção. ~$0.30 fixo."
+                >
+                  🎯 alinhar clips ↔ narração (~$0.30)
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!project) return;
                     const empty = promptsDraft.filter(
                       (p) => !((p.motion ?? "").trim()),
                     ).length;

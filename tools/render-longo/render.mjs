@@ -276,56 +276,108 @@ async function main() {
   );
   let clipDurations = nativeClipDurations.slice();
 
-  // ── Loop bounce: preserva pace nativo, repete clips para encher narração ──
-  // Vivianne corrigiu: slow motion 2× e boomerang fazem clips parecerem
-  // congelados. A solução racional é PRESERVAR o pace nativo (10s) e
-  // repetir clips. Sequência vai-e-volta (0→55, 55→0, 0→55, ...) com
-  // skip do clip de fronteira para evitar duplicação consecutiva.
+  // ── Alinhamento semântico se disponível, senão bounce loop uniforme ────
+  // hasAlignment: cada prompt tem startSec/endSec atribuídos por Claude
+  // após análise script+SRT (via /align-clips). Cada clip toca pelo tempo
+  // que a narração dedica à sua secção — densidade variável reflectida
+  // no visual.
   //
-  // Math: stride = native - cf = 9s. Para narrSec, M plays needed:
-  //   (M-1) * stride + native = narrSec → M = ceil((narrSec - native + cf) / stride)
-  //
-  // Com 56 clips e 1070s narração: M ≈ 119 plays, cada clip aparece ~2.1×
-  // mas em momentos distantes (forward + reverse + parcial).
-  const stride = 10 - crossfade; // assume 10s Runway native
-  const M = Math.max(1, Math.ceil((narrSec - 10 + crossfade) / stride) + 1);
+  // Sem alinhamento: bounce loop uniforme (cada clip 10s native, sequência
+  // forward/reverse para encher narração). Funciona mas tem mismatch
+  // narração-densa vs cena longa.
+  const hasAlignment = clips.every(
+    (c) =>
+      typeof c.startSec === "number" &&
+      typeof c.endSec === "number" &&
+      c.endSec > c.startSec,
+  );
 
-  const playlist = [];
-  let pos = 0;
-  let dir = 1;
-  while (playlist.length < M) {
-    playlist.push(pos);
-    const next = pos + dir;
-    if (next < 0 || next >= clips.length) {
-      // Boundary hit — flip direction + step para evitar duplicação
-      dir = -dir;
-      pos = pos + dir;
-      // Edge case: clips.length === 1 (loop infinito impossível, fallback)
-      if (clips.length === 1) pos = 0;
-    } else {
-      pos = next;
+  if (hasAlignment) {
+    console.log("[align] alignment Claude detectado — duração variável por cena");
+    await writeResult(jobId, { status: "running", phase: "align", progress: 18 });
+    // Para non-last clip: duração = visible + cf (compensa overlap xfade)
+    const targets = clips.map((c, i) => {
+      const visible = Number(c.endSec) - Number(c.startSec);
+      return i === clips.length - 1 ? visible : visible + crossfade;
+    });
+    for (let i = 0; i < clips.length; i++) {
+      const native = nativeClipDurations[i];
+      const target = targets[i];
+      const stretchedPath = path.join(WORK_DIR, `clip-${i}-aligned.mp4`);
+
+      if (Math.abs(native - target) < 0.3) {
+        await new Promise((resolve, reject) => {
+          const p = spawn("cp", [clipPaths[i], stretchedPath]);
+          p.on("error", reject);
+          p.on("exit", (c) => (c === 0 ? resolve() : reject(new Error("cp falhou"))));
+        });
+      } else if (native > target) {
+        await runFfmpeg([
+          "-y", "-i", clipPaths[i], "-t", target.toFixed(3),
+          "-c", "copy", "-avoid_negative_ts", "1", stretchedPath,
+        ]);
+      } else {
+        // Boomerang para esticar mantendo pace nativo. Se >2× native,
+        // boomerang + slow leve.
+        const boomDuration = native * 2;
+        if (target <= boomDuration + 0.1) {
+          await runFfmpeg([
+            "-y", "-i", clipPaths[i],
+            "-filter_complex",
+            `[0:v]split[v0][v1];[v1]reverse[v1r];[v0][v1r]concat=n=2:v=1:a=0,trim=duration=${target.toFixed(3)},setpts=PTS-STARTPTS[out]`,
+            "-map", "[out]",
+            "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
+            stretchedPath,
+          ]);
+        } else {
+          const slowR = target / boomDuration;
+          await runFfmpeg([
+            "-y", "-i", clipPaths[i],
+            "-filter_complex",
+            `[0:v]split[v0][v1];[v1]reverse[v1r];[v0][v1r]concat=n=2:v=1:a=0,setpts=${slowR.toFixed(3)}*PTS[out]`,
+            "-map", "[out]",
+            "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
+            stretchedPath,
+          ]);
+        }
+      }
+      clipPaths[i] = stretchedPath;
+      clipDurations[i] = target;
     }
+    console.log(
+      `[align] clips com duração variável: total=${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
+        `(narração ${narrSec.toFixed(1)}s)`,
+    );
+  } else {
+    // ── Bounce loop fallback: pace nativo, sequência vai-e-volta ────────
+    console.log("[align] sem alignment — bounce loop fallback");
+    const stride = 10 - crossfade;
+    const M = Math.max(1, Math.ceil((narrSec - 10 + crossfade) / stride) + 1);
+    const playlist = [];
+    let pos = 0;
+    let dir = 1;
+    while (playlist.length < M) {
+      playlist.push(pos);
+      const next = pos + dir;
+      if (next < 0 || next >= clips.length) {
+        dir = -dir;
+        pos = pos + dir;
+        if (clips.length === 1) pos = 0;
+      } else {
+        pos = next;
+      }
+    }
+    console.log(
+      `[playlist] narrSec=${narrSec.toFixed(1)}s · clips únicos=${clips.length} · ` +
+        `M=${M} plays · padrão: ${playlist.slice(0, 5).join(",")} ... ${playlist.slice(-5).join(",")}`,
+    );
+    clipPaths = playlist.map((idx) => clipPaths[idx]);
+    clipDurations = playlist.map(() => 10);
+    console.log(
+      `[playlist] total = ${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
+        `(narração ${narrSec.toFixed(1)}s)`,
+    );
   }
-
-  console.log(
-    `[playlist] narrSec=${narrSec.toFixed(1)}s · clips únicos=${clips.length} · ` +
-      `M=${M} plays · stride=${stride}s · ` +
-      `padrão bounce: ${playlist.slice(0, 5).join(",")} ... ${playlist.slice(-5).join(",")}`,
-  );
-
-  // Expandir clipPaths e clipDurations para a playlist. NÃO podemos
-  // re-atribuir `clips` (const do destructure do manifest) — em vez disso,
-  // o resto do pipeline usa clipPaths.length / clipDurations.length como
-  // fonte de verdade do número de "plays". `clips` (original 56) só é
-  // referenciado downstream para o thumbnail base url, que vem do clips[0]
-  // (1ª entrada da playlist = clip original index 0). OK.
-  clipPaths = playlist.map((idx) => clipPaths[idx]);
-  clipDurations = playlist.map(() => 10);
-
-  console.log(
-    `[playlist] total expanded = ${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
-      `(narração ${narrSec.toFixed(1)}s)`,
-  );
 
   // ── Timeline ──────────────────────────────────────────────────────────
   // Estrutura linear:
