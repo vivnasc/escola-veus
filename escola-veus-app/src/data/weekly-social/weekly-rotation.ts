@@ -130,12 +130,9 @@ function scoreTrack(lyrics: string): number {
 // com Vivianne antes de adicionar. Quando um álbum novo é gravado, juntar
 // aqui o slug — o pool resolve-se em module-load e a rotação alarga sem
 // mais nada.
-//
-// Total esperado (Maio 2026): ~190 faixas em 19 álbuns.
 export const LORANNE_AVAILABLE_ALBUMS: readonly string[] = Object.freeze([
-  // Catálogo inicial (13 álbuns)
+  // Catálogo inicial (com MP3 confirmado)
   "incenso-frequencia",
-  "incenso-salto-bonito",
   "livro-filosofico",
   "espelho-ilusao",
   "fibra-sangue-aceso",
@@ -146,16 +143,23 @@ export const LORANNE_AVAILABLE_ALBUMS: readonly string[] = Object.freeze([
   "nua-por-dentro",
   "nua-boa",
   "nua-duas-vozes",
-  "grao-o-tear",
-  // Adicionados Maio 2026 (registo elevadora — Mãos Abertas, Mãos Juntas,
-  // Oferenda, Fôlego, Corpo Aberto + Eter Viagem que sempre existiu mas
-  // não estava no allowlist).
-  "incenso-maos-abertas",
+  // Adicionados Maio 2026 (registo elevadora — produzidos pela Vivianne)
   "incenso-maos-juntas",
   "incenso-oferenda",
   "incenso-folego",
   "fibra-corpo-aberto",
   "eter-viagem",
+  // Os 5 do Novos8may produzidos no Suno + uploaded
+  "incenso-acende",
+  "incenso-coro",
+  "incenso-milagre",
+  "incenso-amen",
+  "incenso-aleluia",
+  // REMOVIDOS por não terem MP3 em audios/albums/<slug>/ no Supabase:
+  //   incenso-salto-bonito
+  //   incenso-maos-abertas
+  //   grao-o-tear
+  // Re-adicionar quando os MP3s estiverem no path esperado.
 ]);
 
 export type LoranneRotationEntry = {

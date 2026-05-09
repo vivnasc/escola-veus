@@ -11,6 +11,7 @@ import { FASE1B_LYRICS } from "@loranne/lyrics-fase1b";
 import { FASE2_LYRICS } from "@loranne/lyrics-fase2";
 import { FIBRA_CORRIDA_LYRICS } from "@loranne/lyrics-fibra-corrida";
 import { NOVOS_LYRICS } from "@loranne/lyrics-novos";
+import { ELEVADORA_LYRICS } from "@loranne/lyrics-elevadora";
 
 /**
  * Server-side helper — letras Loranne do repo irmão `loranne-lyrics/`.
@@ -38,6 +39,7 @@ export const ALL_LYRICS: Record<string, string> = {
   ...FASE2_LYRICS,
   ...FIBRA_CORRIDA_LYRICS,
   ...NOVOS_LYRICS,
+  ...ELEVADORA_LYRICS,
 };
 
 const PRODUCT_PREFIXES = ["espelho", "livro", "incenso", "eter", "nua", "sangue", "grao", "ancient"];
