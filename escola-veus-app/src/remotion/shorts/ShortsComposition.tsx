@@ -46,6 +46,9 @@ export type ShortsManifest = {
   /** Letras inteiras divididas em "stanzas" (modo sync — Loranne lyric video).
    *  Cada stanza é mostrada por um intervalo proporcional ao seu peso. */
   syncedLyrics?: string[];
+  /** Timing real por stanza (segundos absolutos) — vindo do Scribe.
+   *  Quando presente, sobrepõe-se à distribuição uniforme. */
+  stanzaTimings?: { text: string; startSec: number; endSec: number }[];
   /** URL do MP3. */
   audioUrl: string;
   /** Volume do MP3 (0-1). */
@@ -82,26 +85,50 @@ function easedFade(frame: number, startFrame: number, endFrame: number, fadeFram
 }
 
 /**
- * Letras divididas em stanzas, cada uma mostrada uniformemente sobre o
- * tempo total. Sem auto-timing por palavra (v1 deliberadamente — sync
- * preciso virá com ElevenLabs Scribe num passo posterior).
+ * Letras divididas em stanzas, mostradas em sync com o áudio.
  *
- * Cada stanza recebe (totalFrames / N) frames. Fade in/out de 0.4s.
+ * Quando `stanzaTimings` é fornecido (vindo do ElevenLabs Scribe), cada
+ * stanza aparece exactamente quando começa a ser cantada e desaparece
+ * quando acaba. Fade in/out de 0.4s nos limites.
+ *
+ * Sem timings (fallback), distribui uniformemente pelo tempo total —
+ * útil quando Scribe falhou ou não está configurado.
  */
 const SyncedLyricsLayer: React.FC<{
   stanzas: string[];
+  stanzaTimings?: { text: string; startSec: number; endSec: number }[];
   frame: number;
   fps: number;
   totalFrames: number;
-}> = ({ stanzas, frame, fps, totalFrames }) => {
+}> = ({ stanzas, stanzaTimings, frame, fps, totalFrames }) => {
   if (stanzas.length === 0) return null;
-  // Reserva os primeiros e últimos 2s para "respirar" (audio fade in/out).
+
+  const fadeFrames = Math.round(fps * 0.4);
+  const currentSec = frame / fps;
+
+  // Modo SYNC com timings reais
+  if (stanzaTimings && stanzaTimings.length > 0) {
+    // Encontra stanza activa (ou a próxima dentro de 0.4s para fade-in antecipado)
+    const active = stanzaTimings.find(
+      (t) => currentSec >= t.startSec - 0.4 && currentSec <= t.endSec + 0.4,
+    );
+    if (!active) return null;
+    const stanzaText = active.text;
+    if (!stanzaText) return null;
+
+    const startFrame = Math.round(active.startSec * fps);
+    const endFrame = Math.round(active.endSec * fps);
+    const inP = Math.min(1, Math.max(0, (frame - (startFrame - fadeFrames)) / fadeFrames));
+    const outP = Math.min(1, Math.max(0, ((endFrame + fadeFrames) - frame) / fadeFrames));
+    const opacity = Math.max(0, Math.min(1, Math.min(inP, outP)));
+
+    return <StanzaText text={stanzaText} opacity={opacity} />;
+  }
+
+  // Fallback uniforme (sem Scribe)
   const buffer = Math.round(fps * 2);
   const usable = Math.max(totalFrames - buffer * 2, 1);
   const stanzaFrames = usable / stanzas.length;
-  const fadeFrames = Math.round(fps * 0.4);
-
-  // Index actual
   const adjusted = frame - buffer;
   if (adjusted < 0 || adjusted >= usable) return null;
   const i = Math.min(stanzas.length - 1, Math.floor(adjusted / stanzaFrames));
@@ -113,36 +140,38 @@ const SyncedLyricsLayer: React.FC<{
   const outP = Math.min(1, (stanzaFrames - localFrame) / fadeFrames);
   const opacity = Math.max(0, Math.min(1, Math.min(inP, outP)));
 
-  return (
-    <div
+  return <StanzaText text={stanza} opacity={opacity} />;
+};
+
+const StanzaText: React.FC<{ text: string; opacity: number }> = ({ text, opacity }) => (
+  <div
+    style={{
+      position: "absolute",
+      left: 0, right: 0, top: "50%",
+      transform: "translateY(-50%)",
+      textAlign: "center",
+      padding: "0 8%",
+      opacity,
+      zIndex: 10,
+    }}
+  >
+    <p
       style={{
-        position: "absolute",
-        left: 0, right: 0, top: "50%",
-        transform: "translateY(-50%)",
-        textAlign: "center",
-        padding: "0 8%",
-        opacity,
-        zIndex: 10,
+        fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
+        fontSize: 56,
+        fontWeight: 500,
+        letterSpacing: 0.5,
+        lineHeight: 1.4,
+        color: "#F5F0E6",
+        textShadow: "0 4px 30px rgba(0,0,0,0.95), 0 0 80px rgba(0,0,0,0.7)",
+        whiteSpace: "pre-line",
+        margin: 0,
       }}
     >
-      <p
-        style={{
-          fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
-          fontSize: 56,
-          fontWeight: 500,
-          letterSpacing: 0.5,
-          lineHeight: 1.4,
-          color: "#F5F0E6",
-          textShadow: "0 4px 30px rgba(0,0,0,0.95), 0 0 80px rgba(0,0,0,0.7)",
-          whiteSpace: "pre-line",
-          margin: 0,
-        }}
-      >
-        {stanza}
-      </p>
-    </div>
-  );
-};
+      {text}
+    </p>
+  </div>
+);
 
 const VerseOverlay: React.FC<{
   text: string;
@@ -240,6 +269,7 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
       {isSync ? (
         <SyncedLyricsLayer
           stanzas={props.syncedLyrics!}
+          stanzaTimings={props.stanzaTimings}
           frame={frame}
           fps={fps}
           totalFrames={durationInFrames}

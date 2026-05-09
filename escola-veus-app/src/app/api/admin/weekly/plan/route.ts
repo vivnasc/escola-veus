@@ -16,9 +16,10 @@ import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
 import { getLoranneStanzas } from "@/lib/shorts/lyrics-stanzas";
+import { scribeAudio, alignStanzasToWords, speakingWordsOnly } from "@/lib/shorts/scribe";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 120; // 7 + 3 chamadas Claude — pode demorar 60-90s
+export const maxDuration = 600; // Scribe ~30s/track × 7 + Claude AG = 5+ min
 
 /**
  * POST /api/admin/weekly/plan
@@ -150,6 +151,33 @@ export async function POST(req: NextRequest) {
 
           const stanzas = getLoranneStanzas(entry.albumSlug, actualTrackNumber);
 
+          // Scribe — extrai timestamps por palavra do MP3 e alinha stanzas.
+          // Custo ~$0.03/track. Falha graciosamente: cai em distribuição
+          // uniforme se Scribe não estiver configurado ou rebentar.
+          let stanzaTimings: WeeklyPost["stanzaTimings"] | undefined;
+          let audioDurationSec: number | undefined;
+          if (stanzas.length > 0) {
+            try {
+              const words = await scribeAudio(musicUrl, "por");
+              const speaking = speakingWordsOnly(words);
+              const lastEnd = speaking.length > 0
+                ? speaking[speaking.length - 1].end ?? 0
+                : 0;
+              audioDurationSec = lastEnd > 0 ? lastEnd + 2 : undefined;
+              if (audioDurationSec) {
+                stanzaTimings = alignStanzasToWords(stanzas, words, audioDurationSec);
+              }
+            } catch (scribeErr) {
+              // Fica sem stanzaTimings; render cai em uniforme.
+              const msg = scribeErr instanceof Error ? scribeErr.message : String(scribeErr);
+              errors.push({
+                brand: "loranne",
+                postId: `loranne-${entry.albumSlug}-f${actualTrackNumber}-${day}`,
+                message: `Scribe falhou (uso fallback uniforme): ${msg.slice(0, 200)}`,
+              });
+            }
+          }
+
           posts.push({
             id: `loranne-${entry.albumSlug}-f${actualTrackNumber}-w${week}-${day}`,
             brandSlug: "loranne",
@@ -160,6 +188,8 @@ export async function POST(req: NextRequest) {
             albumTitle,
             verses: (suggest.verses || []).slice(0, 2),
             syncedLyrics: stanzas,
+            stanzaTimings,
+            audioDurationSec,
             musicUrl,
             motionVariant,
             accent,
