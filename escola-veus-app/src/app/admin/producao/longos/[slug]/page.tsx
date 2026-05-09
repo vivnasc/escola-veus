@@ -28,6 +28,8 @@ type LongoProject = {
     imageUrl?: string;
     clipUrl?: string;
     clipDurationSec?: number;
+    startSec?: number;
+    endSec?: number;
   }[];
   promptCount: number;
   wordCount: number;
