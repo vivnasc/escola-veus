@@ -27,6 +27,10 @@ export type RenderRemotionInput = {
   audioDurationSec?: number;
   /** Activa modo lyric video — letras passam em sync. */
   lyricsSync?: boolean;
+  /** Idioma da letra (PT/EN) — para Scribe usar language_code certo. */
+  lang?: "PT" | "EN";
+  /** Onde começa o áudio neste render (em segundos absolutos no MP3). 0 para full. */
+  audioStartFromSec?: number;
   /** URL do MP3 da faixa. */
   audioUrl: string;
   /** Volume áudio (default 1). */
@@ -91,6 +95,8 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     syncedLyrics: input.syncedLyrics || null,
     stanzaTimings: input.stanzaTimings || null,
     audioDurationSec: input.audioDurationSec ?? null,
+    lang: input.lang || "PT",
+    audioStartFromSec: input.audioStartFromSec ?? 0,
     verses: input.verses,
     audioUrl: input.audioUrl,
     audioVolume: input.audioVolume ?? 1,
