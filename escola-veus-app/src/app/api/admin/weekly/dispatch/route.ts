@@ -24,6 +24,8 @@ type Body = {
   week?: number;
   year?: number;
   brands?: BrandSlug[];
+  /** Se true, reseta todos os renderJobs antes de dispatchar (re-render forçado). */
+  force?: boolean;
 };
 
 const MODE_DURATIONS: Record<RenderMode, number> = {
@@ -66,7 +68,7 @@ async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<
   });
 }
 
-async function dispatchBrand(plan: WeeklyPlan): Promise<{
+async function dispatchBrand(plan: WeeklyPlan, force: boolean): Promise<{
   dispatched: number;
   alreadyDone: number;
   errors: { postId: string; mode: RenderMode; message: string }[];
@@ -78,6 +80,16 @@ async function dispatchBrand(plan: WeeklyPlan): Promise<{
   for (const post of plan.posts) {
     if (!post.renderJobs) post.renderJobs = {};
     for (const mode of ["clip", "full"] as RenderMode[]) {
+      if (force) {
+        // Reseta o job antes de dispatchar — força re-render mesmo se já
+        // existir videoUrl ou estiver em curso.
+        post.renderJobs[mode] = {
+          jobId: null,
+          videoUrl: null,
+          thumbnailUrl: null,
+          status: "planned",
+        };
+      }
       const job = post.renderJobs[mode];
       if (job?.videoUrl && job.status === "done") {
         alreadyDone++;
@@ -135,6 +147,7 @@ export async function POST(req: NextRequest) {
 
     const brands: BrandSlug[] = body.brands && body.brands.length > 0
       ? body.brands : ["loranne", "ancient-ground"];
+    const force = body.force === true;
 
     const summary: Record<string, unknown> = {};
     for (const brand of brands) {
@@ -143,9 +156,9 @@ export async function POST(req: NextRequest) {
         summary[brand] = { erro: "plan inexistente — corre /plan primeiro." };
         continue;
       }
-      summary[brand] = await dispatchBrand(plan);
+      summary[brand] = await dispatchBrand(plan, force);
     }
-    return NextResponse.json({ summary });
+    return NextResponse.json({ summary, force });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ erro: msg }, { status: 500 });
