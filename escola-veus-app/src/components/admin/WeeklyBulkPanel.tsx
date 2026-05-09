@@ -338,7 +338,13 @@ export default function WeeklyBulkPanel({
               )}
               <div className="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {statusEntry.plan.posts.map((p) => (
-                  <PostCard key={p.id} post={p} />
+                  <PostCard
+                    key={p.id}
+                    post={p}
+                    week={week}
+                    year={year}
+                    onRefresh={loadStatus}
+                  />
                 ))}
               </div>
             </div>
@@ -380,11 +386,45 @@ function PostStatusPill({ status }: { status: WeeklyPost["status"] }) {
   );
 }
 
-function PostCard({ post }: { post: WeeklyPost }) {
+function PostCard({
+  post, week, year,
+  onRefresh,
+}: {
+  post: WeeklyPost;
+  week: number;
+  year: number;
+  onRefresh: () => void;
+}) {
   const title = post.trackTitle || post.label || post.id;
   const subtitle = post.albumTitle || (post.temas?.join(" + ")) || "";
   const [activeMode, setActiveMode] = useState<"clip" | "full">("clip");
   const [showCaptions, setShowCaptions] = useState(false);
+  const [rerendering, setRerendering] = useState(false);
+
+  const doRerender = async () => {
+    if (rerendering) return;
+    if (!confirm(`Re-renderizar ${activeMode === "full" ? "Full" : "Clip 30s"} de "${title}"? O actual será substituído.`)) return;
+    setRerendering(true);
+    try {
+      const r = await fetch("/api/admin/weekly/rerender", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          week, year,
+          brand: post.brandSlug,
+          postId: post.id,
+          mode: activeMode,
+        }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.erro || `HTTP ${r.status}`);
+      onRefresh();
+    } catch (e) {
+      alert("Falhou: " + (e as Error).message);
+    } finally {
+      setRerendering(false);
+    }
+  };
 
   const clipJob: RenderJob = post.renderJobs?.clip || {
     jobId: post.jobId,
@@ -466,25 +506,35 @@ function PostCard({ post }: { post: WeeklyPost }) {
         {active?.errorMessage && (
           <div className="mt-1 text-[10px] text-red-300">✗ {active.errorMessage}</div>
         )}
-        {active?.videoUrl && (
-          <div className="mt-2 flex flex-wrap gap-2 text-[10px]">
-            <a
-              href={active.videoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-escola-creme-50 hover:text-escola-dourado"
-            >
-              ↗ abrir
-            </a>
-            <a
-              href={active.videoUrl}
-              download
-              className="text-escola-creme-50 hover:text-escola-dourado"
-            >
-              ↓ download
-            </a>
-          </div>
-        )}
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-[10px]">
+          {active?.videoUrl && (
+            <>
+              <a
+                href={active.videoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-escola-creme-50 hover:text-escola-dourado"
+              >
+                ↗ abrir
+              </a>
+              <a
+                href={active.videoUrl}
+                download
+                className="text-escola-creme-50 hover:text-escola-dourado"
+              >
+                ↓ download
+              </a>
+            </>
+          )}
+          <button
+            onClick={doRerender}
+            disabled={rerendering}
+            className="ml-auto rounded border border-escola-coral/40 bg-escola-coral/10 px-2 py-0.5 text-[10px] text-escola-coral hover:bg-escola-coral/20 disabled:opacity-50"
+            title={`Re-renderiza apenas o ${activeMode === "full" ? "Full" : "Clip"} deste post`}
+          >
+            {rerendering ? "…" : `↻ re-render ${activeMode}`}
+          </button>
+        </div>
         <button
           onClick={() => setShowCaptions((v) => !v)}
           className="mt-2 w-full rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"

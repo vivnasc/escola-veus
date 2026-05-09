@@ -43,6 +43,14 @@ export type WeeklyPost = {
   stanzaTimings?: { text: string; startSec: number; endSec: number }[];
   /** Duração total do áudio em segundos (do Scribe — última palavra + 2s tail). */
   audioDurationSec?: number;
+  /** Idioma da letra (PT/EN) — para Scribe usar language_code certo. */
+  lang?: "PT" | "EN";
+  /** Conto Claude para AG fulls — capítulos passam como texto sobre música. */
+  storyChapters?: string[];
+  /** Título do conto AG (para signature/metadata). */
+  storyTitle?: string;
+  /** Schedule alternativo para mode=full (AG: Mon/Wed/Fri, vs clip Tue/Thu/Sat). */
+  fullSchedule?: Record<Platform, ScheduleSlot>;
   musicUrl: string;
   /** Variante de motion Remotion (A/B/C/D). */
   motionVariant: "A" | "B" | "C" | "D";

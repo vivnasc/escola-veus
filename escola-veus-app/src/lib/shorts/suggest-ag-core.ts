@@ -204,13 +204,27 @@ export async function runSuggestAG(input: SuggestAGInput): Promise<SuggestAGResu
     typeof parsed.tiktokCaption === "string" ? parsed.tiktokCaption : "",
     AG_CAPTION_RULES.tiktokMaxChars,
   );
-  let youtubeTitle = typeof parsed.youtubeTitle === "string" ? parsed.youtubeTitle : "";
-  if (!youtubeTitle.toLowerCase().includes("#shorts")) {
-    youtubeTitle = `${youtubeTitle} #Shorts`;
-  }
-  youtubeTitle = clamp(youtubeTitle, AG_CAPTION_RULES.youtubeTitleMaxChars);
+  // Título YT SEO — keywords primeiro (Ancient Ground · genre · region)
+  // em vez de poesia + #Shorts. O Metricool determina Shorts vs canal pelo
+  // campo Youtube Video Type (SHORTS para clip 30s, VIDEO para full 3-5min).
+  const themeLabel = cleanTemas
+    .map((t) => RAIZES_TEMA_LABELS[t] || t)
+    .slice(0, 2)
+    .join(", ");
+  const claudeTitle = typeof parsed.youtubeTitle === "string"
+    ? parsed.youtubeTitle.replace(/\s*#shorts\s*$/i, "").trim()
+    : "";
+  let youtubeTitle = claudeTitle
+    ? `${claudeTitle} · Ancient Ground · ${themeLabel}`
+    : `Ancient Ground · ${themeLabel} · Mozambique Ambient Music`;
+  youtubeTitle = clamp(youtubeTitle, 100); // YT hard limit é 100
+
+  // Descrição YT SEO — hook + verso + sobre AG + hashtags.
+  const seoHook = `${themeLabel ? themeLabel + " · " : ""}Ancient Ground — música ambient instrumental gravada em Moçambique. Para meditar, dormir, trabalhar, contemplar.`;
+  const aboutAG = "Ancient Ground é um projecto instrumental enraizado em África: capulanas, baobás, oceano Índico, savana. Música contemplativa, sem voz — só presença.";
+  const claudeDesc = typeof parsed.youtubeDescription === "string" ? parsed.youtubeDescription : "";
   const youtubeDescription = clamp(
-    typeof parsed.youtubeDescription === "string" ? parsed.youtubeDescription : "",
+    [seoHook, "", claudeDesc, "", aboutAG].filter(Boolean).join("\n"),
     AG_CAPTION_RULES.youtubeDescriptionMaxChars,
   );
 
