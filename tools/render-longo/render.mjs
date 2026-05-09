@@ -266,17 +266,7 @@ async function main() {
       `(${clips.length} clips)`,
   );
 
-  // ── Alinhamento semântico ───────────────────────────────────────────────
-  // Se TODOS os clips têm startSec/endSec (alinhamento Claude), pre-processa
-  // cada clip para a duração alvo (= endSec - startSec). Clips curtos são
-  // estendidos (tpad clone do último frame); longos são truncados.
-  // Resultado: total de clips = narrSec → sem 8min de last-frame morto.
-  const hasAlignment = clips.every(
-    (c) => typeof c.startSec === "number" && typeof c.endSec === "number" && c.endSec > c.startSec,
-  );
-  let clipDurations = nativeClipDurations.slice();
-
-  // ── Alinhamento semântico se disponível, senão bounce loop uniforme ────
+  // ── Alinhamento semântico vs bounce loop fallback ──────────────────────
   // hasAlignment: cada prompt tem startSec/endSec atribuídos por Claude
   // após análise script+SRT (via /align-clips). Cada clip toca pelo tempo
   // que a narração dedica à sua secção — densidade variável reflectida
@@ -291,6 +281,7 @@ async function main() {
       typeof c.endSec === "number" &&
       c.endSec > c.startSec,
   );
+  let clipDurations = nativeClipDurations.slice();
 
   if (hasAlignment) {
     console.log("[align] alignment Claude detectado — duração variável por cena");
