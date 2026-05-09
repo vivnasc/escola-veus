@@ -146,64 +146,72 @@
     "6": "Rhythm of Making",
     "7": "A Peça Pronta"
   },
-  "incenso-acende": {
-    "1": "Pequena Chama",
-    "2": "Coming Back",
-    "3": "Movimento",
-    "4": "Cinco Passos",
-    "5": "Volta",
-    "6": "Aftercare",
-    "7": "Sair de Casa",
-    "8": "Batimento",
-    "9": "Cá Estou",
-    "10": "What Stays"
+  "incenso-maos-abertas": {
+    "1": "Peso",
+    "2": "Unclench",
+    "3": "Carta Nunca Enviada",
+    "4": "Forgive",
+    "5": "Espelho Partido",
+    "6": "Phone Call",
+    "7": "Mãe e Filha",
+    "8": "Let Go",
+    "9": "Abraço Difícil",
+    "10": "Open Hands"
   },
-  "incenso-coro": {
-    "1": "Alguém Está Acordada",
-    "2": "You Are Not the First",
-    "3": "A Casa de Outra",
-    "4": "WhatsApp at 4 a.m.",
-    "5": "Não Sozinha",
-    "6": "Held",
-    "7": "Tia",
-    "8": "Sisters Without Names",
-    "9": "Eu Sou Porque Tu És",
-    "10": "What the Coro Leaves"
+  "incenso-maos-juntas": {
+    "1": "Obrigada",
+    "2": "Grace",
+    "3": "Lista",
+    "4": "Enough",
+    "5": "Mãos Abertas",
+    "6": "Thank You Body",
+    "7": "Dádiva",
+    "8": "Small Things",
+    "9": "Cheia",
+    "10": "Hallelujah"
   },
-  "incenso-milagre": {
-    "1": "Já Não Pedia",
-    "2": "The Coffee Was Warm",
-    "3": "A Pessoa Certa no Autocarro",
-    "4": "The Job I Didn't Apply For",
-    "5": "Misericórdia",
-    "6": "Quiet Mercy",
-    "7": "Vizinho",
-    "8": "When the Light Came Back",
-    "9": "Sem Eu Pedir",
-    "10": "What I Didn't Have to Earn"
+  "incenso-oferenda": {
+    "1": "Obrigada",
+    "2": "The List",
+    "3": "Mãos no Peito",
+    "4": "Grace",
+    "5": "O Que Tenho",
+    "6": "Offering"
   },
-  "incenso-amen": {
-    "1": "Empurrar a Água",
-    "2": "Letting Go of the Rope",
-    "3": "A Maré Sobe",
-    "4": "The Diagnosis Is True",
-    "5": "Amen",
-    "6": "The Yes That Doesn't Hurt",
-    "7": "Pousar",
-    "8": "Soft Power",
-    "9": "Sim",
-    "10": "What Surrender Tastes Like"
+  "incenso-folego": {
+    "1": "Inspira",
+    "2": "Threshold",
+    "3": "Bicho",
+    "4": "Storm Prayer",
+    "5": "Mãos Vazias",
+    "6": "Unanswered",
+    "7": "Dança",
+    "8": "Ember",
+    "9": "Hum",
+    "10": "Expira"
   },
-  "incenso-aleluia": {
-    "1": "Riso Antigo",
-    "2": "The First Smile",
-    "3": "A Boca Lembrou-se",
-    "4": "Dancing in the Kitchen",
-    "5": "Festa Pequena",
-    "6": "Joy Without Reason",
-    "7": "Cantar Alto",
-    "8": "Suor é Oração",
-    "9": "Aleluia",
-    "10": "What Joy Leaves"
+  "fibra-corpo-aberto": {
+    "1": "Respira",
+    "2": "Stretch",
+    "3": "Equilíbrio",
+    "4": "Bend",
+    "5": "Chão",
+    "6": "Release",
+    "7": "Onda",
+    "8": "Align",
+    "9": "Corpo Líquido",
+    "10": "Namaste"
+  },
+  "eter-viagem": {
+    "1": "Voltar a Casa",
+    "2": "Weightless",
+    "3": "Anterior",
+    "4": "The Cord",
+    "5": "Sem Pele",
+    "6": "Stardust",
+    "7": "A Maré de Dentro",
+    "8": "Eclipse",
+    "9": "Frequência",
+    "10": "Home Is Not a Place"
   }
 }

@@ -168,7 +168,6 @@ export async function runSuggestAG(input: SuggestAGInput): Promise<SuggestAGResu
             versos: {
               type: "array",
               items: { type: "string" },
-              maxItems: 10,
             },
             tiktokCaption: { type: "string" },
             youtubeTitle: { type: "string" },
