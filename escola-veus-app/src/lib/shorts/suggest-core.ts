@@ -121,13 +121,23 @@ function pickQuestion(seed: string): string {
 }
 
 function buildHashtags(theme?: string): string {
+  // Mix de keywords musicais (descobrir Loranne via search) +
+  // identidade Moz/PALOPs (audiência alvo). 13 tags — só primeiras 3
+  // ficam clickable no YT mas todas pesam para o algoritmo.
   const tags = [
     "#Loranne",
+    "#LyricVideo",
+    "#MusicaPortuguesa",
     theme ? `#${theme.replace(/\s+/g, "").toLowerCase()}` : "",
     "#poesia",
-    "#natureza",
-    "#despertar",
-    "#portugal",
+    "#musicacontemplativa",
+    "#mozambique",
+    "#moz",
+    "#maputo",
+    "#palops",
+    "#lusofonia",
+    "#musicaafricana",
+    "#vivianneNascimento",
   ].filter(Boolean);
   return tags.join(" ");
 }
@@ -141,10 +151,19 @@ function makeTikTokCaption(v1: string, v2: string, theme: string | undefined, se
     .join("\n");
 }
 
-function makeYouTubeTitle(trackTitle: string, albumTitle: string, v1: string): string {
-  const first = v1.length > 35 ? v1.slice(0, 32) + "..." : v1;
-  const base = first ? `${first} · ${trackTitle} (${albumTitle})` : `${trackTitle} · ${albumTitle}`;
-  return base.length > 70 ? base.slice(0, 67) + "..." : base;
+function makeYouTubeTitle(trackTitle: string, albumTitle: string, _v1: string): string {
+  // SEO format: TrackTitle · Loranne · Album · Lyric Video PT
+  // Keywords-first (track + artist + album + format) — algoritmo YT search
+  // privilegia título + descrição + tags por ordem.
+  const trim = (s: string, max: number) =>
+    s.length <= max ? s : s.slice(0, max - 1).trimEnd() + "…";
+  // Title YT máx útil = 70 chars antes de cortar nos previews.
+  const safeTrack = trim(trackTitle || "Loranne", 30);
+  const safeAlbum = trim(albumTitle || "", 25);
+  const base = safeAlbum
+    ? `${safeTrack} · Loranne · ${safeAlbum} · Lyric Video`
+    : `${safeTrack} · Loranne · Lyric Video PT`;
+  return trim(base, 100); // YT hard limit é 100
 }
 
 function makeYouTubeDescription(
@@ -158,14 +177,27 @@ function makeYouTubeDescription(
   const verses = [v1, v2].filter(Boolean).join("\n");
   const question = pickQuestion(seed);
   const themeLine = theme ? `\n${theme}\n` : "";
+
+  // Descrição YT — primeiros ~150 chars são visíveis em search/preview.
+  // Estrutura SEO:
+  //   1. Hook curto com keywords (track + artist + album + lyric video)
+  //   2. Verso (poesia)
+  //   3. CTA Apple Music
+  //   4. Sobre Loranne
+  //   5. Hashtags (5-15 — só os primeiros 3 ficam clickable)
+  const seoHook = `${trackTitle} de Loranne — lyric video do álbum ${albumTitle}. Música contemplativa em português, registo elevadora.`;
+  const aboutLoranne = "Loranne é o projecto musical de Vivianne Nascimento. Música em português e inglês, gravada em Maputo, Moçambique. Lyric videos com letras em sync, para meditar, conduzir, voltar a si.";
+
   return [
+    seoHook,
+    "",
     verses,
     themeLine,
     question,
     "",
     `🎵 ${APPLE_MUSIC_CTA}`,
     "",
-    `Música: Loranne · ${albumTitle} · ${trackTitle}`,
+    aboutLoranne,
     "",
     buildHashtags(theme),
   ].join("\n");
