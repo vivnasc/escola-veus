@@ -563,19 +563,75 @@ export default function LongoDetailPage() {
     setRenderErr(null);
     setRenderProgress({ status: "queued", progress: 0 });
     try {
-      const r = await fetch("/api/admin/longos/render-submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug: project.slug,
-          musicUrls: selectedMusic,
-          musicVolume,
-          crossfade,
-          includeBrand,
-          preview,
-        }),
-      });
-      const d = await r.json();
+      // Chain de prerequisitos. Cada call é independente (cada um com o seu
+      // timeout) — render-submit antes era inline auto-trigger e timeoutava
+      // (Hobby tier 30s, mas SRT+align+SEO somam 90-120s).
+      const submitRender = async () => {
+        const r = await fetch("/api/admin/longos/render-submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slug: project.slug,
+            musicUrls: selectedMusic,
+            musicVolume,
+            crossfade,
+            includeBrand,
+            preview,
+          }),
+        });
+        const ct = r.headers.get("content-type") || "";
+        if (!ct.includes("application/json")) {
+          const t = await r.text();
+          throw new Error(
+            `render-submit devolveu ${ct || "non-JSON"} (HTTP ${r.status}). Excerto: ${t.slice(0, 200)}`,
+          );
+        }
+        return { res: r, data: (await r.json()) as { jobId?: string; erro?: string; code?: string } };
+      };
+
+      // 1ª tentativa
+      let { res: r, data: d } = await submitRender();
+
+      // Se SRT em falta → chama /generate-srt e retry
+      if (r.status === 412 && d.code === "MISSING_SRT") {
+        setRenderProgress({ status: "preparing", phase: "srt", progress: 5 });
+        const srtRes = await fetch("/api/admin/longos/generate-srt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: project.slug }),
+        });
+        const srtData = await srtRes.json();
+        if (!srtRes.ok || srtData.erro) {
+          throw new Error(srtData.erro || `gerar SRT falhou: HTTP ${srtRes.status}`);
+        }
+        ({ res: r, data: d } = await submitRender());
+      }
+
+      // Se alinhamento em falta → chama /align-clips e retry
+      if (r.status === 412 && d.code === "MISSING_ALIGNMENT") {
+        setRenderProgress({ status: "preparing", phase: "align", progress: 10 });
+        const alignRes = await fetch("/api/admin/longos/align-clips", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: project.slug }),
+        });
+        const alignData = await alignRes.json();
+        if (!alignRes.ok || alignData.erro) {
+          throw new Error(alignData.erro || `align-clips falhou: HTTP ${alignRes.status}`);
+        }
+        ({ res: r, data: d } = await submitRender());
+      }
+
+      // SEO opcional — silencioso (best-effort)
+      if (r.ok && d.jobId) {
+        // fire-and-forget — SEO não bloqueia render
+        fetch("/api/admin/longos/gen-seo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: project.slug }),
+        }).catch(() => {});
+      }
+
       if (!r.ok || !d.jobId) {
         throw new Error(d.erro || `HTTP ${r.status}`);
       }
