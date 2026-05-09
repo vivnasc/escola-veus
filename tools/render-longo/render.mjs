@@ -195,6 +195,13 @@ async function main() {
     // sobrescrever o final.
     preview = false,
     previewSeconds = 90,
+    // Thumbnail: imagem-base + texto a sobrepôr. Render extrai imagem,
+    // queima texto via drawtext, sobe como <slug>-thumb.jpg.
+    thumbnailBaseUrl = null,
+    thumbnailText = null,
+    // SEO YouTube — gravado como companion file <slug>-seo.json para uso
+    // posterior na upload pública (título, descrição com hashtags).
+    seo = null,
   } = manifest;
 
   if (!narrationUrl) throw new Error("narrationUrl vazio");
@@ -247,21 +254,82 @@ async function main() {
 
   await writeResult(jobId, { status: "running", phase: "probe", progress: 15 });
 
-  // Probe duração real de cada clip (manifest pode trazer estimativa, mas usar real)
-  const clipDurations = await Promise.all(
-    clipPaths.map(async (p, i) =>
-      Number.isFinite(clips[i].durationSec) && clips[i].durationSec > 0
-        ? Number(clips[i].durationSec)
-        : await probeSeconds(p),
-    ),
+  // Probe duração real (native) de cada clip
+  const nativeClipDurations = await Promise.all(
+    clipPaths.map(async (p) => await probeSeconds(p)),
   );
   const narrSec = await probeSeconds(narrationPath);
 
   console.log(
     `[probe] narração=${narrSec.toFixed(1)}s · ` +
-      `clips totais=${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
+      `clips nativos=${nativeClipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
       `(${clips.length} clips)`,
   );
+
+  // ── Alinhamento semântico ───────────────────────────────────────────────
+  // Se TODOS os clips têm startSec/endSec (alinhamento Claude), pre-processa
+  // cada clip para a duração alvo (= endSec - startSec). Clips curtos são
+  // estendidos (tpad clone do último frame); longos são truncados.
+  // Resultado: total de clips = narrSec → sem 8min de last-frame morto.
+  const hasAlignment = clips.every(
+    (c) => typeof c.startSec === "number" && typeof c.endSec === "number" && c.endSec > c.startSec,
+  );
+  let clipDurations = nativeClipDurations.slice();
+  if (hasAlignment) {
+    console.log("[align] alignment Claude detectado — esticando clips para durações alvo");
+    await writeResult(jobId, { status: "running", phase: "align", progress: 18 });
+    const targets = clips.map((c) => Number(c.endSec) - Number(c.startSec));
+    for (let i = 0; i < clips.length; i++) {
+      const target = targets[i];
+      const native = nativeClipDurations[i];
+      const stretchedPath = path.join(WORK_DIR, `clip-${i}-aligned.mp4`);
+      if (Math.abs(native - target) < 0.3) {
+        // Já tem ~ a duração certa — copia como está
+        await new Promise((resolve, reject) => {
+          const p = spawn("cp", [clipPaths[i], stretchedPath]);
+          p.on("error", reject);
+          p.on("exit", (c) => (c === 0 ? resolve() : reject(new Error("cp falhou"))));
+        });
+      } else if (native > target) {
+        // Trim: corta ao target
+        await runFfmpeg([
+          "-y",
+          "-i", clipPaths[i],
+          "-t", target.toFixed(3),
+          "-c", "copy",
+          "-avoid_negative_ts", "1",
+          stretchedPath,
+        ]);
+      } else {
+        // Extend: tpad com clone do último frame para chegar ao target
+        const extra = target - native;
+        await runFfmpeg([
+          "-y",
+          "-i", clipPaths[i],
+          "-vf", `tpad=stop_mode=clone:stop_duration=${extra.toFixed(3)}`,
+          "-an",
+          "-c:v", "libx264",
+          "-preset", "medium",
+          "-crf", "20",
+          stretchedPath,
+        ]);
+      }
+      clipPaths[i] = stretchedPath;
+      clipDurations[i] = target;
+    }
+    console.log(
+      `[align] clips alinhados: total=${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
+        `(narração ${narrSec.toFixed(1)}s)`,
+    );
+  } else {
+    // Sem alignment: usa native ou manifest durationSec
+    clipDurations = clipPaths.map((p, i) =>
+      Number.isFinite(clips[i].durationSec) && clips[i].durationSec > 0
+        ? Number(clips[i].durationSec)
+        : nativeClipDurations[i],
+    );
+    console.log("[align] sem alignment — usando durações nativas (last clip será freezado para cobrir narração)");
+  }
 
   // ── Timeline ──────────────────────────────────────────────────────────
   // Estrutura linear:
@@ -500,6 +568,100 @@ async function main() {
   await uploadToSupabase(`${VIDEO_DIR}/${mp4Name}`, mp4Buf, "video/mp4");
   const videoUrl = supabasePublicUrl(`${VIDEO_DIR}/${mp4Name}`);
 
+  // ── Thumbnail companion ──────────────────────────────────────────────
+  // Só em modo FINAL (preview não precisa). Composição:
+  //   1. Imagem-base = thumbnailBaseUrl (preferível) OU primeiro frame do
+  //      primeiro clip (extraído via ffmpeg).
+  //   2. Sobreposição do thumbnailText (UPPERCASE) em DejaVuSerif Bold,
+  //      centrado a 70% de altura, com sombra preta para legibilidade.
+  //   3. Output 1280×720 JPG → upload longos-videos/<slug>-thumb.jpg
+  let thumbnailUrl = null;
+  if (!preview && thumbnailText) {
+    try {
+      const thumbBasePath = path.join(WORK_DIR, "thumb-base.jpg");
+      const thumbOutPath = path.join(WORK_DIR, "thumb-out.jpg");
+
+      // 1. Obter imagem-base
+      if (thumbnailBaseUrl) {
+        try {
+          await downloadTo(thumbnailBaseUrl, thumbBasePath);
+        } catch {
+          // Fallback: extrai primeiro frame do clip 0
+          await runFfmpeg([
+            "-y",
+            "-i", clipPaths[0],
+            "-vframes", "1",
+            "-q:v", "2",
+            thumbBasePath,
+          ], "thumb-extract");
+        }
+      } else {
+        await runFfmpeg([
+          "-y",
+          "-i", clipPaths[0],
+          "-vframes", "1",
+          "-q:v", "2",
+          thumbBasePath,
+        ], "thumb-extract");
+      }
+
+      // 2. Compor thumbnail 1280×720 com texto sobreposto.
+      // Escapa caracteres especiais para drawtext (single quote, colon, %).
+      const safeText = String(thumbnailText)
+        .toUpperCase()
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\\\'")
+        .replace(/:/g, "\\:")
+        .replace(/%/g, "\\%");
+      const fontPath = "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf";
+      const drawtext =
+        `drawtext=fontfile=${fontPath}:` +
+        `text='${safeText}':` +
+        `fontsize=84:` +
+        `fontcolor=white:` +
+        `borderw=4:` +
+        `bordercolor=black@0.85:` +
+        `shadowcolor=black@0.6:` +
+        `shadowx=3:shadowy=3:` +
+        `x=(w-text_w)/2:` +
+        `y=h*0.72`;
+      await runFfmpeg([
+        "-y",
+        "-i", thumbBasePath,
+        "-vf",
+        `scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,${drawtext}`,
+        "-q:v", "2",
+        "-frames:v", "1",
+        thumbOutPath,
+      ], "thumb-compose");
+
+      // 3. Upload Supabase
+      const thumbName = `${slug}-thumb.jpg`;
+      const thumbBuf = await readFile(thumbOutPath);
+      await uploadToSupabase(`${VIDEO_DIR}/${thumbName}`, thumbBuf, "image/jpeg");
+      thumbnailUrl = supabasePublicUrl(`${VIDEO_DIR}/${thumbName}`);
+      console.log(`[thumb] ${thumbnailUrl}`);
+    } catch (e) {
+      console.warn(`[thumb] composição falhou: ${e?.message || e} — sem thumbnail`);
+    }
+  }
+
+  // ── SEO companion ──────────────────────────────────────────────────
+  // <slug>-seo.json: título YouTube + descrição + hashtags. Para uso ao
+  // publicar manualmente ou via API YouTube no futuro.
+  let seoUrl = null;
+  if (!preview && seo && (seo.postTitle || seo.description)) {
+    try {
+      const seoName = `${slug}-seo.json`;
+      const seoBuf = Buffer.from(JSON.stringify(seo, null, 2), "utf-8");
+      await uploadToSupabase(`${VIDEO_DIR}/${seoName}`, seoBuf, "application/json");
+      seoUrl = supabasePublicUrl(`${VIDEO_DIR}/${seoName}`);
+      console.log(`[seo] ${seoUrl}`);
+    } catch (e) {
+      console.warn(`[seo] upload falhou: ${e?.message || e}`);
+    }
+  }
+
   // Só patcha o projecto com videoUrl em modo FINAL. Preview é descartável,
   // não deve sobrescrever o vídeo final que a user já tenha feito.
   if (!preview) {
@@ -512,6 +674,7 @@ async function main() {
           ...proj,
           videoUrl,
           videoDurationSec: totalDuration,
+          ...(thumbnailUrl ? { thumbnailUrl } : {}),
           updatedAt: new Date().toISOString(),
         };
         await uploadToSupabase(

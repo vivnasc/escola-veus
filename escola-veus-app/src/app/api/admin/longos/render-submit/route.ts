@@ -35,14 +35,25 @@ type ProjectPrompt = {
   id: string;
   clipUrl?: string;
   clipDurationSec?: number;
+  imageUrl?: string;
+  startSec?: number;
+  endSec?: number;
+};
+
+type ProjectSeo = {
+  postTitle?: string;
+  description?: string;
+  hashtags?: string[];
 };
 
 type Project = {
   slug?: string;
   titulo?: string;
+  thumbnailText?: string;
   narrationUrl?: string;
   subtitlesUrl?: string; // SRT em Supabase, gerada por /generate-srt
   prompts?: ProjectPrompt[];
+  seo?: ProjectSeo;
   [k: string]: unknown;
 };
 
@@ -108,13 +119,160 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // SRT obrigatório: render sem legendas é desperdício de tempo. Se a SRT
+  // ainda não foi gerada (gerar narração ≠ gerar SRT — a SRT corre via
+  // ElevenLabs Scribe sobre o MP3), AUTO-GERA agora antes de submeter o
+  // workflow. Se a auto-geração falhar, BLOQUEIA com erro claro.
+  if (!project.subtitlesUrl) {
+    const protocol = req.headers.get("x-forwarded-proto") || "https";
+    const host = req.headers.get("host");
+    if (!host) {
+      return NextResponse.json(
+        {
+          erro:
+            "SRT em falta: não consegui auto-gerar (sem host header). Clica '📝 gerar SRT' antes de render.",
+        },
+        { status: 400 },
+      );
+    }
+    const baseUrl = `${protocol}://${host}`;
+    try {
+      const srtRes = await fetch(`${baseUrl}/api/admin/longos/generate-srt`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug }),
+      });
+      const srtData = await srtRes.json();
+      if (!srtRes.ok || srtData.erro) {
+        return NextResponse.json(
+          {
+            erro: `Falhei a auto-gerar SRT: ${srtData.erro || `HTTP ${srtRes.status}`}. Clica '📝 gerar SRT' manualmente e tenta render de novo.`,
+          },
+          { status: 400 },
+        );
+      }
+      // Re-carrega o projecto para apanhar o novo subtitlesUrl
+      try {
+        const { data: refreshed } = await supabase.storage
+          .from("course-assets")
+          .download(`admin/longos/${slug}.json`);
+        if (refreshed) {
+          project = JSON.parse(await refreshed.text()) as Project;
+        }
+      } catch {
+        /* fall through — vamos usar o subtitlesUrl da resposta SRT abaixo */
+      }
+      // Garantia: se o reload falhou, usa o que SRT response retornou
+      if (!project.subtitlesUrl && srtData.subtitlesUrl) {
+        project.subtitlesUrl = srtData.subtitlesUrl;
+      }
+    } catch (e) {
+      return NextResponse.json(
+        {
+          erro: `Auto-gerar SRT falhou: ${e instanceof Error ? e.message : String(e)}. Clica '📝 gerar SRT' manualmente.`,
+        },
+        { status: 500 },
+      );
+    }
+    // Se mesmo assim ficou sem SRT, bloqueia
+    if (!project.subtitlesUrl) {
+      return NextResponse.json(
+        {
+          erro: "SRT continua em falta após auto-gerar. Clica '📝 gerar SRT' manualmente e tenta render de novo.",
+        },
+        { status: 500 },
+      );
+    }
+  }
+
+  // Alinhamento semântico clips ↔ narração: cada cena deve aparecer quando a
+  // narração fala dela. Sem alinhamento, clips tocam em sequência ignorando
+  // o que a voz diz (Vivianne reportou: 8.5 min de last-frame morto).
+  // Se faltarem startSec/endSec nos prompts, AUTO-CHAMA /align-clips.
+  const promptsList = Array.isArray(project.prompts) ? project.prompts : [];
+  const hasAlignment = promptsList.length > 0 && promptsList.every(
+    (p) => typeof p.startSec === "number" && typeof p.endSec === "number",
+  );
+  if (!hasAlignment) {
+    const protocol = req.headers.get("x-forwarded-proto") || "https";
+    const host = req.headers.get("host");
+    if (host) {
+      const baseUrl = `${protocol}://${host}`;
+      try {
+        const alignRes = await fetch(`${baseUrl}/api/admin/longos/align-clips`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug }),
+        });
+        const alignData = await alignRes.json();
+        if (!alignRes.ok || alignData.erro) {
+          return NextResponse.json(
+            {
+              erro: `Auto-alinhar clips falhou: ${alignData.erro || `HTTP ${alignRes.status}`}. Sem alinhamento, clips ficariam dessincronizados — render bloqueado.`,
+            },
+            { status: 400 },
+          );
+        }
+        // Re-carrega projecto para apanhar o novo timing
+        try {
+          const { data: refreshed } = await supabase.storage
+            .from("course-assets")
+            .download(`admin/longos/${slug}.json`);
+          if (refreshed) {
+            project = JSON.parse(await refreshed.text()) as Project;
+          }
+        } catch {
+          /* fall through */
+        }
+      } catch (e) {
+        return NextResponse.json(
+          {
+            erro: `Auto-alinhar clips: ${e instanceof Error ? e.message : String(e)}. Render bloqueado.`,
+          },
+          { status: 500 },
+        );
+      }
+    }
+  }
+
+  // SEO YouTube: auto-gerar se em falta. Render.mjs guarda <slug>-seo.json
+  // como companion file para upload posterior.
+  const hasSeo =
+    !!project.seo?.postTitle &&
+    !!project.seo?.description &&
+    Array.isArray(project.seo?.hashtags) &&
+    project.seo.hashtags.length > 0;
+  if (!hasSeo) {
+    const protocol = req.headers.get("x-forwarded-proto") || "https";
+    const host = req.headers.get("host");
+    if (host) {
+      try {
+        const seoRes = await fetch(`${protocol}://${host}/api/admin/longos/gen-seo`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug }),
+        });
+        const seoData = await seoRes.json();
+        if (seoRes.ok && !seoData.erro && seoData.seo) {
+          project.seo = seoData.seo;
+        }
+      } catch {
+        /* SEO é opcional — render continua sem se falhar */
+      }
+    }
+  }
+
   // Filtra prompts com clipUrl. A ordem da array dos prompts é a ordem de
   // reprodução. Sem clipUrl → cena ainda não gravada → não entra no render.
+  // INCLUI o timing semântico (startSec/endSec) — render.mjs estica/comprime
+  // cada clip para ocupar o intervalo de narração que lhe foi atribuído.
   const clipsForRender = (project.prompts ?? [])
     .filter((p) => p.clipUrl)
     .map((p) => ({
       url: p.clipUrl as string,
       durationSec: p.clipDurationSec ?? 0,
+      startSec: typeof p.startSec === "number" ? p.startSec : undefined,
+      endSec: typeof p.endSec === "number" ? p.endSec : undefined,
     }));
 
   if (clipsForRender.length === 0) {
@@ -125,6 +283,14 @@ export async function POST(req: NextRequest) {
   }
 
   const jobId = `longo-${slug}-${Date.now()}`;
+
+  // Thumbnail base: primeira imagem uploaded (preferível) ou primeiro clip.
+  // O render.mjs sobrepõe project.thumbnailText em cima.
+  const firstWithImage = (project.prompts ?? []).find(
+    (p) => typeof p.imageUrl === "string" && p.imageUrl,
+  );
+  const firstWithClip = (project.prompts ?? []).find((p) => p.clipUrl);
+  const thumbnailBaseUrl = firstWithImage?.imageUrl || firstWithClip?.clipUrl || null;
 
   const manifest = {
     jobId,
@@ -140,6 +306,13 @@ export async function POST(req: NextRequest) {
     includeBrand: includeBrand !== false,
     preview: !!preview,
     previewSeconds: typeof previewSeconds === "number" ? previewSeconds : 90,
+    // Thumbnail companion file: o render extrai/usa esta imagem, sobrepõe
+    // o thumbnailText em runtime via ffmpeg drawtext, e faz upload como
+    // companion <slug>-thumb.jpg.
+    thumbnailBaseUrl,
+    thumbnailText: project.thumbnailText || project.titulo || slug,
+    // SEO YouTube companion: render guarda <slug>-seo.json se presente.
+    seo: project.seo || null,
     createdAt: new Date().toISOString(),
   };
 

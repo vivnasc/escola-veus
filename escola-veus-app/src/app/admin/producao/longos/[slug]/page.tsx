@@ -2681,13 +2681,14 @@ export default function LongoDetailPage() {
 }
 
 // ─── BulkImageDropZone ──────────────────────────────────────────────────────
-// Zona única para arrastar TODAS as imagens MJ de uma vez. Para cada
-// ficheiro, faz auto-match ao promptId por nome (filename CONTÉM ou IGUAL
-// promptId, case-insensitive). Upload paralelo (3 ao mesmo tempo) via o
-// mesmo handler do per-prompt slot (signed URL → PUT → finalize).
+// Zona única para arrastar TODAS as imagens MJ de uma vez. Mapeamento por
+// ORDEM: cada ficheiro é atribuído ao próximo prompt SEM imagem (na ordem
+// dos prompts). Ficheiros são ordenados por lastModified ascendente — assim
+// se a Vivianne gerou em MJ na ordem dos prompts, o mapping funciona
+// automaticamente sem renomear.
 //
-// Os que não dão match aparecem em lista no fim para a Vivianne picar
-// manualmente o promptId.
+// Upload paralelo (3 ao mesmo tempo) via o mesmo handler do per-prompt slot
+// (signed URL → PUT → finalize).
 
 function BulkImageDropZone({
   prompts,
@@ -2698,27 +2699,8 @@ function BulkImageDropZone({
 }) {
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState({ done: 0, total: 0 });
-  const [unmatched, setUnmatched] = useState<File[]>([]);
+  const [overflow, setOverflow] = useState<File[]>([]);
   const [dragOver, setDragOver] = useState(false);
-
-  const matchPrompt = (filename: string): string | null => {
-    const base = filename.replace(/\.[^.]+$/, "").toLowerCase();
-    // 1. Exact match
-    const exact = prompts.find((p) => p.id.toLowerCase() === base);
-    if (exact) return exact.id;
-    // 2. Filename contains promptId
-    const contained = prompts
-      .filter((p) => base.includes(p.id.toLowerCase()))
-      .sort((a, b) => b.id.length - a.id.length)[0];
-    if (contained) return contained.id;
-    // 3. PromptId contains filename (raro, mas para casos onde a Vivianne
-    //    nomeia ficheiro só com a parte distintiva, ex: "voz-antes-da-compra")
-    const containing = prompts
-      .filter((p) => base.length >= 8 && p.id.toLowerCase().includes(base))
-      .sort((a, b) => a.id.length - b.id.length)[0];
-    if (containing) return containing.id;
-    return null;
-  };
 
   const handleFiles = async (files: File[]) => {
     const images = files.filter(
@@ -2727,14 +2709,25 @@ function BulkImageDropZone({
     if (images.length === 0) return;
 
     setBusy(true);
-    setUnmatched([]);
+    setOverflow([]);
 
+    // Ordena por lastModified ascendente — MJ exports tipicamente seguem
+    // ordem de geração (= ordem dos prompts se gerou linearmente). Drop
+    // de pasta inteira preserva isto.
+    const sorted = [...images].sort((a, b) => a.lastModified - b.lastModified);
+
+    // Toma os prompts SEM imagem na ordem do projecto. Cada ficheiro é
+    // atribuído ao próximo prompt vazio sequencialmente.
+    const emptyPromptIds = prompts.filter((p) => !p.hasImage).map((p) => p.id);
     const matched: { file: File; promptId: string }[] = [];
-    const unmatchedNow: File[] = [];
-    for (const f of images) {
-      const id = matchPrompt(f.name);
-      if (id) matched.push({ file: f, promptId: id });
-      else unmatchedNow.push(f);
+    const overflowNow: File[] = [];
+    for (let i = 0; i < sorted.length; i++) {
+      const promptId = emptyPromptIds[i];
+      if (promptId) {
+        matched.push({ file: sorted[i], promptId });
+      } else {
+        overflowNow.push(sorted[i]);
+      }
     }
 
     setProgress({ done: 0, total: matched.length });
@@ -2754,7 +2747,7 @@ function BulkImageDropZone({
       );
     }
 
-    setUnmatched(unmatchedNow);
+    setOverflow(overflowNow);
     setBusy(false);
   };
 
@@ -2765,10 +2758,7 @@ function BulkImageDropZone({
     if (files.length > 0) handleFiles(files);
   };
 
-  const copyIds = () => {
-    const ids = prompts.map((p) => p.id).join("\n");
-    navigator.clipboard.writeText(ids).catch(() => {});
-  };
+  const emptyCount = prompts.filter((p) => !p.hasImage).length;
 
   return (
     <div className="mb-3">
@@ -2804,48 +2794,31 @@ function BulkImageDropZone({
             </div>
           </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-1">
             <p className="text-sm font-semibold text-escola-creme">
-              🎨 Arrasta TODAS as imagens MJ aqui (auto-match por nome)
+              🎨 Arrasta TODAS as imagens MJ aqui
             </p>
             <p className="text-[10px] text-escola-creme-50">
-              Para auto-match, nomeia cada imagem com o ID da cena (ex:{" "}
-              <code className="text-escola-dourado">
-                {prompts[0]?.id ?? "longo-01-cena"}.png
-              </code>
-              ). Filenames que contêm o ID também funcionam.
+              Atribuição automática por ordem (data de criação do ficheiro).
+              Ficheiros ficam pelos {emptyCount} prompts sem imagem, na mesma
+              ordem dos prompts. Sem renomear.{" "}
+              {emptyCount === 0 && "(Todos os prompts já têm imagem.)"}
             </p>
-            <div className="flex justify-center gap-2 text-[10px]">
-              <button
-                onClick={copyIds}
-                className="rounded border border-escola-border bg-escola-bg px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
-                title="Copia todos os IDs para clipboard. Usa para renomear ficheiros em batch antes de drop."
-              >
-                📋 copiar IDs ({prompts.length})
-              </button>
-              <span className="text-escola-creme-50">
-                já com imagem: {prompts.filter((p) => p.hasImage).length}/{prompts.length}
-              </span>
-            </div>
+            <p className="text-[10px] text-escola-creme-50">
+              já com imagem: {prompts.filter((p) => p.hasImage).length}/{prompts.length}
+            </p>
           </div>
         )}
       </div>
-      {unmatched.length > 0 && (
-        <div className="mt-2 rounded border border-escola-terracota/40 bg-escola-terracota/5 p-2 text-[10px] text-escola-terracota">
-          <p className="font-semibold">
-            ⚠ {unmatched.length} ficheiros sem match (filename não contém
-            promptId):
-          </p>
+      {overflow.length > 0 && (
+        <div className="mt-2 rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2 text-[10px] text-escola-creme-50">
+          ⚠ {overflow.length} ficheiros extra (mais ficheiros que prompts vazios) — não foram atribuídos:
           <ul className="mt-1 list-disc pl-4">
-            {unmatched.slice(0, 10).map((f) => (
+            {overflow.slice(0, 5).map((f) => (
               <li key={f.name}>{f.name}</li>
             ))}
-            {unmatched.length > 10 && <li>...e mais {unmatched.length - 10}</li>}
+            {overflow.length > 5 && <li>...e mais {overflow.length - 5}</li>}
           </ul>
-          <p className="mt-1 text-escola-creme-50">
-            Renomeia (ID copiado para clipboard ajuda) e arrasta de novo. Ou
-            usa o slot 🎨 individual em cada cena.
-          </p>
         </div>
       )}
     </div>
