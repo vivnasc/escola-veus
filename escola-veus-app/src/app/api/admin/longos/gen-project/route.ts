@@ -266,10 +266,22 @@ ESPECIFICAÇÕES:
   "todas nós", "vocês". É íntimo, individual, dirigido àquela ouvinte.
 - Capítulos: 5-7 secções (era 4-6), cada uma com 600-800 palavras de
   narração. Ritmo de respiração, não didáctico.
-- Cenas visuais: 60-80 prompts de imagem (era 50-70) — 1 a cada ~20-25s
-  de narração. Cada prompt = 1 cena ÚNICA. NÃO repitas variações da mesma.
-  Cada cena vai ser animada via Runway image-to-video (10s clip) — para
-  cobrir 25+ min com crossfades, precisamos 60-80 cenas distintas.
+- Cenas visuais: 60-80 prompts ATMOSFÉRICOS (não literais).
+  ESTRATÉGIA CORVO SECO: imagens evocativas/genéricas que FLUTUAM sobre a
+  narração — não tentam ilustrar a frase exacta. Cada visual sustenta um
+  MOOD que combina com vários momentos da narração.
+  - SIM: "cozinha vazia ao fim de tarde, luz baixa, pano dobrado na mesa"
+    (funciona para qualquer narração sobre herança/perda/silêncio)
+  - SIM: "mãos a segurar carta sépia, anel velho ao lado, luz quente lateral"
+    (atmosférico — pode ser sobre nome, mãe, segredo, qualquer coisa)
+  - SIM: "vela a arder em quarto escuro, cera a escorrer devagar"
+    (mood contemplativo universal)
+  - NÃO: "uma cadeira específica que aparece no parágrafo X" (anchor literal)
+  - NÃO: "carteira de couro com 47 trevos dentro" (demasiado específico)
+  Cada clip dura ~18-20s no render (boomerang do 10s native Runway).
+  60-80 prompts × 18-20s = ~20-26 min cobertos sem precisar mais clips.
+  Não temas reutilizar visualmente um motivo (ex: 3 prompts diferentes
+  sobre cozinhas distintas) — variação atmosférica, não temática.
 
 Devolve JSON com:
 - titulo: 4-7 palavras evocativas (pode ser uma frase, não um sumário)
