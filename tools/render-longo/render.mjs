@@ -275,61 +275,66 @@ async function main() {
     (c) => typeof c.startSec === "number" && typeof c.endSec === "number" && c.endSec > c.startSec,
   );
   let clipDurations = nativeClipDurations.slice();
-  if (hasAlignment) {
-    console.log("[align] alignment Claude detectado — esticando clips para durações alvo");
-    await writeResult(jobId, { status: "running", phase: "align", progress: 18 });
-    const targets = clips.map((c) => Number(c.endSec) - Number(c.startSec));
-    for (let i = 0; i < clips.length; i++) {
-      const target = targets[i];
-      const native = nativeClipDurations[i];
-      const stretchedPath = path.join(WORK_DIR, `clip-${i}-aligned.mp4`);
-      if (Math.abs(native - target) < 0.3) {
-        // Já tem ~ a duração certa — copia como está
-        await new Promise((resolve, reject) => {
-          const p = spawn("cp", [clipPaths[i], stretchedPath]);
-          p.on("error", reject);
-          p.on("exit", (c) => (c === 0 ? resolve() : reject(new Error("cp falhou"))));
-        });
-      } else if (native > target) {
-        // Trim: corta ao target
-        await runFfmpeg([
-          "-y",
-          "-i", clipPaths[i],
-          "-t", target.toFixed(3),
-          "-c", "copy",
-          "-avoid_negative_ts", "1",
-          stretchedPath,
-        ]);
-      } else {
-        // Extend: tpad com clone do último frame para chegar ao target
-        const extra = target - native;
-        await runFfmpeg([
-          "-y",
-          "-i", clipPaths[i],
-          "-vf", `tpad=stop_mode=clone:stop_duration=${extra.toFixed(3)}`,
-          "-an",
-          "-c:v", "libx264",
-          "-preset", "medium",
-          "-crf", "20",
-          stretchedPath,
-        ]);
-      }
-      clipPaths[i] = stretchedPath;
-      clipDurations[i] = target;
+
+  // ── SYNC clips↔narração — pattern do funil, escalado para long-form ────
+  // Computa clipDuration UNIFORME a partir de narrSec (como o funil faz):
+  //   clipDuration = (narrSec + (N-1)*cf) / N
+  // Cada clip é então esticado via slow motion a essa duração. Sem Claude
+  // align, sem matching semântico complexo — só sincronização aritmética
+  // uniforme. É o que torna o funil fiável.
+  //
+  // Diferença vs funil: no funil, clips são 10s native e narração ~80-110s
+  // → ratio 1.x, slow motion gentil. Nos longos, narração ~1000s+ e 56
+  // clips de 10s → ratio ~2.0×, slow motion ainda dentro do contemplativo.
+  // Cap 3.0× — acima disso vai além do natural.
+  const targetClipsBlock = narrSec; // sem leadIn/outroHold por agora
+  const n = clips.length;
+  const targetClipDuration = (targetClipsBlock + (n - 1) * crossfade) / n;
+  const SLOW_CAP = 3.0;
+  const ratio = targetClipDuration / 10; // assume 10s Runway native
+  const cappedRatio = Math.min(ratio, SLOW_CAP);
+  const finalClipDuration = cappedRatio * 10;
+
+  console.log(
+    `[sync] narrSec=${narrSec.toFixed(1)}s · clips=${n} · cf=${crossfade}s · ` +
+      `targetClipDuration=${targetClipDuration.toFixed(2)}s · ` +
+      `ratio=${ratio.toFixed(2)}× (cap ${SLOW_CAP}×) · ` +
+      `finalClipDuration=${finalClipDuration.toFixed(2)}s`,
+  );
+
+  await writeResult(jobId, { status: "running", phase: "stretch", progress: 18 });
+  for (let i = 0; i < clips.length; i++) {
+    const native = nativeClipDurations[i];
+    const target = finalClipDuration;
+    const stretchedPath = path.join(WORK_DIR, `clip-${i}-aligned.mp4`);
+    if (Math.abs(native - target) < 0.3) {
+      await new Promise((resolve, reject) => {
+        const p = spawn("cp", [clipPaths[i], stretchedPath]);
+        p.on("error", reject);
+        p.on("exit", (c) => (c === 0 ? resolve() : reject(new Error("cp falhou"))));
+      });
+    } else if (native > target) {
+      await runFfmpeg([
+        "-y", "-i", clipPaths[i], "-t", target.toFixed(3),
+        "-c", "copy", "-avoid_negative_ts", "1", stretchedPath,
+      ]);
+    } else {
+      // Slow motion via setpts — mantém movimento contínuo, sem freeze
+      const r = target / native;
+      await runFfmpeg([
+        "-y", "-i", clipPaths[i],
+        "-vf", `setpts=${r.toFixed(3)}*PTS`,
+        "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
+        stretchedPath,
+      ]);
     }
-    console.log(
-      `[align] clips alinhados: total=${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
-        `(narração ${narrSec.toFixed(1)}s)`,
-    );
-  } else {
-    // Sem alignment: usa native ou manifest durationSec
-    clipDurations = clipPaths.map((p, i) =>
-      Number.isFinite(clips[i].durationSec) && clips[i].durationSec > 0
-        ? Number(clips[i].durationSec)
-        : nativeClipDurations[i],
-    );
-    console.log("[align] sem alignment — usando durações nativas (last clip será freezado para cobrir narração)");
+    clipPaths[i] = stretchedPath;
+    clipDurations[i] = target;
   }
+  console.log(
+    `[sync] clips esticados: total=${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
+      `(narração ${narrSec.toFixed(1)}s)`,
+  );
 
   // ── Timeline ──────────────────────────────────────────────────────────
   // Estrutura linear:
@@ -610,7 +615,7 @@ async function main() {
       const safeText = String(thumbnailText)
         .toUpperCase()
         .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\\\'")
+        .replace(/'/g, "\\'")
         .replace(/:/g, "\\:")
         .replace(/%/g, "\\%");
       const fontPath = "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf";

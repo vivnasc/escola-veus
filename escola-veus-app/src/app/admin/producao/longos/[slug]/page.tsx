@@ -607,20 +607,10 @@ export default function LongoDetailPage() {
         ({ res: r, data: d } = await submitRender());
       }
 
-      // Se alinhamento em falta → chama /align-clips e retry
-      if (r.status === 412 && d.code === "MISSING_ALIGNMENT") {
-        setRenderProgress({ status: "preparing", phase: "align", progress: 10 });
-        const alignRes = await fetch("/api/admin/longos/align-clips", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ slug: project.slug }),
-        });
-        const alignData = await alignRes.json();
-        if (!alignRes.ok || alignData.erro) {
-          throw new Error(alignData.erro || `align-clips falhou: HTTP ${alignRes.status}`);
-        }
-        ({ res: r, data: d } = await submitRender());
-      }
+      // Alignment Claude removido — render.mjs faz sync uniforme com slow
+      // motion (pattern do funil). Não precisamos mais de chamar /align-clips
+      // antes do render. Endpoint /align-clips continua disponível para
+      // experimentos futuros mas não é blocker.
 
       // SEO opcional — silencioso (best-effort)
       if (r.ok && d.jobId) {

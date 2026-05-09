@@ -132,23 +132,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Alinhamento clips ↔ narração obrigatório (sem isto: 8min de last-frame
-  // morto). Cliente chama /align-clips antes do retry.
-  const promptsList = Array.isArray(project.prompts) ? project.prompts : [];
-  const hasAlignment =
-    promptsList.length > 0 &&
-    promptsList.every(
-      (p) => typeof p.startSec === "number" && typeof p.endSec === "number",
-    );
-  if (!hasAlignment) {
-    return NextResponse.json(
-      {
-        erro: "Alinhamento clips↔narração em falta. Gera primeiro (cliente chama /align-clips).",
-        code: "MISSING_ALIGNMENT",
-      },
-      { status: 412 },
-    );
-  }
+  // Alignment Claude já NÃO é obrigatório — render.mjs faz sync uniforme
+  // (pattern do funil: clipDuration calculado de narrSec, slow motion para
+  // esticar os 10s nativos). Mais robusto que tentar mapping semântico que
+  // sobre-engineering e drift acumulado.
 
   // SEO YouTube: opcional, render continua sem. Cliente pode chamar /gen-seo
   // antes para incluir o companion <slug>-seo.json.
