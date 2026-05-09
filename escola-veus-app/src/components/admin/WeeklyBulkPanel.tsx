@@ -41,6 +41,8 @@ type WeeklyPost = {
   label?: string; temas?: string[];
   verses: string[];
   captions: { instagram: string; tiktok: string; youtube: { title: string; description: string } };
+  storyChapters?: string[];
+  storyTitle?: string;
   renderJobs?: { clip?: RenderJob; full?: RenderJob };
   // Legacy / retrocompat — pode estar populado mesmo com renderJobs preenchido (=clip).
   videoUrl: string | null;
@@ -399,7 +401,9 @@ function PostCard({
   const subtitle = post.albumTitle || (post.temas?.join(" + ")) || "";
   const [activeMode, setActiveMode] = useState<"clip" | "full">("clip");
   const [showCaptions, setShowCaptions] = useState(false);
+  const [showStory, setShowStory] = useState(false);
   const [rerendering, setRerendering] = useState(false);
+  const hasStory = (post.storyChapters?.length || 0) > 0;
 
   const doRerender = async () => {
     if (rerendering) return;
@@ -535,12 +539,22 @@ function PostCard({
             {rerendering ? "…" : `↻ re-render ${activeMode}`}
           </button>
         </div>
-        <button
-          onClick={() => setShowCaptions((v) => !v)}
-          className="mt-2 w-full rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
-        >
-          {showCaptions ? "▴ esconder legendas" : "▾ ver legendas"}
-        </button>
+        <div className="mt-2 flex flex-col gap-1">
+          <button
+            onClick={() => setShowCaptions((v) => !v)}
+            className="w-full rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:border-escola-dourado/40 hover:text-escola-creme"
+          >
+            {showCaptions ? "▴ esconder legendas" : "▾ ver legendas"}
+          </button>
+          {hasStory && (
+            <button
+              onClick={() => setShowStory((v) => !v)}
+              className="w-full rounded border border-escola-coral/30 bg-escola-coral/5 px-2 py-1 text-[10px] text-escola-coral hover:bg-escola-coral/10"
+            >
+              {showStory ? "▴ esconder conto" : `▾ ver conto (${post.storyChapters!.length} capítulos)`}
+            </button>
+          )}
+        </div>
         {showCaptions && (
           <div className="mt-2 space-y-2 text-[10px]">
             <CaptionBlock label="Instagram" text={post.captions.instagram} />
@@ -549,6 +563,20 @@ function PostCard({
               label="YouTube"
               text={`${post.captions.youtube.title}\n\n${post.captions.youtube.description}`}
             />
+          </div>
+        )}
+        {showStory && hasStory && (
+          <div className="mt-2 rounded border border-escola-coral/30 bg-black/30 p-2 text-[10px]">
+            {post.storyTitle && (
+              <div className="mb-2 font-semibold italic text-escola-coral">
+                {post.storyTitle}
+              </div>
+            )}
+            <ol className="list-decimal space-y-2 pl-4 text-escola-creme">
+              {post.storyChapters!.map((c, i) => (
+                <li key={i} className="leading-relaxed">{c}</li>
+              ))}
+            </ol>
           </div>
         )}
       </div>
