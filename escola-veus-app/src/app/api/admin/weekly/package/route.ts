@@ -36,6 +36,7 @@ function planToCsvPosts(plan: WeeklyPlan): CsvPost[] {
       trackTitle: p.trackTitle || p.label,
       captions: p.captions,
       schedule: p.schedule,
+      fullSchedule: p.fullSchedule,
     };
   });
 }

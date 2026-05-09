@@ -43,6 +43,8 @@ async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<
   const durationSec = mode === "full"
     ? (post.audioDurationSec && post.audioDurationSec > 0 ? Math.ceil(post.audioDurationSec) : MODE_DURATIONS.full)
     : MODE_DURATIONS.clip;
+  // AG mode=full passa storyChapters (texto a passar) em vez de só verses overlay
+  const isAgFull = post.brandSlug === "ancient-ground" && mode === "full";
   return runRenderRemotionSubmit({
     title,
     slug: `${post.id}-${mode}`,
@@ -55,6 +57,8 @@ async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<
     stanzaTimings: post.brandSlug === "loranne" ? post.stanzaTimings : undefined,
     audioDurationSec: post.audioDurationSec,
     lyricsSync: post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0,
+    storyChapters: isAgFull ? post.storyChapters : undefined,
+    storyTitle: isAgFull ? post.storyTitle : undefined,
     audioUrl: post.musicUrl,
     audioVolume: 1,
     trackLabel: post.trackLabel,

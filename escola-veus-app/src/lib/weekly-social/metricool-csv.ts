@@ -60,7 +60,10 @@ export type CsvPost = {
   thumbnailUrl: string | null;
   trackTitle?: string;
   captions: PlatformCaptions;
+  /** Schedule do clip (social — IG/TT/YT Shorts). */
   schedule: Record<Platform, ScheduleSlot>;
+  /** Schedule alternativo do full (AG: Mon/Wed/Fri vs clip Tue/Thu/Sat). Default = schedule. */
+  fullSchedule?: Record<Platform, ScheduleSlot>;
 };
 
 export function csvEscape(v: string | number | null | undefined): string {
@@ -81,7 +84,10 @@ export function buildRow(post: CsvPost, kind: CsvLineKind): string {
 
   const isYoutubeCanal = kind.type === "youtube-canal";
   const platform: Platform = isYoutubeCanal ? "youtube" : kind.platform;
-  const slot = post.schedule[platform];
+  // AG full usa fullSchedule (Mon/Wed/Fri) em vez do schedule do clip.
+  const slot = isYoutubeCanal && post.fullSchedule
+    ? post.fullSchedule[platform]
+    : post.schedule[platform];
   col("Date", slot.date);
   col("Time", slot.time);
   col("Draft", "FALSE");

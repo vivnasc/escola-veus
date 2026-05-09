@@ -16,6 +16,7 @@ import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
 import { getLoranneStanzas } from "@/lib/shorts/lyrics-stanzas";
+import { generateAGStory } from "@/lib/shorts/ag-story-generator";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60; // Hobby plan limit. Scribe acontece no GHA worker.
@@ -231,6 +232,36 @@ export async function POST(req: NextRequest) {
           const motionVariant = pickMotionVariant(`ag/${entry.temas.join("-")}/${actualAgTrack}`);
           const trackLabel = `Ancient Ground · ${entry.label}`;
 
+          // Story Claude para mode=full (texto a passar sobre instrumental).
+          // Falha graciosa: full sem story cai em modo verses overlay.
+          let storyChapters: string[] | undefined;
+          let storyTitle: string | undefined;
+          try {
+            const story = await generateAGStory({
+              label: entry.label,
+              temas: entry.temas,
+              trackNumber: actualAgTrack,
+            });
+            storyChapters = story.chapters;
+            storyTitle = story.title;
+          } catch (storyErr) {
+            const msg = storyErr instanceof Error ? storyErr.message : String(storyErr);
+            errors.push({
+              brand: "ancient-ground",
+              postId: `ag-w${week}-${day}`,
+              message: `Story Claude falhou (full sem conto): ${msg.slice(0, 200)}`,
+            });
+          }
+
+          // fullSchedule — AG fulls publicam em dias diferentes do clip.
+          // Mapeamento: posição N do publishDays alinha com posição N do
+          // publishDaysFull (1º clip Ter ↔ 1º full Seg, etc.).
+          const fullDays = brand.publishDaysFull || brand.publishDays;
+          const fullDay = fullDays[slotIdx] ?? day;
+          const fullSchedule = Object.fromEntries(
+            ALL_PLATFORMS.map((p) => [p, scheduleFor(year, week, fullDay, brand.hoursByPlatform[p])]),
+          ) as WeeklyPost["schedule"];
+
           posts.push({
             id: `ag-${entry.temas.join("-")}-w${week}-${day}`,
             brandSlug: "ancient-ground",
@@ -239,6 +270,8 @@ export async function POST(req: NextRequest) {
             trackNumber: actualAgTrack,
             temas: [...entry.temas],
             verses: (suggest.versos || []).slice(0, 2),
+            storyChapters,
+            storyTitle,
             renderJobs: {},
             musicUrl,
             motionVariant,
@@ -247,6 +280,7 @@ export async function POST(req: NextRequest) {
             schedule: Object.fromEntries(
               ALL_PLATFORMS.map((p) => [p, scheduleFor(year, week, day, brand.hoursByPlatform[p])]),
             ) as WeeklyPost["schedule"],
+            fullSchedule,
             videoUrl: null,
             thumbnailUrl: null,
             jobId: null,

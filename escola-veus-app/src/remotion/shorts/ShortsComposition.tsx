@@ -49,6 +49,10 @@ export type ShortsManifest = {
   /** Timing real por stanza (segundos absolutos) — vindo do Scribe.
    *  Quando presente, sobrepõe-se à distribuição uniforme. */
   stanzaTimings?: { text: string; startSec: number; endSec: number }[];
+  /** Conto Claude (AG full) — capítulos passam como texto sobre instrumental. */
+  storyChapters?: string[];
+  /** Título do conto AG. */
+  storyTitle?: string;
   /** URL do MP3. */
   audioUrl: string;
   /** Volume do MP3 (0-1). */
@@ -231,6 +235,10 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
     : AG_MOTIONS[props.motionVariant as AGMotionVariant];
 
   const isSync = !!props.lyricsSync && Array.isArray(props.syncedLyrics) && props.syncedLyrics.length > 0;
+  const hasStory = props.brand === "ancient-ground"
+    && props.mode === "full"
+    && Array.isArray(props.storyChapters)
+    && props.storyChapters.length > 0;
   // Tempos default dos 2 versos (modo estático, AG).
   const totalSec = durationInFrames / fps;
   const v1Start = isSync ? 0 : 3;
@@ -265,8 +273,16 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
         <Motion frame={frame} />
       )}
 
-      {/* 2. Letras — sync (Loranne) ou estáticas 2 versos (AG fallback) */}
-      {isSync ? (
+      {/* 2. Texto — story chapters (AG full), lyrics sync (Loranne) ou 2 versos */}
+      {hasStory ? (
+        <SyncedLyricsLayer
+          stanzas={props.storyChapters!}
+          stanzaTimings={undefined}
+          frame={frame}
+          fps={fps}
+          totalFrames={durationInFrames}
+        />
+      ) : isSync ? (
         <SyncedLyricsLayer
           stanzas={props.syncedLyrics!}
           stanzaTimings={props.stanzaTimings}

@@ -21,8 +21,10 @@ export type BrandConfig = {
   slug: BrandSlug;
   /** Nome legível usado em logs e no nome do ZIP. */
   displayName: string;
-  /** Dias da semana em que se publica (1 post por dia, replicado por plataforma). */
+  /** Dias da semana em que se publica clips (1 post por dia, replicado por plataforma). */
   publishDays: DayOfWeek[];
+  /** Dias da semana em que se publica fulls (apenas YT canal). Default = publishDays. */
+  publishDaysFull?: DayOfWeek[];
   /** Hora local Maputo (HH:MM) por plataforma — staggered. */
   hoursByPlatform: Record<Platform, string>;
   /** Pool de hashtags por plataforma. `<tema>` é placeholder dinâmico (substituído em runtime). */
@@ -92,8 +94,11 @@ export const BRANDS: Record<BrandSlug, BrandConfig> = {
   "ancient-ground": {
     slug: "ancient-ground",
     displayName: "Ancient Ground",
-    // 3/sem: Ter, Qui, Sáb (consistência de produção)
+    // Shorts (clip 30s): 3/sem Ter/Qui/Sáb (consistência social)
     publishDays: ["tue", "thu", "sat"],
+    // Fulls (3-5min YT canal): 3/sem Seg/Qua/Sex (alterna com clips,
+    // primes audiência um dia antes do clip social)
+    publishDaysFull: ["mon", "wed", "fri"],
     hoursByPlatform: {
       youtube: "18:00",
       instagram: "20:00",
