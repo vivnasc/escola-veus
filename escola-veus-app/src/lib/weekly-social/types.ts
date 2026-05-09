@@ -39,6 +39,10 @@ export type WeeklyPost = {
   verses: string[];
   /** Letras inteiras divididas em stanzas para lyric video sync (Loranne). */
   syncedLyrics?: string[];
+  /** Timing real por stanza (segundos absolutos no áudio) — vindo do Scribe. */
+  stanzaTimings?: { text: string; startSec: number; endSec: number }[];
+  /** Duração total do áudio em segundos (do Scribe — última palavra + 2s tail). */
+  audioDurationSec?: number;
   musicUrl: string;
   /** Variante de motion Remotion (A/B/C/D). */
   motionVariant: "A" | "B" | "C" | "D";

@@ -21,6 +21,10 @@ export type RenderRemotionInput = {
   verses: [string, string];
   /** Letras inteiras divididas em stanzas (Loranne lyric video). */
   syncedLyrics?: string[];
+  /** Timing real por stanza (segundos absolutos no áudio) — vindo do Scribe. */
+  stanzaTimings?: { text: string; startSec: number; endSec: number }[];
+  /** Duração total do áudio em segundos (do Scribe). Determina full mode duration. */
+  audioDurationSec?: number;
   /** Activa modo lyric video — letras passam em sync. */
   lyricsSync?: boolean;
   /** URL do MP3 da faixa. */
@@ -66,7 +70,11 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
   }
 
   const mode = input.mode ?? "clip";
-  const defaultDuration = mode === "full" ? 240 : 30;
+  // Para mode="full", se temos audioDurationSec do Scribe, usa-a (preciso).
+  // Senão, default 240s. Para mode="clip", sempre 30s.
+  const defaultDuration = mode === "full"
+    ? (input.audioDurationSec && input.audioDurationSec > 0 ? Math.ceil(input.audioDurationSec) : 240)
+    : 30;
   const slugMode = mode === "full" ? "full" : "clip";
   const slug = sanitiseSlug(input.slug || input.title || `${input.brand}-${input.motionVariant}`);
   const jobId = `lyric-${slugMode}-${slug}-${Date.now()}`;
@@ -81,6 +89,8 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     accent: input.accent || (input.brand === "loranne" ? "#D4A853" : "#FFD27F"),
     lyricsSync: !!input.lyricsSync,
     syncedLyrics: input.syncedLyrics || null,
+    stanzaTimings: input.stanzaTimings || null,
+    audioDurationSec: input.audioDurationSec ?? null,
     verses: input.verses,
     audioUrl: input.audioUrl,
     audioVolume: input.audioVolume ?? 1,

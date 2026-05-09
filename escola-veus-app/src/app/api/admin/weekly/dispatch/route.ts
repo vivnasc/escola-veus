@@ -39,6 +39,10 @@ async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<
     post.verses?.[0] || "",
     post.verses?.[1] || "",
   ];
+  // Para mode=full, prefere a duração real do áudio (Scribe) — clip mantém-se 30s.
+  const durationSec = mode === "full"
+    ? (post.audioDurationSec && post.audioDurationSec > 0 ? Math.ceil(post.audioDurationSec) : MODE_DURATIONS.full)
+    : MODE_DURATIONS.clip;
   return runRenderRemotionSubmit({
     title,
     slug: `${post.id}-${mode}`,
@@ -48,11 +52,13 @@ async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<
     accent: post.accent,
     verses,
     syncedLyrics: post.brandSlug === "loranne" ? post.syncedLyrics : undefined,
+    stanzaTimings: post.brandSlug === "loranne" ? post.stanzaTimings : undefined,
+    audioDurationSec: post.audioDurationSec,
     lyricsSync: post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0,
     audioUrl: post.musicUrl,
     audioVolume: 1,
     trackLabel: post.trackLabel,
-    durationSec: MODE_DURATIONS[mode],
+    durationSec,
   });
 }
 
