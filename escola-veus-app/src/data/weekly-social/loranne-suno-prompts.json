@@ -1,0 +1,62 @@
+{
+  "incenso-acende": {
+    "1": "Style: ambient gospel · intimate whisper · solo upright piano with felt damper + soft pad bed",
+    "2": "Style: stripped-back ambient · raw close-mic vocal · solo upright piano + single low cello bo",
+    "3": "Style: contemporary organic-electronic · warm vocal · soft Rhodes piano + light brushed drums",
+    "4": "Style: deep house with organic textures · steady four-on-the-floor kick · warm pads + plucky",
+    "5": "Style: contemporary gospel anthem · powerful chest vocal that never shouts · warm Hammond org",
+    "6": "Style: ambient minimal · intimate whisper close-mic · felt-piano + warm pad swell + ambient r",
+    "7": "Style: stripped-back acoustic · raw close-mic vocal · fingerpicked nylon guitar + soft cello",
+    "8": "Style: deep house pulse · driving four-on-the-floor kick that mimics heartbeat · warm sidecha",
+    "9": "Style: contemporary gospel anthem · powerful chest vocal that never shouts · warm Hammond org",
+    "10": "Style: ambient closing · intimate whisper close-mic · solo felt-piano + soft pad bed + room t"
+  },
+  "incenso-coro": {
+    "1": "Style: ambient with West African textures · intimate whisper close-mic · solo mbira + soft pa",
+    "2": "Style: stripped-back acoustic with subtle West African colour · raw close-mic vocal · fingerp",
+    "3": "Style: contemporary organic-electronic with African colour · warm vocal · soft Rhodes piano +",
+    "4": "Style: minimal organic-electronic · close-mic conversational vocal · solo felt-piano + warm p",
+    "5": "Style: contemporary African gospel anthem · powerful chest vocal that never shouts · warm Ham",
+    "6": "Style: ambient minimal with collective breath texture · intimate whisper close-mic · soft pad",
+    "7": "Style: stripped-back acoustic with West African colour · raw close-mic vocal · solo nylon gui",
+    "8": "Style: deep house with West African pulse · driving four-on-the-floor kick · warm sidechained",
+    "9": "Style: contemporary African gospel anthem · powerful chest vocal that never shouts · warm Ham",
+    "10": "Style: ambient closing with subtle African colour · intimate whisper close-mic · solo felt-pi"
+  },
+  "incenso-milagre": {
+    "1": "Style: ambient soul · intimate whisper close-mic · solo upright piano with felt damper + warm",
+    "2": "Style: stripped-back soul · raw close-mic vocal · solo Wurlitzer piano + soft brushed drum on",
+    "3": "Style: contemporary organic-electronic with soul colour · warm vocal · soft Rhodes piano + li",
+    "4": "Style: deep house with soul colour · steady four-on-the-floor kick · warm sidechained pads +",
+    "5": "Style: contemporary gospel anthem · powerful chest vocal that never shouts · warm Hammond org",
+    "6": "Style: ambient minimal with soul colour · intimate whisper close-mic · felt-piano + warm Wurl",
+    "7": "Style: stripped-back acoustic with soul colour · raw close-mic vocal · solo nylon guitar + wa",
+    "8": "Style: deep house with soul colour · driving four-on-the-floor kick · warm sidechained pads +",
+    "9": "Style: contemporary gospel anthem · powerful chest vocal that never shouts · warm Hammond org",
+    "10": "Style: ambient closing with soul colour · intimate whisper close-mic · solo felt-piano + warm"
+  },
+  "incenso-amen": {
+    "1": "Style: ambient · intimate whisper close-mic · solo upright piano with felt damper + soft pad",
+    "2": "Style: stripped-back ambient · raw close-mic vocal · solo upright piano + single low cello bo",
+    "3": "Style: contemporary organic-electronic · warm vocal · soft Rhodes piano + light brushed drums",
+    "4": "Style: stripped-back acoustic · raw close-mic vocal · fingerpicked nylon guitar + soft cello",
+    "5": "Style: contemporary gospel anthem · warm chest vocal that never shouts · warm Hammond organ +",
+    "6": "Style: ambient minimal · intimate whisper close-mic · felt-piano + warm pad swell + ambient r",
+    "7": "Style: stripped-back acoustic · raw close-mic vocal · solo nylon guitar + low fretless bass +",
+    "8": "Style: deep house · driving four-on-the-floor kick (softer than usual, more rounded) · warm s",
+    "9": "Style: contemporary gospel anthem · powerful chest vocal that never shouts · warm Hammond org",
+    "10": "Style: ambient closing · intimate whisper close-mic · solo felt-piano + soft pad bed + room t"
+  },
+  "incenso-aleluia": {
+    "1": "Style: ambient gospel · intimate whisper close-mic · solo upright piano with felt damper + wa",
+    "2": "Style: stripped-back acoustic gospel · raw close-mic vocal · fingerpicked nylon guitar + soft",
+    "3": "Style: contemporary gospel · warm vocal · gospel piano + soft Hammond + light brushed drums +",
+    "4": "Style: deep house gospel · driving four-on-the-floor kick · warm sidechained pads + plucky sy",
+    "5": "Style: marrabenta with female chorus textures · warm chest vocal that never shouts · warm gui",
+    "6": "Style: ambient gospel minimal · intimate whisper close-mic · felt-piano + warm Hammond pad (v",
+    "7": "Style: stripped-back gospel · raw close-mic vocal · solo gospel piano + warm Hammond chord sw",
+    "8": "Style: marrabenta with house pulse · warm vocal that opens on chorus · marrabenta guitar pick",
+    "9": "Style: marrabenta gospel anthem · powerful chest vocal that never shouts · marrabenta guitar",
+    "10": "Style: ambient gospel closing · intimate whisper close-mic · solo felt-piano + warm Hammond p"
+  }
+}

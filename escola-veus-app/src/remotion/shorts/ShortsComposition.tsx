@@ -39,18 +39,25 @@ export type ShortsManifest = {
   motionVariant: "A" | "B" | "C" | "D";
   /** Cor de acento — só Loranne usa, varia por álbum. */
   accent?: string;
-  /** 2 versos para overlay. */
+  /** Modo: 2 versos estáticos OU letras a passar em sync. */
+  lyricsSync?: boolean;
+  /** 2 versos para overlay (modo estático — AG e fallback). */
   verses: [string, string];
+  /** Letras inteiras divididas em "stanzas" (modo sync — Loranne lyric video).
+   *  Cada stanza é mostrada por um intervalo proporcional ao seu peso. */
+  syncedLyrics?: string[];
   /** URL do MP3. */
   audioUrl: string;
   /** Volume do MP3 (0-1). */
   audioVolume?: number;
   /** Para Loranne: "Faixa · Álbum". Para AG: label do triplete. */
   trackLabel?: string;
-  /** Sub-line opcional (ex: "Loranne", "Ancient Ground"). */
+  /** Sub-line opcional. */
   signature?: string;
-  /** Duração em segundos (default 30). */
+  /** Duração em segundos. Default: 30 (clip) ou 240 (full). */
   durationSec?: number;
+  /** Modo de produção: "clip" (30-60s social) ou "full" (3-5 min YT canal). */
+  mode?: "clip" | "full";
   /** FPS (default 30). */
   fps?: number;
 };
@@ -73,6 +80,69 @@ function easedFade(frame: number, startFrame: number, endFrame: number, fadeFram
   const outProgress = Math.min(1, (endFrame - frame) / fadeFrames);
   return Math.min(inProgress, outProgress);
 }
+
+/**
+ * Letras divididas em stanzas, cada uma mostrada uniformemente sobre o
+ * tempo total. Sem auto-timing por palavra (v1 deliberadamente — sync
+ * preciso virá com ElevenLabs Scribe num passo posterior).
+ *
+ * Cada stanza recebe (totalFrames / N) frames. Fade in/out de 0.4s.
+ */
+const SyncedLyricsLayer: React.FC<{
+  stanzas: string[];
+  frame: number;
+  fps: number;
+  totalFrames: number;
+}> = ({ stanzas, frame, fps, totalFrames }) => {
+  if (stanzas.length === 0) return null;
+  // Reserva os primeiros e últimos 2s para "respirar" (audio fade in/out).
+  const buffer = Math.round(fps * 2);
+  const usable = Math.max(totalFrames - buffer * 2, 1);
+  const stanzaFrames = usable / stanzas.length;
+  const fadeFrames = Math.round(fps * 0.4);
+
+  // Index actual
+  const adjusted = frame - buffer;
+  if (adjusted < 0 || adjusted >= usable) return null;
+  const i = Math.min(stanzas.length - 1, Math.floor(adjusted / stanzaFrames));
+  const stanza = stanzas[i];
+  if (!stanza) return null;
+
+  const localFrame = adjusted - i * stanzaFrames;
+  const inP = Math.min(1, localFrame / fadeFrames);
+  const outP = Math.min(1, (stanzaFrames - localFrame) / fadeFrames);
+  const opacity = Math.max(0, Math.min(1, Math.min(inP, outP)));
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: 0, right: 0, top: "50%",
+        transform: "translateY(-50%)",
+        textAlign: "center",
+        padding: "0 8%",
+        opacity,
+        zIndex: 10,
+      }}
+    >
+      <p
+        style={{
+          fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
+          fontSize: 56,
+          fontWeight: 500,
+          letterSpacing: 0.5,
+          lineHeight: 1.4,
+          color: "#F5F0E6",
+          textShadow: "0 4px 30px rgba(0,0,0,0.95), 0 0 80px rgba(0,0,0,0.7)",
+          whiteSpace: "pre-line",
+          margin: 0,
+        }}
+      >
+        {stanza}
+      </p>
+    </div>
+  );
+};
 
 const VerseOverlay: React.FC<{
   text: string;
@@ -131,9 +201,13 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
     ? LORANNE_MOTIONS[props.motionVariant as LoranneMotionVariant]
     : AG_MOTIONS[props.motionVariant as AGMotionVariant];
 
-  // Tempos default dos 2 versos (em segundos).
-  const v1Start = 3, v1End = 13;
-  const v2Start = 16, v2End = 26;
+  const isSync = !!props.lyricsSync && Array.isArray(props.syncedLyrics) && props.syncedLyrics.length > 0;
+  // Tempos default dos 2 versos (modo estático, AG).
+  const totalSec = durationInFrames / fps;
+  const v1Start = isSync ? 0 : 3;
+  const v1End = isSync ? 0 : Math.min(13, totalSec / 2 - 1);
+  const v2Start = isSync ? 0 : Math.min(16, totalSec / 2 + 1);
+  const v2End = isSync ? 0 : Math.min(26, totalSec - 4);
 
   const audioVolume = props.audioVolume ?? 1;
   const fadeFrames = Math.round(fps * 1.5);
@@ -162,9 +236,20 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
         <Motion frame={frame} />
       )}
 
-      {/* 2. Versos */}
-      <VerseOverlay text={props.verses[0]} frame={frame} fps={fps} startSec={v1Start} endSec={v1End} position="middle" />
-      <VerseOverlay text={props.verses[1]} frame={frame} fps={fps} startSec={v2Start} endSec={v2End} position="middle" />
+      {/* 2. Letras — sync (Loranne) ou estáticas 2 versos (AG fallback) */}
+      {isSync ? (
+        <SyncedLyricsLayer
+          stanzas={props.syncedLyrics!}
+          frame={frame}
+          fps={fps}
+          totalFrames={durationInFrames}
+        />
+      ) : (
+        <>
+          <VerseOverlay text={props.verses[0]} frame={frame} fps={fps} startSec={v1Start} endSec={v1End} position="middle" />
+          <VerseOverlay text={props.verses[1]} frame={frame} fps={fps} startSec={v2Start} endSec={v2End} position="middle" />
+        </>
+      )}
 
       {/* 3. Audio */}
       {props.audioUrl && REMOTION_AVAILABLE && RemotionAudio && (

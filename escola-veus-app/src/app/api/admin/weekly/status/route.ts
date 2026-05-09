@@ -3,17 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { type BrandSlug } from "@/data/weekly-social/brand-config";
 import { loadPlan, savePlan } from "@/lib/weekly-social/plan-storage";
 import { currentYear } from "@/lib/weekly-social/schedule";
-import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
+import type { WeeklyPlan, RenderMode, WeeklyPostStatus } from "@/lib/weekly-social/types";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
-
-/**
- * GET /api/admin/weekly/status?week=19&year=2026
- *
- * Para cada post com jobId, lê o result.json em course-assets/render-jobs/.
- * Actualiza videoUrl, thumbnailUrl, status no plan.
- */
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
@@ -38,46 +31,73 @@ async function fetchResult(jobId: string): Promise<RenderResult | null> {
   }
 }
 
+function normalizeStatus(s: RenderResult["status"]): WeeklyPostStatus {
+  if (s === "done") return "done";
+  if (s === "failed") return "failed";
+  if (s === "queued") return "queued";
+  return "rendering";
+}
+
 async function refreshBrand(plan: WeeklyPlan): Promise<{
-  total: number; done: number; rendering: number; failed: number;
+  totalJobs: number; done: number; rendering: number; failed: number;
 }> {
   let dirty = false;
-  let done = 0, rendering = 0, failed = 0;
+  let done = 0, rendering = 0, failed = 0, totalJobs = 0;
+
   for (const post of plan.posts) {
-    if (post.status === "done" && post.videoUrl) { done++; continue; }
-    if (!post.jobId) {
-      if (post.status === "failed") failed++;
-      continue;
+    if (!post.renderJobs) post.renderJobs = {};
+    for (const mode of ["clip", "full"] as RenderMode[]) {
+      const job = post.renderJobs[mode];
+      if (!job) continue;
+      totalJobs++;
+
+      if (job.status === "done" && job.videoUrl) { done++; continue; }
+      if (!job.jobId) {
+        if (job.status === "failed") failed++;
+        continue;
+      }
+
+      const result = await fetchResult(job.jobId);
+      if (!result) continue;
+      const newStatus = normalizeStatus(result.status);
+      if (newStatus === "done") {
+        const videoUrl = result.videoUrl || result.url || null;
+        if (videoUrl !== job.videoUrl || job.status !== "done") {
+          job.videoUrl = videoUrl;
+          job.thumbnailUrl = result.thumbnailUrl || job.thumbnailUrl;
+          job.status = "done";
+          job.errorMessage = undefined;
+          dirty = true;
+        }
+        done++;
+      } else if (newStatus === "failed") {
+        if (job.status !== "failed") {
+          job.status = "failed";
+          job.errorMessage = result.error || "render falhou";
+          dirty = true;
+        }
+        failed++;
+      } else {
+        if (job.status !== "rendering") {
+          job.status = "rendering";
+          dirty = true;
+        }
+        rendering++;
+      }
     }
-    const result = await fetchResult(post.jobId);
-    if (!result) continue;
-    if (result.status === "done") {
-      const videoUrl = result.videoUrl || result.url || null;
-      if (videoUrl !== post.videoUrl || post.status !== "done") {
-        post.videoUrl = videoUrl;
-        post.thumbnailUrl = result.thumbnailUrl || post.thumbnailUrl;
-        post.status = "done";
-        post.errorMessage = undefined;
-        dirty = true;
-      }
-      done++;
-    } else if (result.status === "failed") {
-      if (post.status !== "failed") {
-        post.status = "failed";
-        post.errorMessage = result.error || "render falhou";
-        dirty = true;
-      }
-      failed++;
-    } else {
-      if (post.status !== "rendering") {
-        post.status = "rendering";
-        dirty = true;
-      }
-      rendering++;
+
+    // Retrocompat — videoUrl raiz reflecte o clip.
+    const clipJob = post.renderJobs.clip;
+    if (clipJob) {
+      post.videoUrl = clipJob.videoUrl;
+      post.thumbnailUrl = clipJob.thumbnailUrl;
+      post.jobId = clipJob.jobId;
+      post.status = clipJob.status;
+      post.errorMessage = clipJob.errorMessage;
     }
   }
   if (dirty) await savePlan(plan);
-  return { total: plan.posts.length, done, rendering, failed };
+  return { totalJobs, done, rendering, failed };
 }
 
 export async function GET(req: NextRequest) {
@@ -101,7 +121,13 @@ export async function GET(req: NextRequest) {
     const plan = await loadPlan(year, week, brand);
     if (!plan) { result[brand] = { plan: null }; continue; }
     const summary = await refreshBrand(plan);
-    result[brand] = { plan, summary };
+    // Mantém forma anterior: "total" agora é nº de jobs (2× nº posts).
+    result[brand] = { plan, summary: {
+      total: summary.totalJobs,
+      done: summary.done,
+      rendering: summary.rendering,
+      failed: summary.failed,
+    } };
   }
 
   return NextResponse.json(result);
