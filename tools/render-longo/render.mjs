@@ -278,7 +278,17 @@ async function main() {
   if (hasAlignment) {
     console.log("[align] alignment Claude detectado — esticando clips para durações alvo");
     await writeResult(jobId, { status: "running", phase: "align", progress: 18 });
-    const targets = clips.map((c) => Number(c.endSec) - Number(c.startSec));
+    // IMPORTANTE: cada clip non-last precisa de duração = visible + crossfade
+    // (porque xfade overlap o último 1s do clip i com o primeiro 1s do clip
+    // i+1). Sem este ajuste, sum(clip durations) = narrSec → clipsBlock =
+    // narrSec - (N-1)*cf → bodyDuration < narrSec → tailExtra de ~50s de
+    // last-frame frozen no fim. Com este ajuste, sum = narrSec + (N-1)*cf,
+    // clipsBlock = narrSec exacto, sem tail freeze.
+    const targets = clips.map((c, i) => {
+      const visible = Number(c.endSec) - Number(c.startSec);
+      // Last clip não precisa de overlap extra (não há clip seguinte)
+      return i === clips.length - 1 ? visible : visible + crossfade;
+    });
     for (let i = 0; i < clips.length; i++) {
       const target = targets[i];
       const native = nativeClipDurations[i];
@@ -631,7 +641,7 @@ async function main() {
       const safeText = String(thumbnailText)
         .toUpperCase()
         .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\\\'")
+        .replace(/'/g, "\\'")
         .replace(/:/g, "\\:")
         .replace(/%/g, "\\%");
       const fontPath = "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf";
