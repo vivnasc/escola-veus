@@ -222,7 +222,7 @@ async function main() {
   );
 
   const narrationPath = path.join(WORK_DIR, "narration.mp3");
-  const clipPaths = clips.map((_, i) => path.join(WORK_DIR, `clip-${i}.mp4`));
+  let clipPaths = clips.map((_, i) => path.join(WORK_DIR, `clip-${i}.mp4`));
   const musicPaths = musicUrls.map((_, i) => path.join(WORK_DIR, `music-${i}.mp3`));
   const introPath = includeBrand ? path.join(WORK_DIR, "brand-intro.mp4") : null;
   const outroPath = includeBrand ? path.join(WORK_DIR, "brand-outro.mp4") : null;
@@ -276,90 +276,54 @@ async function main() {
   );
   let clipDurations = nativeClipDurations.slice();
 
-  // ── SYNC clips↔narração — pattern do funil, escalado para long-form ────
-  // Computa clipDuration UNIFORME a partir de narrSec (como o funil faz):
-  //   clipDuration = (narrSec + (N-1)*cf) / N
-  // Cada clip é então esticado via slow motion a essa duração. Sem Claude
-  // align, sem matching semântico complexo — só sincronização aritmética
-  // uniforme. É o que torna o funil fiável.
+  // ── Loop bounce: preserva pace nativo, repete clips para encher narração ──
+  // Vivianne corrigiu: slow motion 2× e boomerang fazem clips parecerem
+  // congelados. A solução racional é PRESERVAR o pace nativo (10s) e
+  // repetir clips. Sequência vai-e-volta (0→55, 55→0, 0→55, ...) com
+  // skip do clip de fronteira para evitar duplicação consecutiva.
   //
-  // Diferença vs funil: no funil, clips são 10s native e narração ~80-110s
-  // → ratio 1.x, slow motion gentil. Nos longos, narração ~1000s+ e 56
-  // clips de 10s → ratio ~2.0×, slow motion ainda dentro do contemplativo.
-  // Cap 3.0× — acima disso vai além do natural.
-  const targetClipsBlock = narrSec; // sem leadIn/outroHold por agora
-  const n = clips.length;
-  const targetClipDuration = (targetClipsBlock + (n - 1) * crossfade) / n;
-  const SLOW_CAP = 3.0;
-  const ratio = targetClipDuration / 10; // assume 10s Runway native
-  const cappedRatio = Math.min(ratio, SLOW_CAP);
-  const finalClipDuration = cappedRatio * 10;
+  // Math: stride = native - cf = 9s. Para narrSec, M plays needed:
+  //   (M-1) * stride + native = narrSec → M = ceil((narrSec - native + cf) / stride)
+  //
+  // Com 56 clips e 1070s narração: M ≈ 119 plays, cada clip aparece ~2.1×
+  // mas em momentos distantes (forward + reverse + parcial).
+  const stride = 10 - crossfade; // assume 10s Runway native
+  const M = Math.max(1, Math.ceil((narrSec - 10 + crossfade) / stride) + 1);
+
+  const playlist = [];
+  let pos = 0;
+  let dir = 1;
+  while (playlist.length < M) {
+    playlist.push(pos);
+    const next = pos + dir;
+    if (next < 0 || next >= clips.length) {
+      // Boundary hit — flip direction + step para evitar duplicação
+      dir = -dir;
+      pos = pos + dir;
+      // Edge case: clips.length === 1 (loop infinito impossível, fallback)
+      if (clips.length === 1) pos = 0;
+    } else {
+      pos = next;
+    }
+  }
 
   console.log(
-    `[sync] narrSec=${narrSec.toFixed(1)}s · clips=${n} · cf=${crossfade}s · ` +
-      `targetClipDuration=${targetClipDuration.toFixed(2)}s · ` +
-      `ratio=${ratio.toFixed(2)}× (cap ${SLOW_CAP}×) · ` +
-      `finalClipDuration=${finalClipDuration.toFixed(2)}s`,
+    `[playlist] narrSec=${narrSec.toFixed(1)}s · clips únicos=${clips.length} · ` +
+      `M=${M} plays · stride=${stride}s · ` +
+      `padrão bounce: ${playlist.slice(0, 5).join(",")} ... ${playlist.slice(-5).join(",")}`,
   );
 
-  await writeResult(jobId, { status: "running", phase: "stretch", progress: 18 });
-  for (let i = 0; i < clips.length; i++) {
-    const native = nativeClipDurations[i];
-    const target = finalClipDuration;
-    const stretchedPath = path.join(WORK_DIR, `clip-${i}-aligned.mp4`);
+  // Expandir clipPaths e clipDurations para a playlist. NÃO podemos
+  // re-atribuir `clips` (const do destructure do manifest) — em vez disso,
+  // o resto do pipeline usa clipPaths.length / clipDurations.length como
+  // fonte de verdade do número de "plays". `clips` (original 56) só é
+  // referenciado downstream para o thumbnail base url, que vem do clips[0]
+  // (1ª entrada da playlist = clip original index 0). OK.
+  clipPaths = playlist.map((idx) => clipPaths[idx]);
+  clipDurations = playlist.map(() => 10);
 
-    if (Math.abs(native - target) < 0.3) {
-      // Já tem ~ a duração certa
-      await new Promise((resolve, reject) => {
-        const p = spawn("cp", [clipPaths[i], stretchedPath]);
-        p.on("error", reject);
-        p.on("exit", (c) => (c === 0 ? resolve() : reject(new Error("cp falhou"))));
-      });
-    } else if (native > target) {
-      // Trim
-      await runFfmpeg([
-        "-y", "-i", clipPaths[i], "-t", target.toFixed(3),
-        "-c", "copy", "-avoid_negative_ts", "1", stretchedPath,
-      ]);
-    } else {
-      // ESTENDER via BOOMERANG (forward + reverse) em vez de slow motion.
-      // Slow motion 2× faz drift parecer congelado (Vivianne reportou que
-      // 'voz fica muito mais rápida que as imagens'). Boomerang preserva
-      // velocidade natural — clip vai e volta, dá impressão de oscilação
-      // contemplativa (breathing camera) sem perder pace.
-      //
-      // Boomerang dá 2× native automaticamente. Para targets entre native
-      // e 2×native, faz boomerang depois trim. Para >2×, faz boomerang +
-      // slow leve (target/(2×native)), max 1.5× (slow ainda gentil).
-      const boomDuration = native * 2;
-      if (target <= boomDuration + 0.1) {
-        // Boomerang + trim a target
-        await runFfmpeg([
-          "-y", "-i", clipPaths[i],
-          "-filter_complex",
-          `[0:v]split[v0][v1];[v1]reverse[v1r];[v0][v1r]concat=n=2:v=1:a=0,trim=duration=${target.toFixed(3)},setpts=PTS-STARTPTS[out]`,
-          "-map", "[out]",
-          "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
-          stretchedPath,
-        ]);
-      } else {
-        // Boomerang depois slow leve para chegar ao target
-        const slowR = target / boomDuration;
-        await runFfmpeg([
-          "-y", "-i", clipPaths[i],
-          "-filter_complex",
-          `[0:v]split[v0][v1];[v1]reverse[v1r];[v0][v1r]concat=n=2:v=1:a=0,setpts=${slowR.toFixed(3)}*PTS[out]`,
-          "-map", "[out]",
-          "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "20",
-          stretchedPath,
-        ]);
-      }
-    }
-    clipPaths[i] = stretchedPath;
-    clipDurations[i] = target;
-  }
   console.log(
-    `[sync] clips esticados (boomerang): total=${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
+    `[playlist] total expanded = ${clipDurations.reduce((a, b) => a + b, 0).toFixed(1)}s ` +
       `(narração ${narrSec.toFixed(1)}s)`,
   );
 
@@ -418,10 +382,14 @@ async function main() {
   // Inputs ordenados: [intro?][clip0]..[clipN-1][outro?][narration][music0]..[musicM-1]
   //
   // Normaliza tudo para 1920x1080 30fps com letterbox preto se preciso.
+  // IMPORTANTE: a partir daqui usa-se clipPaths.length (= playlist length =
+  // número de plays) e NÃO clips.length (= clips únicos). O loop bounce
+  // expandiu clipPaths para incluir cada clip ~2× ou mais.
+  const playsCount = clipPaths.length;
   const introIdx = includeBrand ? 0 : -1;
   const clipStartIdx = includeBrand ? 1 : 0;
-  const outroIdx = includeBrand ? clipStartIdx + clips.length : -1;
-  const lastVideoIdx = outroIdx >= 0 ? outroIdx : clipStartIdx + clips.length - 1;
+  const outroIdx = includeBrand ? clipStartIdx + playsCount : -1;
+  const lastVideoIdx = outroIdx >= 0 ? outroIdx : clipStartIdx + playsCount - 1;
 
   const normalize = (label) =>
     `scale=${TARGET_W}:${TARGET_H}:force_original_aspect_ratio=decrease,` +
@@ -430,7 +398,7 @@ async function main() {
 
   const videoFilters = [];
   if (includeBrand) videoFilters.push(`[${introIdx}:v]${normalize("vin")}`);
-  for (let i = 0; i < clips.length; i++) {
+  for (let i = 0; i < playsCount; i++) {
     videoFilters.push(`[${clipStartIdx + i}:v]${normalize(`vc${i}`)}`);
   }
   if (includeBrand) videoFilters.push(`[${outroIdx}:v]${normalize("vout0")}`);
@@ -445,9 +413,9 @@ async function main() {
     prev = "vx0";
     xfadeOffset = introStride;
   }
-  // Entre clips
-  const startClipI = includeBrand ? 1 : 1; // se !includeBrand, começa no clip 1 (clip 0 é "vc0" inicial)
-  for (let i = startClipI; i < clips.length; i++) {
+  // Entre plays
+  const startClipI = includeBrand ? 1 : 1;
+  for (let i = startClipI; i < playsCount; i++) {
     const out = `vx${i}`;
     xfadeOffset += includeBrand
       ? clipDurations[i - 1] - crossfade
@@ -459,9 +427,9 @@ async function main() {
     );
     prev = out;
   }
-  // último clip → outro
+  // último play → outro
   if (includeBrand) {
-    xfadeOffset += clipDurations[clips.length - 1] - crossfade;
+    xfadeOffset += clipDurations[playsCount - 1] - crossfade;
     videoFilters.push(
       `[${prev}][vout0]xfade=transition=fade:duration=${crossfade}:offset=${xfadeOffset.toFixed(2)}[vchain]`,
     );
