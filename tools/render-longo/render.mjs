@@ -301,18 +301,39 @@ async function main() {
           stretchedPath,
         ]);
       } else {
-        // Extend: tpad com clone do último frame para chegar ao target
-        const extra = target - native;
-        await runFfmpeg([
-          "-y",
-          "-i", clipPaths[i],
-          "-vf", `tpad=stop_mode=clone:stop_duration=${extra.toFixed(3)}`,
-          "-an",
-          "-c:v", "libx264",
-          "-preset", "medium",
-          "-crf", "20",
-          stretchedPath,
-        ]);
+        // ESTENDER via SLOW MOTION (não tpad freeze).
+        // setpts=ratio*PTS desacelera o vídeo: 10s native → 19s output a
+        // 1.9× lento. Mantém movimento contínuo, evita 9s de imagem morta.
+        // Cap a 3.0× — acima disso fica unnaturally lento; combina slow
+        // (3×) + tpad freeze para o restante.
+        const ratio = target / native;
+        const SLOW_CAP = 3.0;
+        if (ratio <= SLOW_CAP) {
+          await runFfmpeg([
+            "-y",
+            "-i", clipPaths[i],
+            "-vf", `setpts=${ratio.toFixed(3)}*PTS`,
+            "-an",
+            "-c:v", "libx264",
+            "-preset", "medium",
+            "-crf", "20",
+            stretchedPath,
+          ]);
+        } else {
+          // ratio > 3 — slow a 3× depois tpad para o resto
+          const slowedSec = native * SLOW_CAP;
+          const extra = target - slowedSec;
+          await runFfmpeg([
+            "-y",
+            "-i", clipPaths[i],
+            "-vf", `setpts=${SLOW_CAP.toFixed(3)}*PTS,tpad=stop_mode=clone:stop_duration=${extra.toFixed(3)}`,
+            "-an",
+            "-c:v", "libx264",
+            "-preset", "medium",
+            "-crf", "20",
+            stretchedPath,
+          ]);
+        }
       }
       clipPaths[i] = stretchedPath;
       clipDurations[i] = target;
