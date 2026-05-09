@@ -144,7 +144,6 @@ async function tagBatch(client: Anthropic, batch: TrackInput[]): Promise<ClaudeA
                   moods: {
                     type: "array",
                     items: { type: "string", enum: [...LORANNE_MOODS] },
-                    maxItems: 2,
                   },
                   confidence: { type: "number" },
                   reason: { type: "string" },
