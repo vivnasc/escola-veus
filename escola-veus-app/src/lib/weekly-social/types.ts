@@ -21,6 +21,14 @@ export type RenderJob = {
   thumbnailUrl: string | null;
   status: WeeklyPostStatus;
   errorMessage?: string;
+  /** Versão do worker/composição usada (stamp do RENDER_VERSION). Permite
+   *  ver à vista se um vídeo foi feito com código antigo (precisa
+   *  re-render) ou com a versão actual. */
+  renderVersion?: string;
+  /** ISO timestamp quando o render terminou (completedAt do result.json). */
+  renderedAt?: string;
+  /** Quantas vezes este (post, mode) foi dispatchado para render. */
+  attempts?: number;
 };
 
 export type WeeklyPost = {
@@ -45,6 +53,11 @@ export type WeeklyPost = {
   audioDurationSec?: number;
   /** Idioma da letra (PT/EN) — para Scribe usar language_code certo. */
   lang?: "PT" | "EN";
+  /** Índice da primeira stanza marcada como [Chorus] em syncedLyrics.
+   *  Worker usa para arrancar o clip 30s no refrão (ponto mais alto da
+   *  faixa) em vez do início. null/undefined = sem refrão detectado,
+   *  clip arranca em 0. */
+  chorusStanzaIdx?: number | null;
   /** Conto Claude para AG fulls — capítulos passam como texto sobre música. */
   storyChapters?: string[];
   /** Título do conto AG (para signature/metadata). */

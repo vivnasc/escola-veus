@@ -58,7 +58,11 @@ async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<
     syncedLyrics: post.brandSlug === "loranne" ? post.syncedLyrics : undefined,
     stanzaTimings: post.brandSlug === "loranne" ? post.stanzaTimings : undefined,
     audioDurationSec: post.audioDurationSec,
+    lang: post.brandSlug === "loranne" ? post.lang : undefined,
     lyricsSync: post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0,
+    // Chorus offset só se aplica ao clip Loranne (full mostra a faixa toda).
+    chorusStanzaIdx: post.brandSlug === "loranne" && mode === "clip"
+      ? post.chorusStanzaIdx ?? null : null,
     storyChapters: isAgFull ? post.storyChapters : undefined,
     storyTitle: isAgFull ? post.storyTitle : undefined,
     audioUrl: post.musicUrl,
@@ -99,6 +103,7 @@ async function dispatchBrand(plan: WeeklyPlan, force: boolean): Promise<{
         // já dispatchado e ainda em curso — não re-dispatcha
         continue;
       }
+      const prevAttempts = post.renderJobs[mode]?.attempts ?? 0;
       try {
         const { jobId } = await dispatchOnePostMode(post, mode);
         post.renderJobs[mode] = {
@@ -106,6 +111,7 @@ async function dispatchBrand(plan: WeeklyPlan, force: boolean): Promise<{
           videoUrl: null,
           thumbnailUrl: null,
           status: "queued",
+          attempts: prevAttempts + 1,
         };
         dispatched++;
       } catch (e) {
@@ -116,6 +122,7 @@ async function dispatchBrand(plan: WeeklyPlan, force: boolean): Promise<{
           thumbnailUrl: null,
           status: "failed",
           errorMessage: msg,
+          attempts: prevAttempts + 1,
         };
         errors.push({ postId: post.id, mode, message: msg });
       }

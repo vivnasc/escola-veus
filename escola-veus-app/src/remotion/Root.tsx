@@ -30,6 +30,8 @@ let Composition: React.FC<{
   height: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultProps: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  calculateMetadata?: (ctx: { props: any }) => { durationInFrames: number; fps?: number };
 }>;
 
 let REMOTION_AVAILABLE = false;
@@ -157,6 +159,14 @@ export const Root: React.FC = () => {
         width={1080}
         height={1920}
         defaultProps={defaultShortsManifest}
+        calculateMetadata={({ props }) => {
+          const fps = props.fps ?? 30;
+          const sec = props.durationSec ?? 30;
+          return {
+            durationInFrames: Math.max(1, Math.round(fps * sec)),
+            fps,
+          };
+        }}
       />
     </>
   );

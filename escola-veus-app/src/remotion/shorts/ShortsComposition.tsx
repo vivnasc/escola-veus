@@ -19,7 +19,12 @@ import { AG_MOTIONS, type AGMotionVariant } from "./AGMotion";
 // Remotion dynamic load (mesmo padrão do VideoComposition.tsx).
 let useCurrentFrame: () => number;
 let useVideoConfig: () => { fps: number; durationInFrames: number };
-let RemotionAudio: React.FC<{ src: string; volume: number | ((f: number) => number); loop?: boolean }>;
+let RemotionAudio: React.FC<{
+  src: string;
+  volume: number | ((f: number) => number);
+  loop?: boolean;
+  startFrom?: number;
+}>;
 let REMOTION_AVAILABLE = false;
 
 try {
@@ -67,6 +72,9 @@ export type ShortsManifest = {
   mode?: "clip" | "full";
   /** FPS (default 30). */
   fps?: number;
+  /** Onde arrancar o áudio (segundos absolutos no MP3). 0 para full mode;
+   *  para clip Loranne com chorus, é o segundo do refrão menos lead-in. */
+  audioStartFromSec?: number;
 };
 
 const DEFAULT_FPS = 30;
@@ -148,16 +156,18 @@ const SyncedLyricsLayer: React.FC<{
 };
 
 /** Garante que cada linha (frase) começa com maiúscula, mantendo o
- *  resto do texto intacto. Aplica-se ao display do vídeo — fonte fica
- *  intocada. */
+ *  resto do texto intacto. Hashtags (#tag), mentions (@) e URLs ficam
+ *  intactos. Aplica-se ao display do vídeo — fonte fica intocada. */
 function capitalizeLines(text: string): string {
   return text.split("\n").map((line) => {
     const trimmed = line.trimStart();
     if (!trimmed) return line;
-    const ch = trimmed[0];
-    const rest = trimmed.slice(1);
+    if (/^[#@]/.test(trimmed) || /^https?:\/\//.test(trimmed)) return line;
+    const m = trimmed.match(/^([^\p{L}]*)(\p{L})(.*)$/u);
+    if (!m) return line;
+    const [, prefix, ch, rest] = m;
     const indent = line.slice(0, line.length - trimmed.length);
-    return indent + ch.toLocaleUpperCase("pt-PT") + rest;
+    return indent + prefix + ch.toLocaleUpperCase("pt-PT") + rest;
   }).join("\n");
 }
 
@@ -313,7 +323,11 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
 
       {/* 3. Audio */}
       {props.audioUrl && REMOTION_AVAILABLE && RemotionAudio && (
-        <RemotionAudio src={props.audioUrl} volume={audioVolFn} />
+        <RemotionAudio
+          src={props.audioUrl}
+          volume={audioVolFn}
+          startFrom={props.audioStartFromSec ? Math.round(props.audioStartFromSec * fps) : undefined}
+        />
       )}
 
       {/* 4. Signature + track label */}

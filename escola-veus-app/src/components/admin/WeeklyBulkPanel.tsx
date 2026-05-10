@@ -11,6 +11,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { RENDER_VERSION } from "@/lib/shorts/render-version";
+
 type BrandSlug = "loranne" | "ancient-ground";
 
 type Schedule = { date: string; time: string; timezone: string };
@@ -31,6 +33,9 @@ type RenderJob = {
   thumbnailUrl: string | null;
   status: "planned" | "queued" | "rendering" | "done" | "failed";
   errorMessage?: string;
+  renderVersion?: string;
+  renderedAt?: string;
+  attempts?: number;
 };
 
 type WeeklyPost = {
@@ -518,6 +523,7 @@ function PostCard({
           </div>
           <PostStatusPill status={aggregateStatus} />
         </div>
+        <RenderVersionBadge job={active} />
         {active?.errorMessage && (
           <div className="mt-1 text-[10px] text-red-300">✗ {active.errorMessage}</div>
         )}
@@ -550,6 +556,25 @@ function PostCard({
             {rerendering ? "…" : `↻ re-render ${activeMode}`}
           </button>
         </div>
+        {/* YouTube title — sempre visível, é o asset crítico SEO. */}
+        <div className="mt-2 rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-[9px] font-semibold uppercase tracking-wide text-escola-dourado">
+              YouTube · título
+            </span>
+            <button
+              onClick={async () => {
+                try { await navigator.clipboard.writeText(post.captions.youtube.title); } catch {}
+              }}
+              className="text-[9px] text-escola-creme-50 hover:text-escola-dourado"
+            >
+              ⧉ copiar
+            </button>
+          </div>
+          <div className="text-[11px] text-escola-creme break-words">
+            {post.captions.youtube.title}
+          </div>
+        </div>
         <div className="mt-2 flex flex-col gap-1">
           <button
             onClick={() => setShowCaptions((v) => !v)}
@@ -568,24 +593,6 @@ function PostCard({
         </div>
         {showCaptions && (
           <div className="mt-2 space-y-2 text-[10px]">
-            <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
-              <div className="mb-1 flex items-center justify-between">
-                <span className="text-[9px] font-semibold uppercase tracking-wide text-escola-dourado">
-                  YouTube · título
-                </span>
-                <button
-                  onClick={async () => {
-                    try { await navigator.clipboard.writeText(post.captions.youtube.title); } catch {}
-                  }}
-                  className="text-[9px] text-escola-creme-50 hover:text-escola-dourado"
-                >
-                  ⧉ copiar
-                </button>
-              </div>
-              <div className="text-[11px] text-escola-creme break-words">
-                {post.captions.youtube.title}
-              </div>
-            </div>
             <CaptionBlock label="Instagram" text={post.captions.instagram} />
             <CaptionBlock label="TikTok" text={post.captions.tiktok} />
             <CaptionBlock label="YouTube · descrição" text={post.captions.youtube.description} />
@@ -606,6 +613,37 @@ function PostCard({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/** Badge por vídeo: versão renderizada + nº de tentativas + carimbo.
+ *  Marca a verde se a versão coincidir com RENDER_VERSION actual,
+ *  amarelo se for antiga (precisa re-render para apanhar as mudanças). */
+function RenderVersionBadge({ job }: { job: RenderJob | undefined }) {
+  if (!job) return null;
+  const v = job.renderVersion;
+  const attempts = job.attempts ?? 0;
+  const renderedAt = job.renderedAt;
+  if (!v && attempts === 0 && !renderedAt) return null;
+  const isCurrent = v === RENDER_VERSION;
+  const colorClass = !v
+    ? "border-escola-border text-escola-creme-50"
+    : isCurrent
+    ? "border-emerald-700/40 bg-emerald-950/30 text-emerald-300"
+    : "border-amber-700/40 bg-amber-950/30 text-amber-300";
+  const time = renderedAt
+    ? new Date(renderedAt).toLocaleString(undefined, { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })
+    : null;
+  return (
+    <div
+      className={`mt-1 flex flex-wrap items-center gap-1 rounded border px-1.5 py-0.5 text-[9px] ${colorClass}`}
+      title={!v ? "Sem versão registada" : isCurrent ? `Renderizado com a versão actual (${RENDER_VERSION})` : `Versão antiga: ${v}. Versão actual: ${RENDER_VERSION}. Re-renderiza para apanhar as mudanças.`}
+    >
+      {v && <span>{isCurrent ? "✓" : "⚠"} v={v}</span>}
+      {!v && <span>sem versão</span>}
+      {attempts > 0 && <span>· #{attempts}</span>}
+      {time && <span>· {time}</span>}
     </div>
   );
 }

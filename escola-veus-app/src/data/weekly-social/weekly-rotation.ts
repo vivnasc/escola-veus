@@ -18,6 +18,7 @@
 import { ALL_LYRICS } from "@/lib/loranne";
 import type { RaizTema } from "@/lib/ag-raizes-temas";
 import trackTitlesJson from "./loranne-track-titles.json";
+import trackMetaJson from "./loranne-track-meta.json";
 
 /**
  * Mapa albumSlug → trackNumber (string) → título da faixa, extraído de
@@ -53,6 +54,16 @@ export function getTrackTitle(albumSlug: string, trackNumber: number): string {
     LORANNE_TRACK_TITLES[albumSlug]?.[String(trackNumber)] ||
     `Faixa ${trackNumber}`
   );
+}
+
+type TrackMeta = { title?: string; energy?: string; lang?: "PT" | "EN" };
+const LORANNE_TRACK_META: Record<string, Record<string, TrackMeta>> =
+  trackMetaJson as Record<string, Record<string, TrackMeta>>;
+
+/** Idioma da letra de uma faixa Loranne (default PT). Usado para o Scribe
+ *  (language_code) e selecção de hashtags. */
+export function getTrackLang(albumSlug: string, trackNumber: number): "PT" | "EN" {
+  return LORANNE_TRACK_META[albumSlug]?.[String(trackNumber)]?.lang || "PT";
 }
 
 export function getAlbumTitle(albumSlug: string): string {

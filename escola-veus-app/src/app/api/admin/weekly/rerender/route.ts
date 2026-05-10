@@ -56,7 +56,10 @@ async function dispatchPostMode(post: WeeklyPost, mode: RenderMode): Promise<{ j
     syncedLyrics: post.brandSlug === "loranne" ? post.syncedLyrics : undefined,
     stanzaTimings: post.brandSlug === "loranne" ? post.stanzaTimings : undefined,
     audioDurationSec: post.audioDurationSec,
+    lang: post.brandSlug === "loranne" ? post.lang : undefined,
     lyricsSync: post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0,
+    chorusStanzaIdx: post.brandSlug === "loranne" && mode === "clip"
+      ? post.chorusStanzaIdx ?? null : null,
     storyChapters: isAgFull ? post.storyChapters : undefined,
     storyTitle: isAgFull ? post.storyTitle : undefined,
     audioUrl: post.musicUrl,
@@ -98,12 +101,14 @@ export async function POST(req: NextRequest) {
     }
 
     if (!post.renderJobs) post.renderJobs = {};
+    const prevAttempts = post.renderJobs[mode]?.attempts ?? 0;
     // Apaga estado anterior do mode — força re-render
     post.renderJobs[mode] = {
       jobId: null,
       videoUrl: null,
       thumbnailUrl: null,
       status: "planned",
+      attempts: prevAttempts,
     };
 
     try {
@@ -113,6 +118,7 @@ export async function POST(req: NextRequest) {
         videoUrl: null,
         thumbnailUrl: null,
         status: "queued",
+        attempts: prevAttempts + 1,
       };
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -122,6 +128,7 @@ export async function POST(req: NextRequest) {
         thumbnailUrl: null,
         status: "failed",
         errorMessage: msg,
+        attempts: prevAttempts + 1,
       };
       await savePlan(plan);
       return NextResponse.json({ erro: msg }, { status: 502 });
