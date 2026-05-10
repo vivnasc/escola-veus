@@ -147,6 +147,20 @@ const SyncedLyricsLayer: React.FC<{
   return <StanzaText text={stanza} opacity={opacity} />;
 };
 
+/** Garante que cada linha (frase) começa com maiúscula, mantendo o
+ *  resto do texto intacto. Aplica-se ao display do vídeo — fonte fica
+ *  intocada. */
+function capitalizeLines(text: string): string {
+  return text.split("\n").map((line) => {
+    const trimmed = line.trimStart();
+    if (!trimmed) return line;
+    const ch = trimmed[0];
+    const rest = trimmed.slice(1);
+    const indent = line.slice(0, line.length - trimmed.length);
+    return indent + ch.toLocaleUpperCase("pt-PT") + rest;
+  }).join("\n");
+}
+
 const StanzaText: React.FC<{ text: string; opacity: number }> = ({ text, opacity }) => (
   <div
     style={{
@@ -172,7 +186,7 @@ const StanzaText: React.FC<{ text: string; opacity: number }> = ({ text, opacity
         margin: 0,
       }}
     >
-      {text}
+      {capitalizeLines(text)}
     </p>
   </div>
 );
@@ -219,7 +233,7 @@ const VerseOverlay: React.FC<{
           margin: 0,
         }}
       >
-        {text}
+        {capitalizeLines(text)}
       </p>
     </div>
   );
