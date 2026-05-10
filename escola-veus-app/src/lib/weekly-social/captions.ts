@@ -136,10 +136,11 @@ export function buildLoranneCaptions(
   const instagram = compose(igTags);
   const tiktok = compose(ttTags);
 
-  const ytTitle = suggestResult.youtubeTitle ||
+  const ytTitleRaw = suggestResult.youtubeTitle ||
     (realTitle(trackTitle)
       ? `"${realTitle(trackTitle)}" · ${albumTitle} · Loranne · Lyric Video`
       : `Loranne · ${albumTitle} · Lyric Video`);
+  const ytTitle = capitalizeLines(ytTitleRaw);
   const ytDescBase = capitalizeLines((suggestResult.youtubeDescription || "")
     .split("\n")
     .filter((l) => !l.startsWith("#"))
@@ -185,7 +186,7 @@ export function buildAGCaptions(
   const instagram = compose(igTags);
   const tiktok = compose(ttTags);
 
-  const ytTitle = suggestResult.youtubeTitle || `${label} · Ancient Ground`;
+  const ytTitle = capitalizeLines(suggestResult.youtubeTitle || `${label} · Ancient Ground`);
   const ytDescBase = capitalizeLines((suggestResult.youtubeDescription || "")
     .split("\n")
     .filter((l) => !l.startsWith("#"))
