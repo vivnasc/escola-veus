@@ -146,53 +146,12 @@ export async function POST(req: NextRequest) {
   // Render usa sempre bounce loop: cada clip 10s nativo, sequência cicla
   // pelos N clips para encher narrSec. Match com Corvo Seco — visuais
   // flutuam sobre a narração, não anchor literal.
-  const clipsForRender: { url: string; durationSec: number }[] = (
-    project.prompts ?? []
-  )
+  const clipsForRender = (project.prompts ?? [])
     .filter((p) => p.clipUrl)
     .map((p) => ({
       url: p.clipUrl as string,
       durationSec: p.clipDurationSec ?? 0,
     }));
-
-  // Aumenta variedade visual com clips da pool funil (nomear-*-h-NN.mp4).
-  // Vivianne notou (com razão) que looping os 56 clips do longo 2× gera
-  // repetição visível. Misturar com ~40 clips horizontais do funil dá
-  // ~96 unique clips → cobre 1070s narração com pouca repetição.
-  // Filtra horizontais (-h-) e exclui verticais (-v-).
-  try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const { data: poolFiles } = await supabase.storage
-      .from("course-assets")
-      .list("youtube/clips", { limit: 1000 });
-    if (Array.isArray(poolFiles)) {
-      // Dedupe variantes mantendo só -h-01 quando há vários
-      const byBase = new Map<string, string>();
-      for (const f of poolFiles) {
-        if (!/\.mp4$/i.test(f.name)) continue;
-        if (!f.name.startsWith("nomear-")) continue;
-        if (!/-h-\d+\.mp4$/i.test(f.name)) continue; // só horizontais
-        const base = f.name.replace(/\.mp4$/i, "").replace(/-h-\d+$/i, "");
-        const existing = byBase.get(base);
-        if (!existing || /-h-01\.mp4$/i.test(f.name)) {
-          byBase.set(base, f.name);
-        }
-      }
-      // Não duplica clips que já estão no longo (improvável mas safe)
-      const longoUrls = new Set(clipsForRender.map((c) => c.url));
-      for (const fileName of byBase.values()) {
-        const url = `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/clips/${fileName}`;
-        if (!longoUrls.has(url)) {
-          clipsForRender.push({ url, durationSec: 0 });
-        }
-      }
-      console.log(
-        `[render-submit] longo ${(project.prompts ?? []).filter((p) => p.clipUrl).length} clips + pool ${byBase.size} → ${clipsForRender.length} total`,
-      );
-    }
-  } catch {
-    /* pool é opcional — render avança com só os clips do longo */
-  }
 
   if (clipsForRender.length === 0) {
     return NextResponse.json(
