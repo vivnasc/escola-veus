@@ -16,7 +16,7 @@ import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
-import { getLoranneStanzas, getLoranneStanzasWithKind, findFirstChorusIdx } from "@/lib/shorts/lyrics-stanzas";
+import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx } from "@/lib/shorts/lyrics-stanzas";
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
 
 export const dynamic = "force-dynamic";
@@ -152,9 +152,10 @@ export async function POST(req: NextRequest) {
 
           const stanzas = getLoranneStanzas(entry.albumSlug, actualTrackNumber);
           const stanzasKinds = getLoranneStanzasWithKind(entry.albumSlug, actualTrackNumber);
+          // Cascata: tag [Chorus] → repetição → 33% posição. Nunca null se >=3 stanzas.
           const chorusStanzaIdx = stanzasKinds.length === stanzas.length
-            ? findFirstChorusIdx(stanzasKinds)
-            : null;
+            ? detectClipStartStanzaIdx(stanzasKinds)
+            : detectClipStartStanzaIdx(stanzas);
           const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
           // Scribe (timing + alinhamento) acontece no GHA worker antes de
           // renderizar — evita exceder maxDuration do Hobby plan (60s).
