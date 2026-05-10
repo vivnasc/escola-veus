@@ -98,7 +98,7 @@ function pickTwoVerses(candidates: string[], allLines: string[]): [string, strin
   return i1 <= i2 ? [first, second] : [second, first];
 }
 
-const APPLE_MUSIC_CTA = "Ouve no Apple Music → music.seteveus.space";
+const DISTRO_CTA = "Ouve em todas as plataformas → music.seteveus.space";
 
 const EMOTIONAL_QUESTIONS = [
   "E tu, o que sentes ao ler isto?",
@@ -145,7 +145,7 @@ function makeTikTokCaption(v1: string, v2: string, theme: string | undefined, se
   const verseBlock = [v1, v2].filter(Boolean).join("\n");
   const question = pickQuestion(seed);
   const hashtags = buildHashtags(theme);
-  return [verseBlock, "", question, "", APPLE_MUSIC_CTA, "", hashtags]
+  return [verseBlock, "", question, "", DISTRO_CTA, "", hashtags]
     .filter((l) => l !== undefined)
     .join("\n");
 }
@@ -181,7 +181,7 @@ function makeYouTubeDescription(
   // Estrutura SEO:
   //   1. Hook curto com keywords (track + artist + album + lyric video)
   //   2. Verso (poesia)
-  //   3. CTA Apple Music
+  //   3. CTA distro multi-plataforma
   //   4. Sobre Loranne
   //   5. Hashtags (5-15 — só os primeiros 3 ficam clickable)
   const seoHook = `${trackTitle} de Loranne — lyric video do álbum ${albumTitle}. Música contemplativa em português, registo elevadora.`;
@@ -194,7 +194,7 @@ function makeYouTubeDescription(
     themeLine,
     question,
     "",
-    `🎵 ${APPLE_MUSIC_CTA}`,
+    `🎵 ${DISTRO_CTA}`,
     "",
     aboutLoranne,
     "",

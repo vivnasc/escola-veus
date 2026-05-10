@@ -1240,7 +1240,7 @@ export default function ShortsPage() {
           </button>
           <span className="text-escola-creme-50">
             {state.includeMusic
-              ? "música Loranne liga ao Apple Music via DistroKid"
+              ? "música Loranne distribuída em todas as plataformas via DistroKid"
               : "vídeo silencioso — pões música no TikTok/IG"}
           </span>
         </div>
