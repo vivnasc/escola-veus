@@ -16,7 +16,7 @@ import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
-import { getLoranneStanzas, getLoranneStanzasWithKind, findFirstChorusIdx } from "@/lib/shorts/lyrics-stanzas";
+import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx } from "@/lib/shorts/lyrics-stanzas";
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
 
 export const dynamic = "force-dynamic";
@@ -139,23 +139,36 @@ export async function POST(req: NextRequest) {
           }
 
           // (Re-)extrai versos+captions usando o trackNumber realmente disponível.
-          const trackTitle = getTrackTitle(entry.albumSlug, actualTrackNumber);
+          const rawTitle = getTrackTitle(entry.albumSlug, actualTrackNumber);
           const suggest = runSuggest({
             albumSlug: entry.albumSlug,
             trackNumber: actualTrackNumber,
           }) as Parameters<typeof buildLoranneCaptions>[0];
 
-          const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null });
+          // Se não há título real (placeholder "Faixa N"), deriva a partir
+          // da primeira linha do verso. Nunca enviamos "Faixa N" para captions
+          // ou para o overlay no vídeo.
+          const isPlaceholder = /^Faixa\s+\d+$/i.test(rawTitle);
+          const firstLine = (suggest.verses?.[0] || "").split("\n")[0].trim();
+          const derived = firstLine.slice(0, 50);
+          // Garante maiúscula no início (versos Suno por vezes em minúscula).
+          const capitalised = derived
+            ? derived.charAt(0).toLocaleUpperCase("pt-PT") + derived.slice(1)
+            : "";
+          const trackTitle = isPlaceholder && capitalised ? capitalised : rawTitle;
+
+          const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
+          const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null, lang });
           const motionVariant = pickMotionVariant(`loranne/${entry.albumSlug}/${actualTrackNumber}`);
           const accent = pickLoranneAccent(entry.albumSlug);
           const trackLabel = `"${trackTitle}" · ${albumTitle}`;
 
           const stanzas = getLoranneStanzas(entry.albumSlug, actualTrackNumber);
           const stanzasKinds = getLoranneStanzasWithKind(entry.albumSlug, actualTrackNumber);
+          // Cascata: tag [Chorus] → repetição → 33% posição. Nunca null se >=3 stanzas.
           const chorusStanzaIdx = stanzasKinds.length === stanzas.length
-            ? findFirstChorusIdx(stanzasKinds)
-            : null;
-          const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
+            ? detectClipStartStanzaIdx(stanzasKinds)
+            : detectClipStartStanzaIdx(stanzas);
           // Scribe (timing + alinhamento) acontece no GHA worker antes de
           // renderizar — evita exceder maxDuration do Hobby plan (60s).
 

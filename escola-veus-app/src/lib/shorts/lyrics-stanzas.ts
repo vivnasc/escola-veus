@@ -104,3 +104,34 @@ export function findFirstChorusIdx(stanzas: StanzaWithKind[]): number | null {
   const idx = stanzas.findIndex((s) => s.kind === "chorus");
   return idx >= 0 ? idx : null;
 }
+
+/** Procura a "primeira stanza alta" da faixa para arrancar o clip 30s.
+ *  Cascata de heurísticas até cair em algo não-zero:
+ *    1. Tag explícita [Chorus] (ideal — vindo do Suno).
+ *    2. Repetição: primeira stanza cujo texto aparece >=2 vezes.
+ *    3. Posição: stanza ~33% do total (passa intro/primeiro verso).
+ *  Devolve null só se houver <3 stanzas. */
+export function detectClipStartStanzaIdx(stanzas: StanzaWithKind[] | string[]): number | null {
+  if (!stanzas || stanzas.length < 3) return null;
+  const isWithKind = typeof stanzas[0] === "object";
+  const texts: string[] = isWithKind
+    ? (stanzas as StanzaWithKind[]).map((s) => s.text)
+    : (stanzas as string[]);
+
+  // 1. Tag explícita
+  if (isWithKind) {
+    const idx = (stanzas as StanzaWithKind[]).findIndex((s) => s.kind === "chorus");
+    if (idx >= 0) return idx;
+  }
+
+  // 2. Repetição — primeira stanza repetida no array é tipicamente o refrão
+  const norm = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
+  const counts = new Map<string, number>();
+  for (const t of texts) counts.set(norm(t), (counts.get(norm(t)) || 0) + 1);
+  for (let i = 0; i < texts.length; i++) {
+    if ((counts.get(norm(texts[i])) || 0) >= 2) return i;
+  }
+
+  // 3. Posição — 33% do total (passa intro+verso 1)
+  return Math.floor(texts.length / 3);
+}

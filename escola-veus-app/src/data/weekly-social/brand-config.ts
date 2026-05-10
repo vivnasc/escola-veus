@@ -29,7 +29,7 @@ export type BrandConfig = {
   hoursByPlatform: Record<Platform, string>;
   /** Pool de hashtags por plataforma. `<tema>` é placeholder dinâmico (substituído em runtime). */
   hashtagsByPlatform: Record<Platform, string[]>;
-  /** CTA fixo (Loranne tem CTA Apple Music; AG não tem CTA explícito por defeito). */
+  /** CTA fixo (Loranne aponta para distro multi-plataforma; AG não tem CTA explícito por defeito). */
   cta?: string;
 };
 
@@ -88,7 +88,7 @@ export const BRANDS: Record<BrandSlug, BrandConfig> = {
         "#spokenword",
       ],
     },
-    cta: "Ouve no Apple Music → music.seteveus.space",
+    cta: "Ouve em todas as plataformas → music.seteveus.space",
   },
 
   "ancient-ground": {
