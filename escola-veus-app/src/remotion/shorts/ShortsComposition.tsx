@@ -156,16 +156,18 @@ const SyncedLyricsLayer: React.FC<{
 };
 
 /** Garante que cada linha (frase) começa com maiúscula, mantendo o
- *  resto do texto intacto. Aplica-se ao display do vídeo — fonte fica
- *  intocada. */
+ *  resto do texto intacto. Hashtags (#tag), mentions (@) e URLs ficam
+ *  intactos. Aplica-se ao display do vídeo — fonte fica intocada. */
 function capitalizeLines(text: string): string {
   return text.split("\n").map((line) => {
     const trimmed = line.trimStart();
     if (!trimmed) return line;
-    const ch = trimmed[0];
-    const rest = trimmed.slice(1);
+    if (/^[#@]/.test(trimmed) || /^https?:\/\//.test(trimmed)) return line;
+    const m = trimmed.match(/^([^\p{L}]*)(\p{L})(.*)$/u);
+    if (!m) return line;
+    const [, prefix, ch, rest] = m;
     const indent = line.slice(0, line.length - trimmed.length);
-    return indent + ch.toLocaleUpperCase("pt-PT") + rest;
+    return indent + prefix + ch.toLocaleUpperCase("pt-PT") + rest;
   }).join("\n");
 }
 

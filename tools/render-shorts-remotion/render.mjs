@@ -16,8 +16,12 @@
 //   SUPABASE_SERVICE_ROLE_KEY
 
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { exec as execCb } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
+
+const exec = promisify(execCb);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
@@ -143,6 +147,21 @@ async function callScribe(audioUrl, lang) {
   }
   const data = await res.json();
   return Array.isArray(data.words) ? data.words : [];
+}
+
+/** ffprobe à URL do áudio (não requer download local — ffprobe lê via http).
+ *  Devolve duração em segundos, ou null se falhar. */
+async function probeAudioDurationSec(audioUrl) {
+  try {
+    const cmd = `ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${audioUrl.replace(/"/g, '\\"')}"`;
+    const { stdout } = await exec(cmd, { timeout: 60_000 });
+    const sec = parseFloat(String(stdout).trim());
+    if (!Number.isFinite(sec) || sec <= 0) return null;
+    return sec;
+  } catch (e) {
+    console.log(`  ⚠ ffprobe falhou: ${(e && e.message ? e.message : e).slice(0, 200)}`);
+    return null;
+  }
 }
 
 function speakingWords(words) {
@@ -284,6 +303,24 @@ async function ensureStanzaTimings(manifest) {
   };
 }
 
+/** Para mode=full, se ainda não temos duração real (ensureStanzaTimings só
+ *  corre quando há Scribe), faz ffprobe à URL do MP3 para apanhar a duração
+ *  exacta. Cobre AG full (instrumental, sem Scribe) e fallback Loranne. */
+async function ensureFullDuration(manifest) {
+  if (manifest.mode !== "full") return manifest;
+  if (manifest.audioDurationSec && manifest.audioDurationSec > 0) return manifest;
+  if (!manifest.audioUrl) return manifest;
+  console.log(`→ ffprobe duração de ${manifest.audioUrl.slice(-60)}`);
+  const sec = await probeAudioDurationSec(manifest.audioUrl);
+  if (!sec) {
+    console.log(`  ⚠ não foi possível probar — fica em ${manifest.durationSec}s`);
+    return manifest;
+  }
+  const durationSec = Math.ceil(sec);
+  console.log(`  → áudio real ${sec.toFixed(1)}s → durationSec=${durationSec}s`);
+  return { ...manifest, audioDurationSec: durationSec, durationSec };
+}
+
 async function main() {
   console.log(`→ Job ${JOB_ID}`);
 
@@ -296,6 +333,9 @@ async function main() {
   // 1b. Scribe + alinhamento (com cache) — só Loranne lyric video
   await updateProgress("rendering", 5, { title: manifest.title || manifest.trackLabel || JOB_ID });
   manifest = await ensureStanzaTimings(manifest);
+  // 1c. Para mode=full sem audioDurationSec ainda (AG full, ou Loranne sem
+  //     letras sincronizadas), ffprobe a duração real do MP3.
+  manifest = await ensureFullDuration(manifest);
 
   await mkdir(WORK_DIR, { recursive: true });
   const propsPath = path.join(WORK_DIR, `${JOB_ID}-props.json`);

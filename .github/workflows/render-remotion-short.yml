@@ -28,13 +28,14 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install Chromium dependencies
+      - name: Install Chromium dependencies + ffmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             libnss3 libatk-bridge2.0-0 libdrm2 libxkbcommon0 libxcomposite1 \
             libxdamage1 libxrandr2 libgbm1 libxss1 libasound2t64 libpangocairo-1.0-0 \
-            libpango-1.0-0 libgtk-3-0t64 fonts-liberation
+            libpango-1.0-0 libgtk-3-0t64 fonts-liberation \
+            ffmpeg
 
       # Bundler webpack resolve `react`/`remotion` a partir das fontes em
       # escola-veus-app/src/remotion/. Precisa de node_modules no app.
