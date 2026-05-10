@@ -6,6 +6,7 @@ import {
   pickWeeklyAG,
   getTrackTitle,
   getAlbumTitle,
+  getTrackLang,
 } from "@/data/weekly-social/weekly-rotation";
 import { scheduleFor, currentYear } from "@/lib/weekly-social/schedule";
 import { buildLoranneCaptions, buildAGCaptions } from "@/lib/weekly-social/captions";
@@ -15,7 +16,7 @@ import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
-import { getLoranneStanzas } from "@/lib/shorts/lyrics-stanzas";
+import { getLoranneStanzas, getLoranneStanzasWithKind, findFirstChorusIdx } from "@/lib/shorts/lyrics-stanzas";
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
 
 export const dynamic = "force-dynamic";
@@ -150,6 +151,11 @@ export async function POST(req: NextRequest) {
           const trackLabel = `"${trackTitle}" · ${albumTitle}`;
 
           const stanzas = getLoranneStanzas(entry.albumSlug, actualTrackNumber);
+          const stanzasKinds = getLoranneStanzasWithKind(entry.albumSlug, actualTrackNumber);
+          const chorusStanzaIdx = stanzasKinds.length === stanzas.length
+            ? findFirstChorusIdx(stanzasKinds)
+            : null;
+          const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
           // Scribe (timing + alinhamento) acontece no GHA worker antes de
           // renderizar — evita exceder maxDuration do Hobby plan (60s).
 
@@ -163,6 +169,8 @@ export async function POST(req: NextRequest) {
             albumTitle,
             verses: (suggest.verses || []).slice(0, 2),
             syncedLyrics: stanzas,
+            chorusStanzaIdx,
+            lang,
             musicUrl,
             motionVariant,
             accent,

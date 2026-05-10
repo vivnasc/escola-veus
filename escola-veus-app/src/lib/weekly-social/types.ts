@@ -53,6 +53,11 @@ export type WeeklyPost = {
   audioDurationSec?: number;
   /** Idioma da letra (PT/EN) — para Scribe usar language_code certo. */
   lang?: "PT" | "EN";
+  /** Índice da primeira stanza marcada como [Chorus] em syncedLyrics.
+   *  Worker usa para arrancar o clip 30s no refrão (ponto mais alto da
+   *  faixa) em vez do início. null/undefined = sem refrão detectado,
+   *  clip arranca em 0. */
+  chorusStanzaIdx?: number | null;
   /** Conto Claude para AG fulls — capítulos passam como texto sobre música. */
   storyChapters?: string[];
   /** Título do conto AG (para signature/metadata). */

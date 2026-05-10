@@ -3,58 +3,78 @@
  *
  * Estratégia: divide pela secção [Verse]/[Chorus]/[Bridge] etc, ou por linhas
  * em branco se não houver tags. Cada stanza fica com 2-4 linhas no ecrã.
+ *
+ * Variante `WithKind` retém o tipo da secção (chorus/verse/bridge) — usado
+ * para começar o clip 30s no primeiro chorus em vez do início da faixa.
  */
 
 import { ALL_LYRICS } from "@/lib/loranne";
 
-/** Divide letras inteiras numa lista de stanzas (cada uma 2-4 linhas). */
-export function lyricsToStanzas(lyrics: string): string[] {
-  if (!lyrics || !lyrics.trim()) return [];
+export type StanzaKind = "verse" | "chorus" | "bridge" | "pre-chorus" | "post-chorus" | "other";
 
-  // Limpa headers de vocal/persona/CRITICAL/Intro etc — não são letra cantada.
+export type StanzaWithKind = { text: string; kind: StanzaKind };
+
+function classifyTag(tagInner: string): StanzaKind {
+  const t = tagInner.toLowerCase().trim();
+  if (/^pre[\s-]?chorus/.test(t)) return "pre-chorus";
+  if (/^post[\s-]?chorus/.test(t)) return "post-chorus";
+  if (/^chorus/.test(t)) return "chorus";
+  if (/^bridge/.test(t)) return "bridge";
+  if (/^verse/.test(t)) return "verse";
+  // intro/outro/vocal/critical/persona/instrumental → "other" (não usar)
+  return "other";
+}
+
+/** Walk através das letras retendo a secção activa por stanza. */
+export function lyricsToStanzasWithKind(lyrics: string): StanzaWithKind[] {
+  if (!lyrics || !lyrics.trim()) return [];
+  const lines = lyrics.split(/\r?\n/);
+  const out: StanzaWithKind[] = [];
+  let currentKind: StanzaKind = "verse";
+  let buffer: string[] = [];
+
+  const flush = () => {
+    if (buffer.length === 0) return;
+    out.push({ text: buffer.join("\n"), kind: currentKind });
+    buffer = [];
+  };
+
+  for (const raw of lines) {
+    const t = raw.trim();
+    if (!t) {
+      flush();
+      continue;
+    }
+    const tagMatch = t.match(/^\[([^\]]+)\]$/);
+    if (tagMatch) {
+      flush();
+      currentKind = classifyTag(tagMatch[1]);
+      continue;
+    }
+    // Comentários em parênteses
+    if (/^\(.+\)$/.test(t)) continue;
+    // Secções "other" não vão para stanzas (intro instrumental, vocal config)
+    if (currentKind === "other") continue;
+    buffer.push(t);
+    if (buffer.length >= 5) flush(); // parte stanzas longas
+  }
+  flush();
+  return out;
+}
+
+/** Divide letras inteiras numa lista de stanzas (cada uma 2-4 linhas).
+ *  Compatibilidade com chamadores que só querem texto. */
+export function lyricsToStanzas(lyrics: string): string[] {
+  const tagged = lyricsToStanzasWithKind(lyrics);
+  if (tagged.length >= 4) return tagged.map((s) => s.text);
+  // Sem tags estruturais (ou poucos blocos) — fallback: 3 linhas por stanza.
   const cleaned = lyrics
     .split(/\r?\n/)
-    .filter((l) => {
-      const t = l.trim();
-      if (!t) return false;
-      // Linhas só de tags (vocal config, intros instrumentais)
-      if (/^\[(Vocal|CRITICAL|Persona|Intro|Outro|Bridge|Chorus|Verse|Pre-Chorus|Post-Chorus)/i.test(t)) return false;
-      if (/^\[/.test(t) && /\]$/.test(t)) return false;
-      // Linhas de comentário entre parênteses
-      if (/^\(.+\)$/.test(t)) return false;
-      return true;
-    })
-    .join("\n");
-
-  // Divide por blocos de 2-4 linhas. Toma blocos separados por uma única
-  // linha em branco no original; senão, agrupa cada 3 linhas.
-  const blocks = cleaned
-    .split(/\n{2,}/)
-    .map((b) => b.trim())
-    .filter(Boolean);
-
-  if (blocks.length >= 4) {
-    // Cada bloco do output original já é uma stanza. Se algum tiver >5 linhas,
-    // parte ao meio.
-    const out: string[] = [];
-    for (const b of blocks) {
-      const lines = b.split("\n");
-      if (lines.length <= 5) {
-        out.push(b);
-      } else {
-        const half = Math.ceil(lines.length / 2);
-        out.push(lines.slice(0, half).join("\n"));
-        out.push(lines.slice(half).join("\n"));
-      }
-    }
-    return out;
-  }
-
-  // Fallback: agrupa cada 3 linhas como uma stanza.
-  const lines = cleaned.split("\n").map((l) => l.trim()).filter(Boolean);
+    .map((l) => l.trim())
+    .filter((l) => l && !/^\[.*\]$/.test(l) && !/^\(.+\)$/.test(l));
   const stanzas: string[] = [];
-  for (let i = 0; i < lines.length; i += 3) {
-    stanzas.push(lines.slice(i, i + 3).join("\n"));
+  for (let i = 0; i < cleaned.length; i += 3) {
+    stanzas.push(cleaned.slice(i, i + 3).join("\n"));
   }
   return stanzas;
 }
@@ -64,4 +84,23 @@ export function getLoranneStanzas(albumSlug: string, trackNumber: number): strin
   const lyrics = ALL_LYRICS[`${albumSlug}/${trackNumber}`];
   if (!lyrics) return [];
   return lyricsToStanzas(lyrics);
+}
+
+/** Como `getLoranneStanzas` mas retém o tipo de cada stanza (verse/chorus/etc).
+ *  Quando difere do array sem-kind (porque o fallback 3-line está activo),
+ *  devolve `[]` — caller decide como tratar. */
+export function getLoranneStanzasWithKind(albumSlug: string, trackNumber: number): StanzaWithKind[] {
+  const lyrics = ALL_LYRICS[`${albumSlug}/${trackNumber}`];
+  if (!lyrics) return [];
+  const tagged = lyricsToStanzasWithKind(lyrics);
+  // Só devolve se for o mesmo conjunto que getLoranneStanzas (ou seja, ≥4 blocos
+  // estruturados) — caso contrário kinds não alinham com o fallback 3-line.
+  if (tagged.length < 4) return [];
+  return tagged;
+}
+
+/** Índice da primeira stanza marcada como "chorus" (ou null). */
+export function findFirstChorusIdx(stanzas: StanzaWithKind[]): number | null {
+  const idx = stanzas.findIndex((s) => s.kind === "chorus");
+  return idx >= 0 ? idx : null;
 }

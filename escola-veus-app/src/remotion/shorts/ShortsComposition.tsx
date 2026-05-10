@@ -19,7 +19,12 @@ import { AG_MOTIONS, type AGMotionVariant } from "./AGMotion";
 // Remotion dynamic load (mesmo padrão do VideoComposition.tsx).
 let useCurrentFrame: () => number;
 let useVideoConfig: () => { fps: number; durationInFrames: number };
-let RemotionAudio: React.FC<{ src: string; volume: number | ((f: number) => number); loop?: boolean }>;
+let RemotionAudio: React.FC<{
+  src: string;
+  volume: number | ((f: number) => number);
+  loop?: boolean;
+  startFrom?: number;
+}>;
 let REMOTION_AVAILABLE = false;
 
 try {
@@ -67,6 +72,9 @@ export type ShortsManifest = {
   mode?: "clip" | "full";
   /** FPS (default 30). */
   fps?: number;
+  /** Onde arrancar o áudio (segundos absolutos no MP3). 0 para full mode;
+   *  para clip Loranne com chorus, é o segundo do refrão menos lead-in. */
+  audioStartFromSec?: number;
 };
 
 const DEFAULT_FPS = 30;
@@ -313,7 +321,11 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
 
       {/* 3. Audio */}
       {props.audioUrl && REMOTION_AVAILABLE && RemotionAudio && (
-        <RemotionAudio src={props.audioUrl} volume={audioVolFn} />
+        <RemotionAudio
+          src={props.audioUrl}
+          volume={audioVolFn}
+          startFrom={props.audioStartFromSec ? Math.round(props.audioStartFromSec * fps) : undefined}
+        />
       )}
 
       {/* 4. Signature + track label */}

@@ -34,6 +34,9 @@ export type RenderRemotionInput = {
   lang?: "PT" | "EN";
   /** Onde começa o áudio neste render (em segundos absolutos no MP3). 0 para full. */
   audioStartFromSec?: number;
+  /** Índice da primeira stanza chorus — worker usa para arrancar clips no
+   *  refrão em vez do início. Só Loranne clip mode. */
+  chorusStanzaIdx?: number | null;
   /** Capítulos de conto (AG full) — passam como texto sobre instrumental. */
   storyChapters?: string[];
   /** Título do conto AG (signature/metadata). */
@@ -104,6 +107,7 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     audioDurationSec: input.audioDurationSec ?? null,
     lang: input.lang || "PT",
     audioStartFromSec: input.audioStartFromSec ?? 0,
+    chorusStanzaIdx: input.chorusStanzaIdx ?? null,
     storyChapters: input.storyChapters || null,
     storyTitle: input.storyTitle || null,
     verses: input.verses,

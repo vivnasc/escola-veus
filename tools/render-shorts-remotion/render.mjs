@@ -106,6 +106,13 @@ async function writeScribeCache(audioUrl, payload) {
   );
 }
 
+function langToScribeCode(lang) {
+  if (!lang) return "por";
+  const u = String(lang).toUpperCase();
+  if (u === "EN" || u === "ENG" || u === "EN-US" || u === "EN-GB") return "eng";
+  return "por";
+}
+
 async function callScribe(audioUrl, lang) {
   const key = process.env.ELEVENLABS_API_KEY;
   if (!key) throw new Error("ELEVENLABS_API_KEY ausente no GHA secrets.");
@@ -114,14 +121,16 @@ async function callScribe(audioUrl, lang) {
   if (!audioRes.ok) throw new Error(`Download MP3 ${audioRes.status}`);
   const audioBuf = Buffer.from(await audioRes.arrayBuffer());
 
+  const code = langToScribeCode(lang);
   const form = new FormData();
   const blob = new Blob([audioBuf], { type: "audio/mpeg" });
   form.append("file", blob, "track.mp3");
   form.append("model_id", "scribe_v1");
-  form.append("language_code", lang || "por");
+  form.append("language_code", code);
   form.append("timestamps_granularity", "word");
   form.append("tag_audio_events", "false");
   form.append("diarize", "false");
+  console.log(`  · Scribe lang=${code}`);
 
   const res = await fetch("https://api.elevenlabs.io/v1/speech-to-text", {
     method: "POST",
@@ -221,7 +230,7 @@ async function ensureStanzaTimings(manifest) {
     console.log(`  ✓ cache hit (${cached.words?.length || 0} words)`);
   } else {
     console.log(`  · cache miss — a chamar Scribe (~$0.03)`);
-    const words = await callScribe(manifest.audioUrl, "por");
+    const words = await callScribe(manifest.audioUrl, manifest.lang || "PT");
     cached = { words, savedAt: new Date().toISOString() };
     await writeScribeCache(manifest.audioUrl, cached);
     console.log(`  ✓ Scribe ${words.length} words, gravado em cache`);
@@ -237,7 +246,42 @@ async function ensureStanzaTimings(manifest) {
 
   // Para mode=full, ajusta durationSec à duração real do áudio.
   const durationSec = manifest.mode === "full" ? Math.ceil(audioDurationSec) : manifest.durationSec;
-  return { ...manifest, stanzaTimings, audioDurationSec, durationSec };
+
+  // Para mode=clip Loranne, se temos chorusStanzaIdx, arranca o áudio
+  // 1s antes do refrão e shifta as stanzaTimings para tempo relativo
+  // (subtrai offset). A composição renderiza só o que cair dentro de
+  // [0, durationSec=30].
+  let audioStartFromSec = manifest.audioStartFromSec || 0;
+  let adjustedTimings = stanzaTimings;
+  let adjustedLyrics = manifest.syncedLyrics;
+  if (
+    manifest.mode === "clip" &&
+    typeof manifest.chorusStanzaIdx === "number" &&
+    manifest.chorusStanzaIdx >= 0 &&
+    manifest.chorusStanzaIdx < stanzaTimings.length
+  ) {
+    const chorusStart = stanzaTimings[manifest.chorusStanzaIdx].startSec;
+    const offset = Math.max(0, chorusStart - 1); // 1s lead-in
+    audioStartFromSec = offset;
+    adjustedTimings = stanzaTimings
+      .map((t) => ({
+        text: t.text,
+        startSec: Math.max(0, t.startSec - offset),
+        endSec: Math.max(0, t.endSec - offset),
+      }))
+      .filter((t) => t.startSec < durationSec); // só o que cabe no clip
+    adjustedLyrics = adjustedTimings.map((t) => t.text);
+    console.log(`  → clip arranca em chorus: offset=${offset.toFixed(1)}s · ${adjustedTimings.length}/${stanzaTimings.length} stanzas`);
+  }
+
+  return {
+    ...manifest,
+    stanzaTimings: adjustedTimings,
+    syncedLyrics: adjustedLyrics,
+    audioStartFromSec,
+    audioDurationSec,
+    durationSec,
+  };
 }
 
 async function main() {
