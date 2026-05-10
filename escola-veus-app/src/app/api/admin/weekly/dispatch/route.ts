@@ -99,6 +99,7 @@ async function dispatchBrand(plan: WeeklyPlan, force: boolean): Promise<{
         // já dispatchado e ainda em curso — não re-dispatcha
         continue;
       }
+      const prevAttempts = post.renderJobs[mode]?.attempts ?? 0;
       try {
         const { jobId } = await dispatchOnePostMode(post, mode);
         post.renderJobs[mode] = {
@@ -106,6 +107,7 @@ async function dispatchBrand(plan: WeeklyPlan, force: boolean): Promise<{
           videoUrl: null,
           thumbnailUrl: null,
           status: "queued",
+          attempts: prevAttempts + 1,
         };
         dispatched++;
       } catch (e) {
@@ -116,6 +118,7 @@ async function dispatchBrand(plan: WeeklyPlan, force: boolean): Promise<{
           thumbnailUrl: null,
           status: "failed",
           errorMessage: msg,
+          attempts: prevAttempts + 1,
         };
         errors.push({ postId: post.id, mode, message: msg });
       }

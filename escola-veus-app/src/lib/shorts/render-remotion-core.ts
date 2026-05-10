@@ -7,6 +7,9 @@
  */
 
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
+import { RENDER_VERSION } from "@/lib/shorts/render-version";
+
+export { RENDER_VERSION };
 
 export type RenderRemotionInput = {
   /** Marca — determina motion + signature defaults. */
@@ -111,6 +114,7 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     durationSec: input.durationSec ?? defaultDuration,
     fps: 30,
     createdAt: new Date().toISOString(),
+    renderVersion: RENDER_VERSION,
   };
 
   const manifestBody = JSON.stringify(manifest, null, 2);

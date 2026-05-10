@@ -21,6 +21,14 @@ export type RenderJob = {
   thumbnailUrl: string | null;
   status: WeeklyPostStatus;
   errorMessage?: string;
+  /** Versão do worker/composição usada (stamp do RENDER_VERSION). Permite
+   *  ver à vista se um vídeo foi feito com código antigo (precisa
+   *  re-render) ou com a versão actual. */
+  renderVersion?: string;
+  /** ISO timestamp quando o render terminou (completedAt do result.json). */
+  renderedAt?: string;
+  /** Quantas vezes este (post, mode) foi dispatchado para render. */
+  attempts?: number;
 };
 
 export type WeeklyPost = {

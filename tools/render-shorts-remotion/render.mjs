@@ -320,8 +320,10 @@ async function main() {
     videoUrl,
     sizeBytes: mp4Body.length,
     completedAt: new Date().toISOString(),
+    renderVersion: manifest.renderVersion || null,
+    durationSec: manifest.durationSec || null,
   });
-  console.log(`✓ Done`);
+  console.log(`✓ Done (v=${manifest.renderVersion || "n/a"} dur=${manifest.durationSec}s)`);
 }
 
 main().catch(async (err) => {

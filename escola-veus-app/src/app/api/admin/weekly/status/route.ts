@@ -17,6 +17,9 @@ type RenderResult = {
   thumbnailUrl?: string;
   error?: string;
   progress?: number;
+  renderVersion?: string | null;
+  completedAt?: string;
+  durationSec?: number | null;
 };
 
 async function fetchResult(jobId: string): Promise<RenderResult | null> {
@@ -62,11 +65,14 @@ async function refreshBrand(plan: WeeklyPlan): Promise<{
       const newStatus = normalizeStatus(result.status);
       if (newStatus === "done") {
         const videoUrl = result.videoUrl || result.url || null;
-        if (videoUrl !== job.videoUrl || job.status !== "done") {
+        const versionChanged = result.renderVersion && result.renderVersion !== job.renderVersion;
+        if (videoUrl !== job.videoUrl || job.status !== "done" || versionChanged) {
           job.videoUrl = videoUrl;
           job.thumbnailUrl = result.thumbnailUrl || job.thumbnailUrl;
           job.status = "done";
           job.errorMessage = undefined;
+          if (result.renderVersion) job.renderVersion = result.renderVersion;
+          if (result.completedAt) job.renderedAt = result.completedAt;
           dirty = true;
         }
         done++;
