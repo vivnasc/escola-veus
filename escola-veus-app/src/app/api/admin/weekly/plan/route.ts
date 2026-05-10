@@ -150,9 +150,12 @@ export async function POST(req: NextRequest) {
           // ou para o overlay no vídeo.
           const isPlaceholder = /^Faixa\s+\d+$/i.test(rawTitle);
           const firstLine = (suggest.verses?.[0] || "").split("\n")[0].trim();
-          const trackTitle = isPlaceholder && firstLine
-            ? firstLine.slice(0, 50)
-            : rawTitle;
+          const derived = firstLine.slice(0, 50);
+          // Garante maiúscula no início (versos Suno por vezes em minúscula).
+          const capitalised = derived
+            ? derived.charAt(0).toLocaleUpperCase("pt-PT") + derived.slice(1)
+            : "";
+          const trackTitle = isPlaceholder && capitalised ? capitalised : rawTitle;
 
           const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
           const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null, lang });

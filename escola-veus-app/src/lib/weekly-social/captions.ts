@@ -11,6 +11,7 @@
  */
 
 import { expandHashtags, type BrandConfig } from "@/data/weekly-social/brand-config";
+import { RAIZES_TEMA_LABELS } from "@/lib/ag-raizes-temas";
 
 export type PlatformCaptions = {
   instagram: string;
@@ -79,9 +80,14 @@ function loranneAbout(albumTitle: string, lang?: "PT" | "EN"): string {
     : `Sobre · canção contemplativa ${langLabel}, da artista moçambicana Loranne.`;
 }
 
-/** AG: instrumental contemplativo + temas. */
+/** AG: instrumental contemplativo + temas com display name correcto. */
 function agAbout(temas: readonly string[]): string {
-  const t = (temas || []).filter(Boolean).join(" · ");
+  const map = RAIZES_TEMA_LABELS as Record<string, string>;
+  const cap = (s: string) => s.charAt(0).toLocaleUpperCase("pt-PT") + s.slice(1);
+  const t = (temas || [])
+    .filter(Boolean)
+    .map((slug) => map[slug] || cap(slug))
+    .join(" · ");
   return t
     ? `Sobre · instrumental ambiente para meditação e foco — temas raiz: ${t}.`
     : `Sobre · instrumental ambiente para meditação e foco.`;
