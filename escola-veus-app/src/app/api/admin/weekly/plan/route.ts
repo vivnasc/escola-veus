@@ -139,13 +139,23 @@ export async function POST(req: NextRequest) {
           }
 
           // (Re-)extrai versos+captions usando o trackNumber realmente disponível.
-          const trackTitle = getTrackTitle(entry.albumSlug, actualTrackNumber);
+          const rawTitle = getTrackTitle(entry.albumSlug, actualTrackNumber);
           const suggest = runSuggest({
             albumSlug: entry.albumSlug,
             trackNumber: actualTrackNumber,
           }) as Parameters<typeof buildLoranneCaptions>[0];
 
-          const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null });
+          // Se não há título real (placeholder "Faixa N"), deriva a partir
+          // da primeira linha do verso. Nunca enviamos "Faixa N" para captions
+          // ou para o overlay no vídeo.
+          const isPlaceholder = /^Faixa\s+\d+$/i.test(rawTitle);
+          const firstLine = (suggest.verses?.[0] || "").split("\n")[0].trim();
+          const trackTitle = isPlaceholder && firstLine
+            ? firstLine.slice(0, 50)
+            : rawTitle;
+
+          const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
+          const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null, lang });
           const motionVariant = pickMotionVariant(`loranne/${entry.albumSlug}/${actualTrackNumber}`);
           const accent = pickLoranneAccent(entry.albumSlug);
           const trackLabel = `"${trackTitle}" · ${albumTitle}`;
@@ -156,7 +166,6 @@ export async function POST(req: NextRequest) {
           const chorusStanzaIdx = stanzasKinds.length === stanzas.length
             ? detectClipStartStanzaIdx(stanzasKinds)
             : detectClipStartStanzaIdx(stanzas);
-          const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
           // Scribe (timing + alinhamento) acontece no GHA worker antes de
           // renderizar — evita exceder maxDuration do Hobby plan (60s).
 

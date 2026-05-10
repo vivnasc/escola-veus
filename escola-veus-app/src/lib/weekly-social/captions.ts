@@ -70,6 +70,23 @@ function agHeader(label: string): string {
   return label?.trim() ? `🎵 Ancient Ground — ${label.trim()}` : "🎵 Ancient Ground";
 }
 
+/** Linha curta "sobre a música" — explica de que se trata para quem não
+ *  conhece a marca. Loranne: música contemplativa em PT/EN do álbum X. */
+function loranneAbout(albumTitle: string, lang?: "PT" | "EN"): string {
+  const langLabel = lang === "EN" ? "em inglês" : "em português";
+  return albumTitle
+    ? `Sobre · canção contemplativa ${langLabel} do álbum ${albumTitle}, da artista moçambicana Loranne.`
+    : `Sobre · canção contemplativa ${langLabel}, da artista moçambicana Loranne.`;
+}
+
+/** AG: instrumental contemplativo + temas. */
+function agAbout(temas: readonly string[]): string {
+  const t = (temas || []).filter(Boolean).join(" · ");
+  return t
+    ? `Sobre · instrumental ambiente para meditação e foco — temas raiz: ${t}.`
+    : `Sobre · instrumental ambiente para meditação e foco.`;
+}
+
 /** Extrai a "mensagem principal" do tiktokCaption do suggest — tudo até
  *  ao primeiro hashtag, removendo URLs e linhas de CTA conhecidas. */
 function extractBody(tiktokCaption: string | undefined): string {
@@ -84,13 +101,14 @@ function extractBody(tiktokCaption: string | undefined): string {
 export function buildLoranneCaptions(
   suggestResult: LoranneSuggest,
   brand: BrandConfig,
-  meta: { trackTitle: string; albumTitle: string; theme: string | null },
+  meta: { trackTitle: string; albumTitle: string; theme: string | null; lang?: "PT" | "EN" },
 ): PlatformCaptions {
-  const { trackTitle, albumTitle, theme } = meta;
+  const { trackTitle, albumTitle, theme, lang } = meta;
   const v1 = capitalizeLines(suggestResult.verses?.[0] || "");
   const v2 = capitalizeLines(suggestResult.verses?.[1] || "");
   const verses = [v1, v2].filter(Boolean).join("\n");
   const header = loranneHeader(trackTitle, albumTitle);
+  const about = loranneAbout(albumTitle, lang);
   const body = extractBody(suggestResult.tiktokCaption);
   const cta = brand.cta || "";
 
@@ -98,11 +116,12 @@ export function buildLoranneCaptions(
   const ttTags = expandHashtags(brand.hashtagsByPlatform.tiktok, theme).join(" ");
   const ytTags = expandHashtags(brand.hashtagsByPlatform.youtube, theme).join(" ");
 
-  // Ordem: header (título) → versos (mensagem) → body (hook do suggest) → CTA → tags
+  // Ordem: header (título) → versos (mensagem) → about (explica) → body (hook) → CTA → tags
   const compose = (tags: string) => [
     header,
     "",
     verses,
+    `\n${about}`,
     body && body !== verses ? `\n${body}` : "",
     cta ? `\n${cta}` : "",
     `\n${tags}`,
@@ -120,7 +139,8 @@ export function buildLoranneCaptions(
     .filter((l) => !l.startsWith("#"))
     .join("\n")
     .trim());
-  const ytDesc = [header, "", ytDescBase, cta, "", ytTags].filter(Boolean).join("\n");
+  const ytDesc = [header, "", about, "", ytDescBase, cta, "", ytTags]
+    .filter(Boolean).join("\n");
 
   return {
     instagram,
@@ -134,11 +154,12 @@ export function buildAGCaptions(
   brand: BrandConfig,
   meta: { label: string; trackNumber: number; temas: readonly string[] },
 ): PlatformCaptions {
-  const { label } = meta;
+  const { label, temas } = meta;
   const v1 = capitalizeLines(suggestResult.versos?.[0] || "");
   const v2 = capitalizeLines(suggestResult.versos?.[1] || "");
   const verses = [v1, v2].filter(Boolean).join("\n");
   const header = agHeader(label);
+  const about = agAbout(temas);
   const body = extractBody(suggestResult.tiktokCaption);
 
   const igTags = expandHashtags(brand.hashtagsByPlatform.instagram, null).join(" ");
@@ -149,6 +170,7 @@ export function buildAGCaptions(
     header,
     "",
     verses,
+    `\n${about}`,
     body && body !== verses ? `\n${body}` : "",
     "\nmusic.seteveus.space",
     `\n${tags}`,
@@ -163,7 +185,7 @@ export function buildAGCaptions(
     .filter((l) => !l.startsWith("#"))
     .join("\n")
     .trim());
-  const ytDesc = [header, "", ytDescBase, "music.seteveus.space", "", ytTags]
+  const ytDesc = [header, "", about, "", ytDescBase, "music.seteveus.space", "", ytTags]
     .filter(Boolean).join("\n");
 
   return {
