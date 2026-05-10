@@ -18,6 +18,8 @@ import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
 import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx } from "@/lib/shorts/lyrics-stanzas";
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
+import { generateLoranneSynopsis } from "@/lib/shorts/loranne-synopsis-generator";
+import { ALL_LYRICS } from "@/lib/loranne";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60; // Hobby plan limit. Scribe acontece no GHA worker.
@@ -108,16 +110,18 @@ export async function POST(req: NextRequest) {
     // ─── Loranne ────────────────────────────────────────────────────────
     if (brands.includes("loranne")) {
       const brand = BRANDS.loranne;
-      const posts: WeeklyPost[] = [];
-      for (const day of brand.publishDays) {
-        const dayIdx = DAY_ORDER.indexOf(day);
-        const entry = pickWeeklyLoranne(week, dayIdx);
-        const albumTitle = getAlbumTitle(entry.albumSlug);
 
+      // Processa os 7 dias em paralelo — cada track faz Supabase list +
+      // Claude synopsis (com cache). Sequencial estoura os 60s no
+      // primeiro run sem cache.
+      const dayEntries = brand.publishDays.map((day) => ({
+        day,
+        entry: pickWeeklyLoranne(week, DAY_ORDER.indexOf(day)),
+      }));
+
+      const results = await Promise.all(dayEntries.map(async ({ day, entry }) => {
+        const albumTitle = getAlbumTitle(entry.albumSlug);
         try {
-          // Lista MP3s deste álbum no Supabase. Fallback: se a faixa pedida
-          // não tem MP3 produzido, escolhe a mais próxima do mesmo álbum
-          // (re-extrai versos dessa faixa).
           const tracks = await listAlbumTracks(entry.albumSlug);
           if (tracks.length === 0) {
             throw new Error(`Sem MP3 nenhum em audios/albums/${entry.albumSlug}/`);
@@ -138,41 +142,50 @@ export async function POST(req: NextRequest) {
             throw new Error(`MP3 ${entry.albumSlug}/faixa ${entry.trackNumber} (e fallbacks) não encontrado.`);
           }
 
-          // (Re-)extrai versos+captions usando o trackNumber realmente disponível.
           const rawTitle = getTrackTitle(entry.albumSlug, actualTrackNumber);
           const suggest = runSuggest({
             albumSlug: entry.albumSlug,
             trackNumber: actualTrackNumber,
           }) as Parameters<typeof buildLoranneCaptions>[0];
 
-          // Se não há título real (placeholder "Faixa N"), deriva a partir
-          // da primeira linha do verso. Nunca enviamos "Faixa N" para captions
-          // ou para o overlay no vídeo.
           const isPlaceholder = /^Faixa\s+\d+$/i.test(rawTitle);
           const firstLine = (suggest.verses?.[0] || "").split("\n")[0].trim();
           const derived = firstLine.slice(0, 50);
-          // Garante maiúscula no início (versos Suno por vezes em minúscula).
           const capitalised = derived
             ? derived.charAt(0).toLocaleUpperCase("pt-PT") + derived.slice(1)
             : "";
           const trackTitle = isPlaceholder && capitalised ? capitalised : rawTitle;
 
           const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
-          const captions = buildLoranneCaptions(suggest, brand, { trackTitle, albumTitle, theme: null, lang });
+
+          // Synopsis Claude (cached por sha1 das letras) — falha graciosa.
+          let synopsis: string | undefined;
+          let synopsisError: string | undefined;
+          const fullLyrics = ALL_LYRICS[`${entry.albumSlug}/${actualTrackNumber}`] || "";
+          if (fullLyrics) {
+            try {
+              synopsis = await generateLoranneSynopsis({
+                lyrics: fullLyrics, trackTitle, albumTitle, lang,
+              });
+            } catch (e) {
+              synopsisError = e instanceof Error ? e.message : String(e);
+            }
+          }
+
+          const captions = buildLoranneCaptions(suggest, brand, {
+            trackTitle, albumTitle, theme: null, lang, synopsis,
+          });
           const motionVariant = pickMotionVariant(`loranne/${entry.albumSlug}/${actualTrackNumber}`);
           const accent = pickLoranneAccent(entry.albumSlug);
           const trackLabel = `"${trackTitle}" · ${albumTitle}`;
 
           const stanzas = getLoranneStanzas(entry.albumSlug, actualTrackNumber);
           const stanzasKinds = getLoranneStanzasWithKind(entry.albumSlug, actualTrackNumber);
-          // Cascata: tag [Chorus] → repetição → 33% posição. Nunca null se >=3 stanzas.
           const chorusStanzaIdx = stanzasKinds.length === stanzas.length
             ? detectClipStartStanzaIdx(stanzasKinds)
             : detectClipStartStanzaIdx(stanzas);
-          // Scribe (timing + alinhamento) acontece no GHA worker antes de
-          // renderizar — evita exceder maxDuration do Hobby plan (60s).
 
-          posts.push({
+          const post: WeeklyPost = {
             id: `loranne-${entry.albumSlug}-f${actualTrackNumber}-w${week}-${day}`,
             brandSlug: "loranne",
             day,
@@ -184,6 +197,7 @@ export async function POST(req: NextRequest) {
             syncedLyrics: stanzas,
             chorusStanzaIdx,
             lang,
+            synopsis,
             musicUrl,
             motionVariant,
             accent,
@@ -197,12 +211,34 @@ export async function POST(req: NextRequest) {
             thumbnailUrl: null,
             jobId: null,
             status: "planned",
-          });
+          };
+          return { post, day, synopsisError };
         } catch (e) {
+          return {
+            post: null,
+            day,
+            error: e instanceof Error ? e.message : String(e),
+            postId: `loranne-${entry.albumSlug}-f${entry.trackNumber}-${day}`,
+          };
+        }
+      }));
+
+      const posts: WeeklyPost[] = [];
+      for (const r of results) {
+        if (r.post) {
+          posts.push(r.post);
+          if ("synopsisError" in r && r.synopsisError) {
+            errors.push({
+              brand: "loranne",
+              postId: r.post.id,
+              message: `Synopsis Claude falhou (uso template): ${r.synopsisError.slice(0, 200)}`,
+            });
+          }
+        } else if ("error" in r && r.error) {
           errors.push({
             brand: "loranne",
-            postId: `loranne-${entry.albumSlug}-f${entry.trackNumber}-${day}`,
-            message: e instanceof Error ? e.message : String(e),
+            postId: r.postId || `loranne-${r.day}`,
+            message: r.error,
           });
         }
       }

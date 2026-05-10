@@ -524,6 +524,13 @@ function PostCard({
           <PostStatusPill status={aggregateStatus} />
         </div>
         <RenderVersionBadge job={active} />
+        {/* AG full sem conto — Claude story falhou ou plan velho */}
+        {post.brandSlug === "ancient-ground" && activeMode === "full" && !hasStory && (
+          <div className="mt-1 rounded border border-red-700/40 bg-red-950/30 px-1.5 py-0.5 text-[9px] text-red-300">
+            ⚠ sem conto — Claude story falhou ou o plano é anterior à paralelização.
+            Re-gera plano em &quot;1. Gerar plano&quot; para tentar.
+          </div>
+        )}
         {active?.errorMessage && (
           <div className="mt-1 text-[10px] text-red-300">✗ {active.errorMessage}</div>
         )}
