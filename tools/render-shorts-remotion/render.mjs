@@ -275,6 +275,16 @@ async function main() {
     id: "ShortsComposition",
     inputProps: manifest,
   });
+  // selectComposition devolve a duração registada no Root.tsx (30s clip
+  // default). Para mode=full ou sempre que manifest.durationSec divergir,
+  // override aqui — caso contrário renderMedia corta o vídeo a 30s.
+  const fps = composition.fps || manifest.fps || 30;
+  const targetSec = Number(manifest.durationSec) || 30;
+  const targetFrames = Math.max(1, Math.round(targetSec * fps));
+  if (targetFrames !== composition.durationInFrames) {
+    console.log(`→ Override duration: ${composition.durationInFrames}f → ${targetFrames}f (${targetSec}s @ ${fps}fps)`);
+    composition.durationInFrames = targetFrames;
+  }
   console.log(`→ Composition: ${composition.width}x${composition.height} ${composition.durationInFrames}f`);
 
   await updateProgress("rendering", 30);
