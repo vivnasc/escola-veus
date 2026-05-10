@@ -163,14 +163,17 @@ export default function WeeklyBulkPanel({
     }
   }, [week, year, brand, loadStatus]);
 
-  const dispatchRenders = useCallback(async () => {
-    setBusy("dispatch");
+  const dispatchRenders = useCallback(async (force = false) => {
+    if (force && !confirm(
+      `Re-renderizar TODOS os clips e fulls de ${brandLabel} desta semana?\n\nOs vídeos actuais serão substituídos. Útil quando contos/captions/letras mudaram.`,
+    )) return;
+    setBusy(force ? "rerender-all" : "dispatch");
     setErrors([]);
     try {
       const r = await fetch("/api/admin/weekly/dispatch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ week, year, brands: [brand] }),
+        body: JSON.stringify({ week, year, brands: [brand], force }),
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.erro || `HTTP ${r.status}`);
@@ -181,7 +184,7 @@ export default function WeeklyBulkPanel({
     } finally {
       setBusy(null);
     }
-  }, [week, year, brand, loadStatus, startPolling]);
+  }, [week, year, brand, brandLabel, loadStatus, startPolling]);
 
   const packageZip = useCallback(async () => {
     setBusy("package");
@@ -259,11 +262,19 @@ export default function WeeklyBulkPanel({
               {busy === "plan" ? "..." : "1. Gerar plano"}
             </button>
             <button
-              onClick={dispatchRenders}
+              onClick={() => dispatchRenders(false)}
               disabled={busy !== null || !planExists}
               className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
             >
               {busy === "dispatch" ? "..." : "2. Renderizar"}
+            </button>
+            <button
+              onClick={() => dispatchRenders(true)}
+              disabled={busy !== null || !planExists}
+              className="rounded border border-escola-coral/40 bg-escola-coral/10 px-3 py-1 text-xs font-semibold text-escola-coral hover:bg-escola-coral/20 disabled:opacity-50"
+              title="Reseta TODOS os renderJobs e re-dispatcha. Útil depois de mudar contos/letras/captions."
+            >
+              {busy === "rerender-all" ? "..." : "↻ Re-render tudo"}
             </button>
             <button
               onClick={packageZip}

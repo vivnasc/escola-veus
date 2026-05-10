@@ -200,15 +200,32 @@ export async function POST(req: NextRequest) {
     if (brands.includes("ancient-ground")) {
       const brand = BRANDS["ancient-ground"];
       const agTracks = await listAlbumTracks("ancient-ground");
-      const posts: WeeklyPost[] = [];
-      let slotIdx = 0;
-      for (const day of brand.publishDays) {
-        const entry = pickWeeklyAG(week, slotIdx);
+
+      // Processa os 3 posts em paralelo — cada post chama Claude duas vezes
+      // (suggest-ag + story). Sequencial estoura os 60s do Hobby plan.
+      const dayEntries = brand.publishDays.map((day, slotIdx) => ({
+        day, slotIdx, entry: pickWeeklyAG(week, slotIdx),
+      }));
+
+      const results = await Promise.all(dayEntries.map(async ({ day, slotIdx, entry }) => {
         try {
-          const suggest = await runSuggestAG({
-            temas: [...entry.temas],
-            trackNumber: entry.trackNumber,
-          }) as Parameters<typeof buildAGCaptions>[0];
+          // suggest-ag e story em paralelo — ambos batem em Claude e são
+          // independentes um do outro.
+          const [suggestRaw, storyResult] = await Promise.all([
+            runSuggestAG({
+              temas: [...entry.temas],
+              trackNumber: entry.trackNumber,
+            }),
+            generateAGStory({
+              label: entry.label,
+              temas: entry.temas,
+              trackNumber: entry.trackNumber,
+            }).catch((storyErr) => {
+              const msg = storyErr instanceof Error ? storyErr.message : String(storyErr);
+              return { _error: msg } as const;
+            }),
+          ]);
+          const suggest = suggestRaw as Parameters<typeof buildAGCaptions>[0];
 
           let actualAgTrack = entry.trackNumber;
           let musicUrl = findTrackUrl(agTracks, actualAgTrack);
@@ -232,25 +249,14 @@ export async function POST(req: NextRequest) {
           const motionVariant = pickMotionVariant(`ag/${entry.temas.join("-")}/${actualAgTrack}`);
           const trackLabel = `Ancient Ground · ${entry.label}`;
 
-          // Story Claude para mode=full (texto a passar sobre instrumental).
-          // Falha graciosa: full sem story cai em modo verses overlay.
           let storyChapters: string[] | undefined;
           let storyTitle: string | undefined;
-          try {
-            const story = await generateAGStory({
-              label: entry.label,
-              temas: entry.temas,
-              trackNumber: actualAgTrack,
-            });
-            storyChapters = story.chapters;
-            storyTitle = story.title;
-          } catch (storyErr) {
-            const msg = storyErr instanceof Error ? storyErr.message : String(storyErr);
-            errors.push({
-              brand: "ancient-ground",
-              postId: `ag-w${week}-${day}`,
-              message: `Story Claude falhou (full sem conto): ${msg.slice(0, 200)}`,
-            });
+          let storyError: string | undefined;
+          if ("_error" in storyResult) {
+            storyError = storyResult._error;
+          } else {
+            storyChapters = storyResult.chapters;
+            storyTitle = storyResult.title;
           }
 
           // fullSchedule — AG fulls publicam em dias diferentes do clip.
@@ -262,7 +268,7 @@ export async function POST(req: NextRequest) {
             ALL_PLATFORMS.map((p) => [p, scheduleFor(year, week, fullDay, brand.hoursByPlatform[p])]),
           ) as WeeklyPost["schedule"];
 
-          posts.push({
+          const post: WeeklyPost = {
             id: `ag-${entry.temas.join("-")}-w${week}-${day}`,
             brandSlug: "ancient-ground",
             day,
@@ -285,15 +291,35 @@ export async function POST(req: NextRequest) {
             thumbnailUrl: null,
             jobId: null,
             status: "planned",
-          });
+          };
+          return { post, day, storyError };
         } catch (e) {
+          return {
+            post: null,
+            day,
+            error: e instanceof Error ? e.message : String(e),
+          };
+        }
+      }));
+
+      const posts: WeeklyPost[] = [];
+      for (const r of results) {
+        if (r.post) {
+          posts.push(r.post);
+          if ("storyError" in r && r.storyError) {
+            errors.push({
+              brand: "ancient-ground",
+              postId: r.post.id,
+              message: `Story Claude falhou (full sem conto): ${r.storyError.slice(0, 200)}`,
+            });
+          }
+        } else if ("error" in r && r.error) {
           errors.push({
             brand: "ancient-ground",
-            postId: `ag-w${week}-${day}`,
-            message: e instanceof Error ? e.message : String(e),
+            postId: `ag-w${week}-${r.day}`,
+            message: r.error,
           });
         }
-        slotIdx++;
       }
 
       const plan: WeeklyPlan = {
