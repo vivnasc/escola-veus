@@ -1,0 +1,2725 @@
+{
+  "espelho-ilusao": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar",
+        "reunir-se"
+      ]
+    },
+    "3": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar",
+        "acordar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "espelho-culpa": {
+    "1": {
+      "mood": [
+        "acordar",
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar",
+        "reunir-se"
+      ]
+    },
+    "3": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar",
+        "lembrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "livro-filosofico": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "respirar",
+        "acordar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "acordar",
+        "respirar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "9": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-travessia": {
+    "1": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar",
+        "lembrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "11": {
+      "mood": [
+        "atravessar"
+      ]
+    }
+  },
+  "incenso-humus": {
+    "1": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar",
+        "reunir-se"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "lembrar"
+      ]
+    }
+  },
+  "incenso-folego": {
+    "1": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "acordar",
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar",
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "atravessar",
+        "elevar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "aterrar",
+        "lembrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-demora": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "lembrar",
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "11": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-corpo-celeste": {
+    "1": {
+      "mood": [
+        "aterrar",
+        "respirar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "lembrar",
+        "reunir-se"
+      ]
+    },
+    "3": {
+      "mood": [
+        "lembrar",
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "reunir-se",
+        "aterrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar",
+        "reunir-se"
+      ]
+    },
+    "7": {
+      "mood": [
+        "lembrar",
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar",
+        "lembrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-correnteza": {
+    "1": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "lembrar",
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "7": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar",
+        "atravessar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-o-que-resta": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar",
+        "lembrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "11": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-limiar": {
+    "1": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "3": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "9": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "lembrar"
+      ]
+    }
+  },
+  "incenso-o-circulo": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "6": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar",
+        "reunir-se"
+      ]
+    },
+    "10": {
+      "mood": [
+        "atravessar"
+      ]
+    }
+  },
+  "incenso-o-gesto": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "9": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "11": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "fibra-sangue-aceso": {
+    "1": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar",
+        "elevar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-silencio-fertil": {
+    "1": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "6": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "grao-o-tear": {
+    "1": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "reunir-se",
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-diluvio-manso": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar",
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-ancora": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "aterrar",
+        "reunir-se"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "aterrar"
+      ]
+    }
+  },
+  "incenso-rescaldo": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-oferenda": {
+    "1": {
+      "mood": [
+        "lembrar",
+        "respirar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "incenso-raiz-muda": {
+    "1": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-ressonancia": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "5": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "sangue-raiz": {
+    "1": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "reunir-se",
+        "lembrar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "lembrar",
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar",
+        "lembrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "atravessar",
+        "lembrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "lembrar"
+      ]
+    }
+  },
+  "sangue-mae": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "reunir-se",
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar",
+        "lembrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar",
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar",
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-luto": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar",
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "atravessar"
+      ]
+    }
+  },
+  "incenso-espelho-partido": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "reunir-se",
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "6": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "nua-duas-vozes": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "7": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "aterrar"
+      ]
+    }
+  },
+  "eter-raiz-vermelha": {
+    "1": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "3": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "5": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "10": {
+      "mood": [
+        "lembrar"
+      ]
+    }
+  },
+  "nua-inteira": {
+    "1": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "7": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "nua-por-dentro": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar",
+        "acordar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "atravessar",
+        "elevar"
+      ]
+    }
+  },
+  "nua-boa": {
+    "1": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-nevoeiro": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "incenso-frequencia": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se",
+        "acordar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "acordar",
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar",
+        "respirar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "7": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "8": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "10": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "fibra-corpo-aberto": {
+    "1": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "respirar",
+        "aterrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "lembrar"
+      ]
+    }
+  },
+  "incenso-pes-descalcos": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "reunir-se",
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-maos-juntas": {
+    "1": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "incenso-acende": {
+    "1": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "aterrar",
+        "elevar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar",
+        "elevar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "atravessar",
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-coro": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "lembrar",
+        "reunir-se"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "5": {
+      "mood": [
+        "reunir-se",
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se",
+        "aterrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "lembrar",
+        "reunir-se"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "9": {
+      "mood": [
+        "lembrar",
+        "reunir-se"
+      ]
+    },
+    "10": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-milagre": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "acordar"
+      ]
+    }
+  },
+  "incenso-amen": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar",
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "respirar",
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-aleluia": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "lembrar",
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "lembrar",
+        "elevar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "lembrar",
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-de-pe": {
+    "1": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "elevar",
+        "respirar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-hoje-nao": {
+    "1": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-ar": {
+    "1": {
+      "mood": [
+        "respirar",
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar",
+        "aterrar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "respirar",
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "reunir-se",
+        "respirar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar",
+        "aterrar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "respirar",
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-mexe": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-volta-a-mim": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "3": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "4": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "5": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "9": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "10": {
+      "mood": [
+        "aterrar"
+      ]
+    }
+  },
+  "incenso-espelho-verde": {
+    "1": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "respirar"
+      ]
+    }
+  },
+  "incenso-pele-exposta": {
+    "1": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "2": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "9": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "reunir-se"
+      ]
+    }
+  },
+  "incenso-teimosa": {
+    "1": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "incenso-fogo-engolido": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar",
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "10": {
+      "mood": [
+        "elevar",
+        "lembrar"
+      ]
+    }
+  },
+  "incenso-salto-bonito": {
+    "1": {
+      "mood": [
+        "atravessar",
+        "elevar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "incenso-maos-abertas": {
+    "1": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "elevar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "6": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "lembrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  },
+  "incenso-norte-interno": {
+    "1": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "respirar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "acordar"
+      ]
+    },
+    "9": {
+      "mood": [
+        "aterrar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "aterrar",
+        "elevar"
+      ]
+    }
+  },
+  "incenso-cinzento": {
+    "1": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "2": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "3": {
+      "mood": [
+        "respirar",
+        "atravessar"
+      ]
+    },
+    "4": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "5": {
+      "mood": [
+        "atravessar"
+      ]
+    },
+    "6": {
+      "mood": [
+        "elevar",
+        "atravessar"
+      ]
+    },
+    "7": {
+      "mood": [
+        "aterrar",
+        "elevar"
+      ]
+    },
+    "8": {
+      "mood": [
+        "reunir-se"
+      ]
+    },
+    "9": {
+      "mood": [
+        "acordar",
+        "elevar"
+      ]
+    },
+    "10": {
+      "mood": [
+        "elevar"
+      ]
+    }
+  }
+}

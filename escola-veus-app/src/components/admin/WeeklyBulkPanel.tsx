@@ -38,12 +38,25 @@ type RenderJob = {
   attempts?: number;
 };
 
+type LoranneMood = "elevar" | "aterrar" | "acordar" | "lembrar" | "reunir-se" | "respirar" | "atravessar";
+
+const MOOD_COLORS: Record<LoranneMood, string> = {
+  elevar:     "bg-amber-600/30 text-amber-300 border-amber-700/40",
+  aterrar:    "bg-yellow-800/30 text-yellow-300 border-yellow-700/40",
+  acordar:    "bg-purple-600/30 text-purple-300 border-purple-700/40",
+  lembrar:    "bg-rose-700/30 text-rose-300 border-rose-700/40",
+  "reunir-se":"bg-escola-dourado/20 text-escola-dourado border-escola-dourado/40",
+  respirar:   "bg-sky-700/30 text-sky-300 border-sky-700/40",
+  atravessar: "bg-stone-700/30 text-stone-300 border-stone-700/40",
+};
+
 type WeeklyPost = {
   id: string;
   brandSlug: BrandSlug;
   day: string;
   trackTitle?: string; albumTitle?: string;
   label?: string; temas?: string[];
+  mood?: LoranneMood;
   verses: string[];
   captions: { instagram: string; tiktok: string; youtube: { title: string; description: string } };
   storyChapters?: string[];
@@ -523,7 +536,19 @@ function PostCard({
           </div>
           <PostStatusPill status={aggregateStatus} />
         </div>
+        {post.mood && (
+          <div className={`mt-1 inline-block rounded border px-1.5 py-0.5 text-[9px] uppercase tracking-wide ${MOOD_COLORS[post.mood]}`}>
+            ♡ {post.mood}
+          </div>
+        )}
         <RenderVersionBadge job={active} />
+        {/* AG full sem conto — Claude story falhou ou plan velho */}
+        {post.brandSlug === "ancient-ground" && activeMode === "full" && !hasStory && (
+          <div className="mt-1 rounded border border-red-700/40 bg-red-950/30 px-1.5 py-0.5 text-[9px] text-red-300">
+            ⚠ sem conto — Claude story falhou ou o plano é anterior à paralelização.
+            Re-gera plano em &quot;1. Gerar plano&quot; para tentar.
+          </div>
+        )}
         {active?.errorMessage && (
           <div className="mt-1 text-[10px] text-red-300">✗ {active.errorMessage}</div>
         )}

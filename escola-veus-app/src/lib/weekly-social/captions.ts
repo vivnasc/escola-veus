@@ -107,14 +107,17 @@ function extractBody(tiktokCaption: string | undefined): string {
 export function buildLoranneCaptions(
   suggestResult: LoranneSuggest,
   brand: BrandConfig,
-  meta: { trackTitle: string; albumTitle: string; theme: string | null; lang?: "PT" | "EN" },
+  meta: { trackTitle: string; albumTitle: string; theme: string | null; lang?: "PT" | "EN"; synopsis?: string },
 ): PlatformCaptions {
-  const { trackTitle, albumTitle, theme, lang } = meta;
+  const { trackTitle, albumTitle, theme, lang, synopsis } = meta;
   const v1 = capitalizeLines(suggestResult.verses?.[0] || "");
   const v2 = capitalizeLines(suggestResult.verses?.[1] || "");
   const verses = [v1, v2].filter(Boolean).join("\n");
   const header = loranneHeader(trackTitle, albumTitle);
-  const about = loranneAbout(albumTitle, lang);
+  // Synopsis específico (do Claude) > template genérico — explica esta faixa.
+  const about = synopsis && synopsis.trim()
+    ? `Sobre · ${capitalizeLines(synopsis.trim())}`
+    : loranneAbout(albumTitle, lang);
   const body = extractBody(suggestResult.tiktokCaption);
   const cta = brand.cta || "";
 
@@ -136,10 +139,11 @@ export function buildLoranneCaptions(
   const instagram = compose(igTags);
   const tiktok = compose(ttTags);
 
-  const ytTitle = suggestResult.youtubeTitle ||
+  const ytTitleRaw = suggestResult.youtubeTitle ||
     (realTitle(trackTitle)
       ? `"${realTitle(trackTitle)}" · ${albumTitle} · Loranne · Lyric Video`
       : `Loranne · ${albumTitle} · Lyric Video`);
+  const ytTitle = capitalizeLines(ytTitleRaw);
   const ytDescBase = capitalizeLines((suggestResult.youtubeDescription || "")
     .split("\n")
     .filter((l) => !l.startsWith("#"))
@@ -185,7 +189,7 @@ export function buildAGCaptions(
   const instagram = compose(igTags);
   const tiktok = compose(ttTags);
 
-  const ytTitle = suggestResult.youtubeTitle || `${label} · Ancient Ground`;
+  const ytTitle = capitalizeLines(suggestResult.youtubeTitle || `${label} · Ancient Ground`);
   const ytDescBase = capitalizeLines((suggestResult.youtubeDescription || "")
     .split("\n")
     .filter((l) => !l.startsWith("#"))

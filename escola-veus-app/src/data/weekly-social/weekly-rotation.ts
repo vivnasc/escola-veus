@@ -19,6 +19,30 @@ import { ALL_LYRICS } from "@/lib/loranne";
 import type { RaizTema } from "@/lib/ag-raizes-temas";
 import trackTitlesJson from "./loranne-track-titles.json";
 import trackMetaJson from "./loranne-track-meta.json";
+import moodTagsJson from "./loranne-mood-tags.json";
+import { LORANNE_MOODS, type LoranneMood } from "./loranne-moods";
+
+type MoodTagEntry = { mood: LoranneMood[] };
+const LORANNE_MOOD_TAGS: Record<string, Record<string, MoodTagEntry>> =
+  moodTagsJson as Record<string, Record<string, MoodTagEntry>>;
+
+/** Mood atribuído a cada dia da semana (consistência marketing — Mon sempre
+ *  Elevar, Sun sempre Atravessar). 7 dias × 7 moods = cobertura completa. */
+const DAY_MOOD_ORDER: readonly LoranneMood[] = Object.freeze([
+  "elevar",    // mon
+  "aterrar",   // tue
+  "acordar",   // wed
+  "lembrar",   // thu
+  "reunir-se", // fri
+  "respirar",  // sat
+  "atravessar",// sun
+]);
+
+/** Mood que uma faixa Loranne carrega (vindo de loranne-mood-tags.json).
+ *  Vazio se ainda não foi taggeada. */
+export function getTrackMoods(albumSlug: string, trackNumber: number): LoranneMood[] {
+  return LORANNE_MOOD_TAGS[albumSlug]?.[String(trackNumber)]?.mood || [];
+}
 
 /**
  * Mapa albumSlug → trackNumber (string) → título da faixa, extraído de
@@ -352,41 +376,66 @@ function deterministicShuffle<T>(arr: readonly T[], seed: number): T[] {
 }
 
 /**
- * Estratégia: por cada semana, baralha a lista de álbuns disponíveis
- * deterministicamente. Para cada dia, escolhe o álbum N do shuffle e a
- * faixa N rotativa dentro desse álbum. Garantia: 7 dias = 7 álbuns
- * distintos por semana. Ao longo de várias semanas todas as faixas
- * são visitadas.
+ * Estratégia: cada dia da semana tem mood fixo (DAY_MOOD_ORDER).
+ * Para cada dia, escolhe faixa Loranne (i) com esse mood no
+ * loranne-mood-tags.json e (ii) de álbum ainda não usado nesta semana.
+ * Fallback se mood esgota álbuns: ignora exclusão de álbum. Fallback se
+ * mood não tem faixas elegíveis: ignora mood.
+ *
+ * Garantia: 7 dias = 7 moods distintos por semana; tipicamente 7 álbuns
+ * distintos (vai a 5-6 em semanas em que algum mood é pequeno).
  */
-export function pickWeeklyLoranne(
-  weekNumber: number,
-  dayIndex: number,
-): LoranneRotationEntry {
+function buildWeekPicks(weekNumber: number): LoranneRotationEntry[] {
   if (LORANNE_ROTATION.length === 0) {
     throw new Error(
       "LORANNE_ROTATION está vazia — verifica filtros em weekly-rotation.ts.",
     );
   }
-  // Agrupa por álbum, ordena álbuns por melhor track score (estabilidade).
-  const byAlbum = new Map<string, LoranneRotationEntry[]>();
-  for (const e of LORANNE_ROTATION) {
-    if (!byAlbum.has(e.albumSlug)) byAlbum.set(e.albumSlug, []);
-    byAlbum.get(e.albumSlug)!.push(e);
+  const used = new Set<string>();
+  const picks: LoranneRotationEntry[] = [];
+  for (let d = 0; d < 7; d++) {
+    const targetMood = DAY_MOOD_ORDER[d];
+    // 1ª prioridade: mood match + álbum não usado.
+    let candidates = LORANNE_ROTATION.filter((e) => {
+      if (used.has(e.albumSlug)) return false;
+      return getTrackMoods(e.albumSlug, e.trackNumber).includes(targetMood);
+    });
+    // 2ª prioridade: mood match (álbum repetido).
+    if (candidates.length === 0) {
+      candidates = LORANNE_ROTATION.filter((e) =>
+        getTrackMoods(e.albumSlug, e.trackNumber).includes(targetMood),
+      );
+    }
+    // 3ª prioridade: qualquer faixa não usada (mood ignorado).
+    if (candidates.length === 0) {
+      candidates = LORANNE_ROTATION.filter((e) => !used.has(e.albumSlug));
+    }
+    // Último recurso: pool completo.
+    if (candidates.length === 0) candidates = [...LORANNE_ROTATION];
+
+    const shuffled = deterministicShuffle(candidates, weekNumber * 7 + d);
+    const pick = shuffled[0];
+    picks.push(pick);
+    used.add(pick.albumSlug);
   }
-  const albums = [...byAlbum.keys()].sort();
-
-  // Shuffle por semana. dayIndex mod albums.length para nunca rebentar
-  // (mesmo se houver mais dias que álbuns).
-  const shuffled = deterministicShuffle(albums, weekNumber);
-  const albumSlug = shuffled[dayIndex % shuffled.length];
-
-  // Dentro do álbum, rotaciona faixas globalmente por (weekNumber × 7 + dayIndex).
-  const tracks = byAlbum.get(albumSlug)!;
-  // Ordena por trackNumber para previsibilidade.
-  tracks.sort((a, b) => a.trackNumber - b.trackNumber);
-  const trackIdx = (weekNumber * 7 + dayIndex) % tracks.length;
-  return tracks[trackIdx];
+  return picks;
 }
+
+export function pickWeeklyLoranne(
+  weekNumber: number,
+  dayIndex: number,
+): LoranneRotationEntry {
+  const picks = buildWeekPicks(weekNumber);
+  return picks[dayIndex % picks.length];
+}
+
+/** Mood atribuído ao dayIndex (mon=0..sun=6). Usado em captions/UI. */
+export function getDayMood(dayIndex: number): LoranneMood {
+  return DAY_MOOD_ORDER[dayIndex % DAY_MOOD_ORDER.length];
+}
+
+// Suppress unused warning — LORANNE_MOODS reservado para validação futura.
+void LORANNE_MOODS;
 
 /**
  * AG: 3 slots/semana. Garante 3 labels distintos baralhando o pool por semana.
