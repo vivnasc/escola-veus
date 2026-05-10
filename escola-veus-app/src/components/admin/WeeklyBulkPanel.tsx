@@ -568,12 +568,27 @@ function PostCard({
         </div>
         {showCaptions && (
           <div className="mt-2 space-y-2 text-[10px]">
+            <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
+              <div className="mb-1 flex items-center justify-between">
+                <span className="text-[9px] font-semibold uppercase tracking-wide text-escola-dourado">
+                  YouTube · título
+                </span>
+                <button
+                  onClick={async () => {
+                    try { await navigator.clipboard.writeText(post.captions.youtube.title); } catch {}
+                  }}
+                  className="text-[9px] text-escola-creme-50 hover:text-escola-dourado"
+                >
+                  ⧉ copiar
+                </button>
+              </div>
+              <div className="text-[11px] text-escola-creme break-words">
+                {post.captions.youtube.title}
+              </div>
+            </div>
             <CaptionBlock label="Instagram" text={post.captions.instagram} />
             <CaptionBlock label="TikTok" text={post.captions.tiktok} />
-            <CaptionBlock
-              label="YouTube"
-              text={`${post.captions.youtube.title}\n\n${post.captions.youtube.description}`}
-            />
+            <CaptionBlock label="YouTube · descrição" text={post.captions.youtube.description} />
           </div>
         )}
         {showStory && hasStory && (
