@@ -64,6 +64,8 @@ export type WeeklyPost = {
   storyTitle?: string;
   /** Synopsis Claude (Loranne) — 1 linha que explica do que se trata. */
   synopsis?: string;
+  /** Mood do dia (Loranne) — atribuído por DAY_MOOD_ORDER. */
+  mood?: "elevar" | "aterrar" | "acordar" | "lembrar" | "reunir-se" | "respirar" | "atravessar";
   /** Schedule alternativo para mode=full (AG: Mon/Wed/Fri, vs clip Tue/Thu/Sat). */
   fullSchedule?: Record<Platform, ScheduleSlot>;
   musicUrl: string;

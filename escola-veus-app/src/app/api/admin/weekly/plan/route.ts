@@ -7,6 +7,7 @@ import {
   getTrackTitle,
   getAlbumTitle,
   getTrackLang,
+  getDayMood,
 } from "@/data/weekly-social/weekly-rotation";
 import { scheduleFor, currentYear } from "@/lib/weekly-social/schedule";
 import { buildLoranneCaptions, buildAGCaptions } from "@/lib/weekly-social/captions";
@@ -121,6 +122,7 @@ export async function POST(req: NextRequest) {
 
       const results = await Promise.all(dayEntries.map(async ({ day, entry }) => {
         const albumTitle = getAlbumTitle(entry.albumSlug);
+        const mood = getDayMood(DAY_ORDER.indexOf(day));
         try {
           const tracks = await listAlbumTracks(entry.albumSlug);
           if (tracks.length === 0) {
@@ -198,6 +200,7 @@ export async function POST(req: NextRequest) {
             chorusStanzaIdx,
             lang,
             synopsis,
+            mood,
             musicUrl,
             motionVariant,
             accent,
