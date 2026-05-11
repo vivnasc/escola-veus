@@ -58,6 +58,10 @@ jobs:
         run: |
           MANIFEST_URL="${{ secrets.SUPABASE_URL }}/storage/v1/object/public/course-assets/render-jobs/${{ inputs.jobId }}.json"
           curl -s "$MANIFEST_URL" -o /tmp/manifest.json
+          echo "--- manifest meta (top-level keys + theme) ---"
+          jq 'keys' /tmp/manifest.json || true
+          jq '.theme' /tmp/manifest.json || true
+          echo "----------------------------------------------"
           if jq -e '.content != null and (.content.dias | type == "array") and (.content.dias | length > 0)' /tmp/manifest.json >/dev/null 2>&1; then
             jq '.content' /tmp/manifest.json > content.json
             echo "✓ content.json substituído pelo do manifest (edições do utilizador)"
