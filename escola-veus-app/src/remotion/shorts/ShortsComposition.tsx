@@ -120,21 +120,32 @@ const SyncedLyricsLayer: React.FC<{
 
   // Modo SYNC com timings reais
   if (stanzaTimings && stanzaTimings.length > 0) {
-    // Encontra stanza activa (ou a próxima dentro de 0.4s para fade-in antecipado)
-    const active = stanzaTimings.find(
+    // 1ª prioridade: stanza activa na janela actual.
+    let active = stanzaTimings.find(
       (t) => currentSec >= t.startSec - 0.4 && currentSec <= t.endSec + 0.4,
     );
-    if (!active) return null;
-    const stanzaText = active.text;
-    if (!stanzaText) return null;
+    // 2ª prioridade: stanza mais recente cujo startSec <= currentSec.
+    //   Evita "ecrã vazio" entre stanzas — mostra a anterior até a próxima
+    //   começar (continuidade visual em vez de "estático" perceived).
+    if (!active) {
+      for (let i = stanzaTimings.length - 1; i >= 0; i--) {
+        if (stanzaTimings[i].startSec <= currentSec) {
+          active = stanzaTimings[i];
+          break;
+        }
+      }
+    }
+    // 3ª prioridade: primeira stanza (caso ainda nem a primeira começou).
+    if (!active) active = stanzaTimings[0];
+    if (!active || !active.text) return null;
 
     const startFrame = Math.round(active.startSec * fps);
     const endFrame = Math.round(active.endSec * fps);
     const inP = Math.min(1, Math.max(0, (frame - (startFrame - fadeFrames)) / fadeFrames));
     const outP = Math.min(1, Math.max(0, ((endFrame + fadeFrames) - frame) / fadeFrames));
-    const opacity = Math.max(0, Math.min(1, Math.min(inP, outP)));
+    const opacity = Math.max(0.3, Math.min(1, Math.min(inP, outP)));
 
-    return <StanzaText text={stanzaText} opacity={opacity} />;
+    return <StanzaText text={active.text} opacity={opacity} />;
   }
 
   // Fallback uniforme (sem Scribe)
