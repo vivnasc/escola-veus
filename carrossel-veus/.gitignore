@@ -2,5 +2,6 @@ node_modules/
 output/
 audios/
 musica.mp3
+theme.json
 *.log
 .DS_Store

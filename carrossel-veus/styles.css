@@ -1,13 +1,11 @@
 :root {
   --ink: #1a1614;
   --ivory: #ede4d3;
-  --parchment-dark: #c9bfa9;
+  --parchment-dark: #d8cfb8;
   --deep: #0a0907;
-  --deep-warm: #14100c;
+  --deep-warm: #1f1812;
   --terracotta: #b85c38;
-  --terracotta-dim: rgba(184, 92, 56, 0.6);
   --gold: #c9a961;
-  --gold-dim: rgba(201, 169, 97, 0.4);
   --mist: rgba(237, 228, 211, 0.65);
 }
 
@@ -38,16 +36,16 @@ html, body {
   background: radial-gradient(ellipse 80% 60% at center, transparent 40%, rgba(0,0,0,0.55) 100%);
 }
 .slide.light .vignette {
-  background: radial-gradient(ellipse 90% 70% at center, transparent 50%, rgba(60, 35, 15, 0.18) 100%);
+  background: radial-gradient(ellipse 90% 70% at center, transparent 50%, color-mix(in srgb, var(--ink) 18%, transparent) 100%);
 }
 
 .glow-gold {
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 60% 50% at 50% 35%, rgba(201, 169, 97, 0.10) 0%, transparent 70%);
+  background: radial-gradient(ellipse 60% 50% at 50% 35%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 70%);
 }
 .glow-terra {
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(184, 92, 56, 0.10) 0%, transparent 70%);
+  background: radial-gradient(ellipse 60% 50% at 50% 60%, color-mix(in srgb, var(--terracotta) 10%, transparent) 0%, transparent 70%);
 }
 
 /* ─── Base do slide ─────────────────────────────────────────────────── */
@@ -85,7 +83,7 @@ html, body {
 
 .slide.capa {
   background:
-    radial-gradient(ellipse 70% 50% at 50% 35%, #1f1812 0%, #0a0907 70%),
+    radial-gradient(ellipse 70% 50% at 50% 35%, var(--deep-warm) 0%, var(--deep) 70%),
     var(--deep);
   color: var(--ivory);
 }
@@ -107,7 +105,7 @@ html, body {
   font-weight: 300;
   font-size: 720px;
   line-height: 1;
-  color: rgba(201, 169, 97, 0.05);
+  color: color-mix(in srgb, var(--gold) 5%, transparent);
   letter-spacing: -0.05em;
   user-select: none;
   z-index: 1;
@@ -193,7 +191,7 @@ html, body {
 
 .slide.conteudo {
   background:
-    radial-gradient(ellipse 80% 70% at 50% 50%, #efe7d6 0%, #d8cfb8 100%),
+    radial-gradient(ellipse 80% 70% at 50% 50%, var(--ivory) 0%, var(--parchment-dark) 100%),
     var(--ivory);
   color: var(--ink);
 }
@@ -210,7 +208,7 @@ html, body {
   font-family: 'Inter', sans-serif;
   font-weight: 400; font-size: 18px;
   letter-spacing: 0.45em;
-  color: rgba(26, 22, 20, 0.4);
+  color: color-mix(in srgb, var(--ink) 40%, transparent);
   text-transform: uppercase;
 }
 .slide.conteudo .meta-top .num {
@@ -218,7 +216,7 @@ html, body {
   font-style: italic;
   font-size: 32px;
   letter-spacing: 0;
-  color: rgba(184, 92, 56, 0.55);
+  color: color-mix(in srgb, var(--terracotta) 55%, transparent);
   text-transform: none;
 }
 
@@ -297,14 +295,14 @@ html, body {
   font-weight: 300; font-size: 16px;
   letter-spacing: 0.6em;
   text-transform: uppercase;
-  color: rgba(26, 22, 20, 0.35);
+  color: color-mix(in srgb, var(--ink) 35%, transparent);
 }
 
 /* ─── CTA ──────────────────────────────────────────────────────────── */
 
 .slide.cta {
   background:
-    radial-gradient(ellipse 70% 60% at 50% 50%, #1c140e 0%, #08070a 80%),
+    radial-gradient(ellipse 70% 60% at 50% 50%, var(--deep-warm) 0%, var(--deep) 80%),
     var(--deep);
   color: var(--ivory);
 }

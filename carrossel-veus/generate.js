@@ -13,9 +13,44 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = __dirname;
 const TEMPLATE = path.join(ROOT, "template.html");
 const CONTENT = path.join(ROOT, "content.json");
+const THEME_FILE = path.join(ROOT, "theme.json");
 const OUTPUT = path.join(ROOT, "output");
 
 const VIEWPORT = { width: 1080, height: 1920, deviceScaleFactor: 2 };
+
+// Constrói um bloco <style> que sobrepõe as CSS vars do styles.css com as cores
+// do tema escolhido. Espera-se o shape do CarouselTheme (escola-veus-app):
+// { id, ink, ivory, parchmentDark, deep, deepWarm, terracotta, gold, mist }.
+function themeOverrideCss(theme) {
+  if (!theme || typeof theme !== "object") return "";
+  const map = {
+    "--ink": theme.ink,
+    "--ivory": theme.ivory,
+    "--parchment-dark": theme.parchmentDark,
+    "--deep": theme.deep,
+    "--deep-warm": theme.deepWarm,
+    "--terracotta": theme.terracotta,
+    "--gold": theme.gold,
+    "--mist": theme.mist,
+  };
+  const lines = Object.entries(map)
+    .filter(([, v]) => typeof v === "string" && v.length > 0)
+    .map(([k, v]) => `  ${k}: ${v};`);
+  if (lines.length === 0) return "";
+  return `:root {\n${lines.join("\n")}\n}\n`;
+}
+
+async function loadTheme() {
+  if (!existsSync(THEME_FILE)) return null;
+  try {
+    const raw = await readFile(THEME_FILE, "utf8");
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === "object" && typeof parsed.id === "string") return parsed;
+  } catch (err) {
+    console.warn(`! theme.json inválido: ${err.message}`);
+  }
+  return null;
+}
 
 async function ensureDir(dir) {
   if (!existsSync(dir)) await mkdir(dir, { recursive: true });
@@ -29,6 +64,10 @@ async function resetOutput() {
 async function main() {
   console.log("→ a ler content.json");
   const content = JSON.parse(await readFile(CONTENT, "utf8"));
+  const theme = await loadTheme();
+  const themeCss = themeOverrideCss(theme);
+  if (theme) console.log(`→ tema aplicado: ${theme.id}`);
+  else console.log("→ sem theme.json — paleta default (veus)");
   await resetOutput();
 
   console.log("→ a iniciar Puppeteer");
@@ -63,6 +102,9 @@ async function main() {
       }, data);
 
       await page.goto(templateUrl, { waitUntil: "networkidle0" });
+      // Override das CSS vars depois do styles.css carregar, para a paleta
+      // escolhida ganhar sobre os defaults declarados em styles.css.
+      if (themeCss) await page.addStyleTag({ content: themeCss });
       await page.evaluateHandle("document.fonts.ready");
       // pequena pausa para layout estabilizar (gradiente radial + emoji)
       await new Promise((r) => setTimeout(r, 200));
