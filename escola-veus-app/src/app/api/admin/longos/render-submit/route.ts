@@ -87,6 +87,8 @@ for (const p of SEED_PROMPTS) SEED_BY_ID.set(p.id, p);
 
 type ProjectPrompt = {
   id: string;
+  prompt?: string;
+  mood?: string[];
   clipUrl?: string;
   clipDurationSec?: number;
   imageUrl?: string;
