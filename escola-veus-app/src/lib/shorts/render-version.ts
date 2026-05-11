@@ -12,4 +12,4 @@
  * Ficheiro isolado (sem imports server-only) para poder ser importado
  * tanto no servidor (route handlers) como no cliente (PostCard).
  */
-export const RENDER_VERSION = "2026-05-11-align-stanzas-robust";
+export const RENDER_VERSION = "2026-05-11-expand-single-stanza-no-fake-rotation";

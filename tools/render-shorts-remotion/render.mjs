@@ -17,6 +17,7 @@
 
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { exec as execCb } from "node:child_process";
+import { cpus } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
@@ -234,7 +235,13 @@ function alignStanzas(stanzas, words, totalSec) {
     // parcialmente errada a contribuírem para o alinhamento global.
     if (stanzaStart < 0 || matched < Math.ceil(tokens.length * 0.25)) {
       result.push({ text: stanza, startSec: -1, endSec: -1, _failed: true });
-      cursor = Math.min(wordList.length - 1, Math.round(((i + 1) / stanzas.length) * wordList.length));
+      // Cursor APENAS pode avançar — nunca recuar. Sem max(), uma stanza
+      // falhada após uma stanza alinhada perto do fim do áudio fazia o
+      // cursor saltar para uma posição PROPORCIONAL ANTERIOR, permitindo
+      // que stanzas posteriores casassem em wordlist[j] com timestamps
+      // ANTES da stanza anterior → timings não-monotonicos no array.
+      const propCursor = Math.round(((i + 1) / stanzas.length) * wordList.length);
+      cursor = Math.min(wordList.length - 1, Math.max(cursor, propCursor));
       continue;
     }
     result.push({
@@ -395,21 +402,34 @@ async function ensureStanzaTimings(manifest) {
     console.log(`  → clip arranca em chorus: offset=${offset.toFixed(1)}s · ${adjustedTimings.length}/${stanzaTimings.length} stanzas mantidas`);
   }
 
-  // SAFETY NET: se após chorus-shift+filter ficou ≤1 stanza, o vídeo
-  // mostra uma frase fixa em 30s (estática). Nesse caso — e SÓ nesse —
-  // recorremos a uniformStanzas a partir do chorusStanzaIdx para garantir
-  // rotação visual. O caso normal: confiar nos timings reais do Scribe
-  // (cada frase aparece no instante em que é cantada — sync verdadeiro).
-  if (manifest.mode === "clip" && adjustedTimings.length <= 1) {
+  // SAFETY NET: se após chorus-shift+filter ficou ≤1 stanza, NÃO inventamos
+  // texto errado com uniform de stanzas pós-chorus (essas estrofes não estão
+  // a ser cantadas neste trecho de 30s — só audio do refrão + instrumental).
+  // EXPANDE a stanza única para preencher os 30s: vês o texto do refrão
+  // durante todo o clip, sincronizado ao início (entra com a voz, fica
+  // visível durante o instrumental). Sem mentiras, sem rotação errada.
+  if (manifest.mode === "clip" && adjustedTimings.length === 1) {
+    const only = adjustedTimings[0];
+    adjustedTimings = [{
+      text: only.text,
+      startSec: only.startSec,
+      endSec: durationSec,
+    }];
+    adjustedLyrics = [only.text];
+    console.log(`  → Clip 1-stanza: expandir refrão de ${only.startSec.toFixed(1)}s a ${durationSec}s (sem rotação inventada)`);
+  } else if (manifest.mode === "clip" && adjustedTimings.length === 0) {
+    // Zero stanzas dentro da janela — só aí cai em uniform como último
+    // recurso (Scribe falhou catastroficamente ou clip não cobre nenhum
+    // verso). Algo é melhor que ecrã em branco.
     const startIdx = typeof manifest.chorusStanzaIdx === "number" && manifest.chorusStanzaIdx >= 0
       ? manifest.chorusStanzaIdx : 0;
     const reordered = manifest.syncedLyrics.slice(startIdx);
     const fallbackLyrics = reordered.length >= 3 ? reordered : manifest.syncedLyrics;
     adjustedTimings = uniformStanzas(fallbackLyrics, durationSec);
     adjustedLyrics = fallbackLyrics;
-    console.log(`  ⚠ Clip com ≤1 stanza após shift — fallback uniform: ${adjustedLyrics.length} stanzas em ${durationSec}s`);
+    console.log(`  ⚠ Clip ZERO stanzas após shift — último recurso uniform: ${adjustedLyrics.length} stanzas`);
   } else if (manifest.mode === "clip") {
-    console.log(`  → Clip mantém Scribe sync: ${adjustedTimings.length} stanzas, primeiras=[${adjustedTimings.slice(0,3).map(t=>`${t.startSec.toFixed(1)}s`).join(", ")}]`);
+    console.log(`  → Clip Scribe sync: ${adjustedTimings.length} stanzas, primeiras=[${adjustedTimings.slice(0,3).map(t=>`${t.startSec.toFixed(1)}s`).join(", ")}]`);
   }
 
   return {
@@ -504,12 +524,19 @@ async function main() {
   await updateProgress("rendering", 30);
 
   const outputPath = path.join(WORK_DIR, `${JOB_ID}.mp4`);
+  // GH Actions ubuntu-latest tem 4 cores → concurrency=4 paraleliza
+  // rendering de frames. Sem este parametro Remotion default=1 e um full
+  // de 3.5min (6360 frames) demorava >100min, ultrapassando o timeout do
+  // workflow. Com 4 paralelo cabe em ~25min.
+  const renderConcurrency = Math.max(2, Math.min(4, cpus().length));
+  console.log(`→ renderMedia concurrency=${renderConcurrency}`);
   await renderMedia({
     composition,
     serveUrl: bundleLocation,
     codec: "h264",
     outputLocation: outputPath,
     inputProps: manifest,
+    concurrency: renderConcurrency,
     onProgress: ({ progress }) => {
       const pct = 30 + Math.round(progress * 60);
       console.log(`  ... ${pct}%`);
