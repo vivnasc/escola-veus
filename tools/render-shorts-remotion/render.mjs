@@ -548,9 +548,19 @@ async function main() {
 
   // 4. Upload
   const mp4Body = await readFile(outputPath);
-  const remotePath = `shorts/videos/${JOB_ID}.mp4`;
-  const videoUrl = await uploadFile(remotePath, mp4Body, "video/mp4");
-  console.log(`→ Upload OK: ${videoUrl}`);
+  // Path ESTÁVEL para o mp4: tira o timestamp final do JOB_ID. Cada re-render
+  // do MESMO post+mode escreve sobre o ficheiro existente em vez de criar um
+  // novo (poupa espaço em Supabase — user reportou acumulação).
+  // Manifest e result.json mantêm timestamp (são tiny, fáceis de limpar
+  // por TTL/cron mais tarde, e historial pode ser útil para debug).
+  const stableId = JOB_ID.replace(/-\d+$/, "");
+  const remotePath = `shorts/videos/${stableId}.mp4`;
+  const videoUrlBase = await uploadFile(remotePath, mp4Body, "video/mp4");
+  // Cache buster com o timestamp do JOB_ID — browser refaz fetch quando
+  // a URL muda mesmo que o path em Supabase fique igual.
+  const timestampSuffix = JOB_ID.match(/-(\d+)$/)?.[1] || Date.now().toString();
+  const videoUrl = `${videoUrlBase}?v=${timestampSuffix}`;
+  console.log(`→ Upload OK: ${remotePath} (stable, ?v=${timestampSuffix} cache-bust)`);
 
   // 5. Result final
   await writeResult({
