@@ -289,13 +289,8 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
         background: "#000",
       }}
     >
-      {/* 1. Background motion */}
-      {props.brand === "loranne" ? (
-        <Motion frame={frame} accent={accent} />
-      ) : (
-        // @ts-expect-error AG motion components don't take accent
-        <Motion frame={frame} />
-      )}
+      {/* 1. Background motion — ambas as marcas aceitam accent agora. */}
+      <Motion frame={frame} accent={accent} />
 
       {/* 2. Texto — story chapters (AG full), lyrics sync (Loranne) ou 2 versos */}
       {hasStory ? (

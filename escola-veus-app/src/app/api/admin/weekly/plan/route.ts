@@ -21,6 +21,27 @@ import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx,
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
 import { generateLoranneSynopsis } from "@/lib/shorts/loranne-synopsis-generator";
 import { ALL_LYRICS } from "@/lib/loranne";
+import { MOOD_META } from "@/data/weekly-social/loranne-moods";
+
+/** Cor accent AG por tema raiz primário — paleta quente africana, distinta
+ *  por tema para não repetir capa visual entre 3 posts da semana. */
+const AG_TEMA_ACCENTS: Record<string, string> = {
+  machamba: "#B8860B",
+  pesca: "#E07050",
+  artesanato: "#B7410E",
+  batuque: "#C04030",
+  danca: "#FF8C00",
+  crianca: "#FFB347",
+  mercado: "#D2691E",
+  anciao: "#8B4513",
+  casa: "#CD853F",
+  transmissao: "#FFBF00",
+  "trabalho-coletivo": "#B87333",
+  rito: "#722F37",
+  aldeia: "#E0A458",
+  "gente-paisagem": "#DEB887",
+  retrato: "#C68642",
+};
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60; // Hobby plan limit. Scribe acontece no GHA worker.
@@ -190,8 +211,12 @@ export async function POST(req: NextRequest) {
           const captions = buildLoranneCaptions(suggest, brand, {
             trackTitle, albumTitle, theme: null, lang, synopsis,
           });
-          const motionVariant = pickMotionVariant(`loranne/${entry.albumSlug}/${actualTrackNumber}`);
-          const accent = pickLoranneAccent(entry.albumSlug);
+          // Variante rotativa por (week, dia) garante variantes adjacentes
+          // diferentes e cobertura completa em 4 semanas.
+          const motionVariant = MOTION_VARIANTS[(week + DAY_ORDER.indexOf(day)) % 4];
+          // Accent vem do MOOD do dia (7 cores distintas/semana) em vez do
+          // álbum — assim cada um dos 7 posts tem accent visualmente único.
+          const accent = MOOD_META[mood]?.color || pickLoranneAccent(entry.albumSlug);
           const trackLabel = `"${trackTitle}" · ${albumTitle}`;
 
           const stanzas = getLoranneStanzas(entry.albumSlug, actualTrackNumber);
@@ -321,7 +346,12 @@ export async function POST(req: NextRequest) {
           const captions = buildAGCaptions(suggest, brand, {
             label: entry.label, trackNumber: actualAgTrack, temas: entry.temas,
           });
-          const motionVariant = pickMotionVariant(`ag/${entry.temas.join("-")}/${actualAgTrack}`);
+          // Garante 3 motion variants distintos por semana — pickMotionVariant
+          // por hash colidia frequentemente (3 dias × 4 variantes).
+          const motionVariant = MOTION_VARIANTS[(week + slotIdx) % 4];
+          // Accent por tema raiz primário — 15 cores possíveis, garante 3
+          // distintas por semana (3 temas diferentes nos 3 posts).
+          const agAccent = AG_TEMA_ACCENTS[entry.temas[0]] || "#FFD27F";
           const trackLabel = `Ancient Ground · ${entry.label}`;
 
           let storyChapters: string[] | undefined;
@@ -356,6 +386,7 @@ export async function POST(req: NextRequest) {
             renderJobs: {},
             musicUrl,
             motionVariant,
+            accent: agAccent,
             trackLabel,
             captions,
             schedule: Object.fromEntries(
