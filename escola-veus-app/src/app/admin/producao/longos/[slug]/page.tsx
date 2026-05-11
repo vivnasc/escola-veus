@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 
@@ -37,6 +37,7 @@ type LongoProject = {
   durationSec?: number; // real, vem do MP3 gerado
   subtitlesUrl?: string; // SRT em Supabase, gerada via /generate-srt
   videoUrl?: string;
+  videoDurationSec?: number;
   thumbnailUrl?: string;
   seo?: {
     postTitle?: string;
@@ -502,6 +503,11 @@ export default function LongoDetailPage() {
   type Track = { name: string; url: string };
   const [tracks, setTracks] = useState<Track[]>([]);
   const [selectedMusic, setSelectedMusic] = useState<string[]>([]);
+  // Thumbnail editor state (frame picker + texto editável, pattern do funil)
+  const thumbVideoRef = useRef<HTMLVideoElement | null>(null);
+  const [thumbFrameT, setThumbFrameT] = useState(10); // default 10s (1º clip)
+  const [thumbTextDraft, setThumbTextDraft] = useState("");
+  const [thumbGenerating, setThumbGenerating] = useState(false);
   const [timelinePreview, setTimelinePreview] = useState<{
     totalSegments: number;
     totalClipsAvailable: number;
@@ -793,6 +799,7 @@ export default function LongoDetailPage() {
       setNarrationInput(p.narrationUrl ?? "");
       setTituloDraft(p.titulo ?? "");
       setThumbDraft(p.thumbnailText ?? "");
+      setThumbTextDraft(p.thumbnailText ?? "");
       setScriptDraft(p.script ?? "");
       setPromptsDraft(p.prompts ?? []);
       setScriptDirty(false);
@@ -3025,44 +3032,126 @@ export default function LongoDetailPage() {
               )}
             </div>
 
-            {/* Thumbnail */}
+            {/* Thumbnail — pattern do funil: frame picker + texto editável */}
             <div className="rounded border border-escola-border bg-escola-card p-3">
-              <div className="mb-2 flex items-center justify-between">
-                <p className="text-[11px] font-semibold text-escola-creme">
-                  Thumbnail
+              <p className="mb-2 text-[11px] font-semibold text-escola-creme">
+                Thumbnail
+              </p>
+
+              {/* Video preview para escolher o frame */}
+              <div className="mb-2">
+                <video
+                  ref={thumbVideoRef}
+                  src={project.videoUrl}
+                  className="w-full max-w-2xl rounded border border-escola-border"
+                  muted
+                  playsInline
+                  preload="metadata"
+                />
+                <div className="mt-1 flex items-center gap-2 text-[10px]">
+                  <span className="whitespace-nowrap text-escola-creme-50">
+                    Frame: <b className="text-escola-creme">{thumbFrameT.toFixed(1)}s</b>
+                  </span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={Math.max(60, project.videoDurationSec ?? 1000)}
+                    step={0.1}
+                    value={thumbFrameT}
+                    onChange={(e) => {
+                      const v = parseFloat(e.target.value);
+                      setThumbFrameT(v);
+                      if (thumbVideoRef.current) thumbVideoRef.current.currentTime = v;
+                    }}
+                    className="flex-1"
+                  />
+                  <button
+                    onClick={() => {
+                      const cur = thumbVideoRef.current?.currentTime;
+                      if (typeof cur === "number") setThumbFrameT(+cur.toFixed(1));
+                    }}
+                    className="whitespace-nowrap rounded border border-escola-dourado bg-escola-dourado/10 px-2 py-1 text-escola-dourado hover:bg-escola-dourado/20"
+                    title="Usa o tempo actual do leitor"
+                  >
+                    📍 daqui
+                  </button>
+                </div>
+                <p className="mt-1 text-[10px] text-escola-creme-50">
+                  💡 Reproduz o vídeo, pausa no momento que quiseres e clica &quot;📍 daqui&quot;. Ou arrasta o slider.
                 </p>
-                <button
-                  onClick={async () => {
-                    if (!project) return;
-                    setInfo("🖼 a gerar thumbnail (frame@10s + brand + título)...");
-                    try {
-                      const r = await fetch(
-                        "/api/admin/longos/generate-thumbnail",
-                        {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ slug: project.slug }),
-                        },
-                      );
-                      const d = await r.json();
-                      if (!r.ok || d.erro)
-                        throw new Error(d.erro || `HTTP ${r.status}`);
-                      setInfo("✓ thumbnail gerado");
-                      setTimeout(() => setInfo(null), 3000);
-                      await load();
-                    } catch (e) {
-                      setInfo(
-                        `Erro: ${e instanceof Error ? e.message : String(e)}`,
-                      );
-                    }
-                  }}
-                  className="rounded bg-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-bg"
-                >
-                  {project.thumbnailUrl ? "↻ regerar" : "🖼 gerar thumbnail"}
-                </button>
               </div>
-              {project.thumbnailUrl ? (
-                <div className="space-y-2">
+
+              {/* Texto editável */}
+              <div className="mb-2">
+                <label className="mb-1 block text-[10px] uppercase tracking-wider text-escola-creme-50">
+                  Texto da thumbnail (editável)
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={thumbTextDraft}
+                    onChange={(e) => setThumbTextDraft(e.target.value)}
+                    placeholder={project.thumbnailText ?? project.titulo}
+                    maxLength={60}
+                    className="flex-1 rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-xs text-escola-creme"
+                  />
+                  {thumbTextDraft !== (project.thumbnailText ?? "") && (
+                    <button
+                      onClick={() => setThumbTextDraft(project.thumbnailText ?? "")}
+                      className="rounded border border-escola-border px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                      title="Voltar ao thumbnailText do projecto"
+                    >
+                      ↺ default
+                    </button>
+                  )}
+                </div>
+                <p className="mt-1 text-[10px] text-escola-creme-50">
+                  {thumbTextDraft.length}/60 chars · UPPERCASE automático · wrap 18 chars/linha.
+                </p>
+              </div>
+
+              <button
+                onClick={async () => {
+                  if (!project) return;
+                  setThumbGenerating(true);
+                  setInfo(`🖼 a gerar thumbnail (frame@${thumbFrameT.toFixed(1)}s)...`);
+                  try {
+                    const r = await fetch(
+                      "/api/admin/longos/generate-thumbnail",
+                      {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          slug: project.slug,
+                          frameTimeSec: thumbFrameT,
+                          titulo: thumbTextDraft.trim() || undefined,
+                        }),
+                      },
+                    );
+                    const d = await r.json();
+                    if (!r.ok || d.erro)
+                      throw new Error(d.erro || `HTTP ${r.status}`);
+                    setInfo("✓ thumbnail gerado");
+                    setTimeout(() => setInfo(null), 3000);
+                    await load();
+                  } catch (e) {
+                    setInfo(`Erro: ${e instanceof Error ? e.message : String(e)}`);
+                  } finally {
+                    setThumbGenerating(false);
+                  }
+                }}
+                disabled={thumbGenerating}
+                className="rounded bg-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-bg disabled:opacity-40"
+              >
+                {thumbGenerating
+                  ? "a gerar..."
+                  : project.thumbnailUrl
+                    ? "↻ regerar thumbnail"
+                    : "🖼 gerar thumbnail"}
+              </button>
+
+              {project.thumbnailUrl && (
+                <div className="mt-3 space-y-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={project.thumbnailUrl}
@@ -3076,23 +3165,7 @@ export default function LongoDetailPage() {
                   >
                     ⬇ download PNG · 1280×720
                   </a>
-                  <p className="text-[10px] text-escola-creme-50">
-                    Compose: frame@10s do vídeo (dentro do 1º clip) + brand
-                    "A ESCOLA DOS VÉUS" dourado em cima + título "
-                    {project.thumbnailText || project.titulo}" em DejaVu Serif
-                    Bold cream com borda preta. Curves darker para contraste.
-                  </p>
                 </div>
-              ) : (
-                <p className="text-[10px] text-escola-creme-50">
-                  Clica para gerar — extrai frame@10s do vídeo final + brand
-                  "A ESCOLA DOS VÉUS" + título "
-                  <code className="rounded bg-escola-bg px-1 text-escola-dourado">
-                    {project.thumbnailText || project.titulo}
-                  </code>
-                  ". Resolução YouTube 1280×720, ~3s processamento. Pattern
-                  copiado do funil.
-                </p>
               )}
             </div>
           </div>
