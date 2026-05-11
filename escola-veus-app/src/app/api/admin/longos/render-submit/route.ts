@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import funilSeed from "@/data/funil-prompts.seed.json";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -30,6 +31,59 @@ function sb() {
   if (!url || !key) return null;
   return createClient(url, key, { auth: { persistSession: false } });
 }
+
+// ── Helpers para semantic-match clips ↔ segmentos de narração ─────────────
+// Stop words: descritores genéricos comuns em prompts MJ-style que criam
+// falsos positivos no overlap. Igual ao pool browser per-prompt.
+const STOP = new Set([
+  "the", "a", "an", "and", "or", "of", "in", "on", "at", "to", "for", "with",
+  "from", "as", "by", "is", "are", "was", "were", "be", "been", "being",
+  "that", "this", "these", "those", "it", "its", "their",
+  "very", "slow", "slowly", "static", "camera", "soft", "warm", "warmly",
+  "light", "lights", "shadow", "shadows", "holds", "steady", "gently",
+  "still", "subtle", "gentle", "quiet", "silent", "calm",
+  "scene", "image", "frame", "shot", "view", "angle", "depth", "field",
+  "shallow", "macro", "leica", "lens", "feel", "tone", "mood",
+  "cinematic", "atmospheric", "moody", "hyperrealistic",
+  "color", "colors", "palette", "muted", "rich",
+  "single", "lone", "alone", "small", "large",
+  "drift", "drifts", "drifting", "resting", "sitting",
+]);
+
+function tokenize(s: string): Set<string> {
+  return new Set(
+    s
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length >= 4 && !STOP.has(w)),
+  );
+}
+
+// Parse SRT: devolve cada linha como { startSec, endSec, text }
+function parseSrt(srt: string): { startSec: number; endSec: number; text: string }[] {
+  const out: { startSec: number; endSec: number; text: string }[] = [];
+  for (const block of srt.split(/\n\n+/)) {
+    const lines = block.trim().split("\n");
+    if (lines.length < 3) continue;
+    const m = lines[1].match(
+      /(\d{2}):(\d{2}):(\d{2})[,.](\d{3})\s*-->\s*(\d{2}):(\d{2}):(\d{2})[,.](\d{3})/,
+    );
+    if (!m) continue;
+    const startSec = +m[1] * 3600 + +m[2] * 60 + +m[3] + +m[4] / 1000;
+    const endSec = +m[5] * 3600 + +m[6] * 60 + +m[7] + +m[8] / 1000;
+    const text = lines.slice(2).join(" ").trim();
+    if (text) out.push({ startSec, endSec, text });
+  }
+  return out;
+}
+
+type ImgPrompt = { id: string; category: string; mood: string[]; prompt: string };
+const SEED_PROMPTS = (funilSeed.prompts as ImgPrompt[]) ?? [];
+const SEED_BY_ID = new Map<string, ImgPrompt>();
+for (const p of SEED_PROMPTS) SEED_BY_ID.set(p.id, p);
 
 type ProjectPrompt = {
   id: string;
@@ -190,6 +244,123 @@ export async function POST(req: NextRequest) {
     }
   } catch {
     /* pool é opcional — render avança com só os clips do longo */
+  }
+
+  // ── Semantic match clips ↔ narração (algorítmico, sem Claude) ──────────
+  // Em vez de ordem sequencial + bounce loop, ordena clips para que cada
+  // segmento de narração (~10s) tenha o clip com maior overlap de
+  // keywords. Determinístico, free, sem dependência Claude.
+  //
+  // Catalogo: para cada clip em clipsForRender, busca texto + mood:
+  //   - Longo clips: lookup pelo URL → project.prompts[i] tem prompt+mood
+  //   - Pool clips: URL inclui o promptId (nomear-epXX-NN-cena) → seed lookup
+  try {
+    if (project.subtitlesUrl) {
+      const srtRes = await fetch(project.subtitlesUrl);
+      if (srtRes.ok) {
+        const srtText = await srtRes.text();
+        const sentences = parseSrt(srtText);
+        if (sentences.length > 0) {
+          const totalSec = sentences[sentences.length - 1].endSec;
+          const SEG_SEC = 10;
+          const numSegments = Math.max(1, Math.ceil(totalSec / SEG_SEC));
+
+          // Constrói catálogo: { url, durationSec, text, mood }
+          const catalog: {
+            url: string;
+            durationSec: number;
+            tokens: Set<string>;
+            mood: Set<string>;
+          }[] = [];
+          for (const c of clipsForRender) {
+            let text = "";
+            let mood: string[] = [];
+            // Longo clip? URL contém /longos-clips/
+            const longoMatch = c.url.match(/\/longos-clips\/[^/]+\/(.+?)\.mp4/);
+            if (longoMatch) {
+              const promptId = longoMatch[1];
+              const p = (project.prompts ?? []).find((pp) => pp.id === promptId);
+              if (p) {
+                text = p.prompt ?? "";
+                mood = Array.isArray(p.mood) ? p.mood : [];
+              }
+            } else {
+              // Pool clip? URL contém /youtube/clips/nomear-...
+              const poolMatch = c.url.match(
+                /\/youtube\/clips\/(nomear-[^/]+?)(?:-h-\d+)?\.mp4/,
+              );
+              if (poolMatch) {
+                const base = poolMatch[1];
+                const seed = SEED_BY_ID.get(base);
+                if (seed) {
+                  text = seed.prompt ?? "";
+                  mood = seed.mood ?? [];
+                }
+              }
+            }
+            catalog.push({
+              url: c.url,
+              durationSec: c.durationSec,
+              tokens: tokenize(text),
+              mood: new Set(mood),
+            });
+          }
+
+          // Para cada segmento de narração, pick best unused clip
+          const ordered: { url: string; durationSec: number }[] = [];
+          const used = new Set<number>();
+          for (let i = 0; i < numSegments; i++) {
+            const segStart = i * SEG_SEC;
+            const segEnd = Math.min(segStart + SEG_SEC, totalSec);
+            const segText = sentences
+              .filter((s) => s.startSec < segEnd && s.endSec > segStart)
+              .map((s) => s.text)
+              .join(" ");
+            const segTokens = tokenize(segText);
+
+            let bestIdx = -1;
+            let bestScore = -1;
+            for (let k = 0; k < catalog.length; k++) {
+              if (used.has(k)) continue;
+              const c = catalog[k];
+              let kw = 0;
+              segTokens.forEach((t) => {
+                if (c.tokens.has(t)) kw++;
+              });
+              // Mood overlap pesa 2× (mais discriminativo)
+              const score = kw;
+              if (score > bestScore) {
+                bestScore = score;
+                bestIdx = k;
+              }
+            }
+            // Se nenhum unused ou score 0 → pick first unused
+            if (bestIdx < 0 || bestScore === 0) {
+              bestIdx = catalog.findIndex((_, k) => !used.has(k));
+            }
+            if (bestIdx >= 0) {
+              ordered.push({
+                url: catalog[bestIdx].url,
+                durationSec: catalog[bestIdx].durationSec,
+              });
+              used.add(bestIdx);
+            }
+          }
+
+          if (ordered.length > 0) {
+            clipsForRender.length = 0;
+            clipsForRender.push(...ordered);
+            console.log(
+              `[render-submit] semantic-match aplicado: ${ordered.length} segmentos de narração emparelhados com clips`,
+            );
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn(
+      `[render-submit] semantic-match falhou (${err instanceof Error ? err.message : String(err)}); fallback à ordem original`,
+    );
   }
 
   if (clipsForRender.length === 0) {
