@@ -53,7 +53,7 @@ jobs:
         working-directory: carrossel-veus
         run: npm ci
 
-      - name: Override content.json from manifest (if user edited texts)
+      - name: Override content.json + theme.json from manifest
         working-directory: carrossel-veus
         run: |
           MANIFEST_URL="${{ secrets.SUPABASE_URL }}/storage/v1/object/public/course-assets/render-jobs/${{ inputs.jobId }}.json"
@@ -64,6 +64,13 @@ jobs:
             jq '.dias | length' content.json
           else
             echo "→ manifest sem content; mantém content.json do repo"
+          fi
+          if jq -e '.theme != null and (.theme.id | type == "string")' /tmp/manifest.json >/dev/null 2>&1; then
+            jq '.theme' /tmp/manifest.json > theme.json
+            echo "✓ theme.json escrito (paleta $(jq -r '.id' theme.json))"
+          else
+            rm -f theme.json
+            echo "→ manifest sem theme; paleta default (veus)"
           fi
 
       - name: Generate slides (PNG via Puppeteer)

@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
     slideDuration?: number;
     dias?: number[] | null; // se presente: só estes dias (ex: [3]); senão: todos
     content?: { campanha: string; dias: unknown[] }; // override do content.json
+    theme?: Record<string, unknown>; // paleta escolhida (CarouselTheme) — injectada como CSS vars no Puppeteer
   };
 
   const jobId = (body.jobId || "").trim();
@@ -74,6 +75,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Validação leve do theme — só aceitamos se tiver as chaves de cor esperadas.
+  const themeKeys = ["id", "ink", "ivory", "parchmentDark", "deep", "deepWarm", "terracotta", "gold", "mist"] as const;
+  const themePayload =
+    body.theme && typeof body.theme === "object" && themeKeys.every((k) => typeof body.theme![k] === "string")
+      ? body.theme
+      : null;
+
   // Manifest: lido pelo workflow para saber quais áudios descarregar
   const manifest = {
     jobId,
@@ -84,6 +92,7 @@ export async function POST(req: NextRequest) {
     slideDuration,
     dias: diasFiltrados, // null = todos
     content: body.content && Array.isArray(body.content.dias) ? body.content : null,
+    theme: themePayload,
     createdAt: new Date().toISOString(),
   };
   const manifestPath = `render-jobs/${jobId}.json`;

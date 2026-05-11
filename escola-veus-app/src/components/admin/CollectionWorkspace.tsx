@@ -347,6 +347,7 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
           slideDuration,
           dias: targetDiasNumbers ?? null,
           content: sendContent ? { campanha, dias } : undefined,
+          theme,
         }),
       });
       const data = await r.json();
