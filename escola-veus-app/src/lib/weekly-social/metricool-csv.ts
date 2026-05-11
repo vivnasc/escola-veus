@@ -1,6 +1,6 @@
 /**
  * Metricool CSV builder — header confirmado pela utilizadora (Maio 2026,
- * Planning > Calendar > Import CSV). 87 colunas, 1 linha por
+ * Planning > Calendar > Import CSV). 93 colunas, 1 linha por
  * (post × plataforma) para permitir caption + hora distintas por canal.
  */
 
@@ -89,7 +89,8 @@ export function buildRow(post: CsvPost, kind: CsvLineKind): string {
     ? post.fullSchedule[platform]
     : post.schedule[platform];
   col("Date", slot.date);
-  col("Time", slot.time);
+  // Metricool exige formato HH:MM:SS — sufixamos ":00" se vier só HH:MM.
+  col("Time", /^\d{2}:\d{2}$/.test(slot.time) ? `${slot.time}:00` : slot.time);
   col("Draft", "FALSE");
 
   col("Instagram", platform === "instagram" && !isYoutubeCanal ? "TRUE" : "FALSE");

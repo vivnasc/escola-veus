@@ -1,13 +1,12 @@
 /**
  * Gerador de contos contemplativos para AG fulls.
  *
- * Claude Sonnet 4.6 escreve história inédita ~500-800 palavras dividida
- * em 12-15 capítulos curtos (1-3 frases cada) que vão passar como texto
- * sobre música instrumental durante 3-5 min.
+ * Claude Sonnet 4.6 escreve história inédita ~300-450 palavras dividida
+ * em ~22-28 capítulos muito curtos (1 frase, 6-12 palavras) que passam
+ * como texto sobre música instrumental durante 3-5 min.
  *
- * Tema influenciado pelos raízes-temas do post (machamba, anciao, etc.)
- * + label do triplete. Tom: alguém a contar uma noite junto ao fogo.
- * Sem morais explícitas. Sem "lições".
+ * Cada capítulo é dimensionado para ser lido em 6-8s — pacing rápido
+ * mantém retenção. Sem espaços de "ecrã vazio".
  */
 
 import Anthropic from "@anthropic-ai/sdk";
@@ -36,13 +35,21 @@ Música enraizada em Moçambique: capulanas, baobás, oceano Índico, savana, ma
 
 # O que escrever
 
-Conto inédito de **200-280 palavras**, dividido em **exactamente 10 capítulos**.
+Conto inédito de **300-450 palavras**, dividido em **22 a 28 capítulos muito curtos**.
 
-- Capítulos 1-9: cada um é UMA frase curta (10-20 palavras) ou no máximo duas frases curtas. Cada frase é uma imagem concreta — alguém a fazer alguma coisa, num sítio que se vê.
-- Capítulo 10 (fecho): 1-2 frases que **selam a aprendizagem da história** de forma concreta. Não é moral abstracta, é uma observação que arruma o que foi mostrado.
+- Cada capítulo (1 até N-1): **UMA frase única, 6-12 palavras**. Uma imagem concreta por frase — um gesto, um objecto, um som, uma luz. Cada frase deve poder ler-se em voz alta em ~6 segundos.
+- Capítulo final (N): 1 frase de 8-14 palavras que **sela a aprendizagem da história** de forma concreta. Não é moral abstracta, é uma observação que arruma o que foi mostrado.
 
-Exemplo de fecho concreto: "Há coisas que não se ensinam por palavras. Passam pelos gestos. As mãos aprendem antes da cabeça."
-Não escrevas fecho moralizante tipo "e assim aprendeu que…" ou "a lição é que…".
+A história tem ARCO completo: abertura (1-3), desenvolvimento (4-N-3), viragem (N-2), fecho (N). Mas cada frase é mínima — corta tudo o que não é gesto ou imagem.
+
+Exemplo de pacing:
+1. "Era ainda escuro quando a avó acendeu o fogo."
+2. "A panela esperava na pedra fria."
+3. "Os galos calaram-se quando ela cantou baixinho."
+4. "Pôs a água, mexeu o sal, esperou."
+...
+
+Exemplo de fecho concreto: "Há coisas que não se ensinam por palavras. Passam pelas mãos." Não escrevas fecho moralizante tipo "e assim aprendeu que…" ou "a lição é que…".
 
 # Tom
 
@@ -79,11 +86,11 @@ O conto deve ressoar com estes temas — directamente (cenas com avó, machamba,
 
 Devolve JSON com:
 - title: título curto (3-6 palavras)
-- chapters: array com EXACTAMENTE 10 strings.
-    - 1-9: cada uma 1 frase curta (10-20 palavras) ou no máximo 2 frases curtas
-    - 10: fecho-lição que sela a história em 1-2 frases concretas
+- chapters: array com **22 a 28 strings**.
+    - Cada string: 1 frase única, 6-12 palavras (lê-se em ~6s)
+    - Última: 1 frase de 8-14 palavras que sela a história
 
-O 1º capítulo abre a cena. Os intermédios deixam o gesto crescer. O 10º arruma.
+Pacing rápido = retenção. Frases minimais. Cada capítulo é um plano de cinema curto. Não acumules duas imagens numa frase — separa em dois capítulos.
 
 Output JSON puro, sem markdown.`;
 }
@@ -132,8 +139,8 @@ export async function generateAGStory(input: AGStoryInput): Promise<AGStory> {
     ? parsed.chapters.filter((c): c is string => typeof c === "string" && c.trim().length > 0)
     : [];
 
-  if (chapters.length < 8 || chapters.length > 12) {
-    throw new Error(`Story com nº de chapters errado (${chapters.length}; esperado 10±2).`);
+  if (chapters.length < 20 || chapters.length > 30) {
+    throw new Error(`Story com nº de chapters errado (${chapters.length}; esperado 22-28).`);
   }
   return { title, chapters };
 }

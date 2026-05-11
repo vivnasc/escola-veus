@@ -112,7 +112,11 @@ const SyncedLyricsLayer: React.FC<{
   frame: number;
   fps: number;
   totalFrames: number;
-}> = ({ stanzas, stanzaTimings, frame, fps, totalFrames }) => {
+  /** Cap por estanza no modo uniform (sem timings). Útil para AG story
+   *  onde queremos pacing rápido (~7s/capítulo) independente da duração
+   *  do áudio. Última stanza fica visível até ao fim. */
+  maxSecPerStanza?: number;
+}> = ({ stanzas, stanzaTimings, frame, fps, totalFrames, maxSecPerStanza }) => {
   if (stanzas.length === 0) return null;
 
   const fadeFrames = Math.round(fps * 0.4);
@@ -120,36 +124,60 @@ const SyncedLyricsLayer: React.FC<{
 
   // Modo SYNC com timings reais
   if (stanzaTimings && stanzaTimings.length > 0) {
-    // Encontra stanza activa (ou a próxima dentro de 0.4s para fade-in antecipado)
-    const active = stanzaTimings.find(
+    // 1ª prioridade: stanza activa na janela actual.
+    let active = stanzaTimings.find(
       (t) => currentSec >= t.startSec - 0.4 && currentSec <= t.endSec + 0.4,
     );
-    if (!active) return null;
-    const stanzaText = active.text;
-    if (!stanzaText) return null;
+    // 2ª prioridade: stanza mais recente cujo startSec <= currentSec.
+    //   Evita "ecrã vazio" entre stanzas — mostra a anterior até a próxima
+    //   começar (continuidade visual em vez de "estático" perceived).
+    if (!active) {
+      for (let i = stanzaTimings.length - 1; i >= 0; i--) {
+        if (stanzaTimings[i].startSec <= currentSec) {
+          active = stanzaTimings[i];
+          break;
+        }
+      }
+    }
+    // 3ª prioridade: primeira stanza (caso ainda nem a primeira começou).
+    if (!active) active = stanzaTimings[0];
+    if (!active || !active.text) return null;
 
     const startFrame = Math.round(active.startSec * fps);
     const endFrame = Math.round(active.endSec * fps);
     const inP = Math.min(1, Math.max(0, (frame - (startFrame - fadeFrames)) / fadeFrames));
     const outP = Math.min(1, Math.max(0, ((endFrame + fadeFrames) - frame) / fadeFrames));
-    const opacity = Math.max(0, Math.min(1, Math.min(inP, outP)));
+    const opacity = Math.max(0.3, Math.min(1, Math.min(inP, outP)));
 
-    return <StanzaText text={stanzaText} opacity={opacity} />;
+    return <StanzaText text={active.text} opacity={opacity} />;
   }
 
   // Fallback uniforme (sem Scribe)
   const buffer = Math.round(fps * 2);
   const usable = Math.max(totalFrames - buffer * 2, 1);
-  const stanzaFrames = usable / stanzas.length;
+  // Se maxSecPerStanza estiver definido, cada stanza ocupa no máximo
+  // esse tempo (pacing rápido para AG story). Última stanza estende-se
+  // até ao fim do tempo disponível para não cortar a mensagem final.
+  const cappedStanzaFrames = maxSecPerStanza
+    ? Math.min(usable / stanzas.length, maxSecPerStanza * fps)
+    : usable / stanzas.length;
   const adjusted = frame - buffer;
-  if (adjusted < 0 || adjusted >= usable) return null;
-  const i = Math.min(stanzas.length - 1, Math.floor(adjusted / stanzaFrames));
+  if (adjusted < 0) return null;
+  if (adjusted >= usable) {
+    // Pós-narrativa (modo capped): mostra última stanza com fade-out suave.
+    if (maxSecPerStanza) {
+      return <StanzaText text={stanzas[stanzas.length - 1]} opacity={0.6} />;
+    }
+    return null;
+  }
+  let i = Math.floor(adjusted / cappedStanzaFrames);
+  if (i >= stanzas.length) i = stanzas.length - 1;
   const stanza = stanzas[i];
   if (!stanza) return null;
 
-  const localFrame = adjusted - i * stanzaFrames;
+  const localFrame = adjusted - i * cappedStanzaFrames;
   const inP = Math.min(1, localFrame / fadeFrames);
-  const outP = Math.min(1, (stanzaFrames - localFrame) / fadeFrames);
+  const outP = Math.min(1, (cappedStanzaFrames - localFrame) / fadeFrames);
   const opacity = Math.max(0, Math.min(1, Math.min(inP, outP)));
 
   return <StanzaText text={stanza} opacity={opacity} />;
@@ -300,6 +328,7 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
           frame={frame}
           fps={fps}
           totalFrames={durationInFrames}
+          maxSecPerStanza={7.5}
         />
       ) : isSync ? (
         <SyncedLyricsLayer

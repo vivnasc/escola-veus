@@ -188,28 +188,13 @@ function alignStanzas(stanzas, words, totalSec) {
   const wordList = speaking.map((w) => ({ ...w, norm: normalizeText(w.text) }));
   const result = [];
   let cursor = 0;
-
-  // Helper para fallback sequencial — usa o último endSec conhecido e
-  // distribui o resto uniformemente. Nunca devolve (0,0).
-  const sequentialFallback = (stanzaIdx, stanza) => {
-    const prevEnd = result.length > 0 ? result[result.length - 1].endSec : 0;
-    const remaining = stanzas.length - stanzaIdx;
-    const remainingTime = Math.max(0.5, totalSec - 2 - prevEnd);
-    const each = remainingTime / Math.max(1, remaining);
-    return {
-      text: stanza,
-      startSec: prevEnd,
-      endSec: Math.min(prevEnd + each, totalSec - 1),
-    };
-  };
+  let successCount = 0;
 
   for (let i = 0; i < stanzas.length; i++) {
     const stanza = stanzas[i];
     const tokens = normalizeText(stanza).split(" ").filter((t) => t.length > 1);
     if (tokens.length === 0) {
-      // Stanza sem tokens normalizáveis — usa fallback sequencial,
-      // NÃO (0,0). Evitar colisões com outras stanzas em sec=0.
-      result.push(sequentialFallback(i, stanza));
+      result.push({ text: stanza, startSec: -1, endSec: -1, _failed: true });
       continue;
     }
     let stanzaStart = -1, stanzaEnd = -1, matched = 0, tIdx = 0;
@@ -222,19 +207,53 @@ function alignStanzas(stanzas, words, totalSec) {
       }
     }
     if (stanzaStart < 0 || matched < Math.ceil(tokens.length * 0.4)) {
-      result.push(sequentialFallback(i, stanza));
-      // Avança o cursor mesmo em falha — proporcional ao progresso da
-      // lista de stanzas. Sem isto, stanzas seguintes tentam matchar do
-      // mesmo ponto da letra e podem confundir-se.
+      result.push({ text: stanza, startSec: -1, endSec: -1, _failed: true });
       cursor = Math.min(wordList.length - 1, Math.round(((i + 1) / stanzas.length) * wordList.length));
       continue;
     }
-    // Sucesso. Garante que startSec progride monotonicamente.
-    const minStart = result.length > 0 ? result[result.length - 1].endSec : 0;
-    const start = Math.max(minStart, wordList[stanzaStart].start);
-    const end = Math.max(start + 0.5, wordList[stanzaEnd].end);
-    result.push({ text: stanza, startSec: start, endSec: end });
+    result.push({
+      text: stanza,
+      startSec: wordList[stanzaStart].start,
+      endSec: Math.max(wordList[stanzaStart].start + 0.5, wordList[stanzaEnd].end),
+    });
     cursor = stanzaEnd + 1;
+    successCount++;
+  }
+
+  const successRate = successCount / stanzas.length;
+  console.log(`  → alignStanzas: ${successCount}/${stanzas.length} matches (${(successRate*100).toFixed(0)}%)`);
+
+  // Se menos de 70% das stanzas alinharam, abandona o sync per-stanza e
+  // usa distribuição uniforme contínua. Sync parcial cria janelas
+  // estranhas e gaps que parecem "estático". Uniforme rotaciona sempre.
+  if (successRate < 0.7) {
+    console.log(`  ⚠ alinhamento insuficiente — usar uniform (${totalSec.toFixed(0)}s)`);
+    return uniformStanzas(stanzas, totalSec);
+  }
+
+  // Preenche falhas restantes com tempo médio entre vizinhos válidos.
+  for (let i = 0; i < result.length; i++) {
+    if (!result[i]._failed) continue;
+    const prevValid = result.slice(0, i).reverse().find((r) => !r._failed);
+    const nextValid = result.slice(i + 1).find((r) => !r._failed);
+    const startSec = prevValid?.endSec ?? 0;
+    const endSec = nextValid?.startSec ?? totalSec - 1;
+    const each = (endSec - startSec) / 2;
+    result[i] = {
+      text: result[i].text,
+      startSec,
+      endSec: startSec + each,
+    };
+  }
+
+  // Garante monotonia + sem zero-width
+  for (let i = 1; i < result.length; i++) {
+    if (result[i].startSec < result[i - 1].endSec) {
+      result[i].startSec = result[i - 1].endSec;
+    }
+    if (result[i].endSec <= result[i].startSec) {
+      result[i].endSec = result[i].startSec + 0.5;
+    }
   }
   return result;
 }
