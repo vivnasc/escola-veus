@@ -17,7 +17,7 @@ import type { WeeklyPlan, WeeklyPost } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
-import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx } from "@/lib/shorts/lyrics-stanzas";
+import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx, sanitizeLyricLine } from "@/lib/shorts/lyrics-stanzas";
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
 import { generateLoranneSynopsis } from "@/lib/shorts/loranne-synopsis-generator";
 import { ALL_LYRICS } from "@/lib/loranne";
@@ -208,7 +208,9 @@ export async function POST(req: NextRequest) {
             trackNumber: actualTrackNumber,
             trackTitle,
             albumTitle,
-            verses: (suggest.verses || []).slice(0, 2),
+            // Versos passam por sanitizeLyricLine — strip [tags], (parens),
+            // travessões. Nada de artefactos Suno no ecrã ou no CSV.
+            verses: (suggest.verses || []).slice(0, 2).map(sanitizeLyricLine).filter(Boolean),
             syncedLyrics: stanzas,
             chorusStanzaIdx,
             lang,
@@ -348,8 +350,8 @@ export async function POST(req: NextRequest) {
             label: entry.label,
             trackNumber: actualAgTrack,
             temas: [...entry.temas],
-            verses: (suggest.versos || []).slice(0, 2),
-            storyChapters,
+            verses: (suggest.versos || []).slice(0, 2).map(sanitizeLyricLine).filter(Boolean),
+            storyChapters: storyChapters?.map(sanitizeLyricLine).filter(Boolean),
             storyTitle,
             renderJobs: {},
             musicUrl,
