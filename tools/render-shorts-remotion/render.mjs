@@ -274,6 +274,10 @@ function uniformStanzas(stanzas, totalSec) {
 function sanitizeLyricLine(line) {
   return String(line || "")
     .replace(/\[[^\]]*\]/g, "")
+    // Tag Suno truncada (multi-linha) — abre [ e não fecha na mesma linha
+    .replace(/\[[^\]]*$/g, "")
+    // Continuação de tag truncada que finalmente fecha noutra linha
+    .replace(/^[^\[]*\]/g, "")
     .replace(/\([^)]*\)/g, "")
     .replace(/\s*—\s*/g, ", ")
     .replace(/\s*–\s*/g, ", ")

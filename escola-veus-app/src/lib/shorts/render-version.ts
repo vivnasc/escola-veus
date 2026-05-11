@@ -12,4 +12,4 @@
  * Ficheiro isolado (sem imports server-only) para poder ser importado
  * tanto no servidor (route handlers) como no cliente (PostCard).
  */
-export const RENDER_VERSION = "2026-05-11-revert-uniform-restore-scribe-sync";
+export const RENDER_VERSION = "2026-05-11-strip-truncated-suno-tags";

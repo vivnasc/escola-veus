@@ -33,6 +33,12 @@ export function sanitizeLyricLine(line: string): string {
   return line
     // [Anything] — tags Suno inline
     .replace(/\[[^\]]*\]/g, "")
+    // [Anything sem fechar — tag Suno multi-linha truncada na 1ª linha.
+    // Sem este pass, "[Vocal: ONE warm mezzo... sl" passava intacto e
+    // aparecia no ecrã + envenenava Scribe align.
+    .replace(/\[[^\]]*$/g, "")
+    // Anything] sem abrir — continuação de tag multi-linha que fechou.
+    .replace(/^[^\[]*\]/g, "")
     // (anything) — comentários/vocalizações Suno inline (oh oh, ah ah, harmonia)
     .replace(/\([^)]*\)/g, "")
     // Travessões longos — tique IA; substitui por vírgula ou nada
@@ -63,6 +69,22 @@ export function lyricsToStanzasWithKind(lyrics: string): StanzaWithKind[] {
     const t = raw.trim();
     if (!t) {
       flush();
+      continue;
+    }
+    // Tags Suno truncadas (multi-linha): começam com [ mas não fecham na
+    // mesma linha. Aparecem no início das letras (ex.: [Vocal: ONE warm
+    // mezzo-contralto ... sl). Sem fechar, escapavam ao match `^\[...\]$`
+    // e entravam como letra cantada → brackets no ecrã + Scribe align
+    // falhava (0% match com palavras inventadas). Trata como bloco "other"
+    // até nova tag fechada aparecer.
+    if (t.startsWith("[") && !t.includes("]")) {
+      flush();
+      currentKind = "other";
+      continue;
+    }
+    // Linha sem [ inicial mas que TERMINA com ] sem [ — continuação de tag
+    // multi-linha aberta atrás. Skip se estamos em "other".
+    if (currentKind === "other" && !t.startsWith("[") && t.endsWith("]") && !t.includes("[")) {
       continue;
     }
     const tagMatch = t.match(/^\[([^\]]+)\]$/);
