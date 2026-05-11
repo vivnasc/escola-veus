@@ -139,12 +139,22 @@ export function buildLoranneCaptions(
   const instagram = compose(igTags);
   const tiktok = compose(ttTags);
 
-  const ytTitleRaw = suggestResult.youtubeTitle ||
+  // suggest.youtubeTitle pode ainda conter "Faixa N" se /plan não conseguiu
+  // derivar (faixa sem título no JSON E sem verso). Aceita-o só se limpo.
+  const suggestYt = suggestResult.youtubeTitle && !/Faixa\s+\d+/i.test(suggestResult.youtubeTitle)
+    ? suggestResult.youtubeTitle
+    : "";
+  const ytTitleRaw = suggestYt ||
     (realTitle(trackTitle)
       ? `"${realTitle(trackTitle)}" · ${albumTitle} · Loranne · Lyric Video`
       : `Loranne · ${albumTitle} · Lyric Video`);
   const ytTitle = capitalizeLines(ytTitleRaw);
-  const ytDescBase = capitalizeLines((suggestResult.youtubeDescription || "")
+  // Mesma defesa para a description: se contém "Faixa N", remove a frase
+  // "Faixa N de Loranne — " do início (frase fixa do makeYouTubeDescription).
+  const ytDescClean = (suggestResult.youtubeDescription || "")
+    .replace(/^Faixa\s+\d+\s+de\s+Loranne\s*[—-]\s*/i, "")
+    .replace(/Faixa\s+\d+/gi, "");
+  const ytDescBase = capitalizeLines(ytDescClean
     .split("\n")
     .filter((l) => !l.startsWith("#"))
     .join("\n")

@@ -467,7 +467,11 @@ function PostCard({
     errorMessage: post.errorMessage,
   };
   const fullJob: RenderJob | undefined = post.renderJobs?.full;
-  const active = activeMode === "full" ? fullJob : clipJob;
+  // Para preview pré-render, finge um job vazio em mode=full para activar a tab.
+  const fullJobOrPlaceholder: RenderJob = fullJob || {
+    jobId: null, videoUrl: null, thumbnailUrl: null, status: "planned",
+  };
+  const active = activeMode === "full" ? fullJobOrPlaceholder : clipJob;
   const aggregateStatus: RenderJob["status"] =
     [clipJob, fullJob].some((j) => j?.status === "failed") ? "failed"
     : [clipJob, fullJob].every((j) => !j || j.status === "done") ? "done"
@@ -477,22 +481,19 @@ function PostCard({
 
   return (
     <div className="overflow-hidden rounded border border-escola-border bg-escola-bg-card">
-      {/* Tabs clip/full */}
+      {/* Tabs clip/full — ambas sempre clicáveis (full mostra placeholder
+          se ainda não foi dispatchado). */}
       <div className="flex border-b border-escola-border text-[10px]">
         {(["clip", "full"] as const).map((m) => {
           const job = m === "full" ? fullJob : clipJob;
-          const exists = !!job;
           return (
             <button
               key={m}
-              onClick={() => exists && setActiveMode(m)}
-              disabled={!exists}
+              onClick={() => setActiveMode(m)}
               className={`flex-1 px-2 py-1.5 transition-colors ${
                 activeMode === m
                   ? "border-b-2 border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
-                  : exists
-                  ? "text-escola-creme-50 hover:text-escola-creme"
-                  : "text-escola-creme-50/30"
+                  : "text-escola-creme-50 hover:text-escola-creme"
               }`}
             >
               {m === "clip" ? "Clip 30s" : "Full"}
