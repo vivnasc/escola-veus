@@ -48,6 +48,17 @@ const STOP = new Set([
   "color", "colors", "palette", "muted", "rich",
   "single", "lone", "alone", "small", "large",
   "drift", "drifts", "drifting", "resting", "sitting",
+  // PT stop-words comuns (length >=4, passariam o filtro de tamanho)
+  "para", "como", "isso", "esse", "essa", "este", "esta",
+  "isto", "essas", "estas", "esses", "estes",
+  "porque", "quando", "onde", "tudo", "nada",
+  "muito", "muita", "muitas", "muitos", "também",
+  "está", "estás", "estão", "estive", "estiveste",
+  "tens", "tinha", "tinham", "tivesse",
+  "todos", "todas", "outro", "outra", "outros", "outras",
+  "depois", "antes", "agora", "ainda", "talvez",
+  "mais", "menos", "sempre", "nunca",
+  "nomear", "trailer", "longo",
 ]);
 
 function tokenize(s: string): Set<string> {
@@ -324,6 +335,27 @@ export async function POST(req: NextRequest) {
               mood: new Set(mood),
             });
           }
+
+          // Catálogo construído na ordem clipsForRender (longos primeiro,
+          // pool depois). Re-ordena INTERCALADO (longo, pool, longo, pool…)
+          // para que os longo clips fiquem distribuídos pela timeline em
+          // vez de exauridos nos primeiros 56 segmentos. Quando uma fonte
+          // se esgota, a outra continua.
+          const longoIndices: number[] = [];
+          const poolIndices: number[] = [];
+          for (let i = 0; i < catalog.length; i++) {
+            if (catalog[i].url.includes("/longos-clips/")) longoIndices.push(i);
+            else poolIndices.push(i);
+          }
+          const interleavedOrder: typeof catalog = [];
+          let li = 0, pi = 0;
+          while (li < longoIndices.length || pi < poolIndices.length) {
+            if (li < longoIndices.length) interleavedOrder.push(catalog[longoIndices[li++]]);
+            if (pi < poolIndices.length) interleavedOrder.push(catalog[poolIndices[pi++]]);
+          }
+          // Substitui catalog pelo interleaved (mantém referência pelo idx novo)
+          catalog.length = 0;
+          catalog.push(...interleavedOrder);
 
           // Para cada segmento de narração, pick best unused clip
           const ordered: { url: string; durationSec: number }[] = [];
