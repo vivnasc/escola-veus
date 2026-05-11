@@ -146,12 +146,51 @@ export async function POST(req: NextRequest) {
   // Render usa sempre bounce loop: cada clip 10s nativo, sequência cicla
   // pelos N clips para encher narrSec. Match com Corvo Seco — visuais
   // flutuam sobre a narração, não anchor literal.
-  const clipsForRender = (project.prompts ?? [])
+  const clipsForRender: { url: string; durationSec: number }[] = (
+    project.prompts ?? []
+  )
     .filter((p) => p.clipUrl)
     .map((p) => ({
       url: p.clipUrl as string,
       durationSec: p.clipDurationSec ?? 0,
     }));
+
+  // Aumenta variedade visual com clips da pool funil (nomear-*-h-NN.mp4).
+  // Com 7 eps do funil produzidos + 56 clips do longo, o total combinado
+  // (>120 unique) excede o needed (~107 plays para 1070s narração) →
+  // bounce loop não precisa repetir. Atmosfera Corvo Seco.
+  // Filtra horizontais apenas (-h-NN), exclui verticais (-v-NN).
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const { data: poolFiles } = await supabase.storage
+      .from("course-assets")
+      .list("youtube/clips", { limit: 1000 });
+    if (Array.isArray(poolFiles)) {
+      const byBase = new Map<string, string>();
+      for (const f of poolFiles) {
+        if (!/\.mp4$/i.test(f.name)) continue;
+        if (!f.name.startsWith("nomear-")) continue;
+        if (!/-h-\d+\.mp4$/i.test(f.name)) continue;
+        const base = f.name.replace(/\.mp4$/i, "").replace(/-h-\d+$/i, "");
+        const existing = byBase.get(base);
+        if (!existing || /-h-01\.mp4$/i.test(f.name)) {
+          byBase.set(base, f.name);
+        }
+      }
+      const longoUrls = new Set(clipsForRender.map((c) => c.url));
+      for (const fileName of byBase.values()) {
+        const url = `${supabaseUrl}/storage/v1/object/public/course-assets/youtube/clips/${fileName}`;
+        if (!longoUrls.has(url)) {
+          clipsForRender.push({ url, durationSec: 0 });
+        }
+      }
+      console.log(
+        `[render-submit] longo ${(project.prompts ?? []).filter((p) => p.clipUrl).length} + pool ${byBase.size} = ${clipsForRender.length} clips`,
+      );
+    }
+  } catch {
+    /* pool é opcional — render avança com só os clips do longo */
+  }
 
   if (clipsForRender.length === 0) {
     return NextResponse.json(
