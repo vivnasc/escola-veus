@@ -273,6 +273,18 @@ export async function POST(req: NextRequest) {
           const numSegments = Math.max(1, Math.ceil(totalSec / SEG_SEC));
 
           // Constrói catálogo: { url, durationSec, text, mood }
+          // CROSS-LANGUAGE FIX: usa filename SCENE-NAME (PT) como fonte de
+          // tokens em vez do prompt (EN). Narração é PT, prompts são EN →
+          // overlap direto seria sempre 0.
+          //
+          // Filename é tipo "nomear-ep05-01-casa-calou" ou
+          // "peso-de-quem-veio-antes-01-voz-antiga". Extraímos só a parte
+          // ÚNICA depois do número de cena (ex: "casa-calou", "voz-antiga")
+          // para evitar prefixos partilhados (todos os pool clips têm
+          // "nomear"/"ep05"; todos os longo clips têm o project slug)
+          // dominarem o matching e perder diferenciação.
+          //
+          // Mood (PT em ambos) é adicionado por completude.
           const catalog: {
             url: string;
             durationSec: number;
@@ -280,35 +292,35 @@ export async function POST(req: NextRequest) {
             mood: Set<string>;
           }[] = [];
           for (const c of clipsForRender) {
-            let text = "";
             let mood: string[] = [];
-            // Longo clip? URL contém /longos-clips/
+            let filenameSlug = "";
             const longoMatch = c.url.match(/\/longos-clips\/[^/]+\/(.+?)\.mp4/);
             if (longoMatch) {
-              const promptId = longoMatch[1];
-              const p = (project.prompts ?? []).find((pp) => pp.id === promptId);
-              if (p) {
-                text = p.prompt ?? "";
-                mood = Array.isArray(p.mood) ? p.mood : [];
-              }
+              filenameSlug = longoMatch[1];
+              const p = (project.prompts ?? []).find((pp) => pp.id === filenameSlug);
+              if (p) mood = Array.isArray(p.mood) ? p.mood : [];
             } else {
-              // Pool clip? URL contém /youtube/clips/nomear-...
               const poolMatch = c.url.match(
                 /\/youtube\/clips\/(nomear-[^/]+?)(?:-h-\d+)?\.mp4/,
               );
               if (poolMatch) {
-                const base = poolMatch[1];
-                const seed = SEED_BY_ID.get(base);
-                if (seed) {
-                  text = seed.prompt ?? "";
-                  mood = seed.mood ?? [];
-                }
+                filenameSlug = poolMatch[1];
+                const seed = SEED_BY_ID.get(filenameSlug);
+                if (seed) mood = seed.mood ?? [];
               }
             }
+            // Extrai só a parte após o último N-2-digit-prefix
+            // ("01-voz-antiga" → "voz-antiga"). Se não houver match,
+            // usa o filename completo como fallback.
+            const sceneMatch = filenameSlug.match(/\d{2}-(.+)$/);
+            const sceneName = sceneMatch ? sceneMatch[1] : filenameSlug;
+            const sceneText = sceneName.replace(/-/g, " ");
+            const moodText = mood.join(" ");
+            const allText = `${sceneText} ${moodText}`;
             catalog.push({
               url: c.url,
               durationSec: c.durationSec,
-              tokens: tokenize(text),
+              tokens: tokenize(allText),
               mood: new Set(mood),
             });
           }
