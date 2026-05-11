@@ -497,6 +497,21 @@ export default function LongoDetailPage() {
   type Track = { name: string; url: string };
   const [tracks, setTracks] = useState<Track[]>([]);
   const [selectedMusic, setSelectedMusic] = useState<string[]>([]);
+  const [timelinePreview, setTimelinePreview] = useState<{
+    totalSegments: number;
+    totalClipsAvailable: number;
+    segments: {
+      idx: number;
+      startSec: number;
+      endSec: number;
+      narration: string;
+      clipUrl: string | null;
+      clipPrompt: string;
+      matchScore: number;
+    }[];
+  } | null>(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewErr, setPreviewErr] = useState<string | null>(null);
   const [musicVolume, setMusicVolume] = useState(0.15);
   const [crossfade, setCrossfade] = useState(1.0);
   const [includeBrand, setIncludeBrand] = useState(true);
@@ -2675,6 +2690,33 @@ export default function LongoDetailPage() {
               ⏱ Preview (90s · 1-2 min)
             </button>
             <button
+              onClick={async () => {
+                if (!project) return;
+                setPreviewLoading(true);
+                setPreviewErr(null);
+                setTimelinePreview(null);
+                try {
+                  const r = await fetch("/api/admin/longos/render-submit", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ slug: project.slug, dryRun: true }),
+                  });
+                  const d = await r.json();
+                  if (!r.ok || d.erro) throw new Error(d.erro || `HTTP ${r.status}`);
+                  setTimelinePreview(d);
+                } catch (e) {
+                  setPreviewErr(e instanceof Error ? e.message : String(e));
+                } finally {
+                  setPreviewLoading(false);
+                }
+              }}
+              disabled={previewLoading || !project.narrationUrl}
+              className="rounded border border-escola-creme bg-escola-card px-3 py-2 text-[11px] text-escola-creme hover:bg-escola-creme/10 disabled:opacity-40"
+              title="Mostra a timeline planeada — cada segmento de narração de 10s com o clip atribuído. Não dispatcha render. Free."
+            >
+              {previewLoading ? "A computar..." : "🔍 ver timeline antes"}
+            </button>
+            <button
               onClick={() => submitRender(false)}
               disabled={
                 rendering || !project.narrationUrl || selectedMusic.length === 0
@@ -2702,6 +2744,98 @@ export default function LongoDetailPage() {
               {project.narrationUrl ? " · narração ✓" : " · ✗ sem narração"}
             </span>
           </div>
+
+          {previewErr && (
+            <p className="text-xs text-escola-terracota">⚠ Preview: {previewErr}</p>
+          )}
+
+          {timelinePreview && (
+            <div className="rounded border border-escola-creme/30 bg-escola-card p-3">
+              <div className="mb-2 flex items-center justify-between">
+                <h3 className="text-xs font-semibold text-escola-creme">
+                  📋 Timeline planeada · {timelinePreview.totalSegments} segmentos · {timelinePreview.totalClipsAvailable} clips disponíveis
+                </h3>
+                <button
+                  onClick={() => setTimelinePreview(null)}
+                  className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                >
+                  fechar
+                </button>
+              </div>
+              <p className="mb-2 text-[10px] text-escola-creme-50">
+                Cada linha = 10s de narração + o clip que vai aparecer. Score
+                = nº de palavras em comum entre narração e prompt do clip
+                (depois de stop-words filtradas). Score 0 = pick livre.
+              </p>
+              <div className="max-h-96 overflow-y-auto rounded border border-escola-border bg-escola-bg">
+                <table className="w-full text-[10px]">
+                  <thead className="sticky top-0 bg-escola-card text-escola-creme-50">
+                    <tr>
+                      <th className="px-2 py-1 text-left">#</th>
+                      <th className="px-2 py-1 text-left">tempo</th>
+                      <th className="px-2 py-1 text-left">narração</th>
+                      <th className="px-2 py-1 text-left">clip</th>
+                      <th className="px-2 py-1 text-left">score</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {timelinePreview.segments.map((s) => {
+                      const isLongoClip =
+                        s.clipUrl?.includes("/longos-clips/") ?? false;
+                      const isPoolClip =
+                        s.clipUrl?.includes("/youtube/clips/") ?? false;
+                      const source = isLongoClip
+                        ? "longo"
+                        : isPoolClip
+                          ? "pool"
+                          : "?";
+                      const fileName =
+                        s.clipUrl?.split("/").pop()?.replace(".mp4", "") ?? "—";
+                      return (
+                        <tr
+                          key={s.idx}
+                          className="border-t border-escola-border"
+                        >
+                          <td className="px-2 py-1 text-escola-creme-50">{s.idx + 1}</td>
+                          <td className="px-2 py-1 text-escola-creme-50">
+                            {Math.floor(s.startSec / 60)}:
+                            {String(Math.floor(s.startSec % 60)).padStart(2, "0")}
+                          </td>
+                          <td className="px-2 py-1 text-escola-creme">
+                            {s.narration.slice(0, 100)}
+                            {s.narration.length > 100 ? "…" : ""}
+                          </td>
+                          <td className="px-2 py-1 text-escola-creme-50">
+                            <span
+                              className={`mr-1 rounded px-1 text-[9px] ${
+                                source === "longo"
+                                  ? "bg-escola-dourado/20 text-escola-dourado"
+                                  : "bg-escola-creme/10 text-escola-creme-50"
+                              }`}
+                            >
+                              {source}
+                            </span>
+                            <code className="text-[9px]">{fileName}</code>
+                          </td>
+                          <td
+                            className={`px-2 py-1 ${
+                              s.matchScore >= 2
+                                ? "text-escola-dourado"
+                                : s.matchScore === 1
+                                  ? "text-escola-creme-50"
+                                  : "text-escola-terracota"
+                            }`}
+                          >
+                            {s.matchScore}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
 
           {renderErr && (
             <p className="text-xs text-escola-terracota">{renderErr}</p>
