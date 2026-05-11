@@ -30,6 +30,7 @@ Regras:
 - Evita: "esta canção…", "o tema…", "a artista…" (redundante)
 - Evita morais/lições, vocabulário New Age
 - PT de Portugal/Moçambique, nunca brasileiro
+- PROIBIDO: travessões longos "—" e "–" (tique IA). Usa vírgula ou ponto.
 - Devolve APENAS o JSON do schema, sem markdown nem preâmbulo`;
 
 function buildUserMessage(input: SynopsisInput): string {

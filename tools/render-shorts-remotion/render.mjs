@@ -188,11 +188,28 @@ function alignStanzas(stanzas, words, totalSec) {
   const wordList = speaking.map((w) => ({ ...w, norm: normalizeText(w.text) }));
   const result = [];
   let cursor = 0;
+
+  // Helper para fallback sequencial — usa o último endSec conhecido e
+  // distribui o resto uniformemente. Nunca devolve (0,0).
+  const sequentialFallback = (stanzaIdx, stanza) => {
+    const prevEnd = result.length > 0 ? result[result.length - 1].endSec : 0;
+    const remaining = stanzas.length - stanzaIdx;
+    const remainingTime = Math.max(0.5, totalSec - 2 - prevEnd);
+    const each = remainingTime / Math.max(1, remaining);
+    return {
+      text: stanza,
+      startSec: prevEnd,
+      endSec: Math.min(prevEnd + each, totalSec - 1),
+    };
+  };
+
   for (let i = 0; i < stanzas.length; i++) {
     const stanza = stanzas[i];
     const tokens = normalizeText(stanza).split(" ").filter((t) => t.length > 1);
     if (tokens.length === 0) {
-      result.push({ text: stanza, startSec: 0, endSec: 0 });
+      // Stanza sem tokens normalizáveis — usa fallback sequencial,
+      // NÃO (0,0). Evitar colisões com outras stanzas em sec=0.
+      result.push(sequentialFallback(i, stanza));
       continue;
     }
     let stanzaStart = -1, stanzaEnd = -1, matched = 0, tIdx = 0;
@@ -205,22 +222,18 @@ function alignStanzas(stanzas, words, totalSec) {
       }
     }
     if (stanzaStart < 0 || matched < Math.ceil(tokens.length * 0.4)) {
-      const prevEnd = result.length > 0 ? result[result.length - 1].endSec : 0;
-      const remaining = stanzas.length - i;
-      const remainingTime = Math.max(0, totalSec - 4 - prevEnd);
-      const each = remainingTime / Math.max(1, remaining);
-      result.push({
-        text: stanza,
-        startSec: prevEnd,
-        endSec: Math.min(prevEnd + each, totalSec - 2),
-      });
+      result.push(sequentialFallback(i, stanza));
+      // Avança o cursor mesmo em falha — proporcional ao progresso da
+      // lista de stanzas. Sem isto, stanzas seguintes tentam matchar do
+      // mesmo ponto da letra e podem confundir-se.
+      cursor = Math.min(wordList.length - 1, Math.round(((i + 1) / stanzas.length) * wordList.length));
       continue;
     }
-    result.push({
-      text: stanza,
-      startSec: wordList[stanzaStart].start,
-      endSec: wordList[stanzaEnd].end,
-    });
+    // Sucesso. Garante que startSec progride monotonicamente.
+    const minStart = result.length > 0 ? result[result.length - 1].endSec : 0;
+    const start = Math.max(minStart, wordList[stanzaStart].start);
+    const end = Math.max(start + 0.5, wordList[stanzaEnd].end);
+    result.push({ text: stanza, startSec: start, endSec: end });
     cursor = stanzaEnd + 1;
   }
   return result;
