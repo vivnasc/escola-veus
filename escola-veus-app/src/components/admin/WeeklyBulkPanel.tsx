@@ -224,6 +224,36 @@ export default function WeeklyBulkPanel({
     }
   }, [week, year, brand]);
 
+  const cleanupOrphans = useCallback(async () => {
+    setBusy("cleanup");
+    setErrors([]);
+    try {
+      const dry = await fetch("/api/admin/weekly/cleanup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dryRun: true }),
+      }).then((r) => r.json());
+      if (dry.erro) throw new Error(dry.erro);
+      const found = dry.found || 0;
+      if (found === 0) {
+        alert("Sem ficheiros órfãos para apagar — storage já limpo.");
+        return;
+      }
+      if (!confirm(`Encontrei ${found} mp4s antigos (formato com timestamp). Apagar todos?\n\nApenas o histórico — os novos renders (path estável) ficam intactos.`)) return;
+      const real = await fetch("/api/admin/weekly/cleanup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
+      }).then((r) => r.json());
+      if (real.erro) throw new Error(real.erro);
+      alert(`✓ Apagados ${real.deleted} mp4s antigos.`);
+    } catch (e) {
+      setErrors([(e as Error).message]);
+    } finally {
+      setBusy(null);
+    }
+  }, []);
+
   const planExists = useMemo(
     () => Boolean(statusEntry?.plan && statusEntry.plan.posts.length > 0),
     [statusEntry],
@@ -300,6 +330,14 @@ export default function WeeklyBulkPanel({
               className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
             >
               {busy === "package" ? "..." : "3. Empacotar"}
+            </button>
+            <button
+              onClick={cleanupOrphans}
+              disabled={busy !== null}
+              className="rounded border border-escola-creme-30 bg-escola-creme/5 px-3 py-1 text-xs text-escola-creme-50 hover:bg-escola-creme/10 disabled:opacity-50"
+              title="Apaga mp4s antigos (formato com timestamp) acumulados em Supabase. Os novos renders já usam path estável e não acumulam."
+            >
+              {busy === "cleanup" ? "..." : "🧹 Limpar storage"}
             </button>
             {pollOn && <span className="text-xs text-escola-creme-50">⏱ polling…</span>}
           </div>
