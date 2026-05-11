@@ -365,19 +365,21 @@ async function ensureStanzaTimings(manifest) {
     console.log(`  → clip arranca em chorus: offset=${offset.toFixed(1)}s · ${adjustedTimings.length}/${stanzaTimings.length} stanzas mantidas`);
   }
 
-  // CLIP MODE: Scribe é demasiado impreciso em 30s para alinhar correctamente
-  // (5 stanzas comprimidas em 3s do refrão = ~25s de "estática"). Para clips
-  // forçamos SEMPRE distribuição uniforme sobre durationSec a partir do
-  // chorusStanzaIdx. Garante rotação visual previsível em qualquer faixa.
-  // Full mantém Scribe alignment — 3-5min têm espaço para timing real.
-  if (manifest.mode === "clip" && manifest.syncedLyrics?.length) {
+  // SAFETY NET: se após chorus-shift+filter ficou ≤1 stanza, o vídeo
+  // mostra uma frase fixa em 30s (estática). Nesse caso — e SÓ nesse —
+  // recorremos a uniformStanzas a partir do chorusStanzaIdx para garantir
+  // rotação visual. O caso normal: confiar nos timings reais do Scribe
+  // (cada frase aparece no instante em que é cantada — sync verdadeiro).
+  if (manifest.mode === "clip" && adjustedTimings.length <= 1) {
     const startIdx = typeof manifest.chorusStanzaIdx === "number" && manifest.chorusStanzaIdx >= 0
       ? manifest.chorusStanzaIdx : 0;
     const reordered = manifest.syncedLyrics.slice(startIdx);
     const fallbackLyrics = reordered.length >= 3 ? reordered : manifest.syncedLyrics;
     adjustedTimings = uniformStanzas(fallbackLyrics, durationSec);
     adjustedLyrics = fallbackLyrics;
-    console.log(`  → Clip uniform forçado: ${adjustedLyrics.length} stanzas em ${durationSec}s (startIdx=${startIdx})`);
+    console.log(`  ⚠ Clip com ≤1 stanza após shift — fallback uniform: ${adjustedLyrics.length} stanzas em ${durationSec}s`);
+  } else if (manifest.mode === "clip") {
+    console.log(`  → Clip mantém Scribe sync: ${adjustedTimings.length} stanzas, primeiras=[${adjustedTimings.slice(0,3).map(t=>`${t.startSec.toFixed(1)}s`).join(", ")}]`);
   }
 
   return {
