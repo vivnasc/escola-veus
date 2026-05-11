@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import Anthropic from "@anthropic-ai/sdk";
 import funilSeed from "@/data/funil-prompts.seed.json";
 
 export const dynamic = "force-dynamic";
@@ -336,30 +337,127 @@ export async function POST(req: NextRequest) {
             });
           }
 
-          // Catálogo construído na ordem clipsForRender (longos primeiro,
-          // pool depois). Re-ordena INTERCALADO (longo, pool, longo, pool…)
-          // para que os longo clips fiquem distribuídos pela timeline em
-          // vez de exauridos nos primeiros 56 segmentos. Quando uma fonte
-          // se esgota, a outra continua.
-          const longoIndices: number[] = [];
-          const poolIndices: number[] = [];
-          for (let i = 0; i < catalog.length; i++) {
-            if (catalog[i].url.includes("/longos-clips/")) longoIndices.push(i);
-            else poolIndices.push(i);
-          }
-          const interleavedOrder: typeof catalog = [];
-          let li = 0, pi = 0;
-          while (li < longoIndices.length || pi < poolIndices.length) {
-            if (li < longoIndices.length) interleavedOrder.push(catalog[longoIndices[li++]]);
-            if (pi < poolIndices.length) interleavedOrder.push(catalog[poolIndices[pi++]]);
-          }
-          // Substitui catalog pelo interleaved (mantém referência pelo idx novo)
-          catalog.length = 0;
-          catalog.push(...interleavedOrder);
+          // Catálogo já construído. NÃO interleave — Claude decide ordem.
+          // Para cada segmento de narração, Claude semantic match.
+          //
+          // Vivianne pediu Claude semantic em vez do keyword overlap
+          // algorítmico. Razão: narração PT vs clip prompts EN davam
+          // muitos scores 0 (cross-language). Claude é bilingue e
+          // entende semantic similarity directamente.
+          //
+          // Custo: ~$0.06 por preview/render (Sonnet 4.6).
 
-          // Para cada segmento de narração, pick best unused clip
+          // Constrói payload para Claude: segmentos + catálogo
+          const segmentsForClaude = [];
+          for (let i = 0; i < numSegments; i++) {
+            const segStart = i * SEG_SEC;
+            const segEnd = Math.min(segStart + SEG_SEC, totalSec);
+            const segText = sentences
+              .filter((s) => s.startSec < segEnd && s.endSec > segStart)
+              .map((s) => s.text)
+              .join(" ");
+            segmentsForClaude.push({
+              idx: i,
+              startSec: segStart,
+              text: segText.slice(0, 250),
+            });
+          }
+          const catalogForClaude = catalog.map((c, k) => {
+            const isLongo = c.url.includes("/longos-clips/");
+            const fileName = c.url.split("/").pop()?.replace(".mp4", "") ?? "";
+            return {
+              idx: k,
+              source: isLongo ? "longo" : "pool",
+              fileName,
+              mood: Array.from(c.mood),
+            };
+          });
+          const longoIndicesCount = catalogForClaude.filter(
+            (c) => c.source === "longo",
+          ).length;
+
+          const anthropicKey = process.env.ANTHROPIC_API_KEY;
+          if (!anthropicKey) {
+            throw new Error("ANTHROPIC_API_KEY não configurada para semantic match");
+          }
+          const claude = new Anthropic({ apiKey: anthropicKey, maxRetries: 4 });
+
+          const sysPrompt =
+            "És o editor de timing dum vídeo contemplativo long-form 'Escola dos Véus' (canal da Vivianne Nascimento, conteúdo sobre herança feminina, culpa, vergonha doméstica). Empacotas clips visuais a segmentos de narração para criar coerência semântica.";
+
+          const userMsg =
+            `Empareja cada segmento de narração (PT) ao clip semanticamente mais próximo do catálogo. Catálogo é mistura PT/EN (filenames PT, mood PT).\n\n` +
+            `REGRAS ESTRITAS:\n` +
+            `1. Cada clip pode ser usado NO MÁXIMO 1× (sem repetição). Tens ${catalog.length} clips para ${numSegments} segmentos — surplus, todos os segmentos ficam atribuídos sem repetir.\n` +
+            `2. 1 clip por segmento (todos os ${numSegments} segmentos preenchidos).\n` +
+            `3. Distribui clips com source='longo' uniformemente pela timeline (não só no início — alterna com source='pool'). Os clips longo são ${longoIndicesCount} dos ${catalog.length} — espalha-os a cada ~${Math.max(1, Math.round(numSegments / Math.max(1, longoIndicesCount)))} segmentos.\n` +
+            `4. Match SEMANTIC: lê o texto do segmento e o filename+mood do clip, escolhe baseado em SIGNIFICADO não em palavras literais. Ex: narração sobre 'voz de avó' bate com clip 'voz-antiga' ou 'mulher-velha-mesa'.\n\n` +
+            `SEGMENTOS (${numSegments}):\n` +
+            segmentsForClaude
+              .map((s) => `[${s.idx}] ${s.startSec}s: "${s.text}"`)
+              .join("\n") +
+            `\n\nCATÁLOGO (${catalog.length}):\n` +
+            catalogForClaude
+              .map(
+                (c) =>
+                  `[${c.idx}] ${c.source} · ${c.fileName} · mood:[${c.mood.join(",")}]`,
+              )
+              .join("\n") +
+            `\n\nDevolve JSON com array "assignments": cada item { segmentIdx, clipIdx }. Exactamente ${numSegments} itens, segmentIdx 0..${numSegments - 1} sem repetir, clipIdx 0..${catalog.length - 1} sem repetir.`;
+
+          interface Assignment {
+            segmentIdx: number;
+            clipIdx: number;
+          }
+          let assignments: Assignment[];
+          try {
+            const stream = claude.messages.stream({
+              model: "claude-sonnet-4-6",
+              max_tokens: 24000,
+              system: sysPrompt,
+              messages: [{ role: "user", content: userMsg }],
+              output_config: {
+                format: {
+                  type: "json_schema",
+                  schema: {
+                    type: "object",
+                    properties: {
+                      assignments: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          properties: {
+                            segmentIdx: { type: "integer" },
+                            clipIdx: { type: "integer" },
+                          },
+                          required: ["segmentIdx", "clipIdx"],
+                          additionalProperties: false,
+                        },
+                      },
+                    },
+                    required: ["assignments"],
+                    additionalProperties: false,
+                  },
+                },
+              },
+            });
+            const resp = await stream.finalMessage();
+            const textBlock = resp.content.find((b) => b.type === "text");
+            if (!textBlock || textBlock.type !== "text") {
+              throw new Error(`Claude sem text block · stop=${resp.stop_reason}`);
+            }
+            const parsed = JSON.parse(textBlock.text) as { assignments: Assignment[] };
+            assignments = Array.isArray(parsed.assignments) ? parsed.assignments : [];
+          } catch (claudeErr) {
+            throw new Error(
+              `Claude semantic match falhou: ${claudeErr instanceof Error ? claudeErr.message : String(claudeErr)}`,
+            );
+          }
+
+          // Constrói ordered list a partir das assignments do Claude.
+          // Ordena por segmentIdx ascendente para preservar ordem temporal.
+          assignments.sort((a, b) => a.segmentIdx - b.segmentIdx);
           const ordered: { url: string; durationSec: number }[] = [];
-          // Metadados para preview UI (dryRun) — narração + clip atribuído
           const previewSegments: {
             idx: number;
             startSec: number;
@@ -369,62 +467,35 @@ export async function POST(req: NextRequest) {
             clipPrompt: string;
             matchScore: number;
           }[] = [];
-          const used = new Set<number>();
-          for (let i = 0; i < numSegments; i++) {
-            const segStart = i * SEG_SEC;
-            const segEnd = Math.min(segStart + SEG_SEC, totalSec);
-            const segText = sentences
-              .filter((s) => s.startSec < segEnd && s.endSec > segStart)
-              .map((s) => s.text)
-              .join(" ");
-            const segTokens = tokenize(segText);
-
-            let bestIdx = -1;
-            let bestScore = -1;
-            for (let k = 0; k < catalog.length; k++) {
-              if (used.has(k)) continue;
-              const c = catalog[k];
-              let kw = 0;
-              segTokens.forEach((t) => {
-                if (c.tokens.has(t)) kw++;
-              });
-              // Mood overlap pesa 2× (mais discriminativo)
-              const score = kw;
-              if (score > bestScore) {
-                bestScore = score;
-                bestIdx = k;
-              }
-            }
-            // Se nenhum unused ou score 0 → pick first unused
-            if (bestIdx < 0 || bestScore === 0) {
-              bestIdx = catalog.findIndex((_, k) => !used.has(k));
-            }
-            // Reconstrói o textext do clip atribuído (para preview)
-            const assignedTokens =
-              bestIdx >= 0 ? Array.from(catalog[bestIdx].tokens) : [];
+          const seenSeg = new Set<number>();
+          const seenClip = new Set<number>();
+          for (const a of assignments) {
+            if (seenSeg.has(a.segmentIdx)) continue;
+            if (seenClip.has(a.clipIdx)) continue;
+            if (a.clipIdx < 0 || a.clipIdx >= catalog.length) continue;
+            seenSeg.add(a.segmentIdx);
+            seenClip.add(a.clipIdx);
+            const seg = segmentsForClaude[a.segmentIdx];
+            const clip = catalog[a.clipIdx];
+            const fileName =
+              catalogForClaude[a.clipIdx]?.fileName ?? clip.url.split("/").pop() ?? "";
+            ordered.push({ url: clip.url, durationSec: clip.durationSec });
             previewSegments.push({
-              idx: i,
-              startSec: segStart,
-              endSec: segEnd,
-              narration: segText.slice(0, 200),
-              clipUrl: bestIdx >= 0 ? catalog[bestIdx].url : null,
-              clipPrompt: assignedTokens.slice(0, 12).join(" "),
-              matchScore: bestScore < 0 ? 0 : bestScore,
+              idx: a.segmentIdx,
+              startSec: seg.startSec,
+              endSec: Math.min(seg.startSec + SEG_SEC, totalSec),
+              narration: seg.text,
+              clipUrl: clip.url,
+              clipPrompt: fileName,
+              matchScore: 1, // Claude semantic — score binário (assigned ou not)
             });
-            if (bestIdx >= 0) {
-              ordered.push({
-                url: catalog[bestIdx].url,
-                durationSec: catalog[bestIdx].durationSec,
-              });
-              used.add(bestIdx);
-            }
           }
 
           if (ordered.length > 0) {
             clipsForRender.length = 0;
             clipsForRender.push(...ordered);
             console.log(
-              `[render-submit] semantic-match aplicado: ${ordered.length} segmentos de narração emparelhados com clips`,
+              `[render-submit] Claude semantic match: ${ordered.length} segmentos emparelhados`,
             );
           }
 
