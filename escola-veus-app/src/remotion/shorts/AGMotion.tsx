@@ -11,10 +11,11 @@ function sin01(t: number): number {
   return (Math.sin(t * Math.PI * 2) + 1) / 2;
 }
 
+const AG_ACCENT_DEFAULT = "#D4923E";
+
 // ─── A — Capulana abstracta (panorama horizontal lento) ───────────────────
-export function AGCapulanaA({ frame }: { frame: number }) {
+export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT }: { frame: number; accent?: string }) {
   const t = frame / FPS;
-  // pan -3% to +3% over 12s
   const tx = -3 + sin01(t / 12) * 6;
   return (
     <div
@@ -29,11 +30,11 @@ export function AGCapulanaA({ frame }: { frame: number }) {
       >
         <defs>
           <pattern id="capulana-tri" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 10 0 L 20 10 L 10 20 L 0 10 Z" fill="#D4923E" opacity="0.7" />
+            <path d="M 10 0 L 20 10 L 10 20 L 0 10 Z" fill={accent} opacity="0.7" />
             <circle cx="10" cy="10" r="2" fill="#FFD27F" opacity="0.8" />
           </pattern>
           <pattern id="capulana-circ" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
-            <circle cx="7" cy="7" r="3" fill="none" stroke="#FFD27F" strokeWidth="0.5" opacity="0.5" />
+            <circle cx="7" cy="7" r="3" fill="none" stroke={accent} strokeWidth="0.5" opacity="0.6" />
           </pattern>
         </defs>
         <rect x="-20" y="20" width="140" height="40" fill="url(#capulana-tri)" />
@@ -52,7 +53,7 @@ export function AGCapulanaA({ frame }: { frame: number }) {
 }
 
 // ─── B — Sol pulsante + horizonte (fixo, expande/retrai) ──────────────────
-export function AGSolHorizonteB({ frame }: { frame: number }) {
+export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT }: { frame: number; accent?: string }) {
   const t = frame / FPS;
   // sun-pulse: 3s loop, scale 0.92..1.15
   const pulse = 0.92 + sin01(t / 3) * 0.23;
@@ -83,13 +84,13 @@ export function AGSolHorizonteB({ frame }: { frame: number }) {
             borderRadius: "50%",
           }}
         />
-        {/* sol */}
+        {/* sol — gradient interno fixo, exterior tingido pelo accent */}
         <div
           style={{
             position: "relative", width: 200, height: 200,
             borderRadius: "50%",
-            background: "radial-gradient(circle, #FFE9A0 0%, #FFA040 50%, #E06010 80%, transparent)",
-            boxShadow: "0 0 60px rgba(255,180,80,0.7)",
+            background: `radial-gradient(circle, #FFE9A0 0%, ${accent} 55%, #1a0806 95%, transparent)`,
+            boxShadow: `0 0 60px ${accent}99`,
             transform: `scale(${pulse})`,
             filter: `brightness(${brightness})`,
           }}
@@ -132,7 +133,7 @@ export function AGSolHorizonteB({ frame }: { frame: number }) {
 }
 
 // ─── C — Padrão tradicional + brisa ───────────────────────────────────────
-export function AGPadraoTradicionalC({ frame }: { frame: number }) {
+export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT }: { frame: number; accent?: string }) {
   const t = frame / FPS;
   return (
     <div
@@ -161,7 +162,7 @@ export function AGPadraoTradicionalC({ frame }: { frame: number }) {
                   return (
                     <g key={col}>
                       <circle cx={cx} cy={cy} r="6" fill="none" stroke="#FFD27F" strokeWidth="0.6" opacity="0.5" />
-                      <circle cx={cx} cy={cy} r="3" fill="#D4923E" opacity="0.4" />
+                      <circle cx={cx} cy={cy} r="3" fill={accent} opacity="0.6" />
                     </g>
                   );
                 }
@@ -170,7 +171,7 @@ export function AGPadraoTradicionalC({ frame }: { frame: number }) {
                     <path
                       key={col}
                       d={`M ${cx} ${cy} m -5 0 a 5 5 0 1 1 5 5 a 3 3 0 1 1 -3 -3`}
-                      stroke="#FFD27F" strokeWidth="0.5" fill="none" opacity="0.6"
+                      stroke={accent} strokeWidth="0.5" fill="none" opacity="0.7"
                     />
                   );
                 }
@@ -178,7 +179,7 @@ export function AGPadraoTradicionalC({ frame }: { frame: number }) {
                   <polygon
                     key={col}
                     points={`${cx} ${cy - 5},${cx + 4} ${cy + 3},${cx - 4} ${cy + 3}`}
-                    fill="#FFD27F" opacity="0.5"
+                    fill={accent} opacity="0.55"
                   />
                 );
               })}
@@ -191,7 +192,7 @@ export function AGPadraoTradicionalC({ frame }: { frame: number }) {
 }
 
 // ─── D — Combinação (horizonte + padrão capulana + areia) ─────────────────
-export function AGCombinacaoD({ frame }: { frame: number }) {
+export function AGCombinacaoD({ frame, accent = AG_ACCENT_DEFAULT }: { frame: number; accent?: string }) {
   const t = frame / FPS;
   const tx = -3 + sin01(t / 12) * 6;
 
@@ -217,8 +218,8 @@ export function AGCombinacaoD({ frame }: { frame: number }) {
       >
         <defs>
           <pattern id="combo-pat" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <circle cx="10" cy="10" r="3" fill="none" stroke="#FFD27F" strokeWidth="0.5" />
-            <path d="M 10 4 L 14 10 L 10 16 L 6 10 Z" fill="#D4923E" opacity="0.6" />
+            <circle cx="10" cy="10" r="3" fill="none" stroke={accent} strokeWidth="0.6" />
+            <path d="M 10 4 L 14 10 L 10 16 L 6 10 Z" fill={accent} opacity="0.7" />
           </pattern>
         </defs>
         <rect x="-20" y="30" width="140" height="80" fill="url(#combo-pat)" />
