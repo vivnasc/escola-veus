@@ -139,17 +139,14 @@ export function buildRow(post: CsvPost, kind: CsvLineKind): string {
 export function buildCsv(posts: CsvPost[]): string {
   const lines = [CSV_HEADER.map(csvEscape).join(",")];
   for (const post of posts) {
-    // 3 linhas social com o clip
+    // 3 linhas social com o clip (portrait 9:16)
     for (const platform of ["instagram", "tiktok", "youtube"] as const) {
       lines.push(buildRow(post, { type: "social", platform }));
     }
-    // YT canal full: DESLIGADO até termos composição landscape 16:9.
-    // Metricool rejeita uploads YT-canal vertical 9:16 com "invalid
-    // orientation". Os fulls continuam no ZIP para upload manual no
-    // YT Studio. Reactivar quando ShortsComposition aceitar landscape.
-    // if (post.fullVideoUrl) {
-    //   lines.push(buildRow(post, { type: "youtube-canal" }));
-    // }
+    // 1 linha YT canal com o full (landscape 16:9 — Metricool aceita).
+    if (post.fullVideoUrl) {
+      lines.push(buildRow(post, { type: "youtube-canal" }));
+    }
   }
   return lines.join("\r\n") + "\r\n";
 }

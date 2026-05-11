@@ -51,6 +51,9 @@ export type RenderRemotionInput = {
   signature?: string;
   /** Duração (default: 30 clip / 240 full). */
   durationSec?: number;
+  /** Orientação do canvas: "portrait" (1080x1920, clips social) ou
+   *  "landscape" (1920x1080, fulls YT canal). Default "portrait". */
+  orientation?: "portrait" | "landscape";
 
   /** Identificadores opcionais (para slug/log). */
   title?: string;
@@ -116,6 +119,7 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     trackLabel: input.trackLabel || "",
     signature: input.signature || (input.brand === "loranne" ? "◯ Loranne" : "Ancient Ground"),
     durationSec: input.durationSec ?? defaultDuration,
+    orientation: input.orientation ?? "portrait",
     fps: 30,
     createdAt: new Date().toISOString(),
     renderVersion: RENDER_VERSION,

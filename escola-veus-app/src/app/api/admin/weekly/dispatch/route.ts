@@ -69,6 +69,9 @@ async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<
     audioVolume: 1,
     trackLabel: post.trackLabel,
     durationSec,
+    // Fulls vão para YT canal (Metricool rejeita 9:16 em YT VIDEO).
+    // Clips ficam portrait — IG Reel / TT / YT Shorts.
+    orientation: mode === "full" ? "landscape" : "portrait",
   });
 }
 

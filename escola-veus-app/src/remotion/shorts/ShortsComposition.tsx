@@ -18,7 +18,7 @@ import { AG_MOTIONS, type AGMotionVariant } from "./AGMotion";
 
 // Remotion dynamic load (mesmo padrão do VideoComposition.tsx).
 let useCurrentFrame: () => number;
-let useVideoConfig: () => { fps: number; durationInFrames: number };
+let useVideoConfig: () => { fps: number; durationInFrames: number; width: number; height: number };
 let RemotionAudio: React.FC<{
   src: string;
   volume: number | ((f: number) => number);
@@ -36,7 +36,7 @@ try {
   REMOTION_AVAILABLE = true;
 } catch {
   useCurrentFrame = () => 0;
-  useVideoConfig = () => ({ fps: 30, durationInFrames: 900 });
+  useVideoConfig = () => ({ fps: 30, durationInFrames: 900, width: 1080, height: 1920 });
 }
 
 export type ShortsManifest = {
@@ -75,6 +75,9 @@ export type ShortsManifest = {
   /** Onde arrancar o áudio (segundos absolutos no MP3). 0 para full mode;
    *  para clip Loranne com chorus, é o segundo do refrão menos lead-in. */
   audioStartFromSec?: number;
+  /** Orientação do canvas. Default "portrait" (1080x1920) — clips IG/TT/YT-Shorts.
+   *  "landscape" (1920x1080) — fulls YT canal (Metricool rejeita vertical em YT VIDEO). */
+  orientation?: "portrait" | "landscape";
 };
 
 const DEFAULT_FPS = 30;
@@ -116,7 +119,8 @@ const SyncedLyricsLayer: React.FC<{
    *  onde queremos pacing rápido (~7s/capítulo) independente da duração
    *  do áudio. Última stanza fica visível até ao fim. */
   maxSecPerStanza?: number;
-}> = ({ stanzas, stanzaTimings, frame, fps, totalFrames, maxSecPerStanza }) => {
+  typeScale?: number;
+}> = ({ stanzas, stanzaTimings, frame, fps, totalFrames, maxSecPerStanza, typeScale = 1 }) => {
   if (stanzas.length === 0) return null;
 
   const fadeFrames = Math.round(fps * 0.4);
@@ -149,7 +153,7 @@ const SyncedLyricsLayer: React.FC<{
     const outP = Math.min(1, Math.max(0, ((endFrame + fadeFrames) - frame) / fadeFrames));
     const opacity = Math.max(0.3, Math.min(1, Math.min(inP, outP)));
 
-    return <StanzaText text={active.text} opacity={opacity} />;
+    return <StanzaText text={active.text} opacity={opacity} typeScale={typeScale} />;
   }
 
   // Fallback uniforme (sem Scribe)
@@ -166,7 +170,7 @@ const SyncedLyricsLayer: React.FC<{
   if (adjusted >= usable) {
     // Pós-narrativa (modo capped): mostra última stanza com fade-out suave.
     if (maxSecPerStanza) {
-      return <StanzaText text={stanzas[stanzas.length - 1]} opacity={0.6} />;
+      return <StanzaText text={stanzas[stanzas.length - 1]} opacity={0.6} typeScale={typeScale} />;
     }
     return null;
   }
@@ -180,7 +184,7 @@ const SyncedLyricsLayer: React.FC<{
   const outP = Math.min(1, (cappedStanzaFrames - localFrame) / fadeFrames);
   const opacity = Math.max(0, Math.min(1, Math.min(inP, outP)));
 
-  return <StanzaText text={stanza} opacity={opacity} />;
+  return <StanzaText text={stanza} opacity={opacity} typeScale={typeScale} />;
 };
 
 /** Garante que cada linha (frase) começa com maiúscula, mantendo o
@@ -199,7 +203,7 @@ function capitalizeLines(text: string): string {
   }).join("\n");
 }
 
-const StanzaText: React.FC<{ text: string; opacity: number }> = ({ text, opacity }) => (
+const StanzaText: React.FC<{ text: string; opacity: number; typeScale?: number }> = ({ text, opacity, typeScale = 1 }) => (
   <div
     style={{
       position: "absolute",
@@ -214,7 +218,7 @@ const StanzaText: React.FC<{ text: string; opacity: number }> = ({ text, opacity
     <p
       style={{
         fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
-        fontSize: 56,
+        fontSize: Math.round(56 * typeScale),
         fontWeight: 500,
         letterSpacing: 0.5,
         lineHeight: 1.4,
@@ -236,7 +240,8 @@ const VerseOverlay: React.FC<{
   startSec: number;
   endSec: number;
   position: "top" | "middle" | "bottom";
-}> = ({ text, frame, fps, startSec, endSec, position }) => {
+  typeScale?: number;
+}> = ({ text, frame, fps, startSec, endSec, position, typeScale = 1 }) => {
   if (!text) return null;
   const startFrame = Math.round(startSec * fps);
   const endFrame = Math.round(endSec * fps);
@@ -261,7 +266,7 @@ const VerseOverlay: React.FC<{
       <p
         style={{
           fontFamily: "'Playfair Display', 'Cormorant Garamond', Georgia, serif",
-          fontSize: 64,
+          fontSize: Math.round(64 * typeScale),
           fontWeight: 500,
           letterSpacing: 0.5,
           lineHeight: 1.4,
@@ -279,7 +284,10 @@ const VerseOverlay: React.FC<{
 
 export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
   const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
+  const { fps, durationInFrames, width: canvasW, height: canvasH } = useVideoConfig();
+  // Escala tipográfica: 1.0 em portrait 1080×1920; cresce em landscape
+  // (1920×1080) usando min(W,H) — texto não fica diminuto numa canvas wide.
+  const typeScale = Math.min(canvasW, canvasH) / 1080;
 
   const accent = props.accent || ACCENT_DEFAULT;
   const Motion = props.brand === "loranne"
@@ -312,7 +320,7 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
   return (
     <div
       style={{
-        width: 1080, height: 1920,
+        width: canvasW, height: canvasH,
         position: "relative", overflow: "hidden",
         background: "#000",
       }}
@@ -329,6 +337,7 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
           fps={fps}
           totalFrames={durationInFrames}
           maxSecPerStanza={7.5}
+          typeScale={typeScale}
         />
       ) : isSync ? (
         <SyncedLyricsLayer
@@ -337,11 +346,12 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
           frame={frame}
           fps={fps}
           totalFrames={durationInFrames}
+          typeScale={typeScale}
         />
       ) : (
         <>
-          <VerseOverlay text={props.verses[0]} frame={frame} fps={fps} startSec={v1Start} endSec={v1End} position="middle" />
-          <VerseOverlay text={props.verses[1]} frame={frame} fps={fps} startSec={v2Start} endSec={v2End} position="middle" />
+          <VerseOverlay text={props.verses[0]} frame={frame} fps={fps} startSec={v1Start} endSec={v1End} position="middle" typeScale={typeScale} />
+          <VerseOverlay text={props.verses[1]} frame={frame} fps={fps} startSec={v2Start} endSec={v2End} position="middle" typeScale={typeScale} />
         </>
       )}
 
@@ -358,7 +368,7 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
       <div
         style={{
           position: "absolute",
-          bottom: 80,
+          bottom: Math.round(80 * typeScale),
           left: 0, right: 0,
           textAlign: "center",
           opacity: sigOpacity,
@@ -370,9 +380,9 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
           <div
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: 32,
+              fontSize: Math.round(32 * typeScale),
               color: "rgba(245,240,230,0.85)",
-              marginBottom: 8,
+              marginBottom: Math.round(8 * typeScale),
               textShadow: "0 2px 20px rgba(0,0,0,0.95)",
               letterSpacing: 0.5,
             }}
@@ -383,7 +393,7 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
         <div
           style={{
             fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: 22,
+            fontSize: Math.round(22 * typeScale),
             letterSpacing: 6,
             textTransform: "uppercase",
             color: "rgba(245,240,230,0.55)",
