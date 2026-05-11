@@ -3027,39 +3027,73 @@ export default function LongoDetailPage() {
 
             {/* Thumbnail */}
             <div className="rounded border border-escola-border bg-escola-card p-3">
-              <p className="mb-1 text-[11px] font-semibold text-escola-creme">
-                Thumbnail
-              </p>
-              <p className="mb-1 text-[10px] text-escola-creme-50">
-                O vídeo actual não tem thumbnail companion. Compõe à mão em
-                Canva/Figma com o texto e estética abaixo, depois upload em
-                YouTube Studio.
-              </p>
-              <div className="space-y-1 text-[10px]">
-                <p>
-                  <span className="text-escola-creme-50">Texto:</span>{" "}
-                  <code className="rounded bg-escola-bg px-1 py-0.5 text-escola-dourado">
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-[11px] font-semibold text-escola-creme">
+                  Thumbnail
+                </p>
+                <button
+                  onClick={async () => {
+                    if (!project) return;
+                    setInfo("🖼 a gerar thumbnail (frame@10s + brand + título)...");
+                    try {
+                      const r = await fetch(
+                        "/api/admin/longos/generate-thumbnail",
+                        {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ slug: project.slug }),
+                        },
+                      );
+                      const d = await r.json();
+                      if (!r.ok || d.erro)
+                        throw new Error(d.erro || `HTTP ${r.status}`);
+                      setInfo("✓ thumbnail gerado");
+                      setTimeout(() => setInfo(null), 3000);
+                      await load();
+                    } catch (e) {
+                      setInfo(
+                        `Erro: ${e instanceof Error ? e.message : String(e)}`,
+                      );
+                    }
+                  }}
+                  className="rounded bg-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-bg"
+                >
+                  {project.thumbnailUrl ? "↻ regerar" : "🖼 gerar thumbnail"}
+                </button>
+              </div>
+              {project.thumbnailUrl ? (
+                <div className="space-y-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.thumbnailUrl}
+                    alt="thumbnail"
+                    className="w-full max-w-md rounded border border-escola-border"
+                  />
+                  <a
+                    href={project.thumbnailUrl}
+                    download={`${project.slug}-thumb.png`}
+                    className="inline-block rounded border border-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-dourado hover:bg-escola-dourado/10"
+                  >
+                    ⬇ download PNG · 1280×720
+                  </a>
+                  <p className="text-[10px] text-escola-creme-50">
+                    Compose: frame@10s do vídeo (dentro do 1º clip) + brand
+                    "A ESCOLA DOS VÉUS" dourado em cima + título "
+                    {project.thumbnailText || project.titulo}" em DejaVu Serif
+                    Bold cream com borda preta. Curves darker para contraste.
+                  </p>
+                </div>
+              ) : (
+                <p className="text-[10px] text-escola-creme-50">
+                  Clica para gerar — extrai frame@10s do vídeo final + brand
+                  "A ESCOLA DOS VÉUS" + título "
+                  <code className="rounded bg-escola-bg px-1 text-escola-dourado">
                     {project.thumbnailText || project.titulo}
                   </code>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        project.thumbnailText || project.titulo || "",
-                      );
-                      setInfo("✓ texto thumbnail copiado");
-                      setTimeout(() => setInfo(null), 2000);
-                    }}
-                    className="ml-2 text-escola-dourado hover:underline"
-                  >
-                    copiar
-                  </button>
+                  ". Resolução YouTube 1280×720, ~3s processamento. Pattern
+                  copiado do funil.
                 </p>
-                <p className="text-escola-creme-50">
-                  Sugestões: fundo cream/terracota, serif (Fraunces ou Playfair),
-                  texto UPPERCASE 70-90px, centrado a ~70% da altura. Resolução
-                  1280×720 ou 1920×1080.
-                </p>
-              </div>
+              )}
             </div>
           </div>
         </section>
