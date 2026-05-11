@@ -505,7 +505,7 @@ function PostCard({
         })}
       </div>
 
-      <div className="aspect-[9/16] bg-black">
+      <div className={`${activeMode === "full" ? "aspect-[16/9]" : "aspect-[9/16]"} bg-black`}>
         {active?.videoUrl ? (
           <video
             src={active.videoUrl}
