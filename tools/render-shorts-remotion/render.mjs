@@ -365,18 +365,19 @@ async function ensureStanzaTimings(manifest) {
     console.log(`  → clip arranca em chorus: offset=${offset.toFixed(1)}s · ${adjustedTimings.length}/${stanzaTimings.length} stanzas mantidas`);
   }
 
-  // SAFETY NET: se o clip ficou com <3 stanzas (típico quando alignStanzas
-  // caiu em uniform — cada stanza ocupa audioDur/N segundos, depois do
-  // shift+filter sobra 1 stanza para 30s), regenera uniformemente sobre
-  // os 30s a partir do chorus. Garante rotação visual.
-  if (manifest.mode === "clip" && adjustedTimings.length < 3) {
+  // CLIP MODE: Scribe é demasiado impreciso em 30s para alinhar correctamente
+  // (5 stanzas comprimidas em 3s do refrão = ~25s de "estática"). Para clips
+  // forçamos SEMPRE distribuição uniforme sobre durationSec a partir do
+  // chorusStanzaIdx. Garante rotação visual previsível em qualquer faixa.
+  // Full mantém Scribe alignment — 3-5min têm espaço para timing real.
+  if (manifest.mode === "clip" && manifest.syncedLyrics?.length) {
     const startIdx = typeof manifest.chorusStanzaIdx === "number" && manifest.chorusStanzaIdx >= 0
       ? manifest.chorusStanzaIdx : 0;
     const reordered = manifest.syncedLyrics.slice(startIdx);
     const fallbackLyrics = reordered.length >= 3 ? reordered : manifest.syncedLyrics;
     adjustedTimings = uniformStanzas(fallbackLyrics, durationSec);
     adjustedLyrics = fallbackLyrics;
-    console.log(`  ⚠ Clip com poucas stanzas — regenerar uniform: ${adjustedLyrics.length} stanzas em ${durationSec}s`);
+    console.log(`  → Clip uniform forçado: ${adjustedLyrics.length} stanzas em ${durationSec}s (startIdx=${startIdx})`);
   }
 
   return {
@@ -414,7 +415,7 @@ async function main() {
   const manifestUrl = publicUrl(`render-jobs/${JOB_ID}.json`);
   console.log(`→ A ler manifest ${manifestUrl}`);
   let manifest = await fetchJson(manifestUrl);
-  console.log(`→ Manifest brand=${manifest.brand} variant=${manifest.motionVariant} mode=${manifest.mode}`);
+  console.log(`→ Manifest brand=${manifest.brand} variant=${manifest.motionVariant} mode=${manifest.mode} orientation=${manifest.orientation || "(unset)"} lyricsSync=${!!manifest.lyricsSync} syncedLyrics=${manifest.syncedLyrics?.length || 0} chorusStanzaIdx=${manifest.chorusStanzaIdx ?? "(null)"}`);
 
   // 1b. Scribe + alinhamento (com cache) — só Loranne lyric video
   await updateProgress("rendering", 5, { title: manifest.title || manifest.trackLabel || JOB_ID });
@@ -455,7 +456,18 @@ async function main() {
     console.log(`→ Override duration: ${composition.durationInFrames}f → ${targetFrames}f (${targetSec}s @ ${fps}fps)`);
     composition.durationInFrames = targetFrames;
   }
-  console.log(`→ Composition: ${composition.width}x${composition.height} ${composition.durationInFrames}f`);
+  // BELT-AND-SUSPENDERS: força dimensões baseado em manifest.orientation,
+  // não confia que calculateMetadata do Root.tsx tenha funcionado. Garante
+  // que fulls saem em 1920x1080 (landscape) e clips em 1080x1920 (portrait).
+  const isLandscape = manifest.orientation === "landscape";
+  const targetWidth = isLandscape ? 1920 : 1080;
+  const targetHeight = isLandscape ? 1080 : 1920;
+  if (composition.width !== targetWidth || composition.height !== targetHeight) {
+    console.log(`→ Override dims: ${composition.width}x${composition.height} → ${targetWidth}x${targetHeight} (orientation=${manifest.orientation || "portrait-default"})`);
+    composition.width = targetWidth;
+    composition.height = targetHeight;
+  }
+  console.log(`→ Composition FINAL: ${composition.width}x${composition.height} ${composition.durationInFrames}f`);
 
   await updateProgress("rendering", 30);
 
