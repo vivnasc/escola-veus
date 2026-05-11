@@ -1,6 +1,6 @@
 /**
  * Metricool CSV builder — header confirmado pela utilizadora (Maio 2026,
- * Planning > Calendar > Import CSV). 87 colunas, 1 linha por
+ * Planning > Calendar > Import CSV). 93 colunas, 1 linha por
  * (post × plataforma) para permitir caption + hora distintas por canal.
  */
 
