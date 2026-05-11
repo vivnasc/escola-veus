@@ -269,11 +269,48 @@ function uniformStanzas(stanzas, totalSec) {
   }));
 }
 
+/** Sanitiza linha cantada — strip [tags], (parens), travessões.
+ *  Última linha de defesa caso o plano contenha letras não-limpas. */
+function sanitizeLyricLine(line) {
+  return String(line || "")
+    .replace(/\[[^\]]*\]/g, "")
+    .replace(/\([^)]*\)/g, "")
+    .replace(/\s*—\s*/g, ", ")
+    .replace(/\s*–\s*/g, ", ")
+    .replace(/\s+/g, " ")
+    .replace(/\s*,\s*,\s*/g, ", ")
+    .replace(/^[,;:\s]+|[,;:\s]+$/g, "")
+    .trim();
+}
+
+function sanitizeStanzaBlock(stanza) {
+  return String(stanza || "")
+    .split("\n")
+    .map(sanitizeLyricLine)
+    .filter(Boolean)
+    .join("\n");
+}
+
 /** Computa stanzaTimings + audioDurationSec, com cache em Supabase. */
 async function ensureStanzaTimings(manifest) {
   if (!manifest.lyricsSync) return manifest;
   if (!manifest.syncedLyrics || manifest.syncedLyrics.length === 0) return manifest;
-  if (manifest.stanzaTimings && manifest.stanzaTimings.length > 0) return manifest;
+  // Sanitiza CADA stanza no worker — última defesa contra letras não-limpas
+  // vindas de planos antigos. Aplica-se mesmo se já houver stanzaTimings.
+  manifest = {
+    ...manifest,
+    syncedLyrics: manifest.syncedLyrics.map(sanitizeStanzaBlock).filter(Boolean),
+  };
+  if (manifest.stanzaTimings && manifest.stanzaTimings.length > 0) {
+    manifest = {
+      ...manifest,
+      stanzaTimings: manifest.stanzaTimings.map((t) => ({
+        ...t,
+        text: sanitizeStanzaBlock(t.text),
+      })),
+    };
+    return manifest;
+  }
 
   console.log(`→ Scribe: a verificar cache para ${manifest.audioUrl.slice(-60)}`);
   let cached = await tryFetchScribeCache(manifest.audioUrl);
@@ -326,6 +363,20 @@ async function ensureStanzaTimings(manifest) {
       .filter((t) => t.startSec >= 0 && t.startSec < durationSec);
     adjustedLyrics = adjustedTimings.map((t) => t.text);
     console.log(`  → clip arranca em chorus: offset=${offset.toFixed(1)}s · ${adjustedTimings.length}/${stanzaTimings.length} stanzas mantidas`);
+  }
+
+  // SAFETY NET: se o clip ficou com <3 stanzas (típico quando alignStanzas
+  // caiu em uniform — cada stanza ocupa audioDur/N segundos, depois do
+  // shift+filter sobra 1 stanza para 30s), regenera uniformemente sobre
+  // os 30s a partir do chorus. Garante rotação visual.
+  if (manifest.mode === "clip" && adjustedTimings.length < 3) {
+    const startIdx = typeof manifest.chorusStanzaIdx === "number" && manifest.chorusStanzaIdx >= 0
+      ? manifest.chorusStanzaIdx : 0;
+    const reordered = manifest.syncedLyrics.slice(startIdx);
+    const fallbackLyrics = reordered.length >= 3 ? reordered : manifest.syncedLyrics;
+    adjustedTimings = uniformStanzas(fallbackLyrics, durationSec);
+    adjustedLyrics = fallbackLyrics;
+    console.log(`  ⚠ Clip com poucas stanzas — regenerar uniform: ${adjustedLyrics.length} stanzas em ${durationSec}s`);
   }
 
   return {

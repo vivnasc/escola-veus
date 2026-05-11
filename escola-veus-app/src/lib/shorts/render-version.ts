@@ -12,4 +12,4 @@
  * Ficheiro isolado (sem imports server-only) para poder ser importado
  * tanto no servidor (route handlers) como no cliente (PostCard).
  */
-export const RENDER_VERSION = "2026-05-11-ag-story-fast-pacing";
+export const RENDER_VERSION = "2026-05-11-clip-safety-net-bracket-sanitize";
