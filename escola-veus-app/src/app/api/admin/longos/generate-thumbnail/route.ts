@@ -79,9 +79,10 @@ function wrapLines(text: string, maxChars: number): string[] {
 export async function POST(req: NextRequest) {
   let workDir: string | null = null;
   try {
-    const { slug, frameTimeSec } = (await req.json()) as {
+    const { slug, frameTimeSec, titulo: tituloOverride } = (await req.json()) as {
       slug?: string;
       frameTimeSec?: number;
+      titulo?: string;
     };
 
     if (!slug || !/^[a-z0-9][a-z0-9-]{0,80}$/.test(slug)) {
@@ -119,7 +120,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const titulo = project.thumbnailText || project.titulo || slug;
+    // tituloOverride do client > project.thumbnailText > project.titulo
+    const titulo =
+      (tituloOverride && tituloOverride.trim()) ||
+      project.thumbnailText ||
+      project.titulo ||
+      slug;
 
     workDir = await mkdtemp(join(tmpdir(), "longo-thumb-"));
     const ffmpeg = await getFfmpegPath();
