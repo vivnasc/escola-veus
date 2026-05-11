@@ -38,6 +38,11 @@ type LongoProject = {
   subtitlesUrl?: string; // SRT em Supabase, gerada via /generate-srt
   videoUrl?: string;
   thumbnailUrl?: string;
+  seo?: {
+    postTitle?: string;
+    description?: string;
+    hashtags?: string[];
+  };
   createdAt?: string;
   updatedAt?: string;
 };
@@ -2872,6 +2877,193 @@ export default function LongoDetailPage() {
           )}
         </div>
       </section>
+
+      {/* Publish helpers: SEO, SRT download, thumbnail text — para publicar
+          o vídeo actual no YouTube sem ter de re-renderizar. */}
+      {project.videoUrl && (
+        <section className="rounded-xl border border-escola-dourado/40 bg-escola-dourado/5 p-4">
+          <h2 className="mb-3 text-sm font-semibold text-escola-dourado">
+            📤 Publish helpers
+          </h2>
+          <div className="space-y-3 text-xs">
+            {/* SEO */}
+            <div className="rounded border border-escola-border bg-escola-card p-3">
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-[11px] font-semibold text-escola-creme">
+                  Título · descrição · hashtags
+                </p>
+                {!project.seo && (
+                  <button
+                    onClick={async () => {
+                      setInfo("✨ Claude a gerar SEO YouTube...");
+                      try {
+                        const r = await fetch("/api/admin/longos/gen-seo", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ slug: project.slug }),
+                        });
+                        const d = await r.json();
+                        if (!r.ok || d.erro)
+                          throw new Error(d.erro || `HTTP ${r.status}`);
+                        setInfo("✓ SEO gerado");
+                        setTimeout(() => setInfo(null), 3000);
+                        await load();
+                      } catch (e) {
+                        setInfo(
+                          `Erro: ${e instanceof Error ? e.message : String(e)}`,
+                        );
+                      }
+                    }}
+                    className="rounded bg-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-bg"
+                  >
+                    ✨ gerar SEO (~$0.10)
+                  </button>
+                )}
+              </div>
+              {project.seo ? (
+                <div className="space-y-2">
+                  <div>
+                    <div className="mb-0.5 flex items-center justify-between">
+                      <span className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+                        Título YouTube
+                      </span>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(project.seo?.postTitle ?? "");
+                          setInfo("✓ título copiado");
+                          setTimeout(() => setInfo(null), 2000);
+                        }}
+                        className="text-[10px] text-escola-dourado hover:underline"
+                      >
+                        copiar
+                      </button>
+                    </div>
+                    <p className="rounded bg-escola-bg p-2 text-escola-creme">
+                      {project.seo.postTitle}
+                    </p>
+                  </div>
+                  <div>
+                    <div className="mb-0.5 flex items-center justify-between">
+                      <span className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+                        Descrição
+                      </span>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(project.seo?.description ?? "");
+                          setInfo("✓ descrição copiada");
+                          setTimeout(() => setInfo(null), 2000);
+                        }}
+                        className="text-[10px] text-escola-dourado hover:underline"
+                      >
+                        copiar
+                      </button>
+                    </div>
+                    <pre className="max-h-48 overflow-y-auto whitespace-pre-wrap rounded bg-escola-bg p-2 font-sans text-[11px] text-escola-creme">
+                      {project.seo.description}
+                    </pre>
+                  </div>
+                  <div>
+                    <div className="mb-0.5 flex items-center justify-between">
+                      <span className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+                        Hashtags ({project.seo.hashtags?.length ?? 0})
+                      </span>
+                      <button
+                        onClick={() => {
+                          const tags = (project.seo?.hashtags ?? [])
+                            .map((t) => `#${t}`)
+                            .join(" ");
+                          navigator.clipboard.writeText(tags);
+                          setInfo("✓ hashtags copiadas");
+                          setTimeout(() => setInfo(null), 2000);
+                        }}
+                        className="text-[10px] text-escola-dourado hover:underline"
+                      >
+                        copiar todas
+                      </button>
+                    </div>
+                    <p className="rounded bg-escola-bg p-2 text-escola-creme">
+                      {(project.seo.hashtags ?? []).map((t) => `#${t}`).join(" ")}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-[10px] text-escola-creme-50">
+                  Clica para Claude gerar título YouTube, descrição com créditos e
+                  hashtags relevantes (PT-PT, tom contemplativo).
+                </p>
+              )}
+            </div>
+
+            {/* Legendas — SRT download */}
+            <div className="rounded border border-escola-border bg-escola-card p-3">
+              <p className="mb-1 text-[11px] font-semibold text-escola-creme">
+                Legendas (SRT) para YouTube CC
+              </p>
+              {project.subtitlesUrl ? (
+                <div className="space-y-1">
+                  <p className="text-[10px] text-escola-creme-50">
+                    O vídeo actual NÃO tem legendas queimadas. Faz download do
+                    SRT e carrega-o em YouTube Studio → Legendas → Adicionar.
+                  </p>
+                  <a
+                    href={project.subtitlesUrl}
+                    download={`${project.slug}.srt`}
+                    className="inline-block rounded border border-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-dourado hover:bg-escola-dourado/10"
+                  >
+                    ⬇ download SRT
+                  </a>
+                  <p className="text-[10px] text-escola-creme-50">
+                    YouTube auto-sincroniza com o vídeo. Pequeno ajuste manual
+                    pode ser necessário no editor de legendas se houver offset
+                    do intro (~4s).
+                  </p>
+                </div>
+              ) : (
+                <p className="text-[10px] text-escola-terracota">
+                  ⚠ SRT não foi gerada para este projecto. Gera via /generate-srt.
+                </p>
+              )}
+            </div>
+
+            {/* Thumbnail */}
+            <div className="rounded border border-escola-border bg-escola-card p-3">
+              <p className="mb-1 text-[11px] font-semibold text-escola-creme">
+                Thumbnail
+              </p>
+              <p className="mb-1 text-[10px] text-escola-creme-50">
+                O vídeo actual não tem thumbnail companion. Compõe à mão em
+                Canva/Figma com o texto e estética abaixo, depois upload em
+                YouTube Studio.
+              </p>
+              <div className="space-y-1 text-[10px]">
+                <p>
+                  <span className="text-escola-creme-50">Texto:</span>{" "}
+                  <code className="rounded bg-escola-bg px-1 py-0.5 text-escola-dourado">
+                    {project.thumbnailText || project.titulo}
+                  </code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        project.thumbnailText || project.titulo || "",
+                      );
+                      setInfo("✓ texto thumbnail copiado");
+                      setTimeout(() => setInfo(null), 2000);
+                    }}
+                    className="ml-2 text-escola-dourado hover:underline"
+                  >
+                    copiar
+                  </button>
+                </p>
+                <p className="text-escola-creme-50">
+                  Sugestões: fundo cream/terracota, serif (Fraunces ou Playfair),
+                  texto UPPERCASE 70-90px, centrado a ~70% da altura. Resolução
+                  1280×720 ou 1920×1080.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <details className="rounded border border-escola-border bg-escola-card/40 p-3 text-[10px] text-escola-creme-50">
         <summary className="cursor-pointer text-escola-creme">
