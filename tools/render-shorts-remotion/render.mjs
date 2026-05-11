@@ -402,21 +402,35 @@ async function ensureStanzaTimings(manifest) {
     console.log(`  → clip arranca em chorus: offset=${offset.toFixed(1)}s · ${adjustedTimings.length}/${stanzaTimings.length} stanzas mantidas`);
   }
 
-  // SAFETY NET: se após chorus-shift+filter ficou ≤1 stanza, NÃO inventamos
-  // texto errado com uniform de stanzas pós-chorus (essas estrofes não estão
-  // a ser cantadas neste trecho de 30s — só audio do refrão + instrumental).
-  // EXPANDE a stanza única para preencher os 30s: vês o texto do refrão
-  // durante todo o clip, sincronizado ao início (entra com a voz, fica
-  // visível durante o instrumental). Sem mentiras, sem rotação errada.
+  // SAFETY NET: se após chorus-shift+filter ficou ≤1 stanza, dividir essa
+  // stanza em LINHAS e distribuí-las no intervalo real em que o refrão é
+  // cantado (Scribe-derived endSec). Última linha estende até durationSec
+  // para cobrir o instrumental pós-refrão.
+  //
+  // Antes: mostrava o bloco inteiro do refrão (todas as linhas) estático
+  // durante 30s — user percebia como "não sincroniza".
+  // Agora: line-by-line rotation alinhada com o canto real.
   if (manifest.mode === "clip" && adjustedTimings.length === 1) {
     const only = adjustedTimings[0];
-    adjustedTimings = [{
-      text: only.text,
-      startSec: only.startSec,
-      endSec: durationSec,
-    }];
-    adjustedLyrics = [only.text];
-    console.log(`  → Clip 1-stanza: expandir refrão de ${only.startSec.toFixed(1)}s a ${durationSec}s (sem rotação inventada)`);
+    const naturalEnd = Math.min(only.endSec, durationSec);
+    const lines = only.text.split("\n").map((l) => l.trim()).filter(Boolean);
+    if (lines.length >= 2) {
+      const sungSec = Math.max(naturalEnd - only.startSec, 5);
+      const perLine = sungSec / lines.length;
+      adjustedTimings = lines.map((line, i) => ({
+        text: line,
+        startSec: only.startSec + i * perLine,
+        // Última linha estende até durationSec (cobre instrumental pós-refrão).
+        endSec: i === lines.length - 1 ? durationSec : only.startSec + (i + 1) * perLine,
+      }));
+      adjustedLyrics = lines;
+      console.log(`  → Clip line-split: ${lines.length} linhas distribuídas em ${only.startSec.toFixed(1)}s-${naturalEnd.toFixed(1)}s (~${perLine.toFixed(1)}s/linha), última até ${durationSec}s`);
+    } else {
+      // Stanza com 1 linha só — expandir como antes
+      adjustedTimings = [{ text: only.text, startSec: only.startSec, endSec: durationSec }];
+      adjustedLyrics = [only.text];
+      console.log(`  → Clip 1-linha expandida: ${only.startSec.toFixed(1)}s a ${durationSec}s`);
+    }
   } else if (manifest.mode === "clip" && adjustedTimings.length === 0) {
     // Zero stanzas dentro da janela — só aí cai em uniform como último
     // recurso (Scribe falhou catastroficamente ou clip não cobre nenhum
