@@ -123,6 +123,10 @@ export async function POST(req: NextRequest) {
     includeBrand?: boolean;
     preview?: boolean;
     previewSeconds?: number;
+    // dryRun: corre todo o pipeline (carrega projecto, prereqs, semantic
+    // match) MAS NÃO dispatcha o workflow GitHub Actions. Devolve a
+    // timeline planeada para a Vivianne rever antes do render real.
+    dryRun?: boolean;
   };
   try {
     body = await req.json();
@@ -138,11 +142,12 @@ export async function POST(req: NextRequest) {
     includeBrand,
     preview = false,
     previewSeconds = 90,
+    dryRun = false,
   } = body;
   if (!slug) {
     return NextResponse.json({ erro: "slug obrigatório" }, { status: 400 });
   }
-  if (!Array.isArray(musicUrls) || musicUrls.length === 0) {
+  if (!dryRun && (!Array.isArray(musicUrls) || musicUrls.length === 0)) {
     return NextResponse.json({ erro: "musicUrls[] obrigatório" }, { status: 400 });
   }
 
@@ -310,6 +315,16 @@ export async function POST(req: NextRequest) {
 
           // Para cada segmento de narração, pick best unused clip
           const ordered: { url: string; durationSec: number }[] = [];
+          // Metadados para preview UI (dryRun) — narração + clip atribuído
+          const previewSegments: {
+            idx: number;
+            startSec: number;
+            endSec: number;
+            narration: string;
+            clipUrl: string | null;
+            clipPrompt: string;
+            matchScore: number;
+          }[] = [];
           const used = new Set<number>();
           for (let i = 0; i < numSegments; i++) {
             const segStart = i * SEG_SEC;
@@ -340,6 +355,18 @@ export async function POST(req: NextRequest) {
             if (bestIdx < 0 || bestScore === 0) {
               bestIdx = catalog.findIndex((_, k) => !used.has(k));
             }
+            // Reconstrói o textext do clip atribuído (para preview)
+            const assignedTokens =
+              bestIdx >= 0 ? Array.from(catalog[bestIdx].tokens) : [];
+            previewSegments.push({
+              idx: i,
+              startSec: segStart,
+              endSec: segEnd,
+              narration: segText.slice(0, 200),
+              clipUrl: bestIdx >= 0 ? catalog[bestIdx].url : null,
+              clipPrompt: assignedTokens.slice(0, 12).join(" "),
+              matchScore: bestScore < 0 ? 0 : bestScore,
+            });
             if (bestIdx >= 0) {
               ordered.push({
                 url: catalog[bestIdx].url,
@@ -355,6 +382,16 @@ export async function POST(req: NextRequest) {
             console.log(
               `[render-submit] semantic-match aplicado: ${ordered.length} segmentos de narração emparelhados com clips`,
             );
+          }
+
+          // dryRun: devolve a timeline para preview, NÃO dispatcha render
+          if (dryRun) {
+            return NextResponse.json({
+              dryRun: true,
+              totalSegments: numSegments,
+              totalClipsAvailable: catalog.length,
+              segments: previewSegments,
+            });
           }
         }
       }
