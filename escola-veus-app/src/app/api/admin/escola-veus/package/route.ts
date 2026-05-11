@@ -200,6 +200,3 @@ export async function GET(req: NextRequest) {
     },
   });
 }
-
-/** Reaproveita HASHTAGS_YT noutros chamadores caso surja necessidade. */
-export { HASHTAGS_YT };
