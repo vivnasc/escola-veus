@@ -158,6 +158,19 @@ export async function POST(req: NextRequest) {
             : "";
           const trackTitle = isPlaceholder && capitalised ? capitalised : rawTitle;
 
+          // suggest-core construiu youtubeTitle/youtubeDescription com "Faixa N"
+          // (lê rawTitle directamente). Substituir pelo derived para tudo
+          // downstream (header, ytTitle, ytDesc) ficar consistente.
+          if (isPlaceholder && trackTitle !== rawTitle) {
+            const placeholderRegex = new RegExp(`Faixa\\s+${actualTrackNumber}\\b`, "gi");
+            if (suggest.youtubeTitle) {
+              suggest.youtubeTitle = suggest.youtubeTitle.replace(placeholderRegex, trackTitle);
+            }
+            if (suggest.youtubeDescription) {
+              suggest.youtubeDescription = suggest.youtubeDescription.replace(placeholderRegex, trackTitle);
+            }
+          }
+
           const lang = getTrackLang(entry.albumSlug, actualTrackNumber);
 
           // Synopsis Claude (cached por sha1 das letras) — falha graciosa.
