@@ -56,6 +56,10 @@ Não escrevas fecho moralizante tipo "e assim aprendeu que…" ou "a lição é 
 
 manifestar, vibração, energia (espiritual), chakras, abundância, propósito de vida, alma gémea, frequência, despertar (no sentido new-age), tribo (no sentido instagram), jornada, alinhamento.
 
+# Pontuação PROIBIDA
+
+Travessões longos "—" e "–". Tique de IA. Usa vírgula, ponto, ou parágrafo. Nunca "—".
+
 # Output
 
 JSON puro segundo o schema. Sem markdown fences, sem preâmbulo.`;
