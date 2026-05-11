@@ -182,31 +182,57 @@ function normalizeText(s) {
 
 function alignStanzas(stanzas, words, totalSec) {
   const speaking = speakingWords(words);
+  console.log(`  → Scribe: total=${words.length} words, speaking=${speaking.length}`);
   if (speaking.length === 0 || stanzas.length === 0) {
+    console.log(`  ⚠ sem speaking words — uniform fallback`);
     return uniformStanzas(stanzas, totalSec);
   }
   const wordList = speaking.map((w) => ({ ...w, norm: normalizeText(w.text) }));
+  console.log(`  → 10 primeiras Scribe: "${wordList.slice(0, 10).map(w => w.norm).join(" ")}"`);
   const result = [];
   let cursor = 0;
   let successCount = 0;
 
   for (let i = 0; i < stanzas.length; i++) {
     const stanza = stanzas[i];
-    const tokens = normalizeText(stanza).split(" ").filter((t) => t.length > 1);
+    // Tokens ≥3 chars — evita falsos positivos de "a"/"o"/"de" que aparecem
+    // em qualquer transcrição e poluem a contagem de matches.
+    const tokens = normalizeText(stanza).split(" ").filter((t) => t.length >= 3);
     if (tokens.length === 0) {
       result.push({ text: stanza, startSec: -1, endSec: -1, _failed: true });
       continue;
     }
     let stanzaStart = -1, stanzaEnd = -1, matched = 0, tIdx = 0;
+    let lastMatchJ = cursor;
     for (let j = cursor; j < wordList.length && tIdx < tokens.length; j++) {
       if (wordList[j].norm === tokens[tIdx]) {
         if (stanzaStart < 0) stanzaStart = j;
         stanzaEnd = j;
         matched++;
         tIdx++;
+        lastMatchJ = j;
+        continue;
+      }
+      // Token encalhado: se já scaneamos 6+ Scribe words sem match,
+      // assume mistranscrição/improvisação da cantora e SALTA esse token
+      // lírico. Sem este escape o resto da stanza inteira ficava bloqueado.
+      if (j - lastMatchJ > 6 && tIdx < tokens.length - 1) {
+        tIdx++;
+        if (wordList[j].norm === tokens[tIdx]) {
+          if (stanzaStart < 0) stanzaStart = j;
+          stanzaEnd = j;
+          matched++;
+          tIdx++;
+          lastMatchJ = j;
+        }
       }
     }
-    if (stanzaStart < 0 || matched < Math.ceil(tokens.length * 0.4)) {
+    const pct = (matched / tokens.length * 100).toFixed(0);
+    const startStr = stanzaStart >= 0 ? `${wordList[stanzaStart].start.toFixed(1)}s` : "—";
+    console.log(`  · stanza[${i}] tokens=${tokens.length} matched=${matched} (${pct}%) start=${startStr}`);
+    // Threshold per-stanza: 25% (era 40%). Permite stanzas com Scribe
+    // parcialmente errada a contribuírem para o alinhamento global.
+    if (stanzaStart < 0 || matched < Math.ceil(tokens.length * 0.25)) {
       result.push({ text: stanza, startSec: -1, endSec: -1, _failed: true });
       cursor = Math.min(wordList.length - 1, Math.round(((i + 1) / stanzas.length) * wordList.length));
       continue;
@@ -221,13 +247,13 @@ function alignStanzas(stanzas, words, totalSec) {
   }
 
   const successRate = successCount / stanzas.length;
-  console.log(`  → alignStanzas: ${successCount}/${stanzas.length} matches (${(successRate*100).toFixed(0)}%)`);
+  console.log(`  → alignStanzas TOTAL: ${successCount}/${stanzas.length} stanzas alinhadas (${(successRate*100).toFixed(0)}%)`);
 
-  // Se menos de 70% das stanzas alinharam, abandona o sync per-stanza e
-  // usa distribuição uniforme contínua. Sync parcial cria janelas
-  // estranhas e gaps que parecem "estático". Uniforme rotaciona sempre.
-  if (successRate < 0.7) {
-    console.log(`  ⚠ alinhamento insuficiente — usar uniform (${totalSec.toFixed(0)}s)`);
+  // Threshold global: 30% (era 70%). Se ≥30% das stanzas têm timing real,
+  // usa esses timings + interpola o resto (preenche entre vizinhos válidos).
+  // O fallback uniformStanzas (sem sync) só dispara para Scribe catastrófico.
+  if (successRate < 0.3) {
+    console.log(`  ⚠ alinhamento insuficiente (<30%) — uniform fallback ${totalSec.toFixed(0)}s`);
     return uniformStanzas(stanzas, totalSec);
   }
 
