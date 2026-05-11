@@ -139,11 +139,11 @@ export function buildRow(post: CsvPost, kind: CsvLineKind): string {
 export function buildCsv(posts: CsvPost[]): string {
   const lines = [CSV_HEADER.map(csvEscape).join(",")];
   for (const post of posts) {
-    // 3 linhas social com o clip
+    // 3 linhas social com o clip (portrait 9:16)
     for (const platform of ["instagram", "tiktok", "youtube"] as const) {
       lines.push(buildRow(post, { type: "social", platform }));
     }
-    // 1 linha YT canal com o full (se existir)
+    // 1 linha YT canal com o full (landscape 16:9 — Metricool aceita).
     if (post.fullVideoUrl) {
       lines.push(buildRow(post, { type: "youtube-canal" }));
     }

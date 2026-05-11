@@ -162,9 +162,15 @@ export const Root: React.FC = () => {
         calculateMetadata={({ props }) => {
           const fps = props.fps ?? 30;
           const sec = props.durationSec ?? 30;
+          // Orientation define canvas: portrait (1080x1920) para clips
+          // social, landscape (1920x1080) para fulls YT canal (Metricool
+          // rejeita upload YT VIDEO vertical com "invalid orientation").
+          const landscape = props.orientation === "landscape";
           return {
             durationInFrames: Math.max(1, Math.round(fps * sec)),
             fps,
+            width: landscape ? 1920 : 1080,
+            height: landscape ? 1080 : 1920,
           };
         }}
       />

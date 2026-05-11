@@ -66,6 +66,7 @@ async function dispatchPostMode(post: WeeklyPost, mode: RenderMode): Promise<{ j
     audioVolume: 1,
     trackLabel: post.trackLabel,
     durationSec,
+    orientation: mode === "full" ? "landscape" : "portrait",
   });
 }
 

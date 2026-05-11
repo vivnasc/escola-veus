@@ -91,10 +91,14 @@ export function lyricsToStanzas(lyrics: string): string[] {
   const tagged = lyricsToStanzasWithKind(lyrics);
   if (tagged.length >= 4) return tagged.map((s) => s.text);
   // Sem tags estruturais (ou poucos blocos) — fallback: 3 linhas por stanza.
+  // CRÍTICO: sanitiza CADA linha (não só rejeita linhas inteiras com [/])
+  // — inline "[Verse]" ou "(oh oh)" passavam intactos antes deste fix.
   const cleaned = lyrics
     .split(/\r?\n/)
     .map((l) => l.trim())
-    .filter((l) => l && !/^\[.*\]$/.test(l) && !/^\(.+\)$/.test(l));
+    .filter((l) => l && !/^\[.*\]$/.test(l) && !/^\(.+\)$/.test(l))
+    .map(sanitizeLyricLine)
+    .filter(Boolean);
   const stanzas: string[] = [];
   for (let i = 0; i < cleaned.length; i += 3) {
     stanzas.push(cleaned.slice(i, i + 3).join("\n"));
