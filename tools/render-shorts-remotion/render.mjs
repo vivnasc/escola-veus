@@ -17,6 +17,7 @@
 
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { exec as execCb } from "node:child_process";
+import { cpus } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
@@ -523,12 +524,19 @@ async function main() {
   await updateProgress("rendering", 30);
 
   const outputPath = path.join(WORK_DIR, `${JOB_ID}.mp4`);
+  // GH Actions ubuntu-latest tem 4 cores → concurrency=4 paraleliza
+  // rendering de frames. Sem este parametro Remotion default=1 e um full
+  // de 3.5min (6360 frames) demorava >100min, ultrapassando o timeout do
+  // workflow. Com 4 paralelo cabe em ~25min.
+  const renderConcurrency = Math.max(2, Math.min(4, cpus().length));
+  console.log(`→ renderMedia concurrency=${renderConcurrency}`);
   await renderMedia({
     composition,
     serveUrl: bundleLocation,
     codec: "h264",
     outputLocation: outputPath,
     inputProps: manifest,
+    concurrency: renderConcurrency,
     onProgress: ({ progress }) => {
       const pct = 30 + Math.round(progress * 60);
       console.log(`  ... ${pct}%`);
