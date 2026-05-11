@@ -25,6 +25,26 @@ function classifyTag(tagInner: string): StanzaKind {
   return "other";
 }
 
+/** Remove instruções/tags do Suno e travessões mid-AI de uma linha cantada.
+ *  Suno mete [Vocal: x], (oh oh), etc. inline ou em linhas próprias. Tudo
+ *  isso é metadata de produção, NÃO é letra cantada — não pode aparecer
+ *  no ecrã nem nas legendas. Travessões "—" são tique de IA. */
+export function sanitizeLyricLine(line: string): string {
+  return line
+    // [Anything] — tags Suno inline
+    .replace(/\[[^\]]*\]/g, "")
+    // (anything) — comentários/vocalizações Suno inline (oh oh, ah ah, harmonia)
+    .replace(/\([^)]*\)/g, "")
+    // Travessões longos — tique IA; substitui por vírgula ou nada
+    .replace(/\s*—\s*/g, ", ")
+    .replace(/\s*–\s*/g, ", ")
+    // Limpa whitespace duplicado
+    .replace(/\s+/g, " ")
+    .replace(/\s*,\s*,\s*/g, ", ")
+    .replace(/^[,;:\s]+|[,;:\s]+$/g, "")
+    .trim();
+}
+
 /** Walk através das letras retendo a secção activa por stanza. */
 export function lyricsToStanzasWithKind(lyrics: string): StanzaWithKind[] {
   if (!lyrics || !lyrics.trim()) return [];
@@ -51,11 +71,14 @@ export function lyricsToStanzasWithKind(lyrics: string): StanzaWithKind[] {
       currentKind = classifyTag(tagMatch[1]);
       continue;
     }
-    // Comentários em parênteses
+    // Linha-só de comentário em parênteses (vocalização ou nota Suno)
     if (/^\(.+\)$/.test(t)) continue;
     // Secções "other" não vão para stanzas (intro instrumental, vocal config)
     if (currentKind === "other") continue;
-    buffer.push(t);
+    // Sanitiza inline antes de adicionar — strip [tags], (parens), travessões
+    const cleaned = sanitizeLyricLine(t);
+    if (!cleaned) continue;
+    buffer.push(cleaned);
     if (buffer.length >= 5) flush(); // parte stanzas longas
   }
   flush();

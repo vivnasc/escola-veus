@@ -282,15 +282,18 @@ async function ensureStanzaTimings(manifest) {
     const chorusStart = stanzaTimings[manifest.chorusStanzaIdx].startSec;
     const offset = Math.max(0, chorusStart - 1); // 1s lead-in
     audioStartFromSec = offset;
+    // CRÍTICO: filtra ANTES de clampar. Stanzas pre-chorus shifted ficam
+    // com startSec NEGATIVO — descartam-se. Sem isso, todas as pre-chorus
+    // colapsavam em sec=0 e o renderer só mostrava uma "estática".
     adjustedTimings = stanzaTimings
       .map((t) => ({
         text: t.text,
-        startSec: Math.max(0, t.startSec - offset),
-        endSec: Math.max(0, t.endSec - offset),
+        startSec: t.startSec - offset,
+        endSec: t.endSec - offset,
       }))
-      .filter((t) => t.startSec < durationSec); // só o que cabe no clip
+      .filter((t) => t.startSec >= 0 && t.startSec < durationSec);
     adjustedLyrics = adjustedTimings.map((t) => t.text);
-    console.log(`  → clip arranca em chorus: offset=${offset.toFixed(1)}s · ${adjustedTimings.length}/${stanzaTimings.length} stanzas`);
+    console.log(`  → clip arranca em chorus: offset=${offset.toFixed(1)}s · ${adjustedTimings.length}/${stanzaTimings.length} stanzas mantidas`);
   }
 
   return {

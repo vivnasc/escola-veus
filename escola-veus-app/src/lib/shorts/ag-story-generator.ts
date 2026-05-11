@@ -28,29 +28,33 @@ export type AGStoryInput = {
   trackNumber?: number;
 };
 
-const SYSTEM = `És uma contadora de histórias moçambicana — voz de quem se senta junto ao fogo ao fim do dia e narra. Escreves contos contemplativos curtos para acompanhar música ambient instrumental Ancient Ground.
+const SYSTEM = `És uma contadora de histórias moçambicana — voz de quem se senta junto ao fogo ao fim do dia e narra. Escreves contos curtos para acompanhar música ambient instrumental Ancient Ground.
 
 # Identidade Ancient Ground
 
-Música enraizada em Moçambique: capulanas, baobás, oceano Índico, savana, machambas, batuques, anciãos. Centralidade africana. Ubuntu. Tempo profundo. Elementos como sujeitos vivos. Sem misticismo New Age. Sem morais explícitas. Sem "tu deves" ou "lições".
+Música enraizada em Moçambique: capulanas, baobás, oceano Índico, savana, machambas, batuques, anciãos. Centralidade africana. Ubuntu. Tempo profundo. Elementos como sujeitos vivos. Sem misticismo New Age.
 
 # O que escrever
 
-Conto inédito de **500-700 palavras**, dividido em **12-15 capítulos curtos** (1-3 frases por capítulo). Cada capítulo é uma porta — abre uma cena, deixa-a respirar, segue.
+Conto inédito de **200-280 palavras**, dividido em **exactamente 10 capítulos**.
 
-Cenas concretas: alguém a fazer alguma coisa, num sítio que se vê. Uma avó a tecer. Um pescador a regressar com a maré. Uma criança a aprender o gesto. Detalhes sensoriais — cheiros, texturas, sons.
+- Capítulos 1-9: cada um é UMA frase curta (10-20 palavras) ou no máximo duas frases curtas. Cada frase é uma imagem concreta — alguém a fazer alguma coisa, num sítio que se vê.
+- Capítulo 10 (fecho): 1-2 frases que **selam a aprendizagem da história** de forma concreta. Não é moral abstracta, é uma observação que arruma o que foi mostrado.
+
+Exemplo de fecho concreto: "Há coisas que não se ensinam por palavras. Passam pelos gestos. As mãos aprendem antes da cabeça."
+Não escrevas fecho moralizante tipo "e assim aprendeu que…" ou "a lição é que…".
 
 # Tom
 
 - 3ª pessoa ou 1ª (escolhe o que serve a história)
 - PT-PT (Portugal/Moçambique), nunca brasileiro
-- Frases curtas. Pausas. Silêncios entre capítulos.
-- O que não se diz pesa tanto como o que se diz
-- Inversões temporais: "antes de ele saber", "muito depois"
+- Frases CURTAS. Vai ao gesto, ao objecto, ao som. Detalhes sensoriais concretos.
+- Ancorado: cheiros, texturas, peso, calor, sal, terra. Pouca abstracção.
+- Tempo a passar: manhã, meio-dia, tarde. Inversões pontuais ("muito depois") são OK mas não abuses.
 
 # Vocabulário PROIBIDO
 
-manifestar, vibração, energia (espiritual), chakras, abundância, propósito de vida, alma gémea, frequência, despertar (no sentido new-age), tribo (no sentido instagram).
+manifestar, vibração, energia (espiritual), chakras, abundância, propósito de vida, alma gémea, frequência, despertar (no sentido new-age), tribo (no sentido instagram), jornada, alinhamento.
 
 # Output
 
@@ -61,19 +65,21 @@ function buildUserMessage(input: AGStoryInput): string {
     .map((t) => `- ${RAIZES_TEMA_LABELS[t] || t}: ${RAIZES_TEMA_DESCRICOES[t] || ""}`)
     .join("\n");
 
-  return `Escreve um conto inédito para acompanhar este short Ancient Ground:
+  return `Escreve um conto inédito para acompanhar este Ancient Ground:
 
 **Label do triplete:** ${input.label}
 **Temas raízes:**
 ${temasInfo}
 
-O conto deve ressoar com estes temas — directamente (cenas com avó, machamba, pesca) ou obliquamente (o que a mão sabe, o que o ritmo lembra). Mas é uma HISTÓRIA — tem cenas, gente, gestos, tempo a passar — não é poesia abstracta.
+O conto deve ressoar com estes temas — directamente (cenas com avó, machamba, pesca) ou obliquamente (o que a mão sabe, o que o ritmo lembra). Mas é uma HISTÓRIA — tem cenas, gente, gestos, tempo a passar — não poesia abstracta.
 
 Devolve JSON com:
 - title: título curto (3-6 palavras)
-- chapters: array com 12-15 strings, cada uma 1-3 frases
+- chapters: array com EXACTAMENTE 10 strings.
+    - 1-9: cada uma 1 frase curta (10-20 palavras) ou no máximo 2 frases curtas
+    - 10: fecho-lição que sela a história em 1-2 frases concretas
 
-Cada chapter deve funcionar isolado mas em sequência conta a história. O 1º abre, o último fecha.
+O 1º capítulo abre a cena. Os intermédios deixam o gesto crescer. O 10º arruma.
 
 Output JSON puro, sem markdown.`;
 }
@@ -122,8 +128,8 @@ export async function generateAGStory(input: AGStoryInput): Promise<AGStory> {
     ? parsed.chapters.filter((c): c is string => typeof c === "string" && c.trim().length > 0)
     : [];
 
-  if (chapters.length < 5) {
-    throw new Error(`Story com poucos chapters (${chapters.length}).`);
+  if (chapters.length < 8 || chapters.length > 12) {
+    throw new Error(`Story com nº de chapters errado (${chapters.length}; esperado 10±2).`);
   }
   return { title, chapters };
 }
