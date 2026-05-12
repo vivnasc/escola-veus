@@ -3,6 +3,25 @@
 
 import type { Dia, Slide as SlideType } from "./carousel-types";
 
+const BRAND_HASHTAGS = [
+  "#seteveus",
+  "#escoladosveus",
+  "#despertar",
+  "#autoconhecimento",
+  "#presenca",
+  "#consciencia",
+  "#vidainterior",
+];
+
+function toHashtag(s: string): string {
+  const clean = s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+  return clean ? `#${clean}` : "";
+}
+
 /**
  * Texto que vai ser narrado para um slide (input ao TTS).
  */
@@ -34,6 +53,9 @@ export function captionFor(dia: Dia, totalDias: number = 7): string {
     ? `E se experimentasses esta semana: ${habito.texto.replace(/\n+/g, " ")}`
     : `E tu — como te relacionas com ${veuLower}?`;
 
+  const veuTag = toHashtag(dia.veu);
+  const hashtags = [veuTag, ...BRAND_HASHTAGS].filter(Boolean).join(" ");
+
   const lines = [
     "Olá.",
     "",
@@ -45,6 +67,8 @@ export function captionFor(dia: Dia, totalDias: number = 7): string {
     `Dia ${dia.numero}/${totalDias} · ${dia.veu}`,
     "",
     cta ? `${cta.recurso}\n${cta.url}` : "",
+    "",
+    hashtags,
   ];
 
   return lines.filter((l) => l !== null && l !== undefined).join("\n").replace(/\n{3,}/g, "\n\n").trim();
