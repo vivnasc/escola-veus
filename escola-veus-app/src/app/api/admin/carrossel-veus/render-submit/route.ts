@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
+import { themeById, type CarouselTheme } from "@/lib/carousel-themes";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -75,12 +76,31 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Validação leve do theme — só aceitamos se tiver as chaves de cor esperadas.
+  // Resolve a paleta com 2 estratégias (defensivas, para tolerar cache de
+  // bundle cliente desactualizado):
+  //   1) Cliente envia o objecto theme completo no body — usa esse.
+  //   2) Caso não venha, infere o slug do jobId (`${slug}-${timestamp}`),
+  //      lê a colecção do DB e expande o theme.id em CarouselTheme.
   const themeKeys = ["id", "ink", "ivory", "parchmentDark", "deep", "deepWarm", "terracotta", "gold", "mist"] as const;
-  const themePayload =
-    body.theme && typeof body.theme === "object" && themeKeys.every((k) => typeof body.theme![k] === "string")
-      ? body.theme
-      : null;
+  let themePayload: CarouselTheme | null = null;
+  if (body.theme && typeof body.theme === "object" && themeKeys.every((k) => typeof body.theme![k] === "string")) {
+    themePayload = body.theme as unknown as CarouselTheme;
+  } else {
+    const slugMatch = jobId.match(/^(.+)-\d+$/);
+    const inferredSlug = slugMatch ? slugMatch[1] : null;
+    if (inferredSlug) {
+      const { data: col } = await admin
+        .from("carousel_collections")
+        .select("theme")
+        .eq("slug", inferredSlug)
+        .maybeSingle();
+      const themeId =
+        col && col.theme && typeof col.theme === "object" && typeof (col.theme as { id?: unknown }).id === "string"
+          ? ((col.theme as { id: string }).id)
+          : null;
+      if (themeId) themePayload = themeById(themeId);
+    }
+  }
 
   // Manifest: lido pelo workflow para saber quais áudios descarregar
   const manifest = {
