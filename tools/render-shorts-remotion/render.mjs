@@ -365,6 +365,81 @@ function uniformStanzas(stanzas, totalSec) {
   }));
 }
 
+// ===== SRT utilities (mesma lógica do generate-srt do funil) =====
+
+function fmtSrtTime(seconds) {
+  const s = Math.max(0, seconds);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = Math.floor(s % 60);
+  const ms = Math.round((s - Math.floor(s)) * 1000);
+  return (
+    String(h).padStart(2, "0") + ":" +
+    String(m).padStart(2, "0") + ":" +
+    String(sec).padStart(2, "0") + "," +
+    String(ms).padStart(3, "0")
+  );
+}
+
+/** Agrupa Scribe words em linhas SRT.
+ *  Quebra quando: gap ≥ 0.8s OU 10+ palavras OU 4s OU pontuação final.
+ *  Aplica offset (shift) e maxSec (filter) para clips com chorus-start.
+ *  Mesmo padrão do generate-srt do funil. */
+function wordsToSrt(words, offsetSec, maxSec) {
+  const speaking = (words || []).filter(
+    (w) => w && w.type === "word" && typeof w.start === "number" && typeof w.end === "number" && w.text,
+  );
+  if (speaking.length === 0) return "";
+
+  const lines = [];
+  let buf = [];
+  let bufStart = 0;
+  let prevEnd = 0;
+
+  const flush = () => {
+    if (buf.length === 0) return;
+    const text = buf.map((w) => w.text).join(" ").replace(/\s+([.,!?;:])/g, "$1");
+    lines.push({ start: bufStart, end: prevEnd, text });
+    buf = [];
+  };
+
+  for (const w of speaking) {
+    const wStart = w.start - offsetSec;
+    const wEnd = w.end - offsetSec;
+    if (wEnd < 0) continue;                  // antes do chorus shift
+    if (maxSec != null && wStart > maxSec) break;  // depois do clip de 30s
+    const adjustedStart = Math.max(0, wStart);
+    const gap = buf.length === 0 ? 0 : adjustedStart - prevEnd;
+    const lineDuration = buf.length === 0 ? 0 : wEnd - bufStart;
+    const lastWordEnded = buf.length > 0 && /[.!?:]$/.test(buf[buf.length - 1].text);
+    const shouldBreak = buf.length > 0 && (gap >= 0.8 || buf.length >= 10 || lineDuration >= 4 || lastWordEnded);
+    if (shouldBreak) flush();
+    if (buf.length === 0) bufStart = adjustedStart;
+    buf.push({ ...w, start: adjustedStart, end: wEnd });
+    prevEnd = wEnd;
+  }
+  flush();
+
+  return lines
+    .map((l, i) => `${i + 1}\n${fmtSrtTime(l.start)} --> ${fmtSrtTime(l.end)}\n${l.text.trim()}\n`)
+    .join("\n");
+}
+
+/** Estilo libass elegante para Loranne shorts. Casa com a tipografia do
+ *  overlay actual (serif italic, cream #F5F0E6) — sem a caixa opaca pesada
+ *  que o funil usa por defeito. Override via manifest.subtitleStyle. */
+const DEFAULT_SUBTITLE_STYLE =
+  "FontName=Liberation Serif," +
+  "FontSize=26," +
+  "Italic=1," +
+  "PrimaryColour=&H00E6F0F5," +   // cream #F5F0E6 (BGR)
+  "OutlineColour=&H00000000," +    // outline preto subtil para readability
+  "BorderStyle=1," +               // 1 = outline+shadow, 3 = caixa opaca (não)
+  "Outline=1," +                   // 1px outline (subtil, não tira elegância)
+  "Shadow=1," +                    // 1px shadow (apenas para contraste)
+  "Alignment=2," +                 // bottom-center
+  "MarginV=120";                   // 120px do fundo (respira mais que funil)
+
 /** Sanitiza linha cantada — strip [tags], (parens), travessões.
  *  Última linha de defesa caso o plano contenha letras não-limpas. */
 function sanitizeLyricLine(line) {
@@ -412,22 +487,16 @@ async function ensureStanzaTimings(manifest) {
     return manifest;
   }
 
-  // Forced Alignment: dá-lhe áudio + letra conhecida, devolve timestamps
-  // de cada palavra da letra. ~100% match (contra ~67% do match string
-  // baseado em Scribe). Cache key inclui texto — se a letra muda, recalcula.
-  const lyricsText = manifest.syncedLyrics.join("\n\n");
-  console.log(`→ Forced Alignment: a verificar cache (audio + ${lyricsText.length} chars texto)`);
-  let cached = await tryFetchForcedAlignCache(manifest.audioUrl, lyricsText);
+  console.log(`→ Scribe: a verificar cache para ${manifest.audioUrl.slice(-60)}`);
+  let cached = await tryFetchScribeCache(manifest.audioUrl);
   if (cached) {
-    console.log(`  ✓ cache hit (${cached.words?.length || 0} words, loss=${cached.loss?.toFixed?.(3) ?? "?"})`);
+    console.log(`  ✓ cache hit (${cached.words?.length || 0} words)`);
   } else {
-    console.log(`  · cache miss — a chamar Forced Alignment (~$0.01)`);
-    const result = await callForcedAlignment(manifest.audioUrl, lyricsText);
-    // Adiciona type:"word" para compatibilidade com speakingWords filter
-    const words = result.words.map((w) => ({ ...w, type: "word" }));
-    cached = { words, loss: result.loss, savedAt: new Date().toISOString() };
-    await writeForcedAlignCache(manifest.audioUrl, lyricsText, cached);
-    console.log(`  ✓ Forced Alignment ${words.length} words (loss=${result.loss?.toFixed?.(3) ?? "?"}), gravado em cache`);
+    console.log(`  · cache miss — a chamar Scribe (~$0.03)`);
+    const words = await callScribe(manifest.audioUrl, manifest.lang || "PT");
+    cached = { words, savedAt: new Date().toISOString() };
+    await writeScribeCache(manifest.audioUrl, cached);
+    console.log(`  ✓ Scribe ${words.length} words, gravado em cache`);
   }
 
   const speaking = speakingWords(cached.words);
@@ -552,7 +621,11 @@ async function main() {
   let manifest = await fetchJson(manifestUrl);
   console.log(`→ Manifest brand=${manifest.brand} variant=${manifest.motionVariant} mode=${manifest.mode} orientation=${manifest.orientation || "(unset)"} lyricsSync=${!!manifest.lyricsSync} syncedLyrics=${manifest.syncedLyrics?.length || 0} chorusStanzaIdx=${manifest.chorusStanzaIdx ?? "(null)"}`);
 
-  // 1b. Scribe + alinhamento (com cache) — só Loranne lyric video
+  // 1b. Scribe + alinhamento (com cache) — só Loranne lyric video.
+  // ensureStanzaTimings continua a correr para apurar audioStartFromSec (chorus
+  // shift no clip) e audioDurationSec. Os stanzaTimings computados deixam de ser
+  // usados no overlay (Remotion overlay fica desligado abaixo — passamos a
+  // queimar legendas via FFmpeg+SRT no fim).
   await updateProgress("rendering", 5, { title: manifest.title || manifest.trackLabel || JOB_ID });
   manifest = await ensureStanzaTimings(manifest);
   // 1c. Para mode=full sem audioDurationSec ainda (AG full, ou Loranne sem
@@ -560,6 +633,38 @@ async function main() {
   manifest = await ensureFullDuration(manifest);
 
   await mkdir(WORK_DIR, { recursive: true });
+
+  // 1d. SRT: para Loranne (lyricsSync), gera ficheiro .srt a partir das Scribe
+  // words. Mesmo padrão do render-funil. Para CLIP: shifta por audioStartFromSec
+  // (chorus arranca em 0s no clip) e corta em durationSec. Para FULL: offset 0,
+  // sem limite máximo. Depois DESLIGA o overlay do Remotion — vamos queimar a
+  // SRT por cima do mp4 final via FFmpeg.
+  let subtitlesPath = null;
+  if (manifest.lyricsSync && manifest.audioUrl) {
+    try {
+      const scribeCached = await tryFetchScribeCache(manifest.audioUrl);
+      const words = scribeCached?.words || [];
+      const offset = Number(manifest.audioStartFromSec) || 0;
+      const maxSec = manifest.mode === "clip" ? Number(manifest.durationSec) || 30 : null;
+      const srt = wordsToSrt(words, offset, maxSec);
+      if (srt) {
+        subtitlesPath = path.join(WORK_DIR, `${JOB_ID}.srt`);
+        await writeFile(subtitlesPath, srt, "utf8");
+        const lineCount = (srt.match(/\n\n/g) || []).length;
+        console.log(`→ SRT gerada: ${lineCount} legendas, offset=${offset.toFixed(1)}s${maxSec ? ` max=${maxSec}s` : ""} → ${subtitlesPath}`);
+        // Desliga overlay do Remotion + esvazia verses (que são o fallback
+        // quando isSync=false). VerseOverlay returna null com text vazio,
+        // assim a Composition renderiza só motion+audio sem texto — depois
+        // o FFmpeg burn adiciona as legendas SRT por cima.
+        manifest = { ...manifest, lyricsSync: false, verses: ["", ""] };
+      } else {
+        console.log(`  ⚠ SRT vazia (Scribe não devolveu words usáveis) — sem legendas no clip`);
+      }
+    } catch (e) {
+      console.log(`  ⚠ erro a gerar SRT: ${e.message?.slice(0, 200) || e}`);
+    }
+  }
+
   const propsPath = path.join(WORK_DIR, `${JOB_ID}-props.json`);
   await writeFile(propsPath, JSON.stringify(manifest, null, 2));
 
@@ -627,10 +732,37 @@ async function main() {
   });
   console.log(`→ MP4 renderizado: ${outputPath}`);
 
+  // 3b. FFmpeg burn das legendas (se SRT foi gerada). Mesmo padrão do funil:
+  // `subtitles=path:force_style='...'` queima as legendas no vídeo. Escape `:` e
+  // `\` no path porque são separadores do filtro libass. Copia áudio (sem
+  // re-encode), só re-encoda vídeo.
+  let finalMp4Path = outputPath;
+  if (subtitlesPath) {
+    const burnedPath = path.join(WORK_DIR, `${JOB_ID}-burned.mp4`);
+    const escapedSrt = subtitlesPath.replace(/\\/g, "\\\\").replace(/:/g, "\\:");
+    const style = (manifest.subtitleStyle || DEFAULT_SUBTITLE_STYLE).replace(/'/g, "");
+    const cmd = [
+      "ffmpeg -y",
+      `-i "${outputPath}"`,
+      `-vf "subtitles=${escapedSrt}:force_style='${style}'"`,
+      "-c:v libx264 -preset veryfast -crf 20",
+      "-c:a copy",
+      `"${burnedPath}"`,
+    ].join(" ");
+    console.log(`→ FFmpeg burn legendas → ${burnedPath}`);
+    try {
+      await exec(cmd, { timeout: 300_000, maxBuffer: 50 * 1024 * 1024 });
+      finalMp4Path = burnedPath;
+      console.log(`  ✓ Burn OK`);
+    } catch (e) {
+      console.log(`  ⚠ FFmpeg burn falhou (${e.message?.slice(0, 200)}) — uso mp4 sem legendas`);
+    }
+  }
+
   await updateProgress("uploading", 92);
 
   // 4. Upload
-  const mp4Body = await readFile(outputPath);
+  const mp4Body = await readFile(finalMp4Path);
   // Path ESTÁVEL para o mp4: tira o timestamp final do JOB_ID. Cada re-render
   // do MESMO post+mode escreve sobre o ficheiro existente em vez de criar um
   // novo (poupa espaço em Supabase — user reportou acumulação).
