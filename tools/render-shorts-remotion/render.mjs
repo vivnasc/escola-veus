@@ -111,6 +111,32 @@ async function writeScribeCache(audioUrl, payload) {
   );
 }
 
+/** Cache para Forced Alignment depende de áudio E texto (se a letra
+ *  muda, alinhamento muda). Hash combina ambos. */
+function forcedAlignCachePath(audioUrl, text) {
+  const hash = crypto
+    .createHash("sha1")
+    .update(audioUrl + "\0" + text)
+    .digest("hex")
+    .slice(0, 16);
+  return `forced-align-cache/${hash}.json`;
+}
+
+async function tryFetchForcedAlignCache(audioUrl, text) {
+  const url = publicUrl(forcedAlignCachePath(audioUrl, text));
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) return null;
+  try { return await res.json(); } catch { return null; }
+}
+
+async function writeForcedAlignCache(audioUrl, text, payload) {
+  await uploadFile(
+    forcedAlignCachePath(audioUrl, text),
+    JSON.stringify(payload),
+    "application/json",
+  );
+}
+
 function langToScribeCode(lang) {
   if (!lang) return "por";
   const u = String(lang).toUpperCase();
@@ -148,6 +174,43 @@ async function callScribe(audioUrl, lang) {
   }
   const data = await res.json();
   return Array.isArray(data.words) ? data.words : [];
+}
+
+/** ElevenLabs Forced Alignment — dá-lhe áudio + letra conhecida, devolve
+ *  timestamps reais de cada palavra DA LETRA (não transcrição). É o tool
+ *  certo para sincronização de karaoke; substitui o `callScribe` quando
+ *  temos as letras (sempre o caso em Loranne lyric video).
+ *  Endpoint: POST /v1/forced-alignment
+ *  Body: multipart { file: audio, text: letra inteira }
+ *  Response: { words: [{text, start, end, loss}], characters, loss } */
+async function callForcedAlignment(audioUrl, text) {
+  const key = process.env.ELEVENLABS_API_KEY;
+  if (!key) throw new Error("ELEVENLABS_API_KEY ausente no GHA secrets.");
+
+  const audioRes = await fetch(audioUrl);
+  if (!audioRes.ok) throw new Error(`Download MP3 ${audioRes.status}`);
+  const audioBuf = Buffer.from(await audioRes.arrayBuffer());
+
+  const form = new FormData();
+  const blob = new Blob([audioBuf], { type: "audio/mpeg" });
+  form.append("file", blob, "track.mp3");
+  form.append("text", text);
+  console.log(`  · Forced Alignment text=${text.length} chars`);
+
+  const res = await fetch("https://api.elevenlabs.io/v1/forced-alignment", {
+    method: "POST",
+    headers: { "xi-api-key": key },
+    body: form,
+  });
+  if (!res.ok) {
+    const errTxt = await res.text().catch(() => "");
+    throw new Error(`Forced Alignment ${res.status}: ${errTxt.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  return {
+    words: Array.isArray(data.words) ? data.words : [],
+    loss: typeof data.loss === "number" ? data.loss : null,
+  };
 }
 
 /** ffprobe à URL do áudio (não requer download local — ffprobe lê via http).
@@ -349,16 +412,22 @@ async function ensureStanzaTimings(manifest) {
     return manifest;
   }
 
-  console.log(`→ Scribe: a verificar cache para ${manifest.audioUrl.slice(-60)}`);
-  let cached = await tryFetchScribeCache(manifest.audioUrl);
+  // Forced Alignment: dá-lhe áudio + letra conhecida, devolve timestamps
+  // de cada palavra da letra. ~100% match (contra ~67% do match string
+  // baseado em Scribe). Cache key inclui texto — se a letra muda, recalcula.
+  const lyricsText = manifest.syncedLyrics.join("\n\n");
+  console.log(`→ Forced Alignment: a verificar cache (audio + ${lyricsText.length} chars texto)`);
+  let cached = await tryFetchForcedAlignCache(manifest.audioUrl, lyricsText);
   if (cached) {
-    console.log(`  ✓ cache hit (${cached.words?.length || 0} words)`);
+    console.log(`  ✓ cache hit (${cached.words?.length || 0} words, loss=${cached.loss?.toFixed?.(3) ?? "?"})`);
   } else {
-    console.log(`  · cache miss — a chamar Scribe (~$0.03)`);
-    const words = await callScribe(manifest.audioUrl, manifest.lang || "PT");
-    cached = { words, savedAt: new Date().toISOString() };
-    await writeScribeCache(manifest.audioUrl, cached);
-    console.log(`  ✓ Scribe ${words.length} words, gravado em cache`);
+    console.log(`  · cache miss — a chamar Forced Alignment (~$0.01)`);
+    const result = await callForcedAlignment(manifest.audioUrl, lyricsText);
+    // Adiciona type:"word" para compatibilidade com speakingWords filter
+    const words = result.words.map((w) => ({ ...w, type: "word" }));
+    cached = { words, loss: result.loss, savedAt: new Date().toISOString() };
+    await writeForcedAlignCache(manifest.audioUrl, lyricsText, cached);
+    console.log(`  ✓ Forced Alignment ${words.length} words (loss=${result.loss?.toFixed?.(3) ?? "?"}), gravado em cache`);
   }
 
   const speaking = speakingWords(cached.words);
