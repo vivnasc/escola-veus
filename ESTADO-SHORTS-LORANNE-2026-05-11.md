@@ -1,16 +1,34 @@
-# Estado actual — Shorts Loranne lyric/sync (sessão 2026-05-11)
+# Estado actual — Shorts Loranne + Ancient Ground (sessão 2026-05-11)
 
-> Documento de registo do estado do pipeline de geração de shorts/fulls
-> com legendas, ao fim desta sessão. Para continuar no próximo arranque.
+> Documento de registo do estado dos pipelines de shorts/fulls **para as três
+> marcas (Loranne, Ancient Ground, Escola dos Véus)** ao fim desta sessão.
+> Para continuar no próximo arranque.
 
 ## TL;DR
 
-O pipeline finalmente funciona com legendas **estilo TikTok queimadas via FFmpeg**, ao
-invés do overlay React/Remotion que falhou em múltiplas iterações. A solução veio
-por insistência da user em apontar que devíamos copiar o pipeline de funil em vez
-de continuar a tentar overlays React.
+Esta sessão tocou **só no caminho Loranne** (lyric video com letras cantadas).
+**Ancient Ground não foi alterada** — continua com `storyChapters` em React
+overlay. **Escola dos Véus não foi alterada** — só nasceu PR #322 com o
+endpoint `/api/admin/escola-veus/package` para CSV/Drive de upload, sem mexer
+no visual dos vídeos.
+
+Os TODOs da próxima sessão aplicam-se **às três marcas**, não só Loranne.
 
 `RENDER_VERSION = "2026-05-11-srt-captions-ffmpeg-burn"` — main, depois do PR #334.
+
+## Os três caminhos coexistem hoje
+
+| | **Loranne (lyric)** | **Ancient Ground** | **Escola dos Véus** |
+|---|---|---|---|
+| Conteúdo | Música cantada com letras | Música instrumental | Episódios curso/longos didácticos |
+| Plano weekly | Sim (`weekly/plan`) | Sim (`weekly/plan`) | Não (pipeline próprio em `admin/producao/escola-veus`) |
+| `lyricsSync` no manifest | `true` (sempre) | `false` (sempre) | n/a (não passa por `render-remotion-short`) |
+| Fonte de texto no vídeo | Scribe (STT) sobre o áudio | `storyChapters` do plano (texto narrativo) | Próprio (PDFs, cadernos, longos) |
+| Pipeline de overlay | SRT + FFmpeg burn (esta sessão) | React/Remotion `SyncedLyricsLayer` (story-mode) | Pipeline próprio (longos, cadernos PDF) |
+| Visual actual | Liberation Serif italic cream queimada via libass | Playfair Display cream render React | Variado (vídeos longos `render-longo`, PDFs, etc.) |
+| Mudou esta sessão? | ✅ Tudo refeito | ❌ Intocada | ❌ Só o endpoint `/package` (CSV upload Drive — PR #322) |
+
+
 
 ## Pipeline actual (Loranne lyric short / full)
 
@@ -99,96 +117,125 @@ escola-veus-app/src/app/api/admin/funil/generate-srt/route.ts    # referência: 
 tools/render-funil/render.mjs                                    # referência: FFmpeg burn do funil
 ```
 
-## Próximas melhorias pedidas (TODO)
+## Próximas melhorias pedidas (TODO) — APLICAR ÀS 3 MARCAS
 
 User pediu para a próxima sessão:
 
-### 1. Padrões visuais únicos por música, dentro da identidade de cada artista
+### 1. Padrões visuais únicos por música/conteúdo, dentro da identidade de cada marca
 
-- Cada faixa Loranne deve ter um padrão visual próprio (variação dentro da
-  paleta/tipografia Loranne).
-- Mesmo para AG (Ancient Ground): cada faixa com pattern único dentro da
-  identidade AG.
-- **Aplicação:** estender `motionVariant` para incluir variações de motion
-  background ou paleta accent **estáveis por trackId** (não rotativas por
-  semana como `MOTION_VARIANTS[(week + DAY_ORDER.indexOf(day)) % 4]`).
-- Considerar registar `trackPattern` no manifest (índice estável derivado do
-  `trackId` por hash → variant) para que cada faixa tenha sempre o mesmo visual.
+Aplicar **a todas**:
+- **Loranne:** cada faixa com pattern visual estável (mesma faixa → mesmo
+  visual sempre que renderiza), dentro da paleta/tipografia Loranne. Hoje
+  `MOTION_VARIANTS[(week + DAY_ORDER.indexOf(day)) % 4]` em
+  `app/api/admin/weekly/plan/route.ts:216` rotaciona por semana — quero
+  estabilidade por `trackId`.
+- **Ancient Ground:** mesmo princípio, cada faixa instrumental AG com
+  pattern próprio dentro da identidade AG (paleta terra/raízes).
+- **Escola dos Véus:** cada episódio/conteúdo do curso com pattern próprio
+  dentro da identidade EV. Verificar o que aplica — `admin/producao/escola-veus`
+  e `tools/render-longo` têm pipelines próprios.
+
+**Implementação proposta:**
+- Derivar `motionVariant` (e/ou `accent`) por **hash do trackId/slug** em
+  vez de rotação `(week, day)`. Função stable: `motionFromTrackId(slug)
+  → "A" | "B" | "C" | "D"`.
+- Registar `trackPattern` no manifest para auditoria.
+- Mexer: `app/api/admin/weekly/plan/route.ts` (Loranne + AG), e investigar
+  se Escola dos Véus precisa de mudança equivalente.
 
 ### 2. Legendas Loranne: tamanho menor e cor dourada
 
+Aplica-se hoje só a Loranne (única marca com SRT burn):
 - **Tamanho:** reduzir `FontSize=26 → 22` (ou `20` se ainda pesado em 1080×1920).
 - **Cor:** mudar `PrimaryColour=&H00E6F0F5` (cream) → **dourado escola-dourado**.
   - Hex dourado do tema: ~`#C9A961` (verificar valor exacto em
     `escola-veus-app/tailwind.config.ts` ou `src/styles`).
-  - Conversão BGR libass: `#C9A961` → `0061A9C9` → `&H000061A9C9` (formato
-    `&H00BBGGRR`).
+  - Conversão BGR libass: `#C9A961` → `&H000061A9C9` (formato `&H00BBGGRR`).
 - Local: `DEFAULT_SUBTITLE_STYLE` em `tools/render-shorts-remotion/render.mjs`.
 
-### 3. Possibilidade: word-by-word karaoke (palavra cantada destacada)
+**E os outros?** AG não tem SRT (overlay React). Escola dos Véus tem pipeline
+próprio — verificar se também quer afinar tipografia/cores para coerência.
 
-Avaliar:
-- **libass karaoke tags** (`{\k<centisec>}word`) — suportadas pelo ffmpeg
-  subtitles filter. Pode gerar-se ASS em vez de SRT a partir dos Scribe words
-  com cada `{\kN}` baseado em `(word.end - word.start) * 100`. Cor primária
-  cream + secundária dourado, libass anima a transição.
-- **Forced Alignment** dá timestamps por palavra da letra real — melhor para
-  karaoke do que Scribe (que pode mistranscrever em música cantada). Trocar a
-  fonte da geração ASS para Forced Alignment se a precisão Scribe não chegar.
-- Decidir se aplica só a Loranne (lyric video) ou também AG full com story.
+### 3. Word-by-word karaoke (palavra cantada destacada) — avaliar viabilidade
+
+Aplica-se principalmente a **Loranne** (lyric video):
+- **libass karaoke tags** (`{\k<centisec>}word`) suportadas pelo `ffmpeg
+  subtitles=` filter. Gerar `.ass` em vez de `.srt` a partir dos Scribe words
+  com `{\kN}` por palavra. Cor primária cream/dourado + secundária outro tom,
+  libass anima transição palavra-a-palavra.
+- **Forced Alignment** (já em código, desactivado) dá timestamps por palavra
+  da letra real — melhor para karaoke do que Scribe (que pode mistranscrever
+  música cantada). Trocar fonte da geração `.ass` para Forced Alignment se a
+  precisão Scribe não chegar.
+- Avaliar se aplica também a **AG** (full com story) ou apenas Loranne.
+  Escola dos Véus provavelmente não — é didáctico, não musical.
 
 ## Continuação prompt (paste no início da próxima sessão)
 
 ```
-Trabalhamos no pipeline de shorts/fulls Loranne da escola-veus
-(repo vivnasc/escola-veus). Lê primeiro o ficheiro
-ESTADO-SHORTS-LORANNE-2026-05-11.md no root do repo para perceber
-o estado actual.
+Trabalhamos no pipeline de produção de conteúdo para 3 MARCAS da
+escola-veus (repo vivnasc/escola-veus): Loranne (música cantada),
+Ancient Ground (música instrumental), e Escola dos Véus (curso).
+
+Lê primeiro o ficheiro ESTADO-SHORTS-LORANNE-2026-05-11.md no root
+do repo. Tem o panorama completo + a tabela das 3 marcas.
 
 Tarefas para esta sessão (por ordem):
 
-1. PADRÕES VISUAIS ÚNICOS POR MÚSICA
-   Hoje o `motionVariant` em `lib/shorts/render-remotion-core.ts` rotaciona
-   semanalmente por (week, day). Quero que cada faixa Loranne e AG tenha um
-   pattern visual estável (mesmo visual sempre que a mesma faixa renderiza),
-   dentro da paleta/tipografia da respectiva marca. Propor: derivar
-   `motionVariant` (e/ou `accent`) por hash do trackId/slug em vez de
-   rotação (week, day). Mostrar implementação concreta antes de mexer.
+1. PADRÕES VISUAIS ÚNICOS POR MÚSICA/CONTEÚDO (3 MARCAS)
+   Hoje em app/api/admin/weekly/plan/route.ts:216, MOTION_VARIANTS
+   rotaciona por (week, day) — mesmo trackId pode ter pattern
+   diferente em semanas diferentes. Quero ESTABILIDADE: cada
+   faixa/conteúdo tem sempre o seu visual.
+   - Loranne: hash(trackId) → motion + accent dentro da paleta
+     Loranne.
+   - Ancient Ground: hash(trackId) → motion + accent dentro da
+     paleta AG.
+   - Escola dos Véus: investigar pipeline (admin/producao/escola-veus
+     e tools/render-longo). Aplicar mesmo princípio se faz sentido.
+   Mostrar implementação concreta antes de mexer.
 
-2. ESTILO DAS LEGENDAS LORANNE
-   Em `tools/render-shorts-remotion/render.mjs` mexe o `DEFAULT_SUBTITLE_STYLE`:
-   - FontSize: 26 → 22 (testar 20 também)
-   - Cor: cream &H00E6F0F5 → dourado escola-dourado (ver hex em
-     tailwind.config.ts, converter para BGR libass)
-   - Manter Italic, Outline e MarginV
+2. ESTILO DAS LEGENDAS LORANNE (só Loranne tem SRT hoje)
+   Em tools/render-shorts-remotion/render.mjs mexe DEFAULT_SUBTITLE_STYLE:
+   - FontSize: 26 → 22 (testar 20 se ainda pesado em 1080×1920)
+   - Cor: cream &H00E6F0F5 → dourado escola-dourado
+     (hex exacto em tailwind.config.ts, converter BGR libass formato
+     &H00BBGGRR)
+   - Manter Italic, Outline, MarginV
    Bumpar RENDER_VERSION e abrir PR.
 
+   Avaliar se AG ou Escola dos Véus também querem afinação tipográfica
+   coerente nos seus pipelines próprios.
+
 3. KARAOKE WORD-BY-WORD (avaliar viabilidade primeiro)
-   Avaliar gerar .ass em vez de .srt com tags `{\kN}` libass por palavra
-   (Scribe já dá timestamps word-level). Cor primária cream, secundária
-   dourado — libass anima transição palavra-a-palavra. Antes de
-   implementar, mostrar exemplo de output .ass que seria gerado para 1
-   stanza e perguntar à user se o efeito é o pretendido.
+   Avaliar gerar .ass em vez de .srt com tags {\kN} libass por palavra
+   (Scribe já dá timestamps word-level). Cor primária cream/dourado +
+   secundária outro tom — libass anima transição palavra-a-palavra.
+   Aplica a Loranne. Avaliar se AG full (instrumental com story
+   chapters) também faz sentido. Escola dos Véus provavelmente não.
+   Antes de implementar, mostrar exemplo de output .ass para 1 stanza
+   e perguntar à user se o efeito é o pretendido.
 
 IMPORTANTE — modus operandi a manter nesta sessão:
-- Antes de empurrar código: ler o código existente e confirmar que a
+- Antes de empurrar código: ler o existente, confirmar que a
   alteração combina com a arquitectura.
 - Não propor soluções alternativas sem evidência de que o caminho
   actual está bloqueado.
-- A user (vivnasc) tem razão até prova em contrário — se reportar bug
-  ou comportamento errado, assumir que é real e procurar no MEU código
-  primeiro. Não pedir prints/logs como primeira ferramenta de diagnóstico.
-- A user usa iPad maioritariamente; preferir botões UI a curl/CLI
-  sempre que possível.
+- Quando a user reporta bug/comportamento errado: assumir que é real
+  e procurar no MEU código primeiro. Não pedir prints/logs como
+  primeira ferramenta de diagnóstico.
+- A user usa iPad maioritariamente — preferir botões UI a curl/CLI.
+- 3 marcas, não 1 — quando fizer uma mudança, perguntar se aplica
+  às outras antes de assumir que é só Loranne.
 - Cuidado com storage Supabase: paths de mp4 SÃO estáveis (sem
   timestamp); manifests/results mantêm jobId com timestamp. Há rota
   /api/admin/weekly/cleanup que apaga mp4s órfãos antigos.
 - Workflow GH Actions tem timeout-minutes: 90 e concurrency=4 — não
   reverter.
-- Cache Scribe está em `course-assets/scribe-cache/<sha1>.json` —
-  invalida apenas quando audioUrl muda.
-- Cada commit faz bump de `RENDER_VERSION` em
-  `escola-veus-app/src/lib/shorts/render-version.ts`.
+- Cache Scribe em course-assets/scribe-cache/<sha1>.json — invalida
+  apenas quando audioUrl muda.
+- Cada commit faz bump de RENDER_VERSION em
+  escola-veus-app/src/lib/shorts/render-version.ts.
 - PRs com título descritivo + body curto com "antes/depois".
 ```
 
