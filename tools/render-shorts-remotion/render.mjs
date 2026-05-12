@@ -652,8 +652,11 @@ async function main() {
         await writeFile(subtitlesPath, srt, "utf8");
         const lineCount = (srt.match(/\n\n/g) || []).length;
         console.log(`→ SRT gerada: ${lineCount} legendas, offset=${offset.toFixed(1)}s${maxSec ? ` max=${maxSec}s` : ""} → ${subtitlesPath}`);
-        // Desliga overlay do Remotion — visual passa a vir do FFmpeg burn.
-        manifest = { ...manifest, lyricsSync: false };
+        // Desliga overlay do Remotion + esvazia verses (que são o fallback
+        // quando isSync=false). VerseOverlay returna null com text vazio,
+        // assim a Composition renderiza só motion+audio sem texto — depois
+        // o FFmpeg burn adiciona as legendas SRT por cima.
+        manifest = { ...manifest, lyricsSync: false, verses: ["", ""] };
       } else {
         console.log(`  ⚠ SRT vazia (Scribe não devolveu words usáveis) — sem legendas no clip`);
       }
