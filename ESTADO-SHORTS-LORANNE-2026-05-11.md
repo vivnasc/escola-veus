@@ -18,7 +18,7 @@ Os TODOs da próxima sessão aplicam-se **às três marcas**, não só Loranne.
 
 ## Os três caminhos coexistem hoje
 
-| | **Loranne (lyric)** | **Ancient Ground** | **Escola dos Véus** |
+| | **Loranne (lyric)** | **Ancient Ground** ✅ FINALIZADA | **Escola dos Véus** |
 |---|---|---|---|
 | Conteúdo | Música cantada com letras | Música instrumental | Episódios curso/longos didácticos |
 | Plano weekly | Sim (`weekly/plan`) | Sim (`weekly/plan`) | Não (pipeline próprio em `admin/producao/escola-veus`) |
@@ -26,7 +26,11 @@ Os TODOs da próxima sessão aplicam-se **às três marcas**, não só Loranne.
 | Fonte de texto no vídeo | Scribe (STT) sobre o áudio | `storyChapters` do plano (texto narrativo) | Próprio (PDFs, cadernos, longos) |
 | Pipeline de overlay | SRT + FFmpeg burn (esta sessão) | React/Remotion `SyncedLyricsLayer` (story-mode) | Pipeline próprio (longos, cadernos PDF) |
 | Visual actual | Liberation Serif italic cream queimada via libass | Playfair Display cream render React | Variado (vídeos longos `render-longo`, PDFs, etc.) |
-| Mudou esta sessão? | ✅ Tudo refeito | ❌ Intocada | ❌ Só o endpoint `/package` (CSV upload Drive — PR #322) |
+| Mudou esta sessão? | ✅ Tudo refeito | ❌ Intocada (e confirmado pela user: **AG está bom, não precisa de mais nada**) | ❌ Só o endpoint `/package` (CSV upload Drive — PR #322) |
+
+> ⚠️ **AG é OFF-LIMITS na próxima sessão.** A user confirmou expressamente que
+> Ancient Ground está finalizada — pipeline visual + sync já como pretendido.
+> Próximas mudanças tocam apenas Loranne e Escola dos Véus.
 
 
 
@@ -117,48 +121,42 @@ escola-veus-app/src/app/api/admin/funil/generate-srt/route.ts    # referência: 
 tools/render-funil/render.mjs                                    # referência: FFmpeg burn do funil
 ```
 
-## Próximas melhorias pedidas (TODO) — APLICAR ÀS 3 MARCAS
+## Próximas melhorias pedidas (TODO) — Loranne + Escola dos Véus
 
-User pediu para a próxima sessão:
+**AG está finalizada e fora do âmbito.** Tocar só em Loranne e Escola dos Véus.
 
-### 1. Padrões visuais únicos por música/conteúdo, dentro da identidade de cada marca
+### 1. Padrões visuais únicos por música/conteúdo
 
-Aplicar **a todas**:
 - **Loranne:** cada faixa com pattern visual estável (mesma faixa → mesmo
   visual sempre que renderiza), dentro da paleta/tipografia Loranne. Hoje
   `MOTION_VARIANTS[(week + DAY_ORDER.indexOf(day)) % 4]` em
   `app/api/admin/weekly/plan/route.ts:216` rotaciona por semana — quero
   estabilidade por `trackId`.
-- **Ancient Ground:** mesmo princípio, cada faixa instrumental AG com
-  pattern próprio dentro da identidade AG (paleta terra/raízes).
 - **Escola dos Véus:** cada episódio/conteúdo do curso com pattern próprio
   dentro da identidade EV. Verificar o que aplica — `admin/producao/escola-veus`
   e `tools/render-longo` têm pipelines próprios.
 
-**Implementação proposta:**
+**Implementação proposta (Loranne):**
 - Derivar `motionVariant` (e/ou `accent`) por **hash do trackId/slug** em
   vez de rotação `(week, day)`. Função stable: `motionFromTrackId(slug)
   → "A" | "B" | "C" | "D"`.
 - Registar `trackPattern` no manifest para auditoria.
-- Mexer: `app/api/admin/weekly/plan/route.ts` (Loranne + AG), e investigar
-  se Escola dos Véus precisa de mudança equivalente.
+- Mexer: `app/api/admin/weekly/plan/route.ts` (entrada Loranne apenas — não
+  tocar na lógica AG).
 
 ### 2. Legendas Loranne: tamanho menor e cor dourada
 
-Aplica-se hoje só a Loranne (única marca com SRT burn):
 - **Tamanho:** reduzir `FontSize=26 → 22` (ou `20` se ainda pesado em 1080×1920).
 - **Cor:** mudar `PrimaryColour=&H00E6F0F5` (cream) → **dourado escola-dourado**.
   - Hex dourado do tema: ~`#C9A961` (verificar valor exacto em
     `escola-veus-app/tailwind.config.ts` ou `src/styles`).
   - Conversão BGR libass: `#C9A961` → `&H000061A9C9` (formato `&H00BBGGRR`).
 - Local: `DEFAULT_SUBTITLE_STYLE` em `tools/render-shorts-remotion/render.mjs`.
-
-**E os outros?** AG não tem SRT (overlay React). Escola dos Véus tem pipeline
-próprio — verificar se também quer afinar tipografia/cores para coerência.
+- Verificar se Escola dos Véus quer tratamento coerente no seu pipeline próprio.
 
 ### 3. Word-by-word karaoke (palavra cantada destacada) — avaliar viabilidade
 
-Aplica-se principalmente a **Loranne** (lyric video):
+**Aplica-se só a Loranne** (lyric video):
 - **libass karaoke tags** (`{\k<centisec>}word`) suportadas pelo `ffmpeg
   subtitles=` filter. Gerar `.ass` em vez de `.srt` a partir dos Scribe words
   com `{\kN}` por palavra. Cor primária cream/dourado + secundária outro tom,
@@ -167,35 +165,35 @@ Aplica-se principalmente a **Loranne** (lyric video):
   da letra real — melhor para karaoke do que Scribe (que pode mistranscrever
   música cantada). Trocar fonte da geração `.ass` para Forced Alignment se a
   precisão Scribe não chegar.
-- Avaliar se aplica também a **AG** (full com story) ou apenas Loranne.
-  Escola dos Véus provavelmente não — é didáctico, não musical.
+- AG está finalizada; Escola dos Véus é didáctico, não musical → não aplicar.
 
 ## Continuação prompt (paste no início da próxima sessão)
 
 ```
-Trabalhamos no pipeline de produção de conteúdo para 3 MARCAS da
-escola-veus (repo vivnasc/escola-veus): Loranne (música cantada),
-Ancient Ground (música instrumental), e Escola dos Véus (curso).
+Trabalhamos no pipeline de produção de conteúdo da escola-veus
+(repo vivnasc/escola-veus). Há 3 marcas no sistema:
+  - Loranne (música cantada) — alvo de mudanças
+  - Ancient Ground — FINALIZADA, OFF-LIMITS, não tocar
+  - Escola dos Véus (curso) — alvo de mudanças
 
-Lê primeiro o ficheiro ESTADO-SHORTS-LORANNE-2026-05-11.md no root
-do repo. Tem o panorama completo + a tabela das 3 marcas.
+Lê primeiro ESTADO-SHORTS-LORANNE-2026-05-11.md no root do repo.
+Tem o panorama completo das 3 marcas e os caminhos de código.
 
-Tarefas para esta sessão (por ordem):
+Tarefas para esta sessão (por ordem) — só Loranne e Escola dos Véus:
 
-1. PADRÕES VISUAIS ÚNICOS POR MÚSICA/CONTEÚDO (3 MARCAS)
+1. PADRÕES VISUAIS ÚNICOS POR MÚSICA/CONTEÚDO
    Hoje em app/api/admin/weekly/plan/route.ts:216, MOTION_VARIANTS
    rotaciona por (week, day) — mesmo trackId pode ter pattern
    diferente em semanas diferentes. Quero ESTABILIDADE: cada
    faixa/conteúdo tem sempre o seu visual.
    - Loranne: hash(trackId) → motion + accent dentro da paleta
-     Loranne.
-   - Ancient Ground: hash(trackId) → motion + accent dentro da
-     paleta AG.
+     Loranne. Mexer a entrada Loranne em weekly/plan; NÃO tocar
+     na lógica AG (que está finalizada).
    - Escola dos Véus: investigar pipeline (admin/producao/escola-veus
      e tools/render-longo). Aplicar mesmo princípio se faz sentido.
    Mostrar implementação concreta antes de mexer.
 
-2. ESTILO DAS LEGENDAS LORANNE (só Loranne tem SRT hoje)
+2. ESTILO DAS LEGENDAS LORANNE
    Em tools/render-shorts-remotion/render.mjs mexe DEFAULT_SUBTITLE_STYLE:
    - FontSize: 26 → 22 (testar 20 se ainda pesado em 1080×1920)
    - Cor: cream &H00E6F0F5 → dourado escola-dourado
@@ -203,20 +201,19 @@ Tarefas para esta sessão (por ordem):
      &H00BBGGRR)
    - Manter Italic, Outline, MarginV
    Bumpar RENDER_VERSION e abrir PR.
-
-   Avaliar se AG ou Escola dos Véus também querem afinação tipográfica
-   coerente nos seus pipelines próprios.
+   Verificar se Escola dos Véus quer tratamento coerente no seu
+   pipeline próprio.
 
 3. KARAOKE WORD-BY-WORD (avaliar viabilidade primeiro)
-   Avaliar gerar .ass em vez de .srt com tags {\kN} libass por palavra
-   (Scribe já dá timestamps word-level). Cor primária cream/dourado +
-   secundária outro tom — libass anima transição palavra-a-palavra.
-   Aplica a Loranne. Avaliar se AG full (instrumental com story
-   chapters) também faz sentido. Escola dos Véus provavelmente não.
-   Antes de implementar, mostrar exemplo de output .ass para 1 stanza
-   e perguntar à user se o efeito é o pretendido.
+   Só Loranne. Avaliar gerar .ass em vez de .srt com tags {\kN}
+   libass por palavra (Scribe já dá timestamps word-level). Cor
+   primária cream/dourado + secundária outro tom — libass anima
+   transição palavra-a-palavra. Antes de implementar, mostrar
+   exemplo de output .ass para 1 stanza e perguntar à user se o
+   efeito é o pretendido.
 
-IMPORTANTE — modus operandi a manter nesta sessão:
+IMPORTANTE — modus operandi a manter:
+- AG está FINALIZADA. Não propor nada que mexa em AG.
 - Antes de empurrar código: ler o existente, confirmar que a
   alteração combina com a arquitectura.
 - Não propor soluções alternativas sem evidência de que o caminho
@@ -225,8 +222,6 @@ IMPORTANTE — modus operandi a manter nesta sessão:
   e procurar no MEU código primeiro. Não pedir prints/logs como
   primeira ferramenta de diagnóstico.
 - A user usa iPad maioritariamente — preferir botões UI a curl/CLI.
-- 3 marcas, não 1 — quando fizer uma mudança, perguntar se aplica
-  às outras antes de assumir que é só Loranne.
 - Cuidado com storage Supabase: paths de mp4 SÃO estáveis (sem
   timestamp); manifests/results mantêm jobId com timestamp. Há rota
   /api/admin/weekly/cleanup que apaga mp4s órfãos antigos.
