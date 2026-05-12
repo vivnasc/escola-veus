@@ -425,19 +425,20 @@ function wordsToSrt(words, offsetSec, maxSec) {
     .join("\n");
 }
 
-/** Estilo libass padrão para subtitles burn (consistente com o funil).
- *  Override via manifest.subtitleStyle se quiseres ajustar. */
+/** Estilo libass elegante para Loranne shorts. Casa com a tipografia do
+ *  overlay actual (serif italic, cream #F5F0E6) — sem a caixa opaca pesada
+ *  que o funil usa por defeito. Override via manifest.subtitleStyle. */
 const DEFAULT_SUBTITLE_STYLE =
-  "FontName=DejaVu Serif," +
-  "FontSize=20," +
-  "PrimaryColour=&H00E6F0F5," +
-  "OutlineColour=&H00000000," +
-  "BackColour=&H80000000," +
-  "BorderStyle=1," +
-  "Outline=2," +
-  "Shadow=1," +
-  "Alignment=2," +
-  "MarginV=80";
+  "FontName=Liberation Serif," +
+  "FontSize=26," +
+  "Italic=1," +
+  "PrimaryColour=&H00E6F0F5," +   // cream #F5F0E6 (BGR)
+  "OutlineColour=&H00000000," +    // outline preto subtil para readability
+  "BorderStyle=1," +               // 1 = outline+shadow, 3 = caixa opaca (não)
+  "Outline=1," +                   // 1px outline (subtil, não tira elegância)
+  "Shadow=1," +                    // 1px shadow (apenas para contraste)
+  "Alignment=2," +                 // bottom-center
+  "MarginV=120";                   // 120px do fundo (respira mais que funil)
 
 /** Sanitiza linha cantada — strip [tags], (parens), travessões.
  *  Última linha de defesa caso o plano contenha letras não-limpas. */
