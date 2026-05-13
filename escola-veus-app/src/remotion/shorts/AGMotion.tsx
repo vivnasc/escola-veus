@@ -4,6 +4,7 @@
  */
 
 import React from "react";
+import type { MotionSeed } from "@/lib/shorts/motion-seed";
 
 const FPS = 30;
 
@@ -13,10 +14,28 @@ function sin01(t: number): number {
 
 const AG_ACCENT_DEFAULT = "#D4923E";
 
-// ─── A — Capulana abstracta (panorama horizontal lento) ───────────────────
-export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT }: { frame: number; accent?: string }) {
+type SeedProps = { frame: number; accent?: string; seed?: MotionSeed };
+
+function seededT(frame: number, seed: MotionSeed | undefined, basePeriod: number): number {
   const t = frame / FPS;
-  const tx = -3 + sin01(t / 12) * 6;
+  if (!seed) return t;
+  return (t + seed.phase * basePeriod) * seed.speedMul;
+}
+
+function seedDir(seed: MotionSeed | undefined): 1 | -1 {
+  return seed?.direction ?? 1;
+}
+
+function seedDensity(seed: MotionSeed | undefined, base: number, min: number, max: number): number {
+  const v = Math.round(base * (seed?.densityMul ?? 1));
+  return Math.max(min, Math.min(max, v));
+}
+
+// ─── A — Capulana abstracta (panorama horizontal lento) ───────────────────
+export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedProps) {
+  const t = seededT(frame, seed, 12);
+  const dir = seedDir(seed);
+  const tx = (-3 + sin01(t / 12) * 6) * dir;
   return (
     <div
       style={{
@@ -53,8 +72,9 @@ export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT }: { frame: numb
 }
 
 // ─── B — Sol pulsante + horizonte (fixo, expande/retrai) ──────────────────
-export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT }: { frame: number; accent?: string }) {
-  const t = frame / FPS;
+export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedProps) {
+  const t = seededT(frame, seed, 3);
+  const dir = seedDir(seed);
   // sun-pulse: 3s loop, scale 0.92..1.15
   const pulse = 0.92 + sin01(t / 3) * 0.23;
   const brightness = 0.9 + sin01(t / 3) * 0.3;
@@ -62,7 +82,8 @@ export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT }: { frame: 
   const haloScale = 1 + sin01(t / 3) * 0.4;
   const haloOp = 0.55 + sin01(t / 3) * 0.35;
   // raios: rotate 30s
-  const rayRot = (t / 30) * 360;
+  const rayRot = (t / 30) * 360 * dir;
+  const raysN = seedDensity(seed, 16, 12, 20);
 
   return (
     <div
@@ -106,8 +127,8 @@ export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT }: { frame: 
           opacity: 0.3,
         }}
       >
-        {Array.from({ length: 16 }).map((_, i) => {
-          const a = (i * Math.PI) / 8;
+        {Array.from({ length: raysN }).map((_, i) => {
+          const a = (i * Math.PI) / (raysN / 2);
           return (
             <line
               key={i}
@@ -133,8 +154,10 @@ export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT }: { frame: 
 }
 
 // ─── C — Padrão tradicional + brisa ───────────────────────────────────────
-export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT }: { frame: number; accent?: string }) {
-  const t = frame / FPS;
+export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedProps) {
+  const t = seededT(frame, seed, 4);
+  const dir = seedDir(seed);
+  const rowsN = seedDensity(seed, 6, 5, 7);
   return (
     <div
       style={{
@@ -143,9 +166,9 @@ export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT }: { fr
       }}
     >
       <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        {Array.from({ length: 6 }).map((_, row) => {
+        {Array.from({ length: rowsN }).map((_, row) => {
           const tt = ((t + row * 0.5) % 4) / 4;
-          const sway = Math.sin(tt * Math.PI * 2) * 2;
+          const sway = Math.sin(tt * Math.PI * 2) * 2 * dir;
           const scale = 1 + sin01((t + row * 0.5) / 4) * 0.04;
           return (
             <g
@@ -192,9 +215,11 @@ export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT }: { fr
 }
 
 // ─── D — Combinação (horizonte + padrão capulana + areia) ─────────────────
-export function AGCombinacaoD({ frame, accent = AG_ACCENT_DEFAULT }: { frame: number; accent?: string }) {
-  const t = frame / FPS;
-  const tx = -3 + sin01(t / 12) * 6;
+export function AGCombinacaoD({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedProps) {
+  const t = seededT(frame, seed, 12);
+  const dir = seedDir(seed);
+  const sandN = seedDensity(seed, 20, 16, 24);
+  const tx = (-3 + sin01(t / 12) * 6) * dir;
 
   return (
     <div
@@ -225,7 +250,7 @@ export function AGCombinacaoD({ frame, accent = AG_ACCENT_DEFAULT }: { frame: nu
         <rect x="-20" y="30" width="140" height="80" fill="url(#combo-pat)" />
       </svg>
       {/* areia */}
-      {Array.from({ length: 20 }).map((_, i) => {
+      {Array.from({ length: sandN }).map((_, i) => {
         const phase = (i * 0.3) % 4;
         const tt = ((t + phase) % 4) / 4;
         const opacity = 0.3 + Math.abs(Math.sin(tt * Math.PI)) * 0.4;

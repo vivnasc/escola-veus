@@ -8,6 +8,7 @@
  */
 
 import React from "react";
+import type { MotionSeed } from "@/lib/shorts/motion-seed";
 
 const FPS = 30;
 
@@ -15,14 +16,38 @@ function sin01(t: number): number {
   return (Math.sin(t * Math.PI * 2) + 1) / 2;
 }
 
-// ─── A — Mandala respirante ───────────────────────────────────────────────
-export function LoranneMandalaA({ frame, accent }: { frame: number; accent: string }) {
+type SeedProps = { frame: number; accent: string; seed?: MotionSeed };
+
+/** Tempo virtual: aplica seed.phase (offset) + seed.speedMul (multiplicador).
+ *  Sem seed = comportamento histórico (t = frame/FPS, sem offset). */
+function seededT(frame: number, seed: MotionSeed | undefined, basePeriod: number): number {
   const t = frame / FPS;
+  if (!seed) return t;
+  return (t + seed.phase * basePeriod) * seed.speedMul;
+}
+
+function seedDir(seed: MotionSeed | undefined): 1 | -1 {
+  return seed?.direction ?? 1;
+}
+
+function seedDensity(seed: MotionSeed | undefined, base: number, min: number, max: number): number {
+  const v = Math.round(base * (seed?.densityMul ?? 1));
+  return Math.max(min, Math.min(max, v));
+}
+
+// ─── A — Mandala respirante ───────────────────────────────────────────────
+export function LoranneMandalaA({ frame, accent, seed }: SeedProps) {
+  const t = seededT(frame, seed, 6);
+  const dir = seedDir(seed);
   // breath: 6s loop → scale 0.95..1.06
   const breath = 0.95 + sin01(t / 6) * 0.11;
   // rotation: 30s a 360°
-  const rot = (t / 30) * 360;
+  const rot = (t / 30) * 360 * dir;
   const opacity = 0.85 + sin01(t / 6) * 0.15;
+  const ringsN = seedDensity(seed, 10, 8, 12);
+  const linesN = seedDensity(seed, 24, 18, 28);
+  const petalsOuter = seedDensity(seed, 12, 10, 14);
+  const petalsInner = seedDensity(seed, 8, 6, 10);
 
   return (
     <div
@@ -42,13 +67,13 @@ export function LoranneMandalaA({ frame, accent }: { frame: number; accent: stri
         }}
       >
         <g stroke={accent} strokeWidth="0.3" fill="none">
-          {Array.from({ length: 10 }).map((_, i) => (
+          {Array.from({ length: ringsN }).map((_, i) => (
             <circle key={i} cx="50" cy="50" r={5 + i * 4} opacity={0.4 + (i % 3) * 0.15} />
           ))}
         </g>
         <g stroke={accent} strokeWidth="0.18" opacity="0.55">
-          {Array.from({ length: 24 }).map((_, i) => {
-            const a = (i * Math.PI) / 12;
+          {Array.from({ length: linesN }).map((_, i) => {
+            const a = (i * Math.PI) / (linesN / 2);
             return (
               <line
                 key={i}
@@ -59,27 +84,27 @@ export function LoranneMandalaA({ frame, accent }: { frame: number; accent: stri
           })}
         </g>
         <g fill={accent} opacity="0.8">
-          {Array.from({ length: 12 }).map((_, i) => {
-            const a = (i * Math.PI) / 6;
+          {Array.from({ length: petalsOuter }).map((_, i) => {
+            const a = (i * Math.PI) / (petalsOuter / 2);
             return (
               <ellipse
                 key={i}
                 cx={50 + Math.cos(a) * 22} cy={50 + Math.sin(a) * 22}
                 rx="2.5" ry="1.2"
-                transform={`rotate(${i * 30} ${50 + Math.cos(a) * 22} ${50 + Math.sin(a) * 22})`}
+                transform={`rotate(${(360 / petalsOuter) * i} ${50 + Math.cos(a) * 22} ${50 + Math.sin(a) * 22})`}
               />
             );
           })}
         </g>
         <g fill={accent} opacity="0.6">
-          {Array.from({ length: 8 }).map((_, i) => {
-            const a = (i * Math.PI) / 4 + Math.PI / 8;
+          {Array.from({ length: petalsInner }).map((_, i) => {
+            const a = (i * Math.PI) / (petalsInner / 2) + Math.PI / 8;
             return (
               <ellipse
                 key={i}
                 cx={50 + Math.cos(a) * 12} cy={50 + Math.sin(a) * 12}
                 rx="1.8" ry="0.8"
-                transform={`rotate(${i * 45} ${50 + Math.cos(a) * 12} ${50 + Math.sin(a) * 12})`}
+                transform={`rotate(${(360 / petalsInner) * i} ${50 + Math.cos(a) * 12} ${50 + Math.sin(a) * 12})`}
               />
             );
           })}
@@ -92,8 +117,10 @@ export function LoranneMandalaA({ frame, accent }: { frame: number; accent: stri
 }
 
 // ─── B — Véus em fluxo ─────────────────────────────────────────────────────
-export function LoranneVeusB({ frame, accent }: { frame: number; accent: string }) {
-  const t = frame / FPS;
+export function LoranneVeusB({ frame, accent, seed }: SeedProps) {
+  const t = seededT(frame, seed, 5);
+  const dir = seedDir(seed);
+  const veusN = seedDensity(seed, 7, 6, 9);
   return (
     <div
       style={{
@@ -102,11 +129,11 @@ export function LoranneVeusB({ frame, accent }: { frame: number; accent: string 
       }}
     >
       <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        {Array.from({ length: 7 }).map((_, i) => {
-          const offset = i * 28;
+        {Array.from({ length: veusN }).map((_, i) => {
+          const offset = i * (200 / veusN);
           // veu: 5s loop, translate -30% to +30%, opacity rises mid
           const tt = ((t + i * 0.7) % 5) / 5; // 0..1
-          const tx = -30 + tt * 60; // -30..30 (% of viewBox)
+          const tx = (-30 + tt * 60) * dir; // -30..30 (direcção invertida com dir=-1)
           const opacity = (1 - Math.abs(tt - 0.5) * 2) * (0.15 + i * 0.04 + 0.4);
           return (
             <path
@@ -124,11 +151,13 @@ export function LoranneVeusB({ frame, accent }: { frame: number; accent: string 
 }
 
 // ─── C — Pó cósmico (roxo, sem mandala) ───────────────────────────────────
-export function LoranneCosmicC({ frame, accent }: { frame: number; accent: string }) {
-  const t = frame / FPS;
+export function LoranneCosmicC({ frame, accent, seed }: SeedProps) {
+  const t = seededT(frame, seed, 5);
+  const dir = seedDir(seed);
+  const starsN = seedDensity(seed, 120, 100, 140);
   const cloudScale = 1 + sin01(t / 5) * 0.15;
   const cloudOpacity = 0.7 + sin01(t / 5) * 0.3;
-  const driftX = sin01(t / 8) * 30 - 0;
+  const driftX = (sin01(t / 8) * 30 - 0) * dir;
   const driftY = sin01(t / 8) * 20 - 0;
   const driftScale = 1 + sin01(t / 8) * 0.2;
 
@@ -162,7 +191,7 @@ export function LoranneCosmicC({ frame, accent }: { frame: number; accent: strin
         }}
       />
       {/* estrelas a piscar */}
-      {Array.from({ length: 120 }).map((_, i) => {
+      {Array.from({ length: starsN }).map((_, i) => {
         const size = 1 + (i % 3);
         const useAccent = i % 4 === 0;
         const period = i % 2 === 0 ? 2 : 1.2;
@@ -193,9 +222,12 @@ export function LoranneCosmicC({ frame, accent }: { frame: number; accent: strin
 }
 
 // ─── D — Combinação (mandala filigrana + véu + pó) ────────────────────────
-export function LoranneCombinacaoD({ frame, accent }: { frame: number; accent: string }) {
-  const t = frame / FPS;
-  const rot = (t / 30) * 360;
+export function LoranneCombinacaoD({ frame, accent, seed }: SeedProps) {
+  const t = seededT(frame, seed, 5);
+  const dir = seedDir(seed);
+  const ringsN = seedDensity(seed, 8, 6, 10);
+  const dustN = seedDensity(seed, 30, 24, 36);
+  const rot = (t / 30) * 360 * dir;
 
   return (
     <div
@@ -213,7 +245,7 @@ export function LoranneCombinacaoD({ frame, accent }: { frame: number; accent: s
         }}
       >
         <g stroke={accent} strokeWidth="0.1" fill="none" opacity="0.25">
-          {Array.from({ length: 8 }).map((_, i) => (
+          {Array.from({ length: ringsN }).map((_, i) => (
             <circle key={i} cx="50" cy="50" r={8 + i * 4} />
           ))}
         </g>
@@ -222,7 +254,7 @@ export function LoranneCombinacaoD({ frame, accent }: { frame: number; accent: s
       <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         {[0, 3].map((delay, idx) => {
           const tt = ((t + delay) % 5) / 5;
-          const tx = -30 + tt * 60;
+          const tx = (-30 + tt * 60) * dir;
           const opacity = (1 - Math.abs(tt - 0.5) * 2) * 0.4;
           const yOffset = idx === 0 ? 60 : 130;
           return (
@@ -237,7 +269,7 @@ export function LoranneCombinacaoD({ frame, accent }: { frame: number; accent: s
         })}
       </svg>
       {/* pó nas margens */}
-      {Array.from({ length: 30 }).map((_, i) => {
+      {Array.from({ length: dustN }).map((_, i) => {
         const phase = (i * 0.4) % 4;
         const tt = ((t + phase) % 4) / 4;
         const opacity = 0.3 + Math.abs(Math.sin(tt * Math.PI)) * 0.4;

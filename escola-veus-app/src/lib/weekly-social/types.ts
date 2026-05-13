@@ -5,6 +5,7 @@
 import type { PlatformCaptions } from "./captions";
 import type { ScheduleSlot } from "./schedule";
 import type { BrandSlug, Platform } from "@/data/weekly-social/brand-config";
+import type { MotionSeed } from "@/lib/shorts/motion-seed";
 
 export type WeeklyPostStatus =
   | "planned"     // criado mas não dispatchado para render
@@ -69,9 +70,13 @@ export type WeeklyPost = {
   /** Schedule alternativo para mode=full (AG: Mon/Wed/Fri, vs clip Tue/Thu/Sat). */
   fullSchedule?: Record<Platform, ScheduleSlot>;
   musicUrl: string;
-  /** Variante de motion Remotion (A/B/C/D). */
+  /** Variante de motion Remotion (A/B/C/D). Estável por trackId. */
   motionVariant: "A" | "B" | "C" | "D";
   accent?: string;
+  /** Fingerprint visual estável por faixa — hash do trackId. Mesma faixa
+   *  renderiza sempre com o mesmo motion (variant + cor + velocidade +
+   *  fase + densidade + direcção), independentemente da semana. */
+  motionSeed?: MotionSeed;
   trackLabel?: string;
   /** Pipeline antigo — não usado pelo Remotion. */
   clipUrls?: string[];

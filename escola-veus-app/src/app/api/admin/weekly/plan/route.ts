@@ -21,27 +21,7 @@ import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx,
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
 import { generateLoranneSynopsis } from "@/lib/shorts/loranne-synopsis-generator";
 import { ALL_LYRICS } from "@/lib/loranne";
-import { MOOD_META } from "@/data/weekly-social/loranne-moods";
-
-/** Cor accent AG por tema raiz primário — paleta quente africana, distinta
- *  por tema para não repetir capa visual entre 3 posts da semana. */
-const AG_TEMA_ACCENTS: Record<string, string> = {
-  machamba: "#B8860B",
-  pesca: "#E07050",
-  artesanato: "#B7410E",
-  batuque: "#C04030",
-  danca: "#FF8C00",
-  crianca: "#FFB347",
-  mercado: "#D2691E",
-  anciao: "#8B4513",
-  casa: "#CD853F",
-  transmissao: "#FFBF00",
-  "trabalho-coletivo": "#B87333",
-  rito: "#722F37",
-  aldeia: "#E0A458",
-  "gente-paisagem": "#DEB887",
-  retrato: "#C68642",
-};
+import { deriveMotionSeed, loranneTrackId, agTrackId } from "@/lib/shorts/motion-seed";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60; // Hobby plan limit. Scribe acontece no GHA worker.
@@ -52,9 +32,9 @@ export const maxDuration = 60; // Hobby plan limit. Scribe acontece no GHA worke
  *
  * Para cada marca:
  *   1. Determina os posts via rotação determinística.
- *   2. Atribui motionVariant (A/B/C/D) determinístico — ciclo entre os 4
- *      para variedade entre vídeos. Loranne acrescenta accent (cor por
- *      álbum).
+ *   2. Atribui motionSeed (variant + accent + speed + phase + density +
+ *      direction) por hash do trackId — fingerprint visual estável: mesma
+ *      faixa renderiza sempre com o mesmo fundo.
  *   3. Resolve URL do MP3 (bucket audios/albums/<slug>).
  *   4. Chama suggest/suggest-ag para versos+captions.
  *   5. Calcula data+hora por plataforma.
@@ -71,32 +51,6 @@ type Body = {
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const BUCKET_AUDIOS = "audios";
-
-const MOTION_VARIANTS = ["A", "B", "C", "D"] as const;
-
-/** Acentos Loranne por prefixo de álbum — cor que vai para o background. */
-const LORANNE_ALBUM_ACCENTS: Record<string, string> = {
-  eter: "#4A6FA5",
-  sangue: "#B0344A",
-  espelho: "#7E57C2",
-  nua: "#D4A853",
-  incenso: "#A088C0",
-  fibra: "#E07050",
-  grao: "#B08050",
-  livro: "#5060A8",
-};
-
-function pickLoranneAccent(albumSlug: string): string {
-  const prefix = albumSlug.split("-")[0];
-  return LORANNE_ALBUM_ACCENTS[prefix] || "#D4A853";
-}
-
-/** Determinístico: ciclo dos 4 motions por (album, faixa) ou por (temas joined). */
-function pickMotionVariant(seed: string): "A" | "B" | "C" | "D" {
-  let h = 0;
-  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
-  return MOTION_VARIANTS[Math.abs(h) % 4];
-}
 
 async function listAlbumTracks(albumSlug: string) {
   const admin = createSupabaseAdminClient();
@@ -211,12 +165,16 @@ export async function POST(req: NextRequest) {
           const captions = buildLoranneCaptions(suggest, brand, {
             trackTitle, albumTitle, theme: null, lang, synopsis,
           });
-          // Variante rotativa por (week, dia) garante variantes adjacentes
-          // diferentes e cobertura completa em 4 semanas.
-          const motionVariant = MOTION_VARIANTS[(week + DAY_ORDER.indexOf(day)) % 4];
-          // Accent vem do MOOD do dia (7 cores distintas/semana) em vez do
-          // álbum — assim cada um dos 7 posts tem accent visualmente único.
-          const accent = MOOD_META[mood]?.color || pickLoranneAccent(entry.albumSlug);
+          // Fingerprint visual estável por faixa — hash do trackId determina
+          // motion (A/B/C/D), accent (paleta Loranne), velocidade, fase,
+          // densidade e direcção. Mesma faixa renderiza sempre com o mesmo
+          // fundo, em qualquer semana ou dia.
+          const motionSeed = deriveMotionSeed(
+            loranneTrackId(entry.albumSlug, actualTrackNumber),
+            "loranne",
+          );
+          const motionVariant = motionSeed.variant;
+          const accent = motionSeed.accent;
           const trackLabel = `"${trackTitle}" · ${albumTitle}`;
 
           const stanzas = getLoranneStanzas(entry.albumSlug, actualTrackNumber);
@@ -243,6 +201,7 @@ export async function POST(req: NextRequest) {
             mood,
             musicUrl,
             motionVariant,
+            motionSeed,
             accent,
             trackLabel,
             captions,
@@ -346,12 +305,16 @@ export async function POST(req: NextRequest) {
           const captions = buildAGCaptions(suggest, brand, {
             label: entry.label, trackNumber: actualAgTrack, temas: entry.temas,
           });
-          // Garante 3 motion variants distintos por semana — pickMotionVariant
-          // por hash colidia frequentemente (3 dias × 4 variantes).
-          const motionVariant = MOTION_VARIANTS[(week + slotIdx) % 4];
-          // Accent por tema raiz primário — 15 cores possíveis, garante 3
-          // distintas por semana (3 temas diferentes nos 3 posts).
-          const agAccent = AG_TEMA_ACCENTS[entry.temas[0]] || "#FFD27F";
+          // Fingerprint visual estável por faixa AG — hash (temas+trackNumber)
+          // determina motion, accent, velocidade, fase, densidade e direcção.
+          // O mesmo triplete-tema com a mesma faixa renderiza sempre com o
+          // mesmo fundo.
+          const motionSeed = deriveMotionSeed(
+            agTrackId(entry.temas, actualAgTrack),
+            "ancient-ground",
+          );
+          const motionVariant = motionSeed.variant;
+          const agAccent = motionSeed.accent;
           const trackLabel = `Ancient Ground · ${entry.label}`;
 
           let storyChapters: string[] | undefined;
@@ -386,6 +349,7 @@ export async function POST(req: NextRequest) {
             renderJobs: {},
             musicUrl,
             motionVariant,
+            motionSeed,
             accent: agAccent,
             trackLabel,
             captions,
