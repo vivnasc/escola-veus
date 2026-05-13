@@ -68,6 +68,18 @@ export type RenderRemotionInput = {
   slug?: string;
 };
 
+/** Última defesa contra tokens IA (`<|nbw|>`, `<|endoftext|>`) e tags Suno
+ *  (`[Verse]`, `(oh oh)`) que tenham escapado da pipeline e cheguem ao
+ *  manifest dos verses overlay. Plans antigos podem conter contaminação. */
+function sanitizeVerse(s: string): string {
+  return String(s || "")
+    .replace(/<\|[^|]*\|>/g, "")
+    .replace(/\[[^\]]*\]/g, "")
+    .replace(/\([^)]*\)/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function sanitiseSlug(s: string): string {
   return s
     .toLowerCase()
@@ -123,7 +135,7 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     chorusStanzaIdx: input.chorusStanzaIdx ?? null,
     storyChapters: input.storyChapters || null,
     storyTitle: input.storyTitle || null,
-    verses: input.verses,
+    verses: [sanitizeVerse(input.verses[0]), sanitizeVerse(input.verses[1])] as [string, string],
     audioUrl: input.audioUrl,
     audioVolume: input.audioVolume ?? 1,
     trackLabel: input.trackLabel || "",

@@ -545,6 +545,10 @@ function wordsToAss(words, offsetSec, maxSec) {
  *  Última linha de defesa caso o plano contenha letras não-limpas. */
 function sanitizeLyricLine(line) {
   return String(line || "")
+    // <|anything|> — tokens IA (`<|nbw|>`, `<|endoftext|>`) que vazam de
+    // Suno/Claude. Última defesa no worker — se o plan ainda contiver,
+    // remove antes de Scribe align e antes do overlay.
+    .replace(/<\|[^|]*\|>/g, "")
     .replace(/\[[^\]]*\]/g, "")
     // Tag Suno truncada (multi-linha) — abre [ e não fecha na mesma linha
     .replace(/\[[^\]]*$/g, "")
