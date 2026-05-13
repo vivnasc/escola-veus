@@ -441,6 +441,106 @@ const DEFAULT_SUBTITLE_STYLE =
   "Alignment=2," +                 // bottom-center
   "MarginV=120";                   // 120px do fundo (respira mais que funil)
 
+// ===== ASS karaoke (opt-in via manifest.karaokeMode === true) =====
+
+function fmtAssTime(seconds) {
+  const s = Math.max(0, seconds);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = Math.floor(s % 60);
+  const cs = Math.round((s - Math.floor(s)) * 100);
+  return (
+    String(h) + ":" +
+    String(m).padStart(2, "0") + ":" +
+    String(sec).padStart(2, "0") + "." +
+    String(cs).padStart(2, "0")
+  );
+}
+
+/** Header ASS com Style "Karaoke" — SecondaryColour é o estado inicial
+ *  (ainda-não-cantado, cinza mute) e PrimaryColour o estado pós-fill
+ *  (dourado escola, BGR &H006EA9C9). Tag \K em cada palavra preenche da
+ *  secondary para a primary durante <centisecs>. */
+function buildAssHeader() {
+  return [
+    "[Script Info]",
+    "ScriptType: v4.00+",
+    "PlayResX: 1080",
+    "PlayResY: 1920",
+    "ScaledBorderAndShadow: yes",
+    "",
+    "[V4+ Styles]",
+    "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
+    // Primary = cantada (dourado #C9A96E BGR &H006EA9C9). Secondary = por-cantar (cinza claro &H00B0B0B0). Outline = preto.
+    "Style: Karaoke,Liberation Serif,22,&H006EA9C9,&H00B0B0B0,&H00000000,&H00000000,0,1,0,0,100,100,0,0,1,1,1,2,40,40,120,1",
+    "",
+    "[Events]",
+    "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
+  ].join("\n");
+}
+
+/** Escapa texto para Dialogue ASS — { e } são reservados para tags. */
+function escapeAssText(s) {
+  return String(s || "").replace(/\\/g, "\\\\").replace(/\{/g, "\\{").replace(/\}/g, "\\}");
+}
+
+/** Agrupa Scribe words em linhas (mesma heurística do wordsToSrt) e
+ *  emite Dialogue ASS com {\K<centisecs>} por palavra. \K = smooth fill
+ *  (cinematográfico — encha gradualmente, não pop). Aplica offset/maxSec
+ *  como o wordsToSrt. */
+function wordsToAss(words, offsetSec, maxSec) {
+  const speaking = (words || []).filter(
+    (w) => w && w.type === "word" && typeof w.start === "number" && typeof w.end === "number" && w.text,
+  );
+  if (speaking.length === 0) return "";
+
+  const lines = [];
+  let buf = [];
+  let bufStart = 0;
+  let prevEnd = 0;
+
+  const flush = () => {
+    if (buf.length === 0) return;
+    lines.push({ start: bufStart, end: prevEnd, words: buf.slice() });
+    buf = [];
+  };
+
+  for (const w of speaking) {
+    const wStart = w.start - offsetSec;
+    const wEnd = w.end - offsetSec;
+    if (wEnd < 0) continue;
+    if (maxSec != null && wStart > maxSec) break;
+    const adjustedStart = Math.max(0, wStart);
+    const gap = buf.length === 0 ? 0 : adjustedStart - prevEnd;
+    const lineDuration = buf.length === 0 ? 0 : wEnd - bufStart;
+    const lastWordEnded = buf.length > 0 && /[.!?:]$/.test(buf[buf.length - 1].text);
+    const shouldBreak = buf.length > 0 && (gap >= 0.8 || buf.length >= 10 || lineDuration >= 4 || lastWordEnded);
+    if (shouldBreak) flush();
+    if (buf.length === 0) bufStart = adjustedStart;
+    buf.push({ text: w.text, start: adjustedStart, end: wEnd });
+    prevEnd = wEnd;
+  }
+  flush();
+
+  const events = lines.map((l) => {
+    let prev = l.start;
+    const parts = l.words.map((w, idx) => {
+      // Gap antes desta palavra (silêncio dentro da linha) → \k cinza
+      // antes da palavra para que o cursor "espere" no sítio.
+      const gap = Math.max(0, w.start - prev);
+      const gapTag = gap > 0.05 ? `{\\k${Math.round(gap * 100)}}` : "";
+      const dur = Math.max(1, Math.round((w.end - w.start) * 100));
+      const sep = idx > 0 ? " " : "";
+      prev = w.end;
+      return `${gapTag}{\\K${dur}}${sep}${escapeAssText(w.text)}`;
+    });
+    const text = parts.join("").replace(/\s+([.,!?;:])/g, "$1");
+    return `Dialogue: 0,${fmtAssTime(l.start)},${fmtAssTime(l.end)},Karaoke,,0,0,0,,${text}`;
+  });
+
+  return [buildAssHeader(), ...events, ""].join("\n");
+}
+
 /** Sanitiza linha cantada — strip [tags], (parens), travessões.
  *  Última linha de defesa caso o plano contenha letras não-limpas. */
 function sanitizeLyricLine(line) {
@@ -635,34 +735,51 @@ async function main() {
 
   await mkdir(WORK_DIR, { recursive: true });
 
-  // 1d. SRT: para Loranne (lyricsSync), gera ficheiro .srt a partir das Scribe
-  // words. Mesmo padrão do render-funil. Para CLIP: shifta por audioStartFromSec
-  // (chorus arranca em 0s no clip) e corta em durationSec. Para FULL: offset 0,
-  // sem limite máximo. Depois DESLIGA o overlay do Remotion — vamos queimar a
-  // SRT por cima do mp4 final via FFmpeg.
+  // 1d. SRT/ASS: para Loranne (lyricsSync), gera ficheiro .srt OU .ass a partir
+  // das Scribe words. Default = SRT (estável, comportamento histórico).
+  // Opt-in karaoke (manifest.karaokeMode === true) → .ass com {\K} por palavra
+  // (smooth fill dourado). Para CLIP: shifta por audioStartFromSec (chorus
+  // arranca em 0s) e corta em durationSec. Para FULL: offset 0, sem limite.
+  // Depois DESLIGA o overlay do Remotion — queima legendas via FFmpeg.
   let subtitlesPath = null;
+  let subtitlesIsAss = false;
   if (manifest.lyricsSync && manifest.audioUrl) {
     try {
       const scribeCached = await tryFetchScribeCache(manifest.audioUrl);
       const words = scribeCached?.words || [];
       const offset = Number(manifest.audioStartFromSec) || 0;
       const maxSec = manifest.mode === "clip" ? Number(manifest.durationSec) || 30 : null;
-      const srt = wordsToSrt(words, offset, maxSec);
-      if (srt) {
-        subtitlesPath = path.join(WORK_DIR, `${JOB_ID}.srt`);
-        await writeFile(subtitlesPath, srt, "utf8");
-        const lineCount = (srt.match(/\n\n/g) || []).length;
-        console.log(`→ SRT gerada: ${lineCount} legendas, offset=${offset.toFixed(1)}s${maxSec ? ` max=${maxSec}s` : ""} → ${subtitlesPath}`);
-        // Desliga overlay do Remotion + esvazia verses (que são o fallback
-        // quando isSync=false). VerseOverlay returna null com text vazio,
-        // assim a Composition renderiza só motion+audio sem texto — depois
-        // o FFmpeg burn adiciona as legendas SRT por cima.
-        manifest = { ...manifest, lyricsSync: false, verses: ["", ""] };
+      const useKaraoke = manifest.karaokeMode === true;
+      if (useKaraoke) {
+        const ass = wordsToAss(words, offset, maxSec);
+        if (ass) {
+          subtitlesPath = path.join(WORK_DIR, `${JOB_ID}.ass`);
+          await writeFile(subtitlesPath, ass, "utf8");
+          subtitlesIsAss = true;
+          const lineCount = (ass.match(/^Dialogue:/gm) || []).length;
+          console.log(`→ ASS karaoke gerada: ${lineCount} linhas, offset=${offset.toFixed(1)}s${maxSec ? ` max=${maxSec}s` : ""} → ${subtitlesPath}`);
+          manifest = { ...manifest, lyricsSync: false, verses: ["", ""] };
+        } else {
+          console.log(`  ⚠ ASS vazia (Scribe não devolveu words) — sem legendas no clip`);
+        }
       } else {
-        console.log(`  ⚠ SRT vazia (Scribe não devolveu words usáveis) — sem legendas no clip`);
+        const srt = wordsToSrt(words, offset, maxSec);
+        if (srt) {
+          subtitlesPath = path.join(WORK_DIR, `${JOB_ID}.srt`);
+          await writeFile(subtitlesPath, srt, "utf8");
+          const lineCount = (srt.match(/\n\n/g) || []).length;
+          console.log(`→ SRT gerada: ${lineCount} legendas, offset=${offset.toFixed(1)}s${maxSec ? ` max=${maxSec}s` : ""} → ${subtitlesPath}`);
+          // Desliga overlay do Remotion + esvazia verses (que são o fallback
+          // quando isSync=false). VerseOverlay returna null com text vazio,
+          // assim a Composition renderiza só motion+audio sem texto — depois
+          // o FFmpeg burn adiciona as legendas SRT por cima.
+          manifest = { ...manifest, lyricsSync: false, verses: ["", ""] };
+        } else {
+          console.log(`  ⚠ SRT vazia (Scribe não devolveu words usáveis) — sem legendas no clip`);
+        }
       }
     } catch (e) {
-      console.log(`  ⚠ erro a gerar SRT: ${e.message?.slice(0, 200) || e}`);
+      console.log(`  ⚠ erro a gerar legendas: ${e.message?.slice(0, 200) || e}`);
     }
   }
 
@@ -733,24 +850,26 @@ async function main() {
   });
   console.log(`→ MP4 renderizado: ${outputPath}`);
 
-  // 3b. FFmpeg burn das legendas (se SRT foi gerada). Mesmo padrão do funil:
-  // `subtitles=path:force_style='...'` queima as legendas no vídeo. Escape `:` e
-  // `\` no path porque são separadores do filtro libass. Copia áudio (sem
-  // re-encode), só re-encoda vídeo.
+  // 3b. FFmpeg burn das legendas. Para SRT (default) usa filtro `subtitles=`
+  // com force_style. Para ASS karaoke (opt-in) usa filtro `ass=` — o estilo
+  // já está dentro do .ass (não suporta force_style). Escape `:` e `\` no
+  // path porque são separadores do filtro libass. Copia áudio (sem re-encode).
   let finalMp4Path = outputPath;
   if (subtitlesPath) {
     const burnedPath = path.join(WORK_DIR, `${JOB_ID}-burned.mp4`);
-    const escapedSrt = subtitlesPath.replace(/\\/g, "\\\\").replace(/:/g, "\\:");
-    const style = (manifest.subtitleStyle || DEFAULT_SUBTITLE_STYLE).replace(/'/g, "");
+    const escapedPath = subtitlesPath.replace(/\\/g, "\\\\").replace(/:/g, "\\:");
+    const filter = subtitlesIsAss
+      ? `ass=${escapedPath}`
+      : `subtitles=${escapedPath}:force_style='${(manifest.subtitleStyle || DEFAULT_SUBTITLE_STYLE).replace(/'/g, "")}'`;
     const cmd = [
       "ffmpeg -y",
       `-i "${outputPath}"`,
-      `-vf "subtitles=${escapedSrt}:force_style='${style}'"`,
+      `-vf "${filter}"`,
       "-c:v libx264 -preset veryfast -crf 20",
       "-c:a copy",
       `"${burnedPath}"`,
     ].join(" ");
-    console.log(`→ FFmpeg burn legendas → ${burnedPath}`);
+    console.log(`→ FFmpeg burn legendas (${subtitlesIsAss ? "ASS karaoke" : "SRT"}) → ${burnedPath}`);
     try {
       await exec(cmd, { timeout: 300_000, maxBuffer: 50 * 1024 * 1024 });
       finalMp4Path = burnedPath;

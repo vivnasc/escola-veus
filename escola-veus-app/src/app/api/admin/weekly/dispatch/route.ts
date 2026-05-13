@@ -61,6 +61,9 @@ async function dispatchOnePostMode(post: WeeklyPost, mode: RenderMode): Promise<
     audioDurationSec: post.audioDurationSec,
     lang: post.brandSlug === "loranne" ? post.lang : undefined,
     lyricsSync: post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0,
+    // Karaoke opt-in (Loranne) — só passa true se o post tem syncedLyrics
+    // (sem letras não há palavras para destacar). Default false.
+    karaokeMode: post.brandSlug === "loranne" && post.karaokeMode === true && (post.syncedLyrics?.length || 0) > 0,
     // Chorus offset só se aplica ao clip Loranne (full mostra a faixa toda).
     chorusStanzaIdx: post.brandSlug === "loranne" && mode === "clip"
       ? post.chorusStanzaIdx ?? null : null,

@@ -59,6 +59,7 @@ async function dispatchPostMode(post: WeeklyPost, mode: RenderMode): Promise<{ j
     audioDurationSec: post.audioDurationSec,
     lang: post.brandSlug === "loranne" ? post.lang : undefined,
     lyricsSync: post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0,
+    karaokeMode: post.brandSlug === "loranne" && post.karaokeMode === true && (post.syncedLyrics?.length || 0) > 0,
     chorusStanzaIdx: post.brandSlug === "loranne" && mode === "clip"
       ? post.chorusStanzaIdx ?? null : null,
     storyChapters: isAgFull ? post.storyChapters : undefined,

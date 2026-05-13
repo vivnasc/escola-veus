@@ -12,4 +12,4 @@
  * Ficheiro isolado (sem imports server-only) para poder ser importado
  * tanto no servidor (route handlers) como no cliente (PostCard).
  */
-export const RENDER_VERSION = "2026-05-13-motion-seed-loranne-gold-subs";
+export const RENDER_VERSION = "2026-05-13-karaoke-opt-in";

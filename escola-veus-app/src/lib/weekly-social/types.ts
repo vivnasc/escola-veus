@@ -78,6 +78,11 @@ export type WeeklyPost = {
    *  fase + densidade + direcção), independentemente da semana. */
   motionSeed?: MotionSeed;
   trackLabel?: string;
+  /** Karaoke opt-in (Loranne) — quando true, o worker gera .ass com {\K}
+   *  por palavra (smooth fill dourado) em vez do .srt linha-a-linha.
+   *  Default false → SRT estável. Activa por edição manual do plan no
+   *  Supabase ou via UI futura, faixa a faixa. */
+  karaokeMode?: boolean;
   /** Pipeline antigo — não usado pelo Remotion. */
   clipUrls?: string[];
   captions: PlatformCaptions;

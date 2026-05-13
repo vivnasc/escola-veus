@@ -35,6 +35,9 @@ export type RenderRemotionInput = {
   audioDurationSec?: number;
   /** Activa modo lyric video — letras passam em sync. */
   lyricsSync?: boolean;
+  /** Karaoke opt-in — worker gera .ass com {\K} por palavra (smooth fill
+   *  dourado) em vez de .srt linha-a-linha. Default false. */
+  karaokeMode?: boolean;
   /** Idioma da letra (PT/EN) — para Scribe usar language_code certo. */
   lang?: "PT" | "EN";
   /** Onde começa o áudio neste render (em segundos absolutos no MP3). 0 para full. */
@@ -111,6 +114,7 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     accent: input.accent || (input.brand === "loranne" ? "#D4A853" : "#FFD27F"),
     motionSeed: input.motionSeed || null,
     lyricsSync: !!input.lyricsSync,
+    karaokeMode: !!input.karaokeMode,
     syncedLyrics: input.syncedLyrics || null,
     stanzaTimings: input.stanzaTimings || null,
     audioDurationSec: input.audioDurationSec ?? null,
