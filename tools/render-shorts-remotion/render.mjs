@@ -425,14 +425,15 @@ function wordsToSrt(words, offsetSec, maxSec) {
     .join("\n");
 }
 
-/** Estilo libass elegante para Loranne shorts. Casa com a tipografia do
- *  overlay actual (serif italic, cream #F5F0E6) — sem a caixa opaca pesada
- *  que o funil usa por defeito. Override via manifest.subtitleStyle. */
+/** Estilo libass elegante para Loranne shorts. Serif italic dourado
+ *  escola-dourado (#C9A96E ↔ BGR &H006EA9C9) — coerência com o tema da
+ *  marca. Tamanho reduzido (22pt) para respirar mais em 1080×1920.
+ *  Override via manifest.subtitleStyle. */
 const DEFAULT_SUBTITLE_STYLE =
   "FontName=Liberation Serif," +
-  "FontSize=26," +
+  "FontSize=22," +
   "Italic=1," +
-  "PrimaryColour=&H00E6F0F5," +   // cream #F5F0E6 (BGR)
+  "PrimaryColour=&H006EA9C9," +    // escola-dourado #C9A96E (BGR)
   "OutlineColour=&H00000000," +    // outline preto subtil para readability
   "BorderStyle=1," +               // 1 = outline+shadow, 3 = caixa opaca (não)
   "Outline=1," +                   // 1px outline (subtil, não tira elegância)

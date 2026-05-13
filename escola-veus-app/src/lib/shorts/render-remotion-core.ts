@@ -8,6 +8,7 @@
 
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
 import { RENDER_VERSION } from "@/lib/shorts/render-version";
+import type { MotionSeed } from "@/lib/shorts/motion-seed";
 
 export { RENDER_VERSION };
 
@@ -18,6 +19,10 @@ export type RenderRemotionInput = {
   motionVariant: "A" | "B" | "C" | "D";
   /** Cor de acento (Loranne) — varia por álbum. */
   accent?: string;
+  /** Fingerprint visual estável por faixa (hash trackId). Contém variant,
+   *  accent, speedMul, phase, densityMul, direction. Quando presente,
+   *  motion usa estes parâmetros. */
+  motionSeed?: MotionSeed;
   /** Modo: "clip" (30-60s social) ou "full" (3-5 min YT canal). */
   mode?: "clip" | "full";
   /** 2 versos para overlay (modo estático — AG e fallback Loranne). */
@@ -104,6 +109,7 @@ export async function runRenderRemotionSubmit(input: RenderRemotionInput): Promi
     brand: input.brand,
     motionVariant: input.motionVariant,
     accent: input.accent || (input.brand === "loranne" ? "#D4A853" : "#FFD27F"),
+    motionSeed: input.motionSeed || null,
     lyricsSync: !!input.lyricsSync,
     syncedLyrics: input.syncedLyrics || null,
     stanzaTimings: input.stanzaTimings || null,

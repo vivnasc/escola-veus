@@ -15,6 +15,7 @@
 import React from "react";
 import { LORANNE_MOTIONS, type LoranneMotionVariant } from "./LoranneMotion";
 import { AG_MOTIONS, type AGMotionVariant } from "./AGMotion";
+import type { MotionSeed } from "@/lib/shorts/motion-seed";
 
 // Remotion dynamic load (mesmo padrão do VideoComposition.tsx).
 let useCurrentFrame: () => number;
@@ -44,6 +45,9 @@ export type ShortsManifest = {
   motionVariant: "A" | "B" | "C" | "D";
   /** Cor de acento — só Loranne usa, varia por álbum. */
   accent?: string;
+  /** Fingerprint visual estável por faixa — quando presente, motion usa
+   *  estes parâmetros (velocidade, fase, densidade, direcção). */
+  motionSeed?: MotionSeed;
   /** Modo: 2 versos estáticos OU letras a passar em sync. */
   lyricsSync?: boolean;
   /** 2 versos para overlay (modo estático — AG e fallback). */
@@ -325,8 +329,9 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
         background: "#000",
       }}
     >
-      {/* 1. Background motion — ambas as marcas aceitam accent agora. */}
-      <Motion frame={frame} accent={accent} />
+      {/* 1. Background motion — ambas as marcas aceitam accent + seed agora.
+           Sem seed (vídeos antigos) os motions caem no comportamento histórico. */}
+      <Motion frame={frame} accent={accent} seed={props.motionSeed} />
 
       {/* 2. Texto — story chapters (AG full), lyrics sync (Loranne) ou 2 versos */}
       {hasStory ? (

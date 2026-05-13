@@ -51,6 +51,7 @@ async function dispatchPostMode(post: WeeklyPost, mode: RenderMode): Promise<{ j
     mode,
     brand: post.brandSlug,
     motionVariant: post.motionVariant,
+    motionSeed: post.motionSeed,
     accent: post.accent,
     verses,
     syncedLyrics: post.brandSlug === "loranne" ? post.syncedLyrics : undefined,
