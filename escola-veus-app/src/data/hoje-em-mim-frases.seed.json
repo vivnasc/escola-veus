@@ -1,0 +1,72 @@
+{
+  "colecao": "hoje-em-mim",
+  "titulo": "Hoje, em Mim",
+  "horario_publicacao": "noite",
+  "descricao": "Post de fecho do dia. Contemplativo, acolhedor. Tira a leitora do automático e convida a um pequeno ritual de introspeção diária rumo à evolução.",
+  "ritmo_semanal": {
+    "mon": { "label": "Pergunta de introspeção", "kicker": "Pergunta-te hoje —" },
+    "tue": { "label": "Gratidão", "kicker": "Hoje agradeço —" },
+    "wed": { "label": "Soltar", "kicker": "Solto hoje —" },
+    "thu": { "label": "O que aprendi", "kicker": "Hoje aprendi —" },
+    "fri": { "label": "Celebrar o caminho", "kicker": "Celebro hoje —" },
+    "sat": { "label": "Ritual do corpo", "kicker": "Hoje, no corpo —" },
+    "sun": { "label": "Intenção para amanhã", "kicker": "Amanhã, escolho —" }
+  },
+  "frases": [
+    { "id": "hem-0001", "dia": "mon", "texto": "Que momento do dia me pediu mais do que eu queria dar — e o que aprendi com isso?" },
+    { "id": "hem-0002", "dia": "mon", "texto": "Onde, hoje, escolhi pela minha verdade — mesmo quando ninguém estava a ver?" },
+    { "id": "hem-0003", "dia": "mon", "texto": "Que palavra me ficou a vibrar no peito ao fim do dia — e o que ela quer dizer-me?" },
+    { "id": "hem-0004", "dia": "mon", "texto": "O que é que, hoje, eu fui sem pensar — e o que isso me revela?" },
+    { "id": "hem-0005", "dia": "mon", "texto": "Que pequena verdade minha apareceu hoje, devagarinho, e pediu para ser escutada?" },
+    { "id": "hem-0006", "dia": "mon", "texto": "Em que momento de hoje eu fui mais inteira? E em qual fui mais ausente?" },
+    { "id": "hem-0007", "dia": "mon", "texto": "Que parte de mim, hoje, pediu colo — e como respondi?" },
+
+    { "id": "hem-0008", "dia": "tue", "texto": "Pelo gesto mínimo que segurou o meu dia — agradeço com a mão no peito." },
+    { "id": "hem-0009", "dia": "tue", "texto": "Por quem me olhou sem pressa hoje — agradeço com presença." },
+    { "id": "hem-0010", "dia": "tue", "texto": "Pelo corpo que me trouxe até aqui, ainda que cansado — agradeço com ternura." },
+    { "id": "hem-0011", "dia": "tue", "texto": "Pela luz que entrou pela janela e me fez parar um segundo — agradeço com memória." },
+    { "id": "hem-0012", "dia": "tue", "texto": "Pelo que correu bem sem eu forçar — agradeço com fé." },
+    { "id": "hem-0013", "dia": "tue", "texto": "Pela paciência que me apareceu na hora certa — agradeço, mesmo sem saber de onde veio." },
+    { "id": "hem-0014", "dia": "tue", "texto": "Por estar viva, neste fecho de dia — agradeço, simplesmente." },
+
+    { "id": "hem-0015", "dia": "wed", "texto": "Uma frase que me magoou hoje — devolvo-a ao vento. Não é minha para guardar." },
+    { "id": "hem-0016", "dia": "wed", "texto": "O peso de querer ter feito mais — pouso-o aqui, ao fim do dia." },
+    { "id": "hem-0017", "dia": "wed", "texto": "Aquela conversa que ficou a girar na minha cabeça — entrego-a à noite." },
+    { "id": "hem-0018", "dia": "wed", "texto": "Solto a versão de mim que tentou agradar a toda a gente. Amanhã sou só minha outra vez." },
+    { "id": "hem-0019", "dia": "wed", "texto": "Deixo cair, como folha, tudo o que hoje me foi dito sem cuidado." },
+    { "id": "hem-0020", "dia": "wed", "texto": "Liberto a urgência. O que é meu chega no seu tempo." },
+    { "id": "hem-0021", "dia": "wed", "texto": "Solto o controlo do que não me cabe. Confio no que está em movimento." },
+
+    { "id": "hem-0022", "dia": "thu", "texto": "Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor." },
+    { "id": "hem-0023", "dia": "thu", "texto": "Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta." },
+    { "id": "hem-0024", "dia": "thu", "texto": "Hoje aprendi que a pressa não me leva mais longe — só me afasta de mim." },
+    { "id": "hem-0025", "dia": "thu", "texto": "Hoje aprendi que pedir ajuda não me torna menor — torna-me mais inteira." },
+    { "id": "hem-0026", "dia": "thu", "texto": "Hoje aprendi que descansar é parte do trabalho de evoluir." },
+    { "id": "hem-0027", "dia": "thu", "texto": "Hoje aprendi que cuidar de mim é o primeiro recado que dou ao mundo." },
+    { "id": "hem-0028", "dia": "thu", "texto": "Hoje aprendi que a minha intuição fala baixinho — e que vale a pena parar para a escutar." },
+
+    { "id": "hem-0029", "dia": "fri", "texto": "Celebro hoje o que comecei sem garantia — porque foi corajoso." },
+    { "id": "hem-0030", "dia": "fri", "texto": "Celebro a versão de mim de há um ano que não desistiu. Ela trouxe-me até aqui." },
+    { "id": "hem-0031", "dia": "fri", "texto": "Celebro hoje uma pequena vitória — daquelas que ninguém vê, mas que eu sinto." },
+    { "id": "hem-0032", "dia": "fri", "texto": "Celebro hoje o passo pequeno que dei — porque pequeno também é caminho." },
+    { "id": "hem-0033", "dia": "fri", "texto": "Celebro hoje a minha capacidade de recomeçar, vezes sem conta, sem perder a luz." },
+    { "id": "hem-0034", "dia": "fri", "texto": "Celebro hoje quem me amou mesmo nos meus dias menos brilhantes." },
+    { "id": "hem-0035", "dia": "fri", "texto": "Celebro hoje a coragem silenciosa que ninguém aplaude — mas que me sustenta." },
+
+    { "id": "hem-0036", "dia": "sat", "texto": "Hoje, no corpo, pouso a mão no peito e digo: 'estás em casa'." },
+    { "id": "hem-0037", "dia": "sat", "texto": "Hoje, no corpo, inspiro fundo três vezes — e devolvo o dia ao chão." },
+    { "id": "hem-0038", "dia": "sat", "texto": "Hoje, no corpo, solto os ombros. O dia já não me precisa carregada." },
+    { "id": "hem-0039", "dia": "sat", "texto": "Hoje, no corpo, escuto onde está apertado — e respiro para lá." },
+    { "id": "hem-0040", "dia": "sat", "texto": "Hoje, no corpo, agradeço aos pés que me levaram a cada lugar deste dia." },
+    { "id": "hem-0041", "dia": "sat", "texto": "Hoje, no corpo, fecho os olhos um instante. Aqui dentro também é templo." },
+    { "id": "hem-0042", "dia": "sat", "texto": "Hoje, no corpo, espreguiço-me como gata — e devolvo o dia à terra." },
+
+    { "id": "hem-0043", "dia": "sun", "texto": "Amanhã, escolho começar devagar. A pressa não me serve." },
+    { "id": "hem-0044", "dia": "sun", "texto": "Amanhã, escolho um gesto pequeno por mim — antes de cuidar de mais ninguém." },
+    { "id": "hem-0045", "dia": "sun", "texto": "Amanhã, escolho dizer 'sim' só ao que me faz expandir." },
+    { "id": "hem-0046", "dia": "sun", "texto": "Amanhã, escolho escutar antes de responder. Em mim e nos outros." },
+    { "id": "hem-0047", "dia": "sun", "texto": "Amanhã, escolho confiar — mesmo quando não vejo ainda o caminho inteiro." },
+    { "id": "hem-0048", "dia": "sun", "texto": "Amanhã, escolho a minha verdade, mesmo que ela peça coragem." },
+    { "id": "hem-0049", "dia": "sun", "texto": "Amanhã, escolho lembrar-me: estou a evoluir, mesmo quando parece silêncio." }
+  ]
+}

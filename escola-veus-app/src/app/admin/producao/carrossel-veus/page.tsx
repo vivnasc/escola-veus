@@ -56,7 +56,14 @@ export default function CarrosselVeusPage() {
       description={
         <p>
           42 slides verticais (7 dias × 6) para status do WhatsApp. Edita textos, escolhe tema,
-          gera vozes ou marca "sem voz" para ir só com música Ancient Ground.
+          gera vozes ou marca "sem voz" para ir só com música Ancient Ground.{" "}
+          <a
+            href="/admin/producao/carrossel-veus/metricool"
+            className="text-escola-dourado underline hover:text-escola-creme"
+          >
+            Exportar CSV Metricool (IG + TikTok)
+          </a>
+          .
         </p>
       }
     />
