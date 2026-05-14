@@ -10,8 +10,8 @@ import {
 import {
   WEEKDAYS,
   WEEKDAY_LABELS,
-  loadWeeklyAudios,
-  saveWeeklyAudios,
+  loadWeeklyAudiosRemote,
+  saveWeeklyAudiosRemote,
   todayWeekday,
   type Weekday,
   type WeekdayAudio,
@@ -25,16 +25,24 @@ interface Props {
 export function WeeklyAudios({ onTodayAudioChange }: Props) {
   const [audios, setAudios] = useState<Partial<Record<Weekday, WeekdayAudio>>>({});
   const [hydrated, setHydrated] = useState(false);
+  const [syncState, setSyncState] = useState<"idle" | "saving" | "saved" | "error">(
+    "idle"
+  );
 
   useEffect(() => {
-    const loaded = loadWeeklyAudios();
-    setAudios(loaded);
-    setHydrated(true);
+    loadWeeklyAudiosRemote().then((loaded) => {
+      setAudios(loaded);
+      setHydrated(true);
+    });
   }, []);
 
   useEffect(() => {
     if (!hydrated) return;
-    saveWeeklyAudios(audios);
+    setSyncState("saving");
+    saveWeeklyAudiosRemote(audios).then((ok) => {
+      setSyncState(ok ? "saved" : "error");
+      if (ok) setTimeout(() => setSyncState("idle"), 1500);
+    });
     if (onTodayAudioChange) {
       const td = todayWeekday();
       onTodayAudioChange(audios[td] ?? null, td);
@@ -59,9 +67,22 @@ export function WeeklyAudios({ onTodayAudioChange }: Props) {
   return (
     <section className="space-y-3">
       <div>
-        <h2 className="font-serif text-lg text-escola-dourado">
-          Áudios da semana ({filled}/7)
-        </h2>
+        <div className="flex items-center gap-2">
+          <h2 className="font-serif text-lg text-escola-dourado">
+            Áudios da semana ({filled}/7)
+          </h2>
+          {syncState === "saving" && (
+            <span className="text-[10px] text-escola-creme-50">a sincronizar...</span>
+          )}
+          {syncState === "saved" && (
+            <span className="text-[10px] text-emerald-400">gravado em Supabase</span>
+          )}
+          {syncState === "error" && (
+            <span className="text-[10px] text-red-400">
+              ERRO de sincronização. Só local!
+            </span>
+          )}
+        </div>
         <p className="text-xs text-escola-creme-50">
           Gera um SFX por dia da semana. Os 7 ficam fixos e repetem-se semana
           após semana. Não tens de gerar novos todos os dias. O áudio de{" "}
