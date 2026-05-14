@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import seed from "@/data/vc-sabia-frases.seed.json";
 import { phraseToCaptions } from "@/lib/vc-sabia/captions";
+import { MOOD_LABELS } from "@/lib/vc-sabia/audio";
 import {
-  DEFAULT_DURATION_SEC,
-  MOOD_LABELS,
-  MORNING_MOODS,
-  type MorningMood,
-} from "@/lib/vc-sabia/audio";
+  WEEKDAY_LABELS,
+  type Weekday,
+  type WeekdayAudio,
+} from "@/lib/vc-sabia/weekly-audio-store";
 import { MotionLibrary } from "./MotionLibrary";
+import { WeeklyAudios } from "./WeeklyAudios";
 
 type Variant = "A" | "B" | "C";
 
@@ -31,6 +32,16 @@ export function VcSabiaPreviewPanel() {
   const [phraseId, setPhraseId] = useState<string>(SAMPLE_PHRASE_ID);
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
   const [copied, setCopied] = useState<string | null>(null);
+  const [todayAudio, setTodayAudio] = useState<WeekdayAudio | null>(null);
+  const [todayWd, setTodayWd] = useState<Weekday | null>(null);
+
+  const handleTodayAudioChange = useCallback(
+    (audio: WeekdayAudio | null, weekday: Weekday) => {
+      setTodayAudio(audio);
+      setTodayWd(weekday);
+    },
+    []
+  );
 
   const phrase = seed.frases.find((f) => f.id === phraseId) ?? seed.frases[0];
   const dateLabel = formatDatePT(new Date());
@@ -159,6 +170,31 @@ export function VcSabiaPreviewPanel() {
             <div className="text-escola-creme">Media</div>
             <div className="mt-1 break-all">{media}</div>
           </div>
+
+          {todayWd && (
+            <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
+              <div className="text-escola-dourado">
+                Áudio de hoje ({WEEKDAY_LABELS[todayWd]})
+              </div>
+              {todayAudio ? (
+                <>
+                  <div className="mt-1 text-escola-creme">
+                    {MOOD_LABELS[todayAudio.mood]} · {todayAudio.durationSec}s
+                  </div>
+                  <audio
+                    src={todayAudio.url}
+                    controls
+                    loop
+                    className="mt-2 h-8 w-full"
+                  />
+                </>
+              ) : (
+                <div className="mt-1 text-escola-creme-50">
+                  Sem áudio — gera em baixo na secção semanal.
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -194,110 +230,8 @@ export function VcSabiaPreviewPanel() {
         </div>
       </section>
 
-      <AudioGeneratorSection />
+      <WeeklyAudios onTodayAudioChange={handleTodayAudioChange} />
     </div>
-  );
-}
-
-function AudioGeneratorSection() {
-  const [mood, setMood] = useState<MorningMood>("birds-dawn");
-  const [durationSec, setDurationSec] = useState<number>(DEFAULT_DURATION_SEC);
-  const [generating, setGenerating] = useState(false);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const generate = async () => {
-    setGenerating(true);
-    setError(null);
-    setAudioUrl(null);
-    try {
-      const res = await fetch("/api/admin/vc-sabia/audio/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mood, durationSec }),
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        setError(json.erro || `Erro ${res.status}`);
-      } else {
-        setAudioUrl(json.audioUrl);
-      }
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setGenerating(false);
-    }
-  };
-
-  return (
-    <section className="space-y-3">
-      <h2 className="font-serif text-lg text-escola-dourado">
-        Áudio de manhã · ElevenLabs SFX
-      </h2>
-      <p className="text-xs text-escola-creme-50">
-        Escolhe um mood e gera um SFX ambiente para servir de fundo ao motion.
-        Custa ~$0.30 por geração (~10s). O ficheiro é guardado em Supabase
-        Storage e pode ser reutilizado em múltiplos posts.
-      </p>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
-          Mood:
-          <select
-            value={mood}
-            onChange={(e) => setMood(e.target.value as MorningMood)}
-            className="rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
-          >
-            {MORNING_MOODS.map((m) => (
-              <option key={m} value={m}>
-                {MOOD_LABELS[m]}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
-          Duração:
-          <input
-            type="number"
-            min={3}
-            max={22}
-            value={durationSec}
-            onChange={(e) => setDurationSec(Number(e.target.value))}
-            className="w-16 rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
-          />
-          <span>s</span>
-        </label>
-
-        <button
-          onClick={generate}
-          disabled={generating}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado transition-colors hover:bg-escola-dourado/20 disabled:opacity-50"
-        >
-          {generating ? "A gerar…" : "Gerar áudio"}
-        </button>
-      </div>
-
-      {error && (
-        <div className="rounded border border-red-700/40 bg-red-900/20 p-3 text-xs text-red-300">
-          {error}
-        </div>
-      )}
-
-      {audioUrl && (
-        <div className="space-y-2 rounded border border-escola-border bg-escola-card p-3">
-          <audio src={audioUrl} controls className="w-full" />
-          <a
-            href={audioUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="text-xs text-escola-dourado hover:underline"
-          >
-            {audioUrl}
-          </a>
-        </div>
-      )}
-    </section>
   );
 }
 
