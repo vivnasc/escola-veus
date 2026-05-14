@@ -18,8 +18,6 @@ import {
 } from "@/lib/hoje-em-mim/audio";
 import { NightMotionLibrary } from "./MotionLibrary";
 
-type Variant = "A" | "B" | "C";
-
 type Frase = { id: string; dia: DiaSemana; texto: string };
 
 const DEFAULT_MEDIA = "/assets/vc-sabia/motions/db5056e4-aabc-43e6-ab9f-48f8d96c10a8.mp4";
@@ -48,7 +46,6 @@ export function HojeEmMimPreviewPanel() {
   const hoje = diaSemanaHoje();
   const [dia, setDia] = useState<DiaSemana>(hoje);
   const frasesDoDia = useMemo(() => FRASES.filter((f) => f.dia === dia), [dia]);
-  const [variant, setVariant] = useState<Variant>("A");
   const [phraseId, setPhraseId] = useState<string>(frasesDoDia[0]?.id ?? FRASES[0].id);
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
   const [copied, setCopied] = useState<string | null>(null);
@@ -133,22 +130,6 @@ export function HojeEmMimPreviewPanel() {
       <NightMotionLibrary selectedUrl={media} onSelect={setMedia} />
 
       <div className="flex flex-wrap gap-3">
-        <div className="flex gap-1 rounded-md border border-escola-border p-1">
-          {(["A", "B", "C"] as const).map((v) => (
-            <button
-              key={v}
-              onClick={() => setVariant(v)}
-              className={`rounded px-3 py-1.5 text-xs transition-colors ${
-                variant === v
-                  ? "bg-escola-dourado text-escola-bg"
-                  : "text-escola-creme-50 hover:text-escola-creme"
-              }`}
-            >
-              Variante {v}
-            </button>
-          ))}
-        </div>
-
         <select
           value={phrase.id}
           onChange={(e) => setPhraseId(e.target.value)}
@@ -193,17 +174,13 @@ export function HojeEmMimPreviewPanel() {
       </div>
 
       <div className="text-xs text-escola-creme-50">
-        Variante <strong className="text-escola-creme">A</strong> Carta aberta:
-        texto respira, dia vertical à esquerda, kicker em baixo como assinatura.{" "}
-        <strong className="text-escola-creme">B</strong> Carta selada: idem com selo
-        de cera em cobre no canto.{" "}
-        <strong className="text-escola-creme">C</strong> Janela de lua: arco superior
-        em cobre, texto centrado, dia em pé à direita.
+        Visual fixo "Janela de Lua": arco de cobre no topo, texto centrado,
+        nome do dia em pé à direita, glifo e kicker em baixo como assinatura.
+        Grão de papel sobre vídeo. Sem cartão de vidro.
       </div>
 
       <div className="flex flex-wrap gap-8">
         <Frame
-          variant={variant}
           phrase={phrase.texto}
           kicker={kicker}
           glifo={glifo}
@@ -410,19 +387,15 @@ function CaptionCard({
 }
 
 /**
- * Visual "Carta Noturna".
- * Distingue do VC Sabia por:
- *  - Nome do dia escrito vertical (rotação 90°) no lado esquerdo (Var A/B)
- *    ou direito (Var C)
- *  - Kicker e glifo aparecem em baixo, como assinatura, e não no topo
- *  - Cobre morno (#C28F60) substitui o dourado luminoso
- *  - Camada de grão de papel sobre o vídeo
- *  - Sem cartão de vidro: texto respira na tela
- *  - Variante B inclui selo de cera com o glifo
- *  - Variante C usa arco de cobre fino (silhueta de janela de lua)
+ * Visual "Janela de Lua" (variante C aprovada).
+ *  - Arco de cobre fino no topo (silhueta de janela)
+ *  - Nome do dia escrito vertical (rotação 90°) no lado direito, em cobre
+ *  - Texto centrado, em itálico serif, respirando
+ *  - Glifo e kicker em baixo como assinatura, centrados
+ *  - Grão de papel sobre o vídeo, vinheta densa, sem cartão de vidro
+ *  - Marca de canto em cobre no topo esquerdo (cantoneira fina)
  */
 function Frame({
-  variant,
   phrase,
   kicker,
   glifo,
@@ -430,7 +403,6 @@ function Frame({
   media,
   isVideo,
 }: {
-  variant: Variant;
   phrase: string;
   kicker: string;
   glifo: string;
@@ -463,7 +435,7 @@ function Frame({
         />
       )}
 
-      {/* Grão de papel suave. SVG inline em base64 leve. */}
+      {/* Grão de papel suave. SVG inline. */}
       <div
         className="pointer-events-none absolute inset-0 mix-blend-overlay"
         style={{
@@ -473,7 +445,7 @@ function Frame({
         }}
       />
 
-      {/* Vinhetas densas para suportar leitura noturna */}
+      {/* Vinheta densa para leitura noturna */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -482,75 +454,52 @@ function Frame({
         }}
       />
 
-      {variant === "C" ? (
-        // Janela de lua: arco de cobre no topo
-        <svg
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-8 -translate-x-1/2"
-          width="280"
-          height="380"
-          viewBox="0 0 280 380"
+      {/* Arco de cobre, janela de lua */}
+      <svg
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-8 -translate-x-1/2"
+        width="280"
+        height="380"
+        viewBox="0 0 280 380"
+        fill="none"
+      >
+        <path
+          d="M 20 380 L 20 140 A 120 120 0 0 1 260 140 L 260 380"
+          stroke={COBRE_FRACO}
+          strokeWidth="1.2"
           fill="none"
-        >
-          <path
-            d="M 20 380 L 20 140 A 120 120 0 0 1 260 140 L 260 380"
-            stroke={COBRE_FRACO}
-            strokeWidth="1.2"
-            fill="none"
-          />
-          <circle cx="140" cy="140" r="3" fill={COBRE} opacity="0.7" />
-        </svg>
-      ) : (
-        // Variantes A e B: dia vertical no lado esquerdo
-        <div
-          className="absolute font-sans"
-          style={{
-            left: 24,
-            top: "50%",
-            transform: "translateY(-50%) rotate(-90deg)",
-            transformOrigin: "center",
-            color: COBRE_FRACO,
-            fontSize: 11,
-            letterSpacing: "0.42em",
-            textTransform: "lowercase",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {diaLongo}
-        </div>
-      )}
+        />
+        <circle cx="140" cy="140" r="3" fill={COBRE} opacity="0.7" />
+      </svg>
 
-      {variant === "C" && (
-        // Variante C: dia vertical no lado direito
-        <div
-          className="absolute font-sans"
-          style={{
-            right: 24,
-            top: "50%",
-            transform: "translateY(-50%) rotate(90deg)",
-            transformOrigin: "center",
-            color: COBRE_FRACO,
-            fontSize: 11,
-            letterSpacing: "0.42em",
-            textTransform: "lowercase",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {diaLongo}
-        </div>
-      )}
+      {/* Nome do dia em pé, lado direito */}
+      <div
+        className="absolute font-sans"
+        style={{
+          right: 24,
+          top: "50%",
+          transform: "translateY(-50%) rotate(90deg)",
+          transformOrigin: "center",
+          color: COBRE_FRACO,
+          fontSize: 11,
+          letterSpacing: "0.42em",
+          textTransform: "lowercase",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {diaLongo}
+      </div>
 
-      {/* Corpo: frase em itálico, alinhada à esquerda, respirando */}
+      {/* Corpo: frase em itálico, centrada, respirando */}
       <main className="absolute inset-0 flex flex-col justify-center px-12 pt-10">
         <p
-          className="font-serif italic"
+          className="font-serif italic text-center"
           style={{
             color: CREME,
             fontWeight: 400,
             fontSize: 24,
             lineHeight: 1.42,
             letterSpacing: "0.005em",
-            textAlign: variant === "C" ? "center" : "left",
             textShadow:
               "0 2px 10px rgba(0,0,0,0.6), 0 1px 2px rgba(0,0,0,0.85)",
           }}
@@ -559,18 +508,11 @@ function Frame({
         </p>
       </main>
 
-      {/* Assinatura em baixo: glifo + kicker em cobre */}
-      <footer
-        className="absolute inset-x-0 bottom-0 flex items-baseline gap-2 px-12 pb-10"
-        style={{ justifyContent: variant === "C" ? "center" : "flex-start" }}
-      >
+      {/* Assinatura: glifo + kicker centrados em baixo */}
+      <footer className="absolute inset-x-0 bottom-0 flex items-baseline justify-center gap-2 px-12 pb-10">
         <span
           className="font-serif"
-          style={{
-            color: COBRE,
-            fontSize: 18,
-            lineHeight: 1,
-          }}
+          style={{ color: COBRE, fontSize: 18, lineHeight: 1 }}
         >
           {glifo}
         </span>
@@ -587,63 +529,14 @@ function Frame({
         </span>
       </footer>
 
-      {/* Variante B: selo de cera no canto superior direito */}
-      {variant === "B" && (
-        <div
-          className="absolute font-serif flex items-center justify-center"
-          style={{
-            right: 22,
-            top: 22,
-            width: 44,
-            height: 44,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle at 35% 30%, rgba(194,143,96,0.95) 0%, rgba(132,86,52,0.95) 70%, rgba(80,46,22,0.95) 100%)",
-            color: "#1a0e05",
-            fontSize: 20,
-            fontWeight: 600,
-            boxShadow:
-              "0 4px 10px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,220,180,0.4)",
-          }}
-        >
-          {glifo}
-        </div>
-      )}
-
-      {/* Monograma h,m no canto inferior direito, sem URL */}
-      <div
-        className="absolute font-serif italic"
-        style={{
-          right: 14,
-          bottom: 14,
-          color: COBRE_FRACO,
-          fontSize: 11,
-          letterSpacing: "0.1em",
-        }}
-      >
-        h,m
-      </div>
-
-      {/* Topo: linha de cobre fina no canto, sem data */}
+      {/* Cantoneira de cobre no topo esquerdo */}
       <div
         className="pointer-events-none absolute"
-        style={{
-          left: 22,
-          top: 22,
-          width: 24,
-          height: 1,
-          background: COBRE_FRACO,
-        }}
+        style={{ left: 22, top: 22, width: 24, height: 1, background: COBRE_FRACO }}
       />
       <div
         className="pointer-events-none absolute"
-        style={{
-          left: 22,
-          top: 22,
-          width: 1,
-          height: 24,
-          background: COBRE_FRACO,
-        }}
+        style={{ left: 22, top: 22, width: 1, height: 24, background: COBRE_FRACO }}
       />
     </div>
   );
