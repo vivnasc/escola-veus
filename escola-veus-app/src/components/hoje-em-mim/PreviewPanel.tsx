@@ -13,8 +13,11 @@ import {
   type DiaSemana,
 } from "@/lib/hoje-em-mim/captions";
 import {
+  DEFAULT_NIGHT_DURATION_SEC,
   NIGHT_MOOD_LABELS,
   NIGHT_MOOD_PROMPTS,
+  NIGHT_MOODS,
+  type NightMood,
 } from "@/lib/hoje-em-mim/audio";
 import { NightMotionLibrary } from "./MotionLibrary";
 
@@ -246,8 +249,159 @@ export function HojeEmMimPreviewPanel() {
         </div>
       </section>
 
+      <AudioGeneratorSection />
+
       <MjPromptsSection copied={copied} onCopy={copy} />
     </div>
+  );
+}
+
+type AudioOutput = {
+  url: string;
+  mood: NightMood;
+  durationSec: number;
+  sizeBytes: number;
+};
+
+function AudioGeneratorSection() {
+  const [mood, setMood] = useState<NightMood>("grilos-tropicais");
+  const [durationSec, setDurationSec] = useState<number>(DEFAULT_NIGHT_DURATION_SEC);
+  const [generating, setGenerating] = useState(false);
+  const [output, setOutput] = useState<AudioOutput | null>(null);
+  const [recent, setRecent] = useState<AudioOutput[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const gerar = async () => {
+    setGenerating(true);
+    setError(null);
+    setOutput(null);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/audio/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mood, durationSec }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.erro || `Erro ${res.status}`);
+      } else {
+        const out: AudioOutput = {
+          url: json.audioUrl,
+          mood: json.mood,
+          durationSec: json.durationSec,
+          sizeBytes: json.sizeBytes,
+        };
+        setOutput(out);
+        setRecent((prev) => [out, ...prev].slice(0, 6));
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  return (
+    <section className="space-y-3">
+      <h2 className="font-serif text-lg" style={{ color: COBRE }}>
+        Áudio noturno. Gerar com ElevenLabs SFX
+      </h2>
+      <p className="text-xs text-escola-creme-50">
+        Escolhe um mood e gera o SFX direto. Guarda em Supabase
+        (course-assets/hoje-em-mim-audios/) e podes reutilizar em vários posts.
+        Custo aproximado: 0,30 USD por geração de 10 a 12 segundos.
+      </p>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
+          mood
+          <select
+            value={mood}
+            onChange={(e) => setMood(e.target.value as NightMood)}
+            className="rounded border border-escola-border bg-escola-card px-2 py-1.5 text-xs text-escola-creme"
+          >
+            {NIGHT_MOODS.map((m) => (
+              <option key={m} value={m}>
+                {NIGHT_MOOD_LABELS[m]}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
+          duração
+          <input
+            type="number"
+            min={3}
+            max={22}
+            value={durationSec}
+            onChange={(e) => setDurationSec(Number(e.target.value))}
+            className="w-16 rounded border border-escola-border bg-escola-card px-2 py-1.5 text-xs text-escola-creme"
+          />
+          <span>s</span>
+        </label>
+
+        <button
+          onClick={gerar}
+          disabled={generating}
+          className="rounded-md border px-3 py-1.5 text-xs disabled:opacity-50 transition-colors"
+          style={{
+            borderColor: COBRE,
+            color: COBRE,
+            background: "rgba(194, 143, 96, 0.1)",
+          }}
+        >
+          {generating ? "a gerar…" : "Gerar áudio"}
+        </button>
+      </div>
+
+      {error && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-3 text-xs text-red-300">
+          {error}
+        </div>
+      )}
+
+      {output && (
+        <div className="space-y-2 rounded border border-escola-border bg-escola-card p-3">
+          <div className="text-xs text-escola-creme-50">
+            <strong style={{ color: COBRE }}>{NIGHT_MOOD_LABELS[output.mood]}</strong>{" "}
+            · {output.durationSec}s ·{" "}
+            {(output.sizeBytes / 1024).toFixed(0)} KB
+          </div>
+          <audio src={output.url} controls className="w-full" />
+          <a
+            href={output.url}
+            target="_blank"
+            rel="noreferrer"
+            className="block break-all text-[10px] underline"
+            style={{ color: COBRE }}
+          >
+            {output.url}
+          </a>
+        </div>
+      )}
+
+      {recent.length > 1 && (
+        <details className="text-xs text-escola-creme-50">
+          <summary className="cursor-pointer hover:text-escola-creme">
+            últimas {recent.length} gerações desta sessão
+          </summary>
+          <div className="mt-2 space-y-2">
+            {recent.slice(1).map((r, i) => (
+              <div
+                key={`${r.url}-${i}`}
+                className="rounded border border-escola-border bg-escola-bg/60 p-2"
+              >
+                <div className="mb-1 text-[10px]">
+                  {NIGHT_MOOD_LABELS[r.mood]} · {r.durationSec}s
+                </div>
+                <audio src={r.url} controls className="w-full" />
+              </div>
+            ))}
+          </div>
+        </details>
+      )}
+    </section>
   );
 }
 
@@ -277,79 +431,145 @@ function MjPromptsSection({
         </label>
       </div>
       <p className="text-xs text-escola-creme-50">
-        Cada cartão tem o prompt Midjourney V7 video para 9:16 lento (12 a 15s) e o
-        mood ElevenLabs sugerido para acompanhar. Copia, gera, faz upload no library
-        em cima.
+        Cada cartão tem o prompt Midjourney 9:16 e o mood ElevenLabs sugerido.
+        Copia o MJ e gera o vídeo. O áudio gera direto aqui com o teu API key
+        ElevenLabs configurado (não precisas copiar).
       </p>
 
       <div className="grid gap-3 md:grid-cols-2">
-        {list.map((p) => {
-          const audioPrompt = NIGHT_MOOD_PROMPTS[p.audioMood];
-          const audioLabel = NIGHT_MOOD_LABELS[p.audioMood];
-          const keyMj = `mj-${p.id}`;
-          const keyAudio = `audio-${p.id}`;
-          return (
-            <div
-              key={p.id}
-              className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs" style={{ color: COBRE }}>
-                  {p.id} {p.prioritario ? "★" : ""}
-                </span>
-                <span className="text-[10px] text-escola-creme-50">
-                  áudio: <span className="text-escola-creme">{audioLabel}</span>
-                </span>
-              </div>
-
-              <div className="rounded border border-escola-border bg-escola-bg p-2">
-                <div className="mb-1 flex items-center justify-between">
-                  <span className="text-[10px] text-escola-creme-50">Midjourney</span>
-                  <button
-                    onClick={() => onCopy(keyMj, p.prompt)}
-                    className={`rounded px-1.5 py-0.5 text-[10px] transition-colors ${
-                      copied === keyMj
-                        ? "bg-escola-dourado text-escola-bg"
-                        : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
-                    }`}
-                  >
-                    {copied === keyMj ? "✓" : "Copiar"}
-                  </button>
-                </div>
-                <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
-                  {p.prompt}
-                </pre>
-              </div>
-
-              <div className="rounded border border-escola-border bg-escola-bg p-2">
-                <div className="mb-1 flex items-center justify-between">
-                  <span className="text-[10px] text-escola-creme-50">ElevenLabs SFX</span>
-                  <button
-                    onClick={() => onCopy(keyAudio, audioPrompt)}
-                    className={`rounded px-1.5 py-0.5 text-[10px] transition-colors ${
-                      copied === keyAudio
-                        ? "bg-escola-dourado text-escola-bg"
-                        : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
-                    }`}
-                  >
-                    {copied === keyAudio ? "✓" : "Copiar"}
-                  </button>
-                </div>
-                <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
-                  {audioPrompt}
-                </pre>
-              </div>
-
-              {p.notas && (
-                <div className="text-[10px] italic text-escola-creme-50">
-                  {p.notas}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {list.map((p) => (
+          <PromptCard
+            key={p.id}
+            prompt={p}
+            copied={copied}
+            onCopy={onCopy}
+          />
+        ))}
       </div>
     </section>
+  );
+}
+
+function PromptCard({
+  prompt,
+  copied,
+  onCopy,
+}: {
+  prompt: (typeof MJ_VIDEO_PROMPTS)[number];
+  copied: string | null;
+  onCopy: (key: string, text: string) => void;
+}) {
+  const audioPrompt = NIGHT_MOOD_PROMPTS[prompt.audioMood];
+  const audioLabel = NIGHT_MOOD_LABELS[prompt.audioMood];
+  const keyMj = `mj-${prompt.id}`;
+  const keyAudio = `audio-${prompt.id}`;
+
+  const [generating, setGenerating] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [audioError, setAudioError] = useState<string | null>(null);
+
+  const gerarAudio = async () => {
+    setGenerating(true);
+    setAudioError(null);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/audio/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mood: prompt.audioMood,
+          durationSec: DEFAULT_NIGHT_DURATION_SEC,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setAudioError(json.erro || `Erro ${res.status}`);
+      } else {
+        setAudioUrl(json.audioUrl);
+      }
+    } catch (e) {
+      setAudioError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  return (
+    <div className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs" style={{ color: COBRE }}>
+          {prompt.id} {prompt.prioritario ? "★" : ""}
+        </span>
+        <span className="text-[10px] text-escola-creme-50">
+          áudio: <span className="text-escola-creme">{audioLabel}</span>
+        </span>
+      </div>
+
+      <div className="rounded border border-escola-border bg-escola-bg p-2">
+        <div className="mb-1 flex items-center justify-between">
+          <span className="text-[10px] text-escola-creme-50">Midjourney</span>
+          <button
+            onClick={() => onCopy(keyMj, prompt.prompt)}
+            className={`rounded px-1.5 py-0.5 text-[10px] transition-colors ${
+              copied === keyMj
+                ? "bg-escola-dourado text-escola-bg"
+                : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            {copied === keyMj ? "✓" : "Copiar"}
+          </button>
+        </div>
+        <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
+          {prompt.prompt}
+        </pre>
+      </div>
+
+      <div className="rounded border border-escola-border bg-escola-bg p-2 space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] text-escola-creme-50">ElevenLabs SFX</span>
+          <div className="flex gap-1">
+            <button
+              onClick={() => onCopy(keyAudio, audioPrompt)}
+              className={`rounded px-1.5 py-0.5 text-[10px] transition-colors ${
+                copied === keyAudio
+                  ? "bg-escola-dourado text-escola-bg"
+                  : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
+              }`}
+            >
+              {copied === keyAudio ? "✓" : "Copiar"}
+            </button>
+            <button
+              onClick={gerarAudio}
+              disabled={generating}
+              className="rounded px-1.5 py-0.5 text-[10px] disabled:opacity-50 transition-colors"
+              style={{
+                borderWidth: 1,
+                borderStyle: "solid",
+                borderColor: COBRE,
+                color: COBRE,
+                background: "rgba(194, 143, 96, 0.1)",
+              }}
+            >
+              {generating ? "a gerar…" : "Gerar"}
+            </button>
+          </div>
+        </div>
+        <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
+          {audioPrompt}
+        </pre>
+        {audioError && (
+          <div className="rounded border border-red-700/40 bg-red-900/20 p-1.5 text-[10px] text-red-300">
+            {audioError}
+          </div>
+        )}
+        {audioUrl && (
+          <audio src={audioUrl} controls className="w-full h-7" />
+        )}
+      </div>
+
+      {prompt.notas && (
+        <div className="text-[10px] italic text-escola-creme-50">{prompt.notas}</div>
+      )}
+    </div>
   );
 }
 
@@ -472,19 +692,17 @@ function Frame({
         <circle cx="140" cy="140" r="3" fill={COBRE} opacity="0.7" />
       </svg>
 
-      {/* Nome do dia em pé, lado direito */}
+      {/* Nome do dia logo abaixo do pontinho da lua, dentro do arco */}
       <div
-        className="absolute font-sans"
+        className="absolute inset-x-0 text-center font-sans"
         style={{
-          right: 24,
-          top: "50%",
-          transform: "translateY(-50%) rotate(90deg)",
-          transformOrigin: "center",
-          color: COBRE_FRACO,
+          top: 190,
+          color: COBRE,
           fontSize: 11,
+          fontWeight: 400,
           letterSpacing: "0.42em",
           textTransform: "lowercase",
-          whiteSpace: "nowrap",
+          textShadow: "0 1px 4px rgba(0,0,0,0.65)",
         }}
       >
         {diaLongo}
@@ -508,25 +726,40 @@ function Frame({
         </p>
       </main>
 
-      {/* Assinatura: glifo + kicker centrados em baixo */}
-      <footer className="absolute inset-x-0 bottom-0 flex items-baseline justify-center gap-2 px-12 pb-10">
-        <span
-          className="font-serif"
-          style={{ color: COBRE, fontSize: 18, lineHeight: 1 }}
-        >
-          {glifo}
-        </span>
-        <span
-          className="font-sans italic"
+      {/* Assinatura: glifo + kicker centrados, seteveus.space por baixo */}
+      <footer className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-1.5 px-12 pb-8">
+        <div className="flex items-baseline justify-center gap-2">
+          <span
+            className="font-serif"
+            style={{ color: COBRE, fontSize: 18, lineHeight: 1 }}
+          >
+            {glifo}
+          </span>
+          <span
+            className="font-sans italic"
+            style={{
+              color: COBRE,
+              fontSize: 13,
+              letterSpacing: "0.08em",
+              textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+            }}
+          >
+            {kicker}
+          </span>
+        </div>
+        <div
+          className="font-sans"
           style={{
-            color: COBRE,
-            fontSize: 13,
-            letterSpacing: "0.08em",
-            textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+            color: COBRE_FRACO,
+            fontSize: 9,
+            fontWeight: 400,
+            letterSpacing: "0.28em",
+            textTransform: "uppercase",
+            textShadow: "0 1px 4px rgba(0,0,0,0.7)",
           }}
         >
-          {kicker}
-        </span>
+          seteveus.space
+        </div>
       </footer>
 
       {/* Cantoneira de cobre no topo esquerdo */}
