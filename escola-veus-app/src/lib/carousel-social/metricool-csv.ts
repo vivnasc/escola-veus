@@ -1,11 +1,15 @@
 /**
- * Metricool CSV builder para carrosséis (conta pessoal · IG + TikTok).
+ * Metricool CSV builder para carrosséis-vídeo · conta pessoal (IG + TikTok).
  *
- * Header igual ao usado para Loranne/AG (93 colunas). Cada dia gera 2 linhas:
- *  - Instagram (post type CAROUSEL, até 10 Picture Urls)
- *  - TikTok (carrossel de fotos, mesmas URLs)
+ * Cada carrossel é UM MP4 (1080×1920, ~60s, gerado pelo workflow GitHub
+ * Actions render-carrossel-veus e armazenado em
+ * course-assets/carrossel-veus/<jobId>/videos/dia-N.mp4).
  *
- * WhatsApp Status fica de fora — é manual.
+ * Por cada dia geramos 2 linhas CSV:
+ *  - Instagram (REEL · 1 vídeo)
+ *  - TikTok (vídeo)
+ *
+ * WhatsApp Status fica de fora — manual.
  */
 
 import { CSV_HEADER, csvEscape } from "@/lib/weekly-social/metricool-csv";
@@ -17,13 +21,15 @@ export type CarouselPost = {
   date: string;
   /** Hora local "HH:MM" — Metricool converte para o fuso da conta. */
   time: string;
-  /** URLs públicas dos slides (1 a 10). 1ª URL é a capa. */
-  slideUrls: string[];
+  /** URL pública do MP4 (1080×1920). */
+  videoUrl: string;
+  /** Thumbnail opcional (capa do Reel). */
+  thumbnailUrl?: string;
   /** Caption Instagram (com hashtags). */
   instagramCaption: string;
   /** Caption TikTok (mais curta). */
   tiktokCaption: string;
-  /** Título opcional do carrossel TikTok. */
+  /** Título opcional do TikTok. */
   tiktokTitle?: string;
 };
 
@@ -54,25 +60,20 @@ function buildRow(post: CarouselPost, kind: RowKind): string {
   set("Threads", "FALSE");
   set("Bluesky", "FALSE");
 
-  // 1-10 Picture Urls
-  const slides = post.slideUrls.slice(0, 10);
-  for (let i = 0; i < slides.length; i++) {
-    const colName = `Picture Url ${i + 1}` as typeof CSV_HEADER[number];
-    set(colName, slides[i]);
-  }
+  // O MP4 vai no Picture Url 1 (Metricool aceita vídeo aí para Reels/TikTok).
+  set("Picture Url 1", post.videoUrl);
+  if (post.thumbnailUrl) set("Video Thumbnail Url", post.thumbnailUrl);
 
   if (kind === "instagram") {
     set("Text", post.instagramCaption);
-    // Carrossel IG (não Reel) — várias imagens
-    set("Instagram Post Type", "CAROUSEL");
+    set("Instagram Post Type", "REEL");
+    set("Instagram Show Reel On Feed", "TRUE");
   } else {
     set("Text", post.tiktokCaption);
     if (post.tiktokTitle) set("TikTok Title", post.tiktokTitle);
     set("TikTok Post Privacy", "PUBLIC_TO_EVERYONE");
-    set("TikTok Auto Add Music", "TRUE");
+    set("TikTok Auto Add Music", "FALSE");
     set("TikTok is AI generated content", "FALSE");
-    // Capa = primeiro slide (índice 0)
-    set("TikTok Photo Cover Index", "0");
   }
 
   return row.map(csvEscape).join(",");
@@ -81,7 +82,7 @@ function buildRow(post: CarouselPost, kind: RowKind): string {
 export function buildCarouselCsv(posts: CarouselPost[]): string {
   const lines = [CSV_HEADER.map(csvEscape).join(",")];
   for (const post of posts) {
-    if (post.slideUrls.length === 0) continue;
+    if (!post.videoUrl) continue;
     lines.push(buildRow(post, "instagram"));
     lines.push(buildRow(post, "tiktok"));
   }
@@ -112,7 +113,9 @@ export function buildCarouselCaption(opts: {
     : CAROUSEL_HASHTAGS_BASE;
 
   const hashes = tagsBase.map((t) => `#${t}`).join(" ");
-  const fypHashes = ["#fyp", "#foryou"].concat(tagsBase.slice(0, 5).map((t) => `#${t}`)).join(" ");
+  const fypHashes = ["#fyp", "#foryou"]
+    .concat(tagsBase.slice(0, 5).map((t) => `#${t}`))
+    .join(" ");
 
   if (opts.platform === "instagram") {
     return [

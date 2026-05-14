@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   buildCarouselCaption,
   buildCarouselCsv,
@@ -8,18 +8,16 @@ import {
 } from "@/lib/carousel-social/metricool-csv";
 
 /**
- * Exportador Metricool para carrosséis · conta pessoal (IG + TikTok).
+ * Exportador Metricool para carrosséis-vídeo · conta pessoal (IG + TikTok).
  *
- * Fluxo:
- *  1. Para cada dia: arrasta os PNGs/JPGs do carrossel (até 10).
- *     O app faz upload para Supabase e mostra-te as thumbnails.
- *  2. Define data + hora + frase + tema.
- *  3. Descarrega CSV pronto para drag-drop em Metricool > Planning > Calendar > Import CSV.
+ * Os carrosséis são MP4 1080×1920 (1 por dia, ~60s) já renderizados em
+ * Supabase pelo workflow GitHub Actions render-carrossel-veus. Esta página:
+ *  1. Lista os jobs render concluídos (course-assets/render-jobs/*-result.json)
+ *  2. Para cada dia da semana, escolhes 1 MP4 do job certo
+ *  3. Configuras data + hora + frase + tema
+ *  4. Descarregas CSV com 2 linhas por dia (IG REEL + TikTok vídeo)
  *
- * WhatsApp Status fica de fora — usa a caption "WhatsApp" abaixo para publicar manual.
- *
- * NOTA: o upload é para o bucket Supabase `course-assets`, pasta
- * `carrossel-social/{slug-do-dia}/`. URLs públicas são geradas automaticamente.
+ * WhatsApp Status fica de fora — usa a caption pré-formatada para publicar manual.
  */
 
 type DiaSemana = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
@@ -36,10 +34,13 @@ const DIAS_PT: Record<DiaSemana, string> = {
 
 const DIAS_ORDEM: DiaSemana[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
-type SlideUpload = {
-  name: string;
-  url: string;
-  sizeBytes: number;
+type JobVideo = { file: string; url: string; sizeBytes?: number };
+type RenderJob = {
+  jobId: string;
+  status?: string;
+  videos?: JobVideo[];
+  completedAt?: string;
+  campanha?: string;
 };
 
 type DiaRow = {
@@ -48,9 +49,7 @@ type DiaRow = {
   time: string;
   texto: string;
   tema: string;
-  slides: SlideUpload[];
-  uploading: { done: number; total: number } | null;
-  error: string | null;
+  videoUrl: string; // URL do MP4 escolhido
 };
 
 function isoHoje(): string {
@@ -71,13 +70,21 @@ function diaDaSemana(iso: string): DiaSemana {
   return (["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as DiaSemana[])[w];
 }
 
+/** Extrai dia-N do nome do ficheiro (dia-1.mp4 → 1). */
+function diaNumeroFromFile(file: string): number | null {
+  const m = file.match(/dia-(\d+)/i);
+  return m ? Number(m[1]) : null;
+}
+
 export default function CarrosselMetricoolPage() {
   const [startDate, setStartDate] = useState<string>(isoHoje());
   const [defaultTime, setDefaultTime] = useState<string>("13:00");
   const [cta, setCta] = useState<string>("Guarda este post para voltares mais tarde 💛");
-  const [folderPrefix, setFolderPrefix] = useState<string>(() =>
-    `semana-${isoHoje()}`.replace(/[^a-z0-9-]/gi, "-").toLowerCase()
-  );
+
+  const [jobs, setJobs] = useState<RenderJob[]>([]);
+  const [loadingJobs, setLoadingJobs] = useState(true);
+  const [jobsError, setJobsError] = useState<string | null>(null);
+  const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
 
   const [rows, setRows] = useState<DiaRow[]>(() =>
     DIAS_ORDEM.map((dia, i) => ({
@@ -86,11 +93,58 @@ export default function CarrosselMetricoolPage() {
       time: "13:00",
       texto: "",
       tema: "",
-      slides: [],
-      uploading: null,
-      error: null,
+      videoUrl: "",
     }))
   );
+
+  // Carrega lista de jobs com MP4 prontos
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoadingJobs(true);
+      setJobsError(null);
+      try {
+        const res = await fetch("/api/admin/carrossel-veus/list-renders");
+        const json = await res.json();
+        if (cancelled) return;
+        if (!res.ok) {
+          setJobsError(json.erro || `Erro ${res.status}`);
+        } else {
+          const list: RenderJob[] = json.jobs || [];
+          setJobs(list);
+          if (list.length > 0 && !selectedJobId) {
+            setSelectedJobId(list[0].jobId);
+          }
+        }
+      } catch (e) {
+        if (!cancelled) setJobsError(e instanceof Error ? e.message : String(e));
+      } finally {
+        if (!cancelled) setLoadingJobs(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const selectedJob = useMemo(
+    () => jobs.find((j) => j.jobId === selectedJobId) ?? null,
+    [jobs, selectedJobId]
+  );
+
+  // Auto-mapeia: cada dia da semana → dia-N.mp4 do job (1=Seg, 2=Ter, …)
+  const autoMapFromJob = () => {
+    if (!selectedJob?.videos) return;
+    setRows((prev) =>
+      prev.map((r, i) => {
+        const diaNum = i + 1;
+        const v = selectedJob.videos!.find(
+          (vv) => diaNumeroFromFile(vv.file) === diaNum
+        );
+        return v ? { ...r, videoUrl: v.url } : r;
+      })
+    );
+  };
 
   const syncDates = (nextStart: string, nextTime: string) => {
     setRows((prev) =>
@@ -105,114 +159,24 @@ export default function CarrosselMetricoolPage() {
     setDefaultTime(nextTime);
   };
 
-  const uploadSlides = async (rowIdx: number, files: FileList | File[]) => {
-    const list = Array.from(files).filter((f) =>
-      /\.(png|jpe?g|webp)$/i.test(f.name)
-    );
-    if (list.length === 0) {
-      setRows((prev) => {
-        const next = [...prev];
-        next[rowIdx] = { ...next[rowIdx], error: "Sem PNG/JPG/WebP." };
-        return next;
-      });
-      return;
-    }
-
-    setRows((prev) => {
-      const next = [...prev];
-      next[rowIdx] = {
-        ...next[rowIdx],
-        uploading: { done: 0, total: list.length },
-        error: null,
-      };
-      return next;
-    });
-
-    const uploaded: SlideUpload[] = [];
-    const folder = `${folderPrefix}-${rows[rowIdx].dia}-${rows[rowIdx].date}`
-      .replace(/[^a-z0-9-]/gi, "-")
-      .toLowerCase();
-
-    for (let i = 0; i < list.length; i++) {
-      const file = list[i];
-      const form = new FormData();
-      form.append("file", file);
-      form.append("folder", folder);
-      try {
-        const res = await fetch("/api/admin/carrossel-veus/social-upload", {
-          method: "POST",
-          body: form,
-        });
-        const json = await res.json();
-        if (!res.ok) {
-          setRows((prev) => {
-            const next = [...prev];
-            next[rowIdx] = {
-              ...next[rowIdx],
-              error: `${file.name}: ${json.erro || `HTTP ${res.status}`}`,
-              uploading: null,
-            };
-            return next;
-          });
-          return;
-        }
-        uploaded.push({
-          name: json.name,
-          url: json.url,
-          sizeBytes: json.sizeBytes,
-        });
-      } catch (e) {
-        setRows((prev) => {
-          const next = [...prev];
-          next[rowIdx] = {
-            ...next[rowIdx],
-            error: `${file.name}: ${e instanceof Error ? e.message : String(e)}`,
-            uploading: null,
-          };
-          return next;
-        });
-        return;
-      }
-      setRows((prev) => {
-        const next = [...prev];
-        next[rowIdx] = {
-          ...next[rowIdx],
-          uploading: { done: i + 1, total: list.length },
-        };
-        return next;
-      });
-    }
-
-    setRows((prev) => {
-      const next = [...prev];
-      const merged = [...next[rowIdx].slides, ...uploaded].slice(0, 10);
-      next[rowIdx] = {
-        ...next[rowIdx],
-        slides: merged,
-        uploading: null,
-      };
-      return next;
-    });
-  };
-
-  const removeSlide = (rowIdx: number, slideIdx: number) => {
-    setRows((prev) => {
-      const next = [...prev];
-      const slides = next[rowIdx].slides.filter((_, i) => i !== slideIdx);
-      next[rowIdx] = { ...next[rowIdx], slides };
-      return next;
-    });
-  };
+  // Todos os MP4 disponíveis (de todos os jobs) para escolha individual
+  const todosMp4: Array<{ jobId: string; file: string; url: string }> = useMemo(
+    () =>
+      jobs.flatMap((j) =>
+        (j.videos || []).map((v) => ({ jobId: j.jobId, file: v.file, url: v.url }))
+      ),
+    [jobs]
+  );
 
   const posts: CarouselPost[] = useMemo(() => {
     return rows
       .map((r) => {
-        if (r.slides.length === 0 || !r.texto.trim()) return null;
-        const post: CarouselPost = {
+        if (!r.videoUrl || !r.texto.trim()) return null;
+        return {
           id: `${r.date}-${r.dia}`,
           date: r.date,
           time: r.time,
-          slideUrls: r.slides.map((s) => s.url),
+          videoUrl: r.videoUrl,
           instagramCaption: buildCarouselCaption({
             texto: r.texto.trim(),
             tema: r.tema.trim() || undefined,
@@ -225,13 +189,10 @@ export default function CarrosselMetricoolPage() {
             platform: "tiktok",
           }),
           tiktokTitle: r.texto.trim().slice(0, 80),
-        };
-        return post;
+        } as CarouselPost;
       })
       .filter((x): x is CarouselPost => x !== null);
   }, [rows, cta]);
-
-  const totalSlides = posts.reduce((acc, p) => acc + p.slideUrls.length, 0);
 
   const downloadCsv = () => {
     const csv = buildCarouselCsv(posts);
@@ -246,13 +207,6 @@ export default function CarrosselMetricoolPage() {
     URL.revokeObjectURL(url);
   };
 
-  const previewWhatsapp = (texto: string, tema: string) =>
-    buildCarouselCaption({
-      texto: texto.trim() || "(frase do dia)",
-      tema: tema.trim() || undefined,
-      platform: "whatsapp",
-    });
-
   return (
     <div className="space-y-6 p-4">
       <header className="space-y-2">
@@ -260,18 +214,102 @@ export default function CarrosselMetricoolPage() {
           Carrossel · CSV Metricool (conta pessoal)
         </h1>
         <p className="text-sm text-escola-creme-50">
-          1 carrossel por dia, em Instagram + TikTok. Por cada dia, arrasta os
-          slides PNG/JPG (até 10) e o app faz upload para Supabase. Depois
-          descarregas um CSV que vais arrastar para a Metricool em{" "}
-          <strong className="text-escola-creme">
-            Planning &gt; Calendar &gt; Import CSV
-          </strong>
-          . O WhatsApp Status fica de fora — usa o texto pré-formatado para
-          colares quando publicares no telemóvel.
+          Os carrosséis são <strong className="text-escola-creme">MP4 1080×1920</strong>{" "}
+          (1 por dia, ~60s) gerados pelo workflow render-carrossel-veus. Aqui escolhes
+          qual MP4 publicar em cada dia da semana, defines data e frase, e descarregas
+          o CSV. Cada dia produz 2 linhas: Instagram Reel + TikTok vídeo.{" "}
+          <strong className="text-escola-creme">WhatsApp Status</strong> fica fora —
+          usa a pré-visualização da caption para colares manualmente no telemóvel.
         </p>
       </header>
 
-      <section className="grid gap-3 rounded-lg border border-escola-border bg-escola-card p-4 sm:grid-cols-4">
+      {/* Selecção de job */}
+      <section className="rounded-lg border border-escola-border bg-escola-card p-4 space-y-3">
+        <div className="flex items-baseline justify-between gap-3">
+          <h2 className="font-serif text-lg text-escola-dourado">
+            Renders disponíveis
+          </h2>
+          <button
+            onClick={autoMapFromJob}
+            disabled={!selectedJob}
+            className="rounded border border-escola-dourado/60 bg-escola-dourado/10 px-2 py-1 text-xs text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-40"
+          >
+            Auto-mapear dia 1→Seg, 2→Ter…
+          </button>
+        </div>
+
+        {loadingJobs && (
+          <div className="text-xs text-escola-creme-50">A carregar lista de renders…</div>
+        )}
+        {jobsError && (
+          <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
+            {jobsError}
+          </div>
+        )}
+        {!loadingJobs && jobs.length === 0 && (
+          <div className="rounded border border-escola-border bg-escola-bg p-3 text-xs text-escola-creme-50">
+            Ainda não há jobs concluídos com MP4. Vai a{" "}
+            <a
+              href="/admin/producao/carrossel-veus"
+              className="text-escola-dourado underline"
+            >
+              /admin/producao/carrossel-veus
+            </a>{" "}
+            e dispara um render primeiro.
+          </div>
+        )}
+
+        {jobs.length > 0 && (
+          <div className="space-y-2">
+            <label className="block text-xs text-escola-creme-50">
+              Job (mais recentes em cima)
+              <select
+                value={selectedJobId ?? ""}
+                onChange={(e) => setSelectedJobId(e.target.value)}
+                className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
+              >
+                {jobs.map((j) => (
+                  <option key={j.jobId} value={j.jobId}>
+                    {j.jobId} · {j.videos?.length ?? 0} MP4
+                    {j.completedAt ? ` · ${j.completedAt.slice(0, 16).replace("T", " ")}` : ""}
+                    {j.campanha ? ` · ${j.campanha}` : ""}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {selectedJob?.videos && (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-7">
+                {selectedJob.videos
+                  .slice()
+                  .sort((a, b) => (diaNumeroFromFile(a.file) ?? 99) - (diaNumeroFromFile(b.file) ?? 99))
+                  .map((v) => (
+                    <div
+                      key={v.url}
+                      className="rounded border border-escola-border bg-escola-bg p-1"
+                      title={v.file}
+                    >
+                      <video
+                        src={v.url}
+                        muted
+                        playsInline
+                        preload="metadata"
+                        controls
+                        className="aspect-[9/16] w-full bg-black object-cover"
+                      />
+                      <div className="mt-1 truncate text-[10px] text-escola-creme">
+                        {v.file}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+
+      {/* Configuração global */}
+      <section className="grid gap-3 rounded-lg border border-escola-border bg-escola-card p-4 sm:grid-cols-3">
         <label className="text-xs text-escola-creme-50">
           Data início (segunda da semana)
           <input
@@ -298,21 +336,15 @@ export default function CarrosselMetricoolPage() {
             className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
           />
         </label>
-        <label className="text-xs text-escola-creme-50">
-          Pasta Supabase (identificador da semana)
-          <input
-            value={folderPrefix}
-            onChange={(e) => setFolderPrefix(e.target.value)}
-            className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 font-mono text-escola-creme"
-          />
-        </label>
       </section>
 
+      {/* Linhas por dia */}
       <section className="space-y-3">
         {rows.map((r, i) => (
           <DiaCard
             key={`${r.dia}-${r.date}-${i}`}
             row={r}
+            todosMp4={todosMp4}
             onTimeChange={(time) =>
               setRows((prev) => {
                 const next = [...prev];
@@ -334,9 +366,13 @@ export default function CarrosselMetricoolPage() {
                 return next;
               })
             }
-            onUpload={(files) => uploadSlides(i, files)}
-            onRemoveSlide={(idx) => removeSlide(i, idx)}
-            whatsappPreview={previewWhatsapp(r.texto, r.tema)}
+            onVideoChange={(videoUrl) =>
+              setRows((prev) => {
+                const next = [...prev];
+                next[i] = { ...next[i], videoUrl };
+                return next;
+              })
+            }
           />
         ))}
       </section>
@@ -344,9 +380,7 @@ export default function CarrosselMetricoolPage() {
       <footer className="sticky bottom-0 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-escola-border bg-escola-card p-4 shadow-lg">
         <div className="text-xs text-escola-creme-50">
           <strong className="text-escola-creme">{posts.length}</strong> dia
-          {posts.length === 1 ? "" : "s"} com slides ·{" "}
-          <strong className="text-escola-creme">{totalSlides}</strong> slide
-          {totalSlides === 1 ? "" : "s"} no total ·{" "}
+          {posts.length === 1 ? "" : "s"} com MP4 + frase ·{" "}
           <strong className="text-escola-creme">{posts.length * 2}</strong>{" "}
           linhas no CSV (IG + TT)
         </div>
@@ -364,24 +398,19 @@ export default function CarrosselMetricoolPage() {
 
 function DiaCard({
   row,
+  todosMp4,
   onTimeChange,
   onTextChange,
   onTemaChange,
-  onUpload,
-  onRemoveSlide,
-  whatsappPreview,
+  onVideoChange,
 }: {
   row: DiaRow;
+  todosMp4: Array<{ jobId: string; file: string; url: string }>;
   onTimeChange: (time: string) => void;
   onTextChange: (texto: string) => void;
   onTemaChange: (tema: string) => void;
-  onUpload: (files: FileList | File[]) => void;
-  onRemoveSlide: (idx: number) => void;
-  whatsappPreview: string;
+  onVideoChange: (videoUrl: string) => void;
 }) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [dragOver, setDragOver] = useState(false);
-
   return (
     <div className="rounded-lg border border-escola-border bg-escola-card p-4">
       <div className="flex flex-wrap items-baseline justify-between gap-3 mb-3">
@@ -397,7 +426,7 @@ function DiaCard({
         />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-[1fr_auto]">
         <div className="space-y-3">
           <label className="block text-xs text-escola-creme-50">
             Frase / texto principal
@@ -406,7 +435,7 @@ function DiaCard({
               value={row.texto}
               onChange={(e) => onTextChange(e.target.value)}
               className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
-              placeholder="Mensagem principal deste carrossel…"
+              placeholder="Mensagem principal deste vídeo…"
             />
           </label>
           <label className="block text-xs text-escola-creme-50">
@@ -418,136 +447,81 @@ function DiaCard({
               className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
             />
           </label>
+          <label className="block text-xs text-escola-creme-50">
+            MP4 a publicar
+            <select
+              value={row.videoUrl}
+              onChange={(e) => onVideoChange(e.target.value)}
+              className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
+            >
+              <option value="">— escolhe um MP4 —</option>
+              {todosMp4.map((v) => (
+                <option key={v.url} value={v.url}>
+                  {v.file} · {v.jobId.slice(0, 12)}…
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {row.texto.trim() && (
+            <details className="text-xs text-escola-creme-50">
+              <summary className="cursor-pointer hover:text-escola-creme">
+                Pré-visualizar captions (IG · TikTok · WhatsApp manual)
+              </summary>
+              <div className="mt-2 grid gap-2 md:grid-cols-3">
+                <CaptionPreview
+                  label="Instagram (Reel)"
+                  text={buildCarouselCaption({
+                    texto: row.texto.trim(),
+                    tema: row.tema.trim() || undefined,
+                    platform: "instagram",
+                  })}
+                />
+                <CaptionPreview
+                  label="TikTok"
+                  text={buildCarouselCaption({
+                    texto: row.texto.trim(),
+                    tema: row.tema.trim() || undefined,
+                    platform: "tiktok",
+                  })}
+                />
+                <CaptionPreview
+                  label="WhatsApp Status (manual)"
+                  text={buildCarouselCaption({
+                    texto: row.texto.trim(),
+                    tema: row.tema.trim() || undefined,
+                    platform: "whatsapp",
+                  })}
+                />
+              </div>
+            </details>
+          )}
         </div>
 
-        <div>
-          <div className="mb-1 flex items-center justify-between text-xs text-escola-creme-50">
-            <span>
-              Slides ({row.slides.length}/10){" "}
-              {row.uploading && (
-                <span className="text-escola-dourado">
-                  · a carregar {row.uploading.done}/{row.uploading.total}
-                </span>
-              )}
-            </span>
-            <button
-              onClick={() => inputRef.current?.click()}
-              className="rounded border border-escola-dourado/60 bg-escola-dourado/10 px-2 py-1 text-[11px] text-escola-dourado hover:bg-escola-dourado/20"
-            >
-              Escolher ficheiros
-            </button>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              multiple
-              className="hidden"
-              onChange={(e) => {
-                if (e.target.files?.length) onUpload(e.target.files);
-                e.target.value = "";
-              }}
+        <div className="w-40">
+          {row.videoUrl ? (
+            <video
+              src={row.videoUrl}
+              muted
+              playsInline
+              preload="metadata"
+              controls
+              className="aspect-[9/16] w-full bg-black object-cover rounded border border-escola-border"
             />
-          </div>
-
-          <div
-            onDrop={(e) => {
-              e.preventDefault();
-              setDragOver(false);
-              if (e.dataTransfer.files?.length) onUpload(e.dataTransfer.files);
-            }}
-            onDragOver={(e) => {
-              e.preventDefault();
-              setDragOver(true);
-            }}
-            onDragLeave={() => setDragOver(false)}
-            className={`rounded-lg border-2 border-dashed p-3 text-center text-xs transition-colors ${
-              dragOver
-                ? "border-escola-dourado bg-escola-dourado/5 text-escola-dourado"
-                : "border-escola-border bg-escola-bg/30 text-escola-creme-50"
-            }`}
-          >
-            Arrasta PNG/JPG dos slides para aqui
-          </div>
-
-          {row.error && (
-            <div className="mt-2 rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
-              {row.error}
-            </div>
-          )}
-
-          {row.slides.length > 0 && (
-            <div className="mt-2 grid grid-cols-5 gap-1">
-              {row.slides.map((s, idx) => (
-                <div
-                  key={s.url}
-                  className="relative aspect-[9/16] overflow-hidden rounded border border-escola-border"
-                  title={s.name}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={s.url}
-                    alt={`slide ${idx + 1}`}
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-black/80 to-transparent p-1 text-[10px] text-escola-creme">
-                    {idx + 1}
-                    {idx === 0 ? " (capa)" : ""}
-                  </div>
-                  <button
-                    onClick={() => onRemoveSlide(idx)}
-                    className="absolute right-0.5 bottom-0.5 rounded bg-black/60 px-1 text-[10px] text-red-300 hover:bg-black/80"
-                    title="Remover"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
+          ) : (
+            <div className="aspect-[9/16] w-full rounded border border-dashed border-escola-border bg-escola-bg/30 flex items-center justify-center text-[10px] text-escola-creme-50 text-center px-2">
+              sem MP4
+              <br />
+              selecionado
             </div>
           )}
         </div>
       </div>
-
-      {row.texto.trim() && (
-        <details className="mt-3 text-xs text-escola-creme-50">
-          <summary className="cursor-pointer hover:text-escola-creme">
-            Pré-visualizar captions (IG · TikTok · WhatsApp)
-          </summary>
-          <div className="mt-2 grid gap-2 md:grid-cols-3">
-            <CaptionPreview label="Instagram" text={whatsappPreview /* substituído abaixo */} hidden />
-            <CaptionPreview
-              label="Instagram"
-              text={buildCarouselCaption({
-                texto: row.texto.trim(),
-                tema: row.tema.trim() || undefined,
-                platform: "instagram",
-              })}
-            />
-            <CaptionPreview
-              label="TikTok"
-              text={buildCarouselCaption({
-                texto: row.texto.trim(),
-                tema: row.tema.trim() || undefined,
-                platform: "tiktok",
-              })}
-            />
-            <CaptionPreview label="WhatsApp Status (manual)" text={whatsappPreview} />
-          </div>
-        </details>
-      )}
     </div>
   );
 }
 
-function CaptionPreview({
-  label,
-  text,
-  hidden,
-}: {
-  label: string;
-  text: string;
-  hidden?: boolean;
-}) {
-  if (hidden) return null;
+function CaptionPreview({ label, text }: { label: string; text: string }) {
   const onCopy = async () => {
     try {
       await navigator.clipboard.writeText(text);
