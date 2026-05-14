@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   DEFAULT_DURATION_SEC,
   MOOD_LABELS,
+  MOOD_PROMPTS,
   MORNING_MOODS,
   type MorningMood,
 } from "@/lib/vc-sabia/audio";
@@ -125,15 +126,24 @@ function MoodRow({ mood, audios, activeUrl, onSelect, onReload }: MoodRowProps) 
   const [duration, setDuration] = useState<number>(DEFAULT_DURATION_SEC);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [editingPrompt, setEditingPrompt] = useState(false);
+  const [promptText, setPromptText] = useState<string>(MOOD_PROMPTS[mood]);
 
   const generate = async () => {
     setGenerating(true);
     setError(null);
     try {
+      const body: { mood: MorningMood; durationSec: number; promptOverride?: string } = {
+        mood,
+        durationSec: duration,
+      };
+      if (editingPrompt && promptText.trim() !== MOOD_PROMPTS[mood]) {
+        body.promptOverride = promptText.trim();
+      }
       const res = await fetch("/api/admin/vc-sabia/audio/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mood, durationSec: duration }),
+        body: JSON.stringify(body),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -223,29 +233,65 @@ function MoodRow({ mood, audios, activeUrl, onSelect, onReload }: MoodRowProps) 
             </div>
           )}
 
-          <div className="flex items-center gap-2 pt-1">
-            <label className="flex items-center gap-1 text-[11px] text-escola-creme-50">
-              Duração:
-              <input
-                type="number"
-                min={3}
-                max={22}
-                value={duration}
-                onChange={(e) => setDuration(Number(e.target.value))}
-                className="w-12 rounded border border-escola-border bg-escola-card px-1 py-0.5 text-escola-creme"
-              />
-              s
-            </label>
-            <button
-              onClick={generate}
-              disabled={generating}
-              className="rounded border border-escola-dourado/60 bg-escola-dourado/10 px-2 py-1 text-[11px] text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
-            >
-              {generating ? "A gerar..." : "Gerar novo"}
-            </button>
-            {error && (
-              <span className="text-[10px] text-red-400">{error}</span>
+          <div className="space-y-2 border-t border-escola-border/40 pt-2">
+            {editingPrompt ? (
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[10px] text-escola-creme-50">
+                  <span>Prompt (em inglês, ElevenLabs)</span>
+                  <button
+                    onClick={() => {
+                      setPromptText(MOOD_PROMPTS[mood]);
+                      setEditingPrompt(false);
+                    }}
+                    className="text-escola-creme-50 hover:text-escola-creme"
+                  >
+                    cancelar
+                  </button>
+                </div>
+                <textarea
+                  value={promptText}
+                  onChange={(e) => setPromptText(e.target.value)}
+                  rows={3}
+                  className="w-full rounded border border-escola-border bg-escola-card px-2 py-1 text-[11px] text-escola-creme"
+                />
+              </div>
+            ) : (
+              <button
+                onClick={() => setEditingPrompt(true)}
+                className="block w-full rounded bg-escola-card/60 px-2 py-1.5 text-left text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                title="Clica para editar o prompt antes de gerar"
+              >
+                <span className="text-escola-dourado">Prompt:</span>{" "}
+                {MOOD_PROMPTS[mood]}
+              </button>
             )}
+
+            <div className="flex items-center gap-2">
+              <label className="flex items-center gap-1 text-[11px] text-escola-creme-50">
+                Duração:
+                <input
+                  type="number"
+                  min={3}
+                  max={22}
+                  value={duration}
+                  onChange={(e) => setDuration(Number(e.target.value))}
+                  className="w-12 rounded border border-escola-border bg-escola-card px-1 py-0.5 text-escola-creme"
+                />
+                s
+              </label>
+              <button
+                onClick={generate}
+                disabled={generating}
+                className="rounded border border-escola-dourado/60 bg-escola-dourado/10 px-2 py-1 text-[11px] text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
+              >
+                {generating
+                  ? "A gerar..."
+                  : editingPrompt && promptText.trim() !== MOOD_PROMPTS[mood]
+                  ? "Gerar com prompt custom"
+                  : "Gerar novo"}
+              </button>
+              {error && <span className="text-[10px] text-red-400">{error}</span>}
+            </div>
           </div>
         </div>
       )}

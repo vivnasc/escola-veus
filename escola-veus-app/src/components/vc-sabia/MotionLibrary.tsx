@@ -25,6 +25,16 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
   const [uploading, setUploading] = useState<{ done: number; total: number } | null>(
     null
   );
+  const [autoTagging, setAutoTagging] = useState<{
+    phase: "extracting" | "asking-claude";
+    done?: number;
+    total?: number;
+  } | null>(null);
+  const [autoTagResult, setAutoTagResult] = useState<{
+    classified: number;
+    skipped: number;
+    reasoning: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -69,6 +79,95 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
       else next[motionName] = mood;
       return next;
     });
+  };
+
+  /** Extrai 1 frame de um motion via canvas. Retorna data URL JPEG. */
+  const extractFrame = (url: string): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const video = document.createElement("video");
+      video.crossOrigin = "anonymous";
+      video.src = url;
+      video.muted = true;
+      video.playsInline = true;
+      video.preload = "metadata";
+
+      const cleanup = () => {
+        video.src = "";
+      };
+      const onLoaded = () => {
+        video.currentTime = Math.min(0.5, video.duration / 4);
+      };
+      const onSeeked = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          const scale = Math.min(1, 768 / (video.videoWidth || 768));
+          canvas.width = Math.round((video.videoWidth || 768) * scale);
+          canvas.height = Math.round((video.videoHeight || 1366) * scale);
+          const ctx = canvas.getContext("2d");
+          if (!ctx) throw new Error("canvas ctx null");
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL("image/jpeg", 0.7));
+        } catch (e) {
+          reject(e);
+        } finally {
+          cleanup();
+        }
+      };
+      video.addEventListener("loadeddata", onLoaded, { once: true });
+      video.addEventListener("seeked", onSeeked, { once: true });
+      video.addEventListener("error", () => {
+        cleanup();
+        reject(new Error(`Falha a ler ${url}`));
+      });
+    });
+
+  const autoTagAll = async () => {
+    if (motions.length === 0) return;
+    setError(null);
+    setAutoTagResult(null);
+    setAutoTagging({ phase: "extracting", done: 0, total: motions.length });
+
+    const frames: Array<{ name: string; base64: string }> = [];
+    for (let i = 0; i < motions.length; i++) {
+      try {
+        const base64 = await extractFrame(motions[i].url);
+        frames.push({ name: motions[i].name, base64 });
+      } catch (e) {
+        console.warn(`[auto-tag] falhou extrair ${motions[i].name}`, e);
+      }
+      setAutoTagging({ phase: "extracting", done: i + 1, total: motions.length });
+    }
+
+    if (frames.length === 0) {
+      setError("Não consegui extrair nenhum frame.");
+      setAutoTagging(null);
+      return;
+    }
+
+    setAutoTagging({ phase: "asking-claude" });
+
+    try {
+      const res = await fetch("/api/admin/vc-sabia/motions/auto-tag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ frames }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.erro || `HTTP ${res.status}`);
+      } else {
+        setTags((prev) => ({ ...prev, ...json.tags }));
+        setAutoTagResult({
+          classified: json.classified,
+          skipped: json.skipped,
+          reasoning: json.reasoning || "",
+        });
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setAutoTagging(null);
+    }
   };
 
   const uploadFiles = async (files: FileList | File[]) => {
@@ -148,12 +247,26 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
             baixo para adicionar mais. {motions.length > 0 && `(${motions.length} no library)`}
           </p>
         </div>
-        <button
-          onClick={() => inputRef.current?.click()}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20"
-        >
-          Upload ficheiros
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={autoTagAll}
+            disabled={autoTagging !== null || motions.length === 0}
+            className="rounded-md border border-emerald-500/60 bg-emerald-500/10 px-3 py-1.5 text-xs text-emerald-400 hover:bg-emerald-500/20 disabled:opacity-50"
+            title="Claude vision olha para o 1º frame de cada motion e classifica em água/vento/lume/terra"
+          >
+            {autoTagging?.phase === "extracting"
+              ? `A extrair frames ${autoTagging.done}/${autoTagging.total}…`
+              : autoTagging?.phase === "asking-claude"
+              ? "Claude a classificar…"
+              : "Auto-classificar"}
+          </button>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20"
+          >
+            Upload ficheiros
+          </button>
+        </div>
         <input
           ref={inputRef}
           type="file"
@@ -178,6 +291,25 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
       {error && (
         <div className="rounded border border-red-700/40 bg-red-900/20 p-3 text-xs text-red-300">
           {error}
+        </div>
+      )}
+
+      {autoTagResult && (
+        <div className="space-y-1 rounded border border-emerald-500/40 bg-emerald-500/10 p-3 text-xs text-emerald-200">
+          <div>
+            <strong>Claude classificou {autoTagResult.classified} motion(s)</strong>
+            {autoTagResult.skipped > 0 &&
+              ` · saltou ${autoTagResult.skipped} (não bateu nas 4 categorias)`}
+          </div>
+          {autoTagResult.reasoning && (
+            <div className="text-[11px] italic text-emerald-200/80">
+              {autoTagResult.reasoning}
+            </div>
+          )}
+          <div className="text-[11px] text-emerald-200/60">
+            Revê os dropdowns das thumbnails. Podes ajustar manualmente o que
+            não bate certo.
+          </div>
         </div>
       )}
 
