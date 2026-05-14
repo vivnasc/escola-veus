@@ -280,6 +280,24 @@ async function getAlignedWords(manifest) {
   return { words: cached.words, source: "scribe" };
 }
 
+/** ffprobe streams de um ficheiro MP4 local. Devolve `{video, audio}` (counts).
+ *  Útil para validar que o burn FFmpeg não comeu áudio — bug observado com
+ *  ASS karaoke onde libass corrompia o output sem retornar erro. */
+async function probeStreams(filePath) {
+  try {
+    const cmd = `ffprobe -v error -show_entries stream=codec_type -of default=noprint_wrappers=1:nokey=1 "${filePath.replace(/"/g, '\\"')}"`;
+    const { stdout } = await exec(cmd, { timeout: 30_000 });
+    const types = String(stdout).trim().split("\n").map((s) => s.trim()).filter(Boolean);
+    return {
+      video: types.filter((t) => t === "video").length,
+      audio: types.filter((t) => t === "audio").length,
+    };
+  } catch (e) {
+    console.log(`  ⚠ ffprobe streams falhou em ${filePath}: ${(e && e.message ? e.message : e).slice(0, 200)}`);
+    return { video: 0, audio: 0 };
+  }
+}
+
 /** ffprobe à URL do áudio (não requer download local — ffprobe lê via http).
  *  Devolve duração em segundos, ou null se falhar. */
 async function probeAudioDurationSec(audioUrl) {
@@ -956,10 +974,24 @@ async function main() {
       `"${burnedPath}"`,
     ].join(" ");
     console.log(`→ FFmpeg burn legendas (${subtitlesIsAss ? "ASS karaoke" : "SRT"}) → ${burnedPath}`);
+    const preStreams = await probeStreams(outputPath);
+    console.log(`  · pre-burn: video=${preStreams.video} audio=${preStreams.audio}`);
     try {
-      await exec(cmd, { timeout: 300_000, maxBuffer: 50 * 1024 * 1024 });
-      finalMp4Path = burnedPath;
-      console.log(`  ✓ Burn OK`);
+      const { stderr } = await exec(cmd, { timeout: 300_000, maxBuffer: 50 * 1024 * 1024 });
+      // libass tende a logar "Glyph X not found" / "fontselect: failed" em
+      // stderr mesmo quando exit=0 mas resultado corrompido. Expor cauda.
+      const stderrTail = String(stderr || "").split("\n").slice(-20).join("\n");
+      if (/font|glyph|libass/i.test(stderrTail)) {
+        console.log(`  · libass stderr (cauda):\n${stderrTail}`);
+      }
+      const postStreams = await probeStreams(burnedPath);
+      console.log(`  · post-burn: video=${postStreams.video} audio=${postStreams.audio}`);
+      if (postStreams.video === 0 || (preStreams.audio > 0 && postStreams.audio === 0)) {
+        console.log(`  ⚠ burn produziu mp4 incompleto (perdeu áudio ou vídeo) — descarta, uso original`);
+      } else {
+        finalMp4Path = burnedPath;
+        console.log(`  ✓ Burn OK`);
+      }
     } catch (e) {
       console.log(`  ⚠ FFmpeg burn falhou (${e.message?.slice(0, 200)}) — uso mp4 sem legendas`);
     }
