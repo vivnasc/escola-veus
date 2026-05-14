@@ -88,9 +88,10 @@ export function AudioLibrary({ onActiveChange }: Props) {
         )}
       </div>
       <p className="text-xs text-escola-creme-50">
-        Cada mood tem 1 áudio activo (radio button verde). Os motions ficam
-        tagged com um mood e usam automaticamente o áudio activo desse mood.
-        Podes gerar várias versões de cada mood e escolher a melhor.
+        Geração via FAL Stable Audio (ambiente contemplativo, 5-47s). Cada
+        elemento tem 1 áudio activo (radio verde) que toca quando se usa um
+        motion tagged com esse elemento. Gera várias versões e escolhe a melhor.
+        Demora ~20-40s por geração (FAL queue).
       </p>
 
       {loading ? (
@@ -271,8 +272,8 @@ function MoodRow({ mood, audios, activeUrl, onSelect, onReload }: MoodRowProps) 
                 Duração:
                 <input
                   type="number"
-                  min={3}
-                  max={22}
+                  min={5}
+                  max={47}
                   value={duration}
                   onChange={(e) => setDuration(Number(e.target.value))}
                   className="w-12 rounded border border-escola-border bg-escola-card px-1 py-0.5 text-escola-creme"

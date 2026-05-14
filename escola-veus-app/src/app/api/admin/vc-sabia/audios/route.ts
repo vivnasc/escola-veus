@@ -45,7 +45,7 @@ export async function GET() {
       continue;
     }
     byMood[mood] = (data || [])
-      .filter((f) => f.name && /\.mp3$/i.test(f.name))
+      .filter((f) => f.name && /\.(mp3|wav|ogg|flac|m4a)$/i.test(f.name))
       .map((f) => ({
         name: f.name,
         url: `${supabaseUrl}/storage/v1/object/public/course-assets/vc-sabia-audios/${mood}/${f.name}`,
