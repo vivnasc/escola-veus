@@ -23,7 +23,7 @@ import { NightMotionLibrary } from "./MotionLibrary";
 
 type Frase = { id: string; dia: DiaSemana; texto: string };
 
-const DEFAULT_MEDIA = "/assets/vc-sabia/motions/db5056e4-aabc-43e6-ab9f-48f8d96c10a8.mp4";
+const DEFAULT_MEDIA = "/assets/hoje-em-mim/motions/lua-piscina-01.mp4";
 const FALLBACK_MEDIA = "/assets/vc-sabia/motions/IMG_8599.webp";
 
 const DIAS_PT_CURTO: Record<DiaSemana, string> = {
@@ -161,7 +161,7 @@ export function HojeEmMimPreviewPanel() {
                 : "text-escola-creme-50 hover:text-escola-creme"
             }`}
           >
-            MP4 teste
+            Lua na piscina
           </button>
           <button
             onClick={() => setMedia(FALLBACK_MEDIA)}
@@ -171,7 +171,7 @@ export function HojeEmMimPreviewPanel() {
                 : "text-escola-creme-50 hover:text-escola-creme"
             }`}
           >
-            Imagem teste
+            Imagem fallback
           </button>
         </div>
       </div>
