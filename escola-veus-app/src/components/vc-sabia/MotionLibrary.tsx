@@ -69,7 +69,7 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
         });
         const sigText = await sigRes.text();
         if (!sigRes.ok) {
-          setError(`${file.name}: signed-url HTTP ${sigRes.status} — ${sigText.slice(0, 200)}`);
+          setError(`${file.name}: signed-url HTTP ${sigRes.status}: ${sigText.slice(0, 200)}`);
           console.error("[MotionLibrary] signed-url falhou", sigRes.status, sigText);
           break;
         }
@@ -84,7 +84,7 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
         });
         if (!upRes.ok) {
           const upText = await upRes.text();
-          setError(`${file.name}: upload HTTP ${upRes.status} — ${upText.slice(0, 200)}`);
+          setError(`${file.name}: upload HTTP ${upRes.status}: ${upText.slice(0, 200)}`);
           console.error("[MotionLibrary] upload falhou", upRes.status, upText);
           break;
         }
@@ -99,7 +99,7 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
     }
 
     setUploading(null);
-    console.log("[MotionLibrary] Upload concluído — a refrescar lista");
+    console.log("[MotionLibrary] Upload concluído. A refrescar lista");
     await load();
   };
 

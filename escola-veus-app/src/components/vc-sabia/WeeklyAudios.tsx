@@ -64,7 +64,7 @@ export function WeeklyAudios({ onTodayAudioChange }: Props) {
         </h2>
         <p className="text-xs text-escola-creme-50">
           Gera um SFX por dia da semana. Os 7 ficam fixos e repetem-se semana
-          após semana — não tens de gerar novos todos os dias. O áudio de{" "}
+          após semana. Não tens de gerar novos todos os dias. O áudio de{" "}
           <strong className="text-escola-creme">hoje</strong> toca a par do
           motion na preview em baixo.
         </p>

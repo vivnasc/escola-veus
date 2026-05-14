@@ -62,7 +62,7 @@ export function VcSabiaPreviewPanel() {
     <div className="space-y-6 p-4">
       <header className="space-y-2">
         <h1 className="text-2xl font-serif text-escola-dourado">
-          VC Sabia Que…? — Preview de overlay
+          VC Sabia Que…? · Preview de overlay
         </h1>
         <p className="text-sm text-escola-creme-50">
           Compara as três variantes de overlay sobre o ficheiro de teste.
@@ -133,9 +133,9 @@ export function VcSabiaPreviewPanel() {
       </div>
 
       <div className="text-xs text-escola-creme-50">
-        Variante <strong className="text-escola-creme">A</strong> — só vinheta + texto com stroke ·{" "}
-        <strong className="text-escola-creme">B</strong> — cartão de vidro fosco (recomendado) ·{" "}
-        <strong className="text-escola-creme">C</strong> — vidro + moldura dourada
+        Variante <strong className="text-escola-creme">A</strong>: só vinheta + texto com stroke ·{" "}
+        <strong className="text-escola-creme">B</strong>: cartão de vidro fosco (recomendado) ·{" "}
+        <strong className="text-escola-creme">C</strong>: vidro + moldura dourada
       </div>
 
       <div className="flex flex-wrap gap-8">
@@ -151,7 +151,7 @@ export function VcSabiaPreviewPanel() {
           <div>
             <div className="text-escola-creme">Frase</div>
             <div className="mt-1 font-serif text-base text-escola-creme">
-              Sabias que — {phrase.texto}
+              Sabias que... {phrase.texto}
             </div>
           </div>
           <div>
@@ -190,7 +190,7 @@ export function VcSabiaPreviewPanel() {
                 </>
               ) : (
                 <div className="mt-1 text-escola-creme-50">
-                  Sem áudio — gera em baixo na secção semanal.
+                  Sem áudio. Gera em baixo na secção semanal.
                 </div>
               )}
             </div>
@@ -204,7 +204,7 @@ export function VcSabiaPreviewPanel() {
         </h2>
         <p className="text-xs text-escola-creme-50">
           Gerados automaticamente a partir da frase e do tema. Carrega no
-          botão para copiar — depois cola na Metricool (IG/TikTok) ou no
+          botão para copiar e depois cola na Metricool (IG/TikTok) ou no
           WhatsApp Status.
         </p>
 
@@ -390,7 +390,7 @@ function BodyVariantA({ phrase }: { phrase: string }) {
           textShadow: "0 1px 4px rgba(0,0,0,0.7)",
         }}
       >
-        Sabias que —
+        Sabias que...
       </span>
       {phrase}
     </p>
@@ -420,7 +420,7 @@ function BodyVariantB({ phrase }: { phrase: string }) {
           marginBottom: 14,
         }}
       >
-        Sabias que —
+        Sabias que...
       </div>
       <p
         className="text-balance font-serif italic text-escola-creme"
@@ -465,7 +465,7 @@ function BodyVariantC({ phrase }: { phrase: string }) {
           textShadow: "0 1px 6px rgba(0,0,0,0.6)",
         }}
       >
-        Sabias que —
+        Sabias que...
       </div>
       <p
         className="text-balance font-serif italic text-escola-creme"

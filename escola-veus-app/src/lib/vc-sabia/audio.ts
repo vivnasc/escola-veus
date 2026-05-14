@@ -2,8 +2,8 @@
  * Biblioteca de moods de áudio de manhã para a sub-produção VC Sabia Que…?.
  *
  * Cada mood mapeia para um prompt do ElevenLabs Sound Effects API.
- * Os prompts pedem explicitamente "no music" porque a frase é o foco —
- * o áudio é só ambiente.
+ * Os prompts pedem explicitamente "no music" porque a frase é o foco.
+ * O áudio é só ambiente.
  *
  * Duração default: 12s (o post final faz loop com fade até 15s).
  */

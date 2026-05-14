@@ -4,7 +4,7 @@
  * - Instagram: kicker + frase + assinatura + bloco de hashtags (separado para
  *   facilitar copy/paste e baixar ranking de spam).
  * - TikTok: 1 linha kicker + frase, hashtags fyp + tema na mesma linha.
- * - WhatsApp Status: minimalista — kicker + frase + assinatura curta.
+ * - WhatsApp Status: minimalista. Kicker + frase + assinatura curta.
  */
 
 const HASHTAGS_BASE = [
@@ -59,11 +59,10 @@ export function phraseToCaptions(opts: {
   const allTags = [...themeTags, ...HASHTAGS_BASE];
 
   const instagram = [
-    "Sabias que —",
+    "Sabias que...",
     "",
     opts.phrase,
     "",
-    "—",
     "Vivianne dos Santos · seteveus.space",
     "",
     ".",
@@ -82,17 +81,17 @@ export function phraseToCaptions(opts: {
     "pt",
   ];
   const tiktok = [
-    `Sabias que — ${opts.phrase}`,
+    `Sabias que... ${opts.phrase}`,
     "",
     hashesJoined(tiktokTags),
   ].join("\n");
 
   const whatsapp = [
-    "Sabias que —",
+    "Sabias que...",
     "",
     opts.phrase,
     "",
-    "— Vivianne · seteveus.space",
+    "Vivianne · seteveus.space",
   ].join("\n");
 
   return { instagram, tiktok, whatsapp };

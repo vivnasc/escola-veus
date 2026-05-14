@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     const apiKey = process.env.ELEVENLABS_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
-        { erro: "ELEVENLABS_API_KEY não configurada — adiciona em .env.local e Vercel" },
+        { erro: "ELEVENLABS_API_KEY não configurada. Adiciona em .env.local e Vercel" },
         { status: 503 }
       );
     }
