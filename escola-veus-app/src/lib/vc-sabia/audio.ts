@@ -1,10 +1,9 @@
 /**
  * 4 elementos contemplativos para o VC Sabia.
  *
- * Geracao via FAL Stable Audio (modelo de ambient/atmospheric, max 47s).
- * Prompts em estilo "field recording / ambient texture" — instrucao
- * explicita "no music, no melody" porque Stable Audio e treinado em
- * musica e tende a meter melodia se nao se pedir o contrario.
+ * Geracao via ElevenLabs Sound Effects API (3-22s, MP3). Prompts curtos
+ * e directos — o modelo responde melhor a 1 frase iconica do que a
+ * paragrafo literario.
  */
 
 export type MorningMood = "agua" | "vento" | "lume" | "terra";
@@ -25,5 +24,5 @@ export const MOOD_PROMPTS: Record<MorningMood, string> = {
 
 export const MORNING_MOODS: MorningMood[] = Object.keys(MOOD_PROMPTS) as MorningMood[];
 
-export const DEFAULT_DURATION_SEC = 15;
+export const DEFAULT_DURATION_SEC = 12;
 export const DEFAULT_PROMPT_INFLUENCE = 0.25;

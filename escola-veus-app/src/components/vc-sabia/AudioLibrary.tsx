@@ -88,10 +88,10 @@ export function AudioLibrary({ onActiveChange }: Props) {
         )}
       </div>
       <p className="text-xs text-escola-creme-50">
-        Geração via FAL Stable Audio (ambiente contemplativo, 5-47s). Cada
-        elemento tem 1 áudio activo (radio verde) que toca quando se usa um
-        motion tagged com esse elemento. Gera várias versões e escolhe a melhor.
-        Demora ~10-20s por geração (FAL queue).
+        Geração via ElevenLabs Sound Effects (3-22s). Cada elemento tem 1
+        áudio activo (radio verde) que toca quando se usa um motion tagged
+        com esse elemento. Gera várias versões e escolhe a melhor.
+        Prompt editável (clica em cima do texto) para afinares ao teu gosto.
       </p>
 
       {loading ? (
@@ -272,8 +272,8 @@ function MoodRow({ mood, audios, activeUrl, onSelect, onReload }: MoodRowProps) 
                 Duração:
                 <input
                   type="number"
-                  min={5}
-                  max={47}
+                  min={3}
+                  max={22}
                   value={duration}
                   onChange={(e) => setDuration(Number(e.target.value))}
                   className="w-12 rounded border border-escola-border bg-escola-card px-1 py-0.5 text-escola-creme"
