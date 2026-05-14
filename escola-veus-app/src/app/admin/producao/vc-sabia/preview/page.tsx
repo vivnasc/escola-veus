@@ -6,7 +6,8 @@ import seed from "@/data/vc-sabia-frases.seed.json";
 type Variant = "A" | "B" | "C";
 
 const SAMPLE_PHRASE_ID = "vsq-0021";
-const DEFAULT_MEDIA = "/assets/vc-sabia/motions/IMG_8599.webp";
+const DEFAULT_MEDIA = "/assets/vc-sabia/motions/db5056e4-aabc-43e6-ab9f-48f8d96c10a8.mp4";
+const FALLBACK_MEDIA = "/assets/vc-sabia/motions/IMG_8599.webp";
 
 const MESES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -73,6 +74,29 @@ export default function VcSabiaPreviewPage() {
           placeholder="/assets/vc-sabia/motions/…"
           className="min-w-[280px] flex-1 rounded border border-escola-border bg-escola-card px-3 py-1.5 text-xs text-escola-creme"
         />
+
+        <div className="flex gap-1 rounded-md border border-escola-border p-1 text-xs">
+          <button
+            onClick={() => setMedia(DEFAULT_MEDIA)}
+            className={`rounded px-2 py-1 transition-colors ${
+              media === DEFAULT_MEDIA
+                ? "bg-escola-dourado/20 text-escola-dourado"
+                : "text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            MP4 teste
+          </button>
+          <button
+            onClick={() => setMedia(FALLBACK_MEDIA)}
+            className={`rounded px-2 py-1 transition-colors ${
+              media === FALLBACK_MEDIA
+                ? "bg-escola-dourado/20 text-escola-dourado"
+                : "text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            Imagem teste
+          </button>
+        </div>
       </div>
 
       <div className="text-xs text-escola-creme-50">
