@@ -23,7 +23,7 @@ import { NightMotionLibrary } from "./MotionLibrary";
 
 type Frase = { id: string; dia: DiaSemana; texto: string };
 
-const DEFAULT_MEDIA = "/assets/vc-sabia/motions/db5056e4-aabc-43e6-ab9f-48f8d96c10a8.mp4";
+const DEFAULT_MEDIA = "/assets/hoje-em-mim/motions/lua-piscina-01.mp4";
 const FALLBACK_MEDIA = "/assets/vc-sabia/motions/IMG_8599.webp";
 
 const DIAS_PT_CURTO: Record<DiaSemana, string> = {
@@ -161,7 +161,7 @@ export function HojeEmMimPreviewPanel() {
                 : "text-escola-creme-50 hover:text-escola-creme"
             }`}
           >
-            MP4 teste
+            Lua na piscina
           </button>
           <button
             onClick={() => setMedia(FALLBACK_MEDIA)}
@@ -171,7 +171,7 @@ export function HojeEmMimPreviewPanel() {
                 : "text-escola-creme-50 hover:text-escola-creme"
             }`}
           >
-            Imagem teste
+            Imagem fallback
           </button>
         </div>
       </div>
@@ -412,14 +412,16 @@ function MjPromptsSection({
   copied: string | null;
   onCopy: (key: string, text: string) => void;
 }) {
-  const [onlyPrior, setOnlyPrior] = useState(true);
+  const [onlyPrior, setOnlyPrior] = useState(false);
   const list = onlyPrior ? MJ_VIDEO_PROMPTS.filter((p) => p.prioritario) : MJ_VIDEO_PROMPTS;
+  const totalShown = list.length;
+  const totalAll = MJ_VIDEO_PROMPTS.length;
 
   return (
     <section className="space-y-3">
-      <div className="flex items-baseline justify-between gap-3">
+      <div className="flex items-baseline justify-between gap-3 flex-wrap">
         <h2 className="font-serif text-lg" style={{ color: COBRE }}>
-          Library de clips. Prompts Midjourney + áudio noturno
+          Library de clips. {totalShown} de {totalAll} prompts
         </h2>
         <label className="flex items-center gap-2 text-xs text-escola-creme-50">
           <input
@@ -427,13 +429,14 @@ function MjPromptsSection({
             checked={onlyPrior}
             onChange={(e) => setOnlyPrior(e.target.checked)}
           />
-          só prioritários (5)
+          mostrar só os 5 prioritários ★
         </label>
       </div>
       <p className="text-xs text-escola-creme-50">
-        Cada cartão tem o prompt Midjourney 9:16 e o mood ElevenLabs sugerido.
-        Copia o MJ e gera o vídeo. O áudio gera direto aqui com o teu API key
-        ElevenLabs configurado (não precisas copiar).
+        30 prompts no total (1 por dia, com folga para 1 mês). Cada cartão tem
+        o prompt Midjourney 9:16 e o mood ElevenLabs sugerido. Copia o MJ e
+        gera o vídeo. O áudio gera direto aqui com o teu API key ElevenLabs
+        configurado.
       </p>
 
       <div className="grid gap-3 md:grid-cols-2">
