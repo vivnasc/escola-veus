@@ -21,15 +21,15 @@ export async function POST(req: NextRequest) {
     if (!(file instanceof File)) {
       return NextResponse.json({ erro: "file em falta" }, { status: 400 });
     }
-    if (file.size > 50 * 1024 * 1024) {
+    if (file.size > 150 * 1024 * 1024) {
       return NextResponse.json(
-        { erro: "Ficheiro >50MB. Reduz qualidade ou usa upload direto Supabase." },
+        { erro: "Ficheiro >150MB. Reduz qualidade no iPad com Compress Video, ou usa upload direto Supabase." },
         { status: 413 }
       );
     }
-    if (!/\.(mp4|webm|mov)$/i.test(file.name)) {
+    if (!/\.(mp4|webm|mov|m4v)$/i.test(file.name)) {
       return NextResponse.json(
-        { erro: "Extensão tem de ser .mp4, .webm ou .mov" },
+        { erro: "Extensão tem de ser .mp4, .webm, .mov ou .m4v" },
         { status: 400 }
       );
     }
