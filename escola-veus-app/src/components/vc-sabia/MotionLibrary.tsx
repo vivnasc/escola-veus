@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
 
 export interface Motion {
   name: string;
@@ -12,10 +13,14 @@ export interface Motion {
 interface Props {
   selectedUrl: string;
   onSelect: (url: string) => void;
+  /** Notifica parent quando tags de motion mudam. */
+  onTagsChange?: (tags: Record<string, MorningMood>) => void;
 }
 
-export function MotionLibrary({ selectedUrl, onSelect }: Props) {
+export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
   const [motions, setMotions] = useState<Motion[]>([]);
+  const [tags, setTags] = useState<Record<string, MorningMood>>({});
+  const [tagsHydrated, setTagsHydrated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState<{ done: number; total: number } | null>(
     null
@@ -27,13 +32,13 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/admin/vc-sabia/motions");
-      const json = await res.json();
-      if (!res.ok) {
-        setError(json.erro || `Erro ${res.status}`);
-      } else {
-        setMotions(json.motions || []);
-      }
+      const [motionsRes, tagsRes] = await Promise.all([
+        fetch("/api/admin/vc-sabia/motions").then((r) => r.json()),
+        fetch("/api/admin/vc-sabia/motion-tags").then((r) => r.json()),
+      ]);
+      setMotions(motionsRes.motions || []);
+      setTags(tagsRes.tags || {});
+      setTagsHydrated(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -44,6 +49,27 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (!tagsHydrated) return;
+    if (onTagsChange) onTagsChange(tags);
+    fetch("/api/admin/vc-sabia/motion-tags", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tags }),
+    }).catch(() => {
+      /* erros silenciosos para tags, sao auto-save em background */
+    });
+  }, [tags, tagsHydrated, onTagsChange]);
+
+  const setMotionTag = (motionName: string, mood: MorningMood | "") => {
+    setTags((prev) => {
+      const next = { ...prev };
+      if (mood === "") delete next[motionName];
+      else next[motionName] = mood;
+      return next;
+    });
+  };
 
   const uploadFiles = async (files: FileList | File[]) => {
     const list = Array.from(files).filter((f) => /\.(mp4|webm|mov)$/i.test(f.name));
@@ -69,7 +95,7 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
         });
         const sigText = await sigRes.text();
         if (!sigRes.ok) {
-          setError(`${file.name}: signed-url HTTP ${sigRes.status} — ${sigText.slice(0, 200)}`);
+          setError(`${file.name}: signed-url HTTP ${sigRes.status}: ${sigText.slice(0, 200)}`);
           console.error("[MotionLibrary] signed-url falhou", sigRes.status, sigText);
           break;
         }
@@ -84,7 +110,7 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
         });
         if (!upRes.ok) {
           const upText = await upRes.text();
-          setError(`${file.name}: upload HTTP ${upRes.status} — ${upText.slice(0, 200)}`);
+          setError(`${file.name}: upload HTTP ${upRes.status}: ${upText.slice(0, 200)}`);
           console.error("[MotionLibrary] upload falhou", upRes.status, upText);
           break;
         }
@@ -99,7 +125,7 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
     }
 
     setUploading(null);
-    console.log("[MotionLibrary] Upload concluído — a refrescar lista");
+    console.log("[MotionLibrary] Upload concluído. A refrescar lista");
     await load();
   };
 
@@ -169,42 +195,66 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {motions.map((m) => (
-            <button
-              key={m.url}
-              onClick={() => onSelect(m.url)}
-              className={`group relative overflow-hidden rounded-md border transition-all ${
-                selectedUrl === m.url
-                  ? "border-escola-dourado ring-2 ring-escola-dourado/40"
-                  : "border-escola-border hover:border-escola-dourado/60"
-              }`}
-              title={m.name}
-            >
-              <video
-                src={m.url}
-                muted
-                playsInline
-                preload="metadata"
-                className="aspect-[9/16] w-full bg-black object-cover"
-                onMouseEnter={(e) => {
-                  const v = e.currentTarget;
-                  v.currentTime = 0;
-                  v.play().catch(() => {});
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.pause();
-                }}
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-1.5 text-left">
-                <div className="truncate text-[10px] text-escola-creme">
-                  {m.name}
-                </div>
-                <div className="text-[9px] text-escola-creme-50">
-                  {(m.sizeBytes / 1024 / 1024).toFixed(1)} MB
+          {motions.map((m) => {
+            const isSelected = selectedUrl === m.url;
+            const motionMood = tags[m.name];
+            return (
+              <div
+                key={m.url}
+                className={`group relative overflow-hidden rounded-md border transition-all ${
+                  isSelected
+                    ? "border-escola-dourado ring-2 ring-escola-dourado/40"
+                    : "border-escola-border hover:border-escola-dourado/60"
+                }`}
+              >
+                <button
+                  onClick={() => onSelect(m.url)}
+                  className="block w-full text-left"
+                  title={m.name}
+                >
+                  <video
+                    src={m.url}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="aspect-[9/16] w-full bg-black object-cover"
+                    onMouseEnter={(e) => {
+                      const v = e.currentTarget;
+                      v.currentTime = 0;
+                      v.play().catch(() => {});
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.pause();
+                    }}
+                  />
+                </button>
+                <div className="space-y-1 bg-black/70 p-1.5">
+                  <div className="truncate text-[10px] text-escola-creme">
+                    {m.name}
+                  </div>
+                  <select
+                    value={motionMood ?? ""}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) =>
+                      setMotionTag(m.name, e.target.value as MorningMood | "")
+                    }
+                    className={`w-full rounded border bg-escola-card px-1 py-0.5 text-[10px] ${
+                      motionMood
+                        ? "border-escola-dourado/60 text-escola-dourado"
+                        : "border-red-700/40 text-red-300"
+                    }`}
+                  >
+                    <option value="">⚠ sem mood</option>
+                    {MORNING_MOODS.map((mm) => (
+                      <option key={mm} value={mm}>
+                        {MOOD_LABELS[mm]}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
-            </button>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>

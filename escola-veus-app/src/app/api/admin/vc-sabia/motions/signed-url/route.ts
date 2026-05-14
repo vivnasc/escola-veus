@@ -8,7 +8,7 @@ export const runtime = "nodejs";
  *
  * Cria um signed upload URL para o cliente subir o ficheiro DIRECTO ao
  * Supabase Storage. Bypassa o limite de 4.5MB do body das serverless do
- * Vercel — essencial para clips MP4 de 5-50MB.
+ * Vercel. Essencial para clips MP4 de 5-50MB.
  *
  * Body: { filename: string }
  * Returns: { signedUrl, path, token, publicUrl }
