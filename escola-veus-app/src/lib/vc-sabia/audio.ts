@@ -17,14 +17,10 @@ export const MOOD_LABELS: Record<MorningMood, string> = {
 };
 
 export const MOOD_PROMPTS: Record<MorningMood, string> = {
-  agua:
-    "Field recording of a small forest spring trickling gently over mossy stones, deep forest quiet around it, occasional very distant bird, natural reverb, no music, no melody, no instruments, pure nature ambience, slow contemplative atmosphere",
-  vento:
-    "Field recording of soft slow wind through tall grass and distant trees in a wide open meadow, very airy and unhurried, occasional leaf rustle, vast spaciousness, no music, no melody, no instruments, pure nature ambience, contemplative",
-  lume:
-    "Field recording of a small wood fire crackling softly in a quiet stone hearth, deep embers settling, occasional gentle pop, intimate and warm, no music, no melody, no instruments, pure ambience, contemplative",
-  terra:
-    "Field recording of a deep stone cave at dusk, very low wind drone moving through the space, occasional distant water drip echoing, vast natural reverb, ancient and grounding, no music, no melody, no instruments, pure ambience, contemplative",
+  agua: "Gentle forest stream flowing over rocks, calm nature ambience",
+  vento: "Soft wind through tall grass on a quiet hillside, peaceful",
+  lume: "Crackling wood fireplace in a quiet room, warm and intimate",
+  terra: "Deep cave ambience with subtle water drips and natural reverb",
 };
 
 export const MORNING_MOODS: MorningMood[] = Object.keys(MOOD_PROMPTS) as MorningMood[];
