@@ -1,15 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import seed from "@/data/vc-sabia-frases.seed.json";
 import { phraseToCaptions } from "@/lib/vc-sabia/captions";
-import {
-  DEFAULT_DURATION_SEC,
-  MOOD_LABELS,
-  MORNING_MOODS,
-  type MorningMood,
-} from "@/lib/vc-sabia/audio";
+import { MOOD_LABELS, type MorningMood } from "@/lib/vc-sabia/audio";
 import { MotionLibrary } from "./MotionLibrary";
+import { AudioLibrary } from "./AudioLibrary";
 
 type Variant = "A" | "B" | "C";
 
@@ -31,6 +27,26 @@ export function VcSabiaPreviewPanel() {
   const [phraseId, setPhraseId] = useState<string>(SAMPLE_PHRASE_ID);
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
   const [copied, setCopied] = useState<string | null>(null);
+  const [motionTags, setMotionTags] = useState<Record<string, MorningMood>>({});
+  const [activeByMood, setActiveByMood] = useState<Partial<Record<MorningMood, string>>>({});
+
+  const handleMotionTags = useCallback((t: Record<string, MorningMood>) => {
+    setMotionTags(t);
+  }, []);
+  const handleActiveAudios = useCallback(
+    (a: Partial<Record<MorningMood, string>>) => {
+      setActiveByMood(a);
+    },
+    []
+  );
+
+  /** Áudio derivado do motion seleccionado. */
+  const { motionMood, motionAudioUrl } = useMemo(() => {
+    const name = media.split("/").pop() ?? "";
+    const mood = motionTags[name];
+    const url = mood ? activeByMood[mood] ?? null : null;
+    return { motionMood: mood ?? null, motionAudioUrl: url };
+  }, [media, motionTags, activeByMood]);
 
   const phrase = seed.frases.find((f) => f.id === phraseId) ?? seed.frases[0];
   const dateLabel = formatDatePT(new Date());
@@ -51,7 +67,7 @@ export function VcSabiaPreviewPanel() {
     <div className="space-y-6 p-4">
       <header className="space-y-2">
         <h1 className="text-2xl font-serif text-escola-dourado">
-          VC Sabia Que…? — Preview de overlay
+          VC Sabia Que…? · Preview de overlay
         </h1>
         <p className="text-sm text-escola-creme-50">
           Compara as três variantes de overlay sobre o ficheiro de teste.
@@ -59,7 +75,11 @@ export function VcSabiaPreviewPanel() {
         </p>
       </header>
 
-      <MotionLibrary selectedUrl={media} onSelect={setMedia} />
+      <MotionLibrary
+        selectedUrl={media}
+        onSelect={setMedia}
+        onTagsChange={handleMotionTags}
+      />
 
       <div className="flex flex-wrap gap-3">
         <div className="flex gap-1 rounded-md border border-escola-border p-1">
@@ -122,9 +142,9 @@ export function VcSabiaPreviewPanel() {
       </div>
 
       <div className="text-xs text-escola-creme-50">
-        Variante <strong className="text-escola-creme">A</strong> — só vinheta + texto com stroke ·{" "}
-        <strong className="text-escola-creme">B</strong> — cartão de vidro fosco (recomendado) ·{" "}
-        <strong className="text-escola-creme">C</strong> — vidro + moldura dourada
+        Variante <strong className="text-escola-creme">A</strong>: só vinheta + texto com stroke ·{" "}
+        <strong className="text-escola-creme">B</strong>: cartão de vidro fosco (recomendado) ·{" "}
+        <strong className="text-escola-creme">C</strong>: vidro + moldura dourada
       </div>
 
       <div className="flex flex-wrap gap-8">
@@ -140,7 +160,7 @@ export function VcSabiaPreviewPanel() {
           <div>
             <div className="text-escola-creme">Frase</div>
             <div className="mt-1 font-serif text-base text-escola-creme">
-              Sabias que — {phrase.texto}
+              Sabias que... {phrase.texto}
             </div>
           </div>
           <div>
@@ -159,6 +179,33 @@ export function VcSabiaPreviewPanel() {
             <div className="text-escola-creme">Media</div>
             <div className="mt-1 break-all">{media}</div>
           </div>
+
+          <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
+            <div className="text-escola-dourado">Áudio do motion</div>
+            {motionMood && motionAudioUrl ? (
+              <>
+                <div className="mt-1 text-escola-creme">
+                  {MOOD_LABELS[motionMood]}
+                </div>
+                <audio
+                  key={motionAudioUrl}
+                  src={motionAudioUrl}
+                  controls
+                  loop
+                  className="mt-2 h-8 w-full"
+                />
+              </>
+            ) : motionMood ? (
+              <div className="mt-1 text-red-300">
+                Motion tagged como {MOOD_LABELS[motionMood]}, mas esse mood não
+                tem áudio activo. Escolhe um em baixo na Áudio library.
+              </div>
+            ) : (
+              <div className="mt-1 text-red-300">
+                Motion sem mood. Atribui um na thumbnail acima (dropdown).
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -168,7 +215,7 @@ export function VcSabiaPreviewPanel() {
         </h2>
         <p className="text-xs text-escola-creme-50">
           Gerados automaticamente a partir da frase e do tema. Carrega no
-          botão para copiar — depois cola na Metricool (IG/TikTok) ou no
+          botão para copiar e depois cola na Metricool (IG/TikTok) ou no
           WhatsApp Status.
         </p>
 
@@ -194,110 +241,8 @@ export function VcSabiaPreviewPanel() {
         </div>
       </section>
 
-      <AudioGeneratorSection />
+      <AudioLibrary onActiveChange={handleActiveAudios} />
     </div>
-  );
-}
-
-function AudioGeneratorSection() {
-  const [mood, setMood] = useState<MorningMood>("birds-dawn");
-  const [durationSec, setDurationSec] = useState<number>(DEFAULT_DURATION_SEC);
-  const [generating, setGenerating] = useState(false);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const generate = async () => {
-    setGenerating(true);
-    setError(null);
-    setAudioUrl(null);
-    try {
-      const res = await fetch("/api/admin/vc-sabia/audio/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mood, durationSec }),
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        setError(json.erro || `Erro ${res.status}`);
-      } else {
-        setAudioUrl(json.audioUrl);
-      }
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setGenerating(false);
-    }
-  };
-
-  return (
-    <section className="space-y-3">
-      <h2 className="font-serif text-lg text-escola-dourado">
-        Áudio de manhã · ElevenLabs SFX
-      </h2>
-      <p className="text-xs text-escola-creme-50">
-        Escolhe um mood e gera um SFX ambiente para servir de fundo ao motion.
-        Custa ~$0.30 por geração (~10s). O ficheiro é guardado em Supabase
-        Storage e pode ser reutilizado em múltiplos posts.
-      </p>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
-          Mood:
-          <select
-            value={mood}
-            onChange={(e) => setMood(e.target.value as MorningMood)}
-            className="rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
-          >
-            {MORNING_MOODS.map((m) => (
-              <option key={m} value={m}>
-                {MOOD_LABELS[m]}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
-          Duração:
-          <input
-            type="number"
-            min={3}
-            max={22}
-            value={durationSec}
-            onChange={(e) => setDurationSec(Number(e.target.value))}
-            className="w-16 rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
-          />
-          <span>s</span>
-        </label>
-
-        <button
-          onClick={generate}
-          disabled={generating}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado transition-colors hover:bg-escola-dourado/20 disabled:opacity-50"
-        >
-          {generating ? "A gerar…" : "Gerar áudio"}
-        </button>
-      </div>
-
-      {error && (
-        <div className="rounded border border-red-700/40 bg-red-900/20 p-3 text-xs text-red-300">
-          {error}
-        </div>
-      )}
-
-      {audioUrl && (
-        <div className="space-y-2 rounded border border-escola-border bg-escola-card p-3">
-          <audio src={audioUrl} controls className="w-full" />
-          <a
-            href={audioUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="text-xs text-escola-dourado hover:underline"
-          >
-            {audioUrl}
-          </a>
-        </div>
-      )}
-    </section>
   );
 }
 
@@ -456,7 +401,7 @@ function BodyVariantA({ phrase }: { phrase: string }) {
           textShadow: "0 1px 4px rgba(0,0,0,0.7)",
         }}
       >
-        Sabias que —
+        Sabias que...
       </span>
       {phrase}
     </p>
@@ -486,7 +431,7 @@ function BodyVariantB({ phrase }: { phrase: string }) {
           marginBottom: 14,
         }}
       >
-        Sabias que —
+        Sabias que...
       </div>
       <p
         className="text-balance font-serif italic text-escola-creme"
@@ -531,7 +476,7 @@ function BodyVariantC({ phrase }: { phrase: string }) {
           textShadow: "0 1px 6px rgba(0,0,0,0.6)",
         }}
       >
-        Sabias que —
+        Sabias que...
       </div>
       <p
         className="text-balance font-serif italic text-escola-creme"

@@ -1,7 +1,7 @@
 {
   "colecao": "vc-sabia-que",
   "titulo": "VC Sabia Que…?",
-  "abertura": "Sabias que —",
+  "abertura": "Sabias que...",
   "horario_publicacao": "manha",
   "temas": {
     "autoconhecimento": "Autoconhecimento",
@@ -19,7 +19,7 @@
     "beleza-de-existir": "Beleza de existir"
   },
   "frases": [
-    { "id": "vsq-0001", "tema": "autoconhecimento", "texto": "Antes de procurares respostas no mundo, escuta a tua primeira voz — a que fala antes do julgamento." },
+    { "id": "vsq-0001", "tema": "autoconhecimento", "texto": "Antes de procurares respostas no mundo, escuta a tua primeira voz. A que fala antes do julgamento." },
     { "id": "vsq-0002", "tema": "autoconhecimento", "texto": "Repara hoje no que repetes sem perceber: é aí que começa o teu mapa." },
     { "id": "vsq-0003", "tema": "autoconhecimento", "texto": "O que te incomoda nos outros é, quase sempre, um convite a olhares para ti com mais ternura." },
     { "id": "vsq-0004", "tema": "autoconhecimento", "texto": "Cada pergunta que te fazes com coragem é uma raiz nova a crescer dentro de ti." },
@@ -36,17 +36,17 @@
     { "id": "vsq-0014", "tema": "autoamor", "texto": "A tua presença é néctar. Não a desperdices a tentar agradar." },
 
     { "id": "vsq-0015", "tema": "autoperdao", "texto": "Liberta hoje uma culpa antiga. Não precisas dela para fazer este dia florescer." },
-    { "id": "vsq-0016", "tema": "autoperdao", "texto": "Quem foste ontem trouxe-te até aqui. Agradece-lhe — e segue." },
+    { "id": "vsq-0016", "tema": "autoperdao", "texto": "Quem foste ontem trouxe-te até aqui. Agradece-lhe, e segue." },
     { "id": "vsq-0017", "tema": "autoperdao", "texto": "Perdoares-te é parar de te punires por algo que já não és." },
     { "id": "vsq-0018", "tema": "autoperdao", "texto": "A tua versão de ontem fez o melhor que pôde com o que tinha. Honra isso." },
     { "id": "vsq-0019", "tema": "autoperdao", "texto": "Cada amanhecer é um convite a recomeçar. Aceita-o sem peso." },
     { "id": "vsq-0020", "tema": "autoperdao", "texto": "Solta o que já não te serve como a árvore solta a folha: sem drama, com fé." },
 
-    { "id": "vsq-0021", "tema": "florescer-no-tempo-certo", "texto": "O lótus aprendeu a florescer na lama. Tu também sabes — confia no teu tempo." },
+    { "id": "vsq-0021", "tema": "florescer-no-tempo-certo", "texto": "O lótus aprendeu a florescer na lama. Tu também sabes. Confia no teu tempo." },
     { "id": "vsq-0022", "tema": "florescer-no-tempo-certo", "texto": "Não compares a tua estação com a dos outros. Cada flor abre quando é a sua hora." },
     { "id": "vsq-0023", "tema": "florescer-no-tempo-certo", "texto": "O que está a germinar em ti agora pede paciência, não pressa." },
     { "id": "vsq-0024", "tema": "florescer-no-tempo-certo", "texto": "Confia: a tua semente sabe quando abrir, mesmo que tu ainda não saibas." },
-    { "id": "vsq-0025", "tema": "florescer-no-tempo-certo", "texto": "Florescer não é um esforço — é uma rendição luminosa ao tempo certo." },
+    { "id": "vsq-0025", "tema": "florescer-no-tempo-certo", "texto": "Florescer não é um esforço, é uma rendição luminosa ao tempo certo." },
     { "id": "vsq-0026", "tema": "florescer-no-tempo-certo", "texto": "Hoje, planta uma intenção pequena. Amanhã, rega-a com presença." },
 
     { "id": "vsq-0027", "tema": "presenca-leve", "texto": "Antes de pegares no telemóvel, respira três vezes. É assim que se acorda em ti." },
@@ -64,21 +64,21 @@
     { "id": "vsq-0038", "tema": "suavidade-e-descanso", "texto": "Cuida da tua energia como cuidas de uma planta delicada. É o que te sustenta." },
 
     { "id": "vsq-0039", "tema": "sonhar-com-raizes", "texto": "Sonha grande, mas começa pequeno. As maiores árvores começaram numa única semente." },
-    { "id": "vsq-0040", "tema": "sonhar-com-raizes", "texto": "O teu sonho não precisa de pressa — precisa de raiz." },
+    { "id": "vsq-0040", "tema": "sonhar-com-raizes", "texto": "O teu sonho não precisa de pressa, precisa de raiz." },
     { "id": "vsq-0041", "tema": "sonhar-com-raizes", "texto": "Hoje, dá um passo na direcção do que te chama em silêncio. Basta um." },
     { "id": "vsq-0042", "tema": "sonhar-com-raizes", "texto": "Os teus sonhos têm raízes, não asas que fogem. Plantam-se em ti, e crescem com calma." },
     { "id": "vsq-0043", "tema": "sonhar-com-raizes", "texto": "Visualiza, ao acordar, a vida que queres habitar. Depois, faz uma coisa em direcção a ela." },
     { "id": "vsq-0044", "tema": "sonhar-com-raizes", "texto": "O que te chama com ternura é, quase sempre, o caminho mais verdadeiro." },
 
-    { "id": "vsq-0045", "tema": "inteireza", "texto": "Aceita-te inteira hoje — luz e sombra, certeza e dúvida. Tudo cabe em ti." },
+    { "id": "vsq-0045", "tema": "inteireza", "texto": "Aceita-te inteira hoje: luz e sombra, certeza e dúvida. Tudo cabe em ti." },
     { "id": "vsq-0046", "tema": "inteireza", "texto": "Não tens de escolher entre seres forte e seres frágil. Podes ser ambas, e bonita." },
-    { "id": "vsq-0047", "tema": "inteireza", "texto": "A tua complexidade não é defeito. É riqueza — como um jardim com muitas espécies." },
+    { "id": "vsq-0047", "tema": "inteireza", "texto": "A tua complexidade não é defeito. É riqueza, como um jardim com muitas espécies." },
     { "id": "vsq-0048", "tema": "inteireza", "texto": "Honra os teus opostos. É na união deles que mora a tua paz." },
     { "id": "vsq-0049", "tema": "inteireza", "texto": "Podes amar e, ainda assim, afastar-te. Ambas as verdades cabem em ti." },
     { "id": "vsq-0050", "tema": "inteireza", "texto": "Ser inteira é deixares todas as cores caberem no mesmo arco-íris." },
 
     { "id": "vsq-0051", "tema": "corpo-como-casa", "texto": "Ao acordar, agradece ao teu corpo antes de pedires algo dele." },
-    { "id": "vsq-0052", "tema": "corpo-como-casa", "texto": "O teu corpo já sabia, antes de tu pensares. Volta a ele — é casa." },
+    { "id": "vsq-0052", "tema": "corpo-como-casa", "texto": "O teu corpo já sabia, antes de tu pensares. Volta a ele. É casa." },
     { "id": "vsq-0053", "tema": "corpo-como-casa", "texto": "Hoje, repara nos teus pés no chão. É o gesto mais simples de regresso a ti." },
     { "id": "vsq-0054", "tema": "corpo-como-casa", "texto": "Bebe água ao acordar. É a primeira forma de dizeres 'amo-te' ao teu corpo." },
     { "id": "vsq-0055", "tema": "corpo-como-casa", "texto": "Move o corpo um pouco hoje. A vida começa a circular onde a respiração entra." },
@@ -88,17 +88,17 @@
     { "id": "vsq-0058", "tema": "confianca-no-caminho", "texto": "O que está para ti não passa por ti sem te tocar. Confia." },
     { "id": "vsq-0059", "tema": "confianca-no-caminho", "texto": "As raízes confiam no escuro. Por isso é que as flores podem confiar na luz." },
     { "id": "vsq-0060", "tema": "confianca-no-caminho", "texto": "O atraso que sentes é, quase sempre, preparação. Continua." },
-    { "id": "vsq-0061", "tema": "confianca-no-caminho", "texto": "Hoje, deixa de tentar controlar. Faz o teu — o resto floresce." },
+    { "id": "vsq-0061", "tema": "confianca-no-caminho", "texto": "Hoje, deixa de tentar controlar. Faz o teu, o resto floresce." },
     { "id": "vsq-0062", "tema": "confianca-no-caminho", "texto": "Confiar não é ter a certeza. É caminhares mesmo sem ela, com leveza." },
 
     { "id": "vsq-0063", "tema": "gratidao", "texto": "Começa o dia a notar três pequenas bênçãos. A gratidão multiplica o que existe." },
     { "id": "vsq-0064", "tema": "gratidao", "texto": "Diz 'obrigada' à manhã. É um gesto silencioso que muda o teu olhar." },
-    { "id": "vsq-0065", "tema": "gratidao", "texto": "Há, no banal, um néctar escondido — só os atentos o sabem colher." },
+    { "id": "vsq-0065", "tema": "gratidao", "texto": "Há, no banal, um néctar escondido. Só os atentos o sabem colher." },
     { "id": "vsq-0066", "tema": "gratidao", "texto": "Hoje, agradece ao que te trouxe até aqui: ao pão, à luz, à própria respiração." },
     { "id": "vsq-0067", "tema": "gratidao", "texto": "Agradecer é o gesto mais leve que multiplica a beleza onde já existe." },
     { "id": "vsq-0068", "tema": "gratidao", "texto": "Lembra-te: a tua vida tem mais pequenos milagres do que dias para os notar." },
 
-    { "id": "vsq-0069", "tema": "alegria-simples", "texto": "Procura uma alegria pequena hoje — uma chávena, uma luz, um cheiro. É suficiente." },
+    { "id": "vsq-0069", "tema": "alegria-simples", "texto": "Procura uma alegria pequena hoje: uma chávena, uma luz, um cheiro. É suficiente." },
     { "id": "vsq-0070", "tema": "alegria-simples", "texto": "Permite-te rir, mesmo sozinha. O riso é uma oração curta." },
     { "id": "vsq-0071", "tema": "alegria-simples", "texto": "A leveza é a forma mais elevada de seriedade. Pratica-a hoje." },
     { "id": "vsq-0072", "tema": "alegria-simples", "texto": "Não esperes razões para seres feliz. Algumas alegrias chegam sem pedir licença." },
@@ -107,9 +107,9 @@
 
     { "id": "vsq-0075", "tema": "beleza-de-existir", "texto": "Lembra-te hoje: estares aqui já é uma forma de poesia." },
     { "id": "vsq-0076", "tema": "beleza-de-existir", "texto": "Que coisa rara é uma manhã onde tu estás. Não desperdices a estranheza disso." },
-    { "id": "vsq-0077", "tema": "beleza-de-existir", "texto": "A beleza não está só na pétala — está também na coragem de se abrir. Tu também." },
+    { "id": "vsq-0077", "tema": "beleza-de-existir", "texto": "A beleza não está só na pétala. Está também na coragem de se abrir. Tu também." },
     { "id": "vsq-0078", "tema": "beleza-de-existir", "texto": "Respirar é um pequeno milagre repetido. E ninguém te cobra a entrada." },
     { "id": "vsq-0079", "tema": "beleza-de-existir", "texto": "Olha para a luz da manhã como olharias para um milagre. Porque é." },
-    { "id": "vsq-0080", "tema": "beleza-de-existir", "texto": "A tua existência rima com algo. Estás só a aprender o poema — e isso já é vida." }
+    { "id": "vsq-0080", "tema": "beleza-de-existir", "texto": "A tua existência rima com algo. Estás só a aprender o poema. E isso já é vida." }
   ]
 }
