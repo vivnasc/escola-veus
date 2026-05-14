@@ -9,6 +9,7 @@ import {
   MORNING_MOODS,
   type MorningMood,
 } from "@/lib/vc-sabia/audio";
+import { MotionLibrary } from "./MotionLibrary";
 
 type Variant = "A" | "B" | "C";
 
@@ -57,6 +58,8 @@ export function VcSabiaPreviewPanel() {
           Frame renderiza a 405×720 (escala 0.375 do output final 1080×1920).
         </p>
       </header>
+
+      <MotionLibrary selectedUrl={media} onSelect={setMedia} />
 
       <div className="flex flex-wrap gap-3">
         <div className="flex gap-1 rounded-md border border-escola-border p-1">
