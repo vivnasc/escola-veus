@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import seed from "@/data/vc-sabia-frases.seed.json";
+import { phraseToCaptions } from "@/lib/vc-sabia/captions";
 
 type Variant = "A" | "B" | "C";
 
@@ -19,13 +20,25 @@ function formatDatePT(d: Date) {
 }
 
 export function VcSabiaPreviewPanel() {
-  const [variant, setVariant] = useState<Variant>("B");
+  const [variant, setVariant] = useState<Variant>("C");
   const [phraseId, setPhraseId] = useState<string>(SAMPLE_PHRASE_ID);
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const phrase = seed.frases.find((f) => f.id === phraseId) ?? seed.frases[0];
   const dateLabel = formatDatePT(new Date());
   const isVideo = /\.(mp4|webm|mov)$/i.test(media);
+  const captions = phraseToCaptions({ phrase: phrase.texto, theme: phrase.tema });
+
+  const copy = async (key: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(key);
+      setTimeout(() => setCopied(null), 1500);
+    } catch {
+      /* ignore */
+    }
+  };
 
   return (
     <div className="space-y-6 p-4">
@@ -139,6 +152,71 @@ export function VcSabiaPreviewPanel() {
           </div>
         </div>
       </div>
+
+      <section className="space-y-3">
+        <h2 className="font-serif text-lg text-escola-dourado">
+          Captions para os 3 canais
+        </h2>
+        <p className="text-xs text-escola-creme-50">
+          Gerados automaticamente a partir da frase e do tema. Carrega no
+          botão para copiar — depois cola na Metricool (IG/TikTok) ou no
+          WhatsApp Status.
+        </p>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <CaptionCard
+            label="Instagram"
+            text={captions.instagram}
+            copied={copied === "ig"}
+            onCopy={() => copy("ig", captions.instagram)}
+          />
+          <CaptionCard
+            label="TikTok"
+            text={captions.tiktok}
+            copied={copied === "tt"}
+            onCopy={() => copy("tt", captions.tiktok)}
+          />
+          <CaptionCard
+            label="WhatsApp Status"
+            text={captions.whatsapp}
+            copied={copied === "wa"}
+            onCopy={() => copy("wa", captions.whatsapp)}
+          />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function CaptionCard({
+  label,
+  text,
+  copied,
+  onCopy,
+}: {
+  label: string;
+  text: string;
+  copied: boolean;
+  onCopy: () => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2 rounded-lg border border-escola-border bg-escola-card p-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-medium text-escola-dourado">{label}</span>
+        <button
+          onClick={onCopy}
+          className={`rounded px-2 py-1 text-xs transition-colors ${
+            copied
+              ? "bg-escola-dourado text-escola-bg"
+              : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
+          }`}
+        >
+          {copied ? "Copiado ✓" : "Copiar"}
+        </button>
+      </div>
+      <pre className="whitespace-pre-wrap break-words font-sans text-xs leading-relaxed text-escola-creme">
+        {text}
+      </pre>
     </div>
   );
 }
