@@ -207,26 +207,15 @@ function Frame({
         <div
           className="font-serif italic text-escola-creme"
           style={{
-            fontWeight: 500,
-            fontSize: 22,
-            letterSpacing: "0.02em",
-            textShadow: "0 2px 8px rgba(0,0,0,0.4)",
-          }}
-        >
-          VC Sabia Que…?
-        </div>
-        <div
-          className="mt-1 font-serif text-escola-creme-50"
-          style={{
             fontWeight: 400,
-            fontSize: 11,
+            fontSize: 13,
             letterSpacing: "0.06em",
-            textShadow: "0 1px 4px rgba(0,0,0,0.4)",
+            textShadow: "0 1px 4px rgba(0,0,0,0.5)",
           }}
         >
           {dateLabel}
         </div>
-        <div className="mx-auto mt-3 h-px w-16 bg-escola-dourado/60" />
+        <div className="mx-auto mt-2 h-px w-12 bg-escola-dourado/60" />
       </header>
 
       <main className="absolute inset-0 flex items-center justify-center px-6">
@@ -246,7 +235,7 @@ function Frame({
             textShadow: "0 1px 4px rgba(0,0,0,0.5)",
           }}
         >
-          @escola.dos.veus
+          seteveus.space
         </div>
       </footer>
     </div>
@@ -327,12 +316,12 @@ function BodyVariantC({ phrase }: { phrase: string }) {
     <div
       className="relative rounded-2xl px-5 py-7 text-center"
       style={{
-        background: "rgba(20, 15, 30, 0.34)",
-        backdropFilter: "blur(14px) saturate(140%)",
-        WebkitBackdropFilter: "blur(14px) saturate(140%)",
+        background: "rgba(20, 15, 30, 0.14)",
+        backdropFilter: "blur(6px) saturate(120%)",
+        WebkitBackdropFilter: "blur(6px) saturate(120%)",
         border: "1px solid rgba(201, 169, 110, 0.55)",
         boxShadow:
-          "0 8px 32px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(201, 169, 110, 0.12), 0 0 0 4px rgba(201, 169, 110, 0.08)",
+          "0 6px 22px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(201, 169, 110, 0.1)",
       }}
     >
       <Corner pos="tl" />
@@ -348,6 +337,7 @@ function BodyVariantC({ phrase }: { phrase: string }) {
           letterSpacing: "0.22em",
           textTransform: "uppercase",
           marginBottom: 14,
+          textShadow: "0 1px 6px rgba(0,0,0,0.6)",
         }}
       >
         Sabias que —
@@ -358,6 +348,8 @@ function BodyVariantC({ phrase }: { phrase: string }) {
           fontWeight: 500,
           fontSize: 21,
           lineHeight: 1.45,
+          textShadow:
+            "0 2px 10px rgba(0,0,0,0.65), 0 1px 2px rgba(0,0,0,0.85)",
         }}
       >
         {phrase}
