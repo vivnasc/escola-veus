@@ -3,19 +3,23 @@
 import { useState } from "react";
 import WeeklyBulkPanel from "@/components/admin/WeeklyBulkPanel";
 import { VcSabiaPreviewPanel } from "@/components/vc-sabia/PreviewPanel";
+import { HojeEmMimPreviewPanel } from "@/components/hoje-em-mim/PreviewPanel";
 
 /**
- * Bulk semanal — três sub-produções: Loranne, Ancient Ground e VC Sabia Que…?.
- * As duas primeiras geram ZIPs Metricool (CSV + media). A terceira é o pólo
- * diário de motion + frase, com preview e produção do post do dia.
+ * Bulk semanal — quatro sub-produções:
+ *  - Loranne · Ancient Ground (geram ZIPs Metricool: CSV + media)
+ *  - VC Sabia Que…? — post da manhã (conta pessoal), motion + frase
+ *  - Hoje, em Mim — post da noite (conta pessoal), fecho do dia,
+ *    rotação editorial por dia da semana
  */
 
-type SubProducao = "loranne" | "ancient-ground" | "vc-sabia";
+type SubProducao = "loranne" | "ancient-ground" | "vc-sabia" | "hoje-em-mim";
 
 const TABS: { id: SubProducao; label: string }[] = [
   { id: "loranne", label: "Loranne" },
   { id: "ancient-ground", label: "Ancient Ground" },
-  { id: "vc-sabia", label: "VC Sabia Que…?" },
+  { id: "vc-sabia", label: "VC Sabia Que…? (manhã)" },
+  { id: "hoje-em-mim", label: "Hoje, em Mim (noite)" },
 ];
 
 export default function BulkSemanalPage() {
@@ -51,8 +55,10 @@ export default function BulkSemanalPage() {
 
       {tab === "vc-sabia" ? (
         <VcSabiaPreviewPanel />
+      ) : tab === "hoje-em-mim" ? (
+        <HojeEmMimPreviewPanel />
       ) : (
-        <WeeklyBulkPanel key={tab} brand={tab} defaultOpen />
+        <WeeklyBulkPanel key={tab} brand={tab as "loranne" | "ancient-ground"} defaultOpen />
       )}
     </div>
   );
