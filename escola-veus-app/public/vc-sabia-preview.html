@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VC Sabia Que…? — Preview de overlay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #0d0d1a;
+      --bg-2: #141428;
+      --creme: #f5f0e6;
+      --creme-50: rgba(245, 240, 230, 0.5);
+      --dourado: #c9a96e;
+      --border: rgba(201, 169, 110, 0.2);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--creme);
+      font-family: "Inter", system-ui, sans-serif;
+      min-height: 100dvh;
+    }
+    .wrap {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+    h1 {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--dourado);
+      font-size: 32px;
+      margin: 0 0 8px;
+    }
+    .lead {
+      color: var(--creme-50);
+      font-size: 14px;
+      margin: 0 0 12px;
+      max-width: 800px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin: 16px 0 32px;
+      padding: 12px;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .controls label {
+      font-size: 12px;
+      color: var(--creme-50);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .controls select, .controls input[type="checkbox"] {
+      font-family: inherit;
+      font-size: 12px;
+      background: var(--bg);
+      color: var(--creme);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 32px;
+    }
+    @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 750px) { .grid { grid-template-columns: 1fr; } }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .col-label {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--creme);
+      letter-spacing: 0.05em;
+    }
+    .col-sub {
+      font-size: 11px;
+      color: var(--creme-50);
+      text-align: center;
+      max-width: 320px;
+      line-height: 1.5;
+    }
+
+    /* === FRAME 9:16 ================================================ */
+    .frame {
+      position: relative;
+      width: 360px;
+      aspect-ratio: 9 / 16;
+      overflow: hidden;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      ring: 1px solid var(--border);
+    }
+    .frame video, .frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(13,13,26,0) 35%,
+        rgba(13,13,26,0.55) 100%
+      );
+      pointer-events: none;
+    }
+    .grad-top {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 28%;
+      background: linear-gradient(
+        to bottom,
+        rgba(13,13,26,0.7) 0%,
+        rgba(13,13,26,0) 100%
+      );
+      pointer-events: none;
+    }
+    .grad-bot {
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 18%;
+      background: linear-gradient(
+        to top,
+        rgba(13,13,26,0.6) 0%,
+        rgba(13,13,26,0) 100%
+      );
+      pointer-events: none;
+    }
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 22px 24px 0;
+      text-align: center;
+    }
+    .title {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      color: var(--creme);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .date {
+      margin-top: 4px;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--creme-50);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+    .divider {
+      width: 56px;
+      height: 1px;
+      background: rgba(201, 169, 110, 0.6);
+      margin: 12px auto 0;
+    }
+    .body {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+    }
+    .kicker {
+      font-family: "Inter", system-ui, sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dourado);
+      margin-bottom: 12px;
+    }
+    .phrase {
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 1.45;
+      color: var(--creme);
+      text-wrap: balance;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 24px 18px;
+      text-align: center;
+      font-family: "Inter", system-ui, sans-serif;
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--creme-50);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
+
+    /* === Variantes ================================================= */
+    /* A — só vinheta + texto com stroke */
+    .variant-a .body p {
+      text-align: center;
+      text-shadow:
+        0 2px 12px rgba(0,0,0,0.75),
+        0 1px 2px rgba(0,0,0,0.9),
+        0 0 1px rgba(0,0,0,0.9);
+    }
+    .variant-a .body .kicker {
+      text-shadow: 0 1px 4px rgba(0,0,0,0.75);
+    }
+
+    /* B — vidro fosco (recomendado) */
+    .glass {
+      background: rgba(20, 15, 30, 0.32);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid rgba(245, 240, 230, 0.16);
+      border-radius: 18px;
+      padding: 22px 20px;
+      text-align: center;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    /* C — vidro + moldura dourada */
+    .glass-gold {
+      background: rgba(20, 15, 30, 0.34);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid rgba(201, 169, 110, 0.55);
+      border-radius: 18px;
+      padding: 26px 20px;
+      text-align: center;
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.4),
+        inset 0 0 0 1px rgba(201, 169, 110, 0.12),
+        0 0 0 4px rgba(201, 169, 110, 0.08);
+      position: relative;
+    }
+    .corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--dourado);
+      border-style: solid;
+      border-width: 0;
+    }
+    .corner.tl { top: 6px; left: 6px; border-top-width: 1px; border-left-width: 1px; }
+    .corner.tr { top: 6px; right: 6px; border-top-width: 1px; border-right-width: 1px; }
+    .corner.bl { bottom: 6px; left: 6px; border-bottom-width: 1px; border-left-width: 1px; }
+    .corner.br { bottom: 6px; right: 6px; border-bottom-width: 1px; border-right-width: 1px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>VC Sabia Que…? — preview de overlay</h1>
+    <p class="lead">
+      Três variantes lado a lado sobre o MP4 real do MJ. Tipografia
+      Cormorant Garamond. Os tamanhos estão à escala de uma preview de
+      360×640 — o output final será 1080×1920.
+    </p>
+
+    <div class="controls">
+      <label>
+        Frase:
+        <select id="phrase-sel"></select>
+      </label>
+      <label>
+        Fundo:
+        <select id="media-sel">
+          <option value="mp4">MP4 motion (recomendado)</option>
+          <option value="webp">Imagem estática</option>
+        </select>
+      </label>
+      <label>
+        <input type="checkbox" id="show-still" />
+        Pausar vídeo
+      </label>
+    </div>
+
+    <div class="grid">
+      <!-- Variante A -->
+      <div class="col">
+        <div class="col-label">Variante A</div>
+        <div class="col-sub">Vinheta + texto com stroke. Vídeo limpo, mas pede zonas escuras na imagem.</div>
+        <div class="frame variant-a" data-frame>
+          <video class="bg-video" autoplay loop muted playsinline></video>
+          <img class="bg-img" alt="" style="display:none" />
+          <div class="vignette"></div>
+          <div class="grad-top"></div>
+          <div class="grad-bot"></div>
+          <header class="header">
+            <div class="title">VC Sabia Que…?</div>
+            <div class="date" data-date></div>
+            <div class="divider"></div>
+          </header>
+          <div class="body">
+            <p class="phrase" data-phrase>
+              <span class="kicker">Sabias que —</span>
+              <span data-phrase-text></span>
+            </p>
+          </div>
+          <footer class="footer">@escola.dos.veus</footer>
+        </div>
+      </div>
+
+      <!-- Variante B (recomendada) -->
+      <div class="col">
+        <div class="col-label">Variante B · recomendada</div>
+        <div class="col-sub">Cartão de vidro fosco translúcido. Funciona em qualquer fundo, leitura garantida.</div>
+        <div class="frame variant-b" data-frame>
+          <video class="bg-video" autoplay loop muted playsinline></video>
+          <img class="bg-img" alt="" style="display:none" />
+          <div class="vignette"></div>
+          <div class="grad-top"></div>
+          <div class="grad-bot"></div>
+          <header class="header">
+            <div class="title">VC Sabia Que…?</div>
+            <div class="date" data-date></div>
+            <div class="divider"></div>
+          </header>
+          <div class="body">
+            <div class="glass">
+              <div class="kicker">Sabias que —</div>
+              <p class="phrase" data-phrase-text></p>
+            </div>
+          </div>
+          <footer class="footer">@escola.dos.veus</footer>
+        </div>
+      </div>
+
+      <!-- Variante C -->
+      <div class="col">
+        <div class="col-label">Variante C</div>
+        <div class="col-sub">Vidro + moldura dourada + cantos decorativos. Look mais "premium".</div>
+        <div class="frame variant-c" data-frame>
+          <video class="bg-video" autoplay loop muted playsinline></video>
+          <img class="bg-img" alt="" style="display:none" />
+          <div class="vignette"></div>
+          <div class="grad-top"></div>
+          <div class="grad-bot"></div>
+          <header class="header">
+            <div class="title">VC Sabia Que…?</div>
+            <div class="date" data-date></div>
+            <div class="divider"></div>
+          </header>
+          <div class="body">
+            <div class="glass-gold">
+              <span class="corner tl"></span>
+              <span class="corner tr"></span>
+              <span class="corner bl"></span>
+              <span class="corner br"></span>
+              <div class="kicker">Sabias que —</div>
+              <p class="phrase" data-phrase-text></p>
+            </div>
+          </div>
+          <footer class="footer">@escola.dos.veus</footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const MP4 = "./assets/vc-sabia/motions/db5056e4-aabc-43e6-ab9f-48f8d96c10a8.mp4";
+    const WEBP = "./assets/vc-sabia/motions/IMG_8599.webp";
+
+    const MESES = [
+      "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+      "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
+    ];
+    const today = new Date();
+    const dateLabel = `${today.getDate()} de ${MESES[today.getMonth()]} de ${today.getFullYear()}`;
+
+    document.querySelectorAll("[data-date]").forEach(el => el.textContent = dateLabel);
+
+    // Carrega frases do JSON
+    fetch("./vc-sabia-frases.seed.json")
+      .then(r => r.json())
+      .then(seed => {
+        const sel = document.getElementById("phrase-sel");
+        seed.frases.forEach(f => {
+          const opt = document.createElement("option");
+          opt.value = f.id;
+          opt.textContent = `${f.id} · ${f.tema} · ${f.texto.slice(0, 50)}…`;
+          sel.appendChild(opt);
+        });
+        // Default: vsq-0021
+        sel.value = "vsq-0021";
+        const applyPhrase = () => {
+          const f = seed.frases.find(x => x.id === sel.value);
+          document.querySelectorAll("[data-phrase-text]").forEach(el => el.textContent = f.texto);
+        };
+        sel.addEventListener("change", applyPhrase);
+        applyPhrase();
+      })
+      .catch(() => {
+        // Fallback se o fetch falhar (file://)
+        const fallback = "o lótus nasce na lama e ninguém lhe pede pressa. Tu também tens permissão para demorar.";
+        document.querySelectorAll("[data-phrase-text]").forEach(el => el.textContent = fallback);
+      });
+
+    function setMedia(kind) {
+      document.querySelectorAll("[data-frame]").forEach(frame => {
+        const video = frame.querySelector(".bg-video");
+        const img = frame.querySelector(".bg-img");
+        if (kind === "mp4") {
+          video.src = MP4;
+          video.style.display = "";
+          img.style.display = "none";
+          video.play().catch(() => {});
+        } else {
+          img.src = WEBP;
+          img.style.display = "";
+          video.style.display = "none";
+          video.pause();
+        }
+      });
+    }
+    setMedia("mp4");
+
+    document.getElementById("media-sel").addEventListener("change", e => setMedia(e.target.value));
+    document.getElementById("show-still").addEventListener("change", e => {
+      document.querySelectorAll(".bg-video").forEach(v => {
+        if (e.target.checked) v.pause(); else v.play().catch(() => {});
+      });
+    });
+  </script>
+</body>
+</html>
