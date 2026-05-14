@@ -91,7 +91,7 @@ export function AudioLibrary({ onActiveChange }: Props) {
         Geração via FAL Stable Audio (ambiente contemplativo, 5-47s). Cada
         elemento tem 1 áudio activo (radio verde) que toca quando se usa um
         motion tagged com esse elemento. Gera várias versões e escolhe a melhor.
-        Demora ~20-40s por geração (FAL queue).
+        Demora ~10-20s por geração (FAL queue).
       </p>
 
       {loading ? (

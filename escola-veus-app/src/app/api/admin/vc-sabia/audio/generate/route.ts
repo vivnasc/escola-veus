@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         prompt,
         seconds_total: durationSec,
-        steps: 100,
+        steps: 50,
       }),
     });
     if (!submitRes.ok) {
