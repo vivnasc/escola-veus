@@ -2,6 +2,14 @@
 
 import { useState } from "react";
 import seed from "@/data/vc-sabia-frases.seed.json";
+import { phraseToCaptions } from "@/lib/vc-sabia/captions";
+import {
+  DEFAULT_DURATION_SEC,
+  MOOD_LABELS,
+  MORNING_MOODS,
+  type MorningMood,
+} from "@/lib/vc-sabia/audio";
+import { MotionLibrary } from "./MotionLibrary";
 
 type Variant = "A" | "B" | "C";
 
@@ -19,13 +27,25 @@ function formatDatePT(d: Date) {
 }
 
 export function VcSabiaPreviewPanel() {
-  const [variant, setVariant] = useState<Variant>("B");
+  const [variant, setVariant] = useState<Variant>("C");
   const [phraseId, setPhraseId] = useState<string>(SAMPLE_PHRASE_ID);
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const phrase = seed.frases.find((f) => f.id === phraseId) ?? seed.frases[0];
   const dateLabel = formatDatePT(new Date());
   const isVideo = /\.(mp4|webm|mov)$/i.test(media);
+  const captions = phraseToCaptions({ phrase: phrase.texto, theme: phrase.tema });
+
+  const copy = async (key: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(key);
+      setTimeout(() => setCopied(null), 1500);
+    } catch {
+      /* ignore */
+    }
+  };
 
   return (
     <div className="space-y-6 p-4">
@@ -38,6 +58,8 @@ export function VcSabiaPreviewPanel() {
           Frame renderiza a 405×720 (escala 0.375 do output final 1080×1920).
         </p>
       </header>
+
+      <MotionLibrary selectedUrl={media} onSelect={setMedia} />
 
       <div className="flex flex-wrap gap-3">
         <div className="flex gap-1 rounded-md border border-escola-border p-1">
@@ -139,6 +161,175 @@ export function VcSabiaPreviewPanel() {
           </div>
         </div>
       </div>
+
+      <section className="space-y-3">
+        <h2 className="font-serif text-lg text-escola-dourado">
+          Captions para os 3 canais
+        </h2>
+        <p className="text-xs text-escola-creme-50">
+          Gerados automaticamente a partir da frase e do tema. Carrega no
+          botão para copiar — depois cola na Metricool (IG/TikTok) ou no
+          WhatsApp Status.
+        </p>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <CaptionCard
+            label="Instagram"
+            text={captions.instagram}
+            copied={copied === "ig"}
+            onCopy={() => copy("ig", captions.instagram)}
+          />
+          <CaptionCard
+            label="TikTok"
+            text={captions.tiktok}
+            copied={copied === "tt"}
+            onCopy={() => copy("tt", captions.tiktok)}
+          />
+          <CaptionCard
+            label="WhatsApp Status"
+            text={captions.whatsapp}
+            copied={copied === "wa"}
+            onCopy={() => copy("wa", captions.whatsapp)}
+          />
+        </div>
+      </section>
+
+      <AudioGeneratorSection />
+    </div>
+  );
+}
+
+function AudioGeneratorSection() {
+  const [mood, setMood] = useState<MorningMood>("birds-dawn");
+  const [durationSec, setDurationSec] = useState<number>(DEFAULT_DURATION_SEC);
+  const [generating, setGenerating] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const generate = async () => {
+    setGenerating(true);
+    setError(null);
+    setAudioUrl(null);
+    try {
+      const res = await fetch("/api/admin/vc-sabia/audio/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mood, durationSec }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.erro || `Erro ${res.status}`);
+      } else {
+        setAudioUrl(json.audioUrl);
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  return (
+    <section className="space-y-3">
+      <h2 className="font-serif text-lg text-escola-dourado">
+        Áudio de manhã · ElevenLabs SFX
+      </h2>
+      <p className="text-xs text-escola-creme-50">
+        Escolhe um mood e gera um SFX ambiente para servir de fundo ao motion.
+        Custa ~$0.30 por geração (~10s). O ficheiro é guardado em Supabase
+        Storage e pode ser reutilizado em múltiplos posts.
+      </p>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
+          Mood:
+          <select
+            value={mood}
+            onChange={(e) => setMood(e.target.value as MorningMood)}
+            className="rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
+          >
+            {MORNING_MOODS.map((m) => (
+              <option key={m} value={m}>
+                {MOOD_LABELS[m]}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
+          Duração:
+          <input
+            type="number"
+            min={3}
+            max={22}
+            value={durationSec}
+            onChange={(e) => setDurationSec(Number(e.target.value))}
+            className="w-16 rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
+          />
+          <span>s</span>
+        </label>
+
+        <button
+          onClick={generate}
+          disabled={generating}
+          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado transition-colors hover:bg-escola-dourado/20 disabled:opacity-50"
+        >
+          {generating ? "A gerar…" : "Gerar áudio"}
+        </button>
+      </div>
+
+      {error && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-3 text-xs text-red-300">
+          {error}
+        </div>
+      )}
+
+      {audioUrl && (
+        <div className="space-y-2 rounded border border-escola-border bg-escola-card p-3">
+          <audio src={audioUrl} controls className="w-full" />
+          <a
+            href={audioUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-xs text-escola-dourado hover:underline"
+          >
+            {audioUrl}
+          </a>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function CaptionCard({
+  label,
+  text,
+  copied,
+  onCopy,
+}: {
+  label: string;
+  text: string;
+  copied: boolean;
+  onCopy: () => void;
+}) {
+  return (
+    <div className="flex flex-col gap-2 rounded-lg border border-escola-border bg-escola-card p-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-medium text-escola-dourado">{label}</span>
+        <button
+          onClick={onCopy}
+          className={`rounded px-2 py-1 text-xs transition-colors ${
+            copied
+              ? "bg-escola-dourado text-escola-bg"
+              : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
+          }`}
+        >
+          {copied ? "Copiado ✓" : "Copiar"}
+        </button>
+      </div>
+      <pre className="whitespace-pre-wrap break-words font-sans text-xs leading-relaxed text-escola-creme">
+        {text}
+      </pre>
     </div>
   );
 }
@@ -207,26 +398,15 @@ function Frame({
         <div
           className="font-serif italic text-escola-creme"
           style={{
-            fontWeight: 500,
-            fontSize: 22,
-            letterSpacing: "0.02em",
-            textShadow: "0 2px 8px rgba(0,0,0,0.4)",
-          }}
-        >
-          VC Sabia Que…?
-        </div>
-        <div
-          className="mt-1 font-serif text-escola-creme-50"
-          style={{
             fontWeight: 400,
-            fontSize: 11,
+            fontSize: 13,
             letterSpacing: "0.06em",
-            textShadow: "0 1px 4px rgba(0,0,0,0.4)",
+            textShadow: "0 1px 4px rgba(0,0,0,0.5)",
           }}
         >
           {dateLabel}
         </div>
-        <div className="mx-auto mt-3 h-px w-16 bg-escola-dourado/60" />
+        <div className="mx-auto mt-2 h-px w-12 bg-escola-dourado/60" />
       </header>
 
       <main className="absolute inset-0 flex items-center justify-center px-6">
@@ -246,7 +426,7 @@ function Frame({
             textShadow: "0 1px 4px rgba(0,0,0,0.5)",
           }}
         >
-          @escola.dos.veus
+          seteveus.space
         </div>
       </footer>
     </div>
@@ -327,12 +507,12 @@ function BodyVariantC({ phrase }: { phrase: string }) {
     <div
       className="relative rounded-2xl px-5 py-7 text-center"
       style={{
-        background: "rgba(20, 15, 30, 0.34)",
-        backdropFilter: "blur(14px) saturate(140%)",
-        WebkitBackdropFilter: "blur(14px) saturate(140%)",
+        background: "rgba(20, 15, 30, 0.14)",
+        backdropFilter: "blur(6px) saturate(120%)",
+        WebkitBackdropFilter: "blur(6px) saturate(120%)",
         border: "1px solid rgba(201, 169, 110, 0.55)",
         boxShadow:
-          "0 8px 32px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(201, 169, 110, 0.12), 0 0 0 4px rgba(201, 169, 110, 0.08)",
+          "0 6px 22px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(201, 169, 110, 0.1)",
       }}
     >
       <Corner pos="tl" />
@@ -348,6 +528,7 @@ function BodyVariantC({ phrase }: { phrase: string }) {
           letterSpacing: "0.22em",
           textTransform: "uppercase",
           marginBottom: 14,
+          textShadow: "0 1px 6px rgba(0,0,0,0.6)",
         }}
       >
         Sabias que —
@@ -358,6 +539,8 @@ function BodyVariantC({ phrase }: { phrase: string }) {
           fontWeight: 500,
           fontSize: 21,
           lineHeight: 1.45,
+          textShadow:
+            "0 2px 10px rgba(0,0,0,0.65), 0 1px 2px rgba(0,0,0,0.85)",
         }}
       >
         {phrase}
