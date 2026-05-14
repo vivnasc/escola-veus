@@ -1,34 +1,59 @@
 /**
- * Captions para "Hoje, em Mim" — post de fecho do dia, conta pessoal.
+ * Captions para "Hoje, em Mim". Post de fecho do dia, conta pessoal.
  *
  * Estrutura editorial: rotação por dia da semana (7 formatos).
  * Cada dia tem um kicker próprio que ancora o ritual:
- *  Seg pergunta · Ter gratidão · Qua soltar · Qui aprender ·
- *  Sex celebrar · Sáb corpo · Dom intenção.
+ *  seg convite · ter gratidão · qua soltar · qui aprender ·
+ *  sex celebrar · sáb corpo · dom intenção.
  *
  * Captions são gerados para IG/TikTok (Metricool) e WhatsApp Status (manual).
+ *
+ * Nota tipográfica: sem travessões. Pontuação usa vírgula, ponto, ou
+ * quebra de linha conforme o ritmo da frase.
  */
 
 export type DiaSemana = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 
 export const KICKER_POR_DIA: Record<DiaSemana, string> = {
-  mon: "Pergunta-te hoje —",
-  tue: "Hoje agradeço —",
-  wed: "Solto hoje —",
-  thu: "Hoje aprendi —",
-  fri: "Celebro hoje —",
-  sat: "Hoje, no corpo —",
-  sun: "Amanhã, escolho —",
+  mon: "olha hoje",
+  tue: "hoje agradeço",
+  wed: "solto hoje",
+  thu: "hoje aprendi",
+  fri: "celebro hoje",
+  sat: "hoje, no corpo",
+  sun: "amanhã, escolho",
 };
 
 export const LABEL_POR_DIA: Record<DiaSemana, string> = {
-  mon: "Pergunta de introspeção",
+  mon: "Convite a olhar para dentro",
   tue: "Gratidão",
   wed: "Soltar",
   thu: "O que aprendi",
   fri: "Celebrar o caminho",
   sat: "Ritual do corpo",
   sun: "Intenção para amanhã",
+};
+
+/** Glifo discreto que aparece no canto do frame e ao lado do kicker. */
+export const GLIFO_POR_DIA: Record<DiaSemana, string> = {
+  mon: "✶",
+  tue: "☉",
+  wed: "◌",
+  thu: "〜",
+  fri: "♢",
+  sat: "◯",
+  sun: "→",
+};
+
+/** Nome do dia em minúsculas para escrever vertical no frame. */
+export const DIA_LONGO_PT: Record<DiaSemana, string> = {
+  mon: "segunda",
+  tue: "terça",
+  wed: "quarta",
+  thu: "quinta",
+  fri: "sexta",
+  sat: "sábado",
+  sun: "domingo",
 };
 
 const HASHTAGS_BASE = [
@@ -45,7 +70,7 @@ const HASHTAGS_BASE = [
 ];
 
 const HASHTAGS_POR_DIA: Record<DiaSemana, string[]> = {
-  mon: ["pergunta", "autoconhecimento", "questionate"],
+  mon: ["olhardentro", "autoconhecimento", "presenca"],
   tue: ["gratidao", "gratitude", "agradecer"],
   wed: ["soltar", "liberta", "deixaire"],
   thu: ["aprendizagem", "aprendi", "lesson"],
@@ -79,8 +104,8 @@ export function phraseToCaptions(opts: {
     "",
     opts.phrase,
     "",
-    "—",
-    "Vivianne dos Santos · seteveus.space",
+    "Vivianne dos Santos",
+    "seteveus.space",
     "",
     ".",
     ".",
@@ -97,16 +122,14 @@ export function phraseToCaptions(opts: {
     "fechodoDia",
     "pt",
   ];
-  const tiktok = [`${kicker} ${opts.phrase}`, "", hashesJoined(tiktokTags)].join(
-    "\n"
-  );
+  const tiktok = [`${kicker}. ${opts.phrase}`, "", hashesJoined(tiktokTags)].join("\n");
 
   const whatsapp = [
     kicker,
     "",
     opts.phrase,
     "",
-    "— Vivianne · seteveus.space",
+    "Vivianne · seteveus.space",
   ].join("\n");
 
   return { instagram, tiktok, whatsapp };

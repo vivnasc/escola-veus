@@ -17,7 +17,7 @@ import {
  *  3. Configuras data + hora + frase + tema
  *  4. Descarregas CSV com 2 linhas por dia (IG REEL + TikTok vídeo)
  *
- * WhatsApp Status fica de fora — usa a caption pré-formatada para publicar manual.
+ * WhatsApp Status fica de fora. Usa a caption pré-formatada para publicar manual.
  */
 
 type DiaSemana = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
@@ -218,8 +218,8 @@ export default function CarrosselMetricoolPage() {
           (1 por dia, ~60s) gerados pelo workflow render-carrossel-veus. Aqui escolhes
           qual MP4 publicar em cada dia da semana, defines data e frase, e descarregas
           o CSV. Cada dia produz 2 linhas: Instagram Reel + TikTok vídeo.{" "}
-          <strong className="text-escola-creme">WhatsApp Status</strong> fica fora —
-          usa a pré-visualização da caption para colares manualmente no telemóvel.
+          <strong className="text-escola-creme">WhatsApp Status</strong> fica fora.
+          Usa a pré-visualização da caption para colares manualmente no telemóvel.
         </p>
       </header>
 
@@ -454,7 +454,7 @@ function DiaCard({
               onChange={(e) => onVideoChange(e.target.value)}
               className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-escola-creme"
             >
-              <option value="">— escolhe um MP4 —</option>
+              <option value="">escolhe um MP4</option>
               {todosMp4.map((v) => (
                 <option key={v.url} value={v.url}>
                   {v.file} · {v.jobId.slice(0, 12)}…

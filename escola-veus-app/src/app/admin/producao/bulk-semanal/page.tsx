@@ -6,10 +6,10 @@ import { VcSabiaPreviewPanel } from "@/components/vc-sabia/PreviewPanel";
 import { HojeEmMimPreviewPanel } from "@/components/hoje-em-mim/PreviewPanel";
 
 /**
- * Bulk semanal — quatro sub-produções:
- *  - Loranne · Ancient Ground (geram ZIPs Metricool: CSV + media)
- *  - VC Sabia Que…? — post da manhã (conta pessoal), motion + frase
- *  - Hoje, em Mim — post da noite (conta pessoal), fecho do dia,
+ * Bulk semanal. Quatro sub-produções:
+ *  - Loranne e Ancient Ground (geram ZIPs Metricool: CSV + media)
+ *  - VC Sabia Que…?, post da manhã (conta pessoal), motion + frase
+ *  - Hoje, em Mim, post da noite (conta pessoal), fecho do dia,
  *    rotação editorial por dia da semana
  */
 

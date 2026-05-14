@@ -9,7 +9,7 @@
  *  - Instagram (REEL · 1 vídeo)
  *  - TikTok (vídeo)
  *
- * WhatsApp Status fica de fora — manual.
+ * WhatsApp Status fica de fora, é manual.
  */
 
 import { CSV_HEADER, csvEscape } from "@/lib/weekly-social/metricool-csv";
@@ -19,7 +19,7 @@ export type CarouselPost = {
   id: string;
   /** Data ISO (YYYY-MM-DD) em fuso CAT. */
   date: string;
-  /** Hora local "HH:MM" — Metricool converte para o fuso da conta. */
+  /** Hora local "HH:MM". Metricool converte para o fuso da conta. */
   time: string;
   /** URL pública do MP4 (1080×1920). */
   videoUrl: string;
@@ -121,8 +121,8 @@ export function buildCarouselCaption(opts: {
     return [
       opts.texto,
       "",
-      "—",
-      "Vivianne dos Santos · seteveus.space",
+      "Vivianne dos Santos",
+      "seteveus.space",
       opts.cta ?? "",
       "",
       ".",
@@ -140,5 +140,5 @@ export function buildCarouselCaption(opts: {
   }
 
   // whatsapp
-  return [opts.texto, "", "— Vivianne · seteveus.space"].join("\n");
+  return [opts.texto, "", "Vivianne · seteveus.space"].join("\n");
 }
