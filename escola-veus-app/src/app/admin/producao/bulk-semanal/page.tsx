@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import WeeklyBulkPanel from "@/components/admin/WeeklyBulkPanel";
 
 /**
@@ -22,14 +23,23 @@ export default function BulkSemanalPage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="font-serif text-2xl font-semibold text-escola-creme">
-          Bulk semanal · Metricool
-        </h2>
-        <p className="mt-1 text-sm text-escola-creme-50">
-          Gera todos os shorts da semana de uma vez, por marca. CSV pronto
-          para drag-drop em Planning &gt; Calendar &gt; Import CSV.
-        </p>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h2 className="font-serif text-2xl font-semibold text-escola-creme">
+            Bulk semanal · Metricool
+          </h2>
+          <p className="mt-1 text-sm text-escola-creme-50">
+            Gera todos os shorts da semana de uma vez, por marca. CSV pronto
+            para drag-drop em Planning &gt; Calendar &gt; Import CSV.
+          </p>
+        </div>
+        <Link
+          href="/admin/producao/vc-sabia/preview"
+          className="inline-flex items-center gap-2 rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-2 font-serif text-sm italic text-escola-dourado transition-colors hover:bg-escola-dourado/20"
+        >
+          VC Sabia Que…?
+          <span aria-hidden>→</span>
+        </Link>
       </div>
 
       <nav className="mb-6 flex gap-1 border-b border-escola-border">
