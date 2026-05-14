@@ -1,16 +1,11 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import seed from "@/data/vc-sabia-frases.seed.json";
 import { phraseToCaptions } from "@/lib/vc-sabia/captions";
-import { MOOD_LABELS } from "@/lib/vc-sabia/audio";
-import {
-  WEEKDAY_LABELS,
-  type Weekday,
-  type WeekdayAudio,
-} from "@/lib/vc-sabia/weekly-audio-store";
+import { MOOD_LABELS, type MorningMood } from "@/lib/vc-sabia/audio";
 import { MotionLibrary } from "./MotionLibrary";
-import { WeeklyAudios } from "./WeeklyAudios";
+import { AudioLibrary } from "./AudioLibrary";
 
 type Variant = "A" | "B" | "C";
 
@@ -32,16 +27,26 @@ export function VcSabiaPreviewPanel() {
   const [phraseId, setPhraseId] = useState<string>(SAMPLE_PHRASE_ID);
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
   const [copied, setCopied] = useState<string | null>(null);
-  const [todayAudio, setTodayAudio] = useState<WeekdayAudio | null>(null);
-  const [todayWd, setTodayWd] = useState<Weekday | null>(null);
+  const [motionTags, setMotionTags] = useState<Record<string, MorningMood>>({});
+  const [activeByMood, setActiveByMood] = useState<Partial<Record<MorningMood, string>>>({});
 
-  const handleTodayAudioChange = useCallback(
-    (audio: WeekdayAudio | null, weekday: Weekday) => {
-      setTodayAudio(audio);
-      setTodayWd(weekday);
+  const handleMotionTags = useCallback((t: Record<string, MorningMood>) => {
+    setMotionTags(t);
+  }, []);
+  const handleActiveAudios = useCallback(
+    (a: Partial<Record<MorningMood, string>>) => {
+      setActiveByMood(a);
     },
     []
   );
+
+  /** Áudio derivado do motion seleccionado. */
+  const { motionMood, motionAudioUrl } = useMemo(() => {
+    const name = media.split("/").pop() ?? "";
+    const mood = motionTags[name];
+    const url = mood ? activeByMood[mood] ?? null : null;
+    return { motionMood: mood ?? null, motionAudioUrl: url };
+  }, [media, motionTags, activeByMood]);
 
   const phrase = seed.frases.find((f) => f.id === phraseId) ?? seed.frases[0];
   const dateLabel = formatDatePT(new Date());
@@ -70,7 +75,11 @@ export function VcSabiaPreviewPanel() {
         </p>
       </header>
 
-      <MotionLibrary selectedUrl={media} onSelect={setMedia} />
+      <MotionLibrary
+        selectedUrl={media}
+        onSelect={setMedia}
+        onTagsChange={handleMotionTags}
+      />
 
       <div className="flex flex-wrap gap-3">
         <div className="flex gap-1 rounded-md border border-escola-border p-1">
@@ -171,30 +180,32 @@ export function VcSabiaPreviewPanel() {
             <div className="mt-1 break-all">{media}</div>
           </div>
 
-          {todayWd && (
-            <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
-              <div className="text-escola-dourado">
-                Áudio de hoje ({WEEKDAY_LABELS[todayWd]})
-              </div>
-              {todayAudio ? (
-                <>
-                  <div className="mt-1 text-escola-creme">
-                    {MOOD_LABELS[todayAudio.mood]} · {todayAudio.durationSec}s
-                  </div>
-                  <audio
-                    src={todayAudio.url}
-                    controls
-                    loop
-                    className="mt-2 h-8 w-full"
-                  />
-                </>
-              ) : (
-                <div className="mt-1 text-escola-creme-50">
-                  Sem áudio. Gera em baixo na secção semanal.
+          <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
+            <div className="text-escola-dourado">Áudio do motion</div>
+            {motionMood && motionAudioUrl ? (
+              <>
+                <div className="mt-1 text-escola-creme">
+                  {MOOD_LABELS[motionMood]}
                 </div>
-              )}
-            </div>
-          )}
+                <audio
+                  key={motionAudioUrl}
+                  src={motionAudioUrl}
+                  controls
+                  loop
+                  className="mt-2 h-8 w-full"
+                />
+              </>
+            ) : motionMood ? (
+              <div className="mt-1 text-red-300">
+                Motion tagged como {MOOD_LABELS[motionMood]}, mas esse mood não
+                tem áudio activo. Escolhe um em baixo na Áudio library.
+              </div>
+            ) : (
+              <div className="mt-1 text-red-300">
+                Motion sem mood. Atribui um na thumbnail acima (dropdown).
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -230,7 +241,7 @@ export function VcSabiaPreviewPanel() {
         </div>
       </section>
 
-      <WeeklyAudios onTodayAudioChange={handleTodayAudioChange} />
+      <AudioLibrary onActiveChange={handleActiveAudios} />
     </div>
   );
 }
