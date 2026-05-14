@@ -53,29 +53,53 @@ export function MotionLibrary({ selectedUrl, onSelect }: Props) {
     }
     setUploading({ done: 0, total: list.length });
     setError(null);
+    console.log(`[MotionLibrary] A iniciar upload de ${list.length} ficheiros`);
 
     for (let i = 0; i < list.length; i++) {
       const file = list[i];
-      const form = new FormData();
-      form.append("file", file);
+      const sizeMB = (file.size / 1024 / 1024).toFixed(1);
+      console.log(`[MotionLibrary] ${i + 1}/${list.length}: ${file.name} (${sizeMB} MB)`);
+
       try {
-        const res = await fetch("/api/admin/vc-sabia/motions/upload", {
+        // Passo 1: pedir signed URL ao backend
+        const sigRes = await fetch("/api/admin/vc-sabia/motions/signed-url", {
           method: "POST",
-          body: form,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ filename: file.name }),
         });
-        const json = await res.json();
-        if (!res.ok) {
-          setError(`${file.name}: ${json.erro || `HTTP ${res.status}`}`);
+        const sigText = await sigRes.text();
+        if (!sigRes.ok) {
+          setError(`${file.name}: signed-url HTTP ${sigRes.status} — ${sigText.slice(0, 200)}`);
+          console.error("[MotionLibrary] signed-url falhou", sigRes.status, sigText);
           break;
         }
+        const sig = JSON.parse(sigText) as { signedUrl: string; path: string };
+        console.log(`[MotionLibrary]   signed URL OK → ${sig.path}`);
+
+        // Passo 2: upload directo para Supabase via PUT
+        const upRes = await fetch(sig.signedUrl, {
+          method: "PUT",
+          headers: { "Content-Type": file.type || "video/mp4" },
+          body: file,
+        });
+        if (!upRes.ok) {
+          const upText = await upRes.text();
+          setError(`${file.name}: upload HTTP ${upRes.status} — ${upText.slice(0, 200)}`);
+          console.error("[MotionLibrary] upload falhou", upRes.status, upText);
+          break;
+        }
+        console.log(`[MotionLibrary]   upload OK`);
       } catch (e) {
-        setError(`${file.name}: ${e instanceof Error ? e.message : String(e)}`);
+        const msg = e instanceof Error ? e.message : String(e);
+        setError(`${file.name}: ${msg}`);
+        console.error("[MotionLibrary] excepção", e);
         break;
       }
       setUploading({ done: i + 1, total: list.length });
     }
 
     setUploading(null);
+    console.log("[MotionLibrary] Upload concluído — a refrescar lista");
     await load();
   };
 
