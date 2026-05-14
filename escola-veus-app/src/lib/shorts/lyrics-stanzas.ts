@@ -31,6 +31,11 @@ function classifyTag(tagInner: string): StanzaKind {
  *  no ecrã nem nas legendas. Travessões "—" são tique de IA. */
 export function sanitizeLyricLine(line: string): string {
   return line
+    // <|anything|> — tokens IA tipo `<|nbw|>`, `<|endoftext|>` que aparecem
+    // nas letras vindas de Suno/Claude quando o output trunca ou contamina
+    // com tokens internos do modelo. Sem este pass entravam no overlay
+    // como "<|nbw|>" no centro do vídeo.
+    .replace(/<\|[^|]*\|>/g, "")
     // [Anything] — tags Suno inline
     .replace(/\[[^\]]*\]/g, "")
     // [Anything sem fechar — tag Suno multi-linha truncada na 1ª linha.

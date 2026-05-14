@@ -545,6 +545,10 @@ function wordsToAss(words, offsetSec, maxSec) {
  *  Última linha de defesa caso o plano contenha letras não-limpas. */
 function sanitizeLyricLine(line) {
   return String(line || "")
+    // <|anything|> — tokens IA (`<|nbw|>`, `<|endoftext|>`) que vazam de
+    // Suno/Claude. Última defesa no worker — se o plan ainda contiver,
+    // remove antes de Scribe align e antes do overlay.
+    .replace(/<\|[^|]*\|>/g, "")
     .replace(/\[[^\]]*\]/g, "")
     // Tag Suno truncada (multi-linha) — abre [ e não fecha na mesma linha
     .replace(/\[[^\]]*$/g, "")
@@ -590,6 +594,19 @@ async function ensureStanzaTimings(manifest) {
 
   console.log(`→ Scribe: a verificar cache para ${manifest.audioUrl.slice(-60)}`);
   let cached = await tryFetchScribeCache(manifest.audioUrl);
+  // Sanity-check: cache pode estar corrompido por uma run antiga em que Scribe
+  // devolveu lixo (vocal em língua difícil, áudio ruidoso, glitch na API).
+  // Sintoma observado: Cold Country (EN, house abafado) ficou com cache de
+  // 2 words, primeira "nbw", que depois era queimado via SRT. Estimamos o
+  // mínimo esperado em ~3 words por stanza (muito conservador — versos
+  // reais têm 10+). Se menor, descarta cache e re-chama Scribe.
+  const expectedMinWords = Math.max(10, (manifest.syncedLyrics?.length || 0) * 3);
+  if (cached && (cached.words?.length || 0) < expectedMinWords) {
+    console.log(
+      `  ⚠ cache podre (${cached.words?.length || 0} words < esperado ${expectedMinWords}) — descartar e re-chamar Scribe`,
+    );
+    cached = null;
+  }
   if (cached) {
     console.log(`  ✓ cache hit (${cached.words?.length || 0} words)`);
   } else {
@@ -750,24 +767,32 @@ async function main() {
       const offset = Number(manifest.audioStartFromSec) || 0;
       const maxSec = manifest.mode === "clip" ? Number(manifest.durationSec) || 30 : null;
       const useKaraoke = manifest.karaokeMode === true;
+      // Mínimo de legendas decentes para considerar "SRT/ASS útil". Sob este
+      // limiar o burn ia mostrar 1 palavra solta (caso Cold Country: cache
+      // Scribe deu 1 word "nbw" → SRT com 1 entry → vídeo com lixo queimado).
+      // Mantemos os verses originais como fallback AG nestes casos.
+      const MIN_USEFUL_LINES = 2;
       if (useKaraoke) {
         const ass = wordsToAss(words, offset, maxSec);
-        if (ass) {
+        const lineCount = ass ? (ass.match(/^Dialogue:/gm) || []).length : 0;
+        if (ass && lineCount >= MIN_USEFUL_LINES) {
           subtitlesPath = path.join(WORK_DIR, `${JOB_ID}.ass`);
           await writeFile(subtitlesPath, ass, "utf8");
           subtitlesIsAss = true;
-          const lineCount = (ass.match(/^Dialogue:/gm) || []).length;
           console.log(`→ ASS karaoke gerada: ${lineCount} linhas, offset=${offset.toFixed(1)}s${maxSec ? ` max=${maxSec}s` : ""} → ${subtitlesPath}`);
           manifest = { ...manifest, lyricsSync: false, verses: ["", ""] };
         } else {
-          console.log(`  ⚠ ASS vazia (Scribe não devolveu words) — sem legendas no clip`);
+          console.log(`  ⚠ ASS pobre (${lineCount} linhas) — mantém verses overlay como fallback AG`);
+          manifest = { ...manifest, lyricsSync: false };
         }
       } else {
         const srt = wordsToSrt(words, offset, maxSec);
-        if (srt) {
+        // wordsToSrt usa \n\n entre blocos; com 1 legenda só há 0 ocorrências
+        // → underestima. Conta entradas por número de cabeçalhos "N\n".
+        const lineCount = srt ? (srt.match(/^\d+\n/gm) || []).length : 0;
+        if (srt && lineCount >= MIN_USEFUL_LINES) {
           subtitlesPath = path.join(WORK_DIR, `${JOB_ID}.srt`);
           await writeFile(subtitlesPath, srt, "utf8");
-          const lineCount = (srt.match(/\n\n/g) || []).length;
           console.log(`→ SRT gerada: ${lineCount} legendas, offset=${offset.toFixed(1)}s${maxSec ? ` max=${maxSec}s` : ""} → ${subtitlesPath}`);
           // Desliga overlay do Remotion + esvazia verses (que são o fallback
           // quando isSync=false). VerseOverlay returna null com text vazio,
@@ -775,7 +800,11 @@ async function main() {
           // o FFmpeg burn adiciona as legendas SRT por cima.
           manifest = { ...manifest, lyricsSync: false, verses: ["", ""] };
         } else {
-          console.log(`  ⚠ SRT vazia (Scribe não devolveu words usáveis) — sem legendas no clip`);
+          console.log(`  ⚠ SRT pobre (${lineCount} legendas) — mantém verses overlay como fallback AG`);
+          // CRÍTICO: NÃO esvazia verses. Desliga sync mas mantém verses
+          // sanitizados como overlay AG-style. Melhor 2 versos estáticos
+          // que 1 palavra solta queimada no centro.
+          manifest = { ...manifest, lyricsSync: false };
         }
       }
     } catch (e) {

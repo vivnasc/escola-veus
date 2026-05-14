@@ -7,6 +7,7 @@
  */
 
 import { getTrackLyrics, parseTrackNumber } from "@/lib/loranne";
+import { sanitizeLyricLine } from "@/lib/shorts/lyrics-stanzas";
 
 const EMOTION_WORDS = [
   "coracao", "coração", "alma", "amor", "sagrado", "fogo", "luz", "voz",
@@ -262,7 +263,12 @@ export function runSuggest(input: SuggestInput): SuggestResult {
     .map((l) => l.trim())
     .filter((l) => l.length > 0 && !/^\[.*\]$/.test(l));
   const candidates = pickCandidates(lyrics, 6);
-  const [v1, v2] = pickTwoVerses(candidates, allLines);
+  const [rawV1, rawV2] = pickTwoVerses(candidates, allLines);
+  // Sanitiza verses antes de devolver — pickTwoVerses opera em allLines
+  // não-sanitizado (tags Suno, tokens IA `<|nbw|>`, parens, travessões).
+  // Sem isto, contaminação escapa por aqui directo para o overlay Remotion.
+  const v1 = sanitizeLyricLine(rawV1);
+  const v2 = sanitizeLyricLine(rawV2);
 
   const seed = `${albumSlug || ""}/${finalTrackNumber || ""}`;
   return {
