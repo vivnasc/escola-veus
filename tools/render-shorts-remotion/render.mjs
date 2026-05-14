@@ -207,10 +207,77 @@ async function callForcedAlignment(audioUrl, text) {
     throw new Error(`Forced Alignment ${res.status}: ${errTxt.slice(0, 200)}`);
   }
   const data = await res.json();
+  // Normaliza para o formato do Scribe (type+text+start+end). FA devolve
+  // `{text, start, end, loss}` por palavra; sem `type` o `speakingWords` e
+  // o `wordsToSrt` filtravam tudo fora. Adicionamos `type: "word"`.
+  const words = Array.isArray(data.words)
+    ? data.words
+        .filter((w) => w && typeof w.start === "number" && typeof w.end === "number" && w.text)
+        .map((w) => ({ ...w, type: "word" }))
+    : [];
   return {
-    words: Array.isArray(data.words) ? data.words : [],
+    words,
     loss: typeof data.loss === "number" ? data.loss : null,
   };
+}
+
+/** Carrega palavras alinhadas para o áudio do manifest. Estratégia:
+ *   1. Se manifest tem `syncedLyrics`, prefere Forced Alignment (FA) — junta
+ *      todas as stanzas em texto, alinhamento determinístico vs. transcrição
+ *      adivinhada. Imune a falhas Scribe em vocal abafado/EN (caso Cold
+ *      Country: Scribe devolvia 2 words "nbw" para áudio house).
+ *   2. Cache FA por hash(audioUrl + text) — se a letra muda, recachea.
+ *   3. Se FA falhar (rede, API, áudio inválido), cai para Scribe com sanity
+ *      check (descarta cache podre < expectedMinWords).
+ *  Returns: `{ words, source: "fa" | "scribe" }` ou `null` se ambos falharem. */
+async function getAlignedWords(manifest) {
+  const expectedMinWords = Math.max(10, (manifest.syncedLyrics?.length || 0) * 3);
+  const text = (manifest.syncedLyrics || []).join("\n\n").trim();
+
+  if (text) {
+    try {
+      console.log(`→ Forced Alignment: a verificar cache para ${manifest.audioUrl.slice(-60)} (${text.length} chars)`);
+      let cached = await tryFetchForcedAlignCache(manifest.audioUrl, text);
+      if (cached && (cached.words?.length || 0) < expectedMinWords) {
+        console.log(`  ⚠ cache FA podre (${cached.words?.length || 0} words < ${expectedMinWords}) — re-chamar FA`);
+        cached = null;
+      }
+      if (cached) {
+        console.log(`  ✓ cache FA hit (${cached.words?.length || 0} words${cached.loss != null ? `, loss=${cached.loss.toFixed(3)}` : ""})`);
+      } else {
+        console.log(`  · cache miss — a chamar Forced Alignment (~$0.001)`);
+        const { words, loss } = await callForcedAlignment(manifest.audioUrl, text);
+        if ((words?.length || 0) < expectedMinWords) {
+          throw new Error(`FA devolveu ${words?.length || 0} words < ${expectedMinWords}`);
+        }
+        cached = { words, loss, savedAt: new Date().toISOString() };
+        await writeForcedAlignCache(manifest.audioUrl, text, cached);
+        console.log(`  ✓ FA ${words.length} words${loss != null ? ` (loss=${loss.toFixed(3)})` : ""}, gravado em cache`);
+      }
+      return { words: cached.words, source: "fa" };
+    } catch (e) {
+      console.log(`  ⚠ FA falhou (${e.message?.slice(0, 200) || e}) — fallback para Scribe`);
+    }
+  }
+
+  console.log(`→ Scribe: a verificar cache para ${manifest.audioUrl.slice(-60)}`);
+  let cached = await tryFetchScribeCache(manifest.audioUrl);
+  // Sanity-check (ver Cold Country bug, commit cc7f33b): cache pode estar
+  // corrompido por uma run antiga em que Scribe devolveu lixo.
+  if (cached && (cached.words?.length || 0) < expectedMinWords) {
+    console.log(`  ⚠ cache Scribe podre (${cached.words?.length || 0} words < ${expectedMinWords}) — re-chamar Scribe`);
+    cached = null;
+  }
+  if (cached) {
+    console.log(`  ✓ cache Scribe hit (${cached.words?.length || 0} words)`);
+  } else {
+    console.log(`  · cache miss — a chamar Scribe (~$0.03)`);
+    const words = await callScribe(manifest.audioUrl, manifest.lang || "PT");
+    cached = { words, savedAt: new Date().toISOString() };
+    await writeScribeCache(manifest.audioUrl, cached);
+    console.log(`  ✓ Scribe ${words.length} words, gravado em cache`);
+  }
+  return { words: cached.words, source: "scribe" };
 }
 
 /** ffprobe à URL do áudio (não requer download local — ffprobe lê via http).
@@ -592,37 +659,17 @@ async function ensureStanzaTimings(manifest) {
     return manifest;
   }
 
-  console.log(`→ Scribe: a verificar cache para ${manifest.audioUrl.slice(-60)}`);
-  let cached = await tryFetchScribeCache(manifest.audioUrl);
-  // Sanity-check: cache pode estar corrompido por uma run antiga em que Scribe
-  // devolveu lixo (vocal em língua difícil, áudio ruidoso, glitch na API).
-  // Sintoma observado: Cold Country (EN, house abafado) ficou com cache de
-  // 2 words, primeira "nbw", que depois era queimado via SRT. Estimamos o
-  // mínimo esperado em ~3 words por stanza (muito conservador — versos
-  // reais têm 10+). Se menor, descarta cache e re-chama Scribe.
-  const expectedMinWords = Math.max(10, (manifest.syncedLyrics?.length || 0) * 3);
-  if (cached && (cached.words?.length || 0) < expectedMinWords) {
-    console.log(
-      `  ⚠ cache podre (${cached.words?.length || 0} words < esperado ${expectedMinWords}) — descartar e re-chamar Scribe`,
-    );
-    cached = null;
-  }
-  if (cached) {
-    console.log(`  ✓ cache hit (${cached.words?.length || 0} words)`);
-  } else {
-    console.log(`  · cache miss — a chamar Scribe (~$0.03)`);
-    const words = await callScribe(manifest.audioUrl, manifest.lang || "PT");
-    cached = { words, savedAt: new Date().toISOString() };
-    await writeScribeCache(manifest.audioUrl, cached);
-    console.log(`  ✓ Scribe ${words.length} words, gravado em cache`);
-  }
+  const aligned = await getAlignedWords(manifest);
+  // Preserva words+source no manifest para o bloco SRT reusar (em vez de re-ler
+  // do cache — que duplica a lógica FA/Scribe e arrisca divergir).
+  manifest = { ...manifest, _alignedWords: aligned.words, _alignedSource: aligned.source };
 
-  const speaking = speakingWords(cached.words);
+  const speaking = speakingWords(aligned.words);
   const lastEnd = speaking.length > 0 ? speaking[speaking.length - 1].end || 0 : 0;
   const audioDurationSec = lastEnd > 0 ? lastEnd + 2 : null;
   if (!audioDurationSec) return manifest;
 
-  const stanzaTimings = alignStanzas(manifest.syncedLyrics, cached.words, audioDurationSec);
+  const stanzaTimings = alignStanzas(manifest.syncedLyrics, aligned.words, audioDurationSec);
   console.log(`  → stanzaTimings: ${stanzaTimings.length} stanzas alinhadas`);
 
   // Para mode=full, ajusta durationSec à duração real do áudio.
@@ -762,8 +809,14 @@ async function main() {
   let subtitlesIsAss = false;
   if (manifest.lyricsSync && manifest.audioUrl) {
     try {
-      const scribeCached = await tryFetchScribeCache(manifest.audioUrl);
-      const words = scribeCached?.words || [];
+      // Reusar os aligned words já carregados em `ensureStanzaTimings`
+      // (FA ou Scribe). Se não existirem (manifest sem syncedLyrics passou
+      // pelo branch early-return), tenta cache Scribe directamente.
+      let words = manifest._alignedWords;
+      if (!words) {
+        const scribeCached = await tryFetchScribeCache(manifest.audioUrl);
+        words = scribeCached?.words || [];
+      }
       const offset = Number(manifest.audioStartFromSec) || 0;
       const maxSec = manifest.mode === "clip" ? Number(manifest.durationSec) || 30 : null;
       const useKaraoke = manifest.karaokeMode === true;
@@ -813,7 +866,11 @@ async function main() {
   }
 
   const propsPath = path.join(WORK_DIR, `${JOB_ID}-props.json`);
-  await writeFile(propsPath, JSON.stringify(manifest, null, 2));
+  // Strip campos internos antes de serializar para Remotion props — `_alignedWords`
+  // pode ser MB de palavras com timestamps que a composição não usa.
+  const { _alignedWords, _alignedSource, ...serializableManifest } = manifest;
+  void _alignedWords; void _alignedSource;
+  await writeFile(propsPath, JSON.stringify(serializableManifest, null, 2));
 
   await updateProgress("rendering", 10, { title: manifest.title || manifest.trackLabel || JOB_ID });
 
