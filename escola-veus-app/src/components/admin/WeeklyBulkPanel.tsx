@@ -58,6 +58,7 @@ type WeeklyPost = {
   label?: string; temas?: string[];
   mood?: LoranneMood;
   verses: string[];
+  syncedLyrics?: string[];
   captions: { instagram: string; tiktok: string; youtube: { title: string; description: string } };
   storyChapters?: string[];
   storyTitle?: string;
@@ -472,9 +473,10 @@ function PostCard({
   const [rerendering, setRerendering] = useState(false);
   const hasStory = (post.storyChapters?.length || 0) > 0;
 
-  const doRerender = async () => {
+  const doRerender = async (opts: { karaoke?: boolean } = {}) => {
     if (rerendering) return;
-    if (!confirm(`Re-renderizar ${activeMode === "full" ? "Full" : "Clip 30s"} de "${title}"? O actual será substituído.`)) return;
+    const label = opts.karaoke ? "Karaoke" : (activeMode === "full" ? "Full" : "Clip 30s");
+    if (!confirm(`Re-renderizar ${label} de "${title}"? O actual será substituído.`)) return;
     setRerendering(true);
     try {
       const r = await fetch("/api/admin/weekly/rerender", {
@@ -485,6 +487,7 @@ function PostCard({
           brand: post.brandSlug,
           postId: post.id,
           mode: activeMode,
+          ...(opts.karaoke ? { karaokeOverride: true } : {}),
         }),
       });
       const j = await r.json();
@@ -612,13 +615,23 @@ function PostCard({
             </>
           )}
           <button
-            onClick={doRerender}
+            onClick={() => doRerender()}
             disabled={rerendering}
             className="ml-auto rounded border border-escola-coral/40 bg-escola-coral/10 px-2 py-0.5 text-[10px] text-escola-coral hover:bg-escola-coral/20 disabled:opacity-50"
             title={`Re-renderiza apenas o ${activeMode === "full" ? "Full" : "Clip"} deste post`}
           >
             {rerendering ? "…" : `↻ re-render ${activeMode}`}
           </button>
+          {post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0 && (
+            <button
+              onClick={() => doRerender({ karaoke: true })}
+              disabled={rerendering}
+              className="rounded border border-escola-dourado/40 bg-escola-dourado/10 px-2 py-0.5 text-[10px] text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
+              title="Re-renderiza com estilo karaoke (.ass com fill por palavra). Override só para este render, não persiste no post."
+            >
+              {rerendering ? "…" : "🎤 karaoke"}
+            </button>
+          )}
         </div>
         {/* YouTube title — sempre visível, é o asset crítico SEO. */}
         <div className="mt-2 rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
