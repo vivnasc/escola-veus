@@ -26,6 +26,9 @@ type Body = {
   brand?: BrandSlug;
   postId?: string;
   mode?: RenderMode;
+  /** Override karaoke flag para este render apenas. Não persiste no post.
+   *  Útil para testar estilo karaoke vs SRT sem alterar plan. */
+  karaokeOverride?: boolean;
 };
 
 const MODE_DURATIONS: Record<RenderMode, number> = {
@@ -33,7 +36,12 @@ const MODE_DURATIONS: Record<RenderMode, number> = {
   full: 240,
 };
 
-async function dispatchPostMode(post: WeeklyPost, mode: RenderMode): Promise<{ jobId: string }> {
+async function dispatchPostMode(
+  post: WeeklyPost,
+  mode: RenderMode,
+  opts: { karaokeOverride?: boolean } = {},
+): Promise<{ jobId: string }> {
+  const karaokeEffective = opts.karaokeOverride ?? post.karaokeMode ?? false;
   const title = post.brandSlug === "loranne"
     ? `${post.trackTitle} · ${post.albumTitle}`
     : (post.label || post.id);
@@ -59,7 +67,7 @@ async function dispatchPostMode(post: WeeklyPost, mode: RenderMode): Promise<{ j
     audioDurationSec: post.audioDurationSec,
     lang: post.brandSlug === "loranne" ? post.lang : undefined,
     lyricsSync: post.brandSlug === "loranne" && (post.syncedLyrics?.length || 0) > 0,
-    karaokeMode: post.brandSlug === "loranne" && post.karaokeMode === true && (post.syncedLyrics?.length || 0) > 0,
+    karaokeMode: post.brandSlug === "loranne" && karaokeEffective && (post.syncedLyrics?.length || 0) > 0,
     chorusStanzaIdx: post.brandSlug === "loranne" && mode === "clip"
       ? post.chorusStanzaIdx ?? null : null,
     storyChapters: isAgFull ? post.storyChapters : undefined,
@@ -115,7 +123,7 @@ export async function POST(req: NextRequest) {
     };
 
     try {
-      const { jobId } = await dispatchPostMode(post, mode);
+      const { jobId } = await dispatchPostMode(post, mode, { karaokeOverride: body.karaokeOverride });
       post.renderJobs[mode] = {
         jobId,
         videoUrl: null,
