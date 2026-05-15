@@ -1,8 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
-import { toPng } from "html-to-image";
-import JSZip from "jszip";
+import { useEffect, useMemo, useState } from "react";
 import seed from "@/data/hoje-em-mim-frases.seed.json";
 import { MJ_VIDEO_PROMPTS } from "@/data/hoje-em-mim-mj-prompts";
 import {
@@ -53,18 +51,24 @@ export function HojeEmMimPreviewPanel() {
   const frasesDoDia = useMemo(() => FRASES.filter((f) => f.dia === dia), [dia]);
   const [phraseId, setPhraseId] = useState<string>(frasesDoDia[0]?.id ?? FRASES[0].id);
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
+  const [audioUrlSelected, setAudioUrlSelected] = useState<string>("");
   const [copied, setCopied] = useState<string | null>(null);
 
-  // Refs e estado dos downloads PNG (WhatsApp Status etc).
-  const frameRef = useRef<HTMLDivElement | null>(null);
-  const hiddenFrameRef = useRef<HTMLDivElement | null>(null);
-  const [downloading, setDownloading] = useState<"current" | "all" | null>(null);
-  const [zipProgress, setZipProgress] = useState<{ done: number; total: number }>({
+  // Estado dos renders MP4 server-side (ffmpeg em Vercel).
+  type RenderItem = {
+    url: string;
+    name: string;
+    sizeBytes: number;
+    createdAt: string | null;
+  };
+  type RendersByDia = Record<DiaSemana, RenderItem[]>;
+  const [rendering, setRendering] = useState<DiaSemana | "week" | null>(null);
+  const [renderProgress, setRenderProgress] = useState<{ done: number; total: number }>({
     done: 0,
     total: 0,
   });
-  const [downloadError, setDownloadError] = useState<string | null>(null);
-  const [hiddenFraseSnap, setHiddenFraseSnap] = useState<Frase | null>(null);
+  const [renderError, setRenderError] = useState<string | null>(null);
+  const [rendersByDia, setRendersByDia] = useState<RendersByDia | null>(null);
 
   const phrase =
     frasesDoDia.find((f) => f.id === phraseId) ?? frasesDoDia[0] ?? FRASES[0];
@@ -85,92 +89,69 @@ export function HojeEmMimPreviewPanel() {
     }
   };
 
-  const captureNodeToBlob = async (
-    node: HTMLElement,
-    file: string
-  ): Promise<{ blob: Blob; file: string }> => {
-    const dataUrl = await toPng(node, {
-      pixelRatio: 1,
-      width: 1080,
-      height: 1920,
-      cacheBust: true,
+  const loadRenders = async () => {
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/renders");
+      const json = await res.json();
+      if (res.ok) setRendersByDia(json.rendersByDia as RendersByDia);
+    } catch {
+      /* silencioso, mostra-se "0 renders" */
+    }
+  };
+
+  useEffect(() => {
+    loadRenders();
+  }, []);
+
+  const renderOne = async (targetDia: DiaSemana, fraseId: string, fraseTexto: string) => {
+    const res = await fetch("/api/admin/hoje-em-mim/render", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        dia: targetDia,
+        fraseId,
+        fraseTexto,
+        motionUrl: media,
+        audioUrl: audioUrlSelected || undefined,
+        durationSec: 15,
+      }),
     });
-    const r = await fetch(dataUrl);
-    return { blob: await r.blob(), file };
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+    return json as { videoUrl: string; durationSec: number; sizeBytes: number };
   };
 
-  const isoToday = () => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  };
-
-  const downloadCurrentPng = async () => {
-    setDownloadError(null);
-    if (!frameRef.current) {
-      setDownloadError("Frame ainda não pronto. Aguarda 1s e tenta de novo.");
-      return;
-    }
-    setDownloading("current");
+  const gerarMp4DoDia = async () => {
+    setRenderError(null);
+    setRendering(phrase.dia);
     try {
-      const child = frameRef.current.firstElementChild as HTMLElement | null;
-      if (!child) throw new Error("Frame interno em falta.");
-      const { blob } = await captureNodeToBlob(
-        child,
-        `hoje-em-mim-${isoToday()}-${phrase.dia}.png`
-      );
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `hoje-em-mim-${isoToday()}-${phrase.dia}.png`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      await renderOne(phrase.dia, phrase.id, phrase.texto);
+      await loadRenders();
     } catch (e) {
-      setDownloadError(e instanceof Error ? e.message : String(e));
+      setRenderError(e instanceof Error ? e.message : String(e));
     } finally {
-      setDownloading(null);
+      setRendering(null);
     }
   };
 
-  const downloadAllSevenPng = async () => {
-    setDownloadError(null);
-    setDownloading("all");
-    const zip = new JSZip();
+  const gerarMp4SemanaToda = async () => {
+    setRenderError(null);
+    setRendering("week");
+    const dias: DiaSemana[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+    setRenderProgress({ done: 0, total: dias.length });
     try {
-      const dias: DiaSemana[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
-      const total = dias.length;
-      setZipProgress({ done: 0, total });
-
       for (let i = 0; i < dias.length; i++) {
         const d = dias[i];
-        const frase = FRASES.find((f) => f.dia === d) ?? FRASES[0];
-        setHiddenFraseSnap(frase);
-        // dá tempo ao DOM para re-renderizar com a nova frase
-        await new Promise((r) => setTimeout(r, 250));
-        if (!hiddenFrameRef.current) throw new Error("Frame oculto não montado.");
-        const child = hiddenFrameRef.current.firstElementChild as HTMLElement | null;
-        if (!child) throw new Error("Frame oculto interno em falta.");
-        const { blob } = await captureNodeToBlob(child, "");
-        zip.file(`${DIA_LONGO_PT[d]}-${frase.id}.png`, blob);
-        setZipProgress({ done: i + 1, total });
+        const frase = FRASES.find((f) => f.dia === d);
+        if (!frase) continue;
+        await renderOne(d, frase.id, frase.texto);
+        setRenderProgress({ done: i + 1, total: dias.length });
       }
-
-      setHiddenFraseSnap(null);
-      const out = await zip.generateAsync({ type: "blob" });
-      const url = URL.createObjectURL(out);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `hoje-em-mim-semana-${isoToday()}.zip`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      await loadRenders();
     } catch (e) {
-      setDownloadError(e instanceof Error ? e.message : String(e));
-      setHiddenFraseSnap(null);
+      setRenderError(e instanceof Error ? e.message : String(e));
     } finally {
-      setDownloading(null);
+      setRendering(null);
     }
   };
 
@@ -285,16 +266,14 @@ export function HojeEmMimPreviewPanel() {
       </div>
 
       <div className="flex flex-wrap gap-8">
-        <div ref={frameRef}>
-          <Frame
-            phrase={phrase.texto}
-            kicker={kicker}
-            glifo={glifo}
-            diaLongo={diaLongo}
-            media={media}
-            isVideo={isVideo}
-          />
-        </div>
+        <Frame
+          phrase={phrase.texto}
+          kicker={kicker}
+          glifo={glifo}
+          diaLongo={diaLongo}
+          media={media}
+          isVideo={isVideo}
+        />
 
         <div className="space-y-3 text-xs text-escola-creme-50">
           <div>
@@ -316,15 +295,27 @@ export function HojeEmMimPreviewPanel() {
             <div className="mt-1">{phrase.id}</div>
           </div>
           <div>
-            <div className="text-escola-creme">Media</div>
+            <div className="text-escola-creme">Motion</div>
             <div className="mt-1 break-all">{media}</div>
+          </div>
+          <div>
+            <div className="text-escola-creme">Áudio</div>
+            <input
+              value={audioUrlSelected}
+              onChange={(e) => setAudioUrlSelected(e.target.value)}
+              placeholder="URL do MP3 (vazio = sem som)"
+              className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+            />
+            <div className="mt-1 text-[10px]">
+              Gera um áudio na secção em baixo e cola a URL aqui, ou deixa vazio.
+            </div>
           </div>
 
           <div className="space-y-2 pt-3 border-t border-escola-border">
-            <div className="text-escola-creme">Descarregar</div>
+            <div className="text-escola-creme">Render MP4 (ffmpeg)</div>
             <button
-              onClick={downloadCurrentPng}
-              disabled={downloading === "current"}
+              onClick={gerarMp4DoDia}
+              disabled={rendering !== null}
               className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
               style={{
                 borderColor: COBRE,
@@ -332,13 +323,13 @@ export function HojeEmMimPreviewPanel() {
                 background: "rgba(194, 143, 96, 0.1)",
               }}
             >
-              {downloading === "current"
-                ? "a gerar PNG…"
-                : "PNG deste dia para WhatsApp Status"}
+              {rendering === phrase.dia
+                ? "a renderizar MP4…"
+                : "Gerar MP4 deste dia"}
             </button>
             <button
-              onClick={downloadAllSevenPng}
-              disabled={downloading === "all"}
+              onClick={gerarMp4SemanaToda}
+              disabled={rendering !== null}
               className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
               style={{
                 borderColor: COBRE_FRACO,
@@ -346,18 +337,20 @@ export function HojeEmMimPreviewPanel() {
                 background: "rgba(194, 143, 96, 0.04)",
               }}
             >
-              {downloading === "all"
-                ? `a gerar ${zipProgress.done}/${zipProgress.total}…`
-                : "ZIP com os 7 dias da semana"}
+              {rendering === "week"
+                ? `a renderizar ${renderProgress.done}/${renderProgress.total}…`
+                : "Gerar MP4 dos 7 dias"}
             </button>
-            {downloadError && (
+            {renderError && (
               <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
-                {downloadError}
+                {renderError}
               </div>
             )}
             <div className="text-[10px] text-escola-creme-50">
-              PNG 1080×1920 com a frase, glifo e arco da janela de lua queimados
-              sobre o motion atual. Posta direto no WhatsApp Status.
+              MP4 1080×1920, 15s, motion em loop com frase, glifo, arco e
+              seteveus.space queimados, mais áudio se escolhido. Guardado em
+              Supabase, fica acessível e descarregável de qualquer device.
+              Render demora 10 a 30s por dia.
             </div>
           </div>
         </div>
@@ -394,36 +387,97 @@ export function HojeEmMimPreviewPanel() {
         </div>
       </section>
 
+      <RendersSection rendersByDia={rendersByDia} onReload={loadRenders} />
+
       <AudioGeneratorSection />
 
       <MjPromptsSection copied={copied} onCopy={copy} />
-
-      {/* Frame oculto, off-screen, usado para capturar PNG dos 7 dias da semana.
-          Fica fora do viewport mas é renderizado pelo browser, o que permite a
-          html-to-image capturar. */}
-      <div
-        aria-hidden
-        style={{
-          position: "fixed",
-          left: -9999,
-          top: 0,
-          pointerEvents: "none",
-        }}
-      >
-        <div ref={hiddenFrameRef}>
-          {hiddenFraseSnap && (
-            <Frame
-              phrase={hiddenFraseSnap.texto}
-              kicker={KICKER_POR_DIA[hiddenFraseSnap.dia]}
-              glifo={GLIFO_POR_DIA[hiddenFraseSnap.dia]}
-              diaLongo={DIA_LONGO_PT[hiddenFraseSnap.dia]}
-              media={media}
-              isVideo={isVideo}
-            />
-          )}
-        </div>
-      </div>
     </div>
+  );
+}
+
+function RendersSection({
+  rendersByDia,
+  onReload,
+}: {
+  rendersByDia: Record<DiaSemana, Array<{ url: string; name: string; sizeBytes: number; createdAt: string | null }>> | null;
+  onReload: () => void;
+}) {
+  const dias: DiaSemana[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+  const total = rendersByDia
+    ? dias.reduce((acc, d) => acc + (rendersByDia[d]?.length ?? 0), 0)
+    : 0;
+
+  return (
+    <section className="space-y-3">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 className="font-serif text-lg" style={{ color: COBRE }}>
+          MP4 já renderizados. {total} no Supabase
+        </h2>
+        <button
+          onClick={onReload}
+          className="rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme-50 hover:text-escola-creme"
+        >
+          Recarregar
+        </button>
+      </div>
+      <p className="text-xs text-escola-creme-50">
+        Cada render fica guardado em course-assets/hoje-em-mim-renders/{`{dia}`}/.
+        Clica para abrir, para descarregar usa o link com a seta.
+      </p>
+
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+        {dias.map((d) => {
+          const list = rendersByDia?.[d] ?? [];
+          return (
+            <div
+              key={d}
+              className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2"
+            >
+              <div className="text-xs" style={{ color: COBRE }}>
+                {DIA_LONGO_PT[d]} ({list.length})
+              </div>
+              {list.length === 0 ? (
+                <div className="text-[10px] text-escola-creme-50">sem renders ainda.</div>
+              ) : (
+                <div className="space-y-2">
+                  {list.slice(0, 3).map((r) => (
+                    <div key={r.url} className="rounded border border-escola-border bg-escola-bg p-2 space-y-1">
+                      <video
+                        src={r.url}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="aspect-[9/16] w-full bg-black object-cover rounded"
+                      />
+                      <div className="flex items-center justify-between gap-2 text-[10px]">
+                        <span className="truncate text-escola-creme-50" title={r.name}>
+                          {(r.sizeBytes / 1024 / 1024).toFixed(1)} MB
+                        </span>
+                        <a
+                          href={r.url}
+                          download
+                          target="_blank"
+                          rel="noreferrer"
+                          className="rounded border border-escola-border px-1.5 py-0.5 text-escola-dourado hover:text-escola-creme"
+                        >
+                          Descarregar ↓
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                  {list.length > 3 && (
+                    <div className="text-[10px] text-escola-creme-50">
+                      mais {list.length - 3} render(s) anteriores no Supabase.
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
