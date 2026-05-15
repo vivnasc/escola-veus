@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
+import { phraseToCaptions } from "@/lib/vc-sabia/captions";
 
 const MESES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -95,6 +96,41 @@ export function BulkMonthPanel() {
   const [activeAudios, setActiveAudios] = useState<Partial<Record<MorningMood, string>>>({});
   /** Tags actuais dos motions, carregadas com o plano. */
   const [motionTags, setMotionTags] = useState<Record<string, MorningMood>>({});
+  /** Estado de copia da legenda (feedback visual: dia -> plataforma). */
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  /** Lista de batches anteriores carregada do Supabase. */
+  const [pastBatches, setPastBatches] = useState<Array<{
+    batchId: string;
+    year?: number;
+    month?: number;
+    startDay?: number;
+    endDay?: number;
+    createdAt?: string;
+    jobs?: number;
+  }>>([]);
+
+  const refreshPastBatches = useCallback(async () => {
+    try {
+      const r = await fetch("/api/admin/vc-sabia/bulk-list", { cache: "no-store" });
+      if (!r.ok) return;
+      const j = await r.json();
+      setPastBatches(j.batches || []);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  useEffect(() => {
+    if (phase === "config") refreshPastBatches();
+  }, [phase, refreshPastBatches]);
+
+  const loadPastBatch = (id: string) => {
+    setBatchId(id);
+    setStatus(null);
+    setZipUrl(null);
+    setError(null);
+    setPhase("submitted");
+  };
 
   const preparePlan = async () => {
     setPreparing(true);
@@ -307,6 +343,26 @@ export function BulkMonthPanel() {
     setError(null);
   };
 
+  const copyToClipboard = async (key: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedKey(key);
+      setTimeout(() => setCopiedKey((k) => (k === key ? null : k)), 1500);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const downloadTxt = (filename: string, content: string) => {
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const allDone =
     status && status.summary.done === status.summary.total && status.summary.total > 0;
 
@@ -424,6 +480,58 @@ export function BulkMonthPanel() {
               ? "A preparar..."
               : `📋 Preparar plano (${endDay - startDay + 1} dias)`}
           </button>
+        </div>
+      )}
+
+      {phase === "config" && pastBatches.length > 0 && (
+        <div className="space-y-2 rounded border border-escola-border/40 bg-escola-card/40 p-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-medium text-escola-creme">
+              Bulks anteriores ({pastBatches.length})
+            </h3>
+            <button
+              onClick={refreshPastBatches}
+              className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              ↻ refresh
+            </button>
+          </div>
+          <div className="space-y-1">
+            {pastBatches.map((b) => (
+              <button
+                key={b.batchId}
+                onClick={() => loadPastBatch(b.batchId)}
+                className="block w-full rounded border border-escola-border bg-escola-card/60 px-2 py-1.5 text-left text-[11px] text-escola-creme-50 hover:bg-escola-card hover:text-escola-creme"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-escola-creme">
+                    {b.year && b.month
+                      ? `${b.year}-${String(b.month).padStart(2, "0")}`
+                      : "?"}
+                    {b.startDay && b.endDay
+                      ? ` · dias ${b.startDay}-${b.endDay}`
+                      : ""}
+                    {b.jobs !== undefined ? ` · ${b.jobs} jobs` : ""}
+                  </span>
+                  {b.createdAt && (
+                    <span className="text-[9px] text-escola-creme-50">
+                      {new Date(b.createdAt).toLocaleString("pt-PT", {
+                        timeZone: "Africa/Maputo",
+                        year: "2-digit",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  )}
+                </div>
+                <div className="mt-0.5 truncate text-[9px] text-escola-creme-50">
+                  {b.batchId}
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -592,44 +700,96 @@ export function BulkMonthPanel() {
                   <th className="px-2 py-1 text-left">Frase</th>
                   <th className="px-2 py-1 text-left">Estado</th>
                   <th className="px-2 py-1 text-left">MP4</th>
+                  <th className="px-2 py-1 text-left">Legenda</th>
                 </tr>
               </thead>
               <tbody>
-                {status.jobs.map((j) => (
-                  <tr key={j.jobId} className="border-t border-escola-border/30">
-                    <td className="px-2 py-1">{j.day}</td>
-                    <td className="px-2 py-1">
-                      {j.phraseText ? j.phraseText.slice(0, 60) + "…" : "—"}
-                    </td>
-                    <td className="px-2 py-1">
-                      <StatusBadge status={j.status} progress={j.progress} />
-                    </td>
-                    <td className="px-2 py-1">
-                      {j.videoUrl ? (
-                        <div className="space-y-1">
-                          <video
-                            src={j.videoUrl}
-                            controls
-                            playsInline
-                            preload="metadata"
-                            className="aspect-[9/16] w-24 rounded bg-black"
-                          />
-                          <a
-                            href={j.videoUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            download
-                            className="block text-emerald-300 hover:underline"
-                          >
-                            ↓ baixar
-                          </a>
-                        </div>
-                      ) : (
-                        "—"
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {status.jobs.map((j) => {
+                  const phraseText = j.phraseText || "";
+                  const captions = phraseText
+                    ? phraseToCaptions({ phrase: phraseText, theme: "beleza-de-existir" })
+                    : null;
+                  const ddPad = String(j.day).padStart(2, "0");
+                  return (
+                    <tr key={j.jobId} className="border-t border-escola-border/30">
+                      <td className="px-2 py-1">{j.day}</td>
+                      <td className="px-2 py-1">
+                        {phraseText ? phraseText.slice(0, 60) + "…" : "—"}
+                      </td>
+                      <td className="px-2 py-1">
+                        <StatusBadge status={j.status} progress={j.progress} />
+                      </td>
+                      <td className="px-2 py-1">
+                        {j.videoUrl ? (
+                          <div className="space-y-1">
+                            <video
+                              src={j.videoUrl}
+                              controls
+                              playsInline
+                              preload="metadata"
+                              className="aspect-[9/16] w-24 rounded bg-black"
+                            />
+                            <a
+                              href={j.videoUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              download={`vc-sabia-${ddPad}.mp4`}
+                              className="block text-emerald-300 hover:underline"
+                            >
+                              ↓ MP4
+                            </a>
+                          </div>
+                        ) : (
+                          "—"
+                        )}
+                      </td>
+                      <td className="px-2 py-1">
+                        {captions ? (
+                          <div className="space-y-1">
+                            <button
+                              onClick={() =>
+                                copyToClipboard(`wa-${j.day}`, captions.whatsapp)
+                              }
+                              className="block w-full rounded border border-emerald-500/60 bg-emerald-500/10 px-2 py-0.5 text-left text-[10px] text-emerald-300 hover:bg-emerald-500/20"
+                              title="WhatsApp Status: copia para postares manualmente"
+                            >
+                              {copiedKey === `wa-${j.day}` ? "✓ copiado" : "📋 WhatsApp"}
+                            </button>
+                            <button
+                              onClick={() =>
+                                copyToClipboard(`ig-${j.day}`, captions.instagram)
+                              }
+                              className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme hover:bg-escola-card/60"
+                            >
+                              {copiedKey === `ig-${j.day}` ? "✓ copiado" : "📋 Instagram"}
+                            </button>
+                            <button
+                              onClick={() =>
+                                copyToClipboard(`tt-${j.day}`, captions.tiktok)
+                              }
+                              className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme hover:bg-escola-card/60"
+                            >
+                              {copiedKey === `tt-${j.day}` ? "✓ copiado" : "📋 TikTok"}
+                            </button>
+                            <button
+                              onClick={() =>
+                                downloadTxt(
+                                  `vc-sabia-${ddPad}-legendas.txt`,
+                                  `WHATSAPP\n${"=".repeat(40)}\n${captions.whatsapp}\n\n\nINSTAGRAM\n${"=".repeat(40)}\n${captions.instagram}\n\n\nTIKTOK\n${"=".repeat(40)}\n${captions.tiktok}\n`
+                                )
+                              }
+                              className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme hover:bg-escola-card/60"
+                            >
+                              ↓ .txt (3 redes)
+                            </button>
+                          </div>
+                        ) : (
+                          "—"
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
