@@ -1,76 +1,99 @@
 # Contos Mensais · Escola dos Véus
 
-Terceira linha de conteúdo para as redes — sem marketing, só com link da escola.
+Terceira linha de conteúdo para as redes. Conto serializado em 30 capítulos por mês.
+
+**Objetivo de conversão:** crescimento de seguidores nas redes (não cliques externos). Cada short é otimizado para retenção, saves e shares dentro da plataforma. O link `seteveus.space` aparece apenas em 4 posts-âncora por mês (cap 1, 15, 29, 30) e na bio — o resto puxa engagement sem fuga.
 
 ## Mês 1 · Junho 2026 · "Trinta Manhãs"
 
-Um conto serializado em 30 capítulos diários. Cada dia da semana é um véu. O conto fecha-se a 30 de Junho.
+Slideshow editorial sem voz humana — 3 imagens Midjourney em fade + texto cinético + música AG instrumental. ~25 segundos por short.
 
 ### Ficheiros
 
-| Ficheiro | O que é |
+| Ficheiro | Para quê |
 |---|---|
-| `MES-01-JUNHO-2026-BIBLIA.md` | Premissa, voz, personagem, mapa semanal de véus, arco em 3 atos, template de short, plataformas e horários, regras de copy. **Começar por aqui.** |
-| `MES-01-JUNHO-2026-GUIOES.md` | Os 30 capítulos — logline, narração (~75 palavras), imagem-chave, música, frase-âncora e copy pronta a publicar em IG / TikTok / YouTube Shorts / Facebook. |
-| `MES-01-JUNHO-2026-METRICOOL.csv` | 120 posts (4 plataformas × 30 dias) prontos para importar no Metricool. Gerado por `tools/contos-mensais/generate-metricool-csv.py`. |
+| `MES-01-JUNHO-2026-BIBLIA.md` | Premissa, voz, personagem, mapa de véus, arco, template do short, regras de copy, métricas. **Começar aqui.** |
+| `MES-01-JUNHO-2026-GUIOES.md` | Fonte literária dos 30 capítulos — texto-base, imagem-chave, frase-âncora. *Não é o que se publica*; a copy canónica está no CSV. |
+| `MES-01-JUNHO-2026-SLIDESHOW.md` | Produção visual e sonora: 90 prompts Midjourney + 8 prompts AG (1 por véu) + painéis cinéticos com timings. Único ficheiro para a equipa de produção. **Gerado** — não editar à mão; alterar `tools/contos-mensais/content.py` e correr `generate-slideshow-md.py`. |
+| `MES-01-JUNHO-2026-METRICOOL.csv` | 120 posts (4 plataformas × 30 dias) prontos para importar no Metricool. **Gerado** — `tools/contos-mensais/generate-metricool-csv.py`. |
 
 ### Fluxo de produção (1 vez antes de 2026-06-01)
 
-1. **Gravar narrações** — 30 capítulos × ~30s ≈ 16 min de áudio. Recomendado fazer em 3 sessões de 10. Sair em `assets/trinta-manhas/narracao/cap-NN.wav`.
-2. **Gerar SRTs** — uma por capítulo, a partir do texto da narração. Sair em `assets/trinta-manhas/srt/cap-NN.srt`. Pode usar o pipeline Loranne existente ou alinhamento manual.
-3. **Escolher vídeo base** — clip Ancient Ground por capítulo (cenário coerente com o território visual indicado nos guiões). Sair em `assets/trinta-manhas/base/cap-NN.mp4`.
-4. **Cortar tracks Loranne** — 2-3 tracks por véu, instrumental, cortadas para a duração. Sair em `assets/trinta-manhas/musica/cap-NN.mp3`.
-5. **Render em batch:**
+1. **Imagens (90).** Gerar 30 × 3 stills no Midjourney v6 usando os prompts em `MES-01-JUNHO-2026-SLIDESHOW.md` (`--ar 9:16 --style raw --stylize 200`). Guardar como `assets/trinta-manhas/imagens/cap-NN-{1,2,3}.jpg`.
+2. **Música (8 trilhas).** Gerar 8 instrumentais com AG (ElevenLabs Music), ~30s loopable, a partir dos prompts da tabela "Trilhas AG" no SLIDESHOW. Uma por véu — recicladas pelos 4 ciclos. Guardar como `assets/trinta-manhas/musica/veu-{nome}.mp3`.
+3. **Render em batch:**
    ```bash
-   bash tools/contos-mensais/render-batch.sh
-   # ou um intervalo:
-   bash tools/contos-mensais/render-batch.sh 1 7
+   bash tools/contos-mensais/render-batch.sh                 # todos os 30
+   bash tools/contos-mensais/render-batch.sh 1 7             # caps 1-7
+   bash tools/contos-mensais/render-batch.sh --dry-run       # imprime FFmpeg
    ```
-   Output em `renders/trinta-manhas/trinta-manhas-cap-NN.mp4`.
+   Output em `renders/trinta-manhas/trinta-manhas-cap-NN.mp4`. ~25s, 1080×1920, 5-8MB.
+4. **Copy.** `python3 tools/contos-mensais/generate-metricool-csv.py` regenera o CSV.
+5. **Agendamento.** Importar CSV no Metricool, anexar vídeos da Biblioteca. Atualizar bio das 4 contas: `Trinta Manhãs · conto diário · 07:30 / seteveus.space`.
+
+### Fonts opcionais
+
+O renderer usa Liberation Serif Italic + Liberation Sans Regular por defeito. Para a identidade visual definitiva (Cormorant Garamond Italic na frase-âncora; Inter Regular nas linhas de cartão):
+
+```bash
+FONT_SERIF=/path/to/CormorantGaramond-Italic.ttf \
+FONT_SANS=/path/to/Inter-Regular.ttf \
+  bash tools/contos-mensais/render-batch.sh
+```
+
+### Estratégia de link
+
+| Caps | Última linha |
+|---|---|
+| 1, 15, 29 | `Continua amanhã. seteveus.space` |
+| 30 | `Recomeça amanhã. seteveus.space` |
+| 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28 | `Continua amanhã.` *(sem URL)* |
+
+CTAs internos extra (saves/shares sem fugir da plataforma):
+- Cap 7 (domingo do 1.º ciclo): `guarda esta`
+- Cap 14 (domingo do 2.º ciclo): `envia a quem precisa`
+- Cap 21 (domingo do 3.º ciclo): `vê desde o cap 1`
 
 ### Agendamento no Metricool
 
-O CSV gerado segue o formato genérico `date,time,network,text,link,media`.
+CSV no formato `date,time,network,text,link,media` (column `link` vazio em 26 dos 30 dias).
 
-**Opção A · Importação direta (planos com Bulk Upload):**
 1. Metricool → Planeamento → Importar
 2. Carregar `MES-01-JUNHO-2026-METRICOOL.csv`
-3. Mapear colunas: `date` → Data, `time` → Hora, `network` → Rede social, `text` → Texto, `media` → Anexar de Biblioteca
+3. Mapear: `date`→Data, `time`→Hora, `network`→Rede social, `text`→Texto, `media`→Anexar de Biblioteca
 4. Pré-visualizar e confirmar
 
-**Opção B · Copy & paste manual (planos básicos):**
-1. Abrir o CSV no Numbers / Excel / Google Sheets
-2. Para cada linha, copiar `text` e colar no agendador do Metricool com a data/hora indicadas
-3. Anexar o vídeo de `renders/trinta-manhas/` pelo nome em `media`
-
-### Regenerar o CSV
-
-Para alterar copy, horários, ou adicionar plataformas, editar `tools/contos-mensais/generate-metricool-csv.py` e correr:
-
-```bash
-python3 tools/contos-mensais/generate-metricool-csv.py
-```
+Plano sem bulk upload: abrir o CSV, copiar `text` linha-a-linha, anexar o vídeo de `renders/trinta-manhas/`.
 
 ### Métrica de sucesso
 
-Sem objetivo de conversão. Sinais a vigiar (Plausible / Instagram Insights / TikTok Analytics):
+Foco: **crescimento de seguidores**. Sinais que alimentam o algoritmo a empurrar para não-seguidores:
 
-- **% de followers que vê >5 capítulos** (retenção da série)
-- **Save rate** (sinal de literatura)
-- **Comentários narrativos** (quem comenta com versos próprios)
-- **Tráfego direto a seteveus.space em Junho vs Maio**
+- **Completion rate** ≥70% (sinal #1)
+- **Saves** ≥3% das views
+- **Shares** ≥2% das views
+- **Profile visits** ≥1% das views
+- **Follow rate** ≥10% das profile-visits
+- **Novos seguidores líquidos / semana** crescendo
 
-Se >30% dos followers virem >10 capítulos, replicar a fórmula para Julho.
+Se ao fim do 1.º ciclo (7 dias) o completion estiver <50%, encurtar para 18s. Se completion bom mas follow baixo, fortalecer a frase-âncora.
+
+Tráfego para `seteveus.space` (Plausible) é secundário — útil só para confirmar que os 4 posts-âncora puxam.
+
+### Regenerar ficheiros derivados
+
+```bash
+# Após editar content.py (prompts MJ, frases-âncora, prompts AG):
+python3 tools/contos-mensais/generate-slideshow-md.py
+
+# Após editar generate-metricool-csv.py (copy, hashtags, mapping):
+python3 tools/contos-mensais/generate-metricool-csv.py
+```
 
 ## Próximos meses (esboço)
 
-- **Julho 2026 · "Trinta Noites"** — espelho de Junho. Mesma protagonista, mesmas horas, vista pelas noites.
+- **Julho 2026 · "Trinta Noites"** — espelho de Junho. Mesma protagonista, vista pelas noites.
 - **Agosto 2026 · "Trinta Janelas"** — outras pessoas vistas das janelas. Sai do "eu" para o "outros".
 - **Setembro 2026 · "Trinta Cartas"** — formato epistolar. Cada capítulo é uma carta curta.
 
-Cada mês mantém:
-- 30 capítulos / 30 dias
-- 1 véu por dia da semana em rotação
-- Mesmo template visual e sonoro
-- Hashtag-série única por mês
-- Link único: `seteveus.space`
+Cada mês mantém: 30 caps, 7 véus em rotação, mesma identidade visual e sonora, hashtag-série única, link `seteveus.space` em 4 posts-âncora + bio.

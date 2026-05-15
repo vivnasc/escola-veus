@@ -15,7 +15,9 @@ Formato do Metricool (importação manual via Planner > Importar):
 Notas:
   - Hora IG/TT/YT: 07:30 Europe/Lisbon
   - Hora Facebook: 08:30 Europe/Lisbon
-  - Link em todas as plataformas: seteveus.space
+  - Link `seteveus.space` SÓ nos caps 1, 15, 29, 30 (objetivo: seguidores, não cliques).
+    Nos outros 26 caps a última linha é só `Continua amanhã.` sem URL.
+  - CTAs internos (saves/shares dentro da plataforma) nos caps 7, 14, 21.
   - O `media_filename` aponta para o ficheiro de vídeo final que será renderizado.
     Convenção: trinta-manhas-cap-{NN}.mp4
 """
@@ -27,6 +29,13 @@ from datetime import date, timedelta
 
 LINK = "seteveus.space"
 HASHTAGS_FIXAS = "#TrintaManhas #EscolaDosVeus #ContoDiario #LiteraturaCurta #PortugalLiterario"
+
+LINK_CAPS = {1, 15, 29, 30}
+INTERNAL_CTAS = {
+    7: "guarda esta",
+    14: "envia a quem precisa",
+    21: "vê desde o cap 1",
+}
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = REPO_ROOT / "docs" / "contos-mensais"
@@ -216,6 +225,50 @@ CAPITULOS = [
 ]
 
 
+def _strip_link_from_ig(copy_ig: str, cap_n: int) -> str:
+    """Remove `seteveus.space` da última linha em caps que não são âncora.
+    Mantém para 1, 15, 29 ('Continua amanhã. seteveus.space') e 30 ('Recomeça amanhã. seteveus.space').
+    Adiciona CTA interno (saves/shares) nos caps 7, 14, 21.
+    """
+    if cap_n in LINK_CAPS:
+        text = copy_ig
+    else:
+        text = (
+            copy_ig
+            .replace("Continua amanhã. seteveus.space", "Continua amanhã.")
+            .replace("Recomeça amanhã. seteveus.space", "Recomeça amanhã.")
+        )
+    cta = INTERNAL_CTAS.get(cap_n)
+    if cta:
+        text = text.rstrip() + f"\n\n{cta}"
+    return text
+
+
+def _strip_link_from_tt(copy_tt: str, cap_n: int) -> str:
+    """A copy TikTok original termina com '\\nseteveus.space' no fim."""
+    if cap_n in LINK_CAPS:
+        text = copy_tt
+    else:
+        # remove só a última linha se for o link
+        lines = copy_tt.splitlines()
+        while lines and lines[-1].strip() in (LINK, ""):
+            if lines[-1].strip() == LINK:
+                lines.pop()
+                break
+            lines.pop()
+        text = "\n".join(lines).rstrip()
+    cta = INTERNAL_CTAS.get(cap_n)
+    if cta:
+        text = text + f"\n\n{cta}"
+    return text
+
+
+def _strip_link_from_yt_desc(yt_desc: str, cap_n: int) -> str:
+    if cap_n in LINK_CAPS:
+        return yt_desc
+    return yt_desc.replace(f" {LINK}", "").replace(f"{LINK}", "").rstrip(" .")
+
+
 def build_rows():
     """Gera 120 linhas: 4 plataformas × 30 dias."""
     start = date(2026, 6, 1)
@@ -226,33 +279,38 @@ def build_rows():
         date_str = d.isoformat()
         media = f"trinta-manhas-cap-{cap_n:02d}.mp4"
         hashtags_all = f"{HASHTAGS_FIXAS} {hashtags_veu}"
+        link_for_row = LINK if cap_n in LINK_CAPS else ""
+
+        copy_ig_final = _strip_link_from_ig(copy_ig, cap_n)
+        copy_tt_final = _strip_link_from_tt(copy_tt, cap_n)
+        yt_desc_final = _strip_link_from_yt_desc(yt_desc, cap_n)
 
         # Instagram Reels — 07:30
-        ig_text = f"{copy_ig}\n\n{hashtags_all}"
+        ig_text = f"{copy_ig_final}\n\n{hashtags_all}"
         rows.append({
             "date": date_str, "time": "07:30", "network": "Instagram",
-            "text": ig_text, "link": LINK, "media": media,
+            "text": ig_text, "link": link_for_row, "media": media,
         })
 
         # TikTok — 07:30
-        tt_text = f"{copy_tt}\n\n{hashtags_all}"
+        tt_text = f"{copy_tt_final}\n\n{hashtags_all}"
         rows.append({
             "date": date_str, "time": "07:30", "network": "TikTok",
-            "text": tt_text, "link": LINK, "media": media,
+            "text": tt_text, "link": link_for_row, "media": media,
         })
 
         # YouTube Shorts — 07:30 — usa título + descrição + hashtags
-        yt_text = f"{yt_title}\n\n{yt_desc}\n\n{hashtags_all}"
+        yt_text = f"{yt_title}\n\n{yt_desc_final}\n\n{hashtags_all}"
         rows.append({
             "date": date_str, "time": "07:30", "network": "YouTube",
-            "text": yt_text, "link": LINK, "media": media,
+            "text": yt_text, "link": link_for_row, "media": media,
         })
 
         # Facebook — 08:30 — mesma copy de IG
-        fb_text = f"{copy_ig}\n\n{hashtags_all}"
+        fb_text = f"{copy_ig_final}\n\n{hashtags_all}"
         rows.append({
             "date": date_str, "time": "08:30", "network": "Facebook",
-            "text": fb_text, "link": LINK, "media": media,
+            "text": fb_text, "link": link_for_row, "media": media,
         })
 
     return rows

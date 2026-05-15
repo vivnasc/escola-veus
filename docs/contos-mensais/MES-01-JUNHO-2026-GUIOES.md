@@ -1,15 +1,22 @@
 # Trinta Manhãs · Junho 2026
-## Guiões dos 30 capítulos
+## Guiões dos 30 capítulos · fonte literária
 
 > Ver bíblia: `MES-01-JUNHO-2026-BIBLIA.md`
-> Formato por capítulo: logline · narração (~75 palavras / ~30s) · imagem · música · frase-âncora · copy IG-FB · copy TikTok · copy YouTube Shorts · hashtags
+> Ver produção visual e sonora: `MES-01-JUNHO-2026-SLIDESHOW.md`
+
+**⚠ Este ficheiro é fonte literária, não o que se publica.**
+- O bloco "Narração (~75 palavras)" abaixo passou a ser o **texto-base de cada capítulo** — matéria-prima para os 4 painéis cinéticos do slideshow. Os timings exatos e as quebras de painel estão em `MES-01-JUNHO-2026-SLIDESHOW.md`.
+- Os blocos "Copy IG/FB · Copy TikTok · Copy YouTube" abaixo são **exemplos da primeira versão** com link em todos os posts. A copy canónica está em `MES-01-JUNHO-2026-METRICOOL.csv`, onde o link só aparece nos caps **1, 15, 29 e 30** (regra revista — ver bíblia §10).
+- **Não há narração gravada.** O conto é lido no ecrã, sem voz humana. AG cobre só a música instrumental.
+
+Formato por capítulo: logline · texto-base · imagem-chave · música · frase-âncora · exemplos de copy · hashtags
 
 Hashtags fixas em todos os posts (5):
 `#TrintaManhas #EscolaDosVeus #ContoDiario #LiteraturaCurta #PortugalLiterario`
 
 Hora de publicação: **07:30 Europe/Lisbon** (IG/TT/YT) · **08:30** (Facebook).
 
-Link único, sempre na última linha do corpo: **seteveus.space**
+Link: na bio o mês inteiro. No corpo dos posts apenas em 4 capítulos (1, 15, 29, 30) — ver bíblia §10.
 
 ---
 
