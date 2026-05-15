@@ -1717,7 +1717,7 @@ function Frame({
           muted
           playsInline
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "saturate(1.02) contrast(1.02)" }}
+          style={{ filter: "brightness(1.45) saturate(1.1) contrast(0.95)" }}
         />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
@@ -1725,44 +1725,45 @@ function Frame({
           src={media}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "saturate(1.02) contrast(1.02)" }}
+          style={{ filter: "brightness(1.45) saturate(1.1) contrast(0.95)" }}
         />
       )}
 
-      {/* Scrim local atrás da frase: backdrop-blur + gradiente vertical
-          que desvanece nos topos. Garante contraste em qualquer motion. */}
+      {/* Scrim local atrás da frase: backdrop-blur subtil. Sem escurecer
+          (motion escuro fica ainda mais escuro com scrim escuro). O blur
+          já desfoca o motion atrás do texto e dá-lhe contraste suficiente. */}
       <div
         className="pointer-events-none absolute inset-x-0"
         style={{
-          top: "34%",
-          height: "38%",
-          background:
-            "linear-gradient(to bottom, rgba(14,8,32,0) 0%, rgba(14,8,32,0.42) 25%, rgba(14,8,32,0.42) 75%, rgba(14,8,32,0) 100%)",
-          backdropFilter: "blur(6px) saturate(95%)",
-          WebkitBackdropFilter: "blur(6px) saturate(95%)",
+          top: "36%",
+          height: "34%",
+          backdropFilter: "blur(10px) saturate(110%)",
+          WebkitBackdropFilter: "blur(10px) saturate(110%)",
         }}
       />
 
-      {/* Scrim atrás da assinatura (kicker + glifo + URL) no fundo */}
+      {/* Scrim atrás da assinatura: blur subtil em vez de gradiente escuro */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0"
         style={{
-          height: "18%",
-          background:
-            "linear-gradient(to top, rgba(14,8,32,0.55) 0%, rgba(14,8,32,0.4) 60%, rgba(14,8,32,0) 100%)",
-          backdropFilter: "blur(4px)",
-          WebkitBackdropFilter: "blur(4px)",
+          height: "16%",
+          backdropFilter: "blur(8px) saturate(110%)",
+          WebkitBackdropFilter: "blur(8px) saturate(110%)",
         }}
       />
 
-      {/* Pequeno scrim atrás do nome do dia no arco */}
+      {/* Halo do nome do dia: blur pequeno em vez de scrim escuro */}
       <div
-        className="pointer-events-none absolute inset-x-0"
+        className="pointer-events-none absolute"
         style={{
+          left: "50%",
           top: 175,
+          transform: "translateX(-50%)",
+          width: 220,
           height: 40,
-          background:
-            "radial-gradient(ellipse at center, rgba(14,8,32,0.45) 0%, rgba(14,8,32,0) 70%)",
+          backdropFilter: "blur(6px) saturate(110%)",
+          WebkitBackdropFilter: "blur(6px) saturate(110%)",
+          borderRadius: 12,
         }}
       />
 
