@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
 
 const MESES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -90,36 +91,82 @@ export function BulkMonthPanel() {
   const [error, setError] = useState<string | null>(null);
   const [regenerating, setRegenerating] = useState<number | null>(null);
   const [regenAll, setRegenAll] = useState(false);
+  /** Mapping mood -> audioUrl activo. Carregado quando entra no plan. */
+  const [activeAudios, setActiveAudios] = useState<Partial<Record<MorningMood, string>>>({});
+  /** Tags actuais dos motions, carregadas com o plano. */
+  const [motionTags, setMotionTags] = useState<Record<string, MorningMood>>({});
 
   const preparePlan = async () => {
     setPreparing(true);
     setError(null);
     setPlan([]);
     try {
-      const res = await fetch("/api/admin/vc-sabia/bulk-month/preview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          year,
-          month,
-          startDay,
-          endDay,
-          phraseStartIndex,
-          motionStartIndex,
+      const [planRes, activeRes, tagsRes] = await Promise.all([
+        fetch("/api/admin/vc-sabia/bulk-month/preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            year,
+            month,
+            startDay,
+            endDay,
+            phraseStartIndex,
+            motionStartIndex,
+          }),
         }),
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        setError(json.erro || `HTTP ${res.status}`);
-      } else {
-        setPlan(json.plan || []);
-        setPhase("plan");
+        fetch("/api/admin/vc-sabia/active-audios"),
+        fetch("/api/admin/vc-sabia/motion-tags"),
+      ]);
+      const planJson = await planRes.json();
+      if (!planRes.ok) {
+        setError(planJson.erro || `HTTP ${planRes.status}`);
+        return;
       }
+      const activeJson = activeRes.ok ? await activeRes.json() : { active: {} };
+      const tagsJson = tagsRes.ok ? await tagsRes.json() : { tags: {} };
+      setActiveAudios(activeJson.active || {});
+      setMotionTags(tagsJson.tags || {});
+      setPlan(planJson.plan || []);
+      setPhase("plan");
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
       setPreparing(false);
     }
+  };
+
+  /** Muda o mood deste motion: persiste em motion-tags.json e
+   *  actualiza audioUrl da linha (e de outras linhas com mesmo motion). */
+  const setRowMood = async (idx: number, mood: MorningMood | "") => {
+    const motionName = plan[idx]?.motionName;
+    if (!motionName) return;
+
+    const nextTags = { ...motionTags };
+    if (mood === "") delete nextTags[motionName];
+    else nextTags[motionName] = mood;
+    setMotionTags(nextTags);
+
+    const newAudioUrl = mood && activeAudios[mood] ? activeAudios[mood]! : null;
+    setPlan((prev) =>
+      prev.map((p) =>
+        p.motionName === motionName ? { ...p, mood: mood || null, audioUrl: newAudioUrl } : p
+      )
+    );
+
+    try {
+      await fetch("/api/admin/vc-sabia/motion-tags", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tags: nextTags }),
+      });
+    } catch {
+      /* erro silencioso */
+    }
+  };
+
+  /** Muda apenas o áudio desta linha (override pontual, não persiste). */
+  const setRowAudio = (idx: number, audioUrl: string | null) => {
+    setPlan((prev) => prev.map((p, i) => (i === idx ? { ...p, audioUrl } : p)));
   };
 
   const regenPhrase = async (idx: number) => {
@@ -413,8 +460,8 @@ export function BulkMonthPanel() {
                 <tr>
                   <th className="px-2 py-1 text-left">Dia</th>
                   <th className="px-2 py-1 text-left">Frase (editável)</th>
-                  <th className="px-2 py-1 text-left">Motion</th>
-                  <th className="px-2 py-1 text-left">Áudio</th>
+                  <th className="px-2 py-1 text-left">Motion · Mood</th>
+                  <th className="px-2 py-1 text-left">Áudio (override)</th>
                 </tr>
               </thead>
               <tbody>
@@ -443,10 +490,52 @@ export function BulkMonthPanel() {
                       </div>
                     </td>
                     <td className="px-2 py-1 align-top">
-                      {p.motionName.slice(0, 18)}…
+                      <div className="space-y-1">
+                        <div className="truncate text-[10px] text-escola-creme-50" title={p.motionName}>
+                          {p.motionName.slice(0, 22)}…
+                        </div>
+                        <select
+                          value={(p.mood as string) || ""}
+                          onChange={(e) =>
+                            setRowMood(i, e.target.value as MorningMood | "")
+                          }
+                          className={`w-full rounded border bg-escola-card px-1 py-0.5 text-[10px] ${
+                            p.mood
+                              ? "border-escola-dourado/60 text-escola-dourado"
+                              : "border-red-700/40 text-red-300"
+                          }`}
+                          title="Mood deste motion. Auto-saves para Supabase + actualiza audio da linha."
+                        >
+                          <option value="">⚠ sem mood</option>
+                          {MORNING_MOODS.map((m) => (
+                            <option key={m} value={m}>
+                              {MOOD_LABELS[m]}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </td>
                     <td className="px-2 py-1 align-top">
-                      {p.audioUrl ? p.mood : <span className="text-red-300">⚠ sem áudio</span>}
+                      <select
+                        value={p.audioUrl || ""}
+                        onChange={(e) => setRowAudio(i, e.target.value || null)}
+                        className={`w-full rounded border bg-escola-card px-1 py-0.5 text-[10px] ${
+                          p.audioUrl
+                            ? "border-emerald-500/40 text-emerald-300"
+                            : "border-red-700/40 text-red-300"
+                        }`}
+                        title="Override do áudio desta linha. Lista os áudios activos de todos os moods."
+                      >
+                        <option value="">⚠ sem áudio (silencioso)</option>
+                        {MORNING_MOODS.filter((m) => activeAudios[m]).map((m) => (
+                          <option key={m} value={activeAudios[m]}>
+                            {MOOD_LABELS[m]}
+                          </option>
+                        ))}
+                      </select>
+                      {p.audioUrl && (
+                        <audio src={p.audioUrl} controls className="mt-1 h-6 w-full" />
+                      )}
                     </td>
                   </tr>
                 ))}
