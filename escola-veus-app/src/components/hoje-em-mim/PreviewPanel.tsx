@@ -1707,10 +1707,10 @@ function RunwayPipelineSection() {
   const [reviewBatchStatus, setReviewBatchStatus] = useState<string>("");
   const [reviewBatchError, setReviewBatchError] = useState<string | null>(null);
 
-  const reviewAllPrompts = async () => {
+  const reviewAllPrompts = async (): Promise<Record<string, string>> => {
     if (images.length === 0) {
       setReviewBatchError("Sem imagens MJ carregadas.");
-      return;
+      return motionByImage;
     }
     setReviewBatchError(null);
     setReviewingBatch(true);
@@ -1778,6 +1778,70 @@ function RunwayPipelineSection() {
       setReviewBatchError(e instanceof Error ? e.message : String(e));
     } finally {
       setReviewingBatch(false);
+    }
+    return next;
+  };
+
+  // Combo: Claude review chunked + Runway submit num click. Usa o map
+  // de motions devolvido pelo review (evita stale closure de
+  // motionByImage entre setState e submit).
+  const reviewAndSubmitAll = async () => {
+    const nextMotions = await reviewAllPrompts();
+
+    const submittedNames = new Set(
+      state.items
+        .filter((i) => i.runwayTaskId || i.clipUrl)
+        .map((i) => i.imageName)
+        .filter((n): n is string => !!n)
+    );
+    const candidates = images
+      .filter((img) => !submittedNames.has(img.name))
+      .map((img) => {
+        const motion = (nextMotions[img.name] ?? "").trim();
+        if (!motion) return null;
+        const pid = promptByImage[img.name] || "";
+        const duration = durationByImage[img.name] || 5;
+        const safeId = img.name
+          .replace(/\.[^.]+$/, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9-]+/g, "-")
+          .slice(0, 80);
+        return {
+          id: safeId,
+          imageUrl: img.url,
+          imageName: img.name,
+          runwayMotion: motion,
+          promptRef: pid || undefined,
+          duration,
+        };
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null);
+
+    if (candidates.length === 0) {
+      setSubmitError(
+        "Sem candidatos para Runway. Claude pode ter falhado todos os prompts."
+      );
+      return;
+    }
+
+    setSubmitError(null);
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/runway/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: candidates }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      if (json.failed?.length > 0) {
+        setSubmitError(`${json.failed.length} falhou: ${json.failed[0].reason}`);
+      }
+      await loadState();
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -1851,6 +1915,22 @@ function RunwayPipelineSection() {
           }}
         />
         <button
+          onClick={reviewAndSubmitAll}
+          disabled={reviewingBatch || submitting || images.length === 0}
+          className="rounded border px-3 py-1.5 text-xs disabled:opacity-50 font-medium"
+          style={{
+            borderColor: COBRE,
+            color: "#FFF8E8",
+            background: COBRE,
+          }}
+        >
+          {reviewingBatch
+            ? "Claude a rever…"
+            : submitting
+              ? "a submeter à Runway…"
+              : `✨ Claude review + Runway submit (${images.length})`}
+        </button>
+        <button
           onClick={reviewAllPrompts}
           disabled={reviewingBatch || images.length === 0}
           className="rounded border px-3 py-1.5 text-xs disabled:opacity-50"
@@ -1858,7 +1938,7 @@ function RunwayPipelineSection() {
         >
           {reviewingBatch
             ? "Claude a rever…"
-            : `🤖 Rever todos os ${images.length} motion prompts (Claude vision)`}
+            : `🤖 Só rever com Claude (${images.length})`}
         </button>
         <button
           onClick={submitAllUnsubmitted}
@@ -1877,9 +1957,9 @@ function RunwayPipelineSection() {
             ? "a submeter…"
             : eligibleForSubmit.length === 0
               ? missingMotion.length > 0
-                ? `${missingMotion.length} sem motion prompt — corre o Claude review`
+                ? `${missingMotion.length} sem motion — corre o review primeiro`
                 : "Nada para submeter"
-              : `Submeter ${eligibleForSubmit.length} à Runway`}
+              : `▶ Só submeter ${eligibleForSubmit.length} à Runway`}
         </button>
       </div>
 
