@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { BRANDS, ALL_PLATFORMS, DAY_ORDER, type BrandSlug } from "@/data/weekly-social/brand-config";
 import {
-  pickWeeklyLoranne,
+  pickWeekLoranneFromPool,
   pickWeeklyAG,
   getTrackTitle,
   getAlbumTitle,
   getTrackLang,
   getDayMood,
+  LORANNE_ROTATION,
 } from "@/data/weekly-social/weekly-rotation";
 import { scheduleFor, currentYear } from "@/lib/weekly-social/schedule";
 import { buildLoranneCaptions, buildAGCaptions } from "@/lib/weekly-social/captions";
@@ -82,17 +83,63 @@ export async function POST(req: NextRequest) {
 
     const plans: Partial<Record<BrandSlug, WeeklyPlan>> = {};
     const errors: { brand: BrandSlug; postId?: string; message: string }[] = [];
+    // Albums Loranne ignorados por não terem MP3 em Supabase. Lista vai
+    // para a resposta para a UI poder dizer ao user quais é que ainda
+    // precisam de upload.
+    const loranneSkippedAlbums: string[] = [];
 
     // ─── Loranne ────────────────────────────────────────────────────────
     if (brands.includes("loranne")) {
       const brand = BRANDS.loranne;
+
+      // Pre-flight: descobre quais álbuns da rotação têm MP3 em Supabase.
+      // O `LORANNE_AVAILABLE_ALBUMS` em weekly-rotation.ts é otimista (lista
+      // o que SE PRETENDE produzir), mas pode haver álbuns ainda sem MP3
+      // upload (ex.: sangue-mae). Sem este filtro, `pickWeeklyLoranne`
+      // entregava um entry desses e a chamada `listAlbumTracks` mais abaixo
+      // falhava com "Sem MP3 nenhum em audios/albums/<slug>/".
+      // Listamos uma vez por álbum único (paralelo) e filtramos a rotação.
+      const uniqueAlbums = [...new Set(LORANNE_ROTATION.map((e) => e.albumSlug))];
+      const availResults = await Promise.all(
+        uniqueAlbums.map(async (slug) => {
+          try {
+            const tracks = await listAlbumTracks(slug);
+            return { slug, has: tracks.length > 0 };
+          } catch {
+            return { slug, has: false };
+          }
+        }),
+      );
+      const skippedAlbums = availResults.filter((r) => !r.has).map((r) => r.slug);
+      loranneSkippedAlbums.push(...skippedAlbums);
+      const availablePool = LORANNE_ROTATION.filter(
+        (e) => !skippedAlbums.includes(e.albumSlug),
+      );
+      if (skippedAlbums.length > 0) {
+        console.log(
+          `[weekly/plan] álbuns Loranne sem MP3 em audios/albums/ — ignorados: ${skippedAlbums.join(", ")}`,
+        );
+      }
+      if (availablePool.length === 0) {
+        return NextResponse.json(
+          {
+            erro: "Nenhum álbum Loranne tem MP3 em audios/albums/. Faz upload de pelo menos um álbum antes de gerar o plano.",
+            loranneSkippedAlbums,
+          },
+          { status: 500 },
+        );
+      }
+
+      // Os 7 picks da semana derivam SÓ do pool com áudios prontos. Mesma
+      // lógica de mood/no-repeat-album, mas a partir do subconjunto.
+      const weekPicks = pickWeekLoranneFromPool(week, availablePool);
 
       // Processa os 7 dias em paralelo — cada track faz Supabase list +
       // Claude synopsis (com cache). Sequencial estoura os 60s no
       // primeiro run sem cache.
       const dayEntries = brand.publishDays.map((day) => ({
         day,
-        entry: pickWeeklyLoranne(week, DAY_ORDER.indexOf(day)),
+        entry: weekPicks[DAY_ORDER.indexOf(day)],
       }));
 
       const results = await Promise.all(dayEntries.map(async ({ day, entry }) => {
@@ -402,7 +449,11 @@ export async function POST(req: NextRequest) {
       plans["ancient-ground"] = plan;
     }
 
-    return NextResponse.json({ plans, errors });
+    return NextResponse.json({
+      plans,
+      errors,
+      loranneSkippedAlbums,
+    });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ erro: msg }, { status: 500 });
