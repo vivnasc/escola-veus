@@ -646,7 +646,7 @@ function Frame({
           muted
           playsInline
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.55) saturate(0.7) contrast(1.05) hue-rotate(-10deg)" }}
+          style={{ filter: "brightness(0.85) saturate(0.85) contrast(1.05) hue-rotate(-6deg)" }}
         />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
@@ -654,7 +654,7 @@ function Frame({
           src={media}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.55) saturate(0.7) contrast(1.05) hue-rotate(-10deg)" }}
+          style={{ filter: "brightness(0.85) saturate(0.85) contrast(1.05) hue-rotate(-6deg)" }}
         />
       )}
 
@@ -662,7 +662,7 @@ function Frame({
       <div
         className="pointer-events-none absolute inset-0 mix-blend-overlay"
         style={{
-          opacity: 0.18,
+          opacity: 0.1,
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>\")",
         }}
@@ -673,7 +673,7 @@ function Frame({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(14,8,32,0.05) 20%, rgba(14,8,32,0.82) 100%)",
+            "radial-gradient(ellipse at center, rgba(14,8,32,0) 35%, rgba(14,8,32,0.55) 100%)",
         }}
       />
 
