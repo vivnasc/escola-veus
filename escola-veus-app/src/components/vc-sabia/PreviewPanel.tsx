@@ -6,6 +6,7 @@ import { phraseToCaptions } from "@/lib/vc-sabia/captions";
 import { MOOD_LABELS, type MorningMood } from "@/lib/vc-sabia/audio";
 import { MotionLibrary } from "./MotionLibrary";
 import { AudioLibrary } from "./AudioLibrary";
+import { ManualDownloadPanel } from "./ManualDownloadPanel";
 
 type Variant = "A" | "B" | "C";
 
@@ -29,6 +30,33 @@ export function VcSabiaPreviewPanel() {
   const [copied, setCopied] = useState<string | null>(null);
   const [motionTags, setMotionTags] = useState<Record<string, MorningMood>>({});
   const [activeByMood, setActiveByMood] = useState<Partial<Record<MorningMood, string>>>({});
+  const [customPhrase, setCustomPhrase] = useState<string>("");
+  const [generatingPhrase, setGeneratingPhrase] = useState(false);
+  const [phraseError, setPhraseError] = useState<string | null>(null);
+
+  const generateFreshPhrase = async () => {
+    setGeneratingPhrase(true);
+    setPhraseError(null);
+    try {
+      const res = await fetch("/api/admin/vc-sabia/phrase/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          avoid: seed.frases.slice(0, 20).map((f) => f.texto),
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setPhraseError(json.erro || `HTTP ${res.status}`);
+      } else if (json.phrase) {
+        setCustomPhrase(json.phrase);
+      }
+    } catch (e) {
+      setPhraseError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setGeneratingPhrase(false);
+    }
+  };
 
   const handleMotionTags = useCallback((t: Record<string, MorningMood>) => {
     setMotionTags(t);
@@ -48,10 +76,12 @@ export function VcSabiaPreviewPanel() {
     return { motionMood: mood ?? null, motionAudioUrl: url };
   }, [media, motionTags, activeByMood]);
 
-  const phrase = seed.frases.find((f) => f.id === phraseId) ?? seed.frases[0];
+  const seedPhrase = seed.frases.find((f) => f.id === phraseId) ?? seed.frases[0];
+  const effectiveText = customPhrase.trim() || seedPhrase.texto;
+  const phrase = { ...seedPhrase, texto: effectiveText };
   const dateLabel = formatDatePT(new Date());
   const isVideo = /\.(mp4|webm|mov)$/i.test(media);
-  const captions = phraseToCaptions({ phrase: phrase.texto, theme: phrase.tema });
+  const captions = phraseToCaptions({ phrase: effectiveText, theme: seedPhrase.tema });
 
   const copy = async (key: string, text: string) => {
     try {
@@ -110,6 +140,24 @@ export function VcSabiaPreviewPanel() {
           ))}
         </select>
 
+        <div className="flex min-w-[280px] flex-1 gap-1">
+          <input
+            value={customPhrase}
+            onChange={(e) => setCustomPhrase(e.target.value)}
+            placeholder="Frase customizada (sobrepõe a dropdown)…"
+            className="flex-1 rounded border border-escola-dourado/40 bg-escola-card px-3 py-1.5 text-xs text-escola-creme placeholder:text-escola-creme-50"
+            title="Escreve aqui a tua frase do dia. Deixa em branco para usar a frase da dropdown."
+          />
+          <button
+            onClick={generateFreshPhrase}
+            disabled={generatingPhrase}
+            className="shrink-0 rounded border border-emerald-500/60 bg-emerald-500/10 px-2 py-1.5 text-xs text-emerald-400 hover:bg-emerald-500/20 disabled:opacity-50"
+            title="Claude gera uma frase fresca (não gasta o seed programado)"
+          >
+            {generatingPhrase ? "…" : "✨ Gerar"}
+          </button>
+        </div>
+
         <input
           value={media}
           onChange={(e) => setMedia(e.target.value)}
@@ -146,6 +194,12 @@ export function VcSabiaPreviewPanel() {
         <strong className="text-escola-creme">B</strong>: cartão de vidro fosco (recomendado) ·{" "}
         <strong className="text-escola-creme">C</strong>: vidro + moldura dourada
       </div>
+
+      {phraseError && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
+          Gerador de frase: {phraseError}
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-8">
         <Frame
@@ -240,6 +294,17 @@ export function VcSabiaPreviewPanel() {
           />
         </div>
       </section>
+
+      <ManualDownloadPanel
+        motionUrl={media}
+        motionName={media.split("/").pop() ?? "motion.mp4"}
+        audioUrl={motionAudioUrl}
+        phrase={effectiveText}
+        dateLabel={dateLabel}
+        captionInstagram={captions.instagram}
+        captionTiktok={captions.tiktok}
+        captionWhatsapp={captions.whatsapp}
+      />
 
       <AudioLibrary onActiveChange={handleActiveAudios} />
     </div>
