@@ -385,10 +385,13 @@ function deterministicShuffle<T>(arr: readonly T[], seed: number): T[] {
  * Garantia: 7 dias = 7 moods distintos por semana; tipicamente 7 álbuns
  * distintos (vai a 5-6 em semanas em que algum mood é pequeno).
  */
-function buildWeekPicks(weekNumber: number): LoranneRotationEntry[] {
-  if (LORANNE_ROTATION.length === 0) {
+function buildWeekPicks(
+  weekNumber: number,
+  pool: readonly LoranneRotationEntry[] = LORANNE_ROTATION,
+): LoranneRotationEntry[] {
+  if (pool.length === 0) {
     throw new Error(
-      "LORANNE_ROTATION está vazia — verifica filtros em weekly-rotation.ts.",
+      "Pool de rotação Loranne vazio — verifica filtros em weekly-rotation.ts ou disponibilidade de MP3s.",
     );
   }
   const used = new Set<string>();
@@ -396,22 +399,22 @@ function buildWeekPicks(weekNumber: number): LoranneRotationEntry[] {
   for (let d = 0; d < 7; d++) {
     const targetMood = DAY_MOOD_ORDER[d];
     // 1ª prioridade: mood match + álbum não usado.
-    let candidates = LORANNE_ROTATION.filter((e) => {
+    let candidates = pool.filter((e) => {
       if (used.has(e.albumSlug)) return false;
       return getTrackMoods(e.albumSlug, e.trackNumber).includes(targetMood);
     });
     // 2ª prioridade: mood match (álbum repetido).
     if (candidates.length === 0) {
-      candidates = LORANNE_ROTATION.filter((e) =>
+      candidates = pool.filter((e) =>
         getTrackMoods(e.albumSlug, e.trackNumber).includes(targetMood),
       );
     }
     // 3ª prioridade: qualquer faixa não usada (mood ignorado).
     if (candidates.length === 0) {
-      candidates = LORANNE_ROTATION.filter((e) => !used.has(e.albumSlug));
+      candidates = pool.filter((e) => !used.has(e.albumSlug));
     }
     // Último recurso: pool completo.
-    if (candidates.length === 0) candidates = [...LORANNE_ROTATION];
+    if (candidates.length === 0) candidates = [...pool];
 
     const shuffled = deterministicShuffle(candidates, weekNumber * 7 + d);
     const pick = shuffled[0];
@@ -427,6 +430,17 @@ export function pickWeeklyLoranne(
 ): LoranneRotationEntry {
   const picks = buildWeekPicks(weekNumber);
   return picks[dayIndex % picks.length];
+}
+
+/** Como `pickWeeklyLoranne` mas devolve os 7 picks da semana de uma vez, a
+ *  partir de um pool pré-filtrado (ex.: só álbuns com MP3 produzido). Usado
+ *  pelo `/api/admin/weekly/plan` para evitar erros quando um álbum do
+ *  allowlist `LORANNE_AVAILABLE_ALBUMS` ainda não tem áudios em Supabase. */
+export function pickWeekLoranneFromPool(
+  weekNumber: number,
+  pool: readonly LoranneRotationEntry[],
+): LoranneRotationEntry[] {
+  return buildWeekPicks(weekNumber, pool);
 }
 
 /** Mood atribuído ao dayIndex (mon=0..sun=6). Usado em captions/UI. */
