@@ -761,6 +761,10 @@ function JobSection({
         <>
           <JobProgressBar result={jobResult} />
 
+          {jobResult.videos && jobResult.videos.some((v) => v.url) && (
+            <MetricoolCsvButton videos={jobResult.videos} />
+          )}
+
           {todayVideo && (
             <TodayWidget video={todayVideo} copied={copied} onCopy={onCopy} />
           )}
@@ -771,6 +775,62 @@ function JobSection({
         </>
       )}
     </section>
+  );
+}
+
+function MetricoolCsvButton({
+  videos,
+}: {
+  videos: JobVideoUI[];
+}) {
+  const ready = videos.filter(
+    (v): v is JobVideoUI & { url: string; captions: NonNullable<JobVideoUI["captions"]> } =>
+      !!v.url && !!v.captions
+  );
+  if (ready.length === 0) return null;
+
+  const download = async () => {
+    const { buildHemCsv } = await import("@/lib/hoje-em-mim/metricool-csv");
+    const csv = buildHemCsv(
+      ready.map((v) => ({
+        date: v.date,
+        time: "19:00",
+        videoUrl: v.url,
+        captions: v.captions,
+        fraseTexto: v.fraseTexto,
+      }))
+    );
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const first = ready[0].date;
+    const last = ready[ready.length - 1].date;
+    a.download = `hoje-em-mim-metricool-${first}-a-${last}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="rounded-lg border border-escola-border bg-escola-card p-3 flex flex-wrap items-baseline justify-between gap-3">
+      <div className="text-xs">
+        <strong style={{ color: COBRE }}>
+          📅 Pacote Metricool pronto
+        </strong>
+        <span className="ml-2 text-escola-creme-50">
+          {ready.length} posts agendados às 19h em IG (Reel) + TikTok + YT Shorts.
+        </span>
+      </div>
+      <button
+        onClick={download}
+        className="rounded border px-3 py-1.5 text-xs"
+        style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.1)" }}
+      >
+        Descarregar CSV Metricool ↓
+      </button>
+    </div>
   );
 }
 
