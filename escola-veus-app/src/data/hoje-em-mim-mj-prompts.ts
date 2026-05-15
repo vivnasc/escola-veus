@@ -1,15 +1,25 @@
 /**
- * Prompts Midjourney V7 video para a motion library "Hoje, em Mim".
+ * Prompts Midjourney V7 (imagens) + motion para Runway Gen4 Turbo, para a
+ * motion library "Hoje, em Mim".
  *
- * 30 prompts (1 por dia, com folga para 1 mês completo). Todos para 9:16
- * vertical, movimento lento e contemplativo. Cada prompt vem emparelhado
- * com um mood de áudio ElevenLabs.
+ * Pipeline:
+ *  1. Geras a IMAGEM no Midjourney com `prompt` (--ar 9:16, sem motion tag)
+ *  2. Carregas a imagem no admin (hoje-em-mim → "Imagens MJ → Runway")
+ *  3. App submete a Runway gen4_turbo image_to_video com `runwayMotion`
+ *     (duração 10s, ratio 720:1280 vertical)
+ *  4. Quando pronto, o MP4 fica em course-assets/hoje-em-mim-motions/ e
+ *     aparece no library para usar como fundo
  *
- * Notas:
- *  - O parâmetro --motion foi removido (Midjourney atual não está a aceitar).
- *  - O prompt 'lua-piscina' do batch anterior foi excluído (já gerado).
- *  - Os 5 marcados com ★ (prioritarios) cobrem o leque visual mínimo,
- *    bons para começar enquanto se gera o resto.
+ * O `runwayMotion` é SEMPRE específico para a cena (que se mexe, como, em
+ * que direcção), nunca genérico. Câmara sempre estática (ou drift muito
+ * subtil) para manter o tom contemplativo.
+ *
+ * Cada entrada inclui:
+ *  - id: identificador estável
+ *  - prompt: cola direto no Midjourney
+ *  - runwayMotion: cola na Runway com a imagem MJ
+ *  - audioMood: ElevenLabs SFX que combina
+ *  - notas, prioritario (opcionais)
  */
 
 import type { NightMood } from "@/lib/hoje-em-mim/audio";
@@ -17,11 +27,9 @@ import type { NightMood } from "@/lib/hoje-em-mim/audio";
 export type MjVideoPrompt = {
   id: string;
   prompt: string;
-  /** Mood de áudio recomendado para acompanhar este visual. */
+  runwayMotion: string;
   audioMood: NightMood;
-  /** Notas para a editora. */
   notas?: string;
-  /** Marcado como prioritário no primeiro batch da library. */
   prioritario?: boolean;
 };
 
@@ -30,196 +38,255 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     id: "mj-01-vela-stucco",
     prioritario: true,
     prompt:
-      "Single warm beeswax candle flame flickering against a dark stucco wall, shadow play, intimate sanctuary mood, deep navy background, slow --ar 9:16",
+      "Single warm beeswax candle flame against a dark stucco wall, shadow play, intimate sanctuary mood, deep navy background --ar 9:16",
+    runwayMotion:
+      "static camera, single candle flame gently flickering and dancing in place, soft shadow flickering on the stucco wall, slow contemplative night atmosphere, no zoom, no pan, no rotation, no people, no sudden movements",
     audioMood: "lareira-respira",
   },
   {
     id: "mj-02-tropical-amber",
     prioritario: true,
     prompt:
-      "Tropical broadleaf plants swaying in night breeze, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16",
+      "Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16",
+    runwayMotion:
+      "static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people",
     audioMood: "brisa-bambu",
   },
   {
     id: "mj-03-brasas",
     prioritario: true,
     prompt:
-      "Glowing embers in a low brazier, orange sparks rising slowly, dark earthy background, hypnotic, contemplative, dust particles --ar 9:16",
+      "Glowing embers in a low brazier, dark earthy background, contemplative atmosphere, dust particles in warm air --ar 9:16",
+    runwayMotion:
+      "static camera, glowing orange embers slowly pulsing and breathing in place, small sparks rising slowly upward, dust particles drifting gently in warm light, no zoom, no pan, no rotation, no people",
     audioMood: "lareira-respira",
   },
   {
     id: "mj-04-chuva-janela",
     prioritario: true,
     prompt:
-      "Fine rain on a window pane at night, warm interior amber light behind, blurred droplets, melancholic peace --ar 9:16",
+      "Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16",
+    runwayMotion:
+      "static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people",
     audioMood: "chuva-fina-no-telhado",
   },
   {
     id: "mj-05-incenso",
     prioritario: true,
     prompt:
-      "White incense smoke rising slowly in a dark room, single beam of warm light cutting through, very still, contemplative --ar 9:16",
+      "White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16",
+    runwayMotion:
+      "static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people",
     audioMood: "tigela-grave",
   },
   {
     id: "mj-06-bambu-ocre",
     prompt:
-      "Bamboo leaves swaying in night air, soft shadows on earthen ochre wall, low warm lantern light, very slow --ar 9:16",
+      "Bamboo grove against an earthen ochre wall at night, low warm lantern light, soft long shadows --ar 9:16",
+    runwayMotion:
+      "static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people",
     audioMood: "brisa-bambu",
   },
   {
     id: "mj-07-baobab-lua",
     prompt:
-      "Full moon behind drifting silver clouds, silhouette of a single baobab tree, African savannah at night, wide --ar 9:16",
+      "Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16",
+    runwayMotion:
+      "static camera, silver clouds slowly drifting horizontally across the full moon from left to right, full moon stays in place, baobab silhouette unmoving in foreground, very slow drift, no zoom, no rotation, no people",
     audioMood: "coruja-distante",
   },
   {
     id: "mj-08-cortina-linho",
     prompt:
-      "White linen curtain billowing in moonlit window, silvery blue light, slow gentle motion, soft sheer fabric --ar 9:16",
+      "White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16",
+    runwayMotion:
+      "static camera, sheer white linen curtain gently billowing inward and outward in moonlit night breeze, fabric folds rippling slowly and organically, silvery light pulsing softly behind, no zoom, no pan, no rotation, no people",
     audioMood: "brisa-bambu",
   },
   {
     id: "mj-09-pirilampos",
     prompt:
-      "Fireflies floating in a dark forest clearing, faint blue moon above, dreamy slow movement, ambient --ar 9:16",
+      "Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16",
+    runwayMotion:
+      "static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people",
     audioMood: "grilos-tropicais",
   },
   {
     id: "mj-10-fonte-pedra",
     prompt:
-      "Water trickling from a black stone fountain in a moonlit African garden, single low warm lantern nearby, peaceful --ar 9:16",
+      "Water trickling from a black stone fountain in a moonlit African garden, single low warm lantern nearby --ar 9:16",
+    runwayMotion:
+      "static camera, water gently trickling continuously down the black stone fountain, water droplets falling and pooling, lantern flame softly flickering nearby, slow continuous flow, no zoom, no pan, no rotation, no people",
     audioMood: "lua-sobre-agua",
   },
   {
     id: "mj-11-via-lactea",
     prompt:
-      "Milky Way slowly drifting over silhouetted acacia trees, deep cosmic blues and purples, time-lapse feel but slow --ar 9:16",
+      "Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16",
+    runwayMotion:
+      "static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people",
     audioMood: "sussurro-coro-feminino",
   },
   {
     id: "mj-12-cha-quente",
     prompt:
-      "Hands wrapping themselves around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16",
+      "Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16",
+    runwayMotion:
+      "static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible",
     audioMood: "lareira-respira",
     notas: "Bom para sábado (corpo). Mãos como protagonistas, sem rosto.",
   },
   {
     id: "mj-13-rede-verandah",
     prompt:
-      "Soft amber-lit hammock swaying gently on a verandah, dark tropical garden beyond, calm warm dusk to night --ar 9:16",
+      "Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16",
+    runwayMotion:
+      "static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people",
     audioMood: "grilos-tropicais",
   },
   {
     id: "mj-14-diario-cera",
     prompt:
-      "Pages of an old leather journal turning slowly in candlelight, warm shadows, intimate writing nook --ar 9:16",
+      "Pages of an old leather journal open under candlelight, warm shadows, intimate writing nook --ar 9:16",
+    runwayMotion:
+      "static camera, single page of the open journal slowly turning upward and folding over, candle flame gently flickering in background warm shadows pulsing, slow contemplative pace, no zoom, no pan, no rotation, no hands visible",
     audioMood: "lareira-respira",
     notas: "Bom para segunda (convite) e quinta (aprendi).",
   },
   {
     id: "mj-15-mar-noite",
     prompt:
-      "Calm small waves on dark sand at night, distant moon reflection, no people, contemplative, slow --ar 9:16",
+      "Calm small waves on dark sand at night, distant moon reflection, contemplative composition --ar 9:16",
+    runwayMotion:
+      "static camera, small calm waves slowly rolling onto dark sand, moon reflection rippling gently on the wet sand and water surface, slow continuous wave motion, no zoom, no pan, no rotation, no people",
     audioMood: "mare-noturna",
   },
   {
     id: "mj-16-tambor-shadow",
     prompt:
-      "Single low African udu drum in soft amber light, slight shadow movement on dark wall, no hands visible, contemplative --ar 9:16",
+      "Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16",
+    runwayMotion:
+      "static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible",
     audioMood: "tambor-lento-distante",
     notas: "Pode tentar 'djembe' se udu não devolver bem.",
   },
   {
     id: "mj-17-velas-mesa",
     prompt:
-      "Three warm beeswax candles flickering on a dark wood table, soft amber halo, deep navy room beyond, intimate altar feel --ar 9:16",
+      "Three warm beeswax candles on a dark wood table, soft amber halo, deep navy room beyond, intimate altar feel --ar 9:16",
+    runwayMotion:
+      "static camera, three candle flames independently flickering and dancing in place on the dark wood table, soft amber halos gently pulsing around each, no zoom, no pan, no rotation, no people",
     audioMood: "lareira-respira",
   },
   {
     id: "mj-18-sombra-planta",
     prompt:
-      "Soft shadow of a single house plant swaying on a creamy plaster wall, warm lamp light, very slow, intimate room --ar 9:16",
+      "Soft shadow of a single house plant on a creamy plaster wall, warm lamp light, intimate room composition --ar 9:16",
+    runwayMotion:
+      "static camera, soft shadow of the house plant slowly swaying left and right on the creamy plaster wall, warm lamp light softly pulsing, very slow rhythmic shadow movement, no zoom, no pan, no rotation",
     audioMood: "brisa-bambu",
     notas: "Bom para quarta (soltar). Movimento mínimo, quase abstrato.",
   },
   {
     id: "mj-19-vapor-cha",
     prompt:
-      "Steam rising slowly from a dark stoneware cup of tea on wooden surface, soft warm side light, dark navy background, intimate --ar 9:16",
+      "Steam rising from a dark stoneware cup of tea on a wooden surface, soft warm side light, dark navy background --ar 9:16",
+    runwayMotion:
+      "static camera, white steam rising slowly from the dark stoneware cup curling upward in soft tendrils, steam dissipates and renews continuously, warm side light gently pulsing, no zoom, no pan, no rotation, no people",
     audioMood: "lareira-respira",
   },
   {
     id: "mj-20-silhueta-janela",
     prompt:
-      "Silhouette of a woman from behind looking out of an arched window at the moon, deep indigo room, single soft lamp glow, contemplative --ar 9:16",
+      "Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16",
+    runwayMotion:
+      "static camera, soft moonlight slowly shifting on the arched window frame, woman silhouette unmoving in contemplative pose, light pulsing gently, very subtle slow motion, no zoom, no pan, no rotation",
     audioMood: "sussurro-coro-feminino",
     notas: "Bom para domingo (intenção).",
   },
   {
     id: "mj-21-estrelas-poca",
     prompt:
-      "Stars reflected in a still puddle of water on dark earth, gentle ripple, no people, magical realism, contemplative --ar 9:16",
+      "Stars reflected in a still puddle of water on dark earth, magical realism, contemplative composition --ar 9:16",
+    runwayMotion:
+      "static camera, gentle ripple expanding slowly across the still water puddle from a single point, stars reflection rippling and re-settling, surface returns to stillness then ripples again, very subtle slow motion, no zoom, no pan, no rotation, no people",
     audioMood: "lua-sobre-agua",
   },
   {
     id: "mj-22-coruja-ramo",
     prompt:
-      "Owl silhouette perched on a bare branch under a misty moon, faint blue light, slow gentle camera drift, quiet --ar 9:16",
+      "Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16",
+    runwayMotion:
+      "static camera, owl silhouette slowly turning its head once to the side and back, soft mist drifting horizontally behind, blue moon light softly pulsing, no zoom, no pan, no rotation, no people",
     audioMood: "coruja-distante",
   },
   {
     id: "mj-23-jasmim-vela",
     prompt:
-      "White jasmine flowers in a clay bowl beside a single warm candle, dark earthy background, soft amber glow, intimate --ar 9:16",
+      "White jasmine flowers in a clay bowl beside a single warm candle, dark earthy background, soft amber glow --ar 9:16",
+    runwayMotion:
+      "static camera, candle flame gently flickering beside the bowl of white jasmine flowers, soft amber glow pulsing on the white petals, very slight petal movement, slow contemplative motion, no zoom, no pan, no rotation, no people",
     audioMood: "lareira-respira",
     notas: "Bom para terça (gratidão) e sexta (celebrar).",
   },
   {
     id: "mj-24-pes-areia",
     prompt:
-      "Bare feet softly stepping on dark cool night sand by water edge, moonlight reflection, no face visible, sensorial --ar 9:16",
+      "Bare feet on dark cool night sand at the water edge, moonlight reflection, sensorial intimate framing --ar 9:16",
+    runwayMotion:
+      "static camera, gentle ripple of water lapping at the bare feet on the dark night sand, moonlight reflection rippling on the wet sand, feet remain still, very slow contemplative motion, no zoom, no pan, no rotation, no face visible",
     audioMood: "mare-noturna",
     notas: "Bom para sábado (corpo).",
   },
   {
     id: "mj-25-aldeia-distante",
     prompt:
-      "Distant African village at night with small warm yellow window lights, silhouette of acacia trees, deep blue sky, quiet --ar 9:16",
+      "Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16",
+    runwayMotion:
+      "static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people",
     audioMood: "tambor-lento-distante",
   },
   {
     id: "mj-26-teia-orvalho",
     prompt:
-      "Close up of a spider web glistening with dew drops under moonlight, very slow drift, dark forest background, delicate --ar 9:16",
+      "Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16",
+    runwayMotion:
+      "static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people",
     audioMood: "grilos-tropicais",
   },
   {
     id: "mj-27-fogueira-silhuetas",
     prompt:
       "Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16",
+    runwayMotion:
+      "static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation",
     audioMood: "tambor-lento-distante",
   },
   {
     id: "mj-28-chocolate-vapor",
     prompt:
-      "Steam rising from a mug of dark cacao in soft amber kitchen light at night, hands cradling the mug, intimate close framing --ar 9:16",
+      "Hands cradling a mug of dark cacao in soft amber kitchen light at night, intimate close framing --ar 9:16",
+    runwayMotion:
+      "static camera, white steam rising slowly from the mug of dark cacao curling upward and dissipating, hands stay still cradling the mug, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible",
     audioMood: "lareira-respira",
   },
   {
     id: "mj-29-caminho-lanternas",
     prompt:
-      "Garden path lined with low warm lanterns at night, soft fog, peaceful, no people, depth of field --ar 9:16",
+      "Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16",
+    runwayMotion:
+      "static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people",
     audioMood: "grilos-tropicais",
   },
   {
     id: "mj-30-pena-cai",
     prompt:
-      "Single white feather falling slowly through a beam of moonlight, deep dark background, soft glow, dreamlike --ar 9:16",
+      "Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16",
+    runwayMotion:
+      "static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people",
     audioMood: "sussurro-coro-feminino",
     notas: "Bom para quarta (soltar) e domingo (intenção).",
   },
 ];
 
-/** Filtro para o batch prioritário (5 primeiros marcados ★). */
 export const MJ_PRIORITARIOS = MJ_VIDEO_PROMPTS.filter((p) => p.prioritario);
