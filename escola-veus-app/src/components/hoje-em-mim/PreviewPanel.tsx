@@ -26,6 +26,15 @@ type Frase = { id: string; dia: DiaSemana; texto: string };
 const DEFAULT_MEDIA = "/assets/hoje-em-mim/motions/lua-piscina-01.mp4";
 const FALLBACK_MEDIA = "/assets/vc-sabia/motions/IMG_8599.webp";
 
+const MESES_PT = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+
+function daysInMonth(ano: number, mes: number): number {
+  return new Date(ano, mes, 0).getDate();
+}
+
 const DIAS_PT_CURTO: Record<DiaSemana, string> = {
   mon: "Seg", tue: "Ter", wed: "Qua", thu: "Qui",
   fri: "Sex", sat: "Sáb", sun: "Dom",
@@ -74,6 +83,11 @@ export function HojeEmMimPreviewPanel() {
     total: number;
     videos?: RenderVideo[];
     error?: string;
+    ano?: number;
+    mes?: number;
+    mesLabel?: string;
+    diaInicio?: number;
+    diaFim?: number;
     startDate?: string;
     numDays?: number;
     startedAt?: string;
@@ -88,12 +102,12 @@ export function HojeEmMimPreviewPanel() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Config do job
-  const [startDate, setStartDate] = useState<string>(() => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  });
-  const [numDays, setNumDays] = useState<number>(30);
+  // Config do job: range ano/mes/diaInicio/diaFim
+  const now = new Date();
+  const [ano, setAno] = useState<number>(now.getFullYear());
+  const [mes, setMes] = useState<number>(now.getMonth() + 1);
+  const [diaInicio, setDiaInicio] = useState<number>(now.getDate());
+  const [diaFim, setDiaFim] = useState<number>(() => daysInMonth(now.getFullYear(), now.getMonth() + 1));
   const [durationSec, setDurationSec] = useState<number>(15);
 
   const phrase =
@@ -143,15 +157,27 @@ export function HojeEmMimPreviewPanel() {
     }
   }, [jobResult]);
 
+  const numItens = Math.max(0, diaFim - diaInicio + 1);
+  const dmax = daysInMonth(ano, mes);
+  const rangeOk = diaInicio >= 1 && diaFim >= diaInicio && diaFim <= dmax;
+
   const submitJob = async () => {
     setSubmitError(null);
+    if (!rangeOk) {
+      setSubmitError(
+        `Range inválido. Dias ${diaInicio}-${diaFim} para ${MESES_PT[mes - 1]} (${dmax} dias).`
+      );
+      return;
+    }
     setSubmitting(true);
     try {
-      const id = `hoje-em-mim-${startDate}-${Date.now().toString(36)}`;
+      const id = `hoje-em-mim-${ano}-${String(mes).padStart(2, "0")}-${String(diaInicio).padStart(2, "0")}-to-${String(diaFim).padStart(2, "0")}-${Date.now().toString(36)}`;
       const body = {
         jobId: id,
-        startDate,
-        numDays,
+        ano,
+        mes,
+        diaInicio,
+        diaFim,
         durationSec,
         motionPool: [media],
         audioPool: audioUrlSelected ? [audioUrlSelected] : [],
@@ -332,25 +358,58 @@ export function HojeEmMimPreviewPanel() {
           </div>
 
           <div className="space-y-2 pt-3 border-t border-escola-border">
-            <div className="text-escola-creme">Pack mensal</div>
+            <div className="text-escola-creme">Bulk mensal · Pacote Metricool</div>
             <div className="grid grid-cols-2 gap-2">
               <label className="text-[10px] block">
-                Início
+                Ano
                 <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  type="number"
+                  min={2020}
+                  max={2100}
+                  value={ano}
+                  onChange={(e) => setAno(Number(e.target.value))}
                   className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
                 />
               </label>
               <label className="text-[10px] block">
-                Dias
+                Mês
+                <select
+                  value={mes}
+                  onChange={(e) => {
+                    const newMes = Number(e.target.value);
+                    setMes(newMes);
+                    const newDmax = daysInMonth(ano, newMes);
+                    if (diaFim > newDmax) setDiaFim(newDmax);
+                    if (diaInicio > newDmax) setDiaInicio(newDmax);
+                  }}
+                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                >
+                  {MESES_PT.map((label, i) => (
+                    <option key={i} value={i + 1}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-[10px] block">
+                Dia início
                 <input
                   type="number"
                   min={1}
-                  max={60}
-                  value={numDays}
-                  onChange={(e) => setNumDays(Number(e.target.value))}
+                  max={dmax}
+                  value={diaInicio}
+                  onChange={(e) => setDiaInicio(Number(e.target.value))}
+                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                />
+              </label>
+              <label className="text-[10px] block">
+                Dia fim
+                <input
+                  type="number"
+                  min={diaInicio}
+                  max={dmax}
+                  value={diaFim}
+                  onChange={(e) => setDiaFim(Number(e.target.value))}
                   className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
                 />
               </label>
@@ -368,7 +427,7 @@ export function HojeEmMimPreviewPanel() {
             </div>
             <button
               onClick={submitJob}
-              disabled={submitting}
+              disabled={submitting || !rangeOk}
               className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
               style={{
                 borderColor: COBRE,
@@ -378,7 +437,7 @@ export function HojeEmMimPreviewPanel() {
             >
               {submitting
                 ? "a submeter…"
-                : `Submeter job de ${numDays} dias`}
+                : `▶ Gerar dias ${diaInicio}-${diaFim} de ${MESES_PT[mes - 1]} ${ano} (${numItens})`}
             </button>
             {submitError && (
               <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
@@ -386,10 +445,9 @@ export function HojeEmMimPreviewPanel() {
               </div>
             )}
             <div className="text-[10px] text-escola-creme-50">
-              Submete o job ao GitHub Actions (workflow render-hoje-em-mim).
-              Cada item ~30s, pack de 30 dias demora 15-20 min. Faz polling
-              automático e mostra os MP4 conforme prontos. Motion e áudio
-              usados: o que está selecionado acima.
+              {numItens} jobs em paralelo no GitHub Actions (matrix). Cada
+              item ~30s. Faz polling automático e mostra os MP4 conforme
+              prontos. Motion e áudio usados: os que estão selecionados acima.
             </div>
           </div>
         </div>
@@ -469,6 +527,11 @@ type JobResultUI = {
   total: number;
   videos?: JobVideoUI[];
   error?: string;
+  ano?: number;
+  mes?: number;
+  mesLabel?: string;
+  diaInicio?: number;
+  diaFim?: number;
   startDate?: string;
   numDays?: number;
   startedAt?: string;
@@ -571,8 +634,16 @@ function JobProgressBar({ result }: { result: JobResultUI }) {
     failed: "text-red-300",
   }[result.status];
 
+  const rangeLabel =
+    result.mesLabel && result.diaInicio && result.diaFim && result.ano
+      ? `Dias ${result.diaInicio}-${result.diaFim} de ${result.mesLabel} ${result.ano}`
+      : null;
+
   return (
     <div className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2">
+      {rangeLabel && (
+        <div className="text-xs" style={{ color: COBRE }}>{rangeLabel}</div>
+      )}
       <div className="flex items-baseline justify-between text-xs">
         <span className={statusColor}>{statusLabel}</span>
         <span className="text-escola-creme-50">{pct}%</span>

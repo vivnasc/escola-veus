@@ -1,10 +1,11 @@
 name: Render Hoje em Mim
 
 # Disparado por /api/admin/hoje-em-mim/render-submit. O manifest em
-# course-assets/render-jobs/<jobId>.json tem N items (1 por dia da pack
-# mensal). Cada item tem motionUrl, audioUrl (opcional), frase, dia.
-# Aqui geramos N MP4s 1080x1920 com overlay 'Janela de Lua' queimado e
-# áudio se houver. Resultado vai para course-assets/hoje-em-mim-renders/.
+# course-assets/render-jobs/<jobId>.json tem N items (1 por dia da
+# range). Render é feito em PARALELO via matrix strategy: 1 runner por
+# item. Cada runner escreve o seu resultado em
+# course-assets/render-jobs/<jobId>-items/<dayIndex>.json. A UI agrega
+# tudo via /api/admin/hoje-em-mim/render-status.
 
 on:
   workflow_dispatch:
@@ -17,9 +18,42 @@ on:
 run-name: "render-hoje-em-mim: ${{ inputs.jobId }}"
 
 jobs:
-  render:
+  prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+      total: ${{ steps.set.outputs.total }}
+    steps:
+      - name: Download manifest e calcular matrix
+        id: set
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          JOB_ID: ${{ inputs.jobId }}
+        run: |
+          set -e
+          MANIFEST_URL="$SUPABASE_URL/storage/v1/object/public/course-assets/render-jobs/$JOB_ID.json"
+          echo "Fetching manifest from $MANIFEST_URL"
+          curl -fsSL "$MANIFEST_URL" -o /tmp/manifest.json
+          TOTAL=$(jq '.items | length' /tmp/manifest.json)
+          echo "total=$TOTAL"
+          if [ "$TOTAL" -lt 1 ]; then
+            echo "Manifest sem items. Aborto." >&2
+            exit 1
+          fi
+          MATRIX=$(jq -c '[.items[].dayIndex]' /tmp/manifest.json)
+          echo "matrix=$MATRIX"
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
+
+  render:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        dayIndex: ${{ fromJson(needs.prepare.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,10 +72,42 @@ jobs:
         working-directory: tools/render-hoje-em-mim
         run: npm install --no-audit --no-fund
 
-      - name: Render all items and upload
+      - name: Render item ${{ matrix.dayIndex }}
         working-directory: tools/render-hoje-em-mim
+        env:
+          JOB_ID: ${{ inputs.jobId }}
+          DAY_INDEX: ${{ matrix.dayIndex }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node render-one.mjs
+
+  finalize:
+    needs: [prepare, render]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Marca result.json como done|failed
         env:
           JOB_ID: ${{ inputs.jobId }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: node render.mjs
+          RENDER_RESULT: ${{ needs.render.result }}
+        run: |
+          set -e
+          STATUS="done"
+          if [ "$RENDER_RESULT" != "success" ]; then STATUS="failed"; fi
+          NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          BODY=$(printf '{"jobId":"%s","status":"%s","completedAt":"%s"}' "$JOB_ID" "$STATUS" "$NOW")
+          curl -fsSL -X POST \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            -H "x-upsert: true" \
+            --data "$BODY" \
+            "$SUPABASE_URL/storage/v1/object/course-assets/render-jobs/$JOB_ID-final.json"
+          # Sobrescreve o result.json com o status final
+          curl -fsSL -X POST \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            -H "x-upsert: true" \
+            --data "$BODY" \
+            "$SUPABASE_URL/storage/v1/object/course-assets/render-jobs/$JOB_ID-result.json"

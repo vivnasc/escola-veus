@@ -88,8 +88,8 @@ async function uploadBuffer(path, buf, contentType) {
   return publicUrl(path);
 }
 
-async function writeResult(payload) {
-  const path = `render-jobs/${JOB_ID}-result.json`;
+async function writeItemResult(payload) {
+  const path = `render-jobs/${JOB_ID}-items/${payload.dayIndex}.json`;
   await uploadBuffer(path, Buffer.from(JSON.stringify(payload, null, 2)), "application/json");
 }
 
@@ -273,22 +273,20 @@ async function renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp }) {
 }
 
 async function main() {
-  console.log(`→ Job ${JOB_ID}`);
+  const DAY_INDEX = Number(process.env.DAY_INDEX);
+  if (!Number.isInteger(DAY_INDEX) || DAY_INDEX < 0) {
+    throw new Error(`DAY_INDEX inválido: ${process.env.DAY_INDEX}`);
+  }
+  console.log(`→ Job ${JOB_ID} · item dayIndex=${DAY_INDEX}`);
+
   const manifest = await fetchJsonPublic(`render-jobs/${JOB_ID}.json`);
   const items = manifest.items || [];
-  console.log(`→ ${items.length} items para renderizar`);
+  const item = items.find((it) => it.dayIndex === DAY_INDEX);
+  if (!item) {
+    throw new Error(`dayIndex ${DAY_INDEX} não está no manifest (total ${items.length})`);
+  }
+  console.log(`→ ${item.date} (${item.dia}) → ${item.fraseId}`);
 
-  // Estado inicial: rendering 0/N
-  await writeResult({
-    jobId: JOB_ID,
-    status: "rendering",
-    progress: 0,
-    total: items.length,
-    videos: [],
-    startedAt: new Date().toISOString(),
-  });
-
-  // Carrega fonts uma vez
   const [fontItalicBuf, fontRegBuf] = await Promise.all([
     readFile(join(FONTS_DIR, "CormorantGaramond-Italic.ttf")),
     readFile(join(FONTS_DIR, "CormorantGaramond-Regular.ttf")),
@@ -298,66 +296,44 @@ async function main() {
 
   const { default: sharp } = await import("sharp");
 
-  const workDir = await mkdtemp(join(tmpdir(), "hem-bulk-"));
-  const videos = [];
+  const workDir = await mkdtemp(join(tmpdir(), `hem-${DAY_INDEX}-`));
 
   try {
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
-      console.log(`\n[${i + 1}/${items.length}] ${item.date} (${item.dia}) → ${item.fraseId}`);
-      try {
-        const v = await renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp });
-        videos.push(v);
-        console.log(`   ✓ ${(v.sizeBytes / 1024 / 1024).toFixed(1)} MB`);
-      } catch (err) {
-        console.error(`   ✗ ${err.message || err}`);
-        videos.push({
-          dayIndex: item.dayIndex,
-          date: item.date,
-          dia: item.dia,
-          fraseId: item.fraseId,
-          file: null,
-          url: null,
-          error: String(err.message || err).slice(0, 400),
-          captions: item.captions,
-        });
-      }
-
-      await writeResult({
+    try {
+      const v = await renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp });
+      console.log(`   ✓ ${(v.sizeBytes / 1024 / 1024).toFixed(1)} MB → ${v.url}`);
+      await writeItemResult({
         jobId: JOB_ID,
-        status: "rendering",
-        progress: i + 1,
-        total: items.length,
-        videos,
-        startedAt: new Date().toISOString(),
+        dayIndex: DAY_INDEX,
+        status: "done",
+        ...v,
+        completedAt: new Date().toISOString(),
       });
+    } catch (err) {
+      const errMsg = String(err.message || err).slice(0, 600);
+      console.error(`   ✗ ${errMsg}`);
+      await writeItemResult({
+        jobId: JOB_ID,
+        dayIndex: DAY_INDEX,
+        status: "failed",
+        date: item.date,
+        dia: item.dia,
+        fraseId: item.fraseId,
+        fraseTexto: item.fraseTexto,
+        file: null,
+        url: null,
+        error: errMsg,
+        captions: item.captions,
+        failedAt: new Date().toISOString(),
+      });
+      throw err;
     }
-
-    await writeResult({
-      jobId: JOB_ID,
-      status: "done",
-      progress: items.length,
-      total: items.length,
-      videos,
-      startDate: manifest.startDate,
-      numDays: manifest.numDays,
-      completedAt: new Date().toISOString(),
-    });
-    console.log(`\n✓ Job concluído (${videos.filter((v) => v.url).length}/${videos.length} OK)`);
   } finally {
     await rm(workDir, { recursive: true, force: true }).catch(() => {});
   }
 }
 
-main().catch(async (err) => {
+main().catch((err) => {
   console.error("\n✗", err.message || err);
-  try {
-    await writeResult({
-      jobId: JOB_ID,
-      status: "failed",
-      error: String(err.message || err).slice(0, 800),
-      failedAt: new Date().toISOString(),
-    });
-  } catch {}
   process.exit(1);
 });

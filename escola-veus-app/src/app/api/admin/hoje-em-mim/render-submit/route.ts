@@ -7,36 +7,39 @@ import { phraseToCaptions, type DiaSemana } from "@/lib/hoje-em-mim/captions";
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
+const MESES_PT = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+
 /**
  * POST /api/admin/hoje-em-mim/render-submit
  *
- * Submete um job de render BULK para a produção "Hoje, em Mim". O padrão
- * espelha o de render-carrossel-veus:
- *   1. Escreve manifest com a lista de items (1 por dia da pack) em
- *      course-assets/render-jobs/{jobId}.json
- *   2. Escreve initial result.json com status=queued
- *   3. Dispara o workflow render-hoje-em-mim.yml via GitHub API
- *   4. Devolve { jobId } para a UI fazer polling em /render-status
+ * Submete um job de render BULK em RANGE para a produção "Hoje, em Mim".
  *
- * O trabalho de gerar MP4 + áudio + overlay é feito no GitHub Actions
- * (ffmpeg + sharp). A Vercel só prepara o plano.
+ * Pode pedir um intervalo de dias num mês (ex: 15 a 31 de Maio = 17 items).
+ * O render real corre como matrix paralela no workflow render-hoje-em-mim.yml.
  *
  * Body: {
  *   jobId,
- *   startDate (ISO yyyy-mm-dd),
- *   numDays (default 30),
+ *   ano (yyyy),
+ *   mes (1-12),
+ *   diaInicio (1-31),
+ *   diaFim (diaInicio..31),
  *   motionPool: string[]  (URLs públicas, mínimo 1, roda entre eles),
  *   audioPool?: string[]  (URLs públicas, vazio para sem som),
  *   durationSec (default 15)
  * }
  *
- * Returns: { jobId, manifestUrl, workflowRunUrl, items: number }
+ * Returns: { jobId, items, manifestUrl, workflowRunUrl }
  */
 export async function POST(req: NextRequest) {
   const body = (await req.json().catch(() => ({}))) as {
     jobId?: string;
-    startDate?: string;
-    numDays?: number;
+    ano?: number;
+    mes?: number;
+    diaInicio?: number;
+    diaFim?: number;
     motionPool?: string[];
     audioPool?: string[];
     durationSec?: number;
@@ -45,12 +48,31 @@ export async function POST(req: NextRequest) {
   const jobId = (body.jobId || "").trim();
   if (!jobId) return NextResponse.json({ erro: "jobId obrigatório" }, { status: 400 });
 
-  const startDate = (body.startDate || "").trim();
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(startDate)) {
-    return NextResponse.json({ erro: "startDate inválido (yyyy-mm-dd)" }, { status: 400 });
+  const ano = Number(body.ano);
+  const mes = Number(body.mes);
+  const diaInicio = Number(body.diaInicio);
+  const diaFim = Number(body.diaFim);
+
+  if (!Number.isInteger(ano) || ano < 2020 || ano > 2100) {
+    return NextResponse.json({ erro: "ano inválido (2020-2100)" }, { status: 400 });
+  }
+  if (!Number.isInteger(mes) || mes < 1 || mes > 12) {
+    return NextResponse.json({ erro: "mes inválido (1-12)" }, { status: 400 });
+  }
+  const diasNoMes = daysInMonth(ano, mes);
+  if (!Number.isInteger(diaInicio) || diaInicio < 1 || diaInicio > diasNoMes) {
+    return NextResponse.json(
+      { erro: `diaInicio inválido (1-${diasNoMes} para ${MESES_PT[mes - 1]})` },
+      { status: 400 }
+    );
+  }
+  if (!Number.isInteger(diaFim) || diaFim < diaInicio || diaFim > diasNoMes) {
+    return NextResponse.json(
+      { erro: `diaFim tem de estar entre ${diaInicio} e ${diasNoMes}` },
+      { status: 400 }
+    );
   }
 
-  const numDays = clamp(Number(body.numDays ?? 30), 1, 60);
   const motionPool = Array.isArray(body.motionPool)
     ? body.motionPool.filter((u) => typeof u === "string" && u.length > 4)
     : [];
@@ -62,12 +84,14 @@ export async function POST(req: NextRequest) {
     : [];
   const durationSec = clamp(Number(body.durationSec ?? 15), 5, 60);
 
-  // Constrói items: para cada dia, escolhe frase rotativa do dia, motion e áudio do pool.
   const frases = seed.frases as Array<{ id: string; dia: DiaSemana; texto: string }>;
   const frasesPorDia: Record<DiaSemana, typeof frases> = {
     mon: [], tue: [], wed: [], thu: [], fri: [], sat: [], sun: [],
   };
   for (const f of frases) frasesPorDia[f.dia].push(f);
+
+  const startDate = isoDate(ano, mes, diaInicio);
+  const numDays = diaFim - diaInicio + 1;
 
   const items = buildItems({
     startDate,
@@ -92,10 +116,15 @@ export async function POST(req: NextRequest) {
 
   const manifest = {
     jobId,
-    items,
+    ano,
+    mes,
+    mesLabel: MESES_PT[mes - 1],
+    diaInicio,
+    diaFim,
     startDate,
     numDays,
     durationSec,
+    items,
     createdAt: new Date().toISOString(),
   };
   const manifestPath = `render-jobs/${jobId}.json`;
@@ -112,11 +141,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Estado inicial. O ficheiro `<jobId>-result.json` guarda só metadata.
+  // Os resultados por item ficam em `<jobId>-items/<dayIndex>.json`.
+  // O status endpoint agrega.
   const initial = {
     jobId,
     status: "queued" as const,
-    progress: 0,
     total: items.length,
+    ano,
+    mes,
+    mesLabel: MESES_PT[mes - 1],
+    diaInicio,
+    diaFim,
+    startDate,
+    numDays,
     createdAt: new Date().toISOString(),
   };
   const { error: rErr } = await admin.storage
@@ -170,6 +208,11 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     jobId,
     items: items.length,
+    ano,
+    mes,
+    mesLabel: MESES_PT[mes - 1],
+    diaInicio,
+    diaFim,
     manifestUrl: `${supabaseUrl}/storage/v1/object/public/course-assets/${manifestPath}`,
     workflowRunUrl: `https://github.com/${owner}/${repo}/actions/workflows/${workflowFile}`,
   });
@@ -184,11 +227,7 @@ type ManifestItem = {
   motionUrl: string;
   audioUrl: string | null;
   durationSec: number;
-  captions: {
-    instagram: string;
-    tiktok: string;
-    whatsapp: string;
-  };
+  captions: { instagram: string; tiktok: string; whatsapp: string };
 };
 
 function buildItems(opts: {
@@ -216,7 +255,6 @@ function buildItems(opts: {
     const motionUrl = opts.motionPool[i % opts.motionPool.length];
     const audioUrl =
       opts.audioPool.length > 0 ? opts.audioPool[i % opts.audioPool.length] : null;
-
     const captions = phraseToCaptions({ phrase: frase.texto, dia });
 
     items.push({
@@ -232,6 +270,14 @@ function buildItems(opts: {
     });
   }
   return items;
+}
+
+function isoDate(ano: number, mes: number, dia: number): string {
+  return `${ano}-${String(mes).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+}
+
+function daysInMonth(ano: number, mes: number): number {
+  return new Date(ano, mes, 0).getDate();
 }
 
 function addDays(iso: string, days: number): string {
