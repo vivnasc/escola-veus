@@ -31,17 +31,38 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "JSON invalido" }, { status: 400 });
   }
 
-  const motionUrl = body.motionUrl?.trim();
+  const motionUrlRaw = body.motionUrl?.trim();
   const audioUrl = body.audioUrl?.trim() || null;
   const phrase = (body.phrase || "").trim();
   const dateLabel = (body.dateLabel || "").trim();
   const durationSec = Math.max(5, Math.min(20, Number(body.durationSec ?? 12)));
 
-  if (!motionUrl) {
+  if (!motionUrlRaw) {
     return NextResponse.json({ erro: "motionUrl em falta" }, { status: 400 });
   }
   if (!phrase) {
     return NextResponse.json({ erro: "phrase em falta" }, { status: 400 });
+  }
+
+  // Resolver URLs relativas (e.g. motion de teste em /public/assets/...)
+  // para URLs absolutas, senao o GitHub Action nao consegue fazer fetch.
+  let motionUrl = motionUrlRaw;
+  if (motionUrl.startsWith("/")) {
+    const proto = req.headers.get("x-forwarded-proto") || "https";
+    const host = req.headers.get("host") || process.env.VERCEL_URL || "";
+    if (!host) {
+      return NextResponse.json(
+        { erro: "motionUrl relativa mas nao consegui resolver host. Usa motion da library Supabase." },
+        { status: 400 }
+      );
+    }
+    motionUrl = `${proto}://${host}${motionUrl}`;
+  }
+  if (!/^https?:\/\//.test(motionUrl)) {
+    return NextResponse.json(
+      { erro: `motionUrl invalida: ${motionUrl}` },
+      { status: 400 }
+    );
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
