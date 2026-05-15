@@ -3,7 +3,9 @@
 
 Cada short:
   - 3 imagens MJ em assets/trinta-manhas/imagens/cap-NN-{1,2,3}.jpg
-  - 1 trilha AG em assets/trinta-manhas/musica/veu-{nome}.mp3 (compartilhada por véu)
+  - 1 faixa Ancient Ground (Loranne instrumental) atribuída ao véu — puxa do URL
+    público do Supabase, OU usa cópia local em assets/trinta-manhas/musica/veu-{nome}.mp3
+    se existir (cache).
   - 3 painéis de texto + 1 cartão final (frase-âncora + Continua/Recomeça [+ link em caps âncora])
   - 1080×1920, 25s, H.264, ~5-8MB
 
@@ -95,10 +97,11 @@ def render_cap(cap_n: int, dry_run: bool = False) -> bool:
     img1 = ASSETS / "imagens" / f"cap-{cap_n:02d}-1.jpg"
     img2 = ASSETS / "imagens" / f"cap-{cap_n:02d}-2.jpg"
     img3 = ASSETS / "imagens" / f"cap-{cap_n:02d}-3.jpg"
-    music = ASSETS / "musica" / f"veu-{veu}.mp3"
+    music_local = ASSETS / "musica" / f"veu-{veu}.mp3"
+    music = str(music_local) if music_local.exists() else content.ag_track_url(veu)
     out = RENDERS / f"trinta-manhas-cap-{cap_n:02d}.mp4"
 
-    missing = [str(p.relative_to(REPO_ROOT)) for p in (img1, img2, img3, music) if not p.exists()]
+    missing = [str(p.relative_to(REPO_ROOT)) for p in (img1, img2, img3) if not p.exists()]
     if missing:
         print(f"  CAP {cap_n:02d} ✗ falta: " + ", ".join(missing))
         return False
@@ -187,7 +190,7 @@ def render_cap(cap_n: int, dry_run: bool = False) -> bool:
             "-loop", "1", "-t", "8.5", "-i", str(img1),
             "-loop", "1", "-t", "8.5", "-i", str(img2),
             "-loop", "1", "-t", "12",  "-i", str(img3),
-            "-i", str(music),
+            "-i", music,
             "-filter_complex", filtergraph,
             "-map", f"[{last_label}]", "-map", "[a]",
             "-c:v", "libx264", "-preset", "medium", "-crf", "22", "-pix_fmt", "yuv420p",

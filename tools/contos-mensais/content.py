@@ -17,43 +17,38 @@ MJ_STYLE_SUFFIX = (
     "--ar 9:16 --style raw --stylize 200"
 )
 
-# Trilha AG (ElevenLabs Music) por véu — 8 trilhas, 30s loopable cada,
-# recicladas pelos 4 ciclos do mês.
-TRACKS = {
-    "permanencia": (
-        "Slow ambient piano on felt, distant cello drone, very gentle tape hiss, "
-        "contemplative ibérian dawn mood, 30 seconds loopable, ~70 BPM, no drums, "
-        "intimate and still."
-    ),
-    "memoria": (
-        "Warm vintage cassette piano with soft tape hiss, sparse distant strings, "
-        "tender remembrance, attic afternoon mood, 30 seconds loopable, ~65 BPM."
-    ),
-    "turbilhao": (
-        "Minimal hypnotic pulse synth with breath layer, slow filtered drone, "
-        "mind quieting after agitation, no percussion, 30 seconds loopable, ~72 BPM."
-    ),
-    "esforco": (
-        "Deep cello sustains, clay percussion taps spaced wide, sparse marimba note, "
-        "grounded patient labor, 30 seconds loopable, ~68 BPM."
-    ),
-    "desolacao": (
-        "Rain-fed pad, low choral hum, distant earth drum, fertile sadness, "
-        "no melody, 30 seconds loopable, ~60 BPM."
-    ),
-    "horizonte": (
-        "Open string pad with airy harmonics, gentle wind line, expansive "
-        "contemplation, 30 seconds loopable, ~65 BPM."
-    ),
-    "dualidade": (
-        "Two-handed piano in soft counterpoint, bell resonance, intimate dialogue, "
-        "30 seconds loopable, ~70 BPM."
-    ),
-    "inteireza": (
-        "All previous motifs in distant reprise layered, four threads in slow fade, "
-        "conclusion mood, 30 seconds loopable, ~68 BPM."
-    ),
+# Trilhas Ancient Ground (Loranne instrumental) — 100 faixas em Supabase,
+# catálogo em tools/youtube-pipeline/music-ancient-ground.json.
+# Atribuímos UMA faixa por véu (recorrência intencional ao longo dos 4 ciclos
+# do mês: quem vê uma segunda-feira reconhece a paleta sonora antes do texto).
+# Atribuição inicial arbitrária — espalhada pelo catálogo para variedade tonal.
+# Para trocar, ouve no admin e edita estes 8 números. O renderer pega.
+AG_TRACKS_BY_VEU = {
+    "permanencia": 8,
+    "memoria":     22,
+    "turbilhao":   37,
+    "esforco":     49,
+    "desolacao":   63,
+    "horizonte":   71,
+    "dualidade":   84,
+    "inteireza":   95,
 }
+
+AG_BUCKET_URL = (
+    "https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/"
+    "albums/ancient-ground"
+)
+
+
+def ag_track_url(veu: str) -> str:
+    """URL pública da faixa Ancient Ground atribuída a este véu."""
+    n = AG_TRACKS_BY_VEU[veu]
+    return f"{AG_BUCKET_URL}/faixa-{n:02d}.mp3"
+
+
+def ag_track_label(veu: str) -> str:
+    """Etiqueta curta `faixa-NN` para referência."""
+    return f"faixa-{AG_TRACKS_BY_VEU[veu]:02d}"
 
 # Mapeamento cap → trilha (véu).
 CAP_TRACK = {

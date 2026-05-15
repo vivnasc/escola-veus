@@ -7,7 +7,7 @@
 
 Cada capítulo entrega:
 - **3 imagens Midjourney v6** (1080×1920, --ar 9:16 --style raw --stylize 200) em `assets/trinta-manhas/imagens/cap-NN-{1,2,3}.jpg`
-- **1 trilha AG do véu** (~30s, instrumental, looped) — reciclada pelos 4 ciclos
+- **1 faixa Ancient Ground do véu** (instrumental Loranne, looped) — reciclada pelos 4 ciclos
 - **3 painéis de texto cinético** + **1 cartão final** com frase-âncora
 
 Duração-alvo: **25 segundos** (slot do cartão final inclusive).
@@ -24,20 +24,27 @@ Cada cap apresenta abaixo apenas o **fragmento específico** — o sufixo de est
 
 ---
 
-## Trilhas AG (ElevenLabs Music) — 8 trilhas, recicladas
+## Trilhas Ancient Ground — 1 faixa por véu, reciclada
 
-Gerar uma vez em `assets/trinta-manhas/musica/veu-{nome}.mp3` (~30s loopable). Cada cap usa a trilha do seu véu.
+Catálogo de 100 faixas instrumentais Loranne (álbum *Ancient Ground*) em Supabase.
+Cada véu usa **uma** faixa do catálogo, repetida ao longo dos 4 ciclos do mês —
+recorrência intencional para criar reconhecimento sonoro semanal.
 
-| Véu | Capítulos | Prompt AG |
-|---|---|---|
-| **permanencia** | 1, 8, 15, 22, 29 | Slow ambient piano on felt, distant cello drone, very gentle tape hiss, contemplative ibérian dawn mood, 30 seconds loopable, ~70 BPM, no drums, intimate and still. |
-| **memoria** | 2, 9, 16, 23 | Warm vintage cassette piano with soft tape hiss, sparse distant strings, tender remembrance, attic afternoon mood, 30 seconds loopable, ~65 BPM. |
-| **turbilhao** | 3, 10, 17, 24 | Minimal hypnotic pulse synth with breath layer, slow filtered drone, mind quieting after agitation, no percussion, 30 seconds loopable, ~72 BPM. |
-| **esforco** | 4, 11, 18, 25 | Deep cello sustains, clay percussion taps spaced wide, sparse marimba note, grounded patient labor, 30 seconds loopable, ~68 BPM. |
-| **desolacao** | 5, 12, 19, 26 | Rain-fed pad, low choral hum, distant earth drum, fertile sadness, no melody, 30 seconds loopable, ~60 BPM. |
-| **horizonte** | 6, 13, 20, 27 | Open string pad with airy harmonics, gentle wind line, expansive contemplation, 30 seconds loopable, ~65 BPM. |
-| **dualidade** | 7, 14, 21, 28 | Two-handed piano in soft counterpoint, bell resonance, intimate dialogue, 30 seconds loopable, ~70 BPM. |
-| **inteireza** | 30 | All previous motifs in distant reprise layered, four threads in slow fade, conclusion mood, 30 seconds loopable, ~68 BPM. |
+Atribuição inicial (edita `tools/contos-mensais/content.py:AG_TRACKS_BY_VEU` para trocar):
+
+| Véu | Capítulos | Faixa | URL |
+|---|---|---|---|
+| **permanencia** | 1, 8, 15, 22, 29 | `faixa-08` | <https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-08.mp3> |
+| **memoria** | 2, 9, 16, 23 | `faixa-22` | <https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-22.mp3> |
+| **turbilhao** | 3, 10, 17, 24 | `faixa-37` | <https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-37.mp3> |
+| **esforco** | 4, 11, 18, 25 | `faixa-49` | <https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-49.mp3> |
+| **desolacao** | 5, 12, 19, 26 | `faixa-63` | <https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-63.mp3> |
+| **horizonte** | 6, 13, 20, 27 | `faixa-71` | <https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-71.mp3> |
+| **dualidade** | 7, 14, 21, 28 | `faixa-84` | <https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-84.mp3> |
+| **inteireza** | 30 | `faixa-95` | <https://tdytdamtfillqyklgrmb.supabase.co/storage/v1/object/public/audios/albums/ancient-ground/faixa-95.mp3> |
+
+O renderer (`render-slideshow.py`) usa estes URLs diretamente — FFmpeg lê do Supabase.
+Para correr offline, descarrega para `assets/trinta-manhas/musica/veu-{nome}.mp3` e o renderer prefere o local.
 
 ---
 
@@ -817,8 +824,9 @@ Numeração de capítulo aparece como texto cream 12px no canto topo-direito ao 
 # 1. Gerar 90 imagens MJ a partir dos prompts acima (Discord ou API).
 #    Convenção: assets/trinta-manhas/imagens/cap-NN-{1,2,3}.jpg
 
-# 2. Gerar 8 trilhas AG (ElevenLabs Music) a partir dos prompts da tabela.
-#    Convenção: assets/trinta-manhas/musica/veu-{nome}.mp3
+# 2. Música: as 8 faixas já existem em Supabase (Ancient Ground).
+#    O renderer puxa do URL automaticamente. Para correr offline,
+#    descarregar de cada URL para assets/trinta-manhas/musica/veu-{nome}.mp3.
 
 # 3. Render dos 30 shorts:
 python3 tools/contos-mensais/render-slideshow.py            # todos

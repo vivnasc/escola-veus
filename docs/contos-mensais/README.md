@@ -6,7 +6,7 @@ Terceira linha de conteúdo para as redes. Conto serializado em 30 capítulos po
 
 ## Mês 1 · Junho 2026 · "Trinta Manhãs"
 
-Slideshow editorial sem voz humana — 3 imagens Midjourney em fade + texto cinético + música AG instrumental. ~25 segundos por short.
+Slideshow editorial sem voz humana — 3 imagens Midjourney em fade + texto cinético + faixa Ancient Ground (Loranne instrumental). ~25 segundos por short.
 
 ### Ficheiros
 
@@ -14,13 +14,13 @@ Slideshow editorial sem voz humana — 3 imagens Midjourney em fade + texto cin�
 |---|---|
 | `MES-01-JUNHO-2026-BIBLIA.md` | Premissa, voz, personagem, mapa de véus, arco, template do short, regras de copy, métricas. **Começar aqui.** |
 | `MES-01-JUNHO-2026-GUIOES.md` | Fonte literária dos 30 capítulos — texto-base, imagem-chave, frase-âncora. *Não é o que se publica*; a copy canónica está no CSV. |
-| `MES-01-JUNHO-2026-SLIDESHOW.md` | Produção visual e sonora: 90 prompts Midjourney + 8 prompts AG (1 por véu) + painéis cinéticos com timings. Único ficheiro para a equipa de produção. **Gerado** — não editar à mão; alterar `tools/contos-mensais/content.py` e correr `generate-slideshow-md.py`. |
+| `MES-01-JUNHO-2026-SLIDESHOW.md` | Produção visual e sonora: 90 prompts Midjourney + atribuição das 8 faixas Ancient Ground (1 por véu) + painéis cinéticos com timings. Único ficheiro para a equipa de produção. **Gerado** — não editar à mão; alterar `tools/contos-mensais/content.py` e correr `generate-slideshow-md.py`. |
 | `MES-01-JUNHO-2026-METRICOOL.csv` | 120 posts (4 plataformas × 30 dias) prontos para importar no Metricool. **Gerado** — `tools/contos-mensais/generate-metricool-csv.py`. |
 
 ### Fluxo de produção (1 vez antes de 2026-06-01)
 
 1. **Imagens (90).** Gerar 30 × 3 stills no Midjourney v6 usando os prompts em `MES-01-JUNHO-2026-SLIDESHOW.md` (`--ar 9:16 --style raw --stylize 200`). Guardar como `assets/trinta-manhas/imagens/cap-NN-{1,2,3}.jpg`.
-2. **Música (8 trilhas).** Gerar 8 instrumentais com AG (ElevenLabs Music), ~30s loopable, a partir dos prompts da tabela "Trilhas AG" no SLIDESHOW. Uma por véu — recicladas pelos 4 ciclos. Guardar como `assets/trinta-manhas/musica/veu-{nome}.mp3`.
+2. **Música.** Sem produção — as 8 faixas Ancient Ground já estão em Supabase. Ouvir as atribuições em `MES-01-JUNHO-2026-SLIDESHOW.md` §"Trilhas Ancient Ground"; trocar números em `content.py:AG_TRACKS_BY_VEU` se alguma faixa não encaixar com o véu. O renderer puxa do URL público automaticamente (ou usa cópia local `assets/trinta-manhas/musica/veu-{nome}.mp3` se existir).
 3. **Render em batch:**
    ```bash
    bash tools/contos-mensais/render-batch.sh                 # todos os 30

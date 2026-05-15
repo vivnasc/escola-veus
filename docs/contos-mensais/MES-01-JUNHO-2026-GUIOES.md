@@ -7,7 +7,7 @@
 **⚠ Este ficheiro é fonte literária, não o que se publica.**
 - O bloco "Narração (~75 palavras)" abaixo passou a ser o **texto-base de cada capítulo** — matéria-prima para os 4 painéis cinéticos do slideshow. Os timings exatos e as quebras de painel estão em `MES-01-JUNHO-2026-SLIDESHOW.md`.
 - Os blocos "Copy IG/FB · Copy TikTok · Copy YouTube" abaixo são **exemplos da primeira versão** com link em todos os posts. A copy canónica está em `MES-01-JUNHO-2026-METRICOOL.csv`, onde o link só aparece nos caps **1, 15, 29 e 30** (regra revista — ver bíblia §10).
-- **Não há narração gravada.** O conto é lido no ecrã, sem voz humana. AG cobre só a música instrumental.
+- **Não há narração gravada.** O conto é lido no ecrã, sem voz humana. Música = catálogo Ancient Ground (Loranne instrumental, 100 faixas em Supabase), 1 faixa por véu reciclada.
 
 Formato por capítulo: logline · texto-base · imagem-chave · música · frase-âncora · exemplos de copy · hashtags
 

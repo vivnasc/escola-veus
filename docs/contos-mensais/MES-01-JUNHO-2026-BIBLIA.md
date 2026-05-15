@@ -6,7 +6,7 @@
 >
 > **Objetivo de conversão:** crescimento de seguidores nas redes — não cliques para fora. Cada short é otimizado para retenção (completion >70%), saves e shares; o link `seteveus.space` só entra em 4 posts-âncora (cap 1, 15, 29, 30) e na bio, para não estrangular o alcance.
 >
-> **Formato:** slideshow editorial sem voz humana — 3 imagens Midjourney em fade + texto cinético + música AG instrumental. ~22-26 segundos.
+> **Formato:** slideshow editorial sem voz humana — 3 imagens Midjourney em fade + texto cinético + faixa Ancient Ground (Loranne instrumental). ~22-26 segundos.
 
 ---
 
@@ -127,7 +127,7 @@ Cada short é um carrossel-vídeo em movimento lento — três imagens Midjourne
 **Pipeline:**
 - **Imagens:** 3 stills geradas com Midjourney v6 — `--ar 9:16 --style raw --stylize 200`. Catálogo de 90 prompts (30 caps × 3) em `MES-01-JUNHO-2026-SLIDESHOW.md`. Identidade visual fixa em todos: granulação fina, paleta dourado-âmbar #E8C97A sobre azul-noite #1A2238, sem rostos definidos, atmosfera ibérica de manhã, luz lateral baixa.
 - **Texto cinético:** Cormorant Garamond Italic para o conto (44px), Inter Regular para frase-âncora (38px). Cor cream #F5F0E6, sombra suave. Render via FFmpeg `drawtext` com `enable=between(t,...)` para tempos de entrada.
-- **Música:** trilha instrumental gerada com AG (ElevenLabs Music) — 7 trilhas, **uma por véu**, recicladas pelos 4 ciclos do mês (poupa trabalho, cria reconhecimento sonoro semanal). Referência tonal para o prompt AG: catálogo Loranne (`loranne-lyrics/albums.ts`) usado como mood-board, não como sample direto (Loranne não tem instrumental). Volume -14dB (não há narração a competir).
+- **Música:** catálogo **Ancient Ground** (álbum instrumental Loranne, 100 faixas em Supabase — ver `tools/youtube-pipeline/music-ancient-ground.json`). Atribuímos **uma faixa por véu**, reciclada pelos 4 ciclos do mês (cria reconhecimento sonoro semanal). A atribuição vive em `tools/contos-mensais/content.py:AG_TRACKS_BY_VEU` — 8 números editáveis. O renderer puxa do URL público; volume -14dB.
 - **Sem narração, sem SRT, sem voz humana.** Pipeline mais leve, mais rápido a iterar.
 - **Formato:** 1080×1920 vertical, ~25s, MP4 H.264 30fps ≤8MB por short.
 
@@ -177,7 +177,7 @@ Frequência: 1 post/dia em cada plataforma. Total: ~120 posts agendados no Metri
 Para cada um dos 30, antes de publicar:
 
 - [ ] 3 imagens MJ geradas (`assets/trinta-manhas/imagens/cap-NN-{1,2,3}.jpg`, 1080×1920)
-- [ ] Track AG do véu correspondente cortada a ~26s (`assets/trinta-manhas/musica/veu-{permanencia|memoria|turbilhao|esforco|desolacao|horizonte|dualidade|fechamento}.mp3`) — recicladas
+- [ ] Faixa Ancient Ground do véu atribuída em `content.py` (ouvir uma vez, trocar nº se não encaixar). Renderer puxa do URL automaticamente.
 - [ ] Painéis e timings revistos em `MES-01-JUNHO-2026-SLIDESHOW.md`
 - [ ] Render FFmpeg slideshow (3 imgs cross-fade + drawtext em 4 painéis + música)
 - [ ] Export 1080×1920 H.264 30fps ≤8MB
@@ -190,7 +190,7 @@ Para cada um dos 30, antes de publicar:
 
 **Semana de produção (1 só vez, antes de 01/06):**
 1. **Dia 1-2 · Imagens (90).** Gerar 30 × 3 = 90 stills no Midjourney usando os prompts em `MES-01-JUNHO-2026-SLIDESHOW.md`. Selecionar 1 upscale por prompt. Guardar em `assets/trinta-manhas/imagens/cap-NN-{1,2,3}.jpg`.
-2. **Dia 3 · Música (7).** Gerar 7 instrumentais AG (~30s cada, 1 por véu) com base nos prompts AG em `MES-01-JUNHO-2026-SLIDESHOW.md` §"Trilhas por véu". Guardar como `musica/veu-{nome}.mp3`.
+2. **Dia 3 · Música.** Sem trabalho — as 8 faixas Ancient Ground já estão em Supabase. Ouvir as atribuições em `MES-01-JUNHO-2026-SLIDESHOW.md` §"Trilhas Ancient Ground" e trocar números em `content.py` se alguma faixa não encaixar. O renderer puxa por URL.
 3. **Dia 4-5 · Render.** `bash tools/contos-mensais/render-batch.sh` — produz os 30 MP4 em `renders/trinta-manhas/`.
 4. **Dia 6 · Agendamento.** Regenerar CSV (`python3 tools/contos-mensais/generate-metricool-csv.py`) e importar no Metricool. Anexar vídeos da Biblioteca.
 5. **Dia 7 · Revisão.** Vista de calendário do Metricool, confirmar 120 posts. Atualizar bio das 4 contas para `Trinta Manhãs · conto diário · 07:30 / seteveus.space`.
