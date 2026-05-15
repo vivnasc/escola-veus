@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import seed from "@/data/vc-sabia-frases.seed.json";
+import { loadMergedFrases } from "@/lib/vc-sabia/phrases";
 
 export const maxDuration = 30;
 export const runtime = "nodejs";
@@ -103,12 +103,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "Motion library vazio" }, { status: 400 });
   }
 
+  const frases = await loadMergedFrases(supabaseUrl);
+  if (frases.length === 0) {
+    return NextResponse.json({ erro: "Sem frases" }, { status: 400 });
+  }
+
   const days: number[] = [];
   for (let d = startDay; d <= endDay; d++) days.push(d);
 
   const plan = days.map((day, i) => {
     const date = new Date(Date.UTC(year, month - 1, day));
-    const phrase = seed.frases[(i + phraseStartIndex) % seed.frases.length];
+    const phrase = frases[(i + phraseStartIndex) % frases.length];
     const motion = motions[(i + motionStartIndex) % motions.length];
     const mood = motionTags[motion.name];
     const audioUrl = mood ? activeAudios[mood] ?? null : null;
@@ -136,7 +141,7 @@ export async function POST(req: NextRequest) {
       endDay,
       days: plan.length,
       motionsAvailable: motions.length,
-      phrasesAvailable: seed.frases.length,
+      phrasesAvailable: frases.length,
       motionsWithoutMood: plan.filter((p) => !p.mood).length,
       moodsWithoutActive: plan.filter((p) => p.mood && !p.audioUrl).length,
     },
