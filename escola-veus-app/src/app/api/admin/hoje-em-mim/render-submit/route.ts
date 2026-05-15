@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
     motionPool?: string[];
     audioPool?: string[];
     themePool?: string[];
+    shuffleMotions?: boolean;
     durationSec?: number;
   };
 
@@ -74,9 +75,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const motionPool = Array.isArray(body.motionPool)
+  const rawMotionPool = Array.isArray(body.motionPool)
     ? body.motionPool.filter((u) => typeof u === "string" && u.length > 4)
     : [];
+  // Embaralha o pool para que motions parecidos (várias variações do
+  // mesmo prompt MJ) não fiquem em dias consecutivos. Default true.
+  const shuffleMotions = body.shuffleMotions !== false;
+  const motionPool = shuffleMotions ? shuffleArray(rawMotionPool) : rawMotionPool;
   if (motionPool.length === 0) {
     return NextResponse.json({ erro: "motionPool vazio. Adiciona pelo menos 1 motion." }, { status: 400 });
   }
@@ -305,4 +310,14 @@ function diaFromIso(iso: string): DiaSemana {
 function clamp(n: number, min: number, max: number) {
   if (Number.isNaN(n)) return min;
   return Math.max(min, Math.min(max, n));
+}
+
+/** Fisher-Yates shuffle. Não modifica o array original. */
+function shuffleArray<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
