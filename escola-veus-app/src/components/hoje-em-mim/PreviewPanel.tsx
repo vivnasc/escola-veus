@@ -3117,29 +3117,12 @@ function QuickRenderPanel({
                 </div>
                 <div className="grid gap-1 sm:grid-cols-2">
                   {list.map((a) => (
-                    <button
+                    <AudioPickerItem
                       key={a.url}
-                      onClick={() => setAudioUrlSelected(a.url)}
-                      className="rounded border p-1.5 text-left text-[10px] transition-colors"
-                      style={{
-                        borderColor:
-                          audioUrlSelected === a.url
-                            ? COBRE
-                            : "rgba(245, 240, 230, 0.16)",
-                        background:
-                          audioUrlSelected === a.url
-                            ? "rgba(194, 143, 96, 0.1)"
-                            : "transparent",
-                      }}
-                    >
-                      <div className="truncate text-escola-creme">{a.name}</div>
-                      <audio
-                        src={a.url}
-                        controls
-                        className="mt-1 h-6 w-full"
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                    </button>
+                      audio={a}
+                      selected={audioUrlSelected === a.url}
+                      onSelect={() => setAudioUrlSelected(a.url)}
+                    />
                   ))}
                 </div>
               </div>
@@ -3286,5 +3269,65 @@ function QuickRenderPanel({
         </div>
       )}
     </section>
+  );
+}
+
+function AudioPickerItem({
+  audio,
+  selected,
+  onSelect,
+}: {
+  audio: { name: string; url: string };
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const [errored, setErrored] = useState(false);
+  return (
+    <button
+      onClick={onSelect}
+      disabled={errored}
+      className="rounded border p-1.5 text-left text-[10px] transition-colors disabled:opacity-60"
+      style={{
+        borderColor: errored
+          ? "rgba(220, 38, 38, 0.5)"
+          : selected
+            ? COBRE
+            : "rgba(245, 240, 230, 0.16)",
+        background: errored
+          ? "rgba(127, 29, 29, 0.12)"
+          : selected
+            ? "rgba(194, 143, 96, 0.1)"
+            : "transparent",
+      }}
+    >
+      <div className="flex items-center justify-between gap-1">
+        <span className="truncate text-escola-creme">{audio.name}</span>
+        {errored && (
+          <a
+            href={audio.url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="shrink-0 text-[9px] text-red-300 underline"
+          >
+            testar →
+          </a>
+        )}
+      </div>
+      {errored ? (
+        <div className="mt-1 text-[9px] text-red-300">
+          ✗ não carrega (clica "testar" para ver no browser)
+        </div>
+      ) : (
+        <audio
+          src={audio.url}
+          controls
+          preload="metadata"
+          className="mt-1 h-6 w-full"
+          onClick={(e) => e.stopPropagation()}
+          onError={() => setErrored(true)}
+        />
+      )}
+    </button>
   );
 }

@@ -45,13 +45,12 @@ export async function GET() {
       });
     if (!files) continue;
     audiosByMood[moodFolder.name] = files
-      // Filtra: só .mp3 com tamanho razoável (>1KB). Ficheiros zero-bytes
-      // ou pequenos são sinal de falha do ElevenLabs e dão 'Erro' no
-      // player do browser.
+      // Filtra: só .mp3 com tamanho razoável (>5KB). Menos do que isso
+      // é certeza de MP3 corrupto (falha ElevenLabs).
       .filter((f) => {
         if (!f.name?.endsWith(".mp3")) return false;
         const size = f.metadata?.size ?? 0;
-        return size > 1024;
+        return size > 5 * 1024;
       })
       .map((f) => ({
         name: f.name,
