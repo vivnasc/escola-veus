@@ -35,8 +35,10 @@ interface PlanEntry {
   phrase: string;
   phraseId?: string;
   phraseTheme?: string;
+  phraseReused?: boolean;
   motionName: string;
   motionUrl: string;
+  motionReused?: boolean;
   audioUrl: string | null;
   mood?: string | null;
 }
@@ -110,6 +112,13 @@ export function BulkMonthPanel() {
     createdAt?: string;
     jobs?: number;
   }>>([]);
+  const [planHistory, setPlanHistory] = useState<{
+    batchCount: number;
+    usedPhrases: number;
+    usedMotions: number;
+    phrasesReusedInPlan: number;
+    motionsReusedInPlan: number;
+  } | null>(null);
 
   const refreshPastBatches = useCallback(async () => {
     try {
@@ -188,6 +197,7 @@ export function BulkMonthPanel() {
       setActiveAudios(activeJson.active || {});
       setMotionTags(tagsJson.tags || {});
       setPlan(planJson.plan || []);
+      setPlanHistory(planJson.history || null);
       setPhase("plan");
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -624,6 +634,26 @@ export function BulkMonthPanel() {
             </div>
           )}
 
+          {planHistory && (planHistory.phrasesReusedInPlan > 0 || planHistory.motionsReusedInPlan > 0) && (
+            <div className="rounded border border-amber-500/40 bg-amber-500/10 p-2 text-xs text-amber-200">
+              ⚠ Reutilização detectada (de {planHistory.batchCount} batches anteriores):
+              {planHistory.phrasesReusedInPlan > 0 && (
+                <> {planHistory.phrasesReusedInPlan} frase(s) repetida(s) (já usadas).</>
+              )}
+              {planHistory.motionsReusedInPlan > 0 && (
+                <> {planHistory.motionsReusedInPlan} motion(s) repetido(s).</>
+              )}{" "}
+              Cada repetição está marcada com ↺.
+            </div>
+          )}
+
+          {planHistory && planHistory.batchCount > 0 && (
+            <div className="text-[10px] text-escola-creme-50">
+              Histórico: {planHistory.batchCount} batches · {planHistory.usedPhrases}/90+ frases já posted ·{" "}
+              {planHistory.usedMotions} motions já usados
+            </div>
+          )}
+
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={regenAllPhrases}
@@ -663,7 +693,11 @@ export function BulkMonthPanel() {
                           value={p.phrase}
                           onChange={(e) => updatePhrase(i, e.target.value)}
                           rows={2}
-                          className="flex-1 rounded border border-escola-border bg-escola-card px-2 py-1 text-[11px] text-escola-creme"
+                          className={`flex-1 rounded border bg-escola-card px-2 py-1 text-[11px] text-escola-creme ${
+                            p.phraseReused
+                              ? "border-amber-500/60"
+                              : "border-escola-border"
+                          }`}
                         />
                         <button
                           onClick={() => regenPhrase(i)}
@@ -674,11 +708,22 @@ export function BulkMonthPanel() {
                           {regenerating === i ? "…" : "✨"}
                         </button>
                       </div>
+                      {p.phraseReused && (
+                        <div className="mt-1 text-[9px] text-amber-300">
+                          ↺ esta frase já foi usada em batch anterior
+                        </div>
+                      )}
                     </td>
                     <td className="px-2 py-1 align-top">
                       <div className="space-y-1">
-                        <div className="truncate text-[10px] text-escola-creme-50" title={p.motionName}>
-                          {p.motionName.slice(0, 22)}…
+                        <div
+                          className={`truncate text-[10px] ${
+                            p.motionReused ? "text-amber-300" : "text-escola-creme-50"
+                          }`}
+                          title={p.motionName}
+                        >
+                          {p.motionReused && "↺ "}
+                          {p.motionName.slice(0, 20)}…
                         </div>
                         <select
                           value={(p.mood as string) || ""}
