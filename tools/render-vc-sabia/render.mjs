@@ -66,10 +66,42 @@ async function downloadTo(url, dest) {
   console.log(`  ${buf.length} bytes`);
 }
 
-/** Variante C: cartao de vidro semi-transparente + moldura dourada +
- *  kicker italico dourado + frase italico creme + footer com data e
- *  assinatura. PNG transparente para sobrepor ao motion. */
-function composeOverlay(phrase, dateLabel) {
+const DEFAULT_DESIGN = {
+  cardBg: "#140F1E",
+  cardBgOpacity: 0.14,
+  cardBorder: "#C9A96E",
+  cornerColor: "#D4AF37",
+  kickerColor: "#D4AF37",
+  phraseColor: "#FAF7F0",
+  footerColor: "#FAF7F0",
+  cardY: 880,
+  kickerSize: 56,
+  phraseSize: 60,
+};
+
+function hexToRgba(hex, a) {
+  const h = String(hex).replace("#", "");
+  const r = parseInt(h.substring(0, 2), 16) || 0;
+  const g = parseInt(h.substring(2, 4), 16) || 0;
+  const b = parseInt(h.substring(4, 6), 16) || 0;
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+async function fetchDesign() {
+  try {
+    const r = await fetch(publicUrl("vc-sabia-meta/design-settings.json"), { cache: "no-store" });
+    if (!r.ok) return DEFAULT_DESIGN;
+    const j = await r.json();
+    return { ...DEFAULT_DESIGN, ...(j.design || {}) };
+  } catch {
+    return DEFAULT_DESIGN;
+  }
+}
+
+/** Variante C: cartao de vidro com cores configuraveis via design-settings.
+ *  Compoe PNG transparente para sobrepor ao motion via ffmpeg. */
+function composeOverlay(phrase, dateLabel, design) {
+  const d = { ...DEFAULT_DESIGN, ...(design || {}) };
   const W = 1080;
   const H = 1920;
   const canvas = createCanvas(W, H);
@@ -85,20 +117,20 @@ function composeOverlay(phrase, dateLabel) {
   // Cartao de vidro
   const cardX = 90;
   const cardW = W - cardX * 2;
-  const cardY = 880;
+  const cardY = d.cardY;
   const cardH = 760;
   const radius = 28;
   ctx.save();
   roundedRect(ctx, cardX, cardY, cardW, cardH, radius);
-  ctx.fillStyle = "rgba(255,255,255,0.14)";
+  ctx.fillStyle = hexToRgba(d.cardBg, d.cardBgOpacity);
   ctx.fill();
-  ctx.strokeStyle = "rgba(212,175,55,0.85)";
+  ctx.strokeStyle = hexToRgba(d.cardBorder, 0.85);
   ctx.lineWidth = 2.5;
   ctx.stroke();
   ctx.restore();
 
-  // Cantos dourados
-  ctx.strokeStyle = "#D4AF37";
+  // Cantos
+  ctx.strokeStyle = d.cornerColor;
   ctx.lineWidth = 3;
   const corner = 36;
   drawCornerL(ctx, cardX + 18, cardY + 18, corner, "tl");
@@ -107,26 +139,27 @@ function composeOverlay(phrase, dateLabel) {
   drawCornerL(ctx, cardX + cardW - 18, cardY + cardH - 18, corner, "br");
 
   // Kicker
-  ctx.fillStyle = "#D4AF37";
-  ctx.font = "italic 56px serif";
+  ctx.fillStyle = d.kickerColor;
+  ctx.font = `italic ${d.kickerSize}px serif`;
   ctx.textAlign = "center";
   ctx.fillText("Sabias que...", W / 2, cardY + 110);
 
   // Frase (wrap)
-  ctx.fillStyle = "#FAF7F0";
-  ctx.font = "italic 60px serif";
+  ctx.fillStyle = d.phraseColor;
+  ctx.font = `italic ${d.phraseSize}px serif`;
   const lines = wrapText(ctx, phrase, cardW - 120);
   let y = cardY + 240;
+  const lineHeight = Math.round(d.phraseSize * 1.33);
   for (const ln of lines) {
     ctx.fillText(ln, W / 2, y);
-    y += 80;
+    y += lineHeight;
   }
 
   // Footer
-  ctx.fillStyle = "rgba(250,247,240,0.65)";
+  ctx.fillStyle = hexToRgba(d.footerColor, 0.7);
   ctx.font = "22px sans-serif";
   ctx.fillText(dateLabel, W / 2, H - 80);
-  ctx.fillStyle = "#D4AF37";
+  ctx.fillStyle = d.cornerColor;
   ctx.font = "22px sans-serif";
   ctx.fillText("seteveus.space", W / 2, H - 48);
 
@@ -204,14 +237,15 @@ try {
   })();
   console.log("Manifest:", JSON.stringify({ ...manifest, motionUrl: "..." }, null, 2));
 
-  // Compor overlay localmente (sem precisar de PNG do cliente)
+  // Compor overlay localmente (com design settings do Supabase)
   await writeResult({
     jobId: JOB_ID,
     status: "running",
     progress: 15,
     message: "A compor overlay...",
   });
-  const overlayBuffer = composeOverlay(manifest.phrase || "", manifest.dateLabel || "");
+  const design = await fetchDesign();
+  const overlayBuffer = composeOverlay(manifest.phrase || "", manifest.dateLabel || "", design);
   const overlayPath = path.join(WORK, "overlay.png");
   await writeFile(overlayPath, overlayBuffer);
   console.log(`  overlay ${overlayBuffer.length} bytes`);
