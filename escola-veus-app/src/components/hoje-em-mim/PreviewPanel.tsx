@@ -1541,39 +1541,63 @@ function RunwayPipelineSection() {
     }
     setReviewBatchError(null);
     setReviewingBatch(true);
-    setReviewBatchStatus(`A enviar ${images.length} imagens ao Claude…`);
+
+    const allItems = images.map((img) => {
+      const pid = promptByImage[img.name] || "";
+      const mj = pid ? MJ_VIDEO_PROMPTS.find((p) => p.id === pid) : null;
+      return {
+        id: img.name,
+        imageUrl: img.url,
+        scene: mj?.prompt,
+        currentPrompt: motionByImage[img.name] ?? mj?.runwayMotion ?? "",
+      };
+    });
+
+    // O endpoint /review-batch aceita no máximo 30 items por chamada.
+    // Quando há mais (típico: 30-50 imagens MJ), partimos em chunks de 25
+    // e enviamos sequencialmente. Mostramos progresso à utilizadora.
+    const CHUNK_SIZE = 25;
+    const chunks: Array<typeof allItems> = [];
+    for (let i = 0; i < allItems.length; i += CHUNK_SIZE) {
+      chunks.push(allItems.slice(i, i + CHUNK_SIZE));
+    }
+
+    const next: Record<string, string> = { ...motionByImage };
+    let applied = 0;
+    let failed = 0;
+
     try {
-      const items = images.map((img) => {
-        const pid = promptByImage[img.name] || "";
-        const mj = pid ? MJ_VIDEO_PROMPTS.find((p) => p.id === pid) : null;
-        return {
-          id: img.name,
-          imageUrl: img.url,
-          scene: mj?.prompt,
-          currentPrompt: motionByImage[img.name] ?? mj?.runwayMotion ?? "",
-        };
-      });
-      const res = await fetch("/api/admin/hoje-em-mim/runway-prompts/review-batch", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items }),
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
-      const results = json.results || {};
-      const next: Record<string, string> = { ...motionByImage };
-      let applied = 0;
-      let failed = 0;
-      for (const [id, r] of Object.entries(results)) {
-        const result = r as { suggestedPrompt?: string; error?: string };
-        if (result.suggestedPrompt) {
-          next[id] = result.suggestedPrompt;
-          applied++;
-        } else {
-          failed++;
+      for (let i = 0; i < chunks.length; i++) {
+        setReviewBatchStatus(
+          chunks.length === 1
+            ? `Claude a olhar para ${chunks[i].length} imagens…`
+            : `Claude a rever batch ${i + 1}/${chunks.length} (${chunks[i].length} imagens)…`
+        );
+        const res = await fetch("/api/admin/hoje-em-mim/runway-prompts/review-batch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: chunks[i] }),
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          // Em vez de abortar, regista a falha e segue para o próximo chunk
+          failed += chunks[i].length;
+          continue;
         }
+        const results = json.results || {};
+        for (const [id, r] of Object.entries(results)) {
+          const result = r as { suggestedPrompt?: string; error?: string };
+          if (result.suggestedPrompt) {
+            next[id] = result.suggestedPrompt;
+            applied++;
+          } else {
+            failed++;
+          }
+        }
+        // Aplica incrementalmente para a utilizadora ver os prompts a
+        // serem preenchidos chunk a chunk
+        setMotionByImage({ ...next });
       }
-      setMotionByImage(next);
       setReviewBatchStatus(
         `Claude aplicou ${applied} sugestões${failed > 0 ? `, ${failed} falharam` : ""}.`
       );
@@ -1587,6 +1611,25 @@ function RunwayPipelineSection() {
   const pendingCount = state.items.filter((i) => i.runwayTaskId && !i.clipUrl).length;
   const doneCount = state.items.filter((i) => i.clipUrl).length;
   const failedCount = state.items.filter((i) => i.error && !i.clipUrl).length;
+
+  // Pré-calcula candidatos ao submit-all para mostrar contagem no botão.
+  // Imagens elegíveis: sem taskId pendente, sem clipUrl, COM motion prompt.
+  const submittedNames = new Set(
+    state.items
+      .filter((i) => i.runwayTaskId || i.clipUrl)
+      .map((i) => i.imageName)
+      .filter((n): n is string => !!n)
+  );
+  const eligibleForSubmit = images.filter((img) => {
+    if (submittedNames.has(img.name)) return false;
+    const motion = motionByImage[img.name] ?? "";
+    return motion.trim().length > 0;
+  });
+  const missingMotion = images.filter((img) => {
+    if (submittedNames.has(img.name)) return false;
+    const motion = motionByImage[img.name] ?? "";
+    return motion.trim().length === 0;
+  });
 
   return (
     <section className="space-y-3">
@@ -1646,13 +1689,34 @@ function RunwayPipelineSection() {
         </button>
         <button
           onClick={submitAllUnsubmitted}
-          disabled={submitting || images.length === 0}
+          disabled={submitting || eligibleForSubmit.length === 0}
           className="rounded border px-3 py-1.5 text-xs disabled:opacity-50"
-          style={{ borderColor: COBRE_FRACO, color: COBRE_FRACO, background: "rgba(194, 143, 96, 0.04)" }}
+          style={{
+            borderColor: eligibleForSubmit.length > 0 ? COBRE : COBRE_FRACO,
+            color: eligibleForSubmit.length > 0 ? COBRE : COBRE_FRACO,
+            background:
+              eligibleForSubmit.length > 0
+                ? "rgba(194, 143, 96, 0.1)"
+                : "rgba(194, 143, 96, 0.04)",
+          }}
         >
-          {submitting ? "a submeter…" : "Submeter todos os pendentes à Runway"}
+          {submitting
+            ? "a submeter…"
+            : eligibleForSubmit.length === 0
+              ? missingMotion.length > 0
+                ? `${missingMotion.length} sem motion prompt — corre o Claude review`
+                : "Nada para submeter"
+              : `Submeter ${eligibleForSubmit.length} à Runway`}
         </button>
       </div>
+
+      {missingMotion.length > 0 && eligibleForSubmit.length > 0 && (
+        <div className="rounded border border-amber-700/40 bg-amber-900/15 p-2 text-[11px] text-amber-300">
+          ⚠ {missingMotion.length} imagem{missingMotion.length === 1 ? "" : "ns"} sem
+          motion prompt definido. Vão ficar de fora do submit. Corre "Rever
+          todos os motion prompts" ou preenche manualmente nos cards.
+        </div>
+      )}
 
       {reviewBatchStatus && (
         <div className="rounded border border-emerald-700/40 bg-emerald-900/15 p-2 text-xs text-emerald-300">
