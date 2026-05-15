@@ -1,0 +1,7 @@
+{
+  "name": "render-vc-sabia",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "VC Sabia render tool: ffmpeg composes motion + overlay PNG + audio into final MP4. Runs in GitHub Actions."
+}

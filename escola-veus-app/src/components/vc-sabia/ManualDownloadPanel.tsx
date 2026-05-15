@@ -15,8 +15,13 @@ interface Props {
 
 type RenderState =
   | { phase: "idle" }
-  | { phase: "rendering"; renderId?: string }
-  | { phase: "done"; videoUrl: string }
+  | {
+      phase: "rendering";
+      jobId: string;
+      progress: number;
+      message: string;
+    }
+  | { phase: "done"; videoUrl: string; jobId: string }
   | { phase: "error"; message: string };
 
 /**
@@ -41,9 +46,23 @@ export function ManualDownloadPanel({
   const [showComponentes, setShowComponentes] = useState(false);
 
   const renderFinalMp4 = async () => {
-    setRender({ phase: "rendering" });
+    setRender({ phase: "rendering", jobId: "", progress: 0, message: "A compor overlay..." });
     try {
-      const res = await fetch("/api/admin/vc-sabia/render", {
+      // 1) Compor overlay PNG no browser (mesmo helper que o "Frame .png")
+      const frameDataUrl = await extractMotionFrame(motionUrl);
+      // overlay sem motion frame para evitar duplicacao no ffmpeg; so
+      // a "camada" decorativa com transparencia para sobrepor ao motion.
+      const overlayBase64 = await drawOverlayOnly(phrase, dateLabel);
+
+      setRender({
+        phase: "rendering",
+        jobId: "",
+        progress: 5,
+        message: "A submeter render job...",
+      });
+
+      // 2) Submeter ao backend que escreve manifest + dispara GitHub Action
+      const submitRes = await fetch("/api/admin/vc-sabia/render-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -51,17 +70,57 @@ export function ManualDownloadPanel({
           audioUrl,
           phrase,
           dateLabel,
+          overlayPngBase64: overlayBase64,
           durationSec: 12,
         }),
       });
-      const json = await res.json();
-      if (!res.ok) {
-        setRender({ phase: "error", message: json.erro || `HTTP ${res.status}` });
-      } else if (json.videoUrl) {
-        setRender({ phase: "done", videoUrl: json.videoUrl });
-      } else {
-        setRender({ phase: "error", message: "Render sem URL" });
+      const submitJson = await submitRes.json();
+      if (!submitRes.ok) {
+        setRender({ phase: "error", message: submitJson.erro || `HTTP ${submitRes.status}` });
+        return;
       }
+      const jobId: string = submitJson.jobId;
+      setRender({
+        phase: "rendering",
+        jobId,
+        progress: 10,
+        message: "GitHub Action arrancou. A aguardar ffmpeg...",
+      });
+
+      // 3) Polling
+      const start = Date.now();
+      const timeout = 8 * 60 * 1000; // 8 min
+      while (Date.now() - start < timeout) {
+        await new Promise((r) => setTimeout(r, 5000));
+        const sRes = await fetch(
+          `/api/admin/vc-sabia/render-status?jobId=${encodeURIComponent(jobId)}`,
+          { cache: "no-store" }
+        );
+        if (!sRes.ok) continue;
+        const sd = await sRes.json();
+        if (sd.status === "done" && sd.videoUrl) {
+          setRender({ phase: "done", videoUrl: sd.videoUrl, jobId });
+          return;
+        }
+        if (sd.status === "failed") {
+          setRender({
+            phase: "error",
+            message: sd.error || "Render falhou no GitHub Action",
+          });
+          return;
+        }
+        setRender({
+          phase: "rendering",
+          jobId,
+          progress: Number(sd.progress ?? 0),
+          message: sd.message || "A renderizar...",
+        });
+        void frameDataUrl; // unused, mantido para futura validacao
+      }
+      setRender({
+        phase: "error",
+        message: "Timeout (8 min). Verifica em github.com/vivnasc/escola-veus/actions",
+      });
     } catch (e) {
       setRender({
         phase: "error",
@@ -137,9 +196,18 @@ export function ManualDownloadPanel({
           className="w-full rounded-md border border-emerald-500/60 bg-emerald-500/15 px-4 py-3 text-sm font-medium text-emerald-300 hover:bg-emerald-500/25 disabled:opacity-50"
         >
           {render.phase === "rendering"
-            ? "A renderizar via Shotstack (~30-90s)…"
+            ? `A renderizar (${render.progress}%): ${render.message}`
             : "▶ Render MP4 final (motion + texto + áudio)"}
         </button>
+
+        {render.phase === "rendering" && (
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-escola-card">
+            <div
+              className="h-full bg-emerald-500 transition-all"
+              style={{ width: `${Math.max(5, render.progress)}%` }}
+            />
+          </div>
+        )}
 
         {render.phase === "error" && (
           <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
@@ -295,16 +363,26 @@ function extractMotionFrame(url: string): Promise<string> {
   });
 }
 
+/** Variante transparente: SO o overlay (cartao + texto + assinatura), com
+ *  canvas transparente para ser sobreposto ao motion pelo ffmpeg. */
+async function drawOverlayOnly(phrase: string, dateLabel: string): Promise<string> {
+  return drawComposition(null, phrase, dateLabel);
+}
+
 /** Compõe o overlay variante C sobre o frame e devolve dataURL PNG. */
 async function drawOverlay(
   frameDataUrl: string,
   phrase: string,
   dateLabel: string
 ): Promise<string> {
-  const img = new Image();
-  img.src = frameDataUrl;
-  await img.decode();
+  return drawComposition(frameDataUrl, phrase, dateLabel);
+}
 
+async function drawComposition(
+  frameDataUrl: string | null,
+  phrase: string,
+  dateLabel: string
+): Promise<string> {
   const W = 1080;
   const H = 1920;
   const canvas = document.createElement("canvas");
@@ -313,18 +391,31 @@ async function drawOverlay(
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("ctx null");
 
-  // Fundo: motion frame em cover
-  const ratio = Math.max(W / img.width, H / img.height);
-  const drawW = img.width * ratio;
-  const drawH = img.height * ratio;
-  ctx.drawImage(img, (W - drawW) / 2, (H - drawH) / 2, drawW, drawH);
+  if (frameDataUrl) {
+    const img = new Image();
+    img.src = frameDataUrl;
+    await img.decode();
+    // Fundo: motion frame em cover
+    const ratio = Math.max(W / img.width, H / img.height);
+    const drawW = img.width * ratio;
+    const drawH = img.height * ratio;
+    ctx.drawImage(img, (W - drawW) / 2, (H - drawH) / 2, drawW, drawH);
 
-  // Vinheta inferior para legibilidade
-  const grad = ctx.createLinearGradient(0, H * 0.4, 0, H);
-  grad.addColorStop(0, "rgba(0,0,0,0)");
-  grad.addColorStop(1, "rgba(0,0,0,0.45)");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
+    // Vinheta inferior para legibilidade
+    const grad = ctx.createLinearGradient(0, H * 0.4, 0, H);
+    grad.addColorStop(0, "rgba(0,0,0,0)");
+    grad.addColorStop(1, "rgba(0,0,0,0.45)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+  } else {
+    // Sem frame de fundo: ainda assim metemos uma vinheta semi-transparente
+    // para garantir contraste do texto sobre motions claros.
+    const grad = ctx.createLinearGradient(0, H * 0.4, 0, H);
+    grad.addColorStop(0, "rgba(0,0,0,0)");
+    grad.addColorStop(1, "rgba(0,0,0,0.45)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+  }
 
   // Cartão de vidro fosco (variante C)
   const cardX = 90;
