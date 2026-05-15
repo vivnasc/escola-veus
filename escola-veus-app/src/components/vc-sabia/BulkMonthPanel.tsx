@@ -89,6 +89,7 @@ export function BulkMonthPanel() {
   const [zipUrl, setZipUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [regenerating, setRegenerating] = useState<number | null>(null);
+  const [regenAll, setRegenAll] = useState(false);
 
   const preparePlan = async () => {
     setPreparing(true);
@@ -148,6 +149,39 @@ export function BulkMonthPanel() {
 
   const updatePhrase = (idx: number, value: string) => {
     setPlan((prev) => prev.map((p, i) => (i === idx ? { ...p, phrase: value } : p)));
+  };
+
+  const regenAllPhrases = async () => {
+    if (plan.length === 0) return;
+    setRegenAll(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/admin/vc-sabia/phrase/batch-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          count: plan.length,
+          avoid: plan.map((p) => p.phrase),
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.erro || `HTTP ${res.status}`);
+      } else if (Array.isArray(json.phrases)) {
+        const fresh: { phrase?: string; theme?: string }[] = json.phrases;
+        setPlan((prev) =>
+          prev.map((p, i) => {
+            const f = fresh[i];
+            if (!f || !f.phrase) return p;
+            return { ...p, phrase: f.phrase, phraseTheme: f.theme || p.phraseTheme };
+          })
+        );
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setRegenAll(false);
+    }
   };
 
   const submitPlan = async () => {
@@ -349,6 +383,30 @@ export function BulkMonthPanel() {
       {/* STEP 2: plan edit */}
       {phase === "plan" && (
         <>
+          {plan.some((p) => !p.audioUrl) && (
+            <div className="rounded border border-amber-500/40 bg-amber-500/10 p-2 text-xs text-amber-200">
+              ⚠ {plan.filter((p) => !p.audioUrl).length} dia(s) sem áudio. Vai à
+              Motion library (atribui mood a estes motions) ou à Áudio library
+              (gera/activa áudio para o mood). Ou ignora e renderiza sem som.
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={regenAllPhrases}
+              disabled={regenAll}
+              className="rounded-md border border-emerald-500/60 bg-emerald-500/10 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/20 disabled:opacity-50"
+              title={`Claude regenera as ${plan.length} frases todas de uma vez, no padrão 'X em natureza. Tu também. Confia em Y.'`}
+            >
+              {regenAll
+                ? "Claude a gerar..."
+                : `✨ Regenerar TODAS com Claude (${plan.length})`}
+            </button>
+            <span className="text-[11px] text-escola-creme-50">
+              Garante padrão "Sabias que... + frase de natureza"
+            </span>
+          </div>
+
           <div className="overflow-x-auto">
             <table className="w-full text-[11px] text-escola-creme-50">
               <thead className="text-escola-creme">
