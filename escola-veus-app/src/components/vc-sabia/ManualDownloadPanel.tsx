@@ -13,6 +13,17 @@ interface Props {
   captionWhatsapp: string;
 }
 
+type RenderState =
+  | { phase: "idle" }
+  | {
+      phase: "rendering";
+      jobId: string;
+      progress: number;
+      message: string;
+    }
+  | { phase: "done"; videoUrl: string; jobId: string }
+  | { phase: "error"; message: string };
+
 /**
  * Painel para download manual dos componentes do post de hoje.
  * Util enquanto o pipeline de render automatico nao esta pronto:
@@ -31,6 +42,78 @@ export function ManualDownloadPanel({
 }: Props) {
   const [composingPng, setComposingPng] = useState(false);
   const [pngError, setPngError] = useState<string | null>(null);
+  const [render, setRender] = useState<RenderState>({ phase: "idle" });
+  const [showComponentes, setShowComponentes] = useState(false);
+
+  const renderFinalMp4 = async () => {
+    setRender({ phase: "rendering", jobId: "", progress: 0, message: "A submeter job..." });
+    try {
+      // Submeter ao backend que escreve manifest + dispara GitHub Action.
+      // Overlay e composto server-side dentro do GitHub Action (canvas).
+      const submitRes = await fetch("/api/admin/vc-sabia/render-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          motionUrl,
+          audioUrl,
+          phrase,
+          dateLabel,
+          durationSec: 12,
+        }),
+      });
+      const submitJson = await submitRes.json();
+      if (!submitRes.ok) {
+        setRender({ phase: "error", message: submitJson.erro || `HTTP ${submitRes.status}` });
+        return;
+      }
+      const jobId: string = submitJson.jobId;
+      setRender({
+        phase: "rendering",
+        jobId,
+        progress: 10,
+        message: "GitHub Action arrancou. A aguardar ffmpeg...",
+      });
+
+      // 3) Polling
+      const start = Date.now();
+      const timeout = 8 * 60 * 1000; // 8 min
+      while (Date.now() - start < timeout) {
+        await new Promise((r) => setTimeout(r, 5000));
+        const sRes = await fetch(
+          `/api/admin/vc-sabia/render-status?jobId=${encodeURIComponent(jobId)}`,
+          { cache: "no-store" }
+        );
+        if (!sRes.ok) continue;
+        const sd = await sRes.json();
+        if (sd.status === "done" && sd.videoUrl) {
+          setRender({ phase: "done", videoUrl: sd.videoUrl, jobId });
+          return;
+        }
+        if (sd.status === "failed") {
+          setRender({
+            phase: "error",
+            message: sd.error || "Render falhou no GitHub Action",
+          });
+          return;
+        }
+        setRender({
+          phase: "rendering",
+          jobId,
+          progress: Number(sd.progress ?? 0),
+          message: sd.message || "A renderizar...",
+        });
+      }
+      setRender({
+        phase: "error",
+        message: "Timeout (8 min). Verifica em github.com/vivnasc/escola-veus/actions",
+      });
+    } catch (e) {
+      setRender({
+        phase: "error",
+        message: e instanceof Error ? e.message : String(e),
+      });
+    }
+  };
 
   const slug = (phrase || "frase")
     .toLowerCase()
@@ -92,58 +175,111 @@ export function ManualDownloadPanel({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="space-y-2">
         <button
-          onClick={() =>
-            downloadText(`vc-sabia-${slug}-captions.txt`, fullCaptionTxt)
-          }
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20"
+          onClick={renderFinalMp4}
+          disabled={render.phase === "rendering"}
+          className="w-full rounded-md border border-emerald-500/60 bg-emerald-500/15 px-4 py-3 text-sm font-medium text-emerald-300 hover:bg-emerald-500/25 disabled:opacity-50"
         >
-          ↓ Captions (.txt)
+          {render.phase === "rendering"
+            ? `A renderizar (${render.progress}%): ${render.message}`
+            : "▶ Render MP4 final (motion + texto + áudio)"}
         </button>
 
-        <button
-          onClick={() => downloadRemote(motionUrl, `${motionName}`)}
-          disabled={!motionUrl}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
-        >
-          ↓ Motion (.mp4)
-        </button>
+        {render.phase === "rendering" && (
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-escola-card">
+            <div
+              className="h-full bg-emerald-500 transition-all"
+              style={{ width: `${Math.max(5, render.progress)}%` }}
+            />
+          </div>
+        )}
 
-        <button
-          onClick={() =>
-            audioUrl &&
-            downloadRemote(audioUrl, `vc-sabia-${slug}-audio.mp3`)
-          }
-          disabled={!audioUrl}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
-          title={audioUrl ? undefined : "Não há áudio activo para o mood deste motion"}
-        >
-          ↓ Áudio (.mp3)
-        </button>
+        {render.phase === "error" && (
+          <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
+            Render falhou: {render.message}
+          </div>
+        )}
 
-        <button
-          onClick={composePng}
-          disabled={composingPng}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
-        >
-          {composingPng ? "A compor…" : "↓ Frame com texto (.png)"}
-        </button>
+        {render.phase === "done" && (
+          <div className="space-y-2 rounded border border-emerald-500/40 bg-emerald-500/10 p-3">
+            <video
+              src={render.videoUrl}
+              controls
+              className="w-full max-w-[400px] rounded"
+            />
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() =>
+                  downloadRemote(render.videoUrl, `vc-sabia-${slug}.mp4`)
+                }
+                className="rounded-md border border-emerald-500/60 bg-emerald-500/10 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/20"
+              >
+                ↓ Download MP4 final
+              </button>
+              <button
+                onClick={() =>
+                  downloadText(`vc-sabia-${slug}-captions.txt`, fullCaptionTxt)
+                }
+                className="rounded-md border border-emerald-500/60 bg-emerald-500/10 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/20"
+              >
+                ↓ Captions (.txt)
+              </button>
+            </div>
+            <div className="text-[11px] text-emerald-200/70">
+              MP4 1080×1920 com overlay e áudio mixed in. Postar directo em
+              IG Reel / TikTok / WhatsApp Status.
+            </div>
+          </div>
+        )}
       </div>
 
-      {pngError && (
-        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
-          {pngError}
+      <button
+        onClick={() => setShowComponentes((v) => !v)}
+        className="text-[11px] text-escola-creme-50 hover:text-escola-creme"
+      >
+        {showComponentes ? "▾" : "▸"} Componentes individuais (caso queiras
+        editar manualmente no CapCut, etc)
+      </button>
+
+      {showComponentes && (
+        <div className="flex flex-wrap gap-2 rounded border border-escola-border/40 p-2">
+          <button
+            onClick={() =>
+              downloadText(`vc-sabia-${slug}-captions.txt`, fullCaptionTxt)
+            }
+            className="rounded-md border border-escola-border bg-escola-card/40 px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-card/60"
+          >
+            ↓ Captions (.txt)
+          </button>
+          <button
+            onClick={() => downloadRemote(motionUrl, motionName)}
+            disabled={!motionUrl}
+            className="rounded-md border border-escola-border bg-escola-card/40 px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-card/60 disabled:opacity-50"
+          >
+            ↓ Motion raw (.mp4)
+          </button>
+          <button
+            onClick={() =>
+              audioUrl && downloadRemote(audioUrl, `vc-sabia-${slug}-audio.mp3`)
+            }
+            disabled={!audioUrl}
+            className="rounded-md border border-escola-border bg-escola-card/40 px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-card/60 disabled:opacity-50"
+          >
+            ↓ Áudio (.mp3)
+          </button>
+          <button
+            onClick={composePng}
+            disabled={composingPng}
+            className="rounded-md border border-escola-border bg-escola-card/40 px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-card/60 disabled:opacity-50"
+          >
+            {composingPng ? "A compor…" : "↓ Frame still (.png)"}
+          </button>
+          {pngError && (
+            <span className="text-[10px] text-red-400">{pngError}</span>
+          )}
         </div>
       )}
-
-      <div className="text-[11px] text-escola-creme-50">
-        <strong className="text-escola-creme">Como usar:</strong> baixa o
-        Frame .png + o áudio .mp3. No WhatsApp, mete o png como Status e o
-        áudio dá para anexar separado. No Instagram/TikTok, importa o motion
-        .mp4 + áudio .mp3 no editor (CapCut, etc) e cola por cima o png
-        como overlay com fade-in.
-      </div>
     </section>
   );
 }
@@ -213,16 +349,26 @@ function extractMotionFrame(url: string): Promise<string> {
   });
 }
 
+/** Variante transparente: SO o overlay (cartao + texto + assinatura), com
+ *  canvas transparente para ser sobreposto ao motion pelo ffmpeg. */
+async function drawOverlayOnly(phrase: string, dateLabel: string): Promise<string> {
+  return drawComposition(null, phrase, dateLabel);
+}
+
 /** Compõe o overlay variante C sobre o frame e devolve dataURL PNG. */
 async function drawOverlay(
   frameDataUrl: string,
   phrase: string,
   dateLabel: string
 ): Promise<string> {
-  const img = new Image();
-  img.src = frameDataUrl;
-  await img.decode();
+  return drawComposition(frameDataUrl, phrase, dateLabel);
+}
 
+async function drawComposition(
+  frameDataUrl: string | null,
+  phrase: string,
+  dateLabel: string
+): Promise<string> {
   const W = 1080;
   const H = 1920;
   const canvas = document.createElement("canvas");
@@ -231,18 +377,31 @@ async function drawOverlay(
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("ctx null");
 
-  // Fundo: motion frame em cover
-  const ratio = Math.max(W / img.width, H / img.height);
-  const drawW = img.width * ratio;
-  const drawH = img.height * ratio;
-  ctx.drawImage(img, (W - drawW) / 2, (H - drawH) / 2, drawW, drawH);
+  if (frameDataUrl) {
+    const img = new Image();
+    img.src = frameDataUrl;
+    await img.decode();
+    // Fundo: motion frame em cover
+    const ratio = Math.max(W / img.width, H / img.height);
+    const drawW = img.width * ratio;
+    const drawH = img.height * ratio;
+    ctx.drawImage(img, (W - drawW) / 2, (H - drawH) / 2, drawW, drawH);
 
-  // Vinheta inferior para legibilidade
-  const grad = ctx.createLinearGradient(0, H * 0.4, 0, H);
-  grad.addColorStop(0, "rgba(0,0,0,0)");
-  grad.addColorStop(1, "rgba(0,0,0,0.45)");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
+    // Vinheta inferior para legibilidade
+    const grad = ctx.createLinearGradient(0, H * 0.4, 0, H);
+    grad.addColorStop(0, "rgba(0,0,0,0)");
+    grad.addColorStop(1, "rgba(0,0,0,0.45)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+  } else {
+    // Sem frame de fundo: ainda assim metemos uma vinheta semi-transparente
+    // para garantir contraste do texto sobre motions claros.
+    const grad = ctx.createLinearGradient(0, H * 0.4, 0, H);
+    grad.addColorStop(0, "rgba(0,0,0,0)");
+    grad.addColorStop(1, "rgba(0,0,0,0.45)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+  }
 
   // Cartão de vidro fosco (variante C)
   const cardX = 90;

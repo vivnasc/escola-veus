@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import seed from "@/data/vc-sabia-frases.seed.json";
 import { phraseToCaptions } from "@/lib/vc-sabia/captions";
-import { MOOD_LABELS, type MorningMood } from "@/lib/vc-sabia/audio";
+import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
 import { MotionLibrary } from "./MotionLibrary";
 import { AudioLibrary } from "./AudioLibrary";
 import { ManualDownloadPanel } from "./ManualDownloadPanel";
+import { BulkMonthPanel } from "./BulkMonthPanel";
 
 type Variant = "A" | "B" | "C";
 
@@ -69,12 +70,33 @@ export function VcSabiaPreviewPanel() {
   );
 
   /** Áudio derivado do motion seleccionado. */
+  const motionName = useMemo(() => media.split("/").pop() ?? "", [media]);
   const { motionMood, motionAudioUrl } = useMemo(() => {
-    const name = media.split("/").pop() ?? "";
-    const mood = motionTags[name];
+    const mood = motionTags[motionName];
     const url = mood ? activeByMood[mood] ?? null : null;
     return { motionMood: mood ?? null, motionAudioUrl: url };
-  }, [media, motionTags, activeByMood]);
+  }, [motionName, motionTags, activeByMood]);
+
+  /** Persiste mood do motion actual. Funciona para motions do library
+   *  E para o motion de teste local (qualquer URL serve). */
+  const setCurrentMotionMood = useCallback(
+    async (mood: MorningMood | "") => {
+      const nextTags = { ...motionTags };
+      if (mood === "") delete nextTags[motionName];
+      else nextTags[motionName] = mood;
+      setMotionTags(nextTags);
+      try {
+        await fetch("/api/admin/vc-sabia/motion-tags", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tags: nextTags }),
+        });
+      } catch {
+        /* erro silencioso, vai retry no proximo save */
+      }
+    },
+    [motionTags, motionName]
+  );
 
   const seedPhrase = seed.frases.find((f) => f.id === phraseId) ?? seed.frases[0];
   const effectiveText = customPhrase.trim() || seedPhrase.texto;
@@ -234,29 +256,45 @@ export function VcSabiaPreviewPanel() {
             <div className="mt-1 break-all">{media}</div>
           </div>
 
-          <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
-            <div className="text-escola-dourado">Áudio do motion</div>
+          <div className="space-y-2 rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2">
+            <div className="flex items-center justify-between gap-2">
+              <div className="text-escola-dourado">Áudio do motion</div>
+              <select
+                value={motionMood ?? ""}
+                onChange={(e) =>
+                  setCurrentMotionMood(e.target.value as MorningMood | "")
+                }
+                className={`rounded border bg-escola-card px-1.5 py-0.5 text-[10px] ${
+                  motionMood
+                    ? "border-escola-dourado/60 text-escola-dourado"
+                    : "border-red-700/40 text-red-300"
+                }`}
+                title="Mood deste motion (água, vento, etc). Persiste em Supabase."
+              >
+                <option value="">⚠ sem mood</option>
+                {MORNING_MOODS.map((m) => (
+                  <option key={m} value={m}>
+                    {MOOD_LABELS[m]}
+                  </option>
+                ))}
+              </select>
+            </div>
             {motionMood && motionAudioUrl ? (
-              <>
-                <div className="mt-1 text-escola-creme">
-                  {MOOD_LABELS[motionMood]}
-                </div>
-                <audio
-                  key={motionAudioUrl}
-                  src={motionAudioUrl}
-                  controls
-                  loop
-                  className="mt-2 h-8 w-full"
-                />
-              </>
+              <audio
+                key={motionAudioUrl}
+                src={motionAudioUrl}
+                controls
+                loop
+                className="h-8 w-full"
+              />
             ) : motionMood ? (
-              <div className="mt-1 text-red-300">
-                Motion tagged como {MOOD_LABELS[motionMood]}, mas esse mood não
-                tem áudio activo. Escolhe um em baixo na Áudio library.
+              <div className="text-red-300">
+                Mood {MOOD_LABELS[motionMood]} não tem áudio activo. Vai à
+                Áudio library e gera/marca um.
               </div>
             ) : (
-              <div className="mt-1 text-red-300">
-                Motion sem mood. Atribui um na thumbnail acima (dropdown).
+              <div className="text-red-300">
+                Escolhe um mood acima para este motion.
               </div>
             )}
           </div>
@@ -305,6 +343,8 @@ export function VcSabiaPreviewPanel() {
         captionTiktok={captions.tiktok}
         captionWhatsapp={captions.whatsapp}
       />
+
+      <BulkMonthPanel />
 
       <AudioLibrary onActiveChange={handleActiveAudios} />
     </div>

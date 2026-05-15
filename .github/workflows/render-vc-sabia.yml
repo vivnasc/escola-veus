@@ -1,0 +1,45 @@
+name: Render VC Sabia
+
+# Disparado por /api/admin/vc-sabia/render-submit. O manifest em
+# course-assets/render-jobs/<jobId>.json tem os URLs (motion, audio,
+# overlay PNG). Aqui so corremos ffmpeg.
+
+on:
+  workflow_dispatch:
+    inputs:
+      jobId:
+        description: "ID do job"
+        required: true
+        type: string
+
+run-name: "render-vc-sabia: ${{ inputs.jobId }}"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+        with:
+          ffmpeg-version: "release"
+
+      - name: Install render-vc-sabia deps
+        working-directory: tools/render-vc-sabia
+        run: npm install --no-audit --no-fund
+
+      - name: Render
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          JOB_ID: ${{ inputs.jobId }}
+        working-directory: tools/render-vc-sabia
+        run: node render.mjs
