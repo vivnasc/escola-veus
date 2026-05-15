@@ -32,6 +32,18 @@ function ymd(d: Date) {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
 }
 
+type PlanEntry = {
+  day: number;
+  date: string;
+  dateLabel: string;
+  phrase: string;
+  phraseId?: string;
+  phraseTheme?: string;
+  motionName: string;
+  motionUrl: string;
+  audioUrl: string | null;
+};
+
 export async function POST(req: NextRequest) {
   let body: {
     year?: number;
@@ -40,6 +52,7 @@ export async function POST(req: NextRequest) {
     endDay?: number;
     phraseStartIndex?: number;
     motionStartIndex?: number;
+    plan?: PlanEntry[];
   };
   try {
     body = await req.json();
@@ -60,6 +73,7 @@ export async function POST(req: NextRequest) {
   const endDay = Math.max(startDay, Math.min(daysInMonth, Number(body.endDay ?? daysInMonth)));
   const phraseStartIndex = Math.max(0, Number(body.phraseStartIndex ?? 0));
   const motionStartIndex = Math.max(0, Number(body.motionStartIndex ?? 0));
+  const explicitPlan = Array.isArray(body.plan) ? body.plan : null;
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -155,27 +169,62 @@ export async function POST(req: NextRequest) {
     audioUrl: string | null;
   }> = [];
 
-  for (let i = 0; i < days.length; i++) {
-    const day = days[i];
-    const date = new Date(Date.UTC(year, month - 1, day));
+  // Lista efectiva: vem do plan explicito (com edits da UI) ou auto-pick
+  type IterEntry = {
+    day: number;
+    date: string;
+    dateLabel: string;
+    motionUrl: string;
+    motionName: string;
+    audioUrl: string | null;
+    phrase: string;
+    phraseId: string;
+    phraseTheme: string;
+  };
+  const iter: IterEntry[] = explicitPlan
+    ? explicitPlan.map((p) => ({
+        day: p.day,
+        date: p.date,
+        dateLabel: p.dateLabel,
+        motionUrl: p.motionUrl,
+        motionName: p.motionName,
+        audioUrl: p.audioUrl,
+        phrase: p.phrase,
+        phraseId: p.phraseId || "",
+        phraseTheme: p.phraseTheme || "",
+      }))
+    : days.map((day, i) => {
+        const date = new Date(Date.UTC(year, month - 1, day));
+        const phrase = seed.frases[(i + phraseStartIndex) % seed.frases.length];
+        const motion = motions[(i + motionStartIndex) % motions.length];
+        const mood = motionTags[motion.name];
+        const audioUrl = mood ? activeAudios[mood] ?? null : null;
+        return {
+          day,
+          date: ymd(date),
+          dateLabel: formatDatePT(date),
+          motionUrl: motion.url,
+          motionName: motion.name,
+          audioUrl,
+          phrase: phrase.texto,
+          phraseId: phrase.id,
+          phraseTheme: phrase.tema,
+        };
+      });
 
-    const phrase = seed.frases[i % seed.frases.length];
-    const motion = motions[i % motions.length];
-    const mood = motionTags[motion.name];
-    const audioUrl = mood ? activeAudios[mood] ?? null : null;
-
-    const jobId = `${batchId}-d${String(day).padStart(2, "0")}`;
+  for (const entry of iter) {
+    const jobId = `${batchId}-d${String(entry.day).padStart(2, "0")}`;
     const manifest = {
       jobId,
       batchId,
-      day,
-      date: ymd(date),
-      motionUrl: motion.url,
-      audioUrl,
-      phrase: phrase.texto,
-      phraseId: phrase.id,
-      phraseTheme: phrase.tema,
-      dateLabel: formatDatePT(date),
+      day: entry.day,
+      date: entry.date,
+      motionUrl: entry.motionUrl,
+      audioUrl: entry.audioUrl,
+      phrase: entry.phrase,
+      phraseId: entry.phraseId,
+      phraseTheme: entry.phraseTheme,
+      dateLabel: entry.dateLabel,
       durationSec: 12,
       createdAt: new Date().toISOString(),
     };
