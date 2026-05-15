@@ -606,15 +606,24 @@ export function BulkMonthPanel() {
                     </td>
                     <td className="px-2 py-1">
                       {j.videoUrl ? (
-                        <a
-                          href={j.videoUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          download
-                          className="text-emerald-300 hover:underline"
-                        >
-                          ↓ baixar
-                        </a>
+                        <div className="space-y-1">
+                          <video
+                            src={j.videoUrl}
+                            controls
+                            playsInline
+                            preload="metadata"
+                            className="aspect-[9/16] w-24 rounded bg-black"
+                          />
+                          <a
+                            href={j.videoUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            download
+                            className="block text-emerald-300 hover:underline"
+                          >
+                            ↓ baixar
+                          </a>
+                        </div>
                       ) : (
                         "—"
                       )}
