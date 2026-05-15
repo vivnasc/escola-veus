@@ -33,7 +33,14 @@ function ymd(d: Date) {
 }
 
 export async function POST(req: NextRequest) {
-  let body: { year?: number; month?: number; startDay?: number; endDay?: number };
+  let body: {
+    year?: number;
+    month?: number;
+    startDay?: number;
+    endDay?: number;
+    phraseStartIndex?: number;
+    motionStartIndex?: number;
+  };
   try {
     body = await req.json();
   } catch {
@@ -51,6 +58,8 @@ export async function POST(req: NextRequest) {
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
   const startDay = Math.max(1, Math.min(daysInMonth, Number(body.startDay ?? 1)));
   const endDay = Math.max(startDay, Math.min(daysInMonth, Number(body.endDay ?? daysInMonth)));
+  const phraseStartIndex = Math.max(0, Number(body.phraseStartIndex ?? 0));
+  const motionStartIndex = Math.max(0, Number(body.motionStartIndex ?? 0));
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
