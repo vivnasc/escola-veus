@@ -55,7 +55,17 @@ const COBRE_FRACO = "rgba(194, 143, 96, 0.55)";
 const CREME = "rgb(242, 233, 216)";
 const INDIGO = "rgba(14, 8, 32, 0.85)";
 
+type HemTab = "bulk" | "preview" | "motions" | "audios" | "prompts";
+const HEM_TABS: Array<{ id: HemTab; label: string; icon: string }> = [
+  { id: "bulk", label: "Pack mensal", icon: "📦" },
+  { id: "preview", label: "Preview", icon: "🎬" },
+  { id: "motions", label: "Motions + Runway", icon: "🎞" },
+  { id: "audios", label: "Áudios", icon: "🔊" },
+  { id: "prompts", label: "Prompts (Claude review)", icon: "✍️" },
+];
+
 export function HojeEmMimPreviewPanel() {
+  const [activeTab, setActiveTab] = useState<HemTab>("bulk");
   const hoje = diaSemanaHoje();
   const [dia, setDia] = useState<DiaSemana>(hoje);
   const frasesDoDia = useMemo(() => FRASES.filter((f) => f.dia === dia), [dia]);
@@ -227,6 +237,25 @@ export function HojeEmMimPreviewPanel() {
         </p>
       </header>
 
+      <nav className="flex flex-wrap gap-1 border-b border-escola-border/40">
+        {HEM_TABS.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setActiveTab(t.id)}
+            className={`-mb-px rounded-t-md border-b-2 px-4 py-2 text-xs font-medium transition-colors ${
+              activeTab === t.id
+                ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                : "border-transparent text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            <span className="mr-1.5">{t.icon}</span>
+            {t.label}
+          </button>
+        ))}
+      </nav>
+
+      {activeTab === "preview" && (
+      <>
       <div className="flex flex-wrap gap-3">
         <div className="flex gap-1 rounded-md border border-escola-border p-1">
           {(["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as DiaSemana[]).map((d) => (
@@ -261,8 +290,6 @@ export function HojeEmMimPreviewPanel() {
           )}
         </div>
       </div>
-
-      <NightMotionLibrary selectedUrl={media} onSelect={setMedia} />
 
       <div className="flex flex-wrap gap-3">
         <select
@@ -361,116 +388,6 @@ export function HojeEmMimPreviewPanel() {
             </div>
           </div>
 
-          <div className="space-y-2 pt-3 border-t border-escola-border">
-            <div className="text-escola-creme">Bulk mensal · Pacote Metricool</div>
-            <div className="grid grid-cols-2 gap-2">
-              <label className="text-[10px] block">
-                Ano
-                <input
-                  type="number"
-                  min={2020}
-                  max={2100}
-                  value={ano}
-                  onChange={(e) => setAno(Number(e.target.value))}
-                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
-                />
-              </label>
-              <label className="text-[10px] block">
-                Mês
-                <select
-                  value={mes}
-                  onChange={(e) => {
-                    const newMes = Number(e.target.value);
-                    setMes(newMes);
-                    const newDmax = daysInMonth(ano, newMes);
-                    if (diaFim > newDmax) setDiaFim(newDmax);
-                    if (diaInicio > newDmax) setDiaInicio(newDmax);
-                  }}
-                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
-                >
-                  {MESES_PT.map((label, i) => (
-                    <option key={i} value={i + 1}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="text-[10px] block">
-                Dia início
-                <input
-                  type="number"
-                  min={1}
-                  max={dmax}
-                  value={diaInicio}
-                  onChange={(e) => setDiaInicio(Number(e.target.value))}
-                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
-                />
-              </label>
-              <label className="text-[10px] block">
-                Dia fim
-                <input
-                  type="number"
-                  min={diaInicio}
-                  max={dmax}
-                  value={diaFim}
-                  onChange={(e) => setDiaFim(Number(e.target.value))}
-                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
-                />
-              </label>
-              <label className="text-[10px] block col-span-2">
-                Duração de cada vídeo (s)
-                <input
-                  type="number"
-                  min={5}
-                  max={60}
-                  value={durationSec}
-                  onChange={(e) => setDurationSec(Number(e.target.value))}
-                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
-                />
-              </label>
-              <label className="text-[10px] block col-span-2">
-                Tema visual (overlay)
-                <select
-                  value={themeId}
-                  onChange={(e) => setThemeId(e.target.value)}
-                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
-                >
-                  {HEM_THEMES.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="block mt-0.5 text-[10px] text-escola-creme-50/80 italic">
-                  {getTheme(themeId).notas}
-                </span>
-              </label>
-            </div>
-            <button
-              onClick={submitJob}
-              disabled={submitting || !rangeOk}
-              className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
-              style={{
-                borderColor: COBRE,
-                color: COBRE,
-                background: "rgba(194, 143, 96, 0.1)",
-              }}
-            >
-              {submitting
-                ? "a submeter…"
-                : `▶ Gerar dias ${diaInicio}-${diaFim} de ${MESES_PT[mes - 1]} ${ano} (${numItens})`}
-            </button>
-            {submitError && (
-              <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
-                {submitError}
-              </div>
-            )}
-            <div className="text-[10px] text-escola-creme-50">
-              {numItens} jobs em paralelo no GitHub Actions (matrix). Cada
-              item ~30s. Faz polling automático e mostra os MP4 conforme
-              prontos. Motion e áudio usados: os que estão selecionados acima.
-            </div>
-          </div>
         </div>
       </div>
 
@@ -504,6 +421,145 @@ export function HojeEmMimPreviewPanel() {
           />
         </div>
       </section>
+      </>
+      )}
+
+      {activeTab === "bulk" && (
+      <>
+      <section className="space-y-3 rounded-lg border border-escola-border bg-escola-card p-4">
+        <h2 className="text-base font-serif" style={{ color: COBRE }}>
+          📦 Bulk mensal · Pacote Metricool
+        </h2>
+        <p className="text-xs text-escola-creme-50">
+          Define o range de dias, escolhe motion + áudio + tema globais, e
+          submete o pack. Cria 1 vídeo por dia em paralelo via GitHub Actions.
+        </p>
+        <div className="grid grid-cols-2 gap-2 max-w-xl">
+          <label className="text-[10px] block">
+            Ano
+            <input
+              type="number"
+              min={2020}
+              max={2100}
+              value={ano}
+              onChange={(e) => setAno(Number(e.target.value))}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+            />
+          </label>
+          <label className="text-[10px] block">
+            Mês
+            <select
+              value={mes}
+              onChange={(e) => {
+                const newMes = Number(e.target.value);
+                setMes(newMes);
+                const newDmax = daysInMonth(ano, newMes);
+                if (diaFim > newDmax) setDiaFim(newDmax);
+                if (diaInicio > newDmax) setDiaInicio(newDmax);
+              }}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+            >
+              {MESES_PT.map((label, i) => (
+                <option key={i} value={i + 1}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="text-[10px] block">
+            Dia início
+            <input
+              type="number"
+              min={1}
+              max={dmax}
+              value={diaInicio}
+              onChange={(e) => setDiaInicio(Number(e.target.value))}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+            />
+          </label>
+          <label className="text-[10px] block">
+            Dia fim
+            <input
+              type="number"
+              min={diaInicio}
+              max={dmax}
+              value={diaFim}
+              onChange={(e) => setDiaFim(Number(e.target.value))}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+            />
+          </label>
+          <label className="text-[10px] block col-span-2">
+            Duração de cada vídeo (s)
+            <input
+              type="number"
+              min={5}
+              max={60}
+              value={durationSec}
+              onChange={(e) => setDurationSec(Number(e.target.value))}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+            />
+          </label>
+          <label className="text-[10px] block col-span-2">
+            Tema visual (overlay)
+            <select
+              value={themeId}
+              onChange={(e) => setThemeId(e.target.value)}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+            >
+              {HEM_THEMES.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+            <span className="block mt-0.5 text-[10px] text-escola-creme-50/80 italic">
+              {getTheme(themeId).notas}
+            </span>
+          </label>
+          <label className="text-[10px] block col-span-2">
+            Motion (URL) — escolhe na tab Motions
+            <input
+              value={media}
+              onChange={(e) => setMedia(e.target.value)}
+              placeholder="/assets/hoje-em-mim/motions/…"
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
+            />
+          </label>
+          <label className="text-[10px] block col-span-2">
+            Áudio (URL) — gera na tab Áudios
+            <input
+              value={audioUrlSelected}
+              onChange={(e) => setAudioUrlSelected(e.target.value)}
+              placeholder="vazio = sem som"
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
+            />
+          </label>
+        </div>
+        <button
+          onClick={submitJob}
+          disabled={submitting || !rangeOk}
+          className="w-full max-w-xl rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
+          style={{
+            borderColor: COBRE,
+            color: COBRE,
+            background: "rgba(194, 143, 96, 0.1)",
+          }}
+        >
+          {submitting
+            ? "a submeter…"
+            : `▶ Gerar dias ${diaInicio}-${diaFim} de ${MESES_PT[mes - 1]} ${ano} (${numItens})`}
+        </button>
+        {submitError && (
+          <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
+            {submitError}
+          </div>
+        )}
+        <div className="text-[10px] text-escola-creme-50">
+          {numItens} jobs em paralelo no GitHub Actions (matrix). Cada item
+          ~30s. Faz polling automático abaixo e mostra os MP4 conforme
+          ficam prontos.
+        </div>
+      </section>
 
       <JobSection
         jobId={jobId}
@@ -520,12 +576,19 @@ export function HojeEmMimPreviewPanel() {
         copied={copied}
         onCopy={copy}
       />
+      </>
+      )}
 
-      <RunwayPipelineSection />
+      {activeTab === "motions" && (
+      <>
+        <NightMotionLibrary selectedUrl={media} onSelect={setMedia} />
+        <RunwayPipelineSection />
+      </>
+      )}
 
-      <AudioGeneratorSection />
+      {activeTab === "audios" && <AudioGeneratorSection />}
 
-      <MjPromptsSection copied={copied} onCopy={copy} />
+      {activeTab === "prompts" && <MjPromptsSection copied={copied} onCopy={copy} />}
     </div>
   );
 }
@@ -1255,7 +1318,7 @@ function RunwayPipelineSection() {
     const promptId = promptByImage[img.name] || "";
     const motion = motionByImage[img.name] || "";
     if (!motion.trim()) return null;
-    const duration = durationByImage[img.name] || 10;
+    const duration = durationByImage[img.name] || 5;
     // ID estável para o item Runway: derivado do imageName (sem extensão)
     const safeId = img.name
       .replace(/\.[^.]+$/, "")
@@ -1423,7 +1486,7 @@ function RunwayPipelineSection() {
             const stateItem = state.items.find((s) => s.imageName === img.name);
             const promptId = promptByImage[img.name] || stateItem?.promptRef || "";
             const motion = motionByImage[img.name] ?? stateItem?.runwayMotion ?? "";
-            const duration = durationByImage[img.name] ?? stateItem?.duration ?? 10;
+            const duration = durationByImage[img.name] ?? stateItem?.duration ?? 5;
 
             const statusBadge =
               stateItem?.clipUrl ? "✓ pronto" :
@@ -1491,6 +1554,15 @@ function RunwayPipelineSection() {
                   />
                 </label>
 
+                <ClaudeReviewButton
+                  imageUrl={img.url}
+                  currentPrompt={motion}
+                  scene={promptId ? MJ_VIDEO_PROMPTS.find((p) => p.id === promptId)?.prompt : undefined}
+                  onAccept={(newPrompt) =>
+                    setMotionByImage((m) => ({ ...m, [img.name]: newPrompt }))
+                  }
+                />
+
                 <div className="flex items-center gap-2 text-[10px]">
                   <label className="text-escola-creme-50">
                     duração
@@ -1499,7 +1571,7 @@ function RunwayPipelineSection() {
                       onChange={(e) => setDurationByImage((d) => ({ ...d, [img.name]: Number(e.target.value) as 5 | 10 }))}
                       className="ml-1 rounded border border-escola-border bg-escola-bg px-1.5 py-0.5 text-[11px] text-escola-creme"
                     >
-                      <option value={5}>5s</option>
+                      <option value={5}>5s (poupa, faz loop)</option>
                       <option value={10}>10s</option>
                     </select>
                   </label>
@@ -2092,6 +2164,108 @@ function Frame({
         className="pointer-events-none absolute"
         style={{ left: 22, top: 22, width: 1, height: 24, background: COBRE_FRACO_LOCAL }}
       />
+    </div>
+  );
+}
+
+function ClaudeReviewButton({
+  imageUrl,
+  currentPrompt,
+  scene,
+  onAccept,
+}: {
+  imageUrl: string;
+  currentPrompt: string;
+  scene?: string;
+  onAccept: (newPrompt: string) => void;
+}) {
+  const [reviewing, setReviewing] = useState(false);
+  const [suggestion, setSuggestion] = useState<string | null>(null);
+  const [reasoning, setReasoning] = useState<string>("");
+  const [concerns, setConcerns] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const review = async () => {
+    setReviewing(true);
+    setError(null);
+    setSuggestion(null);
+    setReasoning("");
+    setConcerns([]);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/runway-prompts/review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageUrl, currentPrompt, scene }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      setSuggestion(json.suggestedPrompt);
+      setReasoning(json.reasoning || "");
+      setConcerns(Array.isArray(json.concerns) ? json.concerns : []);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setReviewing(false);
+    }
+  };
+
+  return (
+    <div className="space-y-1.5">
+      <button
+        onClick={review}
+        disabled={reviewing}
+        className="w-full rounded border px-2 py-1 text-[10px] disabled:opacity-50"
+        style={{ borderColor: COBRE_FRACO, color: COBRE, background: "rgba(194, 143, 96, 0.06)" }}
+      >
+        {reviewing ? "Claude a olhar para a imagem…" : "🤖 Rever motion prompt com Claude (vision)"}
+      </button>
+      {error && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-1.5 text-[10px] text-red-300">
+          {error}
+        </div>
+      )}
+      {suggestion && (
+        <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2 space-y-1.5">
+          <div className="text-[10px] text-escola-creme-50">Sugestão do Claude:</div>
+          <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
+            {suggestion}
+          </pre>
+          {reasoning && (
+            <div className="text-[10px] italic text-escola-creme-50">{reasoning}</div>
+          )}
+          {concerns.length > 0 && (
+            <ul className="text-[10px] text-amber-300 space-y-0.5">
+              {concerns.map((c, i) => (
+                <li key={i}>⚠ {c}</li>
+              ))}
+            </ul>
+          )}
+          <div className="flex gap-1.5">
+            <button
+              onClick={() => {
+                onAccept(suggestion);
+                setSuggestion(null);
+              }}
+              className="rounded border px-2 py-0.5 text-[10px]"
+              style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.15)" }}
+            >
+              Usar sugestão
+            </button>
+            <button
+              onClick={() => setSuggestion(null)}
+              className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              Manter o meu
+            </button>
+            <button
+              onClick={review}
+              className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              Tentar de novo
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

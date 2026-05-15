@@ -229,29 +229,6 @@ export function VcSabiaPreviewPanel() {
           placeholder="/assets/vc-sabia/motions/…"
           className="min-w-[280px] flex-1 rounded border border-escola-border bg-escola-card px-3 py-1.5 text-xs text-escola-creme"
         />
-
-        <div className="flex gap-1 rounded-md border border-escola-border p-1 text-xs">
-          <button
-            onClick={() => setMedia(DEFAULT_MEDIA)}
-            className={`rounded px-2 py-1 transition-colors ${
-              media === DEFAULT_MEDIA
-                ? "bg-escola-dourado/20 text-escola-dourado"
-                : "text-escola-creme-50 hover:text-escola-creme"
-            }`}
-          >
-            MP4 teste
-          </button>
-          <button
-            onClick={() => setMedia(FALLBACK_MEDIA)}
-            className={`rounded px-2 py-1 transition-colors ${
-              media === FALLBACK_MEDIA
-                ? "bg-escola-dourado/20 text-escola-dourado"
-                : "text-escola-creme-50 hover:text-escola-creme"
-            }`}
-          >
-            Imagem teste
-          </button>
-        </div>
       </div>
 
       <div className="text-xs text-escola-creme-50">
