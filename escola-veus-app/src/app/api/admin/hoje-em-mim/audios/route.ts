@@ -45,7 +45,14 @@ export async function GET() {
       });
     if (!files) continue;
     audiosByMood[moodFolder.name] = files
-      .filter((f) => f.name?.endsWith(".mp3"))
+      // Filtra: só .mp3 com tamanho razoável (>1KB). Ficheiros zero-bytes
+      // ou pequenos são sinal de falha do ElevenLabs e dão 'Erro' no
+      // player do browser.
+      .filter((f) => {
+        if (!f.name?.endsWith(".mp3")) return false;
+        const size = f.metadata?.size ?? 0;
+        return size > 1024;
+      })
       .map((f) => ({
         name: f.name,
         url: `${supabaseUrl}/storage/v1/object/public/course-assets/hoje-em-mim-audios/${moodFolder.name}/${f.name}`,
