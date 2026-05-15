@@ -46,22 +46,10 @@ export function ManualDownloadPanel({
   const [showComponentes, setShowComponentes] = useState(false);
 
   const renderFinalMp4 = async () => {
-    setRender({ phase: "rendering", jobId: "", progress: 0, message: "A compor overlay..." });
+    setRender({ phase: "rendering", jobId: "", progress: 0, message: "A submeter job..." });
     try {
-      // 1) Compor overlay PNG no browser (mesmo helper que o "Frame .png")
-      const frameDataUrl = await extractMotionFrame(motionUrl);
-      // overlay sem motion frame para evitar duplicacao no ffmpeg; so
-      // a "camada" decorativa com transparencia para sobrepor ao motion.
-      const overlayBase64 = await drawOverlayOnly(phrase, dateLabel);
-
-      setRender({
-        phase: "rendering",
-        jobId: "",
-        progress: 5,
-        message: "A submeter render job...",
-      });
-
-      // 2) Submeter ao backend que escreve manifest + dispara GitHub Action
+      // Submeter ao backend que escreve manifest + dispara GitHub Action.
+      // Overlay e composto server-side dentro do GitHub Action (canvas).
       const submitRes = await fetch("/api/admin/vc-sabia/render-submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,7 +58,6 @@ export function ManualDownloadPanel({
           audioUrl,
           phrase,
           dateLabel,
-          overlayPngBase64: overlayBase64,
           durationSec: 12,
         }),
       });
@@ -115,7 +102,6 @@ export function ManualDownloadPanel({
           progress: Number(sd.progress ?? 0),
           message: sd.message || "A renderizar...",
         });
-        void frameDataUrl; // unused, mantido para futura validacao
       }
       setRender({
         phase: "error",

@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "VC Sabia render tool: ffmpeg composes motion + overlay PNG + audio into final MP4. Runs in GitHub Actions."
+  "description": "VC Sabia render: compoe overlay (canvas) + motion + audio em MP4 final via ffmpeg. Corre em GitHub Actions.",
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.69"
+  }
 }

@@ -7,6 +7,7 @@ import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/aud
 import { MotionLibrary } from "./MotionLibrary";
 import { AudioLibrary } from "./AudioLibrary";
 import { ManualDownloadPanel } from "./ManualDownloadPanel";
+import { BulkMonthPanel } from "./BulkMonthPanel";
 
 type Variant = "A" | "B" | "C";
 
@@ -342,6 +343,8 @@ export function VcSabiaPreviewPanel() {
         captionTiktok={captions.tiktok}
         captionWhatsapp={captions.whatsapp}
       />
+
+      <BulkMonthPanel />
 
       <AudioLibrary onActiveChange={handleActiveAudios} />
     </div>

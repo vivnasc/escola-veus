@@ -32,6 +32,10 @@ jobs:
         with:
           ffmpeg-version: "release"
 
+      - name: Install render-vc-sabia deps
+        working-directory: tools/render-vc-sabia
+        run: npm install --no-audit --no-fund
+
       - name: Render
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}

@@ -1,24 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const maxDuration = 60;
+export const maxDuration = 30;
 export const runtime = "nodejs";
 
 /**
  * POST /api/admin/vc-sabia/render-submit
  *
- * Escreve manifest + overlay PNG em Supabase e dispara
- * workflow render-vc-sabia.yml.
+ * Escreve manifest em Supabase e dispara workflow render-vc-sabia.yml.
+ * Overlay e composto server-side dentro do GitHub Action (canvas).
  *
  * Body: {
- *   motionUrl: string,
- *   audioUrl?: string | null,
- *   phrase: string,
- *   dateLabel: string,
- *   overlayPngBase64: string,
- *   durationSec?: number,
+ *   motionUrl, audioUrl?, phrase, dateLabel, durationSec?,
+ *   jobIdOverride? // bulk mode passa um jobId fixo
  * }
  *
- * Returns: { jobId, manifestUrl, workflowRunUrl }
+ * Returns: { jobId, workflowRunUrl }
  */
 export async function POST(req: NextRequest) {
   let body: {
@@ -26,8 +22,8 @@ export async function POST(req: NextRequest) {
     audioUrl?: string | null;
     phrase?: string;
     dateLabel?: string;
-    overlayPngBase64?: string;
     durationSec?: number;
+    jobIdOverride?: string;
   };
   try {
     body = await req.json();
@@ -39,7 +35,6 @@ export async function POST(req: NextRequest) {
   const audioUrl = body.audioUrl?.trim() || null;
   const phrase = (body.phrase || "").trim();
   const dateLabel = (body.dateLabel || "").trim();
-  const overlayPngBase64 = body.overlayPngBase64 || "";
   const durationSec = Math.max(5, Math.min(20, Number(body.durationSec ?? 12)));
 
   if (!motionUrl) {
@@ -47,9 +42,6 @@ export async function POST(req: NextRequest) {
   }
   if (!phrase) {
     return NextResponse.json({ erro: "phrase em falta" }, { status: 400 });
-  }
-  if (!overlayPngBase64) {
-    return NextResponse.json({ erro: "overlayPngBase64 em falta" }, { status: 400 });
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -63,33 +55,14 @@ export async function POST(req: NextRequest) {
     auth: { persistSession: false },
   });
 
-  const jobId = `vc-sabia-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  const jobId =
+    body.jobIdOverride?.trim() ||
+    `vc-sabia-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
-  // 1) Upload overlay PNG
-  let pngData = overlayPngBase64;
-  if (pngData.startsWith("data:")) {
-    const idx = pngData.indexOf(",");
-    if (idx >= 0) pngData = pngData.slice(idx + 1);
-  }
-  const pngBuffer = Buffer.from(pngData, "base64");
-  const overlayPath = `render-jobs/${jobId}-overlay.png`;
-  const { error: pngErr } = await supabase.storage
-    .from("course-assets")
-    .upload(overlayPath, pngBuffer, {
-      contentType: "image/png",
-      upsert: true,
-    });
-  if (pngErr) {
-    return NextResponse.json({ erro: `Overlay upload: ${pngErr.message}` }, { status: 500 });
-  }
-  const overlayUrl = `${supabaseUrl}/storage/v1/object/public/course-assets/${overlayPath}`;
-
-  // 2) Manifest
   const manifest = {
     jobId,
     motionUrl,
     audioUrl,
-    overlayUrl,
     phrase,
     dateLabel,
     durationSec,
@@ -103,28 +76,24 @@ export async function POST(req: NextRequest) {
       upsert: true,
     });
   if (mErr) {
-    return NextResponse.json({ erro: `Manifest upload: ${mErr.message}` }, { status: 500 });
+    return NextResponse.json({ erro: `Manifest: ${mErr.message}` }, { status: 500 });
   }
 
-  // 3) Initial result (queued)
   const initialResult = {
     jobId,
     status: "queued",
     progress: 0,
     createdAt: new Date().toISOString(),
   };
-  const { error: rErr } = await supabase.storage
+  await supabase.storage
     .from("course-assets")
     .upload(
       `render-jobs/${jobId}-result.json`,
       JSON.stringify(initialResult, null, 2),
-      { contentType: "application/json", upsert: true }
+      { contentType: "application/json", upsert: true },
     );
-  if (rErr) {
-    return NextResponse.json({ erro: `Result init: ${rErr.message}` }, { status: 500 });
-  }
 
-  // 4) Dispatch GitHub workflow
+  // Dispatch GitHub workflow
   const owner = process.env.GITHUB_REPO_OWNER || "vivnasc";
   const repo = process.env.GITHUB_REPO_NAME || "escola-veus";
   const workflowFile = "render-vc-sabia.yml";
@@ -133,7 +102,7 @@ export async function POST(req: NextRequest) {
   if (!token) {
     return NextResponse.json(
       { erro: "GITHUB_DISPATCH_TOKEN nao configurada." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -148,19 +117,18 @@ export async function POST(req: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ref, inputs: { jobId } }),
-    }
+    },
   );
   if (!ghRes.ok) {
     const errText = await ghRes.text();
     return NextResponse.json(
       { erro: `GitHub dispatch ${ghRes.status}: ${errText.slice(0, 400)}` },
-      { status: 502 }
+      { status: 502 },
     );
   }
 
   return NextResponse.json({
     jobId,
-    manifestUrl: `${supabaseUrl}/storage/v1/object/public/course-assets/${manifestPath}`,
     workflowRunUrl: `https://github.com/${owner}/${repo}/actions/workflows/${workflowFile}`,
   });
 }
