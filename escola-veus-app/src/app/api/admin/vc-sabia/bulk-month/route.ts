@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import seed from "@/data/vc-sabia-frases.seed.json";
+import { loadMergedFrases } from "@/lib/vc-sabia/phrases";
 
 export const maxDuration = 120;
 export const runtime = "nodejs";
@@ -86,6 +86,9 @@ export async function POST(req: NextRequest) {
     auth: { persistSession: false },
   });
 
+  // Carregar frases (seed + overrides editadas no PhrasesPanel)
+  const frases = await loadMergedFrases(supabaseUrl);
+
   // 1) Carregar motions + tags + active audios
   const [motionsRes, tagsRes, audiosRes] = await Promise.all([
     supabase.storage.from("course-assets").list("vc-sabia-motions", {
@@ -129,7 +132,7 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
-  if (seed.frases.length === 0) {
+  if (frases.length === 0) {
     return NextResponse.json(
       { erro: "Seed de frases vazio." },
       { status: 400 }
@@ -196,7 +199,7 @@ export async function POST(req: NextRequest) {
       }))
     : days.map((day, i) => {
         const date = new Date(Date.UTC(year, month - 1, day));
-        const phrase = seed.frases[(i + phraseStartIndex) % seed.frases.length];
+        const phrase = frases[(i + phraseStartIndex) % frases.length];
         const motion = motions[(i + motionStartIndex) % motions.length];
         const mood = motionTags[motion.name];
         const audioUrl = mood ? activeAudios[mood] ?? null : null;
