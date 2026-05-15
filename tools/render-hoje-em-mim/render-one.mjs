@@ -223,7 +223,7 @@ async function renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp }) {
   await writeFile(overlayPath, png);
 
   const filter = [
-    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30[v0]`,
+    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30,eq=brightness=0.08:saturation=1.05:contrast=1.05[v0]`,
     `[v0][1:v]overlay=0:0[v]`,
   ].join(";");
 
