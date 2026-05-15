@@ -221,44 +221,27 @@ async function callForcedAlignment(audioUrl, text) {
   };
 }
 
-/** Carrega palavras alinhadas para o áudio do manifest. Estratégia:
- *   1. Se manifest tem `syncedLyrics`, prefere Forced Alignment (FA) — junta
- *      todas as stanzas em texto, alinhamento determinístico vs. transcrição
- *      adivinhada. Imune a falhas Scribe em vocal abafado/EN (caso Cold
- *      Country: Scribe devolvia 2 words "nbw" para áudio house).
- *   2. Cache FA por hash(audioUrl + text) — se a letra muda, recachea.
- *   3. Se FA falhar (rede, API, áudio inválido), cai para Scribe com sanity
- *      check (descarta cache podre < expectedMinWords).
- *  Returns: `{ words, source: "fa" | "scribe" }` ou `null` se ambos falharem. */
+/** Carrega palavras alinhadas para o áudio do manifest.
+ *
+ *  HISTÓRICO: durante alguns dias o default passou a ser Forced Alignment
+ *  (ElevenLabs /v1/forced-alignment) para tracks com syncedLyrics. Provou-se
+ *  pior em prática — em vários tracks Loranne a loss vinha alta (>1.0) e os
+ *  timestamps colocavam palavras em sítios errados do áudio, fazendo a SRT
+ *  parecer fora de sincronia. User exigiu reverter: Scribe (STT) era o que
+ *  sempre funcionou.
+ *
+ *  ATUAL: usa SEMPRE Scribe (ElevenLabs /v1/speech-to-text). Mesmo padrão
+ *  do pipeline funil (`/api/admin/funil/generate-srt`) que casa há meses.
+ *  Cache por hash(audioUrl) — palavras são da transcrição real, válidas
+ *  enquanto o áudio não mudar.
+ *
+ *  As funções `callForcedAlignment`, `tryFetchForcedAlignCache` etc. ficam
+ *  no ficheiro mas não são invocadas — podem ser reactivadas via opt-in
+ *  futuro se necessário, sem perder o trabalho.
+ *
+ *  Returns: `{ words, source: "scribe" }`. */
 async function getAlignedWords(manifest) {
   const expectedMinWords = Math.max(10, (manifest.syncedLyrics?.length || 0) * 3);
-  const text = (manifest.syncedLyrics || []).join("\n\n").trim();
-
-  if (text) {
-    try {
-      console.log(`→ Forced Alignment: a verificar cache para ${manifest.audioUrl.slice(-60)} (${text.length} chars)`);
-      let cached = await tryFetchForcedAlignCache(manifest.audioUrl, text);
-      if (cached && (cached.words?.length || 0) < expectedMinWords) {
-        console.log(`  ⚠ cache FA podre (${cached.words?.length || 0} words < ${expectedMinWords}) — re-chamar FA`);
-        cached = null;
-      }
-      if (cached) {
-        console.log(`  ✓ cache FA hit (${cached.words?.length || 0} words${cached.loss != null ? `, loss=${cached.loss.toFixed(3)}` : ""})`);
-      } else {
-        console.log(`  · cache miss — a chamar Forced Alignment (~$0.001)`);
-        const { words, loss } = await callForcedAlignment(manifest.audioUrl, text);
-        if ((words?.length || 0) < expectedMinWords) {
-          throw new Error(`FA devolveu ${words?.length || 0} words < ${expectedMinWords}`);
-        }
-        cached = { words, loss, savedAt: new Date().toISOString() };
-        await writeForcedAlignCache(manifest.audioUrl, text, cached);
-        console.log(`  ✓ FA ${words.length} words${loss != null ? ` (loss=${loss.toFixed(3)})` : ""}, gravado em cache`);
-      }
-      return { words: cached.words, source: "fa" };
-    } catch (e) {
-      console.log(`  ⚠ FA falhou (${e.message?.slice(0, 200) || e}) — fallback para Scribe`);
-    }
-  }
 
   console.log(`→ Scribe: a verificar cache para ${manifest.audioUrl.slice(-60)}`);
   let cached = await tryFetchScribeCache(manifest.audioUrl);
