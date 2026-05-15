@@ -1,0 +1,10 @@
+{
+  "name": "render-hoje-em-mim",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Renderer ffmpeg para a pack mensal de Hoje, em Mim (workflow GitHub Actions).",
+  "type": "module",
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}
