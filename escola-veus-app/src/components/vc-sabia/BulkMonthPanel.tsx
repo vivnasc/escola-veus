@@ -353,7 +353,11 @@ export function BulkMonthPanel() {
     }
   };
 
+  const [retrying, setRetrying] = useState<Record<string, "loading" | { error: string } | undefined>>({});
+
   const retryJob = async (jobId: string) => {
+    console.log(`[retry] ${jobId} start`);
+    setRetrying((r) => ({ ...r, [jobId]: "loading" }));
     try {
       const res = await fetch("/api/admin/vc-sabia/render-retry", {
         method: "POST",
@@ -361,13 +365,25 @@ export function BulkMonthPanel() {
         body: JSON.stringify({ jobId }),
       });
       const json = await res.json();
+      console.log(`[retry] ${jobId} response`, res.status, json);
       if (!res.ok) {
-        setError(json.erro || `HTTP ${res.status}`);
-      } else {
-        await fetchStatus();
+        setRetrying((r) => ({
+          ...r,
+          [jobId]: { error: json.erro || `HTTP ${res.status}` },
+        }));
+        return;
       }
+      // limpa estado de retry desta linha e refresca status
+      setRetrying((r) => {
+        const next = { ...r };
+        delete next[jobId];
+        return next;
+      });
+      await fetchStatus();
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error(`[retry] ${jobId} exception`, e);
+      setRetrying((r) => ({ ...r, [jobId]: { error: msg } }));
     }
   };
 
@@ -770,13 +786,29 @@ export function BulkMonthPanel() {
                   )}
 
                   {j.status === "failed" && (
-                    <button
-                      onClick={() => retryJob(j.jobId)}
-                      className="rounded border border-amber-500/60 bg-amber-500/10 px-2 py-1 text-[11px] text-amber-300 hover:bg-amber-500/20"
-                      title={j.error || "Re-despacha o workflow"}
-                    >
-                      ↻ Retry
-                    </button>
+                    <div className="space-y-1">
+                      {j.error && (
+                        <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
+                          {j.error.slice(0, 200)}
+                        </div>
+                      )}
+                      <button
+                        onClick={() => retryJob(j.jobId)}
+                        disabled={retrying[j.jobId] === "loading"}
+                        className="block w-full rounded border border-amber-500/60 bg-amber-500/10 px-2 py-1 text-[11px] text-amber-300 hover:bg-amber-500/20 disabled:opacity-50"
+                        title="Re-despacha o workflow"
+                      >
+                        {retrying[j.jobId] === "loading"
+                          ? "↻ A re-despachar..."
+                          : "↻ Retry"}
+                      </button>
+                      {retrying[j.jobId] && retrying[j.jobId] !== "loading" && (
+                        <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
+                          retry erro:{" "}
+                          {(retrying[j.jobId] as { error: string }).error}
+                        </div>
+                      )}
+                    </div>
                   )}
 
                   {j.videoUrl && (
