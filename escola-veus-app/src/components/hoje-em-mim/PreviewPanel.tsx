@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { toPng } from "html-to-image";
+import JSZip from "jszip";
 import seed from "@/data/hoje-em-mim-frases.seed.json";
 import { MJ_VIDEO_PROMPTS } from "@/data/hoje-em-mim-mj-prompts";
 import {
@@ -53,6 +55,17 @@ export function HojeEmMimPreviewPanel() {
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
   const [copied, setCopied] = useState<string | null>(null);
 
+  // Refs e estado dos downloads PNG (WhatsApp Status etc).
+  const frameRef = useRef<HTMLDivElement | null>(null);
+  const hiddenFrameRef = useRef<HTMLDivElement | null>(null);
+  const [downloading, setDownloading] = useState<"current" | "all" | null>(null);
+  const [zipProgress, setZipProgress] = useState<{ done: number; total: number }>({
+    done: 0,
+    total: 0,
+  });
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [hiddenFraseSnap, setHiddenFraseSnap] = useState<Frase | null>(null);
+
   const phrase =
     frasesDoDia.find((f) => f.id === phraseId) ?? frasesDoDia[0] ?? FRASES[0];
 
@@ -69,6 +82,95 @@ export function HojeEmMimPreviewPanel() {
       setTimeout(() => setCopied(null), 1500);
     } catch {
       /* ignore */
+    }
+  };
+
+  const captureNodeToBlob = async (
+    node: HTMLElement,
+    file: string
+  ): Promise<{ blob: Blob; file: string }> => {
+    const dataUrl = await toPng(node, {
+      pixelRatio: 1,
+      width: 1080,
+      height: 1920,
+      cacheBust: true,
+    });
+    const r = await fetch(dataUrl);
+    return { blob: await r.blob(), file };
+  };
+
+  const isoToday = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+
+  const downloadCurrentPng = async () => {
+    setDownloadError(null);
+    if (!frameRef.current) {
+      setDownloadError("Frame ainda não pronto. Aguarda 1s e tenta de novo.");
+      return;
+    }
+    setDownloading("current");
+    try {
+      const child = frameRef.current.firstElementChild as HTMLElement | null;
+      if (!child) throw new Error("Frame interno em falta.");
+      const { blob } = await captureNodeToBlob(
+        child,
+        `hoje-em-mim-${isoToday()}-${phrase.dia}.png`
+      );
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `hoje-em-mim-${isoToday()}-${phrase.dia}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setDownloadError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setDownloading(null);
+    }
+  };
+
+  const downloadAllSevenPng = async () => {
+    setDownloadError(null);
+    setDownloading("all");
+    const zip = new JSZip();
+    try {
+      const dias: DiaSemana[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+      const total = dias.length;
+      setZipProgress({ done: 0, total });
+
+      for (let i = 0; i < dias.length; i++) {
+        const d = dias[i];
+        const frase = FRASES.find((f) => f.dia === d) ?? FRASES[0];
+        setHiddenFraseSnap(frase);
+        // dá tempo ao DOM para re-renderizar com a nova frase
+        await new Promise((r) => setTimeout(r, 250));
+        if (!hiddenFrameRef.current) throw new Error("Frame oculto não montado.");
+        const child = hiddenFrameRef.current.firstElementChild as HTMLElement | null;
+        if (!child) throw new Error("Frame oculto interno em falta.");
+        const { blob } = await captureNodeToBlob(child, "");
+        zip.file(`${DIA_LONGO_PT[d]}-${frase.id}.png`, blob);
+        setZipProgress({ done: i + 1, total });
+      }
+
+      setHiddenFraseSnap(null);
+      const out = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(out);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `hoje-em-mim-semana-${isoToday()}.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setDownloadError(e instanceof Error ? e.message : String(e));
+      setHiddenFraseSnap(null);
+    } finally {
+      setDownloading(null);
     }
   };
 
@@ -183,14 +285,16 @@ export function HojeEmMimPreviewPanel() {
       </div>
 
       <div className="flex flex-wrap gap-8">
-        <Frame
-          phrase={phrase.texto}
-          kicker={kicker}
-          glifo={glifo}
-          diaLongo={diaLongo}
-          media={media}
-          isVideo={isVideo}
-        />
+        <div ref={frameRef}>
+          <Frame
+            phrase={phrase.texto}
+            kicker={kicker}
+            glifo={glifo}
+            diaLongo={diaLongo}
+            media={media}
+            isVideo={isVideo}
+          />
+        </div>
 
         <div className="space-y-3 text-xs text-escola-creme-50">
           <div>
@@ -214,6 +318,47 @@ export function HojeEmMimPreviewPanel() {
           <div>
             <div className="text-escola-creme">Media</div>
             <div className="mt-1 break-all">{media}</div>
+          </div>
+
+          <div className="space-y-2 pt-3 border-t border-escola-border">
+            <div className="text-escola-creme">Descarregar</div>
+            <button
+              onClick={downloadCurrentPng}
+              disabled={downloading === "current"}
+              className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
+              style={{
+                borderColor: COBRE,
+                color: COBRE,
+                background: "rgba(194, 143, 96, 0.1)",
+              }}
+            >
+              {downloading === "current"
+                ? "a gerar PNG…"
+                : "PNG deste dia para WhatsApp Status"}
+            </button>
+            <button
+              onClick={downloadAllSevenPng}
+              disabled={downloading === "all"}
+              className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
+              style={{
+                borderColor: COBRE_FRACO,
+                color: COBRE_FRACO,
+                background: "rgba(194, 143, 96, 0.04)",
+              }}
+            >
+              {downloading === "all"
+                ? `a gerar ${zipProgress.done}/${zipProgress.total}…`
+                : "ZIP com os 7 dias da semana"}
+            </button>
+            {downloadError && (
+              <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
+                {downloadError}
+              </div>
+            )}
+            <div className="text-[10px] text-escola-creme-50">
+              PNG 1080×1920 com a frase, glifo e arco da janela de lua queimados
+              sobre o motion atual. Posta direto no WhatsApp Status.
+            </div>
           </div>
         </div>
       </div>
@@ -252,6 +397,32 @@ export function HojeEmMimPreviewPanel() {
       <AudioGeneratorSection />
 
       <MjPromptsSection copied={copied} onCopy={copy} />
+
+      {/* Frame oculto, off-screen, usado para capturar PNG dos 7 dias da semana.
+          Fica fora do viewport mas é renderizado pelo browser, o que permite a
+          html-to-image capturar. */}
+      <div
+        aria-hidden
+        style={{
+          position: "fixed",
+          left: -9999,
+          top: 0,
+          pointerEvents: "none",
+        }}
+      >
+        <div ref={hiddenFrameRef}>
+          {hiddenFraseSnap && (
+            <Frame
+              phrase={hiddenFraseSnap.texto}
+              kicker={KICKER_POR_DIA[hiddenFraseSnap.dia]}
+              glifo={GLIFO_POR_DIA[hiddenFraseSnap.dia]}
+              diaLongo={DIA_LONGO_PT[hiddenFraseSnap.dia]}
+              media={media}
+              isVideo={isVideo}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 }
