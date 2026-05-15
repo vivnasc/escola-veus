@@ -353,6 +353,24 @@ export function BulkMonthPanel() {
     }
   };
 
+  const retryJob = async (jobId: string) => {
+    try {
+      const res = await fetch("/api/admin/vc-sabia/render-retry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.erro || `HTTP ${res.status}`);
+      } else {
+        await fetchStatus();
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  };
+
   const downloadTxt = (filename: string, content: string) => {
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -365,6 +383,13 @@ export function BulkMonthPanel() {
 
   const allDone =
     status && status.summary.done === status.summary.total && status.summary.total > 0;
+  /** Empacotar e possivel se ha pelo menos 1 done e nada esta em curso.
+   *  Dias falhados sao skipped pelo bulk-package automaticamente. */
+  const canPackage =
+    !!status &&
+    status.summary.done > 0 &&
+    status.summary.running === 0 &&
+    status.summary.queued === 0;
 
   return (
     <section className="space-y-3 rounded-lg border border-emerald-500/40 bg-emerald-500/5 p-4">
@@ -692,119 +717,145 @@ export function BulkMonthPanel() {
             )}
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-[11px] text-escola-creme-50">
-              <thead className="text-escola-creme">
-                <tr>
-                  <th className="px-2 py-1 text-left">Dia</th>
-                  <th className="px-2 py-1 text-left">Frase</th>
-                  <th className="px-2 py-1 text-left">Estado</th>
-                  <th className="px-2 py-1 text-left">MP4</th>
-                  <th className="px-2 py-1 text-left">Legenda</th>
-                </tr>
-              </thead>
-              <tbody>
-                {status.jobs.map((j) => {
-                  const phraseText = j.phraseText || "";
-                  const captions = phraseText
-                    ? phraseToCaptions({ phrase: phraseText, theme: "beleza-de-existir" })
-                    : null;
-                  const ddPad = String(j.day).padStart(2, "0");
-                  return (
-                    <tr key={j.jobId} className="border-t border-escola-border/30">
-                      <td className="px-2 py-1">{j.day}</td>
-                      <td className="px-2 py-1">
-                        {phraseText ? phraseText.slice(0, 60) + "…" : "—"}
-                      </td>
-                      <td className="px-2 py-1">
-                        <StatusBadge status={j.status} progress={j.progress} />
-                      </td>
-                      <td className="px-2 py-1">
-                        {j.videoUrl ? (
-                          <div className="space-y-1">
-                            <video
-                              src={j.videoUrl}
-                              controls
-                              playsInline
-                              preload="metadata"
-                              className="aspect-[9/16] w-24 rounded bg-black"
-                            />
-                            <a
-                              href={j.videoUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              download={`vc-sabia-${ddPad}.mp4`}
-                              className="block text-emerald-300 hover:underline"
-                            >
-                              ↓ MP4
-                            </a>
-                          </div>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                      <td className="px-2 py-1">
-                        {captions ? (
-                          <div className="space-y-1">
-                            <button
-                              onClick={() =>
-                                copyToClipboard(`wa-${j.day}`, captions.whatsapp)
-                              }
-                              className="block w-full rounded border border-emerald-500/60 bg-emerald-500/10 px-2 py-0.5 text-left text-[10px] text-emerald-300 hover:bg-emerald-500/20"
-                              title="WhatsApp Status: copia para postares manualmente"
-                            >
-                              {copiedKey === `wa-${j.day}` ? "✓ copiado" : "📋 WhatsApp"}
-                            </button>
-                            <button
-                              onClick={() =>
-                                copyToClipboard(`ig-${j.day}`, captions.instagram)
-                              }
-                              className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme hover:bg-escola-card/60"
-                            >
-                              {copiedKey === `ig-${j.day}` ? "✓ copiado" : "📋 Instagram"}
-                            </button>
-                            <button
-                              onClick={() =>
-                                copyToClipboard(`tt-${j.day}`, captions.tiktok)
-                              }
-                              className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme hover:bg-escola-card/60"
-                            >
-                              {copiedKey === `tt-${j.day}` ? "✓ copiado" : "📋 TikTok"}
-                            </button>
-                            <button
-                              onClick={() =>
-                                downloadTxt(
-                                  `vc-sabia-${ddPad}-legendas.txt`,
-                                  `WHATSAPP\n${"=".repeat(40)}\n${captions.whatsapp}\n\n\nINSTAGRAM\n${"=".repeat(40)}\n${captions.instagram}\n\n\nTIKTOK\n${"=".repeat(40)}\n${captions.tiktok}\n`
-                                )
-                              }
-                              className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme hover:bg-escola-card/60"
-                            >
-                              ↓ .txt (3 redes)
-                            </button>
-                          </div>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {status.jobs.map((j) => {
+              const phraseText = j.phraseText || "";
+              const captions = phraseText
+                ? phraseToCaptions({ phrase: phraseText, theme: "beleza-de-existir" })
+                : null;
+              const ddPad = String(j.day).padStart(2, "0");
+              return (
+                <div
+                  key={j.jobId}
+                  className={`flex flex-col gap-2 rounded-lg border p-2 ${
+                    j.status === "done"
+                      ? "border-emerald-500/30 bg-emerald-500/5"
+                      : j.status === "failed"
+                      ? "border-red-700/40 bg-red-900/10"
+                      : j.status === "running"
+                      ? "border-amber-500/40 bg-amber-500/5"
+                      : "border-escola-border bg-escola-card/40"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-serif text-lg text-escola-creme">
+                        {j.day}
+                      </span>
+                      <span className="text-[10px] text-escola-creme-50">
+                        {j.date}
+                      </span>
+                    </div>
+                    <StatusBadge status={j.status} progress={j.progress} />
+                  </div>
+
+                  {j.videoUrl ? (
+                    <video
+                      src={j.videoUrl}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="aspect-[9/16] w-full rounded bg-black"
+                    />
+                  ) : (
+                    <div className="flex aspect-[9/16] w-full items-center justify-center rounded bg-escola-card/60 text-[11px] text-escola-creme-50">
+                      {j.status === "failed" ? "✗ falhou" : "a aguardar..."}
+                    </div>
+                  )}
+
+                  {phraseText && (
+                    <div className="rounded bg-escola-card/40 p-1.5 text-[10px] italic text-escola-creme">
+                      {phraseText}
+                    </div>
+                  )}
+
+                  {j.status === "failed" && (
+                    <button
+                      onClick={() => retryJob(j.jobId)}
+                      className="rounded border border-amber-500/60 bg-amber-500/10 px-2 py-1 text-[11px] text-amber-300 hover:bg-amber-500/20"
+                      title={j.error || "Re-despacha o workflow"}
+                    >
+                      ↻ Retry
+                    </button>
+                  )}
+
+                  {j.videoUrl && (
+                    <a
+                      href={j.videoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      download={`vc-sabia-${ddPad}.mp4`}
+                      className="rounded border border-emerald-500/60 bg-emerald-500/10 px-2 py-1 text-center text-[11px] text-emerald-300 hover:bg-emerald-500/20"
+                    >
+                      ↓ MP4
+                    </a>
+                  )}
+
+                  {captions && (
+                    <div className="space-y-1 border-t border-escola-border/30 pt-1.5">
+                      <button
+                        onClick={() =>
+                          copyToClipboard(`wa-${j.day}`, captions.whatsapp)
+                        }
+                        className="block w-full rounded border border-emerald-500/60 bg-emerald-500/10 px-2 py-0.5 text-left text-[10px] text-emerald-300 hover:bg-emerald-500/20"
+                        title="WhatsApp Status"
+                      >
+                        {copiedKey === `wa-${j.day}` ? "✓ copiado" : "📋 WhatsApp"}
+                      </button>
+                      <button
+                        onClick={() =>
+                          copyToClipboard(`ig-${j.day}`, captions.instagram)
+                        }
+                        className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme hover:bg-escola-card/60"
+                      >
+                        {copiedKey === `ig-${j.day}` ? "✓ copiado" : "📋 Instagram"}
+                      </button>
+                      <button
+                        onClick={() =>
+                          copyToClipboard(`tt-${j.day}`, captions.tiktok)
+                        }
+                        className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme hover:bg-escola-card/60"
+                      >
+                        {copiedKey === `tt-${j.day}` ? "✓ copiado" : "📋 TikTok"}
+                      </button>
+                      <button
+                        onClick={() =>
+                          downloadTxt(
+                            `vc-sabia-${ddPad}-legendas.txt`,
+                            `WHATSAPP\n${"=".repeat(40)}\n${captions.whatsapp}\n\n\nINSTAGRAM\n${"=".repeat(40)}\n${captions.instagram}\n\n\nTIKTOK\n${"=".repeat(40)}\n${captions.tiktok}\n`
+                          )
+                        }
+                        className="block w-full rounded border border-escola-border bg-escola-card/40 px-2 py-0.5 text-left text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                      >
+                        ↓ .txt (3 redes)
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={pkg}
-              disabled={!allDone || packaging}
+              disabled={!canPackage || packaging}
               className="rounded-md border border-emerald-500/60 bg-emerald-500/15 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/25 disabled:opacity-50"
+              title={
+                canPackage
+                  ? allDone
+                    ? "Gera ZIP com todos os MP4s feitos + Metricool CSV"
+                    : `${status.summary.done} feitos, ${status.summary.failed} falhados serao skipped`
+                  : "Espera os jobs em curso/fila terminarem"
+              }
             >
               {packaging
                 ? "A empacotar..."
                 : allDone
                 ? "📦 Gerar pacote Metricool (ZIP)"
-                : `📦 Pacote disponível quando os ${status.summary.total} estiverem feitos`}
+                : canPackage
+                ? `📦 Empacotar (${status.summary.done} feitos, ${status.summary.failed} falhados ignorados)`
+                : `📦 Espera os ${status.summary.queued + status.summary.running} em curso`}
             </button>
             {zipUrl && (
               <a

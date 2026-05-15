@@ -22,7 +22,17 @@ function formatDatePT(d: Date) {
   return `${d.getDate()} de ${MESES_PT[d.getMonth()]} de ${d.getFullYear()}`;
 }
 
+type Tab = "bulk" | "preview" | "motions" | "audios" | "design";
+const TABS: Array<{ id: Tab; label: string; icon: string }> = [
+  { id: "bulk", label: "Produção mensal", icon: "📦" },
+  { id: "preview", label: "Preview de hoje", icon: "🎬" },
+  { id: "motions", label: "Motions", icon: "🎞" },
+  { id: "audios", label: "Áudios", icon: "🔊" },
+  { id: "design", label: "Design", icon: "🎨" },
+];
+
 export function VcSabiaPreviewPanel() {
+  const [activeTab, setActiveTab] = useState<Tab>("bulk");
   const [variant, setVariant] = useState<Variant>("C");
   const [phraseId, setPhraseId] = useState<string>(SAMPLE_PHRASE_ID);
   const [media, setMedia] = useState<string>("");
@@ -118,16 +128,48 @@ export function VcSabiaPreviewPanel() {
     <div className="space-y-6 p-4">
       <header className="space-y-2">
         <h1 className="text-2xl font-serif text-escola-dourado">
-          VC Sabia Que…? · Preview de overlay
+          VC Sabia Que…?
         </h1>
         <p className="text-sm text-escola-creme-50">
-          Compara as três variantes de overlay sobre o ficheiro de teste.
-          Frame renderiza a 405×720 (escala 0.375 do output final 1080×1920).
+          Pipeline de produção contemplativa para Instagram + TikTok + WhatsApp Status.
         </p>
       </header>
 
-      <DesignSettingsPanel design={design} onChange={setDesign} />
+      <nav className="flex flex-wrap gap-1 border-b border-escola-border/40">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setActiveTab(t.id)}
+            className={`-mb-px rounded-t-md border-b-2 px-4 py-2 text-xs font-medium transition-colors ${
+              activeTab === t.id
+                ? "border-escola-dourado bg-escola-dourado/10 text-escola-dourado"
+                : "border-transparent text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            <span className="mr-1.5">{t.icon}</span>
+            {t.label}
+          </button>
+        ))}
+      </nav>
 
+      {activeTab === "bulk" && <BulkMonthPanel />}
+
+      {activeTab === "motions" && (
+        <MotionLibrary
+          selectedUrl={media}
+          onSelect={setMedia}
+          onTagsChange={handleMotionTags}
+        />
+      )}
+
+      {activeTab === "audios" && <AudioLibrary onActiveChange={handleActiveAudios} />}
+
+      {activeTab === "design" && (
+        <DesignSettingsPanel design={design} onChange={setDesign} />
+      )}
+
+      {activeTab === "preview" && (
+      <>
       <MotionLibrary
         selectedUrl={media}
         onSelect={setMedia}
@@ -322,10 +364,8 @@ export function VcSabiaPreviewPanel() {
         captionTiktok={captions.tiktok}
         captionWhatsapp={captions.whatsapp}
       />
-
-      <BulkMonthPanel />
-
-      <AudioLibrary onActiveChange={handleActiveAudios} />
+      </>
+      )}
     </div>
   );
 }

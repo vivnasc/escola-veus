@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { DEFAULT_DESIGN, type VcSabiaDesign } from "@/lib/vc-sabia/design";
+
 export const maxDuration = 15;
 export const runtime = "nodejs";
 
@@ -9,38 +11,6 @@ export const runtime = "nodejs";
  */
 
 const PATH = "vc-sabia-meta/design-settings.json";
-
-// VcSabiaDesign type fica como export type (Next.js permite types em
-// route files, são erased em compile time). DEFAULT_DESIGN passa a
-// const interna (Next.js bloqueia exports runtime arbitrários em rotas,
-// causa "is not a valid Route export field"). Quem precisa do default
-// usa o de src/components/vc-sabia/DesignSettingsPanel.tsx.
-
-export type VcSabiaDesign = {
-  cardBg: string;        // hex
-  cardBgOpacity: number; // 0-1
-  cardBorder: string;    // hex
-  cornerColor: string;   // hex
-  kickerColor: string;   // hex
-  phraseColor: string;   // hex
-  footerColor: string;   // hex
-  cardY: number;         // 0-1920 (pixel position 1080x1920 frame)
-  kickerSize: number;    // px (1080x1920 reference)
-  phraseSize: number;    // px (1080x1920 reference)
-};
-
-const DEFAULT_DESIGN: VcSabiaDesign = {
-  cardBg: "#140F1E",
-  cardBgOpacity: 0.14,
-  cardBorder: "#C9A96E",
-  cornerColor: "#D4AF37",
-  kickerColor: "#D4AF37",
-  phraseColor: "#FAF7F0",
-  footerColor: "#FAF7F0",
-  cardY: 880,
-  kickerSize: 56,
-  phraseSize: 60,
-};
 
 function cfg() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
