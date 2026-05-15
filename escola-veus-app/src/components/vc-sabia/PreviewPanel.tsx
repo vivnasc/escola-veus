@@ -9,6 +9,7 @@ import { AudioLibrary } from "./AudioLibrary";
 import { ManualDownloadPanel } from "./ManualDownloadPanel";
 import { BulkMonthPanel } from "./BulkMonthPanel";
 import { DesignSettingsPanel, useDesignSettings } from "./DesignSettingsPanel";
+import { PhrasesPanel } from "./PhrasesPanel";
 
 type Variant = "A" | "B" | "C";
 
@@ -22,10 +23,11 @@ function formatDatePT(d: Date) {
   return `${d.getDate()} de ${MESES_PT[d.getMonth()]} de ${d.getFullYear()}`;
 }
 
-type Tab = "bulk" | "preview" | "motions" | "audios" | "design";
+type Tab = "bulk" | "preview" | "phrases" | "motions" | "audios" | "design";
 const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: "bulk", label: "Produção mensal", icon: "📦" },
   { id: "preview", label: "Preview de hoje", icon: "🎬" },
+  { id: "phrases", label: "Frases", icon: "📝" },
   { id: "motions", label: "Motions", icon: "🎞" },
   { id: "audios", label: "Áudios", icon: "🔊" },
   { id: "design", label: "Design", icon: "🎨" },
@@ -153,6 +155,8 @@ export function VcSabiaPreviewPanel() {
       </nav>
 
       {activeTab === "bulk" && <BulkMonthPanel />}
+
+      {activeTab === "phrases" && <PhrasesPanel />}
 
       {activeTab === "motions" && (
         <MotionLibrary
