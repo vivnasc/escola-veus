@@ -60,6 +60,13 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
     load();
   }, [load]);
 
+  // Auto-select primeiro motion se nao ha selecao (preview arranca limpa)
+  useEffect(() => {
+    if (!selectedUrl && motions.length > 0) {
+      onSelect(motions[0].url);
+    }
+  }, [motions, selectedUrl, onSelect]);
+
   useEffect(() => {
     if (!tagsHydrated) return;
     if (onTagsChange) onTagsChange(tags);

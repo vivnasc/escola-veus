@@ -8,13 +8,11 @@ import { MotionLibrary } from "./MotionLibrary";
 import { AudioLibrary } from "./AudioLibrary";
 import { ManualDownloadPanel } from "./ManualDownloadPanel";
 import { BulkMonthPanel } from "./BulkMonthPanel";
+import { DesignSettingsPanel, useDesignSettings } from "./DesignSettingsPanel";
 
 type Variant = "A" | "B" | "C";
 
 const SAMPLE_PHRASE_ID = "vsq-0021";
-const DEFAULT_MEDIA = "/assets/vc-sabia/motions/db5056e4-aabc-43e6-ab9f-48f8d96c10a8.mp4";
-const FALLBACK_MEDIA = "/assets/vc-sabia/motions/IMG_8599.webp";
-
 const MESES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
@@ -27,11 +25,12 @@ function formatDatePT(d: Date) {
 export function VcSabiaPreviewPanel() {
   const [variant, setVariant] = useState<Variant>("C");
   const [phraseId, setPhraseId] = useState<string>(SAMPLE_PHRASE_ID);
-  const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
+  const [media, setMedia] = useState<string>("");
   const [copied, setCopied] = useState<string | null>(null);
   const [motionTags, setMotionTags] = useState<Record<string, MorningMood>>({});
   const [activeByMood, setActiveByMood] = useState<Partial<Record<MorningMood, string>>>({});
   const [customPhrase, setCustomPhrase] = useState<string>("");
+  const { design, update: setDesign } = useDesignSettings();
   const [generatingPhrase, setGeneratingPhrase] = useState(false);
   const [phraseError, setPhraseError] = useState<string | null>(null);
 
@@ -126,6 +125,8 @@ export function VcSabiaPreviewPanel() {
           Frame renderiza a 405×720 (escala 0.375 do output final 1080×1920).
         </p>
       </header>
+
+      <DesignSettingsPanel design={design} onChange={setDesign} />
 
       <MotionLibrary
         selectedUrl={media}
@@ -230,6 +231,7 @@ export function VcSabiaPreviewPanel() {
           dateLabel={dateLabel}
           media={media}
           isVideo={isVideo}
+          design={design}
         />
 
         <div className="space-y-3 text-xs text-escola-creme-50">
@@ -390,12 +392,14 @@ function Frame({
   dateLabel,
   media,
   isVideo,
+  design,
 }: {
   variant: Variant;
   phrase: string;
   dateLabel: string;
   media: string;
   isVideo: boolean;
+  design?: import("./DesignSettingsPanel").VcSabiaDesign;
 }) {
   return (
     <div
@@ -462,7 +466,7 @@ function Frame({
       <main className="absolute inset-0 flex items-center justify-center px-6">
         {variant === "A" && <BodyVariantA phrase={phrase} />}
         {variant === "B" && <BodyVariantB phrase={phrase} />}
-        {variant === "C" && <BodyVariantC phrase={phrase} />}
+        {variant === "C" && <BodyVariantC phrase={phrase} design={design} />}
       </main>
 
       <footer className="absolute inset-x-0 bottom-0 px-6 pb-5 text-center">
@@ -552,28 +556,49 @@ function BodyVariantB({ phrase }: { phrase: string }) {
   );
 }
 
-function BodyVariantC({ phrase }: { phrase: string }) {
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace("#", "");
+  const r = parseInt(h.substring(0, 2), 16) || 0;
+  const g = parseInt(h.substring(2, 4), 16) || 0;
+  const b = parseInt(h.substring(4, 6), 16) || 0;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function BodyVariantC({
+  phrase,
+  design,
+}: {
+  phrase: string;
+  design?: import("./DesignSettingsPanel").VcSabiaDesign;
+}) {
+  const cardBg = design ? hexToRgba(design.cardBg, design.cardBgOpacity) : "rgba(20, 15, 30, 0.14)";
+  const borderRgba = design ? hexToRgba(design.cardBorder, 0.55) : "rgba(201, 169, 110, 0.55)";
+  const innerRgba = design ? hexToRgba(design.cardBorder, 0.1) : "rgba(201, 169, 110, 0.1)";
+  // Escala dos tamanhos: design e em pixels a 1080-wide, frame e 405-wide -> ratio 0.375
+  const SCALE = 0.375;
+  const kickerSize = design ? Math.round(design.kickerSize * SCALE) : 11;
+  const phraseSize = design ? Math.round(design.phraseSize * SCALE) : 21;
   return (
     <div
       className="relative rounded-2xl px-5 py-7 text-center"
       style={{
-        background: "rgba(20, 15, 30, 0.14)",
+        background: cardBg,
         backdropFilter: "blur(6px) saturate(120%)",
         WebkitBackdropFilter: "blur(6px) saturate(120%)",
-        border: "1px solid rgba(201, 169, 110, 0.55)",
-        boxShadow:
-          "0 6px 22px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(201, 169, 110, 0.1)",
+        border: `1px solid ${borderRgba}`,
+        boxShadow: `0 6px 22px rgba(0,0,0,0.28), inset 0 0 0 1px ${innerRgba}`,
       }}
     >
-      <Corner pos="tl" />
-      <Corner pos="tr" />
-      <Corner pos="bl" />
-      <Corner pos="br" />
+      <Corner pos="tl" color={design?.cornerColor} />
+      <Corner pos="tr" color={design?.cornerColor} />
+      <Corner pos="bl" color={design?.cornerColor} />
+      <Corner pos="br" color={design?.cornerColor} />
 
       <div
-        className="font-sans text-escola-dourado"
+        className="font-sans"
         style={{
-          fontSize: 11,
+          color: design?.kickerColor || "#D4AF37",
+          fontSize: kickerSize,
           fontWeight: 400,
           letterSpacing: "0.22em",
           textTransform: "uppercase",
@@ -584,10 +609,11 @@ function BodyVariantC({ phrase }: { phrase: string }) {
         Sabias que...
       </div>
       <p
-        className="text-balance font-serif italic text-escola-creme"
+        className="text-balance font-serif italic"
         style={{
+          color: design?.phraseColor || "#FAF7F0",
           fontWeight: 500,
-          fontSize: 21,
+          fontSize: phraseSize,
           lineHeight: 1.45,
           textShadow:
             "0 2px 10px rgba(0,0,0,0.65), 0 1px 2px rgba(0,0,0,0.85)",
@@ -599,13 +625,19 @@ function BodyVariantC({ phrase }: { phrase: string }) {
   );
 }
 
-function Corner({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
-  const base = "absolute h-3 w-3 border-escola-dourado";
+function Corner({ pos, color }: { pos: "tl" | "tr" | "bl" | "br"; color?: string }) {
+  const base = "absolute h-3 w-3";
   const map: Record<typeof pos, string> = {
     tl: "left-1.5 top-1.5 border-l border-t",
     tr: "right-1.5 top-1.5 border-r border-t",
     bl: "left-1.5 bottom-1.5 border-l border-b",
     br: "right-1.5 bottom-1.5 border-r border-b",
   };
-  return <span className={`${base} ${map[pos]}`} aria-hidden />;
+  return (
+    <span
+      className={`${base} ${map[pos]}`}
+      style={color ? { borderColor: color } : undefined}
+      aria-hidden
+    />
+  );
 }
