@@ -38,10 +38,16 @@ interface BatchStatus {
   };
 }
 
+function daysInMonth(year: number, month: number): number {
+  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+
 export function BulkMonthPanel() {
   const now = new Date();
   const [year, setYear] = useState<number>(now.getFullYear());
   const [month, setMonth] = useState<number>(now.getMonth() + 1);
+  const [startDay, setStartDay] = useState<number>(now.getDate());
+  const [endDay, setEndDay] = useState<number>(daysInMonth(now.getFullYear(), now.getMonth() + 1));
   const [batchId, setBatchId] = useState<string | null>(null);
   const [status, setStatus] = useState<BatchStatus | null>(null);
   const [starting, setStarting] = useState(false);
@@ -57,7 +63,7 @@ export function BulkMonthPanel() {
       const res = await fetch("/api/admin/vc-sabia/bulk-month", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ year, month }),
+        body: JSON.stringify({ year, month, startDay, endDay }),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -143,7 +149,11 @@ export function BulkMonthPanel() {
               min={2025}
               max={2030}
               value={year}
-              onChange={(e) => setYear(Number(e.target.value))}
+              onChange={(e) => {
+                const y = Number(e.target.value);
+                setYear(y);
+                setEndDay(Math.min(endDay, daysInMonth(y, month)));
+              }}
               className="w-20 rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
             />
           </label>
@@ -151,7 +161,12 @@ export function BulkMonthPanel() {
             Mês
             <select
               value={month}
-              onChange={(e) => setMonth(Number(e.target.value))}
+              onChange={(e) => {
+                const m = Number(e.target.value);
+                setMonth(m);
+                setEndDay(daysInMonth(year, m));
+                setStartDay(1);
+              }}
               className="rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
             >
               {MESES_PT.map((m, i) => (
@@ -161,12 +176,40 @@ export function BulkMonthPanel() {
               ))}
             </select>
           </label>
+          <label className="flex flex-col gap-1 text-xs text-escola-creme-50">
+            Dia início
+            <input
+              type="number"
+              min={1}
+              max={daysInMonth(year, month)}
+              value={startDay}
+              onChange={(e) =>
+                setStartDay(Math.max(1, Math.min(daysInMonth(year, month), Number(e.target.value))))
+              }
+              className="w-16 rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-xs text-escola-creme-50">
+            Dia fim
+            <input
+              type="number"
+              min={startDay}
+              max={daysInMonth(year, month)}
+              value={endDay}
+              onChange={(e) =>
+                setEndDay(Math.max(startDay, Math.min(daysInMonth(year, month), Number(e.target.value))))
+              }
+              className="w-16 rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
+            />
+          </label>
           <button
             onClick={start}
-            disabled={starting}
+            disabled={starting || endDay < startDay}
             className="rounded-md border border-emerald-500/60 bg-emerald-500/15 px-4 py-2 text-xs text-emerald-300 hover:bg-emerald-500/25 disabled:opacity-50"
           >
-            {starting ? "A despachar..." : `▶ Gerar mês ${MESES_PT[month - 1]} ${year}`}
+            {starting
+              ? "A despachar..."
+              : `▶ Gerar dias ${startDay}-${endDay} de ${MESES_PT[month - 1]} ${year} (${endDay - startDay + 1})`}
           </button>
         </div>
       )}

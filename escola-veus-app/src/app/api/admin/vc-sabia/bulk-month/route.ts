@@ -33,7 +33,7 @@ function ymd(d: Date) {
 }
 
 export async function POST(req: NextRequest) {
-  let body: { year?: number; month?: number; startDay?: number };
+  let body: { year?: number; month?: number; startDay?: number; endDay?: number };
   try {
     body = await req.json();
   } catch {
@@ -48,7 +48,9 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
-  const startDay = Math.max(1, Math.min(31, Number(body.startDay ?? 1)));
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const startDay = Math.max(1, Math.min(daysInMonth, Number(body.startDay ?? 1)));
+  const endDay = Math.max(startDay, Math.min(daysInMonth, Number(body.endDay ?? daysInMonth)));
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -111,12 +113,15 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 2) Calcular dias do mes
-  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  // 2) Calcular range de dias a renderizar
   const days: number[] = [];
-  for (let d = startDay; d <= daysInMonth; d++) days.push(d);
+  for (let d = startDay; d <= endDay; d++) days.push(d);
 
-  const batchId = `vc-sabia-${year}-${String(month).padStart(2, "0")}-${Date.now()}`;
+  const rangeSuffix =
+    startDay === 1 && endDay === daysInMonth
+      ? "full"
+      : `d${String(startDay).padStart(2, "0")}-d${String(endDay).padStart(2, "0")}`;
+  const batchId = `vc-sabia-${year}-${String(month).padStart(2, "0")}-${rangeSuffix}-${Date.now()}`;
 
   const token = process.env.GITHUB_DISPATCH_TOKEN;
   if (!token) {
@@ -194,6 +199,8 @@ export async function POST(req: NextRequest) {
     batchId,
     year,
     month,
+    startDay,
+    endDay,
     createdAt: new Date().toISOString(),
     jobs: jobs.map((j) => ({
       day: j.day,
