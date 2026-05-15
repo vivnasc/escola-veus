@@ -27,9 +27,56 @@ const FONTS_DIR = join(REPO_ROOT, "escola-veus-app", "assets", "fonts", "cormora
 const W = 1080;
 const H = 1920;
 
-const COBRE = "#C28F60";
-const COBRE_FRACO = "rgba(194, 143, 96, 0.55)";
-const CREME = "#F2E9D8";
+// Tabelas de temas — espelha src/lib/hoje-em-mim/themes.ts. Cada item
+// do manifest pode trazer `theme` (id) e este worker resolve as cores.
+const THEMES = {
+  "carta-noturna": {
+    highlight: "#C28F60",
+    highlightSoft: "rgba(194, 143, 96, 0.55)",
+    text: "#F2E9D8",
+    bg: "#0E0820",
+    ffmpegEq: "brightness=0.12:saturation=1.1:contrast=0.95:gamma=0.82",
+  },
+  "luar-prata": {
+    highlight: "#CCCCDC",
+    highlightSoft: "rgba(204, 204, 220, 0.55)",
+    text: "#F8F4EC",
+    bg: "#141826",
+    ffmpegEq: "brightness=0.10:saturation=0.85:contrast=1.05:gamma=0.85",
+  },
+  "dourado-luminoso": {
+    highlight: "#D4A853",
+    highlightSoft: "rgba(212, 168, 83, 0.55)",
+    text: "#FAF4E0",
+    bg: "#1A0E05",
+    ffmpegEq: "brightness=0.08:saturation=1.15:contrast=1.0:gamma=0.85",
+  },
+  "rosa-incenso": {
+    highlight: "#D4977C",
+    highlightSoft: "rgba(212, 151, 124, 0.55)",
+    text: "#F5EBD8",
+    bg: "#1F0F1A",
+    ffmpegEq: "brightness=0.10:saturation=1.05:contrast=0.98:gamma=0.85",
+  },
+  "branco-puro": {
+    highlight: "#E8E5DD",
+    highlightSoft: "rgba(232, 229, 221, 0.55)",
+    text: "#FFFFFF",
+    bg: "#0A0A14",
+    ffmpegEq: "brightness=0.12:saturation=0.95:contrast=1.0:gamma=0.82",
+  },
+  "verde-musgo": {
+    highlight: "#A8AF7A",
+    highlightSoft: "rgba(168, 175, 122, 0.55)",
+    text: "#F5F0DC",
+    bg: "#0E1612",
+    ffmpegEq: "brightness=0.10:saturation=1.1:contrast=1.0:gamma=0.85",
+  },
+};
+const DEFAULT_THEME_ID = "carta-noturna";
+function resolveTheme(id) {
+  return THEMES[id] || THEMES[DEFAULT_THEME_ID];
+}
 
 const GLIFO_POR_DIA = {
   mon: "✶", tue: "☉", wed: "◌", thu: "〜",
@@ -124,7 +171,11 @@ function wrap(text, maxChars) {
   return lines;
 }
 
-function buildOverlaySvg({ fraseTexto, dia, fontItalicB64, fontSansB64 }) {
+function buildOverlaySvg({ fraseTexto, dia, fontItalicB64, fontSansB64, theme }) {
+  const COBRE = theme.highlight;
+  const COBRE_FRACO = theme.highlightSoft;
+  const CREME = theme.text;
+  const BG = theme.bg;
   const kicker = KICKER_POR_DIA[dia];
   const glifo = GLIFO_POR_DIA[dia];
   const diaLongo = DIA_LONGO_PT[dia];
@@ -177,19 +228,19 @@ function buildOverlaySvg({ fraseTexto, dia, fontItalicB64, fontSansB64 }) {
       @font-face { font-family: "cormgar"; font-weight: 400; font-style: normal; src: url(data:font/ttf;base64,${fontSansB64}) format("truetype"); }
     </style>
     <linearGradient id="phraseScrim" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0E0820" stop-opacity="0"/>
-      <stop offset="25%" stop-color="#0E0820" stop-opacity="0.45"/>
-      <stop offset="75%" stop-color="#0E0820" stop-opacity="0.45"/>
-      <stop offset="100%" stop-color="#0E0820" stop-opacity="0"/>
+      <stop offset="0%" stop-color="${BG}" stop-opacity="0"/>
+      <stop offset="25%" stop-color="${BG}" stop-opacity="0.15"/>
+      <stop offset="75%" stop-color="${BG}" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="footerScrim" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0E0820" stop-opacity="0"/>
-      <stop offset="60%" stop-color="#0E0820" stop-opacity="0.4"/>
-      <stop offset="100%" stop-color="#0E0820" stop-opacity="0.55"/>
+      <stop offset="0%" stop-color="${BG}" stop-opacity="0"/>
+      <stop offset="60%" stop-color="${BG}" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="${BG}" stop-opacity="0.25"/>
     </linearGradient>
     <radialGradient id="arcDayScrim" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#0E0820" stop-opacity="0.48"/>
-      <stop offset="100%" stop-color="#0E0820" stop-opacity="0"/>
+      <stop offset="0%" stop-color="${BG}" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
     </radialGradient>
     <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#000" flood-opacity="0.85"/>
@@ -251,6 +302,8 @@ async function renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp }) {
   const audioPath = item.audioUrl ? join(workDir, `audio-${item.dayIndex}.mp3`) : null;
   const outPath = join(workDir, `out-${item.dayIndex}.mp4`);
 
+  const theme = resolveTheme(item.theme);
+
   await downloadTo(item.motionUrl, motionPath);
   if (audioPath) await downloadTo(item.audioUrl, audioPath);
 
@@ -259,12 +312,13 @@ async function renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp }) {
     dia: item.dia,
     fontItalicB64,
     fontSansB64,
+    theme,
   });
   const png = await sharp(Buffer.from(svg)).png().toBuffer();
   await writeFile(overlayPath, png);
 
   const filter = [
-    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30,eq=saturation=1.02:contrast=1.02[v0]`,
+    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30,eq=${theme.ffmpegEq}[v0]`,
     `[v0][1:v]overlay=0:0[v]`,
   ].join(";");
 
