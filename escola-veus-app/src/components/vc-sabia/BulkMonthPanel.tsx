@@ -42,12 +42,25 @@ function daysInMonth(year: number, month: number): number {
   return new Date(Date.UTC(year, month, 0)).getUTCDate();
 }
 
+/** Devolve a data actual no fuso de Maputo (UTC+2, CAT). */
+function todayMaputo(): { year: number; month: number; day: number } {
+  const fmt = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Africa/Maputo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const parts = fmt.formatToParts(new Date());
+  const get = (t: string) => Number(parts.find((p) => p.type === t)?.value ?? 0);
+  return { year: get("year"), month: get("month"), day: get("day") };
+}
+
 export function BulkMonthPanel() {
-  const now = new Date();
-  const [year, setYear] = useState<number>(now.getFullYear());
-  const [month, setMonth] = useState<number>(now.getMonth() + 1);
-  const [startDay, setStartDay] = useState<number>(now.getDate());
-  const [endDay, setEndDay] = useState<number>(daysInMonth(now.getFullYear(), now.getMonth() + 1));
+  const t = todayMaputo();
+  const [year, setYear] = useState<number>(t.year);
+  const [month, setMonth] = useState<number>(t.month);
+  const [startDay, setStartDay] = useState<number>(t.day);
+  const [endDay, setEndDay] = useState<number>(daysInMonth(t.year, t.month));
   const [batchId, setBatchId] = useState<string | null>(null);
   const [status, setStatus] = useState<BatchStatus | null>(null);
   const [starting, setStarting] = useState(false);
