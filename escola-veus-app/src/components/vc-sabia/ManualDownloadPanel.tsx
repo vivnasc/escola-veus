@@ -446,13 +446,22 @@ async function drawComposition(
     y += lineHeight;
   }
 
-  // Footer: data + assinatura
-  ctx.fillStyle = "rgba(250,247,240,0.65)";
-  ctx.font = "22px sans-serif";
-  ctx.fillText(dateLabel, W / 2, H - 80);
+  // Header: data ao TOPO
+  ctx.fillStyle = "rgba(250,247,240,0.95)";
+  ctx.font = "italic 30px serif";
+  ctx.textAlign = "center";
+  ctx.fillText(dateLabel, W / 2, 120);
+  ctx.strokeStyle = "rgba(212,175,55,0.6)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(W / 2 - 60, 150);
+  ctx.lineTo(W / 2 + 60, 150);
+  ctx.stroke();
+
+  // Footer: assinatura
   ctx.fillStyle = "#D4AF37";
   ctx.font = "22px sans-serif";
-  ctx.fillText("seteveus.space", W / 2, H - 48);
+  ctx.fillText("seteveus.space", W / 2, H - 64);
 
   return canvas.toDataURL("image/png");
 }

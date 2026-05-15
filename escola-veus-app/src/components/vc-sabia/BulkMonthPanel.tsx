@@ -353,6 +353,24 @@ export function BulkMonthPanel() {
     }
   };
 
+  const retryJob = async (jobId: string) => {
+    try {
+      const res = await fetch("/api/admin/vc-sabia/render-retry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.erro || `HTTP ${res.status}`);
+      } else {
+        await fetchStatus();
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  };
+
   const downloadTxt = (filename: string, content: string) => {
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -365,6 +383,13 @@ export function BulkMonthPanel() {
 
   const allDone =
     status && status.summary.done === status.summary.total && status.summary.total > 0;
+  /** Empacotar e possivel se ha pelo menos 1 done e nada esta em curso.
+   *  Dias falhados sao skipped pelo bulk-package automaticamente. */
+  const canPackage =
+    !!status &&
+    status.summary.done > 0 &&
+    status.summary.running === 0 &&
+    status.summary.queued === 0;
 
   return (
     <section className="space-y-3 rounded-lg border border-emerald-500/40 bg-emerald-500/5 p-4">
@@ -717,7 +742,18 @@ export function BulkMonthPanel() {
                         {phraseText ? phraseText.slice(0, 60) + "…" : "—"}
                       </td>
                       <td className="px-2 py-1">
-                        <StatusBadge status={j.status} progress={j.progress} />
+                        <div className="space-y-1">
+                          <StatusBadge status={j.status} progress={j.progress} />
+                          {j.status === "failed" && (
+                            <button
+                              onClick={() => retryJob(j.jobId)}
+                              className="block rounded border border-amber-500/60 bg-amber-500/10 px-1.5 py-0.5 text-[10px] text-amber-300 hover:bg-amber-500/20"
+                              title={j.error || "Re-despacha o workflow"}
+                            >
+                              ↻ Retry
+                            </button>
+                          )}
+                        </div>
                       </td>
                       <td className="px-2 py-1">
                         {j.videoUrl ? (
@@ -797,14 +833,23 @@ export function BulkMonthPanel() {
           <div className="flex items-center gap-2">
             <button
               onClick={pkg}
-              disabled={!allDone || packaging}
+              disabled={!canPackage || packaging}
               className="rounded-md border border-emerald-500/60 bg-emerald-500/15 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/25 disabled:opacity-50"
+              title={
+                canPackage
+                  ? allDone
+                    ? "Gera ZIP com todos os MP4s feitos + Metricool CSV"
+                    : `${status.summary.done} feitos, ${status.summary.failed} falhados serao skipped`
+                  : "Espera os jobs em curso/fila terminarem"
+              }
             >
               {packaging
                 ? "A empacotar..."
                 : allDone
                 ? "📦 Gerar pacote Metricool (ZIP)"
-                : `📦 Pacote disponível quando os ${status.summary.total} estiverem feitos`}
+                : canPackage
+                ? `📦 Empacotar (${status.summary.done} feitos, ${status.summary.failed} falhados ignorados)`
+                : `📦 Espera os ${status.summary.queued + status.summary.running} em curso`}
             </button>
             {zipUrl && (
               <a

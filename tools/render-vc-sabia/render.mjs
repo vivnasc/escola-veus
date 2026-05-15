@@ -155,13 +155,22 @@ function composeOverlay(phrase, dateLabel, design) {
     y += lineHeight;
   }
 
-  // Footer
-  ctx.fillStyle = hexToRgba(d.footerColor, 0.7);
-  ctx.font = "22px sans-serif";
-  ctx.fillText(dateLabel, W / 2, H - 80);
+  // Header: data ao TOPO (com linha dourada subtil debaixo)
+  ctx.fillStyle = hexToRgba(d.footerColor, 0.95);
+  ctx.font = "italic 30px serif";
+  ctx.textAlign = "center";
+  ctx.fillText(dateLabel, W / 2, 120);
+  ctx.strokeStyle = hexToRgba(d.cornerColor, 0.6);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(W / 2 - 60, 150);
+  ctx.lineTo(W / 2 + 60, 150);
+  ctx.stroke();
+
+  // Footer: assinatura no fundo
   ctx.fillStyle = d.cornerColor;
   ctx.font = "22px sans-serif";
-  ctx.fillText("seteveus.space", W / 2, H - 48);
+  ctx.fillText("seteveus.space", W / 2, H - 64);
 
   return canvas.toBuffer("image/png");
 }
