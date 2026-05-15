@@ -164,6 +164,7 @@ export async function POST(req: NextRequest) {
     jobId: string;
     phraseId: string;
     phraseText: string;
+    phraseTheme: string;
     motionName: string;
     motionUrl: string;
     audioUrl: string | null;
@@ -246,6 +247,7 @@ export async function POST(req: NextRequest) {
       jobId,
       phraseId: entry.phraseId,
       phraseText: entry.phrase,
+      phraseTheme: entry.phraseTheme,
       motionName: entry.motionName,
       motionUrl: entry.motionUrl,
       audioUrl: entry.audioUrl,
@@ -266,6 +268,7 @@ export async function POST(req: NextRequest) {
       jobId: j.jobId,
       phraseId: j.phraseId,
       phraseText: j.phraseText,
+      phraseTheme: j.phraseTheme,
       motionName: j.motionName,
       audioUrl: j.audioUrl,
     })),
