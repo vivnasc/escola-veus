@@ -175,6 +175,55 @@ export function HojeEmMimPreviewPanel() {
   const dmax = daysInMonth(ano, mes);
   const rangeOk = diaInicio >= 1 && diaFim >= diaInicio && diaFim <= dmax;
 
+  // Atalho: render rápido de UM vídeo para hoje, com a motion + áudio +
+  // tema actualmente seleccionados. Não passa pelo useAllMotions: usa
+  // exactamente o que está nos campos.
+  const submitTodayQuick = async () => {
+    setSubmitError(null);
+    if (!media) {
+      setSubmitError(
+        "Sem motion seleccionado. Vai à tab Motions e escolhe um clip (ou cola URL em baixo)."
+      );
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const today = new Date();
+      const todayAno = today.getFullYear();
+      const todayMes = today.getMonth() + 1;
+      const todayDia = today.getDate();
+      const id = `hoje-em-mim-${todayAno}-${String(todayMes).padStart(2, "0")}-${String(todayDia).padStart(2, "0")}-quick-${Date.now().toString(36)}`;
+      const body = {
+        jobId: id,
+        ano: todayAno,
+        mes: todayMes,
+        diaInicio: todayDia,
+        diaFim: todayDia,
+        durationSec,
+        motionPool: [media],
+        audioPool: audioUrlSelected ? [audioUrlSelected] : [],
+        themePool: [themeId],
+        shuffleMotions: false,
+      };
+      const res = await fetch("/api/admin/hoje-em-mim/render-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      setJobId(id);
+      setJobResult(null);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("hoje-em-mim.lastJobId", id);
+      }
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const submitJob = async () => {
     setSubmitError(null);
     if (!rangeOk) {
@@ -462,6 +511,52 @@ export function HojeEmMimPreviewPanel() {
 
       {activeTab === "bulk" && (
       <>
+      <section
+        className="space-y-3 rounded-lg border p-4"
+        style={{
+          borderColor: COBRE,
+          background: "rgba(194, 143, 96, 0.08)",
+        }}
+      >
+        <div className="flex items-baseline justify-between flex-wrap gap-2">
+          <h2 className="text-base font-serif" style={{ color: COBRE }}>
+            ⚡ Render rápido — 1 vídeo para hoje
+          </h2>
+          <span className="text-[10px] text-escola-creme-50">
+            usa motion + áudio + tema seleccionados em baixo
+          </span>
+        </div>
+        <p className="text-xs text-escola-creme-50">
+          Pega no motion que tens neste momento (campo "Motion URL único" ou
+          "Lua na piscina" se ainda não mudaste), no áudio que estiver no
+          campo, e no tema visual. Render 1 vídeo para hoje. Aparece em
+          baixo com player + descarregar.
+        </p>
+        <div className="text-[11px] text-escola-creme-50 font-mono break-all">
+          motion: {media || "(nenhum — vai à tab Motions)"}
+        </div>
+        <button
+          onClick={submitTodayQuick}
+          disabled={submitting || !media}
+          className="w-full rounded border px-4 py-3 text-sm disabled:opacity-50 transition-colors"
+          style={{
+            borderColor: COBRE,
+            color: "#FFF8E8",
+            background: media ? COBRE : "rgba(194, 143, 96, 0.4)",
+            fontWeight: 500,
+          }}
+        >
+          {submitting
+            ? "a submeter…"
+            : "▶ Gerar MP4 para hoje (1 vídeo, ~30s)"}
+        </button>
+        {submitError && (
+          <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
+            {submitError}
+          </div>
+        )}
+      </section>
+
       <section className="space-y-3 rounded-lg border border-escola-border bg-escola-card p-4">
         <h2 className="text-base font-serif" style={{ color: COBRE }}>
           📦 Bulk mensal · Pacote Metricool
@@ -1344,6 +1439,84 @@ function RunwayPipelineSection() {
   const [motionByImage, setMotionByImage] = useState<Record<string, string>>({});
   // Duração por imagem
   const [durationByImage, setDurationByImage] = useState<Record<string, 5 | 10>>({});
+
+  // Persistência: carrega no mount + auto-save com debounce. Garante que
+  // as sugestões do Claude e edições manuais sobrevivem a refresh/F5
+  // e mudança de device.
+  const [draftsLoaded, setDraftsLoaded] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      // Primeiro o localStorage (imediato), depois Supabase (canónico).
+      try {
+        if (typeof window !== "undefined") {
+          const local = localStorage.getItem("hoje-em-mim.runway-drafts");
+          if (local) {
+            const parsed = JSON.parse(local);
+            if (!cancelled) {
+              if (parsed.motions) setMotionByImage(parsed.motions);
+              if (parsed.prompts) setPromptByImage(parsed.prompts);
+              if (parsed.durations) setDurationByImage(parsed.durations);
+            }
+          }
+        }
+        const res = await fetch("/api/admin/hoje-em-mim/motion-prompts");
+        if (cancelled) return;
+        const json = await res.json();
+        if (res.ok) {
+          if (json.motions && Object.keys(json.motions).length > 0) {
+            setMotionByImage(json.motions);
+          }
+          if (json.prompts && Object.keys(json.prompts).length > 0) {
+            setPromptByImage(json.prompts);
+          }
+          if (json.durations && Object.keys(json.durations).length > 0) {
+            setDurationByImage(json.durations);
+          }
+        }
+      } catch {
+        /* silencioso */
+      } finally {
+        if (!cancelled) setDraftsLoaded(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Auto-save debounced: localStorage imediato, Supabase com 1.5s delay.
+  useEffect(() => {
+    if (!draftsLoaded) return;
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(
+          "hoje-em-mim.runway-drafts",
+          JSON.stringify({
+            motions: motionByImage,
+            prompts: promptByImage,
+            durations: durationByImage,
+          })
+        );
+      } catch {
+        /* quota cheia? silencioso */
+      }
+    }
+    const t = setTimeout(() => {
+      fetch("/api/admin/hoje-em-mim/motion-prompts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          motions: motionByImage,
+          prompts: promptByImage,
+          durations: durationByImage,
+        }),
+      }).catch(() => {
+        /* silencioso, ainda temos localStorage */
+      });
+    }, 1500);
+    return () => clearTimeout(t);
+  }, [draftsLoaded, motionByImage, promptByImage, durationByImage]);
 
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
