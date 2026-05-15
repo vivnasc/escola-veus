@@ -8,15 +8,15 @@ import {
 } from "@/lib/vc-sabia/audio";
 
 export const maxDuration = 120;
+export const runtime = "nodejs";
 
 /**
  * POST /api/admin/vc-sabia/audio/generate
  *
- * Gera um SFX de manhã via ElevenLabs Sound Effects API, faz upload para
- * Supabase Storage (course-assets/vc-sabia-audios/<mood>/) e devolve o URL
- * público.
+ * Gera um ambiente contemplativo via ElevenLabs Sound Effects API.
+ * Upload do resultado para Supabase Storage.
  *
- * Body: { mood: MorningMood, durationSec?: number, promptOverride?: string }
+ * Body: { mood: MorningMood, durationSec?: number (3-22), promptOverride?: string }
  * Returns: { audioUrl, mood, prompt, durationSec, sizeBytes }
  */
 export async function POST(req: NextRequest) {
@@ -28,13 +28,13 @@ export async function POST(req: NextRequest) {
 
     if (!mood || !(mood in MOOD_PROMPTS)) {
       return NextResponse.json(
-        { erro: "mood inválido. Usa um de: " + Object.keys(MOOD_PROMPTS).join(", ") },
+        { erro: "mood invalido. Usa um de: " + Object.keys(MOOD_PROMPTS).join(", ") },
         { status: 400 }
       );
     }
     if (durationSec < 3 || durationSec > 22) {
       return NextResponse.json(
-        { erro: "durationSec tem de estar entre 3 e 22" },
+        { erro: "durationSec entre 3 e 22 (limite ElevenLabs SFX)" },
         { status: 400 }
       );
     }
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     const apiKey = process.env.ELEVENLABS_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
-        { erro: "ELEVENLABS_API_KEY não configurada. Adiciona em .env.local e Vercel" },
+        { erro: "ELEVENLABS_API_KEY nao configurada" },
         { status: 503 }
       );
     }
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
     if (!elevenRes.ok) {
       const errText = await elevenRes.text();
       return NextResponse.json(
-        { erro: `ElevenLabs: ${elevenRes.status} ${errText}` },
+        { erro: `ElevenLabs ${elevenRes.status}: ${errText.slice(0, 300)}` },
         { status: 502 }
       );
     }
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) {
-      return NextResponse.json({ erro: "Supabase não configurado" }, { status: 500 });
+      return NextResponse.json({ erro: "Supabase nao configurado" }, { status: 500 });
     }
 
     const { createClient } = await import("@supabase/supabase-js");
@@ -109,6 +109,7 @@ export async function POST(req: NextRequest) {
       prompt,
       durationSec,
       sizeBytes: audioBuffer.byteLength,
+      model: "elevenlabs/sound-generation",
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);

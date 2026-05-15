@@ -81,44 +81,83 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
     });
   };
 
-  /** Extrai 1 frame de um motion via canvas. Retorna data URL JPEG. */
+  /** Extrai 1 frame de um motion via canvas. Retorna data URL JPEG.
+   *  Suporta iOS: video em DOM off-screen, loadedmetadata trigger, timeout. */
   const extractFrame = (url: string): Promise<string> =>
     new Promise((resolve, reject) => {
       const video = document.createElement("video");
       video.crossOrigin = "anonymous";
-      video.src = url;
       video.muted = true;
       video.playsInline = true;
-      video.preload = "metadata";
+      video.preload = "auto";
+      video.style.position = "fixed";
+      video.style.left = "-9999px";
+      video.style.top = "0";
+      video.style.width = "1px";
+      video.style.height = "1px";
+      video.style.opacity = "0";
+      video.style.pointerEvents = "none";
+      document.body.appendChild(video);
 
+      let done = false;
       const cleanup = () => {
-        video.src = "";
+        try {
+          document.body.removeChild(video);
+        } catch {
+          /* já removido */
+        }
       };
-      const onLoaded = () => {
-        video.currentTime = Math.min(0.5, video.duration / 4);
+      const finish = (fn: () => void) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        cleanup();
+        fn();
       };
-      const onSeeked = () => {
+      const timer = setTimeout(() => {
+        finish(() => reject(new Error("timeout 15s a ler video")));
+      }, 15000);
+
+      const tryCapture = () => {
         try {
           const canvas = document.createElement("canvas");
-          const scale = Math.min(1, 768 / (video.videoWidth || 768));
-          canvas.width = Math.round((video.videoWidth || 768) * scale);
-          canvas.height = Math.round((video.videoHeight || 1366) * scale);
+          const w = video.videoWidth || 768;
+          const h = video.videoHeight || 1366;
+          const scale = Math.min(1, 768 / w);
+          canvas.width = Math.round(w * scale);
+          canvas.height = Math.round(h * scale);
           const ctx = canvas.getContext("2d");
           if (!ctx) throw new Error("canvas ctx null");
           ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          resolve(canvas.toDataURL("image/jpeg", 0.7));
+          const data = canvas.toDataURL("image/jpeg", 0.7);
+          if (!data || data.length < 100) throw new Error("dataURL vazio (CORS?)");
+          finish(() => resolve(data));
         } catch (e) {
-          reject(e);
-        } finally {
-          cleanup();
+          finish(() => reject(e));
         }
       };
-      video.addEventListener("loadeddata", onLoaded, { once: true });
-      video.addEventListener("seeked", onSeeked, { once: true });
+
+      video.addEventListener("seeked", tryCapture, { once: true });
+      video.addEventListener(
+        "loadedmetadata",
+        () => {
+          const seekTo = Math.min(0.5, (video.duration || 1) / 4);
+          if (Math.abs(video.currentTime - seekTo) < 0.001) {
+            // já está no ponto certo, capturamos directamente
+            tryCapture();
+          } else {
+            video.currentTime = seekTo;
+          }
+        },
+        { once: true }
+      );
       video.addEventListener("error", () => {
-        cleanup();
-        reject(new Error(`Falha a ler ${url}`));
+        const code = video.error?.code;
+        finish(() => reject(new Error(`video error code ${code ?? "?"}`)));
       });
+
+      video.src = url;
+      video.load();
     });
 
   const autoTagAll = async () => {
@@ -126,22 +165,32 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
     setError(null);
     setAutoTagResult(null);
     setAutoTagging({ phase: "extracting", done: 0, total: motions.length });
+    console.log(`[auto-tag] A extrair frames de ${motions.length} motions`);
 
     const frames: Array<{ name: string; base64: string }> = [];
+    const failed: string[] = [];
     for (let i = 0; i < motions.length; i++) {
+      const m = motions[i];
       try {
-        const base64 = await extractFrame(motions[i].url);
-        frames.push({ name: motions[i].name, base64 });
+        const base64 = await extractFrame(m.url);
+        frames.push({ name: m.name, base64 });
+        console.log(`[auto-tag]   ${i + 1}/${motions.length} ${m.name} OK`);
       } catch (e) {
-        console.warn(`[auto-tag] falhou extrair ${motions[i].name}`, e);
+        failed.push(m.name);
+        console.warn(`[auto-tag]   ${i + 1}/${motions.length} ${m.name} FAIL`, e);
       }
       setAutoTagging({ phase: "extracting", done: i + 1, total: motions.length });
     }
 
     if (frames.length === 0) {
-      setError("Não consegui extrair nenhum frame.");
+      setError(
+        `Não consegui extrair nenhum frame. Os ${failed.length} falharam (provável CORS ou bloqueio do browser). Tenta noutro browser (Chrome desktop) ou avisa-me.`
+      );
       setAutoTagging(null);
       return;
+    }
+    if (failed.length > 0) {
+      console.warn(`[auto-tag] ${failed.length} frames falharam:`, failed);
     }
 
     setAutoTagging({ phase: "asking-claude" });
@@ -159,8 +208,12 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
         setTags((prev) => ({ ...prev, ...json.tags }));
         setAutoTagResult({
           classified: json.classified,
-          skipped: json.skipped,
-          reasoning: json.reasoning || "",
+          skipped: json.skipped + failed.length,
+          reasoning:
+            (json.reasoning || "") +
+            (failed.length
+              ? ` · ${failed.length} clips não foram extraídos: ${failed.slice(0, 3).join(", ")}${failed.length > 3 ? "…" : ""}`
+              : ""),
         });
       }
     } catch (e) {

@@ -88,9 +88,10 @@ export function AudioLibrary({ onActiveChange }: Props) {
         )}
       </div>
       <p className="text-xs text-escola-creme-50">
-        Cada mood tem 1 áudio activo (radio button verde). Os motions ficam
-        tagged com um mood e usam automaticamente o áudio activo desse mood.
-        Podes gerar várias versões de cada mood e escolher a melhor.
+        Geração via ElevenLabs Sound Effects (3-22s). Cada elemento tem 1
+        áudio activo (radio verde) que toca quando se usa um motion tagged
+        com esse elemento. Gera várias versões e escolhe a melhor.
+        Prompt editável (clica em cima do texto) para afinares ao teu gosto.
       </p>
 
       {loading ? (
