@@ -109,11 +109,21 @@ export async function POST(req: NextRequest) {
 
   const item = manifest.items[itemIdx];
   // Aplica overrides em cima do item original
+  // Resolve URLs relativos para absolutos (worker GHA não aceita relativos).
+  const origin =
+    req.nextUrl.origin || process.env.NEXT_PUBLIC_SITE_URL || "https://escola-veus.vercel.app";
+  const resolveUrl = (u: string): string => {
+    if (!u) return u;
+    if (u.startsWith("http://") || u.startsWith("https://")) return u;
+    if (u.startsWith("/")) return `${origin}${u}`;
+    return u;
+  };
+
   if (overrides.motionUrl !== undefined && overrides.motionUrl.trim()) {
-    item.motionUrl = overrides.motionUrl.trim();
+    item.motionUrl = resolveUrl(overrides.motionUrl.trim());
   }
   if (overrides.audioUrl !== undefined) {
-    item.audioUrl = overrides.audioUrl ? overrides.audioUrl.trim() : null;
+    item.audioUrl = overrides.audioUrl ? resolveUrl(overrides.audioUrl.trim()) : null;
   }
   if (overrides.theme !== undefined && overrides.theme.trim()) {
     item.theme = overrides.theme.trim();
