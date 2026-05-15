@@ -132,6 +132,29 @@ export function BulkMonthPanel() {
     setPhase("submitted");
   };
 
+  const [deletingBatch, setDeletingBatch] = useState<string | null>(null);
+  const deletePastBatch = async (id: string) => {
+    if (!confirm(`Apagar o batch ${id}? Apaga todos os MP4s, manifests, captions e o ZIP. Esta acção é irreversível.`)) return;
+    setDeletingBatch(id);
+    try {
+      const res = await fetch("/api/admin/vc-sabia/bulk-delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ batchId: id }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.erro || `HTTP ${res.status}`);
+      } else {
+        await refreshPastBatches();
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setDeletingBatch(null);
+    }
+  };
+
   const preparePlan = async () => {
     setPreparing(true);
     setError(null);
@@ -539,38 +562,50 @@ export function BulkMonthPanel() {
           </div>
           <div className="space-y-1">
             {pastBatches.map((b) => (
-              <button
+              <div
                 key={b.batchId}
-                onClick={() => loadPastBatch(b.batchId)}
-                className="block w-full rounded border border-escola-border bg-escola-card/60 px-2 py-1.5 text-left text-[11px] text-escola-creme-50 hover:bg-escola-card hover:text-escola-creme"
+                className="flex items-stretch gap-1 rounded border border-escola-border bg-escola-card/60 hover:bg-escola-card"
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] text-escola-creme">
-                    {b.year && b.month
-                      ? `${b.year}-${String(b.month).padStart(2, "0")}`
-                      : "?"}
-                    {b.startDay && b.endDay
-                      ? ` · dias ${b.startDay}-${b.endDay}`
-                      : ""}
-                    {b.jobs !== undefined ? ` · ${b.jobs} jobs` : ""}
-                  </span>
-                  {b.createdAt && (
-                    <span className="text-[9px] text-escola-creme-50">
-                      {new Date(b.createdAt).toLocaleString("pt-PT", {
-                        timeZone: "Africa/Maputo",
-                        year: "2-digit",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                <button
+                  onClick={() => loadPastBatch(b.batchId)}
+                  className="flex-1 px-2 py-1.5 text-left text-[11px] text-escola-creme-50 hover:text-escola-creme"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] text-escola-creme">
+                      {b.year && b.month
+                        ? `${b.year}-${String(b.month).padStart(2, "0")}`
+                        : "?"}
+                      {b.startDay && b.endDay
+                        ? ` · dias ${b.startDay}-${b.endDay}`
+                        : ""}
+                      {b.jobs !== undefined ? ` · ${b.jobs} jobs` : ""}
                     </span>
-                  )}
-                </div>
-                <div className="mt-0.5 truncate text-[9px] text-escola-creme-50">
-                  {b.batchId}
-                </div>
-              </button>
+                    {b.createdAt && (
+                      <span className="text-[9px] text-escola-creme-50">
+                        {new Date(b.createdAt).toLocaleString("pt-PT", {
+                          timeZone: "Africa/Maputo",
+                          year: "2-digit",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-0.5 truncate text-[9px] text-escola-creme-50">
+                    {b.batchId}
+                  </div>
+                </button>
+                <button
+                  onClick={() => deletePastBatch(b.batchId)}
+                  disabled={deletingBatch === b.batchId}
+                  className="rounded border-l border-escola-border px-2 text-[14px] text-red-400 hover:bg-red-900/30 hover:text-red-300 disabled:opacity-50"
+                  title="Apagar este batch (MP4s, manifests, ZIP)"
+                >
+                  {deletingBatch === b.batchId ? "…" : "×"}
+                </button>
+              </div>
             ))}
           </div>
         </div>

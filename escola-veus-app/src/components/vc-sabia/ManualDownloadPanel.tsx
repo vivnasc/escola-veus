@@ -458,10 +458,11 @@ async function drawComposition(
   ctx.lineTo(W / 2 + 60, 150);
   ctx.stroke();
 
-  // Footer: assinatura
+  // Footer: assinatura logo abaixo do cartao (visivel)
+  const sigY = 880 + 760 + 60;
   ctx.fillStyle = "#D4AF37";
-  ctx.font = "22px sans-serif";
-  ctx.fillText("seteveus.space", W / 2, H - 64);
+  ctx.font = "italic 32px serif";
+  ctx.fillText("seteveus.space", W / 2, sigY);
 
   return canvas.toDataURL("image/png");
 }
