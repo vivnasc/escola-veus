@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import seed from "@/data/hoje-em-mim-frases.seed.json";
 import { MJ_VIDEO_PROMPTS } from "@/data/hoje-em-mim-mj-prompts";
 import {
@@ -25,6 +25,15 @@ type Frase = { id: string; dia: DiaSemana; texto: string };
 
 const DEFAULT_MEDIA = "/assets/hoje-em-mim/motions/lua-piscina-01.mp4";
 const FALLBACK_MEDIA = "/assets/vc-sabia/motions/IMG_8599.webp";
+
+const MESES_PT = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+
+function daysInMonth(ano: number, mes: number): number {
+  return new Date(ano, mes, 0).getDate();
+}
 
 const DIAS_PT_CURTO: Record<DiaSemana, string> = {
   mon: "Seg", tue: "Ter", wed: "Qua", thu: "Qui",
@@ -74,6 +83,11 @@ export function HojeEmMimPreviewPanel() {
     total: number;
     videos?: RenderVideo[];
     error?: string;
+    ano?: number;
+    mes?: number;
+    mesLabel?: string;
+    diaInicio?: number;
+    diaFim?: number;
     startDate?: string;
     numDays?: number;
     startedAt?: string;
@@ -88,12 +102,12 @@ export function HojeEmMimPreviewPanel() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Config do job
-  const [startDate, setStartDate] = useState<string>(() => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  });
-  const [numDays, setNumDays] = useState<number>(30);
+  // Config do job: range ano/mes/diaInicio/diaFim
+  const now = new Date();
+  const [ano, setAno] = useState<number>(now.getFullYear());
+  const [mes, setMes] = useState<number>(now.getMonth() + 1);
+  const [diaInicio, setDiaInicio] = useState<number>(now.getDate());
+  const [diaFim, setDiaFim] = useState<number>(() => daysInMonth(now.getFullYear(), now.getMonth() + 1));
   const [durationSec, setDurationSec] = useState<number>(15);
 
   const phrase =
@@ -143,15 +157,27 @@ export function HojeEmMimPreviewPanel() {
     }
   }, [jobResult]);
 
+  const numItens = Math.max(0, diaFim - diaInicio + 1);
+  const dmax = daysInMonth(ano, mes);
+  const rangeOk = diaInicio >= 1 && diaFim >= diaInicio && diaFim <= dmax;
+
   const submitJob = async () => {
     setSubmitError(null);
+    if (!rangeOk) {
+      setSubmitError(
+        `Range inválido. Dias ${diaInicio}-${diaFim} para ${MESES_PT[mes - 1]} (${dmax} dias).`
+      );
+      return;
+    }
     setSubmitting(true);
     try {
-      const id = `hoje-em-mim-${startDate}-${Date.now().toString(36)}`;
+      const id = `hoje-em-mim-${ano}-${String(mes).padStart(2, "0")}-${String(diaInicio).padStart(2, "0")}-to-${String(diaFim).padStart(2, "0")}-${Date.now().toString(36)}`;
       const body = {
         jobId: id,
-        startDate,
-        numDays,
+        ano,
+        mes,
+        diaInicio,
+        diaFim,
         durationSec,
         motionPool: [media],
         audioPool: audioUrlSelected ? [audioUrlSelected] : [],
@@ -332,25 +358,58 @@ export function HojeEmMimPreviewPanel() {
           </div>
 
           <div className="space-y-2 pt-3 border-t border-escola-border">
-            <div className="text-escola-creme">Pack mensal</div>
+            <div className="text-escola-creme">Bulk mensal · Pacote Metricool</div>
             <div className="grid grid-cols-2 gap-2">
               <label className="text-[10px] block">
-                Início
+                Ano
                 <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  type="number"
+                  min={2020}
+                  max={2100}
+                  value={ano}
+                  onChange={(e) => setAno(Number(e.target.value))}
                   className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
                 />
               </label>
               <label className="text-[10px] block">
-                Dias
+                Mês
+                <select
+                  value={mes}
+                  onChange={(e) => {
+                    const newMes = Number(e.target.value);
+                    setMes(newMes);
+                    const newDmax = daysInMonth(ano, newMes);
+                    if (diaFim > newDmax) setDiaFim(newDmax);
+                    if (diaInicio > newDmax) setDiaInicio(newDmax);
+                  }}
+                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                >
+                  {MESES_PT.map((label, i) => (
+                    <option key={i} value={i + 1}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-[10px] block">
+                Dia início
                 <input
                   type="number"
                   min={1}
-                  max={60}
-                  value={numDays}
-                  onChange={(e) => setNumDays(Number(e.target.value))}
+                  max={dmax}
+                  value={diaInicio}
+                  onChange={(e) => setDiaInicio(Number(e.target.value))}
+                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                />
+              </label>
+              <label className="text-[10px] block">
+                Dia fim
+                <input
+                  type="number"
+                  min={diaInicio}
+                  max={dmax}
+                  value={diaFim}
+                  onChange={(e) => setDiaFim(Number(e.target.value))}
                   className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
                 />
               </label>
@@ -368,7 +427,7 @@ export function HojeEmMimPreviewPanel() {
             </div>
             <button
               onClick={submitJob}
-              disabled={submitting}
+              disabled={submitting || !rangeOk}
               className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
               style={{
                 borderColor: COBRE,
@@ -378,7 +437,7 @@ export function HojeEmMimPreviewPanel() {
             >
               {submitting
                 ? "a submeter…"
-                : `Submeter job de ${numDays} dias`}
+                : `▶ Gerar dias ${diaInicio}-${diaFim} de ${MESES_PT[mes - 1]} ${ano} (${numItens})`}
             </button>
             {submitError && (
               <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
@@ -386,10 +445,9 @@ export function HojeEmMimPreviewPanel() {
               </div>
             )}
             <div className="text-[10px] text-escola-creme-50">
-              Submete o job ao GitHub Actions (workflow render-hoje-em-mim).
-              Cada item ~30s, pack de 30 dias demora 15-20 min. Faz polling
-              automático e mostra os MP4 conforme prontos. Motion e áudio
-              usados: o que está selecionado acima.
+              {numItens} jobs em paralelo no GitHub Actions (matrix). Cada
+              item ~30s. Faz polling automático e mostra os MP4 conforme
+              prontos. Motion e áudio usados: os que estão selecionados acima.
             </div>
           </div>
         </div>
@@ -442,6 +500,8 @@ export function HojeEmMimPreviewPanel() {
         onCopy={copy}
       />
 
+      <RunwayPipelineSection />
+
       <AudioGeneratorSection />
 
       <MjPromptsSection copied={copied} onCopy={copy} />
@@ -469,6 +529,11 @@ type JobResultUI = {
   total: number;
   videos?: JobVideoUI[];
   error?: string;
+  ano?: number;
+  mes?: number;
+  mesLabel?: string;
+  diaInicio?: number;
+  diaFim?: number;
   startDate?: string;
   numDays?: number;
   startedAt?: string;
@@ -571,8 +636,16 @@ function JobProgressBar({ result }: { result: JobResultUI }) {
     failed: "text-red-300",
   }[result.status];
 
+  const rangeLabel =
+    result.mesLabel && result.diaInicio && result.diaFim && result.ano
+      ? `Dias ${result.diaInicio}-${result.diaFim} de ${result.mesLabel} ${result.ano}`
+      : null;
+
   return (
     <div className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2">
+      {rangeLabel && (
+        <div className="text-xs" style={{ color: COBRE }}>{rangeLabel}</div>
+      )}
       <div className="flex items-baseline justify-between text-xs">
         <span className={statusColor}>{statusLabel}</span>
         <span className="text-escola-creme-50">{pct}%</span>
@@ -812,6 +885,435 @@ type AudioOutput = {
   durationSec: number;
   sizeBytes: number;
 };
+
+type RunwayImage = {
+  name: string;
+  url: string;
+  sizeBytes: number;
+  createdAt: string | null;
+};
+
+type RunwayStateItem = {
+  id: string;
+  imageUrl: string;
+  imageName?: string;
+  runwayMotion: string;
+  promptRef?: string;
+  duration: 5 | 10;
+  ratio: "720:1280";
+  runwayTaskId: string | null;
+  clipUrl: string | null;
+  error: string | null;
+  submittedAt: string;
+  completedAt: string | null;
+};
+
+type RunwayState = {
+  items: RunwayStateItem[];
+  updatedAt: string | null;
+};
+
+function RunwayPipelineSection() {
+  const [images, setImages] = useState<RunwayImage[]>([]);
+  const [loadingImages, setLoadingImages] = useState(true);
+  const [uploading, setUploading] = useState<{ done: number; total: number; current: string } | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const [state, setState] = useState<RunwayState>({ items: [], updatedAt: null });
+  const [polling, setPolling] = useState(false);
+
+  // Por imagem, escolha de prompt MJ (para auto-preencher o motion).
+  // Map imageName → promptId
+  const [promptByImage, setPromptByImage] = useState<Record<string, string>>({});
+  // Motion editável por imagem (default: prompt.runwayMotion)
+  const [motionByImage, setMotionByImage] = useState<Record<string, string>>({});
+  // Duração por imagem
+  const [durationByImage, setDurationByImage] = useState<Record<string, 5 | 10>>({});
+
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const loadImages = async () => {
+    setLoadingImages(true);
+    setUploadError(null);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/images");
+      const json = await res.json();
+      if (res.ok) setImages(json.images || []);
+      else setUploadError(json.erro || `Erro ${res.status}`);
+    } catch (e) {
+      setUploadError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setLoadingImages(false);
+    }
+  };
+
+  const loadState = async () => {
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/runway/state");
+      const json = await res.json();
+      if (res.ok) setState({ items: json.items || [], updatedAt: json.updatedAt });
+    } catch {
+      /* silencioso */
+    }
+  };
+
+  useEffect(() => {
+    loadImages();
+    loadState();
+  }, []);
+
+  // Auto-poll de 20s enquanto há pending
+  useEffect(() => {
+    const hasPending = state.items.some((i) => i.runwayTaskId && !i.clipUrl);
+    if (!hasPending) return;
+    const interval = setInterval(() => {
+      pollNow();
+    }, 20000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.items.map((i) => i.runwayTaskId).join(",")]);
+
+  const pollNow = async () => {
+    setPolling(true);
+    try {
+      await fetch("/api/admin/hoje-em-mim/runway/poll", { method: "POST" });
+      await loadState();
+    } catch {
+      /* silencioso */
+    } finally {
+      setPolling(false);
+    }
+  };
+
+  const uploadImages = async (files: FileList | File[]) => {
+    const list = Array.from(files).filter((f) => /\.(png|jpe?g|webp)$/i.test(f.name));
+    if (list.length === 0) {
+      setUploadError("Sem PNG/JPG/WebP.");
+      return;
+    }
+    setUploadError(null);
+    for (let i = 0; i < list.length; i++) {
+      const file = list[i];
+      setUploading({ done: i, total: list.length, current: file.name });
+      const form = new FormData();
+      form.append("file", file);
+      try {
+        const res = await fetch("/api/admin/hoje-em-mim/images/upload", {
+          method: "POST",
+          body: form,
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          setUploadError(`${file.name}: ${json.erro || `HTTP ${res.status}`}`);
+          setUploading(null);
+          await loadImages();
+          return;
+        }
+      } catch (e) {
+        setUploadError(`${file.name}: ${e instanceof Error ? e.message : String(e)}`);
+        setUploading(null);
+        await loadImages();
+        return;
+      }
+    }
+    setUploading(null);
+    await loadImages();
+  };
+
+  const setPromptForImage = (imageName: string, promptId: string) => {
+    setPromptByImage((p) => ({ ...p, [imageName]: promptId }));
+    const mj = MJ_VIDEO_PROMPTS.find((x) => x.id === promptId);
+    if (mj) {
+      setMotionByImage((m) => ({ ...m, [imageName]: mj.runwayMotion }));
+    }
+  };
+
+  const buildSubmitItem = (img: RunwayImage) => {
+    const promptId = promptByImage[img.name] || "";
+    const motion = motionByImage[img.name] || "";
+    if (!motion.trim()) return null;
+    const duration = durationByImage[img.name] || 10;
+    // ID estável para o item Runway: derivado do imageName (sem extensão)
+    const safeId = img.name
+      .replace(/\.[^.]+$/, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]+/g, "-")
+      .slice(0, 80);
+    return {
+      id: safeId,
+      imageUrl: img.url,
+      imageName: img.name,
+      runwayMotion: motion.trim(),
+      promptRef: promptId || undefined,
+      duration,
+    };
+  };
+
+  const submitOne = async (img: RunwayImage) => {
+    const item = buildSubmitItem(img);
+    if (!item) {
+      setSubmitError(`${img.name}: motion prompt vazio. Escolhe um prompt MJ ou escreve um.`);
+      return;
+    }
+    setSubmitError(null);
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/runway/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [item] }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      if (json.failed?.length > 0) {
+        setSubmitError(`${json.failed[0].id}: ${json.failed[0].reason}`);
+      }
+      await loadState();
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const submitAllUnsubmitted = async () => {
+    const submittedImageNames = new Set(
+      state.items
+        .filter((i) => i.runwayTaskId || i.clipUrl)
+        .map((i) => i.imageName)
+        .filter((n): n is string => !!n)
+    );
+    const candidates = images
+      .filter((img) => !submittedImageNames.has(img.name))
+      .map((img) => buildSubmitItem(img))
+      .filter((x): x is NonNullable<ReturnType<typeof buildSubmitItem>> => x !== null);
+    if (candidates.length === 0) {
+      setSubmitError("Nenhuma imagem com motion prompt definido para submeter.");
+      return;
+    }
+    setSubmitError(null);
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/runway/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: candidates }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      if (json.failed?.length > 0) {
+        setSubmitError(`${json.failed.length} falhou: ${json.failed[0].reason}`);
+      }
+      await loadState();
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const pendingCount = state.items.filter((i) => i.runwayTaskId && !i.clipUrl).length;
+  const doneCount = state.items.filter((i) => i.clipUrl).length;
+  const failedCount = state.items.filter((i) => i.error && !i.clipUrl).length;
+
+  return (
+    <section className="space-y-3">
+      <div className="flex items-baseline justify-between flex-wrap gap-3">
+        <h2 className="font-serif text-lg" style={{ color: COBRE }}>
+          Imagens MJ → Runway Gen4 Turbo (motion library)
+        </h2>
+        <div className="flex gap-2 items-center text-[11px] text-escola-creme-50">
+          <span>
+            {state.items.length} no estado · {doneCount} prontos · {pendingCount} a renderizar
+            {failedCount > 0 && ` · ${failedCount} falharam`}
+          </span>
+          <button
+            onClick={pollNow}
+            disabled={polling}
+            className="rounded border border-escola-border bg-escola-card px-2 py-1 text-escola-creme-50 hover:text-escola-creme disabled:opacity-50"
+          >
+            {polling ? "a atualizar…" : "Atualizar"}
+          </button>
+        </div>
+      </div>
+      <p className="text-xs text-escola-creme-50">
+        Pipeline: geras a imagem no Midjourney (9:16, com o prompt do cartão
+        em baixo), fazes upload aqui, escolhes o prompt para preencher o
+        motion automaticamente, e submetes à Runway. O MP4 resultante vai
+        direto para o motion library no topo da página.
+      </p>
+
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => imageInputRef.current?.click()}
+          className="rounded border px-3 py-1.5 text-xs"
+          style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.1)" }}
+        >
+          Upload imagens MJ
+        </button>
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          multiple
+          className="hidden"
+          onChange={(e) => {
+            if (e.target.files?.length) uploadImages(e.target.files);
+            e.target.value = "";
+          }}
+        />
+        <button
+          onClick={submitAllUnsubmitted}
+          disabled={submitting || images.length === 0}
+          className="rounded border px-3 py-1.5 text-xs disabled:opacity-50"
+          style={{ borderColor: COBRE_FRACO, color: COBRE_FRACO, background: "rgba(194, 143, 96, 0.04)" }}
+        >
+          {submitting ? "a submeter…" : "Submeter todos os pendentes"}
+        </button>
+      </div>
+
+      {uploading && (
+        <div className="rounded border border-escola-dourado/40 bg-escola-dourado/10 p-2 text-xs text-escola-dourado">
+          A carregar {uploading.done + 1}/{uploading.total}. {uploading.current}
+        </div>
+      )}
+      {uploadError && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
+          {uploadError}
+        </div>
+      )}
+      {submitError && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
+          {submitError}
+        </div>
+      )}
+
+      {loadingImages ? (
+        <div className="text-xs text-escola-creme-50">A carregar imagens…</div>
+      ) : images.length === 0 ? (
+        <div className="rounded border border-escola-border bg-escola-card/40 p-6 text-center text-xs text-escola-creme-50">
+          Sem imagens MJ. Faz upload de pelo menos uma para começar.
+        </div>
+      ) : (
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {images.map((img) => {
+            const stateItem = state.items.find((s) => s.imageName === img.name);
+            const promptId = promptByImage[img.name] || stateItem?.promptRef || "";
+            const motion = motionByImage[img.name] ?? stateItem?.runwayMotion ?? "";
+            const duration = durationByImage[img.name] ?? stateItem?.duration ?? 10;
+
+            const statusBadge =
+              stateItem?.clipUrl ? "✓ pronto" :
+              stateItem?.runwayTaskId ? "a renderizar" :
+              stateItem?.error ? "falhou" : null;
+
+            return (
+              <div key={img.url} className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2">
+                <div className="flex items-baseline gap-2">
+                  <span className="truncate text-[10px] text-escola-creme-50 flex-1" title={img.name}>
+                    {img.name}
+                  </span>
+                  {statusBadge && (
+                    <span
+                      className="rounded px-1.5 py-0.5 text-[10px]"
+                      style={{
+                        background: stateItem?.clipUrl
+                          ? "rgba(16,185,129,0.15)"
+                          : stateItem?.error
+                            ? "rgba(127,29,29,0.25)"
+                            : "rgba(194,143,96,0.18)",
+                        color: stateItem?.clipUrl
+                          ? "#6ee7b7"
+                          : stateItem?.error
+                            ? "#fca5a5"
+                            : COBRE,
+                      }}
+                    >
+                      {statusBadge}
+                    </span>
+                  )}
+                </div>
+
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={img.url}
+                  alt={img.name}
+                  className="w-full aspect-[9/16] object-cover rounded border border-escola-border"
+                />
+
+                <label className="block text-[10px] text-escola-creme-50">
+                  Prompt MJ associado (auto-preenche motion)
+                  <select
+                    value={promptId}
+                    onChange={(e) => setPromptForImage(img.name, e.target.value)}
+                    className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                  >
+                    <option value="">— escolhe um —</option>
+                    {MJ_VIDEO_PROMPTS.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.id} {p.prioritario ? "★" : ""}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="block text-[10px] text-escola-creme-50">
+                  Motion prompt (Runway)
+                  <textarea
+                    rows={4}
+                    value={motion}
+                    onChange={(e) => setMotionByImage((m) => ({ ...m, [img.name]: e.target.value }))}
+                    placeholder="static camera, ... (descreve movimento específico, não genérico)"
+                    className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
+                  />
+                </label>
+
+                <div className="flex items-center gap-2 text-[10px]">
+                  <label className="text-escola-creme-50">
+                    duração
+                    <select
+                      value={duration}
+                      onChange={(e) => setDurationByImage((d) => ({ ...d, [img.name]: Number(e.target.value) as 5 | 10 }))}
+                      className="ml-1 rounded border border-escola-border bg-escola-bg px-1.5 py-0.5 text-[11px] text-escola-creme"
+                    >
+                      <option value={5}>5s</option>
+                      <option value={10}>10s</option>
+                    </select>
+                  </label>
+                  <button
+                    onClick={() => submitOne(img)}
+                    disabled={submitting || !motion.trim() || (!!stateItem?.runwayTaskId)}
+                    className="ml-auto rounded border px-2 py-0.5 text-[10px] disabled:opacity-50"
+                    style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.1)" }}
+                  >
+                    {stateItem?.runwayTaskId ? "a renderizar" : stateItem?.clipUrl ? "re-submeter" : "Submeter"}
+                  </button>
+                </div>
+
+                {stateItem?.clipUrl && (
+                  <video
+                    src={stateItem.clipUrl}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full aspect-[9/16] bg-black rounded"
+                  />
+                )}
+                {stateItem?.error && (
+                  <div className="rounded border border-red-700/40 bg-red-900/20 p-1.5 text-[10px] text-red-300">
+                    {stateItem.error}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
 
 function AudioGeneratorSection() {
   const [mood, setMood] = useState<NightMood>("grilos-tropicais");
@@ -1059,7 +1561,7 @@ function PromptCard({
 
       <div className="rounded border border-escola-border bg-escola-bg p-2">
         <div className="mb-1 flex items-center justify-between">
-          <span className="text-[10px] text-escola-creme-50">Midjourney</span>
+          <span className="text-[10px] text-escola-creme-50">Midjourney (imagem)</span>
           <button
             onClick={() => onCopy(keyMj, prompt.prompt)}
             className={`rounded px-1.5 py-0.5 text-[10px] transition-colors ${
@@ -1073,6 +1575,25 @@ function PromptCard({
         </div>
         <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
           {prompt.prompt}
+        </pre>
+      </div>
+
+      <div className="rounded border border-escola-border bg-escola-bg p-2">
+        <div className="mb-1 flex items-center justify-between">
+          <span className="text-[10px] text-escola-creme-50">Runway Gen4 Turbo (motion)</span>
+          <button
+            onClick={() => onCopy(`runway-${prompt.id}`, prompt.runwayMotion)}
+            className={`rounded px-1.5 py-0.5 text-[10px] transition-colors ${
+              copied === `runway-${prompt.id}`
+                ? "bg-escola-dourado text-escola-bg"
+                : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
+            }`}
+          >
+            {copied === `runway-${prompt.id}` ? "✓" : "Copiar"}
+          </button>
+        </div>
+        <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
+          {prompt.runwayMotion}
         </pre>
       </div>
 
@@ -1196,7 +1717,7 @@ function Frame({
           muted
           playsInline
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.85) saturate(0.85) contrast(1.05) hue-rotate(-6deg)" }}
+          style={{ filter: "saturate(1.02) contrast(1.02)" }}
         />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
@@ -1204,26 +1725,44 @@ function Frame({
           src={media}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.85) saturate(0.85) contrast(1.05) hue-rotate(-6deg)" }}
+          style={{ filter: "saturate(1.02) contrast(1.02)" }}
         />
       )}
 
-      {/* Grão de papel suave. SVG inline. */}
+      {/* Scrim local atrás da frase: backdrop-blur + gradiente vertical
+          que desvanece nos topos. Garante contraste em qualquer motion. */}
       <div
-        className="pointer-events-none absolute inset-0 mix-blend-overlay"
+        className="pointer-events-none absolute inset-x-0"
         style={{
-          opacity: 0.1,
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>\")",
+          top: "34%",
+          height: "38%",
+          background:
+            "linear-gradient(to bottom, rgba(14,8,32,0) 0%, rgba(14,8,32,0.42) 25%, rgba(14,8,32,0.42) 75%, rgba(14,8,32,0) 100%)",
+          backdropFilter: "blur(6px) saturate(95%)",
+          WebkitBackdropFilter: "blur(6px) saturate(95%)",
         }}
       />
 
-      {/* Vinheta densa para leitura noturna */}
+      {/* Scrim atrás da assinatura (kicker + glifo + URL) no fundo */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-x-0 bottom-0"
         style={{
+          height: "18%",
           background:
-            "radial-gradient(ellipse at center, rgba(14,8,32,0) 35%, rgba(14,8,32,0.55) 100%)",
+            "linear-gradient(to top, rgba(14,8,32,0.55) 0%, rgba(14,8,32,0.4) 60%, rgba(14,8,32,0) 100%)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
+        }}
+      />
+
+      {/* Pequeno scrim atrás do nome do dia no arco */}
+      <div
+        className="pointer-events-none absolute inset-x-0"
+        style={{
+          top: 175,
+          height: 40,
+          background:
+            "radial-gradient(ellipse at center, rgba(14,8,32,0.45) 0%, rgba(14,8,32,0) 70%)",
         }}
       />
 
@@ -1272,7 +1811,7 @@ function Frame({
             lineHeight: 1.42,
             letterSpacing: "0.005em",
             textShadow:
-              "0 2px 10px rgba(0,0,0,0.6), 0 1px 2px rgba(0,0,0,0.85)",
+              "0 2px 14px rgba(0,0,0,0.85), 0 0 4px rgba(0,0,0,0.95), 0 1px 1px rgba(0,0,0,1)",
           }}
         >
           {phrase}

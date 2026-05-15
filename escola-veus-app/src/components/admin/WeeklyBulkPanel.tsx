@@ -173,7 +173,18 @@ export default function WeeklyBulkPanel({
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.erro || `HTTP ${r.status}`);
-      if (j.errors?.length) setErrors(j.errors.map((e: { message: string }) => e.message));
+      const collected: string[] = [];
+      if (j.errors?.length) {
+        collected.push(...j.errors.map((e: { message: string }) => e.message));
+      }
+      // Álbuns Loranne ignorados por não terem MP3 — informativo, não erro
+      // fatal. O plano foi gerado com os álbuns que têm áudio pronto.
+      if (Array.isArray(j.loranneSkippedAlbums) && j.loranneSkippedAlbums.length > 0) {
+        collected.push(
+          `ℹ Álbuns sem MP3 em Supabase (ignorados na rotação): ${j.loranneSkippedAlbums.join(", ")}. Vão entrar no plano quando fizeres upload em audios/albums/<slug>/.`,
+        );
+      }
+      if (collected.length > 0) setErrors(collected);
       await loadStatus();
     } catch (e) {
       setErrors([(e as Error).message]);

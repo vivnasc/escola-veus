@@ -98,6 +98,39 @@ export function BulkMonthPanel() {
   const [motionTags, setMotionTags] = useState<Record<string, MorningMood>>({});
   /** Estado de copia da legenda (feedback visual: dia -> plataforma). */
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  /** Lista de batches anteriores carregada do Supabase. */
+  const [pastBatches, setPastBatches] = useState<Array<{
+    batchId: string;
+    year?: number;
+    month?: number;
+    startDay?: number;
+    endDay?: number;
+    createdAt?: string;
+    jobs?: number;
+  }>>([]);
+
+  const refreshPastBatches = useCallback(async () => {
+    try {
+      const r = await fetch("/api/admin/vc-sabia/bulk-list", { cache: "no-store" });
+      if (!r.ok) return;
+      const j = await r.json();
+      setPastBatches(j.batches || []);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  useEffect(() => {
+    if (phase === "config") refreshPastBatches();
+  }, [phase, refreshPastBatches]);
+
+  const loadPastBatch = (id: string) => {
+    setBatchId(id);
+    setStatus(null);
+    setZipUrl(null);
+    setError(null);
+    setPhase("submitted");
+  };
 
   const preparePlan = async () => {
     setPreparing(true);
@@ -447,6 +480,58 @@ export function BulkMonthPanel() {
               ? "A preparar..."
               : `📋 Preparar plano (${endDay - startDay + 1} dias)`}
           </button>
+        </div>
+      )}
+
+      {phase === "config" && pastBatches.length > 0 && (
+        <div className="space-y-2 rounded border border-escola-border/40 bg-escola-card/40 p-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-medium text-escola-creme">
+              Bulks anteriores ({pastBatches.length})
+            </h3>
+            <button
+              onClick={refreshPastBatches}
+              className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              ↻ refresh
+            </button>
+          </div>
+          <div className="space-y-1">
+            {pastBatches.map((b) => (
+              <button
+                key={b.batchId}
+                onClick={() => loadPastBatch(b.batchId)}
+                className="block w-full rounded border border-escola-border bg-escola-card/60 px-2 py-1.5 text-left text-[11px] text-escola-creme-50 hover:bg-escola-card hover:text-escola-creme"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-escola-creme">
+                    {b.year && b.month
+                      ? `${b.year}-${String(b.month).padStart(2, "0")}`
+                      : "?"}
+                    {b.startDay && b.endDay
+                      ? ` · dias ${b.startDay}-${b.endDay}`
+                      : ""}
+                    {b.jobs !== undefined ? ` · ${b.jobs} jobs` : ""}
+                  </span>
+                  {b.createdAt && (
+                    <span className="text-[9px] text-escola-creme-50">
+                      {new Date(b.createdAt).toLocaleString("pt-PT", {
+                        timeZone: "Africa/Maputo",
+                        year: "2-digit",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  )}
+                </div>
+                <div className="mt-0.5 truncate text-[9px] text-escola-creme-50">
+                  {b.batchId}
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
