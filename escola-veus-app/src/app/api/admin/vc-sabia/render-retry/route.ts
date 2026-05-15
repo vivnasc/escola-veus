@@ -78,26 +78,33 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const ghRes = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowFile}/dispatches`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ref, inputs: { jobId } }),
-    }
-  );
+  const dispatchUrl = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowFile}/dispatches`;
+  console.log(`[retry] dispatching ${jobId} -> ${dispatchUrl}`);
+
+  const ghRes = await fetch(dispatchUrl, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ref, inputs: { jobId } }),
+  });
   if (!ghRes.ok) {
     const t = await ghRes.text();
+    console.error(`[retry] dispatch failed ${ghRes.status}`, t);
     return NextResponse.json(
-      { erro: `GitHub dispatch ${ghRes.status}: ${t.slice(0, 300)}` },
+      {
+        erro: `GitHub dispatch ${ghRes.status}: ${t.slice(0, 300)}`,
+        dispatchUrl,
+        ref,
+        workflowFile,
+      },
       { status: 502 }
     );
   }
 
-  return NextResponse.json({ ok: true, jobId });
+  console.log(`[retry] dispatched ${jobId} OK`);
+  return NextResponse.json({ ok: true, jobId, dispatchUrl });
 }
