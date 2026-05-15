@@ -46,6 +46,8 @@ interface JobStatus {
   date: string;
   jobId: string;
   phraseText?: string;
+  phraseTheme?: string;
+  phraseId?: string;
   motionName?: string;
   audioUrl?: string | null;
   status: Status;
@@ -772,7 +774,7 @@ export function BulkMonthPanel() {
             {status.jobs.map((j) => {
               const phraseText = j.phraseText || "";
               const captions = phraseText
-                ? phraseToCaptions({ phrase: phraseText, theme: "beleza-de-existir" })
+                ? phraseToCaptions({ phrase: phraseText, theme: j.phraseTheme || "beleza-de-existir" })
                 : null;
               const ddPad = String(j.day).padStart(2, "0");
               return (
