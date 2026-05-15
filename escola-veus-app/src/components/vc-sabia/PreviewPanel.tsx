@@ -8,13 +8,11 @@ import { MotionLibrary } from "./MotionLibrary";
 import { AudioLibrary } from "./AudioLibrary";
 import { ManualDownloadPanel } from "./ManualDownloadPanel";
 import { BulkMonthPanel } from "./BulkMonthPanel";
+import { DesignSettingsPanel, useDesignSettings } from "./DesignSettingsPanel";
 
 type Variant = "A" | "B" | "C";
 
 const SAMPLE_PHRASE_ID = "vsq-0021";
-const DEFAULT_MEDIA = "/assets/vc-sabia/motions/db5056e4-aabc-43e6-ab9f-48f8d96c10a8.mp4";
-const FALLBACK_MEDIA = "/assets/vc-sabia/motions/IMG_8599.webp";
-
 const MESES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
@@ -27,11 +25,12 @@ function formatDatePT(d: Date) {
 export function VcSabiaPreviewPanel() {
   const [variant, setVariant] = useState<Variant>("C");
   const [phraseId, setPhraseId] = useState<string>(SAMPLE_PHRASE_ID);
-  const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
+  const [media, setMedia] = useState<string>("");
   const [copied, setCopied] = useState<string | null>(null);
   const [motionTags, setMotionTags] = useState<Record<string, MorningMood>>({});
   const [activeByMood, setActiveByMood] = useState<Partial<Record<MorningMood, string>>>({});
   const [customPhrase, setCustomPhrase] = useState<string>("");
+  const { design, update: setDesign } = useDesignSettings();
   const [generatingPhrase, setGeneratingPhrase] = useState(false);
   const [phraseError, setPhraseError] = useState<string | null>(null);
 
@@ -126,6 +125,8 @@ export function VcSabiaPreviewPanel() {
           Frame renderiza a 405×720 (escala 0.375 do output final 1080×1920).
         </p>
       </header>
+
+      <DesignSettingsPanel design={design} onChange={setDesign} />
 
       <MotionLibrary
         selectedUrl={media}
