@@ -13,6 +13,12 @@ interface Props {
   captionWhatsapp: string;
 }
 
+type RenderState =
+  | { phase: "idle" }
+  | { phase: "rendering"; renderId?: string }
+  | { phase: "done"; videoUrl: string }
+  | { phase: "error"; message: string };
+
 /**
  * Painel para download manual dos componentes do post de hoje.
  * Util enquanto o pipeline de render automatico nao esta pronto:
@@ -31,6 +37,38 @@ export function ManualDownloadPanel({
 }: Props) {
   const [composingPng, setComposingPng] = useState(false);
   const [pngError, setPngError] = useState<string | null>(null);
+  const [render, setRender] = useState<RenderState>({ phase: "idle" });
+  const [showComponentes, setShowComponentes] = useState(false);
+
+  const renderFinalMp4 = async () => {
+    setRender({ phase: "rendering" });
+    try {
+      const res = await fetch("/api/admin/vc-sabia/render", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          motionUrl,
+          audioUrl,
+          phrase,
+          dateLabel,
+          durationSec: 12,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setRender({ phase: "error", message: json.erro || `HTTP ${res.status}` });
+      } else if (json.videoUrl) {
+        setRender({ phase: "done", videoUrl: json.videoUrl });
+      } else {
+        setRender({ phase: "error", message: "Render sem URL" });
+      }
+    } catch (e) {
+      setRender({
+        phase: "error",
+        message: e instanceof Error ? e.message : String(e),
+      });
+    }
+  };
 
   const slug = (phrase || "frase")
     .toLowerCase()
@@ -92,58 +130,102 @@ export function ManualDownloadPanel({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="space-y-2">
         <button
-          onClick={() =>
-            downloadText(`vc-sabia-${slug}-captions.txt`, fullCaptionTxt)
-          }
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20"
+          onClick={renderFinalMp4}
+          disabled={render.phase === "rendering"}
+          className="w-full rounded-md border border-emerald-500/60 bg-emerald-500/15 px-4 py-3 text-sm font-medium text-emerald-300 hover:bg-emerald-500/25 disabled:opacity-50"
         >
-          ↓ Captions (.txt)
+          {render.phase === "rendering"
+            ? "A renderizar via Shotstack (~30-90s)…"
+            : "▶ Render MP4 final (motion + texto + áudio)"}
         </button>
 
-        <button
-          onClick={() => downloadRemote(motionUrl, `${motionName}`)}
-          disabled={!motionUrl}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
-        >
-          ↓ Motion (.mp4)
-        </button>
+        {render.phase === "error" && (
+          <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
+            Render falhou: {render.message}
+          </div>
+        )}
 
-        <button
-          onClick={() =>
-            audioUrl &&
-            downloadRemote(audioUrl, `vc-sabia-${slug}-audio.mp3`)
-          }
-          disabled={!audioUrl}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
-          title={audioUrl ? undefined : "Não há áudio activo para o mood deste motion"}
-        >
-          ↓ Áudio (.mp3)
-        </button>
-
-        <button
-          onClick={composePng}
-          disabled={composingPng}
-          className="rounded-md border border-escola-dourado/60 bg-escola-dourado/10 px-3 py-1.5 text-xs text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
-        >
-          {composingPng ? "A compor…" : "↓ Frame com texto (.png)"}
-        </button>
+        {render.phase === "done" && (
+          <div className="space-y-2 rounded border border-emerald-500/40 bg-emerald-500/10 p-3">
+            <video
+              src={render.videoUrl}
+              controls
+              className="w-full max-w-[400px] rounded"
+            />
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() =>
+                  downloadRemote(render.videoUrl, `vc-sabia-${slug}.mp4`)
+                }
+                className="rounded-md border border-emerald-500/60 bg-emerald-500/10 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/20"
+              >
+                ↓ Download MP4 final
+              </button>
+              <button
+                onClick={() =>
+                  downloadText(`vc-sabia-${slug}-captions.txt`, fullCaptionTxt)
+                }
+                className="rounded-md border border-emerald-500/60 bg-emerald-500/10 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/20"
+              >
+                ↓ Captions (.txt)
+              </button>
+            </div>
+            <div className="text-[11px] text-emerald-200/70">
+              MP4 1080×1920 com overlay e áudio mixed in. Postar directo em
+              IG Reel / TikTok / WhatsApp Status.
+            </div>
+          </div>
+        )}
       </div>
 
-      {pngError && (
-        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
-          {pngError}
+      <button
+        onClick={() => setShowComponentes((v) => !v)}
+        className="text-[11px] text-escola-creme-50 hover:text-escola-creme"
+      >
+        {showComponentes ? "▾" : "▸"} Componentes individuais (caso queiras
+        editar manualmente no CapCut, etc)
+      </button>
+
+      {showComponentes && (
+        <div className="flex flex-wrap gap-2 rounded border border-escola-border/40 p-2">
+          <button
+            onClick={() =>
+              downloadText(`vc-sabia-${slug}-captions.txt`, fullCaptionTxt)
+            }
+            className="rounded-md border border-escola-border bg-escola-card/40 px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-card/60"
+          >
+            ↓ Captions (.txt)
+          </button>
+          <button
+            onClick={() => downloadRemote(motionUrl, motionName)}
+            disabled={!motionUrl}
+            className="rounded-md border border-escola-border bg-escola-card/40 px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-card/60 disabled:opacity-50"
+          >
+            ↓ Motion raw (.mp4)
+          </button>
+          <button
+            onClick={() =>
+              audioUrl && downloadRemote(audioUrl, `vc-sabia-${slug}-audio.mp3`)
+            }
+            disabled={!audioUrl}
+            className="rounded-md border border-escola-border bg-escola-card/40 px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-card/60 disabled:opacity-50"
+          >
+            ↓ Áudio (.mp3)
+          </button>
+          <button
+            onClick={composePng}
+            disabled={composingPng}
+            className="rounded-md border border-escola-border bg-escola-card/40 px-3 py-1.5 text-xs text-escola-creme hover:bg-escola-card/60 disabled:opacity-50"
+          >
+            {composingPng ? "A compor…" : "↓ Frame still (.png)"}
+          </button>
+          {pngError && (
+            <span className="text-[10px] text-red-400">{pngError}</span>
+          )}
         </div>
       )}
-
-      <div className="text-[11px] text-escola-creme-50">
-        <strong className="text-escola-creme">Como usar:</strong> baixa o
-        Frame .png + o áudio .mp3. No WhatsApp, mete o png como Status e o
-        áudio dá para anexar separado. No Instagram/TikTok, importa o motion
-        .mp4 + áudio .mp3 no editor (CapCut, etc) e cola por cima o png
-        como overlay com fade-in.
-      </div>
     </section>
   );
 }
