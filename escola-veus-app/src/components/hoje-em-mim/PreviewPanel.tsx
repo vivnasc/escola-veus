@@ -121,6 +121,8 @@ export function HojeEmMimPreviewPanel() {
   const [diaFim, setDiaFim] = useState<number>(() => daysInMonth(now.getFullYear(), now.getMonth() + 1));
   const [durationSec, setDurationSec] = useState<number>(15);
   const [themeId, setThemeId] = useState<string>(DEFAULT_THEME_ID);
+  const [useAllMotions, setUseAllMotions] = useState<boolean>(true);
+  const [useAllAudios, setUseAllAudios] = useState<boolean>(true);
 
   const phrase =
     frasesDoDia.find((f) => f.id === phraseId) ?? frasesDoDia[0] ?? FRASES[0];
@@ -184,6 +186,39 @@ export function HojeEmMimPreviewPanel() {
     setSubmitting(true);
     try {
       const id = `hoje-em-mim-${ano}-${String(mes).padStart(2, "0")}-${String(diaInicio).padStart(2, "0")}-to-${String(diaFim).padStart(2, "0")}-${Date.now().toString(36)}`;
+
+      // Se "Usar todos os motions" está on, vai buscar a library inteira.
+      // O servidor faz shuffle por defeito para evitar imagens iguais
+      // em dias consecutivos.
+      let motionPool: string[] = [media].filter(Boolean);
+      let audioPoolList: string[] = audioUrlSelected ? [audioUrlSelected] : [];
+      if (useAllMotions) {
+        try {
+          const r = await fetch("/api/admin/hoje-em-mim/motions");
+          const j = await r.json();
+          if (r.ok && Array.isArray(j.motions)) {
+            motionPool = j.motions.map((m: { url: string }) => m.url);
+          }
+        } catch {
+          /* mantém o single media como fallback */
+        }
+      }
+      if (useAllAudios) {
+        try {
+          const r = await fetch("/api/admin/hoje-em-mim/audios");
+          const j = await r.json();
+          if (r.ok && j.audiosByMood) {
+            const flat: string[] = [];
+            for (const list of Object.values(j.audiosByMood)) {
+              for (const a of list as Array<{ url: string }>) flat.push(a.url);
+            }
+            if (flat.length > 0) audioPoolList = flat;
+          }
+        } catch {
+          /* mantém o single audio */
+        }
+      }
+
       const body = {
         jobId: id,
         ano,
@@ -191,9 +226,10 @@ export function HojeEmMimPreviewPanel() {
         diaInicio,
         diaFim,
         durationSec,
-        motionPool: [media],
-        audioPool: audioUrlSelected ? [audioUrlSelected] : [],
+        motionPool,
+        audioPool: audioPoolList,
         themePool: [themeId],
+        shuffleMotions: true,
       };
       const res = await fetch("/api/admin/hoje-em-mim/render-submit", {
         method: "POST",
@@ -516,24 +552,58 @@ export function HojeEmMimPreviewPanel() {
               {getTheme(themeId).notas}
             </span>
           </label>
-          <label className="text-[10px] block col-span-2">
-            Motion (URL) — escolhe na tab Motions
+          <label className="flex items-start gap-2 col-span-2 text-[11px] text-escola-creme cursor-pointer">
             <input
-              value={media}
-              onChange={(e) => setMedia(e.target.value)}
-              placeholder="/assets/hoje-em-mim/motions/…"
-              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
+              type="checkbox"
+              checked={useAllMotions}
+              onChange={(e) => setUseAllMotions(e.target.checked)}
+              className="mt-0.5"
             />
+            <span>
+              Usar todos os motions da library, embaralhados.
+              <span className="block text-[10px] text-escola-creme-50">
+                Evita que motions parecidos (várias variações do mesmo prompt)
+                fiquem em dias consecutivos. Recomendado.
+              </span>
+            </span>
           </label>
-          <label className="text-[10px] block col-span-2">
-            Áudio (URL) — gera na tab Áudios
+          {!useAllMotions && (
+            <label className="text-[10px] block col-span-2">
+              Motion (URL único) — escolhe na tab Motions
+              <input
+                value={media}
+                onChange={(e) => setMedia(e.target.value)}
+                placeholder="/assets/hoje-em-mim/motions/…"
+                className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
+              />
+            </label>
+          )}
+          <label className="flex items-start gap-2 col-span-2 text-[11px] text-escola-creme cursor-pointer">
             <input
-              value={audioUrlSelected}
-              onChange={(e) => setAudioUrlSelected(e.target.value)}
-              placeholder="vazio = sem som"
-              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
+              type="checkbox"
+              checked={useAllAudios}
+              onChange={(e) => setUseAllAudios(e.target.checked)}
+              className="mt-0.5"
             />
+            <span>
+              Usar todos os áudios da library, rodando por dia.
+              <span className="block text-[10px] text-escola-creme-50">
+                Cada dia ganha um áudio diferente do que tens em
+                course-assets/hoje-em-mim-audios/. Recomendado.
+              </span>
+            </span>
           </label>
+          {!useAllAudios && (
+            <label className="text-[10px] block col-span-2">
+              Áudio (URL único) — gera na tab Áudios
+              <input
+                value={audioUrlSelected}
+                onChange={(e) => setAudioUrlSelected(e.target.value)}
+                placeholder="vazio = sem som"
+                className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
+              />
+            </label>
+          )}
         </div>
         <button
           onClick={submitJob}
@@ -691,6 +761,10 @@ function JobSection({
         <>
           <JobProgressBar result={jobResult} />
 
+          {jobResult.videos && jobResult.videos.some((v) => v.url) && (
+            <MetricoolCsvButton videos={jobResult.videos} />
+          )}
+
           {todayVideo && (
             <TodayWidget video={todayVideo} copied={copied} onCopy={onCopy} />
           )}
@@ -701,6 +775,62 @@ function JobSection({
         </>
       )}
     </section>
+  );
+}
+
+function MetricoolCsvButton({
+  videos,
+}: {
+  videos: JobVideoUI[];
+}) {
+  const ready = videos.filter(
+    (v): v is JobVideoUI & { url: string; captions: NonNullable<JobVideoUI["captions"]> } =>
+      !!v.url && !!v.captions
+  );
+  if (ready.length === 0) return null;
+
+  const download = async () => {
+    const { buildHemCsv } = await import("@/lib/hoje-em-mim/metricool-csv");
+    const csv = buildHemCsv(
+      ready.map((v) => ({
+        date: v.date,
+        time: "19:00",
+        videoUrl: v.url,
+        captions: v.captions,
+        fraseTexto: v.fraseTexto,
+      }))
+    );
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const first = ready[0].date;
+    const last = ready[ready.length - 1].date;
+    a.download = `hoje-em-mim-metricool-${first}-a-${last}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="rounded-lg border border-escola-border bg-escola-card p-3 flex flex-wrap items-baseline justify-between gap-3">
+      <div className="text-xs">
+        <strong style={{ color: COBRE }}>
+          📅 Pacote Metricool pronto
+        </strong>
+        <span className="ml-2 text-escola-creme-50">
+          {ready.length} posts agendados às 19h em IG (Reel) + TikTok + YT Shorts.
+        </span>
+      </div>
+      <button
+        onClick={download}
+        className="rounded border px-3 py-1.5 text-xs"
+        style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.1)" }}
+      >
+        Descarregar CSV Metricool ↓
+      </button>
+    </div>
   );
 }
 
@@ -1398,6 +1528,62 @@ function RunwayPipelineSection() {
     }
   };
 
+  // Batch: revê todos os motion prompts das imagens carregadas via Claude
+  // vision. Aplica cada sugestão directo no estado motionByImage.
+  const [reviewingBatch, setReviewingBatch] = useState(false);
+  const [reviewBatchStatus, setReviewBatchStatus] = useState<string>("");
+  const [reviewBatchError, setReviewBatchError] = useState<string | null>(null);
+
+  const reviewAllPrompts = async () => {
+    if (images.length === 0) {
+      setReviewBatchError("Sem imagens MJ carregadas.");
+      return;
+    }
+    setReviewBatchError(null);
+    setReviewingBatch(true);
+    setReviewBatchStatus(`A enviar ${images.length} imagens ao Claude…`);
+    try {
+      const items = images.map((img) => {
+        const pid = promptByImage[img.name] || "";
+        const mj = pid ? MJ_VIDEO_PROMPTS.find((p) => p.id === pid) : null;
+        return {
+          id: img.name,
+          imageUrl: img.url,
+          scene: mj?.prompt,
+          currentPrompt: motionByImage[img.name] ?? mj?.runwayMotion ?? "",
+        };
+      });
+      const res = await fetch("/api/admin/hoje-em-mim/runway-prompts/review-batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      const results = json.results || {};
+      const next: Record<string, string> = { ...motionByImage };
+      let applied = 0;
+      let failed = 0;
+      for (const [id, r] of Object.entries(results)) {
+        const result = r as { suggestedPrompt?: string; error?: string };
+        if (result.suggestedPrompt) {
+          next[id] = result.suggestedPrompt;
+          applied++;
+        } else {
+          failed++;
+        }
+      }
+      setMotionByImage(next);
+      setReviewBatchStatus(
+        `Claude aplicou ${applied} sugestões${failed > 0 ? `, ${failed} falharam` : ""}.`
+      );
+    } catch (e) {
+      setReviewBatchError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setReviewingBatch(false);
+    }
+  };
+
   const pendingCount = state.items.filter((i) => i.runwayTaskId && !i.clipUrl).length;
   const doneCount = state.items.filter((i) => i.clipUrl).length;
   const failedCount = state.items.filter((i) => i.error && !i.clipUrl).length;
@@ -1449,14 +1635,35 @@ function RunwayPipelineSection() {
           }}
         />
         <button
+          onClick={reviewAllPrompts}
+          disabled={reviewingBatch || images.length === 0}
+          className="rounded border px-3 py-1.5 text-xs disabled:opacity-50"
+          style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.1)" }}
+        >
+          {reviewingBatch
+            ? "Claude a rever…"
+            : `🤖 Rever todos os ${images.length} motion prompts (Claude vision)`}
+        </button>
+        <button
           onClick={submitAllUnsubmitted}
           disabled={submitting || images.length === 0}
           className="rounded border px-3 py-1.5 text-xs disabled:opacity-50"
           style={{ borderColor: COBRE_FRACO, color: COBRE_FRACO, background: "rgba(194, 143, 96, 0.04)" }}
         >
-          {submitting ? "a submeter…" : "Submeter todos os pendentes"}
+          {submitting ? "a submeter…" : "Submeter todos os pendentes à Runway"}
         </button>
       </div>
+
+      {reviewBatchStatus && (
+        <div className="rounded border border-emerald-700/40 bg-emerald-900/15 p-2 text-xs text-emerald-300">
+          {reviewBatchStatus}
+        </div>
+      )}
+      {reviewBatchError && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
+          {reviewBatchError}
+        </div>
+      )}
 
       {uploading && (
         <div className="rounded border border-escola-dourado/40 bg-escola-dourado/10 p-2 text-xs text-escola-dourado">
@@ -1646,6 +1853,57 @@ function AudioGeneratorSection() {
     }
   };
 
+  // Audio library (já gerados em Supabase). Mostra o que está herdado.
+  const [library, setLibrary] = useState<Record<string, Array<{ name: string; url: string; sizeBytes: number }>>>({});
+  const [loadingLib, setLoadingLib] = useState(true);
+  const loadLibrary = async () => {
+    setLoadingLib(true);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/audios");
+      const json = await res.json();
+      if (res.ok) setLibrary(json.audiosByMood || {});
+    } catch {
+      /* silencioso */
+    } finally {
+      setLoadingLib(false);
+    }
+  };
+  useEffect(() => {
+    loadLibrary();
+  }, []);
+
+  // Batch: gera 1 áudio por cada mood (10 chamadas paralelas)
+  const [batchRunning, setBatchRunning] = useState(false);
+  const [batchProgress, setBatchProgress] = useState<{ done: number; total: number } | null>(null);
+  const [batchError, setBatchError] = useState<string | null>(null);
+
+  const gerarBatchTodosMoods = async () => {
+    setBatchError(null);
+    setBatchRunning(true);
+    setBatchProgress({ done: 0, total: NIGHT_MOODS.length });
+    let done = 0;
+    let failed = 0;
+    for (const m of NIGHT_MOODS) {
+      try {
+        const res = await fetch("/api/admin/hoje-em-mim/audio/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mood: m, durationSec: DEFAULT_NIGHT_DURATION_SEC }),
+        });
+        if (!res.ok) failed++;
+      } catch {
+        failed++;
+      }
+      done++;
+      setBatchProgress({ done, total: NIGHT_MOODS.length });
+    }
+    setBatchRunning(false);
+    if (failed > 0) setBatchError(`${failed} mood(s) falharam.`);
+    await loadLibrary();
+  };
+
+  const totalAudios = Object.values(library).reduce((acc, arr) => acc + arr.length, 0);
+
   return (
     <section className="space-y-3">
       <h2 className="font-serif text-lg" style={{ color: COBRE }}>
@@ -1746,6 +2004,100 @@ function AudioGeneratorSection() {
           </div>
         </details>
       )}
+
+      <div className="border-t border-escola-border/40 pt-3 space-y-2">
+        <div className="flex items-baseline justify-between flex-wrap gap-2">
+          <h3 className="font-serif text-base" style={{ color: COBRE }}>
+            Library de áudios já gerados ({totalAudios})
+          </h3>
+          <div className="flex gap-2">
+            <button
+              onClick={loadLibrary}
+              className="rounded border border-escola-border bg-escola-card px-2 py-1 text-[11px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              Recarregar
+            </button>
+            <button
+              onClick={gerarBatchTodosMoods}
+              disabled={batchRunning}
+              className="rounded border px-3 py-1 text-[11px] disabled:opacity-50"
+              style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.1)" }}
+            >
+              {batchRunning
+                ? `Gerar ${batchProgress?.done ?? 0}/${batchProgress?.total ?? NIGHT_MOODS.length}…`
+                : `🔊 Gerar 1 áudio por cada um dos ${NIGHT_MOODS.length} moods (~$3 USD)`}
+            </button>
+          </div>
+        </div>
+        {batchError && (
+          <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
+            {batchError}
+          </div>
+        )}
+        {loadingLib ? (
+          <div className="text-[11px] text-escola-creme-50">A carregar library…</div>
+        ) : totalAudios === 0 ? (
+          <div className="rounded border border-escola-border bg-escola-card/40 p-3 text-[11px] text-escola-creme-50 text-center">
+            Sem áudios gerados ainda. Carrega no botão "Gerar 1 áudio por cada mood".
+          </div>
+        ) : (
+          <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+            {NIGHT_MOODS.map((m) => {
+              const list = library[m] ?? [];
+              if (list.length === 0) {
+                return (
+                  <div
+                    key={m}
+                    className="rounded border border-escola-border bg-escola-card/30 p-2"
+                  >
+                    <div className="text-[11px]" style={{ color: COBRE }}>
+                      {NIGHT_MOOD_LABELS[m]}
+                    </div>
+                    <div className="text-[10px] text-escola-creme-50 italic">
+                      sem áudio gerado
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <div
+                  key={m}
+                  className="rounded border border-escola-border bg-escola-card p-2 space-y-1.5"
+                >
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-[11px]" style={{ color: COBRE }}>
+                      {NIGHT_MOOD_LABELS[m]}
+                    </span>
+                    <span className="text-[10px] text-escola-creme-50">{list.length}</span>
+                  </div>
+                  {list.slice(0, 2).map((a) => (
+                    <div key={a.url} className="space-y-1">
+                      <audio src={a.url} controls className="w-full h-7" />
+                      <button
+                        onClick={async () => {
+                          try {
+                            await navigator.clipboard.writeText(a.url);
+                          } catch {
+                            /* ignore */
+                          }
+                        }}
+                        className="w-full rounded border border-escola-border px-1 py-0.5 text-[9px] text-escola-creme-50 hover:text-escola-creme"
+                      >
+                        Copiar URL
+                      </button>
+                    </div>
+                  ))}
+                  {list.length > 2 && (
+                    <div className="text-[9px] text-escola-creme-50">
+                      mais {list.length - 2} mais antigo(s) no Supabase
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </section>
   );
 }
@@ -2029,41 +2381,14 @@ function Frame({
         />
       )}
 
-      {/* Scrim local atrás da frase: backdrop-blur subtil. Sem escurecer
-          (motion escuro fica ainda mais escuro com scrim escuro). O blur
-          já desfoca o motion atrás do texto e dá-lhe contraste suficiente. */}
+      {/* Gradient scrim subtil. Sem blur (estava a fazer artefactos
+          estranhos). Apenas uma sobreposição de cor de fundo no centro e
+          no rodapé para dar contraste ao texto, sem distorcer o motion. */}
       <div
-        className="pointer-events-none absolute inset-x-0"
+        className="pointer-events-none absolute inset-0"
         style={{
-          top: "36%",
-          height: "34%",
-          backdropFilter: "blur(10px) saturate(110%)",
-          WebkitBackdropFilter: "blur(10px) saturate(110%)",
-        }}
-      />
-
-      {/* Scrim atrás da assinatura: blur subtil em vez de gradiente escuro */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0"
-        style={{
-          height: "16%",
-          backdropFilter: "blur(8px) saturate(110%)",
-          WebkitBackdropFilter: "blur(8px) saturate(110%)",
-        }}
-      />
-
-      {/* Halo do nome do dia: blur pequeno em vez de scrim escuro */}
-      <div
-        className="pointer-events-none absolute"
-        style={{
-          left: "50%",
-          top: 175,
-          transform: "translateX(-50%)",
-          width: 220,
-          height: 40,
-          backdropFilter: "blur(6px) saturate(110%)",
-          WebkitBackdropFilter: "blur(6px) saturate(110%)",
-          borderRadius: 12,
+          background:
+            "linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.32) 50%, rgba(0,0,0,0.32) 75%, rgba(0,0,0,0.55) 100%)",
         }}
       />
 
