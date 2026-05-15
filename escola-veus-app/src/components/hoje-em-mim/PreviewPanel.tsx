@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import seed from "@/data/hoje-em-mim-frases.seed.json";
 import { MJ_VIDEO_PROMPTS } from "@/data/hoje-em-mim-mj-prompts";
+import { HEM_THEMES, getTheme, DEFAULT_THEME_ID } from "@/lib/hoje-em-mim/themes";
 import {
   DIA_LONGO_PT,
   GLIFO_POR_DIA,
@@ -109,6 +110,7 @@ export function HojeEmMimPreviewPanel() {
   const [diaInicio, setDiaInicio] = useState<number>(now.getDate());
   const [diaFim, setDiaFim] = useState<number>(() => daysInMonth(now.getFullYear(), now.getMonth() + 1));
   const [durationSec, setDurationSec] = useState<number>(15);
+  const [themeId, setThemeId] = useState<string>(DEFAULT_THEME_ID);
 
   const phrase =
     frasesDoDia.find((f) => f.id === phraseId) ?? frasesDoDia[0] ?? FRASES[0];
@@ -181,6 +183,7 @@ export function HojeEmMimPreviewPanel() {
         durationSec,
         motionPool: [media],
         audioPool: audioUrlSelected ? [audioUrlSelected] : [],
+        themePool: [themeId],
       };
       const res = await fetch("/api/admin/hoje-em-mim/render-submit", {
         method: "POST",
@@ -319,6 +322,7 @@ export function HojeEmMimPreviewPanel() {
           diaLongo={diaLongo}
           media={media}
           isVideo={isVideo}
+          themeId={themeId}
         />
 
         <div className="space-y-3 text-xs text-escola-creme-50">
@@ -423,6 +427,23 @@ export function HojeEmMimPreviewPanel() {
                   onChange={(e) => setDurationSec(Number(e.target.value))}
                   className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
                 />
+              </label>
+              <label className="text-[10px] block col-span-2">
+                Tema visual (overlay)
+                <select
+                  value={themeId}
+                  onChange={(e) => setThemeId(e.target.value)}
+                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                >
+                  {HEM_THEMES.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
+                <span className="block mt-0.5 text-[10px] text-escola-creme-50/80 italic">
+                  {getTheme(themeId).notas}
+                </span>
               </label>
             </div>
             <button
@@ -612,7 +633,7 @@ function JobSection({
           )}
 
           {jobResult.videos && jobResult.videos.length > 0 && (
-            <JobVideoGrid videos={jobResult.videos} copied={copied} onCopy={onCopy} />
+            <JobVideoGrid videos={jobResult.videos} copied={copied} onCopy={onCopy} jobId={jobResult.jobId} />
           )}
         </>
       )}
@@ -785,98 +806,298 @@ function JobVideoGrid({
   videos,
   copied,
   onCopy,
+  jobId,
 }: {
   videos: JobVideoUI[];
   copied: string | null;
   onCopy: (key: string, text: string) => void;
+  jobId: string;
 }) {
   return (
     <div>
       <div className="text-xs text-escola-creme-50 mb-2">
-        Todos os vídeos do pack ({videos.length}):
+        Todos os vídeos do pack ({videos.length}). Carrega "Editar" para
+        substituir motion, áudio, tema ou frase e re-renderizar só esse dia.
       </div>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {videos.map((v) => (
-          <div
+          <JobVideoCard
             key={`${v.dayIndex}-${v.fraseId}`}
-            className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2"
-          >
-            <div className="flex items-baseline justify-between">
-              <div className="text-xs" style={{ color: COBRE }}>
-                {v.date} · {DIA_LONGO_PT[v.dia]}
-              </div>
-              <span className="text-[10px] text-escola-creme-50">{v.fraseId}</span>
-            </div>
-            {v.url ? (
-              <>
-                <video
-                  src={v.url}
-                  controls
-                  playsInline
-                  preload="metadata"
-                  className="aspect-[9/16] w-full bg-black rounded"
-                />
-                <div className="flex items-center justify-between gap-2 text-[10px]">
-                  {typeof v.sizeBytes === "number" && (
-                    <span className="text-escola-creme-50">
-                      {(v.sizeBytes / 1024 / 1024).toFixed(1)} MB
-                    </span>
-                  )}
-                  <a
-                    href={v.url}
-                    download
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded border border-escola-border px-1.5 py-0.5 text-escola-dourado hover:text-escola-creme"
-                  >
-                    Descarregar ↓
-                  </a>
-                </div>
-              </>
-            ) : v.error ? (
-              <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[10px] text-red-300">
-                {v.error}
-              </div>
-            ) : (
-              <div className="aspect-[9/16] w-full rounded bg-escola-bg/40 flex items-center justify-center text-[10px] text-escola-creme-50">
-                a renderizar…
-              </div>
-            )}
-            {v.captions && v.url && (
-              <details className="text-[10px] text-escola-creme-50">
-                <summary className="cursor-pointer hover:text-escola-creme">
-                  Captions
-                </summary>
-                <div className="mt-1 space-y-1">
-                  <CopyButton
-                    label="WhatsApp"
-                    text={v.captions.whatsapp}
-                    keyId={`wa-${v.dayIndex}`}
-                    copied={copied}
-                    onCopy={onCopy}
-                  />
-                  <CopyButton
-                    label="Instagram"
-                    text={v.captions.instagram}
-                    keyId={`ig-${v.dayIndex}`}
-                    copied={copied}
-                    onCopy={onCopy}
-                  />
-                  <CopyButton
-                    label="TikTok"
-                    text={v.captions.tiktok}
-                    keyId={`tt-${v.dayIndex}`}
-                    copied={copied}
-                    onCopy={onCopy}
-                  />
-                </div>
-              </details>
-            )}
-          </div>
+            video={v}
+            jobId={jobId}
+            copied={copied}
+            onCopy={onCopy}
+          />
         ))}
       </div>
     </div>
   );
+}
+
+function JobVideoCard({
+  video,
+  jobId,
+  copied,
+  onCopy,
+}: {
+  video: JobVideoUI;
+  jobId: string;
+  copied: string | null;
+  onCopy: (key: string, text: string) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [motionUrl, setMotionUrl] = useState<string>("");
+  const [audioUrl, setAudioUrl] = useState<string>("");
+  const [themeOverride, setThemeOverride] = useState<string>("");
+  const [fraseTexto, setFraseTexto] = useState<string>(video.fraseTexto ?? "");
+  const [rerendering, setRerendering] = useState(false);
+  const [rerenderError, setRerenderError] = useState<string | null>(null);
+
+  const [motionsList, setMotionsList] = useState<Array<{ name: string; url: string }>>([]);
+  const [audiosList, setAudiosList] = useState<Array<{ mood: string; name: string; url: string }>>([]);
+  const [listsLoaded, setListsLoaded] = useState(false);
+
+  const ensureListsLoaded = async () => {
+    if (listsLoaded) return;
+    try {
+      const [mRes, aRes] = await Promise.all([
+        fetch("/api/admin/hoje-em-mim/motions"),
+        fetch("/api/admin/hoje-em-mim/audios"),
+      ]);
+      const mJson = await mRes.json();
+      const aJson = await aRes.json();
+      if (mRes.ok && Array.isArray(mJson.motions)) {
+        setMotionsList(
+          mJson.motions.map((m: { name: string; url: string }) => ({ name: m.name, url: m.url }))
+        );
+      }
+      if (aRes.ok && aJson.audiosByMood) {
+        const flat: Array<{ mood: string; name: string; url: string }> = [];
+        for (const [mood, list] of Object.entries(aJson.audiosByMood)) {
+          for (const a of list as Array<{ name: string; url: string }>) {
+            flat.push({ mood, name: a.name, url: a.url });
+          }
+        }
+        setAudiosList(flat);
+      }
+      setListsLoaded(true);
+    } catch {
+      /* silencioso */
+    }
+  };
+
+  const reRender = async () => {
+    setRerenderError(null);
+    setRerendering(true);
+    try {
+      const overrides: {
+        motionUrl?: string;
+        audioUrl?: string | null;
+        theme?: string;
+        fraseTexto?: string;
+      } = {};
+      if (motionUrl.trim()) overrides.motionUrl = motionUrl.trim();
+      if (audioUrl === "-") {
+        overrides.audioUrl = null;
+      } else if (audioUrl) {
+        overrides.audioUrl = audioUrl;
+      }
+      if (themeOverride.trim()) overrides.theme = themeOverride.trim();
+      if (fraseTexto.trim() && fraseTexto.trim() !== (video.fraseTexto ?? "").trim()) {
+        overrides.fraseTexto = fraseTexto.trim();
+      }
+      const res = await fetch("/api/admin/hoje-em-mim/render-rerender", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jobId,
+          dayIndex: video.dayIndex,
+          overrides,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      setEditing(false);
+    } catch (e) {
+      setRerenderError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setRerendering(false);
+    }
+  };
+
+  return (
+    <div className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2">
+      <div className="flex items-baseline justify-between">
+        <div className="text-xs" style={{ color: COBRE }}>
+          {video.date} · {DIA_LONGO_PT[video.dia]}
+        </div>
+        <span className="text-[10px] text-escola-creme-50">{video.fraseId}</span>
+      </div>
+
+      {video.url ? (
+        <>
+          <video
+            src={video.url}
+            controls
+            playsInline
+            preload="metadata"
+            className="aspect-[9/16] w-full bg-black rounded"
+          />
+          <div className="flex items-center justify-between gap-2 text-[10px]">
+            {typeof video.sizeBytes === "number" && (
+              <span className="text-escola-creme-50">
+                {(video.sizeBytes / 1024 / 1024).toFixed(1)} MB
+              </span>
+            )}
+            <a
+              href={video.url}
+              download
+              target="_blank"
+              rel="noreferrer"
+              className="rounded border border-escola-border px-1.5 py-0.5 text-escola-dourado hover:text-escola-creme"
+            >
+              Descarregar ↓
+            </a>
+          </div>
+        </>
+      ) : video.error ? (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[10px] text-red-300">
+          {video.error}
+        </div>
+      ) : (
+        <div className="aspect-[9/16] w-full rounded bg-escola-bg/40 flex items-center justify-center text-[10px] text-escola-creme-50">
+          a renderizar…
+        </div>
+      )}
+
+      <button
+        onClick={async () => {
+          if (!editing) await ensureListsLoaded();
+          setEditing((v) => !v);
+        }}
+        className="w-full rounded border border-escola-border bg-escola-bg/60 px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+      >
+        {editing ? "Cancelar edição" : "Editar e re-renderizar este dia"}
+      </button>
+
+      {editing && (
+        <div className="space-y-2 rounded border border-escola-border bg-escola-bg/50 p-2">
+          <label className="block text-[10px] text-escola-creme-50">
+            Motion alternativo
+            <select
+              value={motionUrl}
+              onChange={(e) => setMotionUrl(e.target.value)}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-1.5 py-1 text-[10px] text-escola-creme"
+            >
+              <option value="">manter ({truncateUrl(video.fraseId)})</option>
+              {motionsList.map((m) => (
+                <option key={m.url} value={m.url}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block text-[10px] text-escola-creme-50">
+            Áudio alternativo
+            <select
+              value={audioUrl}
+              onChange={(e) => setAudioUrl(e.target.value)}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-1.5 py-1 text-[10px] text-escola-creme"
+            >
+              <option value="">manter</option>
+              <option value="-">sem áudio</option>
+              {audiosList.map((a) => (
+                <option key={a.url} value={a.url}>
+                  {a.mood} · {a.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block text-[10px] text-escola-creme-50">
+            Tema visual (cores)
+            <select
+              value={themeOverride}
+              onChange={(e) => setThemeOverride(e.target.value)}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-1.5 py-1 text-[10px] text-escola-creme"
+            >
+              <option value="">manter</option>
+              {HEM_THEMES.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="block text-[10px] text-escola-creme-50">
+            Frase (editar texto)
+            <textarea
+              rows={3}
+              value={fraseTexto}
+              onChange={(e) => setFraseTexto(e.target.value)}
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-1.5 py-1 text-[10px] text-escola-creme"
+            />
+          </label>
+
+          <button
+            onClick={reRender}
+            disabled={rerendering}
+            className="w-full rounded border px-2 py-1 text-[11px] disabled:opacity-50"
+            style={{
+              borderColor: COBRE,
+              color: COBRE,
+              background: "rgba(194, 143, 96, 0.1)",
+            }}
+          >
+            {rerendering ? "a re-renderizar…" : "Re-renderizar com estas mudanças"}
+          </button>
+          {rerenderError && (
+            <div className="rounded border border-red-700/40 bg-red-900/20 p-1.5 text-[10px] text-red-300">
+              {rerenderError}
+            </div>
+          )}
+        </div>
+      )}
+
+      {video.captions && video.url && (
+        <details className="text-[10px] text-escola-creme-50">
+          <summary className="cursor-pointer hover:text-escola-creme">
+            Captions
+          </summary>
+          <div className="mt-1 space-y-1">
+            <CopyButton
+              label="WhatsApp"
+              text={video.captions.whatsapp}
+              keyId={`wa-${video.dayIndex}`}
+              copied={copied}
+              onCopy={onCopy}
+            />
+            <CopyButton
+              label="Instagram"
+              text={video.captions.instagram}
+              keyId={`ig-${video.dayIndex}`}
+              copied={copied}
+              onCopy={onCopy}
+            />
+            <CopyButton
+              label="TikTok"
+              text={video.captions.tiktok}
+              keyId={`tt-${video.dayIndex}`}
+              copied={copied}
+              onCopy={onCopy}
+            />
+          </div>
+        </details>
+      )}
+    </div>
+  );
+}
+
+function truncateUrl(s: string): string {
+  if (!s) return "";
+  return s.length > 24 ? s.slice(0, 24) + "…" : s;
 }
 
 type AudioOutput = {
@@ -1696,6 +1917,7 @@ function Frame({
   diaLongo,
   media,
   isVideo,
+  themeId,
 }: {
   phrase: string;
   kicker: string;
@@ -1703,11 +1925,17 @@ function Frame({
   diaLongo: string;
   media: string;
   isVideo: boolean;
+  themeId?: string;
 }) {
+  const theme = getTheme(themeId);
+  const COBRE_LOCAL = theme.highlight;
+  const COBRE_FRACO_LOCAL = theme.highlightSoft;
+  const CREME_LOCAL = theme.text;
+  const BG_LOCAL = theme.bg;
   return (
     <div
       className="relative overflow-hidden rounded-2xl shadow-2xl ring-1 ring-escola-border"
-      style={{ width: 405, height: 720, background: "#0E0820" }}
+      style={{ width: 405, height: 720, background: BG_LOCAL }}
     >
       {isVideo ? (
         <video
@@ -1778,11 +2006,11 @@ function Frame({
       >
         <path
           d="M 20 380 L 20 140 A 120 120 0 0 1 260 140 L 260 380"
-          stroke={COBRE_FRACO}
+          stroke={COBRE_FRACO_LOCAL}
           strokeWidth="1.2"
           fill="none"
         />
-        <circle cx="140" cy="140" r="3" fill={COBRE} opacity="0.7" />
+        <circle cx="140" cy="140" r="3" fill={COBRE_LOCAL} opacity="0.7" />
       </svg>
 
       {/* Nome do dia logo abaixo do pontinho da lua, dentro do arco */}
@@ -1790,7 +2018,7 @@ function Frame({
         className="absolute inset-x-0 text-center font-sans"
         style={{
           top: 190,
-          color: COBRE,
+          color: COBRE_LOCAL,
           fontSize: 11,
           fontWeight: 400,
           letterSpacing: "0.42em",
@@ -1806,7 +2034,7 @@ function Frame({
         <p
           className="font-serif italic text-center"
           style={{
-            color: CREME,
+            color: CREME_LOCAL,
             fontWeight: 400,
             fontSize: 24,
             lineHeight: 1.42,
@@ -1824,14 +2052,14 @@ function Frame({
         <div className="flex items-baseline justify-center gap-2">
           <span
             className="font-serif"
-            style={{ color: COBRE, fontSize: 18, lineHeight: 1 }}
+            style={{ color: COBRE_LOCAL, fontSize: 18, lineHeight: 1 }}
           >
             {glifo}
           </span>
           <span
             className="font-sans italic"
             style={{
-              color: COBRE,
+              color: COBRE_LOCAL,
               fontSize: 13,
               letterSpacing: "0.08em",
               textShadow: "0 1px 4px rgba(0,0,0,0.6)",
@@ -1843,7 +2071,7 @@ function Frame({
         <div
           className="font-sans"
           style={{
-            color: COBRE_FRACO,
+            color: COBRE_FRACO_LOCAL,
             fontSize: 9,
             fontWeight: 400,
             letterSpacing: "0.28em",
@@ -1858,11 +2086,11 @@ function Frame({
       {/* Cantoneira de cobre no topo esquerdo */}
       <div
         className="pointer-events-none absolute"
-        style={{ left: 22, top: 22, width: 24, height: 1, background: COBRE_FRACO }}
+        style={{ left: 22, top: 22, width: 24, height: 1, background: COBRE_FRACO_LOCAL }}
       />
       <div
         className="pointer-events-none absolute"
-        style={{ left: 22, top: 22, width: 1, height: 24, background: COBRE_FRACO }}
+        style={{ left: 22, top: 22, width: 1, height: 24, background: COBRE_FRACO_LOCAL }}
       />
     </div>
   );

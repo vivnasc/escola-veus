@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
     diaFim?: number;
     motionPool?: string[];
     audioPool?: string[];
+    themePool?: string[];
     durationSec?: number;
   };
 
@@ -82,6 +83,9 @@ export async function POST(req: NextRequest) {
   const audioPool = Array.isArray(body.audioPool)
     ? body.audioPool.filter((u) => typeof u === "string" && u.length > 4)
     : [];
+  const themePool = Array.isArray(body.themePool)
+    ? body.themePool.filter((t) => typeof t === "string" && t.length > 0)
+    : ["carta-noturna"];
   const durationSec = clamp(Number(body.durationSec ?? 15), 5, 60);
 
   const frases = seed.frases as Array<{ id: string; dia: DiaSemana; texto: string }>;
@@ -98,6 +102,7 @@ export async function POST(req: NextRequest) {
     numDays,
     motionPool,
     audioPool,
+    themePool,
     durationSec,
     frasesPorDia,
   });
@@ -226,6 +231,7 @@ type ManifestItem = {
   fraseTexto: string;
   motionUrl: string;
   audioUrl: string | null;
+  theme: string;
   durationSec: number;
   captions: { instagram: string; tiktok: string; whatsapp: string };
 };
@@ -235,6 +241,7 @@ function buildItems(opts: {
   numDays: number;
   motionPool: string[];
   audioPool: string[];
+  themePool: string[];
   durationSec: number;
   frasesPorDia: Record<DiaSemana, Array<{ id: string; dia: DiaSemana; texto: string }>>;
 }): ManifestItem[] {
@@ -255,6 +262,7 @@ function buildItems(opts: {
     const motionUrl = opts.motionPool[i % opts.motionPool.length];
     const audioUrl =
       opts.audioPool.length > 0 ? opts.audioPool[i % opts.audioPool.length] : null;
+    const theme = opts.themePool[i % opts.themePool.length] || "carta-noturna";
     const captions = phraseToCaptions({ phrase: frase.texto, dia });
 
     items.push({
@@ -265,6 +273,7 @@ function buildItems(opts: {
       fraseTexto: frase.texto,
       motionUrl,
       audioUrl,
+      theme,
       durationSec: opts.durationSec,
       captions,
     });
