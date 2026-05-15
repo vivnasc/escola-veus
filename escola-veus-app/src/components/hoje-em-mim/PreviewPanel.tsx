@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import seed from "@/data/hoje-em-mim-frases.seed.json";
 import { MJ_VIDEO_PROMPTS } from "@/data/hoje-em-mim-mj-prompts";
 import {
@@ -51,7 +51,50 @@ export function HojeEmMimPreviewPanel() {
   const frasesDoDia = useMemo(() => FRASES.filter((f) => f.dia === dia), [dia]);
   const [phraseId, setPhraseId] = useState<string>(frasesDoDia[0]?.id ?? FRASES[0].id);
   const [media, setMedia] = useState<string>(DEFAULT_MEDIA);
+  const [audioUrlSelected, setAudioUrlSelected] = useState<string>("");
   const [copied, setCopied] = useState<string | null>(null);
+
+  // Estado do job mensal de render (bulk via workflow GitHub Actions).
+  type RenderVideo = {
+    dayIndex: number;
+    date: string;
+    dia: DiaSemana;
+    fraseId: string;
+    fraseTexto?: string;
+    file: string | null;
+    url: string | null;
+    sizeBytes?: number;
+    error?: string;
+    captions?: { instagram: string; tiktok: string; whatsapp: string };
+  };
+  type JobResult = {
+    jobId: string;
+    status: "queued" | "rendering" | "done" | "failed";
+    progress: number;
+    total: number;
+    videos?: RenderVideo[];
+    error?: string;
+    startDate?: string;
+    numDays?: number;
+    startedAt?: string;
+    completedAt?: string;
+  };
+
+  const [jobId, setJobId] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("hoje-em-mim.lastJobId");
+  });
+  const [jobResult, setJobResult] = useState<JobResult | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Config do job
+  const [startDate, setStartDate] = useState<string>(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
+  const [numDays, setNumDays] = useState<number>(30);
+  const [durationSec, setDurationSec] = useState<number>(15);
 
   const phrase =
     frasesDoDia.find((f) => f.id === phraseId) ?? frasesDoDia[0] ?? FRASES[0];
@@ -69,6 +112,66 @@ export function HojeEmMimPreviewPanel() {
       setTimeout(() => setCopied(null), 1500);
     } catch {
       /* ignore */
+    }
+  };
+
+  const pollJob = async (id: string) => {
+    try {
+      const res = await fetch(`/api/admin/hoje-em-mim/render-status?jobId=${encodeURIComponent(id)}`);
+      if (res.status === 404) return;
+      const json = await res.json();
+      if (res.ok) setJobResult(json as JobResult);
+    } catch {
+      /* polling silencioso */
+    }
+  };
+
+  useEffect(() => {
+    if (!jobId) return;
+    pollJob(jobId);
+    const interval = setInterval(() => {
+      pollJob(jobId);
+    }, 8000);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jobId]);
+
+  // Pára o polling quando done|failed (mantém estado mas evita pedidos)
+  useEffect(() => {
+    if (jobResult && (jobResult.status === "done" || jobResult.status === "failed")) {
+      // nada — o interval continua mas a UI já mostra final
+    }
+  }, [jobResult]);
+
+  const submitJob = async () => {
+    setSubmitError(null);
+    setSubmitting(true);
+    try {
+      const id = `hoje-em-mim-${startDate}-${Date.now().toString(36)}`;
+      const body = {
+        jobId: id,
+        startDate,
+        numDays,
+        durationSec,
+        motionPool: [media],
+        audioPool: audioUrlSelected ? [audioUrlSelected] : [],
+      };
+      const res = await fetch("/api/admin/hoje-em-mim/render-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      setJobId(id);
+      setJobResult(null);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("hoje-em-mim.lastJobId", id);
+      }
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -212,8 +315,82 @@ export function HojeEmMimPreviewPanel() {
             <div className="mt-1">{phrase.id}</div>
           </div>
           <div>
-            <div className="text-escola-creme">Media</div>
+            <div className="text-escola-creme">Motion</div>
             <div className="mt-1 break-all">{media}</div>
+          </div>
+          <div>
+            <div className="text-escola-creme">Áudio</div>
+            <input
+              value={audioUrlSelected}
+              onChange={(e) => setAudioUrlSelected(e.target.value)}
+              placeholder="URL do MP3 (vazio = sem som)"
+              className="mt-1 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+            />
+            <div className="mt-1 text-[10px]">
+              Gera um áudio na secção em baixo e cola a URL aqui, ou deixa vazio.
+            </div>
+          </div>
+
+          <div className="space-y-2 pt-3 border-t border-escola-border">
+            <div className="text-escola-creme">Pack mensal</div>
+            <div className="grid grid-cols-2 gap-2">
+              <label className="text-[10px] block">
+                Início
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                />
+              </label>
+              <label className="text-[10px] block">
+                Dias
+                <input
+                  type="number"
+                  min={1}
+                  max={60}
+                  value={numDays}
+                  onChange={(e) => setNumDays(Number(e.target.value))}
+                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                />
+              </label>
+              <label className="text-[10px] block col-span-2">
+                Duração de cada vídeo (s)
+                <input
+                  type="number"
+                  min={5}
+                  max={60}
+                  value={durationSec}
+                  onChange={(e) => setDurationSec(Number(e.target.value))}
+                  className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] text-escola-creme"
+                />
+              </label>
+            </div>
+            <button
+              onClick={submitJob}
+              disabled={submitting}
+              className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
+              style={{
+                borderColor: COBRE,
+                color: COBRE,
+                background: "rgba(194, 143, 96, 0.1)",
+              }}
+            >
+              {submitting
+                ? "a submeter…"
+                : `Submeter job de ${numDays} dias`}
+            </button>
+            {submitError && (
+              <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
+                {submitError}
+              </div>
+            )}
+            <div className="text-[10px] text-escola-creme-50">
+              Submete o job ao GitHub Actions (workflow render-hoje-em-mim).
+              Cada item ~30s, pack de 30 dias demora 15-20 min. Faz polling
+              automático e mostra os MP4 conforme prontos. Motion e áudio
+              usados: o que está selecionado acima.
+            </div>
           </div>
         </div>
       </div>
@@ -249,9 +426,382 @@ export function HojeEmMimPreviewPanel() {
         </div>
       </section>
 
+      <JobSection
+        jobId={jobId}
+        jobResult={jobResult}
+        onReload={() => jobId && pollJob(jobId)}
+        onChangeJobId={(id) => {
+          setJobId(id);
+          setJobResult(null);
+          if (typeof window !== "undefined") {
+            if (id) localStorage.setItem("hoje-em-mim.lastJobId", id);
+            else localStorage.removeItem("hoje-em-mim.lastJobId");
+          }
+        }}
+        copied={copied}
+        onCopy={copy}
+      />
+
       <AudioGeneratorSection />
 
       <MjPromptsSection copied={copied} onCopy={copy} />
+    </div>
+  );
+}
+
+type JobVideoUI = {
+  dayIndex: number;
+  date: string;
+  dia: DiaSemana;
+  fraseId: string;
+  fraseTexto?: string;
+  file: string | null;
+  url: string | null;
+  sizeBytes?: number;
+  error?: string;
+  captions?: { instagram: string; tiktok: string; whatsapp: string };
+};
+
+type JobResultUI = {
+  jobId: string;
+  status: "queued" | "rendering" | "done" | "failed";
+  progress: number;
+  total: number;
+  videos?: JobVideoUI[];
+  error?: string;
+  startDate?: string;
+  numDays?: number;
+  startedAt?: string;
+  completedAt?: string;
+};
+
+function isoTodayLocal(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function JobSection({
+  jobId,
+  jobResult,
+  onReload,
+  onChangeJobId,
+  copied,
+  onCopy,
+}: {
+  jobId: string | null;
+  jobResult: JobResultUI | null;
+  onReload: () => void;
+  onChangeJobId: (id: string | null) => void;
+  copied: string | null;
+  onCopy: (key: string, text: string) => void;
+}) {
+  if (!jobId) {
+    return (
+      <section className="space-y-3">
+        <h2 className="font-serif text-lg" style={{ color: COBRE }}>
+          Pack mensal · estado do job
+        </h2>
+        <p className="text-xs text-escola-creme-50">
+          Sem job submetido. Configura o pack na coluna ao lado do preview e
+          carrega "Submeter job". A UI vai fazer polling até estar pronto.
+        </p>
+      </section>
+    );
+  }
+
+  const todayIso = isoTodayLocal();
+  const todayVideo = jobResult?.videos?.find((v) => v.date === todayIso && v.url);
+
+  return (
+    <section className="space-y-3">
+      <div className="flex items-baseline justify-between gap-3 flex-wrap">
+        <h2 className="font-serif text-lg" style={{ color: COBRE }}>
+          Pack mensal · estado do job
+        </h2>
+        <div className="flex gap-2 items-center text-[11px] text-escola-creme-50">
+          <span>jobId: <code className="text-escola-creme">{jobId}</code></span>
+          <button
+            onClick={onReload}
+            className="rounded border border-escola-border bg-escola-card px-2 py-1 text-escola-creme-50 hover:text-escola-creme"
+          >
+            Recarregar
+          </button>
+          <button
+            onClick={() => onChangeJobId(null)}
+            className="rounded border border-escola-border bg-escola-card px-2 py-1 text-escola-creme-50 hover:text-red-300"
+            title="Esquecer este job (não apaga ficheiros)"
+          >
+            Limpar
+          </button>
+        </div>
+      </div>
+
+      {!jobResult ? (
+        <div className="text-xs text-escola-creme-50">A obter estado do job…</div>
+      ) : (
+        <>
+          <JobProgressBar result={jobResult} />
+
+          {todayVideo && (
+            <TodayWidget video={todayVideo} copied={copied} onCopy={onCopy} />
+          )}
+
+          {jobResult.videos && jobResult.videos.length > 0 && (
+            <JobVideoGrid videos={jobResult.videos} copied={copied} onCopy={onCopy} />
+          )}
+        </>
+      )}
+    </section>
+  );
+}
+
+function JobProgressBar({ result }: { result: JobResultUI }) {
+  const pct = result.total > 0 ? Math.round((result.progress / result.total) * 100) : 0;
+  const statusLabel = {
+    queued: "Em fila no GitHub Actions",
+    rendering: `A renderizar ${result.progress}/${result.total}`,
+    done: `Concluído. ${result.progress}/${result.total} vídeos`,
+    failed: "Falhou",
+  }[result.status];
+
+  const statusColor = {
+    queued: "text-escola-creme-50",
+    rendering: "text-escola-dourado",
+    done: "text-emerald-300",
+    failed: "text-red-300",
+  }[result.status];
+
+  return (
+    <div className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2">
+      <div className="flex items-baseline justify-between text-xs">
+        <span className={statusColor}>{statusLabel}</span>
+        <span className="text-escola-creme-50">{pct}%</span>
+      </div>
+      <div className="h-2 w-full overflow-hidden rounded bg-escola-bg">
+        <div
+          className="h-full transition-all"
+          style={{
+            width: `${pct}%`,
+            background: result.status === "failed" ? "#7f1d1d" : COBRE,
+          }}
+        />
+      </div>
+      {result.error && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
+          {result.error}
+        </div>
+      )}
+      {result.completedAt && (
+        <div className="text-[10px] text-escola-creme-50">
+          Concluído {result.completedAt.replace("T", " ").slice(0, 16)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function TodayWidget({
+  video,
+  copied,
+  onCopy,
+}: {
+  video: JobVideoUI;
+  copied: string | null;
+  onCopy: (key: string, text: string) => void;
+}) {
+  return (
+    <div
+      className="rounded-lg border-2 p-3 space-y-2"
+      style={{ borderColor: COBRE, background: "rgba(194, 143, 96, 0.06)" }}
+    >
+      <div className="flex items-baseline justify-between gap-3">
+        <div>
+          <span className="text-[10px] uppercase tracking-wider" style={{ color: COBRE }}>
+            Hoje
+          </span>
+          <div className="font-serif text-base" style={{ color: COBRE }}>
+            {video.date} · {DIA_LONGO_PT[video.dia]}
+          </div>
+        </div>
+        {video.url && (
+          <a
+            href={video.url}
+            download
+            target="_blank"
+            rel="noreferrer"
+            className="rounded border px-3 py-1.5 text-xs"
+            style={{
+              borderColor: COBRE,
+              color: COBRE,
+              background: "rgba(194, 143, 96, 0.15)",
+            }}
+          >
+            Descarregar MP4 ↓
+          </a>
+        )}
+      </div>
+      {video.url && (
+        <video
+          src={video.url}
+          controls
+          playsInline
+          preload="metadata"
+          className="w-48 aspect-[9/16] bg-black rounded"
+        />
+      )}
+      {video.captions && (
+        <div className="space-y-1.5">
+          <CopyButton
+            label="Caption WhatsApp Status"
+            text={video.captions.whatsapp}
+            keyId={`wa-today-${video.dayIndex}`}
+            copied={copied}
+            onCopy={onCopy}
+          />
+          <CopyButton
+            label="Caption Instagram"
+            text={video.captions.instagram}
+            keyId={`ig-today-${video.dayIndex}`}
+            copied={copied}
+            onCopy={onCopy}
+          />
+          <CopyButton
+            label="Caption TikTok"
+            text={video.captions.tiktok}
+            keyId={`tt-today-${video.dayIndex}`}
+            copied={copied}
+            onCopy={onCopy}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CopyButton({
+  label,
+  text,
+  keyId,
+  copied,
+  onCopy,
+}: {
+  label: string;
+  text: string;
+  keyId: string;
+  copied: string | null;
+  onCopy: (key: string, text: string) => void;
+}) {
+  const isCopied = copied === keyId;
+  return (
+    <button
+      onClick={() => onCopy(keyId, text)}
+      className="w-full rounded border px-2 py-1 text-left text-[11px] transition-colors"
+      style={{
+        borderColor: isCopied ? COBRE : "rgba(245, 240, 230, 0.16)",
+        color: isCopied ? COBRE : undefined,
+        background: isCopied ? "rgba(194, 143, 96, 0.15)" : undefined,
+      }}
+    >
+      {isCopied ? "✓ copiado: " : "Copiar "}
+      {label}
+    </button>
+  );
+}
+
+function JobVideoGrid({
+  videos,
+  copied,
+  onCopy,
+}: {
+  videos: JobVideoUI[];
+  copied: string | null;
+  onCopy: (key: string, text: string) => void;
+}) {
+  return (
+    <div>
+      <div className="text-xs text-escola-creme-50 mb-2">
+        Todos os vídeos do pack ({videos.length}):
+      </div>
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+        {videos.map((v) => (
+          <div
+            key={`${v.dayIndex}-${v.fraseId}`}
+            className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2"
+          >
+            <div className="flex items-baseline justify-between">
+              <div className="text-xs" style={{ color: COBRE }}>
+                {v.date} · {DIA_LONGO_PT[v.dia]}
+              </div>
+              <span className="text-[10px] text-escola-creme-50">{v.fraseId}</span>
+            </div>
+            {v.url ? (
+              <>
+                <video
+                  src={v.url}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="aspect-[9/16] w-full bg-black rounded"
+                />
+                <div className="flex items-center justify-between gap-2 text-[10px]">
+                  {typeof v.sizeBytes === "number" && (
+                    <span className="text-escola-creme-50">
+                      {(v.sizeBytes / 1024 / 1024).toFixed(1)} MB
+                    </span>
+                  )}
+                  <a
+                    href={v.url}
+                    download
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded border border-escola-border px-1.5 py-0.5 text-escola-dourado hover:text-escola-creme"
+                  >
+                    Descarregar ↓
+                  </a>
+                </div>
+              </>
+            ) : v.error ? (
+              <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[10px] text-red-300">
+                {v.error}
+              </div>
+            ) : (
+              <div className="aspect-[9/16] w-full rounded bg-escola-bg/40 flex items-center justify-center text-[10px] text-escola-creme-50">
+                a renderizar…
+              </div>
+            )}
+            {v.captions && v.url && (
+              <details className="text-[10px] text-escola-creme-50">
+                <summary className="cursor-pointer hover:text-escola-creme">
+                  Captions
+                </summary>
+                <div className="mt-1 space-y-1">
+                  <CopyButton
+                    label="WhatsApp"
+                    text={v.captions.whatsapp}
+                    keyId={`wa-${v.dayIndex}`}
+                    copied={copied}
+                    onCopy={onCopy}
+                  />
+                  <CopyButton
+                    label="Instagram"
+                    text={v.captions.instagram}
+                    keyId={`ig-${v.dayIndex}`}
+                    copied={copied}
+                    onCopy={onCopy}
+                  />
+                  <CopyButton
+                    label="TikTok"
+                    text={v.captions.tiktok}
+                    keyId={`tt-${v.dayIndex}`}
+                    copied={copied}
+                    onCopy={onCopy}
+                  />
+                </div>
+              </details>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -646,7 +1196,7 @@ function Frame({
           muted
           playsInline
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.55) saturate(0.7) contrast(1.05) hue-rotate(-10deg)" }}
+          style={{ filter: "brightness(0.85) saturate(0.85) contrast(1.05) hue-rotate(-6deg)" }}
         />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
@@ -654,7 +1204,7 @@ function Frame({
           src={media}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.55) saturate(0.7) contrast(1.05) hue-rotate(-10deg)" }}
+          style={{ filter: "brightness(0.85) saturate(0.85) contrast(1.05) hue-rotate(-6deg)" }}
         />
       )}
 
@@ -662,7 +1212,7 @@ function Frame({
       <div
         className="pointer-events-none absolute inset-0 mix-blend-overlay"
         style={{
-          opacity: 0.18,
+          opacity: 0.1,
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>\")",
         }}
@@ -673,7 +1223,7 @@ function Frame({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(14,8,32,0.05) 20%, rgba(14,8,32,0.82) 100%)",
+            "radial-gradient(ellipse at center, rgba(14,8,32,0) 35%, rgba(14,8,32,0.55) 100%)",
         }}
       />
 

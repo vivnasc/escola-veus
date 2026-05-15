@@ -1,0 +1,47 @@
+name: Render Hoje em Mim
+
+# Disparado por /api/admin/hoje-em-mim/render-submit. O manifest em
+# course-assets/render-jobs/<jobId>.json tem N items (1 por dia da pack
+# mensal). Cada item tem motionUrl, audioUrl (opcional), frase, dia.
+# Aqui geramos N MP4s 1080x1920 com overlay 'Janela de Lua' queimado e
+# áudio se houver. Resultado vai para course-assets/hoje-em-mim-renders/.
+
+on:
+  workflow_dispatch:
+    inputs:
+      jobId:
+        description: "ID do job (lê manifest em course-assets/render-jobs/<jobId>.json)"
+        required: true
+        type: string
+
+run-name: "render-hoje-em-mim: ${{ inputs.jobId }}"
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+        with:
+          ffmpeg-version: "release"
+
+      - name: Install renderer dependencies
+        working-directory: tools/render-hoje-em-mim
+        run: npm install --no-audit --no-fund
+
+      - name: Render all items and upload
+        working-directory: tools/render-hoje-em-mim
+        env:
+          JOB_ID: ${{ inputs.jobId }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node render.mjs
