@@ -14,8 +14,13 @@ on:
         description: "ID do job (lê manifest em course-assets/render-jobs/<jobId>.json)"
         required: true
         type: string
+      onlyDayIndex:
+        description: "Se preenchido, renderiza só esse dayIndex (re-render individual)"
+        required: false
+        type: string
+        default: ""
 
-run-name: "render-hoje-em-mim: ${{ inputs.jobId }}"
+run-name: "render-hoje-em-mim: ${{ inputs.jobId }}${{ inputs.onlyDayIndex != '' && format(' (dia {0})', inputs.onlyDayIndex) || '' }}"
 
 jobs:
   prepare:
@@ -29,18 +34,30 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           JOB_ID: ${{ inputs.jobId }}
+          ONLY_DAY_INDEX: ${{ inputs.onlyDayIndex }}
         run: |
           set -e
           MANIFEST_URL="$SUPABASE_URL/storage/v1/object/public/course-assets/render-jobs/$JOB_ID.json"
           echo "Fetching manifest from $MANIFEST_URL"
           curl -fsSL "$MANIFEST_URL" -o /tmp/manifest.json
           TOTAL=$(jq '.items | length' /tmp/manifest.json)
-          echo "total=$TOTAL"
+          echo "total=$TOTAL (manifest)"
           if [ "$TOTAL" -lt 1 ]; then
             echo "Manifest sem items. Aborto." >&2
             exit 1
           fi
-          MATRIX=$(jq -c '[.items[].dayIndex]' /tmp/manifest.json)
+          if [ -n "$ONLY_DAY_INDEX" ]; then
+            # Re-render só de um item
+            EXISTS=$(jq --argjson di "$ONLY_DAY_INDEX" '[.items[] | select(.dayIndex == $di)] | length' /tmp/manifest.json)
+            if [ "$EXISTS" != "1" ]; then
+              echo "dayIndex $ONLY_DAY_INDEX não existe no manifest" >&2
+              exit 1
+            fi
+            MATRIX="[$ONLY_DAY_INDEX]"
+            TOTAL=1
+          else
+            MATRIX=$(jq -c '[.items[].dayIndex]' /tmp/manifest.json)
+          fi
           echo "matrix=$MATRIX"
           echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
           echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
