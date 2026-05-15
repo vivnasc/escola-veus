@@ -178,17 +178,17 @@ function buildOverlaySvg({ fraseTexto, dia, fontItalicB64, fontSansB64 }) {
     </style>
     <linearGradient id="phraseScrim" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#0E0820" stop-opacity="0"/>
-      <stop offset="25%" stop-color="#0E0820" stop-opacity="0.45"/>
-      <stop offset="75%" stop-color="#0E0820" stop-opacity="0.45"/>
+      <stop offset="25%" stop-color="#0E0820" stop-opacity="0.15"/>
+      <stop offset="75%" stop-color="#0E0820" stop-opacity="0.15"/>
       <stop offset="100%" stop-color="#0E0820" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="footerScrim" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#0E0820" stop-opacity="0"/>
-      <stop offset="60%" stop-color="#0E0820" stop-opacity="0.4"/>
-      <stop offset="100%" stop-color="#0E0820" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#0E0820" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#0E0820" stop-opacity="0.25"/>
     </linearGradient>
     <radialGradient id="arcDayScrim" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#0E0820" stop-opacity="0.48"/>
+      <stop offset="0%" stop-color="#0E0820" stop-opacity="0.2"/>
       <stop offset="100%" stop-color="#0E0820" stop-opacity="0"/>
     </radialGradient>
     <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -264,7 +264,7 @@ async function renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp }) {
   await writeFile(overlayPath, png);
 
   const filter = [
-    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30,eq=saturation=1.02:contrast=1.02[v0]`,
+    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30,eq=brightness=0.12:saturation=1.1:contrast=0.95:gamma=0.82[v0]`,
     `[v0][1:v]overlay=0:0[v]`,
   ].join(";");
 
