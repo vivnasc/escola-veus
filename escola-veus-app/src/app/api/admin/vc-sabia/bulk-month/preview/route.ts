@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loadMergedFrases } from "@/lib/vc-sabia/phrases";
+import { loadUsageHistory } from "@/lib/vc-sabia/usage-history";
 
 export const maxDuration = 30;
 export const runtime = "nodejs";
@@ -111,10 +112,43 @@ export async function POST(req: NextRequest) {
   const days: number[] = [];
   for (let d = startDay; d <= endDay; d++) days.push(d);
 
+  // Carregar historico de uso (frases e motions ja usados em batches anteriores)
+  const history = await loadUsageHistory(supabaseUrl, serviceKey);
+  const allUsed = history.usedPhraseIds.size >= frases.length;
+  const usedThisPlan = new Set<string>();
+
+  // Helper: encontra a proxima frase nao usada (no historico nem neste plano)
+  let phraseCursor = phraseStartIndex;
+  const pickNextPhrase = () => {
+    let attempts = 0;
+    while (attempts < frases.length) {
+      const p = frases[phraseCursor % frases.length];
+      phraseCursor++;
+      const isUsedGlobally = history.usedPhraseIds.has(p.id);
+      const isUsedThisPlan = usedThisPlan.has(p.id);
+      if (!isUsedGlobally && !isUsedThisPlan) {
+        usedThisPlan.add(p.id);
+        return { phrase: p, reused: false };
+      }
+      // Se ja todas usadas globalmente, aceita repetir do historico mas
+      // continua a tentar evitar repeticao DENTRO deste plano
+      if (allUsed && !isUsedThisPlan) {
+        usedThisPlan.add(p.id);
+        return { phrase: p, reused: true };
+      }
+      attempts++;
+    }
+    // Fallback ultimo recurso: usa qualquer uma
+    const p = frases[phraseCursor % frases.length];
+    phraseCursor++;
+    return { phrase: p, reused: true };
+  };
+
   const plan = days.map((day, i) => {
     const date = new Date(Date.UTC(year, month - 1, day));
-    const phrase = frases[(i + phraseStartIndex) % frases.length];
+    const { phrase, reused: phraseReused } = pickNextPhrase();
     const motion = motions[(i + motionStartIndex) % motions.length];
+    const motionReused = history.usedMotionNames.has(motion.name);
     const mood = motionTags[motion.name];
     const audioUrl = mood ? activeAudios[mood] ?? null : null;
 
@@ -125,8 +159,10 @@ export async function POST(req: NextRequest) {
       phrase: phrase.texto,
       phraseId: phrase.id,
       phraseTheme: phrase.tema,
+      phraseReused,
       motionName: motion.name,
       motionUrl: motion.url,
+      motionReused,
       audioUrl,
       mood: mood || null,
     };
@@ -134,6 +170,13 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     plan,
+    history: {
+      batchCount: history.batchCount,
+      usedPhrases: history.usedPhraseIds.size,
+      usedMotions: history.usedMotionNames.size,
+      phrasesReusedInPlan: plan.filter((p) => p.phraseReused).length,
+      motionsReusedInPlan: plan.filter((p) => p.motionReused).length,
+    },
     summary: {
       year,
       month,
