@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
 
   // Le todos os result.jsons em paralelo
   const results = await Promise.all(
-    (batch.jobs || []).map(async (j: { day: number; date: string; jobId: string; phraseText?: string; motionName?: string; audioUrl?: string | null }) => {
+    (batch.jobs || []).map(async (j: { day: number; date: string; jobId: string; phraseText?: string; phraseId?: string; phraseTheme?: string; motionName?: string; audioUrl?: string | null }) => {
       try {
         const r = await fetch(
           `${supabaseUrl}/storage/v1/object/public/course-assets/render-jobs/${j.jobId}-result.json`,
@@ -49,6 +49,8 @@ export async function GET(req: NextRequest) {
           day: j.day,
           date: j.date,
           jobId: j.jobId,
+          phraseTheme: j.phraseTheme,
+          phraseId: j.phraseId,
           phraseText: j.phraseText,
           motionName: j.motionName,
           audioUrl: j.audioUrl,

@@ -131,8 +131,8 @@ export async function POST(req: NextRequest) {
       videoUrl: job.videoUrl,
       captionInstagram: captions.instagram,
       captionTiktok: captions.tiktok,
-      timeInstagram: "09:00",
-      timeTiktok: "09:30",
+      timeInstagram: "10:00",
+      timeTiktok: "10:30",
     });
   }
 

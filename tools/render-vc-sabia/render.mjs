@@ -167,10 +167,11 @@ function composeOverlay(phrase, dateLabel, design) {
   ctx.lineTo(W / 2 + 60, 150);
   ctx.stroke();
 
-  // Footer: assinatura no fundo
+  // Footer: assinatura logo abaixo do cartao (visivel, nao tao em baixo)
+  const sigY = d.cardY + 760 + 60; // 60px abaixo do cartao
   ctx.fillStyle = d.cornerColor;
-  ctx.font = "22px sans-serif";
-  ctx.fillText("seteveus.space", W / 2, H - 64);
+  ctx.font = "italic 32px serif";
+  ctx.fillText("seteveus.space", W / 2, sigY);
 
   return canvas.toBuffer("image/png");
 }

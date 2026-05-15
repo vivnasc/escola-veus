@@ -46,6 +46,8 @@ interface JobStatus {
   date: string;
   jobId: string;
   phraseText?: string;
+  phraseTheme?: string;
+  phraseId?: string;
   motionName?: string;
   audioUrl?: string | null;
   status: Status;
@@ -130,6 +132,29 @@ export function BulkMonthPanel() {
     setZipUrl(null);
     setError(null);
     setPhase("submitted");
+  };
+
+  const [deletingBatch, setDeletingBatch] = useState<string | null>(null);
+  const deletePastBatch = async (id: string) => {
+    if (!confirm(`Apagar o batch ${id}? Apaga todos os MP4s, manifests, captions e o ZIP. Esta acção é irreversível.`)) return;
+    setDeletingBatch(id);
+    try {
+      const res = await fetch("/api/admin/vc-sabia/bulk-delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ batchId: id }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError(json.erro || `HTTP ${res.status}`);
+      } else {
+        await refreshPastBatches();
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setDeletingBatch(null);
+    }
   };
 
   const preparePlan = async () => {
@@ -353,7 +378,11 @@ export function BulkMonthPanel() {
     }
   };
 
+  const [retrying, setRetrying] = useState<Record<string, "loading" | { error: string } | undefined>>({});
+
   const retryJob = async (jobId: string) => {
+    console.log(`[retry] ${jobId} start`);
+    setRetrying((r) => ({ ...r, [jobId]: "loading" }));
     try {
       const res = await fetch("/api/admin/vc-sabia/render-retry", {
         method: "POST",
@@ -361,13 +390,25 @@ export function BulkMonthPanel() {
         body: JSON.stringify({ jobId }),
       });
       const json = await res.json();
+      console.log(`[retry] ${jobId} response`, res.status, json);
       if (!res.ok) {
-        setError(json.erro || `HTTP ${res.status}`);
-      } else {
-        await fetchStatus();
+        setRetrying((r) => ({
+          ...r,
+          [jobId]: { error: json.erro || `HTTP ${res.status}` },
+        }));
+        return;
       }
+      // limpa estado de retry desta linha e refresca status
+      setRetrying((r) => {
+        const next = { ...r };
+        delete next[jobId];
+        return next;
+      });
+      await fetchStatus();
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      const msg = e instanceof Error ? e.message : String(e);
+      console.error(`[retry] ${jobId} exception`, e);
+      setRetrying((r) => ({ ...r, [jobId]: { error: msg } }));
     }
   };
 
@@ -523,38 +564,50 @@ export function BulkMonthPanel() {
           </div>
           <div className="space-y-1">
             {pastBatches.map((b) => (
-              <button
+              <div
                 key={b.batchId}
-                onClick={() => loadPastBatch(b.batchId)}
-                className="block w-full rounded border border-escola-border bg-escola-card/60 px-2 py-1.5 text-left text-[11px] text-escola-creme-50 hover:bg-escola-card hover:text-escola-creme"
+                className="flex items-stretch gap-1 rounded border border-escola-border bg-escola-card/60 hover:bg-escola-card"
               >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] text-escola-creme">
-                    {b.year && b.month
-                      ? `${b.year}-${String(b.month).padStart(2, "0")}`
-                      : "?"}
-                    {b.startDay && b.endDay
-                      ? ` · dias ${b.startDay}-${b.endDay}`
-                      : ""}
-                    {b.jobs !== undefined ? ` · ${b.jobs} jobs` : ""}
-                  </span>
-                  {b.createdAt && (
-                    <span className="text-[9px] text-escola-creme-50">
-                      {new Date(b.createdAt).toLocaleString("pt-PT", {
-                        timeZone: "Africa/Maputo",
-                        year: "2-digit",
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
+                <button
+                  onClick={() => loadPastBatch(b.batchId)}
+                  className="flex-1 px-2 py-1.5 text-left text-[11px] text-escola-creme-50 hover:text-escola-creme"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] text-escola-creme">
+                      {b.year && b.month
+                        ? `${b.year}-${String(b.month).padStart(2, "0")}`
+                        : "?"}
+                      {b.startDay && b.endDay
+                        ? ` · dias ${b.startDay}-${b.endDay}`
+                        : ""}
+                      {b.jobs !== undefined ? ` · ${b.jobs} jobs` : ""}
                     </span>
-                  )}
-                </div>
-                <div className="mt-0.5 truncate text-[9px] text-escola-creme-50">
-                  {b.batchId}
-                </div>
-              </button>
+                    {b.createdAt && (
+                      <span className="text-[9px] text-escola-creme-50">
+                        {new Date(b.createdAt).toLocaleString("pt-PT", {
+                          timeZone: "Africa/Maputo",
+                          year: "2-digit",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-0.5 truncate text-[9px] text-escola-creme-50">
+                    {b.batchId}
+                  </div>
+                </button>
+                <button
+                  onClick={() => deletePastBatch(b.batchId)}
+                  disabled={deletingBatch === b.batchId}
+                  className="rounded border-l border-escola-border px-2 text-[14px] text-red-400 hover:bg-red-900/30 hover:text-red-300 disabled:opacity-50"
+                  title="Apagar este batch (MP4s, manifests, ZIP)"
+                >
+                  {deletingBatch === b.batchId ? "…" : "×"}
+                </button>
+              </div>
             ))}
           </div>
         </div>
@@ -721,7 +774,7 @@ export function BulkMonthPanel() {
             {status.jobs.map((j) => {
               const phraseText = j.phraseText || "";
               const captions = phraseText
-                ? phraseToCaptions({ phrase: phraseText, theme: "beleza-de-existir" })
+                ? phraseToCaptions({ phrase: phraseText, theme: j.phraseTheme || "beleza-de-existir" })
                 : null;
               const ddPad = String(j.day).padStart(2, "0");
               return (
@@ -770,13 +823,29 @@ export function BulkMonthPanel() {
                   )}
 
                   {j.status === "failed" && (
-                    <button
-                      onClick={() => retryJob(j.jobId)}
-                      className="rounded border border-amber-500/60 bg-amber-500/10 px-2 py-1 text-[11px] text-amber-300 hover:bg-amber-500/20"
-                      title={j.error || "Re-despacha o workflow"}
-                    >
-                      ↻ Retry
-                    </button>
+                    <div className="space-y-1">
+                      {j.error && (
+                        <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
+                          {j.error.slice(0, 200)}
+                        </div>
+                      )}
+                      <button
+                        onClick={() => retryJob(j.jobId)}
+                        disabled={retrying[j.jobId] === "loading"}
+                        className="block w-full rounded border border-amber-500/60 bg-amber-500/10 px-2 py-1 text-[11px] text-amber-300 hover:bg-amber-500/20 disabled:opacity-50"
+                        title="Re-despacha o workflow"
+                      >
+                        {retrying[j.jobId] === "loading"
+                          ? "↻ A re-despachar..."
+                          : "↻ Retry"}
+                      </button>
+                      {retrying[j.jobId] && retrying[j.jobId] !== "loading" && (
+                        <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
+                          retry erro:{" "}
+                          {(retrying[j.jobId] as { error: string }).error}
+                        </div>
+                      )}
+                    </div>
                   )}
 
                   {j.videoUrl && (

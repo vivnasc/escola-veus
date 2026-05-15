@@ -71,8 +71,8 @@ function buildRow(post: VcSabiaCsvPost, platform: "instagram" | "tiktok"): strin
   };
 
   const time = platform === "instagram"
-    ? (post.timeInstagram || "09:00")
-    : (post.timeTiktok || "09:30");
+    ? (post.timeInstagram || "10:00")
+    : (post.timeTiktok || "10:30");
   col("Date", post.date);
   col("Time", /^\d{2}:\d{2}$/.test(time) ? `${time}:00` : time);
   col("Draft", "FALSE");
