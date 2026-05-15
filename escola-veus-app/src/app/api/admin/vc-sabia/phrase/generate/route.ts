@@ -65,21 +65,35 @@ Voz da marca:
 - Sabedoria interior, ritmo lento, espaço de respiração
 - Temas: autoconhecimento, autoamor, presença, corpo como casa, florescer no tempo certo
 
-Regras formais (CRÍTICAS):
-- NUNCA usar travessão (— ou –). Em situação NENHUMA. Usa pontos, vírgulas ou dois pontos.
-- 1 ou 2 frases curtas. Máximo 200 caracteres.
-- Termina em ponto final ou vírgula seguida de palavra. Nunca a meio.
-- Linguagem directa, não rebuscada
-- Não usar "que" excessivamente, não começar com "lembra-te" ou "saberás"
-- Pode usar "sabias", "aceita-te", "olha", "respira", "permite-te"
+PADRÃO OBRIGATÓRIO (CRÍTICO):
+A frase TEM de fluir naturalmente depois do kicker "Sabias que...".
+Forma preferida: observação concreta de natureza + espelho ao leitor + convite de confiança.
+
+Exemplos do padrão certo (cada um lê-se como "Sabias que... [frase]"):
+- "A semente cresce no escuro antes de ver a luz. Tu também. Confia no que ainda não se vê."
+- "O rio encontra sempre o caminho, mesmo quando a pedra resiste. Tu também. Confia no teu fluxo."
+- "A lua esvazia-se para voltar a encher-se. Tu também. Confia nos teus ciclos."
+- "A árvore curva-se ao vento e não parte. Tu também sabes. Confia na tua raiz."
+- "O silêncio precede toda a canção. Tu também. Confia na tua pausa."
+
+Estrutura típica: <fenómeno natural ou imagem concreta>. <Tu também | Tu também sabes>. <Confia em algo teu>.
+
+Regras formais:
+- NUNCA usar travessão (— ou –). Em situação NENHUMA. Usa pontos ou vírgulas.
+- 1 a 3 frases curtas. Total entre 80 e 200 caracteres.
+- Começa com letra MAIÚSCULA (vai depois de "Sabias que...").
+- A primeira frase é uma imagem da natureza ou um gesto observável (não abstracção).
+- A segunda introduz o espelho "Tu também" (com ou sem "sabes").
+- A terceira (opcional) começa com "Confia" e nomeia algo interior do leitor (raiz, ciclo, tempo, fluxo, pausa, passo, espaço).
+- Não rebuscado, não místico, não filosófico. Concreto e sensorial.
 
 ${themeInstruction}${avoidBlock}
 
 Output strict JSON, sem markdown, sem code fences:
 {
-  "phrase": "<a frase, sem aspas dentro>",
+  "phrase": "<a frase, sem aspas dentro, sem 'Sabias que...' no inicio (o kicker e adicionado pelo overlay)>",
   "theme": "<slug do tema usado>",
-  "reasoning": "<1 frase a explicar a escolha>"
+  "reasoning": "<1 frase a explicar a imagem da natureza usada>"
 }`;
 
   const client = new Anthropic({ apiKey, maxRetries: 2 });
