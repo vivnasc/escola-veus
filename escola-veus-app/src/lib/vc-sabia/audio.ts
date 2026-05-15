@@ -1,25 +1,49 @@
 /**
- * 4 elementos contemplativos para o VC Sabia.
+ * Sons de natureza para o VC Sabia (geracao via ElevenLabs SFX, 3-22s).
  *
- * Geracao via ElevenLabs Sound Effects API (3-22s, MP3). Prompts curtos
- * e directos — o modelo responde melhor a 1 frase iconica do que a
- * paragrafo literario.
+ * Os 8 moods aqui sao especificos para o que faz sentido com motions
+ * de flora/lotus/agua que a utilizadora tem: chuva, gotas, ribeiro,
+ * pássaros, vento em folhas. SEM elementos abstractos (fogo, taca
+ * tibetana, etc) que nao existem nos clips.
+ *
+ * Prompts curtos e directos — modelos de text-to-audio respondem mal
+ * a poesia, bem a 1 frase iconica.
  */
 
-export type MorningMood = "agua" | "vento" | "lume" | "terra";
+export type MorningMood =
+  | "chuva-suave"
+  | "gotas-orvalho"
+  | "ribeiro"
+  | "nascente"
+  | "passaros-amanhecer"
+  | "vento-folhas"
+  | "folhas-rustle"
+  | "floresta-silencio";
 
 export const MOOD_LABELS: Record<MorningMood, string> = {
-  agua: "Água",
-  vento: "Vento",
-  lume: "Lume",
-  terra: "Terra",
+  "chuva-suave": "Chuva suave",
+  "gotas-orvalho": "Gotas de orvalho",
+  ribeiro: "Ribeiro",
+  nascente: "Nascente",
+  "passaros-amanhecer": "Pássaros ao amanhecer",
+  "vento-folhas": "Vento entre folhas",
+  "folhas-rustle": "Folhas a oscilar",
+  "floresta-silencio": "Silêncio de floresta",
 };
 
 export const MOOD_PROMPTS: Record<MorningMood, string> = {
-  agua: "Gentle forest stream flowing over rocks, calm nature ambience",
-  vento: "Soft wind through tall grass on a quiet hillside, peaceful",
-  lume: "Crackling wood fireplace in a quiet room, warm and intimate",
-  terra: "Deep cave ambience with subtle water drips and natural reverb",
+  "chuva-suave": "Gentle soft rain falling on leaves in a calm forest",
+  "gotas-orvalho":
+    "Small water drops slowly falling on leaves, very gentle and rhythmic",
+  ribeiro: "Gentle forest stream flowing softly over rocks",
+  nascente: "Small water spring trickling slowly in a quiet nature setting",
+  "passaros-amanhecer":
+    "Gentle morning birds chirping softly at dawn in a peaceful forest",
+  "vento-folhas":
+    "Soft slow wind moving through the leaves of tall trees",
+  "folhas-rustle": "Subtle rustling of leaves in a quiet breeze",
+  "floresta-silencio":
+    "Quiet forest ambience with very distant birds and gentle breeze",
 };
 
 export const MORNING_MOODS: MorningMood[] = Object.keys(MOOD_PROMPTS) as MorningMood[];
