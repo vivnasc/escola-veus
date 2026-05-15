@@ -1267,7 +1267,7 @@ function Frame({
           muted
           playsInline
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(1.2) saturate(1.05) contrast(1.05) hue-rotate(-4deg)" }}
+          style={{ filter: "saturate(1.02) contrast(1.02)" }}
         />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
@@ -1275,26 +1275,44 @@ function Frame({
           src={media}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(1.2) saturate(1.05) contrast(1.05) hue-rotate(-4deg)" }}
+          style={{ filter: "saturate(1.02) contrast(1.02)" }}
         />
       )}
 
-      {/* Grão de papel suave. SVG inline. */}
+      {/* Scrim local atrás da frase: backdrop-blur + gradiente vertical
+          que desvanece nos topos. Garante contraste em qualquer motion. */}
       <div
-        className="pointer-events-none absolute inset-0 mix-blend-overlay"
+        className="pointer-events-none absolute inset-x-0"
         style={{
-          opacity: 0.04,
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.7'/></svg>\")",
+          top: "34%",
+          height: "38%",
+          background:
+            "linear-gradient(to bottom, rgba(14,8,32,0) 0%, rgba(14,8,32,0.42) 25%, rgba(14,8,32,0.42) 75%, rgba(14,8,32,0) 100%)",
+          backdropFilter: "blur(6px) saturate(95%)",
+          WebkitBackdropFilter: "blur(6px) saturate(95%)",
         }}
       />
 
-      {/* Vinheta densa para leitura noturna */}
+      {/* Scrim atrás da assinatura (kicker + glifo + URL) no fundo */}
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-x-0 bottom-0"
         style={{
+          height: "18%",
           background:
-            "radial-gradient(ellipse at center, rgba(14,8,32,0) 60%, rgba(14,8,32,0.22) 100%)",
+            "linear-gradient(to top, rgba(14,8,32,0.55) 0%, rgba(14,8,32,0.4) 60%, rgba(14,8,32,0) 100%)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
+        }}
+      />
+
+      {/* Pequeno scrim atrás do nome do dia no arco */}
+      <div
+        className="pointer-events-none absolute inset-x-0"
+        style={{
+          top: 175,
+          height: 40,
+          background:
+            "radial-gradient(ellipse at center, rgba(14,8,32,0.45) 0%, rgba(14,8,32,0) 70%)",
         }}
       />
 
@@ -1343,7 +1361,7 @@ function Frame({
             lineHeight: 1.42,
             letterSpacing: "0.005em",
             textShadow:
-              "0 2px 10px rgba(0,0,0,0.6), 0 1px 2px rgba(0,0,0,0.85)",
+              "0 2px 14px rgba(0,0,0,0.85), 0 0 4px rgba(0,0,0,0.95), 0 1px 1px rgba(0,0,0,1)",
           }}
         >
           {phrase}

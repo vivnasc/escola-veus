@@ -159,31 +159,72 @@ function buildOverlaySvg({ fraseTexto, dia, fontItalicB64, fontSansB64 }) {
   const seteveusFontSize = 24;
   const seteveusLetterSpacing = 8;
 
+  // Scrims: bandas semi-transparentes que dão contraste local ao texto,
+  // independentemente do brilho do motion (escuro ou claro). SVG não tem
+  // backdrop-blur, mas o gradiente vertical + opacity já basta para
+  // 'destacar' a área do texto sem escurecer o frame inteiro.
+  const phraseScrimY = 653;        // 34% de 1920
+  const phraseScrimH = 730;        // 38% de 1920
+  const footerScrimY = 1574;       // 82% de 1920
+  const footerScrimH = 346;        // 18% de 1920
+  const arcDayScrimY = 472;        // pequeno halo atrás do nome do dia
+  const arcDayScrimH = 86;
+
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
     <style type="text/css">
       @font-face { font-family: "cormgar"; font-weight: 400; font-style: italic; src: url(data:font/ttf;base64,${fontItalicB64}) format("truetype"); }
       @font-face { font-family: "cormgar"; font-weight: 400; font-style: normal; src: url(data:font/ttf;base64,${fontSansB64}) format("truetype"); }
     </style>
+    <linearGradient id="phraseScrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0E0820" stop-opacity="0"/>
+      <stop offset="25%" stop-color="#0E0820" stop-opacity="0.45"/>
+      <stop offset="75%" stop-color="#0E0820" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#0E0820" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="footerScrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0E0820" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#0E0820" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0E0820" stop-opacity="0.55"/>
+    </linearGradient>
+    <radialGradient id="arcDayScrim" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0E0820" stop-opacity="0.48"/>
+      <stop offset="100%" stop-color="#0E0820" stop-opacity="0"/>
+    </radialGradient>
     <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#000" flood-opacity="0.65"/>
-      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.85"/>
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#000" flood-opacity="0.85"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#000" flood-opacity="0.95"/>
     </filter>
-    <filter id="smallShadow">
-      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#000" flood-opacity="0.7"/>
+    <filter id="smallShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.85"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#000" flood-opacity="0.95"/>
     </filter>
   </defs>
 
+  <!-- Scrim atrás da frase (gradiente vertical, desvanece nos topos) -->
+  <rect x="0" y="${phraseScrimY}" width="${W}" height="${phraseScrimH}" fill="url(#phraseScrim)"/>
+
+  <!-- Scrim atrás da assinatura no fundo -->
+  <rect x="0" y="${footerScrimY}" width="${W}" height="${footerScrimH}" fill="url(#footerScrim)"/>
+
+  <!-- Halo radial atrás do nome do dia dentro do arco -->
+  <rect x="280" y="${arcDayScrimY}" width="520" height="${arcDayScrimH}" fill="url(#arcDayScrim)"/>
+
+  <!-- Cantoneira de cobre topo esquerdo -->
   <line x1="60" y1="60" x2="124" y2="60" stroke="${COBRE_FRACO}" stroke-width="3"/>
   <line x1="60" y1="60" x2="60" y2="124" stroke="${COBRE_FRACO}" stroke-width="3"/>
 
+  <!-- Arco janela de lua -->
   <path d="${arcPath}" stroke="${COBRE_FRACO}" stroke-width="3" fill="none"/>
   <circle cx="540" cy="459" r="8" fill="${COBRE}" opacity="0.7"/>
 
+  <!-- Dia da semana -->
   <text x="540" y="${diaY}" text-anchor="middle" font-family="cormgar" font-weight="400" font-size="${diaFontSize}" letter-spacing="${diaLetterSpacing}" fill="${COBRE}" filter="url(#smallShadow)">${xmlEscape(diaLongo)}</text>
 
+  <!-- Frase -->
   ${fraseSvg}
 
+  <!-- Assinatura -->
   <text x="540" y="${sigGlifoY}" text-anchor="middle" font-family="cormgar" font-style="italic" font-weight="400" font-size="${kickerFontSize}" fill="${COBRE}" filter="url(#smallShadow)"><tspan font-size="${glifoFontSize}" font-style="normal">${xmlEscape(glifo)}</tspan>  ${xmlEscape(kicker)}</text>
 
   <text x="540" y="${seteveusY}" text-anchor="middle" font-family="cormgar" font-weight="400" font-size="${seteveusFontSize}" letter-spacing="${seteveusLetterSpacing}" fill="${COBRE_FRACO}" filter="url(#smallShadow)">SETEVEUS.SPACE</text>
@@ -223,7 +264,7 @@ async function renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp }) {
   await writeFile(overlayPath, png);
 
   const filter = [
-    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30,eq=brightness=0.08:saturation=1.05:contrast=1.05[v0]`,
+    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30,eq=saturation=1.02:contrast=1.02[v0]`,
     `[v0][1:v]overlay=0:0[v]`,
   ].join(";");
 
