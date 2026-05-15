@@ -10,6 +10,12 @@ export const runtime = "nodejs";
 
 const PATH = "vc-sabia-meta/design-settings.json";
 
+// VcSabiaDesign type fica como export type (Next.js permite types em
+// route files, são erased em compile time). DEFAULT_DESIGN passa a
+// const interna (Next.js bloqueia exports runtime arbitrários em rotas,
+// causa "is not a valid Route export field"). Quem precisa do default
+// usa o de src/components/vc-sabia/DesignSettingsPanel.tsx.
+
 export type VcSabiaDesign = {
   cardBg: string;        // hex
   cardBgOpacity: number; // 0-1
@@ -23,7 +29,7 @@ export type VcSabiaDesign = {
   phraseSize: number;    // px (1080x1920 reference)
 };
 
-export const DEFAULT_DESIGN: VcSabiaDesign = {
+const DEFAULT_DESIGN: VcSabiaDesign = {
   cardBg: "#140F1E",
   cardBgOpacity: 0.14,
   cardBorder: "#C9A96E",
