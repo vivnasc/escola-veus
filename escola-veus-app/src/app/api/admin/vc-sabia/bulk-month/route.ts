@@ -241,14 +241,14 @@ export async function POST(req: NextRequest) {
     );
 
     jobs.push({
-      day,
-      date: ymd(date),
+      day: entry.day,
+      date: entry.date,
       jobId,
-      phraseId: phrase.id,
-      phraseText: phrase.texto,
-      motionName: motion.name,
-      motionUrl: motion.url,
-      audioUrl,
+      phraseId: entry.phraseId,
+      phraseText: entry.phrase,
+      motionName: entry.motionName,
+      motionUrl: entry.motionUrl,
+      audioUrl: entry.audioUrl,
     });
   }
 
