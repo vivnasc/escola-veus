@@ -78,6 +78,18 @@ export async function POST(req: NextRequest) {
 
     const audioBuffer = await elevenRes.arrayBuffer();
 
+    // Guarda contra ElevenLabs devolver 200 OK com body vazio (acontece
+    // quando rate-limited ou conta sem créditos). Falha cedo em vez de
+    // gravar MP3 corrupto que dá 'Erro' no player do browser.
+    if (audioBuffer.byteLength < 1024) {
+      return NextResponse.json(
+        {
+          erro: `ElevenLabs devolveu ${audioBuffer.byteLength} bytes (MP3 inválido). Provavelmente sem créditos ou rate-limit.`,
+        },
+        { status: 502 }
+      );
+    }
+
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) {

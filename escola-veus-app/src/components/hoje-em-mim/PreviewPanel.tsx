@@ -2295,12 +2295,33 @@ function AudioGeneratorSection() {
           <h3 className="font-serif text-base" style={{ color: COBRE }}>
             Library de áudios já gerados ({totalAudios})
           </h3>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <button
               onClick={loadLibrary}
               className="rounded border border-escola-border bg-escola-card px-2 py-1 text-[11px] text-escola-creme-50 hover:text-escola-creme"
             >
               Recarregar
+            </button>
+            <button
+              onClick={async () => {
+                if (!confirm("Apaga todos os áudios inválidos (corruptos/zero-bytes)?")) return;
+                try {
+                  const res = await fetch("/api/admin/hoje-em-mim/audios/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ cleanInvalid: true, minBytes: 1024 }),
+                  });
+                  const json = await res.json();
+                  if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+                  alert(`Apagados ${json.deleted} áudios inválidos.`);
+                  await loadLibrary();
+                } catch (e) {
+                  alert(e instanceof Error ? e.message : String(e));
+                }
+              }}
+              className="rounded border border-red-700/40 bg-red-900/20 px-2 py-1 text-[11px] text-red-300 hover:bg-red-900/30"
+            >
+              🗑 Limpar inválidos
             </button>
             <button
               onClick={gerarBatchTodosMoods}
