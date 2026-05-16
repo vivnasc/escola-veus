@@ -12,6 +12,38 @@
     "sat": { "label": "Ritual do corpo", "kicker": "hoje, no corpo", "glifo": "◯" },
     "sun": { "label": "Intenção para amanhã", "kicker": "amanhã, escolho", "glifo": "→" }
   },
+  "ritmo_especial": {
+    "fim_mes":    { "label": "Fecho de ciclo do mês", "kicker": "fecho deste mês", "glifo": "✦" },
+    "inicio_mes": { "label": "Início de novo ciclo", "kicker": "começo deste mês", "glifo": "◐" },
+    "fim_ano":    { "label": "Fecho do ano", "kicker": "fecho deste ano", "glifo": "❋" },
+    "inicio_ano": { "label": "Início de ano", "kicker": "abro este ano", "glifo": "✧" }
+  },
+  "frases_especiais": {
+    "fim_mes": [
+      { "id": "hem-fm-01", "texto": "Olho para trás neste mês: o que cresceu em mim sem barulho? Honro essa raiz silenciosa." },
+      { "id": "hem-fm-02", "texto": "Fecho este ciclo com uma respiração funda. O que termina agora deixa espaço para o próximo." },
+      { "id": "hem-fm-03", "texto": "Não levo tudo deste mês para o próximo. Solto o que pesa, guardo o que ensinou." },
+      { "id": "hem-fm-04", "texto": "Que aprendizagem deste mês me acompanha como talismã? Hoje agradeço-a." },
+      { "id": "hem-fm-05", "texto": "Há um eu deste mês de quem me despeço hoje. Obrigada, próxima versão já espera." }
+    ],
+    "inicio_mes": [
+      { "id": "hem-im-01", "texto": "Começo este mês com mãos vazias, abertas. O que pedir para entrar, terá lugar." },
+      { "id": "hem-im-02", "texto": "Hoje começo. Sem mapa rígido, com fé suave de quem confia no caminho que se faz a andar." },
+      { "id": "hem-im-03", "texto": "Que intenção quero plantar hoje, sementeira deste mês novo? Escolho-a com calma." },
+      { "id": "hem-im-04", "texto": "Não preciso ter tudo resolvido para abrir capítulo. Hoje basta a presença e a vontade." },
+      { "id": "hem-im-05", "texto": "Este mês traz dias que ainda não sei. Recebo-os com gratidão antecipada." }
+    ],
+    "fim_ano": [
+      { "id": "hem-fy-01", "texto": "Fecho este ano com a humildade de quem aprendeu mais do que conseguiu dizer." },
+      { "id": "hem-fy-02", "texto": "O que este ano me ensinou ficará comigo mesmo quando o tempo o esbater. Honro a passagem." },
+      { "id": "hem-fy-03", "texto": "Despeço-me deste ano agradecendo cada manhã que vi nascer, mesmo as difíceis." }
+    ],
+    "inicio_ano": [
+      { "id": "hem-iy-01", "texto": "Abro este ano com mão no peito. Que tudo o que aqui vier encontre coragem viva em mim." },
+      { "id": "hem-iy-02", "texto": "Não prometo a este ano. Convido-o. Que venha como é, e que me encontre disponível." },
+      { "id": "hem-iy-03", "texto": "Hoje começo um caminho que não conheço. Confio no que sou para andá-lo." }
+    ]
+  },
   "frases": [
     { "id": "hem-0001", "dia": "mon", "texto": "Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça." },
     { "id": "hem-0002", "dia": "mon", "texto": "Em algum momento de hoje escolhi pela minha verdade, mesmo sem aplauso. Esse instante é semente." },

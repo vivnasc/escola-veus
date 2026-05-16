@@ -8,9 +8,13 @@ import {
   DIA_LONGO_PT,
   GLIFO_POR_DIA,
   KICKER_POR_DIA,
+  KICKER_ESPECIAL,
   LABEL_POR_DIA,
+  LABEL_ESPECIAL,
+  detectDiaEspecial,
   diaSemanaHoje,
   phraseToCaptions,
+  type DiaEspecial,
   type DiaSemana,
 } from "@/lib/hoje-em-mim/captions";
 import {
@@ -63,10 +67,12 @@ function computePreviewItems(opts: {
   motionPool: string[];
   audioPool: string[];
   frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string; dia: DiaSemana }>>;
+  frasesEspeciais: Record<DiaEspecial, Array<{ id: string; texto: string }>>;
 }): Array<{
   dayIndex: number;
   date: string;
   dia: DiaSemana;
+  especial: DiaEspecial | null;
   fraseId: string;
   fraseTexto: string;
   motionUrl: string;
@@ -76,6 +82,7 @@ function computePreviewItems(opts: {
     dayIndex: number;
     date: string;
     dia: DiaSemana;
+    especial: DiaEspecial | null;
     fraseId: string;
     fraseTexto: string;
     motionUrl: string;
@@ -84,15 +91,28 @@ function computePreviewItems(opts: {
   const fraseCursor: Record<DiaSemana, number> = {
     mon: 0, tue: 0, wed: 0, thu: 0, fri: 0, sat: 0, sun: 0,
   };
+  const especialCursor: Record<DiaEspecial, number> = {
+    fim_mes: 0, inicio_mes: 0, fim_ano: 0, inicio_ano: 0,
+  };
   const startDate = isoDate(opts.ano, opts.mes, opts.diaInicio);
   const numDays = opts.diaFim - opts.diaInicio + 1;
   for (let i = 0; i < numDays; i++) {
     const date = addDays(startDate, i);
     const dia = diaFromIso(date);
-    const pool = opts.frasesPorDia[dia];
-    if (!pool || pool.length === 0) continue;
-    const frase = pool[fraseCursor[dia] % pool.length];
-    fraseCursor[dia]++;
+    const especial = detectDiaEspecial(date);
+
+    let frase: { id: string; texto: string } | null = null;
+    if (especial && opts.frasesEspeciais[especial]?.length > 0) {
+      const epool = opts.frasesEspeciais[especial];
+      frase = epool[especialCursor[especial] % epool.length];
+      especialCursor[especial]++;
+    } else {
+      const pool = opts.frasesPorDia[dia];
+      if (!pool || pool.length === 0) continue;
+      frase = pool[fraseCursor[dia] % pool.length];
+      fraseCursor[dia]++;
+    }
+
     const motionUrl = opts.motionPool.length > 0
       ? opts.motionPool[i % opts.motionPool.length]
       : "";
@@ -103,6 +123,7 @@ function computePreviewItems(opts: {
       dayIndex: i,
       date,
       dia,
+      especial,
       fraseId: frase.id,
       fraseTexto: frase.texto,
       motionUrl,
@@ -209,6 +230,16 @@ export function HojeEmMimPreviewPanel() {
   const [loadingAudiosLib, setLoadingAudiosLib] = useState(false);
   const [selectedMotionUrls, setSelectedMotionUrls] = useState<Set<string>>(new Set());
   const [selectedAudioUrls, setSelectedAudioUrls] = useState<Set<string>>(new Set());
+
+  // Overrides per-dayIndex que a Vivianne edita inline na pré-montagem.
+  // Anula a rotação automática quando há um valor aqui.
+  type DayOverride = {
+    fraseTexto?: string;
+    motionUrl?: string;
+    audioUrl?: string | null;
+    theme?: string;
+  };
+  const [overridesByDay, setOverridesByDay] = useState<Record<number, DayOverride>>({});
 
   const loadMotionsLib = useCallback(async () => {
     setLoadingMotionsLib(true);
@@ -390,6 +421,11 @@ export function HojeEmMimPreviewPanel() {
         audioPool: audioPoolList,
         themePool: [themeId],
         shuffleMotions: true,
+        itemOverrides: Object.fromEntries(
+          Object.entries(overridesByDay).filter(([, v]) =>
+            v && (v.fraseTexto || v.motionUrl || v.audioUrl !== undefined || v.theme)
+          )
+        ),
       };
       const res = await fetch("/api/admin/hoje-em-mim/render-submit", {
         method: "POST",
@@ -762,6 +798,8 @@ export function HojeEmMimPreviewPanel() {
           motionsLib={motionsLib}
           audiosLib={audiosLib}
           themeId={themeId}
+          overrides={overridesByDay}
+          onChangeOverrides={setOverridesByDay}
         />
 
         <button
@@ -3758,6 +3796,8 @@ function BulkPreviewTable({
   motionsLib,
   audiosLib,
   themeId,
+  overrides,
+  onChangeOverrides,
 }: {
   ano: number;
   mes: number;
@@ -3768,12 +3808,23 @@ function BulkPreviewTable({
   motionsLib: Array<{ name: string; url: string }>;
   audiosLib: Array<{ name: string; url: string; mood: string }>;
   themeId: string;
+  overrides: Record<number, { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }>;
+  onChangeOverrides: (next: Record<number, { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }>) => void;
 }) {
   const items = useMemo(() => {
     const frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string; dia: DiaSemana }>> = {
       mon: [], tue: [], wed: [], thu: [], fri: [], sat: [], sun: [],
     };
     for (const f of FRASES) frasesPorDia[f.dia].push(f);
+    const fEspRaw = (seed as unknown as {
+      frases_especiais?: Partial<Record<DiaEspecial, Array<{ id: string; texto: string }>>>;
+    }).frases_especiais;
+    const frasesEspeciais: Record<DiaEspecial, Array<{ id: string; texto: string }>> = {
+      fim_mes: fEspRaw?.fim_mes ?? [],
+      inicio_mes: fEspRaw?.inicio_mes ?? [],
+      fim_ano: fEspRaw?.fim_ano ?? [],
+      inicio_ano: fEspRaw?.inicio_ano ?? [],
+    };
     return computePreviewItems({
       ano,
       mes,
@@ -3782,16 +3833,31 @@ function BulkPreviewTable({
       motionPool,
       audioPool,
       frasesPorDia,
+      frasesEspeciais,
     });
   }, [ano, mes, diaInicio, diaFim, motionPool, audioPool]);
 
-  const motionName = (url: string) =>
-    motionsLib.find((m) => m.url === url)?.name ?? url.split("/").pop() ?? "?";
-  const audioName = (url: string | null) => {
-    if (!url) return "—";
-    return audiosLib.find((a) => a.url === url)?.name ?? url.split("/").pop() ?? "?";
+  const setOverride = (dayIndex: number, patch: { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }) => {
+    const next = { ...overrides };
+    const current = next[dayIndex] || {};
+    next[dayIndex] = { ...current, ...patch };
+    onChangeOverrides(next);
   };
+  const clearOverride = (dayIndex: number, key: "fraseTexto" | "motionUrl" | "audioUrl" | "theme") => {
+    const next = { ...overrides };
+    if (next[dayIndex]) {
+      const c = { ...next[dayIndex] };
+      delete c[key];
+      if (Object.keys(c).length === 0) delete next[dayIndex];
+      else next[dayIndex] = c;
+    }
+    onChangeOverrides(next);
+  };
+
   const theme = getTheme(themeId);
+  const overrideCount = Object.values(overrides).filter(
+    (v) => v && (v.fraseTexto || v.motionUrl || v.audioUrl !== undefined || v.theme)
+  ).length;
 
   if (items.length === 0) {
     return (
@@ -3804,14 +3870,14 @@ function BulkPreviewTable({
   return (
     <details
       open
-      className="rounded-lg border max-w-3xl"
+      className="rounded-lg border max-w-5xl"
       style={{ borderColor: COBRE_FRACO, background: "rgba(194, 143, 96, 0.04)" }}
     >
       <summary
         className="cursor-pointer px-3 py-2 text-xs font-medium"
         style={{ color: COBRE }}
       >
-        🔍 Pré-montagem ({items.length} dias) — vê o que vai sair antes de submeter
+        🔍 Pré-montagem editável ({items.length} dias{overrideCount > 0 ? ` · ${overrideCount} com override` : ""}) — clica em qualquer célula para mudar
       </summary>
       <div className="overflow-x-auto px-3 pb-3">
         <table className="w-full text-[10px]">
@@ -3819,37 +3885,127 @@ function BulkPreviewTable({
             <tr>
               <th className="text-left py-1 pr-2">Data</th>
               <th className="text-left py-1 pr-2">Dia</th>
-              <th className="text-left py-1 pr-2">Frase</th>
+              <th className="text-left py-1 pr-2 min-w-[280px]">Frase</th>
               <th className="text-left py-1 pr-2">Motion</th>
               <th className="text-left py-1 pr-2">Áudio</th>
               <th className="text-left py-1 pr-2">Tema</th>
             </tr>
           </thead>
-          <tbody className="text-escola-creme">
-            {items.map((it) => (
-              <tr
-                key={it.dayIndex}
-                className="border-t border-escola-border/40"
-              >
-                <td className="py-1 pr-2 whitespace-nowrap">{it.date}</td>
-                <td className="py-1 pr-2 whitespace-nowrap">{DIA_LONGO_PT[it.dia]}</td>
-                <td className="py-1 pr-2 italic">{it.fraseTexto.slice(0, 60)}{it.fraseTexto.length > 60 ? "…" : ""}</td>
-                <td className="py-1 pr-2 truncate max-w-[150px]" title={motionName(it.motionUrl)}>
-                  {motionName(it.motionUrl).slice(0, 30)}
-                </td>
-                <td className="py-1 pr-2 truncate max-w-[120px]" title={audioName(it.audioUrl)}>
-                  {audioName(it.audioUrl).slice(0, 24)}
-                </td>
-                <td className="py-1 pr-2" style={{ color: theme.highlight }}>
-                  {theme.label.split(" ")[0]}
-                </td>
-              </tr>
-            ))}
+          <tbody className="text-escola-creme align-top">
+            {items.map((it) => {
+              const ov = overrides[it.dayIndex] || {};
+              const fraseEff = ov.fraseTexto ?? it.fraseTexto;
+              const motionEff = ov.motionUrl ?? it.motionUrl;
+              const audioEff = ov.audioUrl !== undefined ? ov.audioUrl : it.audioUrl;
+              const themeEff = ov.theme ?? themeId;
+              const rowTheme = getTheme(themeEff);
+              return (
+                <tr
+                  key={it.dayIndex}
+                  className="border-t border-escola-border/40"
+                >
+                  <td className="py-1.5 pr-2 whitespace-nowrap">{it.date}</td>
+                  <td className="py-1.5 pr-2 whitespace-nowrap">
+                    {DIA_LONGO_PT[it.dia]}
+                    {it.especial && (
+                      <span
+                        className="ml-1 rounded px-1 py-0.5 text-[9px]"
+                        style={{
+                          background: "rgba(194, 143, 96, 0.18)",
+                          color: COBRE,
+                        }}
+                        title={LABEL_ESPECIAL[it.especial]}
+                      >
+                        {KICKER_ESPECIAL[it.especial]}
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-1.5 pr-2">
+                    <textarea
+                      value={fraseEff}
+                      onChange={(e) => setOverride(it.dayIndex, { fraseTexto: e.target.value })}
+                      rows={2}
+                      className="w-full rounded border border-escola-border bg-escola-bg px-1.5 py-1 text-[10px] italic text-escola-creme"
+                      style={{
+                        borderColor: ov.fraseTexto ? COBRE : undefined,
+                      }}
+                    />
+                    {ov.fraseTexto && (
+                      <button
+                        onClick={() => clearOverride(it.dayIndex, "fraseTexto")}
+                        className="mt-0.5 text-[9px] text-escola-creme-50 hover:text-escola-creme underline"
+                      >
+                        repor original
+                      </button>
+                    )}
+                  </td>
+                  <td className="py-1.5 pr-2">
+                    <select
+                      value={motionEff}
+                      onChange={(e) => setOverride(it.dayIndex, { motionUrl: e.target.value })}
+                      className="w-full max-w-[200px] rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme"
+                      style={{ borderColor: ov.motionUrl ? COBRE : undefined }}
+                    >
+                      <option value={motionEff}>
+                        {motionsLib.find((m) => m.url === motionEff)?.name ?? motionEff.split("/").pop() ?? "?"}
+                      </option>
+                      {motionsLib
+                        .filter((m) => m.url !== motionEff)
+                        .map((m) => (
+                          <option key={m.url} value={m.url}>
+                            {m.name}
+                          </option>
+                        ))}
+                    </select>
+                  </td>
+                  <td className="py-1.5 pr-2">
+                    <select
+                      value={audioEff || ""}
+                      onChange={(e) =>
+                        setOverride(it.dayIndex, { audioUrl: e.target.value || null })
+                      }
+                      className="w-full max-w-[180px] rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme"
+                      style={{ borderColor: ov.audioUrl !== undefined ? COBRE : undefined }}
+                    >
+                      <option value="">— sem som —</option>
+                      {audioEff && (
+                        <option value={audioEff}>
+                          {audiosLib.find((a) => a.url === audioEff)?.name ?? audioEff.split("/").pop()}
+                        </option>
+                      )}
+                      {audiosLib
+                        .filter((a) => a.url !== audioEff)
+                        .map((a) => (
+                          <option key={a.url} value={a.url}>
+                            {a.mood} · {a.name}
+                          </option>
+                        ))}
+                    </select>
+                  </td>
+                  <td className="py-1.5 pr-2">
+                    <select
+                      value={themeEff}
+                      onChange={(e) => setOverride(it.dayIndex, { theme: e.target.value })}
+                      className="rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px]"
+                      style={{
+                        color: rowTheme.highlight,
+                        borderColor: ov.theme ? COBRE : undefined,
+                      }}
+                    >
+                      {HEM_THEMES.map((t) => (
+                        <option key={t.id} value={t.id} style={{ color: t.highlight }}>
+                          {t.label}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <div className="mt-2 text-[10px] text-escola-creme-50 italic">
-          Rotação visível aqui é determinística. O servidor faz shuffle do motionPool
-          ao submeter para evitar repetições visuais seguidas.
+          Edita inline — frase, motion, áudio, tema por dia. Células com border cobre = override. O servidor faz shuffle do motionPool mas honra cada override.
         </div>
       </div>
     </details>
