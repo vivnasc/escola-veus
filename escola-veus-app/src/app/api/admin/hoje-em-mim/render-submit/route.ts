@@ -8,6 +8,11 @@ import {
   type DiaEspecial,
   type DiaSemana,
 } from "@/lib/hoje-em-mim/captions";
+import {
+  planAudioSequence,
+  planMotionSequence,
+  seedFromRange,
+} from "@/lib/hoje-em-mim/pairing";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -47,6 +52,7 @@ export async function POST(req: NextRequest) {
     diaFim?: number;
     motionPool?: string[];
     audioPool?: string[];
+    moodByMotion?: Record<string, string>;
     themePool?: string[];
     shuffleMotions?: boolean;
     durationSec?: number;
@@ -145,10 +151,12 @@ export async function POST(req: NextRequest) {
     numDays,
     motionPool: resolvedMotionPool,
     audioPool: resolvedAudioPool,
+    moodByMotion: body.moodByMotion ?? {},
     themePool,
     durationSec,
     frasesPorDia,
     frasesEspeciais,
+    seed: seedFromRange(ano, mes, diaInicio),
   });
 
   if (items.length === 0) {
@@ -315,10 +323,12 @@ function buildItems(opts: {
   numDays: number;
   motionPool: string[];
   audioPool: string[];
+  moodByMotion: Record<string, string>;
   themePool: string[];
   durationSec: number;
   frasesPorDia: Record<DiaSemana, Array<{ id: string; dia: DiaSemana; texto: string }>>;
   frasesEspeciais: Record<DiaEspecial, Array<{ id: string; texto: string }>>;
+  seed: number;
 }): ManifestItem[] {
   const items: ManifestItem[] = [];
   const fraseCursor: Record<DiaSemana, number> = {
@@ -330,10 +340,25 @@ function buildItems(opts: {
     fim_mes: 0, inicio_mes: 0, fim_ano: 0, inicio_ano: 0,
   };
 
+  // Pré-calcula meta por dia, sequência de motions sem repetição
+  // (pareada por mood quando há tags) e sequência de áudios pareada
+  // pelo mood preferido do weekday.
+  const diasMeta: Array<{ dia: DiaSemana; especial: DiaEspecial | null }> = [];
   for (let i = 0; i < opts.numDays; i++) {
     const date = addDays(opts.startDate, i);
-    const dia = diaFromIso(date);
-    const especial = detectDiaEspecial(date);
+    diasMeta.push({ dia: diaFromIso(date), especial: detectDiaEspecial(date) });
+  }
+  const motionSeq = planMotionSequence(
+    opts.motionPool,
+    opts.numDays,
+    opts.seed,
+    { moodByMotion: opts.moodByMotion, dias: diasMeta }
+  );
+  const audioSeq = planAudioSequence(opts.audioPool, diasMeta, opts.seed);
+
+  for (let i = 0; i < opts.numDays; i++) {
+    const date = addDays(opts.startDate, i);
+    const { dia, especial } = diasMeta[i];
 
     // Se é dia especial e há frases especiais disponíveis, usa essas.
     // Caso contrário, fall through para a rotação por weekday.
@@ -349,9 +374,8 @@ function buildItems(opts: {
       fraseCursor[dia]++;
     }
 
-    const motionUrl = opts.motionPool[i % opts.motionPool.length];
-    const audioUrl =
-      opts.audioPool.length > 0 ? opts.audioPool[i % opts.audioPool.length] : null;
+    const motionUrl = motionSeq[i] ?? opts.motionPool[i % opts.motionPool.length];
+    const audioUrl = audioSeq[i];
     const theme = opts.themePool[i % opts.themePool.length] || "carta-noturna";
     const captions = phraseToCaptions({
       phrase: frase.texto,
