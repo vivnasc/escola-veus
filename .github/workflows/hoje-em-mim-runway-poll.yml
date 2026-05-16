@@ -1,0 +1,53 @@
+name: Hoje em Mim · Runway Poll
+
+# Cron de 30 em 30 min que chama o endpoint de polling do Runway. Garante
+# que clips Runway são descarregados mesmo com browser fechado, antes que
+# a CDN do Runway expire as URLs (vive ~7 dias mas mais vale prevenir).
+#
+# Justificação do intervalo (30 min):
+#  - Free tier GitHub Actions: 2000 min/mês. Cada run consome ~1 min
+#    (curl + parse). 48 runs/dia x 30 dias = 1440 min. Cabe.
+#  - 5 min seria 8640 runs/mês, fora do budget free.
+#  - 30 min é largamente suficiente: Runway leva 1-3 min a renderizar
+#    cada vídeo e a CDN aguenta horas.
+
+on:
+  schedule:
+    # A cada 30 minutos, todos os dias
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    # Permite disparar manualmente a partir do GitHub UI
+    inputs:
+      reason:
+        description: "Motivo (opcional)"
+        required: false
+        type: string
+
+run-name: "hoje-em-mim/runway-poll: ${{ github.event_name == 'workflow_dispatch' && (inputs.reason || 'manual') || 'cron' }}"
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call poll endpoint
+        env:
+          POLL_URL: ${{ secrets.HEM_RUNWAY_POLL_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -e
+          if [ -z "$POLL_URL" ]; then
+            echo "HEM_RUNWAY_POLL_URL não configurada no repo secrets" >&2
+            echo "Esperado: https://<vercel>.vercel.app/api/admin/hoje-em-mim/runway/poll?cron=1" >&2
+            exit 1
+          fi
+          AUTH_HEADER=""
+          if [ -n "$CRON_SECRET" ]; then
+            AUTH_HEADER="-H 'Authorization: Bearer $CRON_SECRET'"
+          fi
+          # POST porque o endpoint suporta GET e POST mas POST é mais
+          # explícito para mutation (descarrega + faz upload).
+          eval "curl -fsSL -X POST $AUTH_HEADER \"$POLL_URL\" -o /tmp/poll.json"
+          echo "--- response ---"
+          cat /tmp/poll.json
+          echo ""

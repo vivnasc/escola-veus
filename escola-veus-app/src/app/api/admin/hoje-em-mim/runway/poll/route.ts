@@ -19,8 +19,9 @@ export const maxDuration = 300;
  *    de cada save. Se o state corromper, há sempre snapshots.
  *  - Retry com backoff (1s, 3s, 9s) no download do Runway CDN. Se o
  *    upload Supabase falhar, runwayTaskId é PRESERVADO para próximo poll.
- *  - Cron Vercel chama de 5 em 5 minutos, mesmo com browser fechado,
- *    antes que a URL CDN Runway expire.
+ *  - Cron GitHub Actions chama de 30 em 30 minutos
+ *    (.github/workflows/hoje-em-mim-runway-poll.yml), mesmo com browser
+ *    fechado, antes que a URL CDN Runway expire.
  *
  * Cliente chama em loop a cada 15-30s além do cron, para feedback
  * imediato à utilizadora.
