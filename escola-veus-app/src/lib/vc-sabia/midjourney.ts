@@ -6,7 +6,7 @@
  * Pipeline: o utilizador copia o prompt aqui gerado, cola no Midjourney,
  * exporta MP4 vertical 9:16 e carrega no Motion Library do vc-sabia.
  *
- * Tom: manha portuguesa, luz suave, paleta dourada/creme, sem pessoas,
+ * Tom: manha mocambicana / lusofona, luz suave, paleta dourada/creme, sem pessoas,
  * sem texto, sem mas, sem rostos. Imagem-poema parada com sopro.
  */
 
@@ -14,7 +14,7 @@ export const MJ_BASE_SUFFIX =
   "--ar 9:16 --style raw --stylize 200 --quality 1 --video";
 
 const STYLE_BASE = [
-  "contemplative morning portuguese poetry",
+  "contemplative morning lusophone poetry",
   "soft golden hour light",
   "cinematic film grain 35mm",
   "muted earth tones cream gold dust",
