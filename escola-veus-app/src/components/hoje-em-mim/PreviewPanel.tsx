@@ -1489,6 +1489,12 @@ function RunwayPipelineSection() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
+  // Estado per-imagem para acções individuais (submit, claude review).
+  // Permite clicar Submeter em 3 cards diferentes em paralelo sem
+  // bloquear o resto da UI ou o botão de bulk. Padrão herdado do
+  // funil-gerar (src/app/admin/producao/funil/gerar/page.tsx).
+  const [busyByImage, setBusyByImage] = useState<Record<string, boolean>>({});
+  const [errorByImage, setErrorByImage] = useState<Record<string, string>>({});
 
   const loadImages = async () => {
     setLoadingImages(true);
@@ -1610,11 +1616,20 @@ function RunwayPipelineSection() {
   const submitOne = async (img: RunwayImage) => {
     const item = buildSubmitItem(img);
     if (!item) {
-      setSubmitError(`${img.name}: motion prompt vazio. Escolhe um prompt MJ ou escreve um.`);
+      setErrorByImage((e) => ({
+        ...e,
+        [img.name]: "motion prompt vazio. Escolhe um prompt MJ ou escreve um.",
+      }));
       return;
     }
-    setSubmitError(null);
-    setSubmitting(true);
+    // State per-imagem: não bloqueia o resto da UI. Podes clicar Submeter
+    // em vários cards em simultâneo.
+    setBusyByImage((b) => ({ ...b, [img.name]: true }));
+    setErrorByImage((e) => {
+      const next = { ...e };
+      delete next[img.name];
+      return next;
+    });
     try {
       const res = await fetch("/api/admin/hoje-em-mim/runway/submit", {
         method: "POST",
@@ -1624,13 +1639,23 @@ function RunwayPipelineSection() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
       if (json.failed?.length > 0) {
-        setSubmitError(`${json.failed[0].id}: ${json.failed[0].reason}`);
+        setErrorByImage((e) => ({
+          ...e,
+          [img.name]: json.failed[0].reason,
+        }));
       }
       await loadState();
     } catch (e) {
-      setSubmitError(e instanceof Error ? e.message : String(e));
+      setErrorByImage((errs) => ({
+        ...errs,
+        [img.name]: e instanceof Error ? e.message : String(e),
+      }));
     } finally {
-      setSubmitting(false);
+      setBusyByImage((b) => {
+        const next = { ...b };
+        delete next[img.name];
+        return next;
+      });
     }
   };
 
@@ -2131,13 +2156,25 @@ function RunwayPipelineSection() {
                   </label>
                   <button
                     onClick={() => submitOne(img)}
-                    disabled={submitting || !motion.trim() || (!!stateItem?.runwayTaskId)}
+                    disabled={!!busyByImage[img.name] || !motion.trim() || (!!stateItem?.runwayTaskId)}
                     className="ml-auto rounded border px-2 py-0.5 text-[10px] disabled:opacity-50"
                     style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.1)" }}
                   >
-                    {stateItem?.runwayTaskId ? "a renderizar" : stateItem?.clipUrl ? "re-submeter" : "Submeter"}
+                    {busyByImage[img.name]
+                      ? "a submeter…"
+                      : stateItem?.runwayTaskId
+                        ? "a renderizar"
+                        : stateItem?.clipUrl
+                          ? "re-submeter"
+                          : "Submeter"}
                   </button>
                 </div>
+
+                {errorByImage[img.name] && (
+                  <div className="rounded border border-red-700/40 bg-red-900/20 p-1.5 text-[10px] text-red-300">
+                    {errorByImage[img.name]}
+                  </div>
+                )}
 
                 {stateItem?.clipUrl && (
                   <video
