@@ -36,52 +36,53 @@ type Item = {
 type Suggestion = {
   suggestedPrompt: string;
   reasoning: string;
+  observed?: string;
+  dynamicElement?: string;
   concerns: string[];
 };
 
 type ResultEntry = Suggestion | { error: string };
 
-const SYSTEM_PROMPT = `Geras motion prompts CURTOS para Runway Gen4 Turbo image_to_video (vertical 720:1280, 5-10s). Output para o post "Hoje, em Mim" (fundo contemplativo de uma frase em overlay).
+const SYSTEM_PROMPT = `Escreves motion prompts para Runway Gen4 Turbo image_to_video. Output para o post "Hoje, em Mim" — fundo contemplativo de uma frase em overlay.
 
-REGRA DE OURO
-Runway Gen4 Turbo reage MAL a prompts longos. Tens de produzir UMA frase, MÁXIMO 150 caracteres. O melhor prompt parece um título de documentário, não uma receita.
+PROCESSO OBRIGATÓRIO (faz cada passo no campo certo do JSON)
 
-PRINCÍPIO DO TOM CONTEMPLATIVO
-Contemplativo NÃO é câmara a mexer, é UM ELEMENTO DO AMBIENTE a mexer enquanto tudo o resto está parado. A câmara fica sempre estática (não escrevas "camera drift", "pan", "zoom").
-O motion é da chama, da água, do fumo, da folha, do reflexo. Nunca da câmara.
+1. observed: o que vês especificamente nesta imagem. Lista 3-5 objectos concretos por nome (não 'cena bonita' — escreve 'vela em castiçal de cerâmica preta, parede de tijolo, sombra à direita'). Identifica o material / textura / direcção da luz / fonte da luz.
 
-CONFIRMADO EMPIRICAMENTE
-A produção "longos" da mesma escola usa prompts curtos genéricos e funciona. Replica essa brevidade — mas para "Hoje, em Mim" o motion é do elemento do ambiente, NÃO da câmara.
+2. dynamicElement: dos objectos que viste, qual é o ÚNICO que pode ganhar motion natural? Escolhe um que tenha física natural (chama queima, água ondula, fumo sobe, sombra sai de objecto que se mexe, ar move textil/folha, luz pulsa em brasa). Se a imagem é só estática (e.g. mesa com objectos rígidos), escolhe a luz ambiente ou um pequeno detalhe (poeira no ar, vapor de algo quente).
 
-ANTIPADRÕES (não fazer)
-- Listar amplitudes em mm/cm/graus → vira CGI artificial
-- Descrever motion por segundos → vira movimento robótico
-- "flicker", "dance", "spark", "pulse" → fogo de artifício
-- Lista negativa longa ("no zoom, no pan, no rotation…") → confunde mais do que ajuda
+3. suggestedPrompt: agora escreve o motion para ESSE elemento, em inglês, 1 frase. Não menciones a câmara (é estática). Não uses números. Tem de soar natural, não receita técnica. Verbos preferidos: breathes, drifts, flows, sways, settles, billows, undulates, ripples, glistens, glides. Verbos proibidos: flickers, dances, sparks, pulses, twinkles, flashes, jumps.
 
-PADRÃO BOM
-- 1 frase de 50-150 caracteres
-- 1 verbo central de motion suave + qualificador "slow" ou "gentle"
-- Câmara: implícita estática (não precisas escrever)
-- Adjetivos atmosféricos OK: "ambient", "warm", "soft"
+4. reasoning: 1 frase pt: porque escolheste esse elemento e não outro.
 
-EXEMPLOS (estuda o tom)
-- "candle flame breathes softly in still air, warm amber light, ambient"
-- "moonlight ripples slowly across dark water, gentle undulation"
-- "white smoke curls upward from incense, slow drift, intimate room"
-- "leaves sway gently in night breeze, soft rustle of branches"
-- "embers glow and dim slowly in low brazier, ambient warmth"
-- "stars twinkle softly over silhouetted trees, slow night drift"
-- "linen curtain billows in moonlit window, soft fabric motion"
+EXEMPLOS DE PARES (observed → suggestedPrompt)
+
+Imagem de vela em sala escura:
+observed: "Vela de cera amarela em prato pequeno preto, parede de pedra ao fundo, luz quente vinda da chama, sombras moles."
+suggestedPrompt: "the candle flame breathes softly, casting a slow warm glow on the stone wall behind"
+
+Imagem de água ao luar:
+observed: "Superfície de água escura, lua a refletir vertical como uma coluna prateada, costa não visível, pequenas ondas mínimas."
+suggestedPrompt: "moonlight ripples softly across the dark water surface, the silver column stretching and settling"
+
+Imagem de incenso a fumegar:
+observed: "Vareta de incenso espetada num suporte, fumo branco a subir em curva, fundo escuro com feixe de luz quente."
+suggestedPrompt: "white incense smoke curls upward slowly in the warm beam of light, trailing into the dark"
+
+Imagem de janela com cortina branca:
+observed: "Cortina de linho branco aberta numa janela, luz suave azulada (luar) atrás, sombras das dobras na parede."
+suggestedPrompt: "the linen curtain billows inward gently in the cool night air, soft folds moving with breath"
+
+NUNCA devolvas algo genérico tipo "ambient warm light" ou "soft natural motion" — força-te a olhar para a imagem e a comprometer-te com o objecto que escolheste. Se hesitas, melhor escolher o detalhe MAIS SUBTIL da imagem (sombra a oscilar, reflexo a tremular).
 
 OUTPUT — JSON estrito, sem markdown:
 {
-  "suggestedPrompt": "<inglês, UMA frase, 50-150 chars, sem números>",
-  "reasoning": "<1 frase pt explicando porquê>",
+  "observed": "<descrição visual concreta da imagem, pt, 1-2 frases>",
+  "dynamicElement": "<o elemento que escolheste mexer, pt>",
+  "suggestedPrompt": "<inglês, 1 frase natural, sem números, sem mencionar câmara>",
+  "reasoning": "<porque esse elemento, pt, 1 frase>",
   "concerns": []
-}
-
-OBRIGATÓRIO: olha para a imagem e identifica 1 elemento que pode mexer. NUNCA devolvas prompt genérico. Se a imagem é difícil, escolhe o detalhe mais subtil possível (uma sombra a oscilar, um reflexo a tremular, ar a movimentar-se sobre uma superfície). Mas sempre específico ao que está nesta imagem.`;
+}`;
 
 async function reviewOne(
   client: Anthropic,
@@ -157,6 +158,8 @@ async function reviewOne(
     const parsed = JSON.parse(cleaned) as {
       suggestedPrompt?: string;
       reasoning?: string;
+      observed?: string;
+      dynamicElement?: string;
       concerns?: string[];
     };
     if (!parsed.suggestedPrompt) {
@@ -167,6 +170,8 @@ async function reviewOne(
       result: {
         suggestedPrompt: parsed.suggestedPrompt.trim(),
         reasoning: parsed.reasoning ?? "",
+        observed: parsed.observed,
+        dynamicElement: parsed.dynamicElement,
         concerns: Array.isArray(parsed.concerns) ? parsed.concerns : [],
       },
     };

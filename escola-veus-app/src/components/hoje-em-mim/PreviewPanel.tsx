@@ -2912,6 +2912,8 @@ function ClaudeReviewButton({
   const [reviewing, setReviewing] = useState(false);
   const [suggestion, setSuggestion] = useState<string | null>(null);
   const [reasoning, setReasoning] = useState<string>("");
+  const [observed, setObserved] = useState<string>("");
+  const [dynamicElement, setDynamicElement] = useState<string>("");
   const [concerns, setConcerns] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -2920,6 +2922,8 @@ function ClaudeReviewButton({
     setError(null);
     setSuggestion(null);
     setReasoning("");
+    setObserved("");
+    setDynamicElement("");
     setConcerns([]);
     try {
       const res = await fetch("/api/admin/hoje-em-mim/runway-prompts/review", {
@@ -2931,6 +2935,8 @@ function ClaudeReviewButton({
       if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
       setSuggestion(json.suggestedPrompt);
       setReasoning(json.reasoning || "");
+      setObserved(json.observed || "");
+      setDynamicElement(json.dynamicElement || "");
       setConcerns(Array.isArray(json.concerns) ? json.concerns : []);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -2956,7 +2962,19 @@ function ClaudeReviewButton({
       )}
       {suggestion && (
         <div className="rounded border border-escola-dourado/40 bg-escola-dourado/5 p-2 space-y-1.5">
-          <div className="text-[10px] text-escola-creme-50">Sugestão do Claude:</div>
+          {observed && (
+            <div className="text-[10px] text-escola-creme-50">
+              <span className="font-medium" style={{ color: COBRE }}>O que viu:</span>{" "}
+              <span className="text-escola-creme">{observed}</span>
+            </div>
+          )}
+          {dynamicElement && (
+            <div className="text-[10px] text-escola-creme-50">
+              <span className="font-medium" style={{ color: COBRE }}>Elemento a mexer:</span>{" "}
+              <span className="text-escola-creme">{dynamicElement}</span>
+            </div>
+          )}
+          <div className="text-[10px] text-escola-creme-50">Motion prompt:</div>
           <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
             {suggestion}
           </pre>
