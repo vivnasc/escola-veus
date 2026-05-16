@@ -7,6 +7,7 @@ import { HEM_THEMES, getTheme, DEFAULT_THEME_ID } from "@/lib/hoje-em-mim/themes
 import {
   DIA_LONGO_PT,
   GLIFO_POR_DIA,
+  GLIFO_ESPECIAL,
   KICKER_POR_DIA,
   KICKER_ESPECIAL,
   LABEL_POR_DIA,
@@ -25,6 +26,12 @@ import {
   type NightMood,
 } from "@/lib/hoje-em-mim/audio";
 import { NightMotionLibrary } from "./MotionLibrary";
+import { AutoTagMotionsSection } from "./AutoTagMotions";
+import {
+  planAudioSequence,
+  planMotionSequence,
+  seedFromRange,
+} from "@/lib/hoje-em-mim/pairing";
 
 type Frase = { id: string; dia: DiaSemana; texto: string };
 
@@ -66,6 +73,7 @@ function computePreviewItems(opts: {
   diaFim: number;
   motionPool: string[];
   audioPool: string[];
+  moodByMotion?: Record<string, string>;
   frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string; dia: DiaSemana }>>;
   frasesEspeciais: Record<DiaEspecial, Array<{ id: string; texto: string }>>;
 }): Array<{
@@ -96,10 +104,23 @@ function computePreviewItems(opts: {
   };
   const startDate = isoDate(opts.ano, opts.mes, opts.diaInicio);
   const numDays = opts.diaFim - opts.diaInicio + 1;
+
+  // Pré-calcula sequências sem repetição (motions) e por mood (audios)
+  const seed = seedFromRange(opts.ano, opts.mes, opts.diaInicio);
+  const diasMeta: Array<{ dia: DiaSemana; especial: DiaEspecial | null }> = [];
   for (let i = 0; i < numDays; i++) {
     const date = addDays(startDate, i);
-    const dia = diaFromIso(date);
-    const especial = detectDiaEspecial(date);
+    diasMeta.push({ dia: diaFromIso(date), especial: detectDiaEspecial(date) });
+  }
+  const motionSeq = planMotionSequence(opts.motionPool, numDays, seed, {
+    moodByMotion: opts.moodByMotion,
+    dias: diasMeta,
+  });
+  const audioSeq = planAudioSequence(opts.audioPool, diasMeta, seed);
+
+  for (let i = 0; i < numDays; i++) {
+    const date = addDays(startDate, i);
+    const { dia, especial } = diasMeta[i];
 
     let frase: { id: string; texto: string } | null = null;
     if (especial && opts.frasesEspeciais[especial]?.length > 0) {
@@ -113,12 +134,6 @@ function computePreviewItems(opts: {
       fraseCursor[dia]++;
     }
 
-    const motionUrl = opts.motionPool.length > 0
-      ? opts.motionPool[i % opts.motionPool.length]
-      : "";
-    const audioUrl = opts.audioPool.length > 0
-      ? opts.audioPool[i % opts.audioPool.length]
-      : null;
     items.push({
       dayIndex: i,
       date,
@@ -126,8 +141,8 @@ function computePreviewItems(opts: {
       especial,
       fraseId: frase.id,
       fraseTexto: frase.texto,
-      motionUrl,
-      audioUrl,
+      motionUrl: motionSeq[i] ?? "",
+      audioUrl: audioSeq[i] ?? null,
     });
   }
   return items;
@@ -153,9 +168,13 @@ const CREME = "rgb(242, 233, 216)";
 const INDIGO = "rgba(14, 8, 32, 0.85)";
 
 type HemTab = "bulk" | "preview" | "motions" | "audios" | "prompts";
+// O bulk já tem mini-frame de preview por linha (RowFramePreview), por
+// isso a tab "Preview" standalone foi removida da navegação. O bloco
+// activeTab === "preview" continua no código (mais abaixo) caso queiramos
+// reintroduzi-la no futuro como "Test render single", mas hoje é
+// inalcançável e a UI tem menos ruído.
 const HEM_TABS: Array<{ id: HemTab; label: string; icon: string }> = [
   { id: "bulk", label: "Pack mensal", icon: "📦" },
-  { id: "preview", label: "Preview", icon: "🎬" },
   { id: "motions", label: "Motions + Runway", icon: "🎞" },
   { id: "audios", label: "Áudios", icon: "🔊" },
   { id: "prompts", label: "Prompts (Claude review)", icon: "✍️" },
@@ -240,6 +259,98 @@ export function HojeEmMimPreviewPanel() {
     theme?: string;
   };
   const [overridesByDay, setOverridesByDay] = useState<Record<number, DayOverride>>({});
+
+  // Mood por motion URL (preenchido pelo auto-tag Claude). Permite que
+  // a pairing alinhe motion com o ritual do dia (sexta = lareira, etc).
+  const [moodByMotion, setMoodByMotion] = useState<Record<string, string>>({});
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/hoje-em-mim/motion-prompts");
+        if (!res.ok || cancelled) return;
+        const json = await res.json();
+        if (json.moodByMotion && typeof json.moodByMotion === "object") {
+          setMoodByMotion(json.moodByMotion);
+        }
+      } catch {
+        /* silencioso */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Persistência dos overridesByDay. Carregamento per-mês ao mudar ano/mês,
+  // gravação debounced para Supabase + localStorage imediato. Sem isto,
+  // qualquer re-render que recalcule items perdia as edições inline.
+  const monthKey = `${ano}-${String(mes).padStart(2, "0")}`;
+  const [overridesLoaded, setOverridesLoaded] = useState(false);
+  const [allMonthOverrides, setAllMonthOverrides] = useState<
+    Record<string, Record<number, DayOverride>>
+  >({});
+  useEffect(() => {
+    let cancelled = false;
+    setOverridesLoaded(false);
+    (async () => {
+      // localStorage imediato
+      let local: Record<string, Record<number, DayOverride>> | null = null;
+      if (typeof window !== "undefined") {
+        try {
+          const raw = localStorage.getItem("hoje-em-mim.overrides");
+          if (raw) local = JSON.parse(raw);
+        } catch {
+          /* ignore */
+        }
+      }
+      if (local && !cancelled) {
+        setAllMonthOverrides(local);
+        setOverridesByDay(local[monthKey] ?? {});
+      }
+      try {
+        const res = await fetch("/api/admin/hoje-em-mim/overrides");
+        if (cancelled) return;
+        const json = await res.json();
+        if (res.ok && json.byMonth) {
+          setAllMonthOverrides(json.byMonth);
+          setOverridesByDay(json.byMonth[monthKey] ?? {});
+        }
+      } catch {
+        /* silencioso */
+      } finally {
+        if (!cancelled) setOverridesLoaded(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // monthKey muda quando ano/mes mudam: recarrega overrides do mês certo
+  }, [monthKey]);
+
+  useEffect(() => {
+    if (!overridesLoaded) return;
+    const next = { ...allMonthOverrides, [monthKey]: overridesByDay };
+    setAllMonthOverrides(next);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("hoje-em-mim.overrides", JSON.stringify(next));
+      } catch {
+        /* quota */
+      }
+    }
+    const t = setTimeout(() => {
+      fetch("/api/admin/hoje-em-mim/overrides", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ monthKey, overrides: overridesByDay }),
+      }).catch(() => {
+        /* silencioso, ainda temos localStorage */
+      });
+    }, 1200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [overridesByDay, monthKey, overridesLoaded]);
 
   const loadMotionsLib = useCallback(async () => {
     setLoadingMotionsLib(true);
@@ -421,6 +532,7 @@ export function HojeEmMimPreviewPanel() {
         audioPool: audioPoolList,
         themePool: [themeId],
         shuffleMotions: true,
+        moodByMotion,
         itemOverrides: Object.fromEntries(
           Object.entries(overridesByDay).filter(([, v]) =>
             v && (v.fraseTexto || v.motionUrl || v.audioUrl !== undefined || v.theme)
@@ -800,6 +912,7 @@ export function HojeEmMimPreviewPanel() {
           themeId={themeId}
           overrides={overridesByDay}
           onChangeOverrides={setOverridesByDay}
+          moodByMotion={moodByMotion}
         />
 
         <button
@@ -848,6 +961,7 @@ export function HojeEmMimPreviewPanel() {
 
       {activeTab === "motions" && (
       <>
+        <AutoTagMotionsSection />
         <NightMotionLibrary selectedUrl={media} onSelect={setMedia} />
         <RunwayPipelineSection />
       </>
@@ -3694,27 +3808,49 @@ function BulkAudioPicker({
   onChange: (next: Set<string>) => void;
   onReload: () => void;
 }) {
-  const toggle = (url: string) => {
-    const next = new Set(selected);
-    if (next.has(url)) next.delete(url);
-    else next.add(url);
-    onChange(next);
-  };
-  const selectAll = () => onChange(new Set(audios.map((a) => a.url)));
-  const clearAll = () => onChange(new Set());
-
-  // Agrupa por mood para mostrar header
+  // Agrupa por mood. Cada mood mostra UMA linha: checkbox liga/desliga
+  // todos os ficheiros desse mood (a pairing escolhe o ficheiro certo
+  // por dia). Player toca o primeiro ficheiro como amostra. "+N" expande
+  // para gestão fina caso queiras remover ficheiros maus individualmente.
   const byMood: Record<string, Array<{ mood: string; name: string; url: string }>> = {};
   for (const a of audios) {
     if (!byMood[a.mood]) byMood[a.mood] = [];
     byMood[a.mood].push(a);
   }
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const toggleExpand = (mood: string) => {
+    const next = new Set(expanded);
+    if (next.has(mood)) next.delete(mood);
+    else next.add(mood);
+    setExpanded(next);
+  };
+
+  const toggleOne = (url: string) => {
+    const next = new Set(selected);
+    if (next.has(url)) next.delete(url);
+    else next.add(url);
+    onChange(next);
+  };
+  const toggleMood = (mood: string) => {
+    const urls = byMood[mood]?.map((a) => a.url) ?? [];
+    const allOn = urls.every((u) => selected.has(u));
+    const next = new Set(selected);
+    if (allOn) urls.forEach((u) => next.delete(u));
+    else urls.forEach((u) => next.add(u));
+    onChange(next);
+  };
+
+  const selectAll = () => onChange(new Set(audios.map((a) => a.url)));
+  const clearAll = () => onChange(new Set());
 
   return (
     <div className="space-y-2 max-w-xl">
       <div className="flex items-baseline justify-between flex-wrap gap-2">
         <div className="text-xs text-escola-creme">
-          Áudios a incluir <span className="text-escola-creme-50">({selected.size}/{audios.length})</span>
+          Áudios a incluir{" "}
+          <span className="text-escola-creme-50">
+            ({selected.size}/{audios.length})
+          </span>
         </div>
         <div className="flex gap-1 text-[10px]">
           <button
@@ -3737,49 +3873,236 @@ function BulkAudioPicker({
           </button>
         </div>
       </div>
+      <div className="text-[9px] text-escola-creme-50 italic">
+        Pareamento por mood: a pré-montagem escolhe automaticamente o
+        ficheiro certo dentro de cada mood ligado.
+      </div>
       {loading ? (
-        <div className="text-[10px] text-escola-creme-50">A carregar library…</div>
+        <div className="text-[10px] text-escola-creme-50">
+          A carregar library…
+        </div>
       ) : audios.length === 0 ? (
         <div className="text-[10px] text-escola-creme-50 italic">
           Sem áudios no library. Gera na tab Áudios.
         </div>
       ) : (
-        <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
-          {Object.entries(byMood).map(([mood, list]) => (
-            <div key={mood} className="space-y-1">
-              <div className="text-[10px] uppercase tracking-wider text-escola-creme-50">
-                {NIGHT_MOOD_LABELS[mood as keyof typeof NIGHT_MOOD_LABELS] ?? mood}
-              </div>
-              {list.map((a) => {
-                const on = selected.has(a.url);
-                return (
-                  <label
-                    key={a.url}
-                    className="flex items-center gap-2 rounded border p-1.5 text-[10px] cursor-pointer transition-colors"
-                    style={{
-                      borderColor: on ? COBRE : "rgba(245, 240, 230, 0.16)",
-                      background: on ? "rgba(194, 143, 96, 0.08)" : "transparent",
+        <div className="space-y-1">
+          {Object.entries(byMood).map(([mood, list]) => {
+            const onCount = list.filter((a) => selected.has(a.url)).length;
+            const allOn = onCount === list.length;
+            const someOn = onCount > 0;
+            const isExpanded = expanded.has(mood);
+            const sample = list[0];
+            return (
+              <div
+                key={mood}
+                className="rounded border"
+                style={{
+                  borderColor: someOn ? COBRE : "rgba(245, 240, 230, 0.16)",
+                  background: someOn ? "rgba(194, 143, 96, 0.06)" : "transparent",
+                }}
+              >
+                <div className="flex items-center gap-2 px-2 py-1.5 text-[11px]">
+                  <input
+                    type="checkbox"
+                    checked={allOn}
+                    ref={(el) => {
+                      if (el) el.indeterminate = someOn && !allOn;
                     }}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={on}
-                      onChange={() => toggle(a.url)}
-                      className="shrink-0"
-                    />
-                    <span className="flex-1 truncate text-escola-creme">{a.name}</span>
+                    onChange={() => toggleMood(mood)}
+                    className="shrink-0"
+                  />
+                  <span className="flex-1 truncate text-escola-creme">
+                    {NIGHT_MOOD_LABELS[mood as keyof typeof NIGHT_MOOD_LABELS] ?? mood}
+                  </span>
+                  <span className="text-[9px] text-escola-creme-50">
+                    {onCount}/{list.length}
+                  </span>
+                  {sample && (
                     <audio
-                      src={a.url}
+                      src={sample.url}
                       controls
                       preload="metadata"
                       className="h-6 w-32 shrink-0"
                       onClick={(e) => e.stopPropagation()}
                     />
-                  </label>
-                );
-              })}
+                  )}
+                  {list.length > 1 && (
+                    <button
+                      onClick={() => toggleExpand(mood)}
+                      className="rounded border border-escola-border px-1 text-[9px] text-escola-creme-50 hover:text-escola-creme"
+                      title={isExpanded ? "Colapsar" : "Ver todos os ficheiros deste mood"}
+                    >
+                      {isExpanded ? "−" : `+${list.length - 1}`}
+                    </button>
+                  )}
+                </div>
+                {isExpanded && (
+                  <div className="border-t border-escola-border/40 px-2 py-1.5 space-y-1">
+                    {list.map((a) => {
+                      const on = selected.has(a.url);
+                      return (
+                        <label
+                          key={a.url}
+                          className="flex items-center gap-2 text-[10px]"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={on}
+                            onChange={() => toggleOne(a.url)}
+                            className="shrink-0"
+                          />
+                          <span className="flex-1 truncate text-escola-creme-50">
+                            {a.name}
+                          </span>
+                          <audio
+                            src={a.url}
+                            controls
+                            preload="metadata"
+                            className="h-5 w-24 shrink-0"
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        </label>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function moodFromAudioUrlClient(url: string): string | null {
+  const m = url.match(/hoje-em-mim-audios\/([^/]+)\//);
+  return m ? m[1] : null;
+}
+
+/** Mini-frame 9:16 para a tabela. Replica o look do render final:
+ *
+ *  - Motion em hover-to-play como fundo
+ *  - Scrim escurecido tipo vignette indigo do theme.bg
+ *  - Kicker no topo na cor highlight do theme escolhido para a linha
+ *  - Glifo do dia no canto superior direito (igual ao frame final)
+ *  - Frase central em Cormorant Garamond italic na cor text do theme
+ *  - Assinatura "Vivianne · seteveus.space" no rodapé
+ *  - Tag do tema activo, para confirmar visualmente qual cobre/prata/
+ *    dourado/etc está aplicado a esta linha
+ *
+ *  Permite à Vivianne ver, sem render, se o texto fica legível contra
+ *  cada motion e se a paleta do tema funciona com a paleta da imagem. */
+function RowFramePreview({
+  motionUrl,
+  frase,
+  dia,
+  especial,
+  theme,
+  audioMood,
+  motionMood,
+}: {
+  motionUrl: string;
+  frase: string;
+  dia: DiaSemana;
+  especial: DiaEspecial | null;
+  theme: ReturnType<typeof getTheme>;
+  audioMood: string | null;
+  motionMood: string | null;
+}) {
+  const kicker = especial ? KICKER_ESPECIAL[especial] : KICKER_POR_DIA[dia];
+  const glifo = especial ? GLIFO_ESPECIAL[especial] : GLIFO_POR_DIA[dia];
+  const moodMatch =
+    audioMood && motionMood ? audioMood === motionMood : null;
+  // Comprimento da frase decide o tamanho da fonte para não cortar
+  const fraseLen = frase.length;
+  const fraseFontPx = fraseLen > 140 ? 9 : fraseLen > 100 ? 10 : fraseLen > 60 ? 11 : 12;
+
+  return (
+    <div className="flex flex-col items-start gap-1">
+      <div
+        className="relative overflow-hidden rounded border"
+        style={{
+          borderColor: theme.highlightSoft,
+          background: theme.bg,
+          width: 152,
+          height: 270,
+        }}
+      >
+        {motionUrl && (
+          <video
+            src={motionUrl}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            onMouseEnter={(e) => {
+              e.currentTarget.play().catch(() => {});
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.pause();
+              e.currentTarget.currentTime = 0;
+            }}
+            className="absolute inset-0 h-full w-full object-cover opacity-95"
+          />
+        )}
+        {/* Vignette + scrim com a cor base do tema. Garante contraste do
+            texto e dá ao preview a mesma temperatura do render final. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse at center, rgba(0,0,0,0.0) 30%, ${theme.bg} 110%), linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.78) 100%)`,
+          }}
+        />
+        {/* Cantoneira tipo o frame real */}
+        <div
+          className="absolute left-2 top-2 right-2 flex items-start justify-between text-[8px] uppercase tracking-[0.18em]"
+          style={{ color: theme.highlight, textShadow: "0 1px 2px rgba(0,0,0,0.85)" }}
+        >
+          <span className="font-semibold">{kicker}</span>
+          <span className="text-[10px]">{glifo}</span>
+        </div>
+        {/* Frase central */}
+        <div
+          className="absolute inset-x-2 top-1/2 -translate-y-1/2 text-center italic leading-snug"
+          style={{
+            color: theme.text,
+            fontFamily: "'Cormorant Garamond', 'Cormorant', serif",
+            fontSize: fraseFontPx,
+            textShadow: "0 1px 4px rgba(0,0,0,0.85)",
+            letterSpacing: 0.1,
+          }}
+        >
+          {frase}
+        </div>
+        {/* Rodapé tipo o frame final */}
+        <div
+          className="absolute bottom-1.5 left-0 right-0 text-center text-[7px] uppercase tracking-[0.2em]"
+          style={{ color: theme.highlightSoft, textShadow: "0 1px 2px rgba(0,0,0,0.85)" }}
+        >
+          Vivianne · seteveus.space
+        </div>
+      </div>
+      <div
+        className="rounded px-1 py-0.5 text-[8px]"
+        style={{
+          background: theme.bg,
+          color: theme.highlight,
+          border: `1px solid ${theme.highlightSoft}`,
+        }}
+        title="Tema activo nesta linha"
+      >
+        🎨 {theme.label.split(" (")[0]}
+      </div>
+      {(audioMood || motionMood) && (
+        <div className="text-[8px] text-escola-creme-50 leading-tight">
+          {motionMood && <div>🎞 {motionMood}</div>}
+          {audioMood && (
+            <div style={{ color: moodMatch === true ? "#7bb380" : undefined }}>
+              🔊 {audioMood} {moodMatch === false ? "≠" : moodMatch === true ? "✓" : ""}
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>
@@ -3798,6 +4121,7 @@ function BulkPreviewTable({
   themeId,
   overrides,
   onChangeOverrides,
+  moodByMotion,
 }: {
   ano: number;
   mes: number;
@@ -3810,6 +4134,7 @@ function BulkPreviewTable({
   themeId: string;
   overrides: Record<number, { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }>;
   onChangeOverrides: (next: Record<number, { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }>) => void;
+  moodByMotion: Record<string, string>;
 }) {
   const items = useMemo(() => {
     const frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string; dia: DiaSemana }>> = {
@@ -3832,10 +4157,11 @@ function BulkPreviewTable({
       diaFim,
       motionPool,
       audioPool,
+      moodByMotion,
       frasesPorDia,
       frasesEspeciais,
     });
-  }, [ano, mes, diaInicio, diaFim, motionPool, audioPool]);
+  }, [ano, mes, diaInicio, diaFim, motionPool, audioPool, moodByMotion]);
 
   const setOverride = (dayIndex: number, patch: { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }) => {
     const next = { ...overrides };
@@ -3917,7 +4243,8 @@ function BulkPreviewTable({
             <tr>
               <th className="text-left py-1 pr-2">Data</th>
               <th className="text-left py-1 pr-2">Dia</th>
-              <th className="text-left py-1 pr-2 min-w-[280px]">Frase</th>
+              <th className="text-left py-1 pr-2">Preview</th>
+              <th className="text-left py-1 pr-2 min-w-[260px]">Frase</th>
               <th className="text-left py-1 pr-2">Motion</th>
               <th className="text-left py-1 pr-2">Áudio</th>
               <th className="text-left py-1 pr-2">Tema</th>
@@ -3940,8 +4267,8 @@ function BulkPreviewTable({
                   <td className="py-1.5 pr-2 whitespace-nowrap">
                     {DIA_LONGO_PT[it.dia]}
                     {it.especial && (
-                      <span
-                        className="ml-1 rounded px-1 py-0.5 text-[9px]"
+                      <div
+                        className="mt-0.5 rounded px-1 py-0.5 text-[9px]"
                         style={{
                           background: "rgba(194, 143, 96, 0.18)",
                           color: COBRE,
@@ -3949,15 +4276,29 @@ function BulkPreviewTable({
                         title={LABEL_ESPECIAL[it.especial]}
                       >
                         {KICKER_ESPECIAL[it.especial]}
-                      </span>
+                      </div>
                     )}
+                    <div className="mt-1 text-[9px] text-escola-creme-50">
+                      ritmo: {it.especial ?? it.dia}
+                    </div>
+                  </td>
+                  <td className="py-1.5 pr-2">
+                    <RowFramePreview
+                      motionUrl={motionEff}
+                      frase={fraseEff}
+                      dia={it.dia}
+                      especial={it.especial}
+                      theme={rowTheme}
+                      audioMood={audioEff ? moodFromAudioUrlClient(audioEff) : null}
+                      motionMood={moodByMotion[motionEff] ?? null}
+                    />
                   </td>
                   <td className="py-1.5 pr-2">
                     <div className="flex items-start gap-1">
                       <textarea
                         value={fraseEff}
                         onChange={(e) => setOverride(it.dayIndex, { fraseTexto: e.target.value })}
-                        rows={2}
+                        rows={3}
                         className="flex-1 rounded border border-escola-border bg-escola-bg px-1.5 py-1 text-[10px] italic text-escola-creme"
                         style={{
                           borderColor: ov.fraseTexto ? COBRE : undefined,
@@ -3989,45 +4330,29 @@ function BulkPreviewTable({
                     )}
                   </td>
                   <td className="py-1.5 pr-2">
-                    <div className="flex items-start gap-1.5">
-                      {motionEff && (
-                        <video
-                          src={motionEff}
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          onMouseEnter={(e) => {
-                            const v = e.currentTarget;
-                            v.play().catch(() => {});
-                          }}
-                          onMouseLeave={(e) => {
-                            const v = e.currentTarget;
-                            v.pause();
-                            v.currentTime = 0;
-                          }}
-                          className="h-16 w-9 shrink-0 rounded border border-escola-border bg-black object-cover"
-                          style={{ aspectRatio: "9 / 16" }}
-                        />
-                      )}
-                      <select
-                        value={motionEff}
-                        onChange={(e) => setOverride(it.dayIndex, { motionUrl: e.target.value })}
-                        className="w-full max-w-[180px] rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme"
-                        style={{ borderColor: ov.motionUrl ? COBRE : undefined }}
-                      >
-                        <option value={motionEff}>
-                          {motionsLib.find((m) => m.url === motionEff)?.name ?? motionEff.split("/").pop() ?? "?"}
-                        </option>
-                        {motionsLib
-                          .filter((m) => m.url !== motionEff)
-                          .map((m) => (
-                            <option key={m.url} value={m.url}>
-                              {m.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
+                    <select
+                      value={motionEff}
+                      onChange={(e) => setOverride(it.dayIndex, { motionUrl: e.target.value })}
+                      className="w-full max-w-[180px] rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme"
+                      style={{ borderColor: ov.motionUrl ? COBRE : undefined }}
+                    >
+                      <option value={motionEff}>
+                        {motionsLib.find((m) => m.url === motionEff)?.name ?? motionEff.split("/").pop() ?? "?"}
+                      </option>
+                      {motionsLib
+                        .filter((m) => m.url !== motionEff)
+                        .map((m) => (
+                          <option key={m.url} value={m.url}>
+                            {m.name}
+                            {moodByMotion[m.url] ? ` · ${moodByMotion[m.url]}` : ""}
+                          </option>
+                        ))}
+                    </select>
+                    {moodByMotion[motionEff] && (
+                      <div className="mt-0.5 text-[9px] text-escola-creme-50">
+                        mood: {moodByMotion[motionEff]}
+                      </div>
+                    )}
                   </td>
                   <td className="py-1.5 pr-2">
                     <select
