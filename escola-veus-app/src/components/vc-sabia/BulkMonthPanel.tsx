@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
 import { phraseToCaptions } from "@/lib/vc-sabia/captions";
+import { buildMjPrompt } from "@/lib/vc-sabia/midjourney";
 
 const MESES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -36,12 +37,28 @@ interface PlanEntry {
   phraseId?: string;
   phraseTheme?: string;
   phraseReused?: boolean;
+  phraseThemeMatched?: boolean;
+  calendarMarkers?: string[];
   motionName: string;
   motionUrl: string;
   motionReused?: boolean;
   audioUrl: string | null;
   mood?: string | null;
 }
+
+const MARKER_LABELS: Record<string, string> = {
+  "first-day-of-year": "1.º do ano",
+  "last-day-of-year": "último do ano",
+  "first-day-of-month": "abertura",
+  "last-day-of-month": "encerramento",
+  "mid-month": "meio do mês",
+  "first-monday-of-month": "1.ª segunda",
+  "sunday": "domingo",
+  "winter-solstice-window": "solstício inverno",
+  "summer-solstice-window": "solstício verão",
+  "spring-equinox-window": "equinócio primavera",
+  "autumn-equinox-window": "equinócio outono",
+};
 
 interface JobStatus {
   day: number;
@@ -768,6 +785,17 @@ export function BulkMonthPanel() {
                     <td className="px-2 py-1 align-top">
                       <div>{p.day}</div>
                       <div className="text-[9px] text-escola-creme-50">{p.date}</div>
+                      {p.calendarMarkers
+                        ?.filter((m) => m !== "regular" && MARKER_LABELS[m])
+                        .slice(0, 2)
+                        .map((m) => (
+                          <div
+                            key={m}
+                            className="mt-0.5 inline-block rounded bg-escola-dourado/15 px-1 text-[8px] text-escola-dourado"
+                          >
+                            {MARKER_LABELS[m]}
+                          </div>
+                        ))}
                     </td>
                     <td className="px-2 py-1">
                       <div className="flex items-start gap-1">
@@ -798,15 +826,54 @@ export function BulkMonthPanel() {
                     </td>
                     <td className="px-2 py-1 align-top">
                       <div className="space-y-1">
-                        <div
-                          className={`truncate text-[10px] ${
-                            p.motionReused ? "text-amber-300" : "text-escola-creme-50"
-                          }`}
-                          title={p.motionName}
-                        >
-                          {p.motionReused && "↺ "}
-                          {p.motionName.slice(0, 20)}…
+                        <div className="flex items-start gap-2">
+                          <video
+                            src={p.motionUrl}
+                            preload="metadata"
+                            muted
+                            playsInline
+                            onMouseEnter={(e) => {
+                              const v = e.currentTarget;
+                              v.play().catch(() => {});
+                            }}
+                            onMouseLeave={(e) => {
+                              const v = e.currentTarget;
+                              v.pause();
+                              v.currentTime = 0;
+                            }}
+                            className={`h-16 w-9 shrink-0 rounded border bg-black object-cover ${
+                              p.motionReused ? "border-amber-500/60" : "border-escola-border"
+                            }`}
+                          />
+                          <div
+                            className={`min-w-0 flex-1 break-all text-[10px] leading-tight ${
+                              p.motionReused ? "text-amber-300" : "text-escola-creme-50"
+                            }`}
+                            title={p.motionName}
+                          >
+                            {p.motionReused && "↺ "}
+                            {p.motionName.slice(0, 20)}…
+                          </div>
                         </div>
+                        {p.phraseTheme && (
+                          <button
+                            onClick={() => {
+                              const prompt = buildMjPrompt({
+                                theme: p.phraseTheme!,
+                                mood: (p.mood as string) || null,
+                                variant: i % 3,
+                                phrase: p.phrase,
+                              });
+                              navigator.clipboard.writeText(prompt).catch(() => {});
+                              setCopiedKey(`mj-${p.day}`);
+                              setTimeout(() => setCopiedKey(null), 1500);
+                            }}
+                            className="block w-full rounded border border-violet-500/40 bg-violet-500/10 px-1 py-0.5 text-[9px] text-violet-300 hover:bg-violet-500/20"
+                            title={`Copia prompt Midjourney 9:16 com --video para o tema "${p.phraseTheme}"${p.mood ? ` + mood ${p.mood}` : ""}.`}
+                          >
+                            {copiedKey === `mj-${p.day}` ? "✓ copiado" : "⌘ copy MJ prompt"}
+                          </button>
+                        )}
                         <select
                           value={(p.mood as string) || ""}
                           onChange={(e) =>
@@ -1015,25 +1082,45 @@ export function BulkMonthPanel() {
                                   {showAll ? "só não-usados" : "ver todos"}
                                 </button>
                               </div>
-                              <select
-                                onChange={(e) => {
-                                  const val = e.target.value;
-                                  if (!val) return;
-                                  const m = allMotions.find((x) => x.url === val);
-                                  if (m) swapMotion(j.jobId, m.url, m.name);
-                                }}
-                                disabled={swapping[j.jobId] === "loading"}
-                                className="block w-full rounded border border-escola-border bg-escola-card px-1 py-0.5 text-[10px] text-escola-creme disabled:opacity-50"
-                                defaultValue=""
-                              >
-                                <option value="">— escolhe motion —</option>
-                                {list.map((m) => (
-                                  <option key={m.url} value={m.url}>
-                                    {usedMotionNames.has(m.name) ? "↺ " : ""}
-                                    {m.name.slice(0, 32)}
-                                  </option>
-                                ))}
-                              </select>
+                              <div className="grid max-h-40 grid-cols-4 gap-1 overflow-y-auto">
+                                {list.map((m) => {
+                                  const reused = usedMotionNames.has(m.name);
+                                  return (
+                                    <button
+                                      key={m.url}
+                                      onClick={() => swapMotion(j.jobId, m.url, m.name)}
+                                      disabled={swapping[j.jobId] === "loading"}
+                                      title={`${reused ? "↺ ja usado · " : ""}${m.name}`}
+                                      className={`group relative overflow-hidden rounded border bg-black disabled:opacity-50 ${
+                                        reused
+                                          ? "border-amber-500/60"
+                                          : "border-escola-border hover:border-emerald-500/60"
+                                      }`}
+                                    >
+                                      <video
+                                        src={m.url}
+                                        preload="metadata"
+                                        muted
+                                        playsInline
+                                        onMouseEnter={(e) => {
+                                          e.currentTarget.play().catch(() => {});
+                                        }}
+                                        onMouseLeave={(e) => {
+                                          const v = e.currentTarget;
+                                          v.pause();
+                                          v.currentTime = 0;
+                                        }}
+                                        className="h-14 w-full object-cover"
+                                      />
+                                      {reused && (
+                                        <span className="absolute right-0 top-0 bg-amber-500/80 px-1 text-[8px] text-black">
+                                          ↺
+                                        </span>
+                                      )}
+                                    </button>
+                                  );
+                                })}
+                              </div>
                               {list.length === 0 && (
                                 <div className="text-[9px] text-red-300">
                                   Todos os motions já foram usados. Gera mais clips

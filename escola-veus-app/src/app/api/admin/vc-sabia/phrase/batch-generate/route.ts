@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { calendarContextFor, calendarLabel } from "@/lib/vc-sabia/calendar";
 
 export const maxDuration = 90;
 export const runtime = "nodejs";
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: { count?: number; avoid?: string[] };
+  let body: { count?: number; avoid?: string[]; dates?: string[] };
   try {
     body = await req.json();
   } catch {
@@ -32,10 +33,28 @@ export async function POST(req: NextRequest) {
 
   const count = Math.max(1, Math.min(40, Number(body.count ?? 7)));
   const avoid = Array.isArray(body.avoid) ? body.avoid.slice(0, 80) : [];
+  const dates = Array.isArray(body.dates) ? body.dates.slice(0, count) : [];
 
   const avoidBlock =
     avoid.length > 0
       ? `\n\nNAO repitas nem parafraseies estas frases ja usadas:\n${avoid.map((a, i) => `${i + 1}. ${a}`).join("\n")}`
+      : "";
+
+  // Contexto de calendario por dia: dia do mes, abertura/encerramento de
+  // ciclos, solsticios, etc. Cola cada frase a um dia especifico para o
+  // Claude poder modelar arcos (primeira/ultima frase do mes, etc).
+  const dateBlock =
+    dates.length > 0
+      ? `\n\nCALENDARIO — cada frase corresponde a um dia. Modela arco emocional:\n${dates
+          .map((iso, i) => {
+            const [y, m, d] = iso.split("-").map(Number);
+            if (!y || !m || !d) return `${i + 1}. ${iso}`;
+            const ctx = calendarContextFor(y, m, d);
+            const label = calendarLabel(ctx);
+            const hint = label ? ` · ${label}` : "";
+            return `${i + 1}. ${iso} (dia ${ctx.dayOfMonth}/${ctx.daysInMonth} do mes)${hint}`;
+          })
+          .join("\n")}\n\nDIRECTIVAS POR MARCADOR:\n- "abertura" / "1.º do ano" / "1.ª segunda" → tema de inicio, semente, raiz, manha primeira (florescer, sonhar-com-raizes, presenca-leve).\n- "encerramento" / "último do ano" → tema de fecho, integracao, agradecimento (inteireza, gratidao, autoperdao, beleza-de-existir).\n- "meio do mes" → reafirmar caminho, raiz, paciencia (inteireza, confianca-no-caminho).\n- "domingo" → suavidade, descanso, corpo (suavidade-e-descanso, corpo-como-casa).\n- "solsticio inverno" / "equinocio outono" → temas de pausa e recolhimento.\n- "solsticio verao" / "equinocio primavera" → temas de expansao e alegria.\nNAO precisas de mencionar a data na frase. O dia influencia tema e tom, nao o texto.`
       : "";
 
   const systemPrompt = `És a Vivianne dos Santos, autora da serie "VC Sabia Que..." (Instagram, manha contemplativa).
@@ -74,7 +93,7 @@ Regras formais:
 
 Temas possiveis: autoconhecimento, autoamor, autoperdao, florescer-no-tempo-certo, presenca-leve, suavidade-e-descanso, sonhar-com-raizes, inteireza, corpo-como-casa, confianca-no-caminho, gratidao, alegria-simples, beleza-de-existir.
 
-GERA EXACTAMENTE ${count} frases. Todas distintas entre si. Imagens diferentes (nao todas com agua, nao todas com lua).${avoidBlock}
+GERA EXACTAMENTE ${count} frases. Todas distintas entre si. Imagens diferentes (nao todas com agua, nao todas com lua).${dateBlock}${avoidBlock}
 
 Output strict JSON, sem markdown, sem code fences:
 {

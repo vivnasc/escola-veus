@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loadMergedFrases } from "@/lib/vc-sabia/phrases";
 import { loadUsageHistory } from "@/lib/vc-sabia/usage-history";
+import { calendarContextFor, preferredThemesFor } from "@/lib/vc-sabia/calendar";
 
 export const maxDuration = 30;
 export const runtime = "nodejs";
@@ -117,36 +118,51 @@ export async function POST(req: NextRequest) {
   const allUsed = history.usedPhraseIds.size >= frases.length;
   const usedThisPlan = new Set<string>();
 
-  // Helper: encontra a proxima frase nao usada (no historico nem neste plano)
+  // Helper: encontra a proxima frase nao usada, com vies para temas
+  // preferidos consoante o contexto de calendario do dia. Cai para
+  // cursor sequencial se nao houver match de tema.
   let phraseCursor = phraseStartIndex;
-  const pickNextPhrase = () => {
+  const pickNextPhrase = (preferredThemes: string[]) => {
+    // 1ª passagem: tenta cada tema preferido, em ordem, procurando
+    // uma frase desse tema ainda nao usada (nem global nem no plano).
+    for (const theme of preferredThemes) {
+      for (let i = 0; i < frases.length; i++) {
+        const idx = (phraseCursor + i) % frases.length;
+        const p = frases[idx];
+        if (p.tema !== theme) continue;
+        if (history.usedPhraseIds.has(p.id)) continue;
+        if (usedThisPlan.has(p.id)) continue;
+        usedThisPlan.add(p.id);
+        phraseCursor = idx + 1;
+        return { phrase: p, reused: false, matchedTheme: true };
+      }
+    }
+    // 2ª passagem: cursor sequencial sem filtro de tema (nao usadas)
     let attempts = 0;
     while (attempts < frases.length) {
       const p = frases[phraseCursor % frases.length];
       phraseCursor++;
-      const isUsedGlobally = history.usedPhraseIds.has(p.id);
-      const isUsedThisPlan = usedThisPlan.has(p.id);
-      if (!isUsedGlobally && !isUsedThisPlan) {
+      if (!history.usedPhraseIds.has(p.id) && !usedThisPlan.has(p.id)) {
         usedThisPlan.add(p.id);
-        return { phrase: p, reused: false };
+        return { phrase: p, reused: false, matchedTheme: false };
       }
-      // Se ja todas usadas globalmente, aceita repetir do historico mas
-      // continua a tentar evitar repeticao DENTRO deste plano
-      if (allUsed && !isUsedThisPlan) {
+      if (allUsed && !usedThisPlan.has(p.id)) {
         usedThisPlan.add(p.id);
-        return { phrase: p, reused: true };
+        return { phrase: p, reused: true, matchedTheme: false };
       }
       attempts++;
     }
     // Fallback ultimo recurso: usa qualquer uma
     const p = frases[phraseCursor % frases.length];
     phraseCursor++;
-    return { phrase: p, reused: true };
+    return { phrase: p, reused: true, matchedTheme: false };
   };
 
   const plan = days.map((day, i) => {
     const date = new Date(Date.UTC(year, month - 1, day));
-    const { phrase, reused: phraseReused } = pickNextPhrase();
+    const ctx = calendarContextFor(year, month, day);
+    const preferred = preferredThemesFor(ctx);
+    const { phrase, reused: phraseReused, matchedTheme } = pickNextPhrase(preferred);
     const motion = motions[(i + motionStartIndex) % motions.length];
     const motionReused = history.usedMotionNames.has(motion.name);
     const mood = motionTags[motion.name];
@@ -160,6 +176,8 @@ export async function POST(req: NextRequest) {
       phraseId: phrase.id,
       phraseTheme: phrase.tema,
       phraseReused,
+      phraseThemeMatched: matchedTheme,
+      calendarMarkers: ctx.markers,
       motionName: motion.name,
       motionUrl: motion.url,
       motionReused,
