@@ -4076,13 +4076,6 @@ function RowFramePreview({
         >
           {frase}
         </div>
-        {/* Rodapé tipo o frame final */}
-        <div
-          className="absolute bottom-1.5 left-0 right-0 text-center text-[7px] uppercase tracking-[0.2em]"
-          style={{ color: theme.highlightSoft, textShadow: "0 1px 2px rgba(0,0,0,0.85)" }}
-        >
-          Vivianne · seteveus.space
-        </div>
       </div>
       <div
         className="rounded px-1 py-0.5 text-[8px]"
