@@ -176,6 +176,7 @@ export async function POST(req: NextRequest) {
         item.captions = phraseToCaptions({
           phrase: item.fraseTexto,
           dia: item.dia,
+          especial: item.especial ?? null,
         });
       }
       if (typeof ov.motionUrl === "string" && ov.motionUrl.trim()) {

@@ -294,11 +294,17 @@ export function HojeEmMimPreviewPanel() {
   const [allMonthOverrides, setAllMonthOverrides] = useState<
     Record<string, Record<number, DayOverride>>
   >({});
+  // Flag: utilizador já editou algo nesta sessão para este mês.
+  // Sem isto, o fetch async do Supabase chega depois e clobbera
+  // edições in-progress — que foi o que aconteceu antes (a Vivianne
+  // editava motion/áudio e depois o render saía com a config antiga).
+  const userEditedRef = useRef(false);
   useEffect(() => {
     let cancelled = false;
     setOverridesLoaded(false);
+    userEditedRef.current = false;
     (async () => {
-      // localStorage imediato
+      // 1. localStorage imediato — serve enquanto Supabase responde
       let local: Record<string, Record<number, DayOverride>> | null = null;
       if (typeof window !== "undefined") {
         try {
@@ -312,13 +318,24 @@ export function HojeEmMimPreviewPanel() {
         setAllMonthOverrides(local);
         setOverridesByDay(local[monthKey] ?? {});
       }
+      // 2. Supabase (canónico) — só sobrescreve se utilizador ainda
+      //    NÃO editou nada nesta sessão. Senão respeita o que está
+      //    em memória e deixa o save debounced propagar.
       try {
         const res = await fetch("/api/admin/hoje-em-mim/overrides");
         if (cancelled) return;
         const json = await res.json();
         if (res.ok && json.byMonth) {
-          setAllMonthOverrides(json.byMonth);
-          setOverridesByDay(json.byMonth[monthKey] ?? {});
+          if (!userEditedRef.current) {
+            setAllMonthOverrides(json.byMonth);
+            setOverridesByDay(json.byMonth[monthKey] ?? {});
+          } else {
+            // Apenas absorve outros meses, mantém o actual em memória
+            setAllMonthOverrides((prev) => ({
+              ...json.byMonth,
+              [monthKey]: prev[monthKey] ?? {},
+            }));
+          }
         }
       } catch {
         /* silencioso */
@@ -331,6 +348,16 @@ export function HojeEmMimPreviewPanel() {
     };
     // monthKey muda quando ano/mes mudam: recarrega overrides do mês certo
   }, [monthKey]);
+
+  // Wrapper: marca "userEdited" sempre que setOverridesByDay é chamado
+  // do user code. Garante que o fetch async não clobbera.
+  const setOverridesByDayUserAction = useCallback(
+    (next: Record<number, DayOverride> | ((prev: Record<number, DayOverride>) => Record<number, DayOverride>)) => {
+      userEditedRef.current = true;
+      setOverridesByDay(next);
+    },
+    []
+  );
 
   useEffect(() => {
     if (!overridesLoaded) return;
@@ -934,24 +961,48 @@ export function HojeEmMimPreviewPanel() {
           audiosLib={audiosLib}
           themeId={themeId}
           overrides={overridesByDay}
-          onChangeOverrides={setOverridesByDay}
+          onChangeOverrides={setOverridesByDayUserAction}
           moodByMotion={moodByMotion}
         />
 
-        <button
-          onClick={submitJob}
-          disabled={submitting || !rangeOk}
-          className="w-full max-w-xl rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
-          style={{
-            borderColor: COBRE,
-            color: COBRE,
-            background: "rgba(194, 143, 96, 0.1)",
-          }}
-        >
-          {submitting
-            ? "a submeter…"
-            : `▶ Gerar dias ${diaInicio}-${diaFim} de ${MESES_PT[mes - 1]} ${ano} (${numItens})`}
-        </button>
+        {(() => {
+          const ovCount = Object.values(overridesByDay).filter(
+            (v) =>
+              v &&
+              (v.fraseTexto || v.motionUrl || v.audioUrl !== undefined || v.theme)
+          ).length;
+          return (
+            <div className="max-w-xl space-y-1">
+              <button
+                onClick={submitJob}
+                disabled={submitting || !rangeOk}
+                className="w-full rounded border px-3 py-2 text-xs disabled:opacity-50 transition-colors"
+                style={{
+                  borderColor: COBRE,
+                  color: COBRE,
+                  background: "rgba(194, 143, 96, 0.1)",
+                }}
+              >
+                {submitting
+                  ? "a submeter…"
+                  : `▶ Gerar dias ${diaInicio}-${diaFim} de ${MESES_PT[mes - 1]} ${ano} (${numItens})`}
+              </button>
+              {ovCount > 0 && (
+                <div
+                  className="rounded border px-2 py-1 text-[10px]"
+                  style={{
+                    borderColor: COBRE_FRACO,
+                    background: "rgba(194, 143, 96, 0.06)",
+                    color: COBRE,
+                  }}
+                >
+                  ✓ {ovCount} dia(s) com edição manual — vão para o render
+                  exactamente como editaste (motion, áudio, frase, tema).
+                </div>
+              )}
+            </div>
+          );
+        })()}
         {submitError && (
           <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
             {submitError}
