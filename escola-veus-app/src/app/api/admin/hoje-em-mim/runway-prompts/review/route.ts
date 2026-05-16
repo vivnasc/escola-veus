@@ -83,60 +83,45 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const systemPrompt = `És prompt engineer para Runway Gen4 Turbo image_to_video, vertical 720:1280, 5-10s. Output usado como fundo contemplativo de uma frase em overlay para o post de fecho de dia "Hoje, em Mim".
+  const systemPrompt = `Geras motion prompts CURTOS para Runway Gen4 Turbo image_to_video (vertical 720:1280, 5-10s). Output para o post "Hoje, em Mim".
 
-OBJECTIVO DO MOTION
-Movimento subtil mas REAL e CRÍVEL — como uma fotografia que ganhou vida ao vento. Nem fotografia parada, nem desenho animado.
+REGRA DE OURO
+Runway Gen4 Turbo reage MAL a prompts longos. UMA frase, MÁXIMO 150 caracteres. Parece um título de documentário, não uma receita.
 
-3 MODOS DE FALHA A EVITAR
-A. "Fogo de artifício" — chama/lume vira pontos a piscar dramaticamente.
-   Causa: "flicker", "dance", "spark", "pulse".
-   Padrão certo: "candle flame breathes — top of flame rises 2mm and lowers smoothly over 4 seconds, one continuous cycle, no sparks, no flicker"
-B. "Estátua" — imagem fica parada.
-   Causa: prompts vagos ("contemplative", "peaceful").
-   Padrão certo: identifica UM elemento específico e descreve EXACTAMENTE como mexe (cm, segundos, direcção)
-C. "Brusco / artificial CGI" — movimento interpolado.
-   Causa: "fast", "sudden", "shake".
-   Padrão certo: verbos contínuos: breathes, drifts, flows, settles, rises and falls, billows
+PRINCÍPIO DO TOM CONTEMPLATIVO
+Contemplativo NÃO é câmara a mexer, é UM ELEMENTO DO AMBIENTE a mexer enquanto tudo o resto está parado. A câmara fica sempre estática (não escrevas "camera drift", "pan", "zoom"). O motion é da chama, da água, do fumo, da folha, do reflexo. Nunca da câmara.
 
-REGRAS NUMÉRICAS OBRIGATÓRIAS
-Para cada elemento que mexe:
-- Amplitude concreta: "1-2cm", "5 degrees", "barely 3% of frame"
-- Duração: "over 4-6 seconds", "every 8 seconds"
-- Direcção: "left-to-right", "outward from center"
+Brevidade igual aos prompts curtos dos longos, mas motion é do elemento, não da câmara.
 
-VOCABULÁRIO PREFERIDO
-Bom: breathes, drifts, flows, rises, settles, billows, undulates, glistens, ripples, glides, sways, trails
-Mau: flickers, dances, sparks, jumps, pulses, twinkles fast, shakes, flashes
+ANTIPADRÕES
+- Listar amplitudes em mm/cm/graus → vira CGI artificial
+- Descrever motion por segundos → vira robótico
+- "flicker", "dance", "spark", "pulse" → fogo de artifício
+- Lista negativa longa → confunde Runway
 
-EXEMPLOS REFERÊNCIA
+PADRÃO BOM
+- 1 frase de 50-150 caracteres
+- 1 verbo central suave + qualificador "slow" ou "gentle"
+- Câmara estática é implícita
+- Adjetivos atmosféricos OK: "ambient", "warm", "soft"
 
-Fogueira/chama: "Static camera. The flame breathes — its top moves up 2cm then settles back smoothly over 5 seconds, one continuous cycle. Embers below glow with a slow warm glow that fades up and down across the 5 seconds. Smoke rises in a gentle thin column drifting slightly left. Background remains perfectly still. No sparks, no flicker."
-
-Água/mar: "Static camera. Slow undulation across the water — small ripples drift from right to left across 5 seconds, amplitude 1-2cm vertical. Moonlight reflection stretches and contracts gently with each ripple. Shore remains perfectly still."
-
-Vela em sala: "Static camera. The candle flame breathes slowly — top rises 3mm and settles back over 4 seconds. Shadow on the wall behind grows and retreats with the flame, very softly. Air remains still. No flicker, no jumps, no sparks."
-
-Folhas: "Static camera. The branch tilts 4 degrees right over 3 seconds, then back over the next 3 seconds. Smaller leaves at the tip move 1cm with the breeze. Trunk and background remain still."
-
-Estrelas/céu: "Static camera. Clouds drift left to right across 5 seconds, covering 5% of frame width. Stars in the gaps each fade up and down on independent 4-second cycles. Horizon still."
-
-ESTRUTURA OBRIGATÓRIA DO PROMPT (inglês)
-1. "Static camera."
-2. Para cada um de 1-3 elementos visíveis na imagem real:
-   <verbo preferido> + <amplitude cm/graus/%> + <duração s> + <direcção>
-3. "Background remains perfectly still."
-4. Negativo curto: "No sparks, no flicker, no sudden movement, no zoom, no pan, no rotation, no fast cuts."
-
-LISTA NEGRA (não usar)
-"flicker", "flickering", "dance", "dancing", "dramatic", "fast", "quick", "sudden", "spark", "burst", "twinkle" sem qualificar duração, "contemplative", "peaceful", "atmospheric", "serene"
+EXEMPLOS
+- "candle flame breathes softly in still air, warm amber light, ambient"
+- "moonlight ripples slowly across dark water, gentle undulation"
+- "white smoke curls upward from incense, slow drift, intimate room"
+- "leaves sway gently in night breeze, soft rustle of branches"
+- "embers glow and dim slowly in low brazier, ambient warmth"
+- "stars twinkle softly over silhouetted trees, slow night drift"
+- "linen curtain billows in moonlit window, soft fabric motion"
 
 OUTPUT — JSON estrito, sem markdown:
 {
-  "suggestedPrompt": "<inglês, ESTRUTURA OBRIGATÓRIA, pronto a colar>",
-  "reasoning": "<1-2 frases pt explicando que elementos e porquê>",
-  "concerns": ["<alerta pt se houver risco específico, senão array vazio>"]
-}`;
+  "suggestedPrompt": "<inglês, UMA frase, 50-150 chars, sem números>",
+  "reasoning": "<1 frase pt>",
+  "concerns": []
+}
+
+Se a imagem não tem 1 elemento dinâmico claro, devolve: "ambient air moves softly, gentle natural motion of background elements, warm light".`;
 
   const userText = [
     "Olha para esta imagem que vai ser submetida ao Runway Gen4 Turbo image_to_video em ratio vertical 720:1280, com duração de 10 segundos.",
