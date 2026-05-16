@@ -1,18 +1,30 @@
 // Tipos partilhados entre o gerador hardcoded ("A Estação dos Véus")
 // e o sistema de colecções dinâmicas (carousel_collections).
 
+/**
+ * Campos opcionais de imagem-fundo, partilhados por todos os tipos de slide.
+ * Quando `fundo` é uma URL pública, Puppeteer/template renderiza-a com scrim
+ * por baixo do texto. `notaVisual` é override para o prompt-builder.
+ */
+export type FundoFields = {
+  fundo?: string;        // URL pública (Supabase) da imagem MJ
+  fundoClaro?: boolean;  // Slide com base clara (escolhe scrim escuro)
+  decoracao?: boolean;   // Manter glow/vignette por cima do fundo
+  notaVisual?: string;   // Override do prompt MJ derivado
+};
+
 export type SlideCapa = {
   tipo: "capa";
   linha1: string;
   linha2: string;
-};
+} & FundoFields;
 
 export type SlideConteudo = {
   tipo: "conteudo";
   estilo: "poetico" | "prosa";
   texto: string;
   titulo?: string;
-};
+} & FundoFields;
 
 export type SlideCta = {
   tipo: "cta";
@@ -20,7 +32,7 @@ export type SlideCta = {
   recurso: string;
   descricao: string;
   url: string;
-};
+} & FundoFields;
 
 export type Slide = SlideCapa | SlideConteudo | SlideCta;
 
@@ -30,6 +42,7 @@ export type Dia = {
   subtitulo: string; // Linha curta italic abaixo do veu
   romano: string;    // I / VII
   slides: Slide[];
+  fundo?: string;    // Fallback de fundo para todos os slides do dia
 };
 
 export type Colecao = {

@@ -1,36 +1,16 @@
 // Conteúdo do Carrossel "A Estação dos Véus" — 42 slides (7 dias × 6).
 // Espelha carrossel-veus/content.json. Mantêr os dois sincronizados se editares.
+// Tipos vêm de @/lib/carousel-types para haver uma única fonte da verdade.
 
-export type SlideCapa = {
-  tipo: "capa";
-  linha1: string;
-  linha2: string;
-};
+export type {
+  Slide,
+  SlideCapa,
+  SlideConteudo,
+  SlideCta,
+  Dia,
+} from "@/lib/carousel-types";
 
-export type SlideConteudo = {
-  tipo: "conteudo";
-  estilo: "poetico" | "prosa";
-  texto: string;
-  titulo?: string;
-};
-
-export type SlideCta = {
-  tipo: "cta";
-  icone: string;
-  recurso: string;
-  descricao: string;
-  url: string;
-};
-
-export type Slide = SlideCapa | SlideConteudo | SlideCta;
-
-export type Dia = {
-  numero: number;
-  veu: string;
-  subtitulo: string;
-  romano: string;
-  slides: Slide[];
-};
+import type { Dia } from "@/lib/carousel-types";
 
 export const CAMPANHA = "A Estação dos Véus";
 

@@ -86,6 +86,55 @@ const glowTerra: React.CSSProperties = {
   background: "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(184, 92, 56, 0.10) 0%, transparent 70%)",
 };
 
+/* ─── FUNDO MJ ─────────────────────────────────────────── */
+/**
+ * Camada de imagem-fundo MJ. Renderiza por baixo dos overlays decorativos
+ * (grain/vignette/glow) e do conteúdo. Aplica um scrim para garantir
+ * legibilidade do texto: escuro para fundos com base clara,
+ * radial-warm para fundos escuros (default).
+ */
+function FundoLayer({ url, claro }: { url: string; claro?: boolean }) {
+  const scrim: React.CSSProperties = claro
+    ? {
+        // Slide com texto escuro: cobrir centro com ivory translúcido.
+        background:
+          "radial-gradient(ellipse 75% 60% at center, rgba(245,234,213,0.78) 0%, rgba(245,234,213,0.30) 80%)",
+      }
+    : {
+        // Slide com texto claro: escurecer o fundo com warm-dark.
+        background:
+          "radial-gradient(ellipse 70% 55% at center, rgba(15,12,10,0.55) 0%, rgba(15,12,10,0.85) 100%)",
+      };
+  return (
+    <>
+      <img
+        src={url}
+        alt=""
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+          userSelect: "none",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 1,
+          ...scrim,
+        }}
+      />
+    </>
+  );
+}
+
 /* ─── CAPA ─────────────────────────────────────────── */
 
 function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "capa" }>; C: CarouselTheme }) {
@@ -107,6 +156,7 @@ function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "
     else apply();
   }, [dia.veu]);
 
+  const fundoUrl = slide.fundo ?? dia.fundo;
   return (
     <div
       style={{
@@ -115,6 +165,7 @@ function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "
         color: C.ivory,
       }}
     >
+      {fundoUrl && <FundoLayer url={fundoUrl} claro={slide.fundoClaro} />}
       <div style={grainDarkStyle} />
       <div style={vignetteDark} />
       <div style={glowGold} />
@@ -260,6 +311,10 @@ function Conteudo({
   const num = String(indice + 1).padStart(2, "0");
   const ePoetico = slide.estilo === "poetico";
   const longo = slide.texto.length > 200;
+  const fundoUrl = slide.fundo ?? dia.fundo;
+  // Conteúdo tem texto escuro sobre base clara → scrim "claro" por default
+  // (escurece o fundo o suficiente? não: aqui queremos clarear o fundo).
+  const fundoClaro = slide.fundoClaro ?? true;
 
   return (
     <div
@@ -269,6 +324,7 @@ function Conteudo({
         color: C.ink,
       }}
     >
+      {fundoUrl && <FundoLayer url={fundoUrl} claro={fundoClaro} />}
       <div style={grainStyle} />
       <div style={vignetteLight} />
 
@@ -456,6 +512,7 @@ function Cta({ slide, C }: { slide: Extract<SlideType, { tipo: "cta" }>; C: Caro
     else apply();
   }, [slide.recurso]);
 
+  const fundoUrl = slide.fundo;
   return (
     <div
       style={{
@@ -464,6 +521,7 @@ function Cta({ slide, C }: { slide: Extract<SlideType, { tipo: "cta" }>; C: Caro
         color: C.ivory,
       }}
     >
+      {fundoUrl && <FundoLayer url={fundoUrl} claro={slide.fundoClaro} />}
       <div style={grainDarkStyle} />
       <div style={vignetteDark} />
       <div style={glowTerra} />
