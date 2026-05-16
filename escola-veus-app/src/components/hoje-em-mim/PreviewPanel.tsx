@@ -1205,7 +1205,7 @@ function MetricoolCsvButton({
           📅 Pacote Metricool pronto
         </strong>
         <span className="ml-2 text-escola-creme-50">
-          {ready.length} posts agendados às 19h em IG (Reel) + TikTok + YT Shorts.
+          {ready.length} posts agendados às 19h em IG (Reel) + TikTok.
         </span>
       </div>
       <button
