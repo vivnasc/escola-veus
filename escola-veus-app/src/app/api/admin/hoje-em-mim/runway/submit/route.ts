@@ -42,9 +42,13 @@ type StateItem = {
   ratio: "720:1280";
   runwayTaskId: string | null;
   clipUrl: string | null;
+  /** URLs anteriores preservadas em re-submits/re-renders. */
+  clipUrlHistory?: string[];
   error: string | null;
   submittedAt: string;
   completedAt: string | null;
+  /** Tentativas falhadas de download/upload. */
+  downloadAttempts?: number;
 };
 
 type State = {
@@ -75,6 +79,21 @@ async function loadState(supabase: SupabaseClient): Promise<State> {
 }
 
 async function saveState(supabase: SupabaseClient, state: State) {
+  // Backup snapshot antes do save principal. Se o state corromper,
+  // tens runway.history/<ts>.json para restaurar.
+  try {
+    const ts = new Date().toISOString().replace(/[:.]/g, "-");
+    await supabase.storage
+      .from("course-assets")
+      .upload(
+        `admin/hoje-em-mim/runway.history/${ts}.json`,
+        JSON.stringify(state, null, 2),
+        { contentType: "application/json", upsert: false }
+      );
+  } catch {
+    /* backup não bloqueia save */
+  }
+
   state.updatedAt = new Date().toISOString();
   const { error } = await supabase.storage
     .from("course-assets")
@@ -207,8 +226,17 @@ export async function POST(req: NextRequest) {
         promptRef?: string;
         duration: 5 | 10;
       };
-      // remove qualquer item antigo com mesmo id
+      // Re-submit do mesmo id: preserva clipUrl anterior em history para
+      // a utilizadora não perder o vídeo já gerado se carregar 're-submeter'
+      // por engano. O clipUrl actual passa a null porque vamos esperar pelo
+      // novo render, mas a URL fica em clipUrlHistory.
       const existingIdx = state.items.findIndex((x) => x.id === itm.id);
+      const existing = existingIdx >= 0 ? state.items[existingIdx] : null;
+      const previousHistory = existing?.clipUrlHistory ?? [];
+      const newHistory = existing?.clipUrl
+        ? [...previousHistory, existing.clipUrl]
+        : previousHistory;
+
       const newItem: StateItem = {
         id: itm.id,
         imageUrl: itm.imageUrl,
@@ -219,6 +247,7 @@ export async function POST(req: NextRequest) {
         ratio: "720:1280",
         runwayTaskId: itm.taskId,
         clipUrl: null,
+        clipUrlHistory: newHistory.length > 0 ? newHistory : undefined,
         error: null,
         submittedAt: new Date().toISOString(),
         completedAt: null,
