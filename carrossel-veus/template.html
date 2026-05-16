@@ -55,11 +55,34 @@
       return html;
     }
 
+    // Resolve qual imagem MJ usar para o slide: prioridade slide > dia.
+    // Devolve { src, classes } onde classes inclui `has-bg`, `luz` se aplicável,
+    // e `decor` se o slide pedir decoração explícita sobre a imagem.
+    function fundoFor(dia, slide) {
+      const src = slide.fundo || dia.fundo || null;
+      if (!src) return { src: null, classes: "" };
+      const claro = slide.fundoClaro ?? dia.fundoClaro ?? false;
+      const decoracao = slide.decoracao ?? dia.decoracao ?? false;
+      const classes = [
+        "has-bg",
+        claro ? "luz" : "",
+        decoracao ? "decor" : "",
+      ].filter(Boolean).join(" ");
+      return { src, classes };
+    }
+
+    function bgLayer(fundo) {
+      if (!fundo.src) return "";
+      return `<img class="bg" src="${escapeHtml(fundo.src)}" alt="" /><div class="scrim"></div>`;
+    }
+
     function renderCapa(dia, slide) {
       const numeroBig = dia.numero;
       const isDia7 = dia.numero === 7;
+      const fundo = fundoFor(dia, slide);
       return `
-        <div class="slide capa dia-${dia.numero}">
+        <div class="slide capa dia-${dia.numero} ${fundo.classes}">
+          ${bgLayer(fundo)}
           ${decor({ rainbowArc: isDia7, density: "alta" })}
           <div class="ghost-num">${numeroBig}</div>
           <div class="content">
@@ -94,9 +117,11 @@
         ? `<div class="titulo-pequeno">${escapeHtml(slide.titulo)}</div>` : "";
       const ornamentTop = ePoetico ? `<div class="ornament">~</div>` : "";
       const ornamentBot = ePoetico ? `<div class="ornament">~</div>` : "";
+      const fundo = fundoFor(dia, slide);
 
       return `
-        <div class="slide conteudo ${tipo} dia-${dia.numero}">
+        <div class="slide conteudo ${tipo} dia-${dia.numero} ${fundo.classes}">
+          ${bgLayer(fundo)}
           ${decor({ density: "media" })}
           <div class="content">
             <div class="meta-top">
@@ -121,8 +146,10 @@
 
     function renderCta(dia, slide) {
       const isDia7 = dia.numero === 7;
+      const fundo = fundoFor(dia, slide);
       return `
-        <div class="slide cta dia-${dia.numero}">
+        <div class="slide cta dia-${dia.numero} ${fundo.classes}">
+          ${bgLayer(fundo)}
           ${decor({ rainbowArc: isDia7, rainbowStrip: !isDia7, density: "alta" })}
           <div class="espiral-bg">🌀</div>
           <div class="content">

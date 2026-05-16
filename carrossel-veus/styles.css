@@ -568,3 +568,157 @@ html, body {
 /* ─── Dia 7 — Dualidade: arco-íris explícito ───────────────────────── */
 .slide.dia-7.capa .rainbow-arc,
 .slide.dia-7.cta  .rainbow-arc { opacity: 0.95; }
+
+/* ─── Fundo MJ (imagem por slide ou por dia) ───────────────────────── */
+/* Activado quando o slide tem .has-bg (gerado pelo template quando há `fundo`).
+   Sobrepõe os gradientes do hue, esconde decorações por defeito, aplica scrim
+   e texto claro. Se a imagem MJ for clara/pastel, usa `.luz` para inverter
+   scrim e texto. Se quiseres pirilampos por cima, usa `.decor`. */
+
+.slide.has-bg {
+  background: #1a1410;
+  color: #f8efdf;
+}
+.slide.has-bg .bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  user-select: none;
+  pointer-events: none;
+}
+.slide.has-bg .scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(10, 7, 5, 0.55) 0%,
+    rgba(10, 7, 5, 0.18) 22%,
+    rgba(10, 7, 5, 0.10) 50%,
+    rgba(10, 7, 5, 0.22) 78%,
+    rgba(10, 7, 5, 0.62) 100%);
+}
+.slide.has-bg.luz {
+  color: var(--ink);
+}
+.slide.has-bg.luz .scrim {
+  background: linear-gradient(to bottom,
+    rgba(253, 248, 237, 0.62) 0%,
+    rgba(253, 248, 237, 0.20) 24%,
+    rgba(253, 248, 237, 0.10) 50%,
+    rgba(253, 248, 237, 0.22) 78%,
+    rgba(253, 248, 237, 0.68) 100%);
+}
+
+/* tinta dos elementos quando há imagem (texto claro por defeito) */
+.slide.has-bg .veu,
+.slide.has-bg .abertura,
+.slide.has-bg .subtitulo,
+.slide.has-bg .recurso,
+.slide.has-bg .descricao,
+.slide.has-bg.conteudo .texto,
+.slide.has-bg .meta-bot .marca,
+.slide.has-bg .footer .marca {
+  color: #fbf3e2;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+.slide.has-bg .romano,
+.slide.has-bg .meta-top {
+  color: #f0d68a;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+.slide.has-bg .meta-top .num {
+  color: #f5b8a8;
+}
+.slide.has-bg .ornament,
+.slide.has-bg .meta-bot .ornament,
+.slide.has-bg.poetico .corpo .ornament,
+.slide.has-bg.prosa .titulo-pequeno {
+  color: #f5dc92;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+.slide.has-bg.prosa .titulo-pequeno::before,
+.slide.has-bg.prosa .titulo-pequeno::after {
+  background: #f5dc92;
+  opacity: 0.6;
+}
+.slide.has-bg .rule { background: #f0d68a; opacity: 0.55; }
+.slide.has-bg .url { color: #f5b8a8; }
+
+/* variante luz — texto escuro sobre scrim claro (imagens MJ muito pastel) */
+.slide.has-bg.luz .veu,
+.slide.has-bg.luz .abertura,
+.slide.has-bg.luz .subtitulo,
+.slide.has-bg.luz .recurso,
+.slide.has-bg.luz .descricao,
+.slide.has-bg.luz.conteudo .texto,
+.slide.has-bg.luz .meta-bot .marca,
+.slide.has-bg.luz .footer .marca {
+  color: var(--ink);
+  text-shadow: 0 2px 16px rgba(253, 248, 237, 0.7);
+}
+.slide.has-bg.luz .romano,
+.slide.has-bg.luz .meta-top {
+  color: color-mix(in srgb, var(--hue-deep) 80%, var(--ink));
+  text-shadow: 0 1px 8px rgba(253, 248, 237, 0.7);
+}
+.slide.has-bg.luz .meta-top .num,
+.slide.has-bg.luz .url {
+  color: var(--terracotta);
+  text-shadow: 0 1px 8px rgba(253, 248, 237, 0.7);
+}
+.slide.has-bg.luz .ornament,
+.slide.has-bg.luz .meta-bot .ornament,
+.slide.has-bg.luz.poetico .corpo .ornament,
+.slide.has-bg.luz.prosa .titulo-pequeno {
+  color: color-mix(in srgb, var(--hue-deep) 65%, var(--terracotta));
+  text-shadow: 0 1px 6px rgba(253, 248, 237, 0.65);
+}
+.slide.has-bg.luz.prosa .titulo-pequeno::before,
+.slide.has-bg.luz.prosa .titulo-pequeno::after {
+  background: color-mix(in srgb, var(--hue-deep) 65%, var(--terracotta));
+}
+.slide.has-bg.luz .rule {
+  background: color-mix(in srgb, var(--hue-deep) 70%, var(--ink));
+  opacity: 0.45;
+}
+
+/* ghost-num e espiral discretos quando há imagem (a imagem é a estrela) */
+.slide.has-bg .ghost-num {
+  display: none;
+}
+.slide.has-bg .espiral-bg {
+  color: #fffaeb;
+  opacity: 0.06;
+}
+.slide.has-bg.luz .espiral-bg {
+  color: var(--ink);
+  opacity: 0.06;
+}
+
+/* sem decoração por defeito quando há imagem — opt-in via .decor */
+.slide.has-bg:not(.decor) .glow-hue,
+.slide.has-bg:not(.decor) .paper,
+.slide.has-bg:not(.decor) .vignette-light,
+.slide.has-bg:not(.decor) .fireflies,
+.slide.has-bg:not(.decor) .stars,
+.slide.has-bg:not(.decor) .rainbow-arc,
+.slide.has-bg:not(.decor) .rainbow-strip {
+  display: none;
+}
+
+/* ring do CTA mais subtil sobre imagem */
+.slide.has-bg.cta .icon-ring::before,
+.slide.has-bg.cta .icon-ring::after {
+  border-color: #f0d68a;
+  opacity: 0.55;
+}
+.slide.has-bg.cta .icon-ring {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.35) 0%, transparent 70%);
+}
+.slide.has-bg.luz.cta .icon-ring {
+  background: radial-gradient(circle, rgba(253, 248, 237, 0.6) 0%, transparent 70%);
+}
