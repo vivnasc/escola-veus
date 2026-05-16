@@ -98,8 +98,8 @@ export const CAROUSEL_HASHTAGS_BASE = [
   "espiritualidade",
   "despertar",
   "consciencia",
-  "pt",
-  "portugal",
+  "moçambique",
+  "maputo",
 ];
 
 export function buildCarouselCaption(opts: {
