@@ -144,6 +144,47 @@ export function BulkMonthPanel() {
   };
 
   const [deletingBatch, setDeletingBatch] = useState<string | null>(null);
+  const [allMotions, setAllMotions] = useState<Array<{ name: string; url: string }>>([]);
+  const [swapping, setSwapping] = useState<Record<string, "loading" | { error: string } | undefined>>({});
+  const [swapPickerOpen, setSwapPickerOpen] = useState<string | null>(null);
+
+  const loadAllMotions = useCallback(async () => {
+    if (allMotions.length > 0) return;
+    try {
+      const r = await fetch("/api/admin/vc-sabia/motions", { cache: "no-store" });
+      if (!r.ok) return;
+      const j = await r.json();
+      setAllMotions(j.motions || []);
+    } catch {
+      /* ignore */
+    }
+  }, [allMotions.length]);
+
+  const swapMotion = async (jobId: string, motionUrl: string, motionName: string) => {
+    setSwapping((s) => ({ ...s, [jobId]: "loading" }));
+    try {
+      const r = await fetch("/api/admin/vc-sabia/render-update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId, motionUrl, motionName }),
+      });
+      const j = await r.json();
+      if (!r.ok) {
+        setSwapping((s) => ({ ...s, [jobId]: { error: j.erro || `HTTP ${r.status}` } }));
+        return;
+      }
+      setSwapping((s) => {
+        const next = { ...s };
+        delete next[jobId];
+        return next;
+      });
+      setSwapPickerOpen(null);
+      await fetchStatus();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setSwapping((s) => ({ ...s, [jobId]: { error: msg } }));
+    }
+  };
   const deletePastBatch = async (id: string) => {
     if (!confirm(`Apagar o batch ${id}? Apaga todos os MP4s, manifests, captions e o ZIP. Esta acção é irreversível.`)) return;
     setDeletingBatch(id);
@@ -904,6 +945,62 @@ export function BulkMonthPanel() {
                       ↓ MP4
                     </a>
                   )}
+
+                  {/* Trocar motion + re-render */}
+                  <div className="space-y-1">
+                    {swapPickerOpen === j.jobId ? (
+                      <div className="space-y-1 rounded border border-amber-500/40 bg-amber-500/5 p-1.5">
+                        <div className="text-[10px] text-amber-200">
+                          Escolhe motion novo:
+                        </div>
+                        <select
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (!val) return;
+                            const m = allMotions.find((x) => x.url === val);
+                            if (m) swapMotion(j.jobId, m.url, m.name);
+                          }}
+                          disabled={swapping[j.jobId] === "loading"}
+                          className="block w-full rounded border border-escola-border bg-escola-card px-1 py-0.5 text-[10px] text-escola-creme disabled:opacity-50"
+                          defaultValue=""
+                        >
+                          <option value="">— escolhe motion —</option>
+                          {allMotions
+                            .filter((m) => m.name !== j.motionName)
+                            .map((m) => (
+                              <option key={m.url} value={m.url}>
+                                {m.name.slice(0, 30)}
+                              </option>
+                            ))}
+                        </select>
+                        <button
+                          onClick={() => setSwapPickerOpen(null)}
+                          className="block w-full rounded border border-escola-border bg-escola-card/40 px-1.5 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                        >
+                          cancelar
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          loadAllMotions();
+                          setSwapPickerOpen(j.jobId);
+                        }}
+                        disabled={swapping[j.jobId] === "loading"}
+                        className="block w-full rounded border border-amber-500/60 bg-amber-500/10 px-2 py-0.5 text-[10px] text-amber-300 hover:bg-amber-500/20 disabled:opacity-50"
+                        title="Troca o motion e re-renderiza apenas este dia"
+                      >
+                        {swapping[j.jobId] === "loading"
+                          ? "↻ a re-renderizar..."
+                          : "↻ Trocar motion + re-render"}
+                      </button>
+                    )}
+                    {swapping[j.jobId] && swapping[j.jobId] !== "loading" && (
+                      <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
+                        {(swapping[j.jobId] as { error: string }).error}
+                      </div>
+                    )}
+                  </div>
 
                   {captions && (
                     <div className="space-y-1 border-t border-escola-border/30 pt-1.5">
