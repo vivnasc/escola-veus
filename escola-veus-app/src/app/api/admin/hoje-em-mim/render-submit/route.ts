@@ -2,7 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
 
 import seed from "@/data/hoje-em-mim-frases.seed.json";
-import { phraseToCaptions, type DiaSemana } from "@/lib/hoje-em-mim/captions";
+import {
+  detectDiaEspecial,
+  phraseToCaptions,
+  type DiaEspecial,
+  type DiaSemana,
+} from "@/lib/hoje-em-mim/captions";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -45,6 +50,14 @@ export async function POST(req: NextRequest) {
     themePool?: string[];
     shuffleMotions?: boolean;
     durationSec?: number;
+    /** Override per-dia: motion, audio, frase ou tema específico que
+     *  substitui o que o buildItems calculou por defeito. */
+    itemOverrides?: Record<string, {
+      fraseTexto?: string;
+      motionUrl?: string;
+      audioUrl?: string | null;
+      theme?: string;
+    }>;
   };
 
   const jobId = (body.jobId || "").trim();
@@ -114,6 +127,16 @@ export async function POST(req: NextRequest) {
   };
   for (const f of frases) frasesPorDia[f.dia].push(f);
 
+  const fEspRaw = (seed as unknown as {
+    frases_especiais?: Partial<Record<DiaEspecial, Array<{ id: string; texto: string }>>>;
+  }).frases_especiais;
+  const frasesEspeciais: Record<DiaEspecial, Array<{ id: string; texto: string }>> = {
+    fim_mes: fEspRaw?.fim_mes ?? [],
+    inicio_mes: fEspRaw?.inicio_mes ?? [],
+    fim_ano: fEspRaw?.fim_ano ?? [],
+    inicio_ano: fEspRaw?.inicio_ano ?? [],
+  };
+
   const startDate = isoDate(ano, mes, diaInicio);
   const numDays = diaFim - diaInicio + 1;
 
@@ -125,10 +148,40 @@ export async function POST(req: NextRequest) {
     themePool,
     durationSec,
     frasesPorDia,
+    frasesEspeciais,
   });
 
   if (items.length === 0) {
     return NextResponse.json({ erro: "Não consegui construir items." }, { status: 400 });
+  }
+
+  // Aplica overrides per-dayIndex enviados pelo cliente (edições inline
+  // na BulkPreviewTable). Permite que a Vivianne reescreva frase, troque
+  // motion, troque áudio ou mude tema apenas em dias específicos sem ter
+  // de mudar a pool inteira.
+  if (body.itemOverrides) {
+    for (const item of items) {
+      const ov = body.itemOverrides[String(item.dayIndex)];
+      if (!ov) continue;
+      if (typeof ov.fraseTexto === "string" && ov.fraseTexto.trim()) {
+        item.fraseTexto = ov.fraseTexto.trim();
+        item.captions = phraseToCaptions({
+          phrase: item.fraseTexto,
+          dia: item.dia,
+        });
+      }
+      if (typeof ov.motionUrl === "string" && ov.motionUrl.trim()) {
+        item.motionUrl = resolveUrl(ov.motionUrl.trim());
+      }
+      if (ov.audioUrl !== undefined) {
+        item.audioUrl = ov.audioUrl
+          ? resolveUrl(String(ov.audioUrl).trim())
+          : null;
+      }
+      if (typeof ov.theme === "string" && ov.theme.trim()) {
+        item.theme = ov.theme.trim();
+      }
+    }
   }
 
   const admin = createSupabaseAdminClient();
@@ -254,6 +307,7 @@ type ManifestItem = {
   theme: string;
   durationSec: number;
   captions: { instagram: string; tiktok: string; whatsapp: string };
+  especial?: DiaEspecial;
 };
 
 function buildItems(opts: {
@@ -264,26 +318,46 @@ function buildItems(opts: {
   themePool: string[];
   durationSec: number;
   frasesPorDia: Record<DiaSemana, Array<{ id: string; dia: DiaSemana; texto: string }>>;
+  frasesEspeciais: Record<DiaEspecial, Array<{ id: string; texto: string }>>;
 }): ManifestItem[] {
   const items: ManifestItem[] = [];
   const fraseCursor: Record<DiaSemana, number> = {
     mon: 0, tue: 0, wed: 0, thu: 0, fri: 0, sat: 0, sun: 0,
   };
 
+  // Cursor para frases especiais (fim_mes, inicio_mes, fim_ano, inicio_ano)
+  const especialCursor: Record<DiaEspecial, number> = {
+    fim_mes: 0, inicio_mes: 0, fim_ano: 0, inicio_ano: 0,
+  };
+
   for (let i = 0; i < opts.numDays; i++) {
     const date = addDays(opts.startDate, i);
     const dia = diaFromIso(date);
-    const pool = opts.frasesPorDia[dia];
-    if (pool.length === 0) continue;
+    const especial = detectDiaEspecial(date);
 
-    const frase = pool[fraseCursor[dia] % pool.length];
-    fraseCursor[dia]++;
+    // Se é dia especial e há frases especiais disponíveis, usa essas.
+    // Caso contrário, fall through para a rotação por weekday.
+    let frase: { id: string; texto: string } | null = null;
+    if (especial && opts.frasesEspeciais[especial]?.length > 0) {
+      const epool = opts.frasesEspeciais[especial];
+      frase = epool[especialCursor[especial] % epool.length];
+      especialCursor[especial]++;
+    } else {
+      const pool = opts.frasesPorDia[dia];
+      if (pool.length === 0) continue;
+      frase = pool[fraseCursor[dia] % pool.length];
+      fraseCursor[dia]++;
+    }
 
     const motionUrl = opts.motionPool[i % opts.motionPool.length];
     const audioUrl =
       opts.audioPool.length > 0 ? opts.audioPool[i % opts.audioPool.length] : null;
     const theme = opts.themePool[i % opts.themePool.length] || "carta-noturna";
-    const captions = phraseToCaptions({ phrase: frase.texto, dia });
+    const captions = phraseToCaptions({
+      phrase: frase.texto,
+      dia,
+      especial: especial || null,
+    });
 
     items.push({
       dayIndex: i,
@@ -296,6 +370,7 @@ function buildItems(opts: {
       theme,
       durationSec: opts.durationSec,
       captions,
+      ...(especial ? { especial } : {}),
     });
   }
   return items;

@@ -45,6 +45,43 @@ export const GLIFO_POR_DIA: Record<DiaSemana, string> = {
   sun: "→",
 };
 
+/** Categorias especiais que sobrepõem o weekday quando aplicáveis. */
+export type DiaEspecial = "fim_mes" | "inicio_mes" | "fim_ano" | "inicio_ano";
+
+export const KICKER_ESPECIAL: Record<DiaEspecial, string> = {
+  fim_mes: "fecho deste mês",
+  inicio_mes: "começo deste mês",
+  fim_ano: "fecho deste ano",
+  inicio_ano: "abro este ano",
+};
+
+export const GLIFO_ESPECIAL: Record<DiaEspecial, string> = {
+  fim_mes: "✦",
+  inicio_mes: "◐",
+  fim_ano: "❋",
+  inicio_ano: "✧",
+};
+
+export const LABEL_ESPECIAL: Record<DiaEspecial, string> = {
+  fim_mes: "Fecho de ciclo do mês",
+  inicio_mes: "Início de novo ciclo",
+  fim_ano: "Fecho do ano",
+  inicio_ano: "Início de ano",
+};
+
+/** Detecta se uma data ISO (YYYY-MM-DD) é especial. Prioridade:
+ *  fim_ano > inicio_ano > fim_mes > inicio_mes > weekday normal. */
+export function detectDiaEspecial(iso: string): DiaEspecial | null {
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!Number.isInteger(y) || !Number.isInteger(m) || !Number.isInteger(d)) return null;
+  const lastDayOfMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  if (m === 12 && d === 31) return "fim_ano";
+  if (m === 1 && d === 1) return "inicio_ano";
+  if (d === lastDayOfMonth) return "fim_mes";
+  if (d === 1) return "inicio_mes";
+  return null;
+}
+
 /** Nome do dia em minúsculas para escrever vertical no frame. */
 export const DIA_LONGO_PT: Record<DiaSemana, string> = {
   mon: "segunda",
@@ -94,9 +131,15 @@ function hashesJoined(tags: string[]): string {
 export function phraseToCaptions(opts: {
   phrase: string;
   dia: DiaSemana;
+  /** Quando presente, sobrepõe o kicker e tags do weekday. */
+  especial?: DiaEspecial | null;
 }): CaptionSet {
-  const kicker = KICKER_POR_DIA[opts.dia];
-  const diaTags = HASHTAGS_POR_DIA[opts.dia];
+  const kicker = opts.especial
+    ? KICKER_ESPECIAL[opts.especial]
+    : KICKER_POR_DIA[opts.dia];
+  const diaTags = opts.especial
+    ? [opts.especial.replace(/_/g, "")]
+    : HASHTAGS_POR_DIA[opts.dia];
   const allTags = [...diaTags, ...HASHTAGS_BASE];
 
   const instagram = [

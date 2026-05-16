@@ -35,7 +35,7 @@ export type HoEmMimTheme = {
 export const HEM_THEMES: HoEmMimTheme[] = [
   {
     id: "carta-noturna",
-    label: "Carta Noturna (default)",
+    label: "Cobre + indigo (escuro e quente)",
     notas: "Cobre morno + creme + indigo. Adapta a motions noturnos azuis e roxos.",
     highlight: "rgb(194, 143, 96)",
     highlightSoft: "rgba(194, 143, 96, 0.55)",
