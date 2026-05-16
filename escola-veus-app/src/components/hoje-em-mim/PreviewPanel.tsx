@@ -1974,6 +1974,34 @@ function RunwayPipelineSection() {
             : `🤖 Só rever com Claude (${images.length})`}
         </button>
         <button
+          onClick={() => {
+            // Bypass Claude: aplica prompt genérico contemplativo a TODAS
+            // as imagens sem motion definido. Motion vem de elemento do
+            // ambiente, não da câmara (que fica estática).
+            const generic =
+              "ambient air moves softly, gentle natural motion of background elements, warm light";
+            setMotionByImage((m) => {
+              const next = { ...m };
+              for (const img of images) {
+                if (!next[img.name] || next[img.name].trim().length === 0) {
+                  next[img.name] = generic;
+                }
+              }
+              return next;
+            });
+          }}
+          disabled={images.length === 0}
+          className="rounded border px-3 py-1.5 text-xs disabled:opacity-50"
+          style={{
+            borderColor: COBRE_FRACO,
+            color: COBRE_FRACO,
+            background: "rgba(194, 143, 96, 0.04)",
+          }}
+          title="Aplica prompt genérico contemplativo (bypass Claude). Útil quando o Claude está a falhar."
+        >
+          ⚡ Usar prompt genérico (bypass Claude)
+        </button>
+        <button
           onClick={submitAllUnsubmitted}
           disabled={submitting || eligibleForSubmit.length === 0}
           className="rounded border px-3 py-1.5 text-xs disabled:opacity-50"
