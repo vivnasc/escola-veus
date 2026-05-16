@@ -93,6 +93,21 @@ export async function POST(req: NextRequest) {
     : ["carta-noturna"];
   const durationSec = clamp(Number(body.durationSec ?? 15), 5, 60);
 
+  // Resolve URLs relativos (e.g. '/assets/hoje-em-mim/motions/lua-piscina-01.mp4')
+  // para absolutos, senão o worker do GitHub Actions falha 'Failed to parse URL'.
+  // Origem: req.nextUrl.origin (vercel deployment URL) ou
+  // NEXT_PUBLIC_SITE_URL como fallback.
+  const origin =
+    req.nextUrl.origin || process.env.NEXT_PUBLIC_SITE_URL || "https://escola-veus.vercel.app";
+  const resolveUrl = (u: string): string => {
+    if (!u) return u;
+    if (u.startsWith("http://") || u.startsWith("https://")) return u;
+    if (u.startsWith("/")) return `${origin}${u}`;
+    return u;
+  };
+  const resolvedMotionPool = motionPool.map(resolveUrl);
+  const resolvedAudioPool = audioPool.map(resolveUrl);
+
   const frases = seed.frases as Array<{ id: string; dia: DiaSemana; texto: string }>;
   const frasesPorDia: Record<DiaSemana, typeof frases> = {
     mon: [], tue: [], wed: [], thu: [], fri: [], sat: [], sun: [],
@@ -105,8 +120,8 @@ export async function POST(req: NextRequest) {
   const items = buildItems({
     startDate,
     numDays,
-    motionPool,
-    audioPool,
+    motionPool: resolvedMotionPool,
+    audioPool: resolvedAudioPool,
     themePool,
     durationSec,
     frasesPorDia,

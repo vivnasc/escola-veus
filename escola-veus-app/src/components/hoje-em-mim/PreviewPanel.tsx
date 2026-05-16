@@ -175,6 +175,55 @@ export function HojeEmMimPreviewPanel() {
   const dmax = daysInMonth(ano, mes);
   const rangeOk = diaInicio >= 1 && diaFim >= diaInicio && diaFim <= dmax;
 
+  // Atalho: render rápido de UM vídeo para hoje, com a motion + áudio +
+  // tema actualmente seleccionados. Não passa pelo useAllMotions: usa
+  // exactamente o que está nos campos.
+  const submitTodayQuick = async () => {
+    setSubmitError(null);
+    if (!media) {
+      setSubmitError(
+        "Sem motion seleccionado. Vai à tab Motions e escolhe um clip (ou cola URL em baixo)."
+      );
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const today = new Date();
+      const todayAno = today.getFullYear();
+      const todayMes = today.getMonth() + 1;
+      const todayDia = today.getDate();
+      const id = `hoje-em-mim-${todayAno}-${String(todayMes).padStart(2, "0")}-${String(todayDia).padStart(2, "0")}-quick-${Date.now().toString(36)}`;
+      const body = {
+        jobId: id,
+        ano: todayAno,
+        mes: todayMes,
+        diaInicio: todayDia,
+        diaFim: todayDia,
+        durationSec,
+        motionPool: [media],
+        audioPool: audioUrlSelected ? [audioUrlSelected] : [],
+        themePool: [themeId],
+        shuffleMotions: false,
+      };
+      const res = await fetch("/api/admin/hoje-em-mim/render-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      setJobId(id);
+      setJobResult(null);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("hoje-em-mim.lastJobId", id);
+      }
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const submitJob = async () => {
     setSubmitError(null);
     if (!rangeOk) {
@@ -462,6 +511,20 @@ export function HojeEmMimPreviewPanel() {
 
       {activeTab === "bulk" && (
       <>
+      <QuickRenderPanel
+        media={media}
+        setMedia={setMedia}
+        audioUrlSelected={audioUrlSelected}
+        setAudioUrlSelected={setAudioUrlSelected}
+        themeId={themeId}
+        setThemeId={setThemeId}
+        durationSec={durationSec}
+        onRender={submitTodayQuick}
+        submitting={submitting}
+        submitError={submitError}
+        phrase={phrase}
+      />
+
       <section className="space-y-3 rounded-lg border border-escola-border bg-escola-card p-4">
         <h2 className="text-base font-serif" style={{ color: COBRE }}>
           📦 Bulk mensal · Pacote Metricool
@@ -1345,6 +1408,84 @@ function RunwayPipelineSection() {
   // Duração por imagem
   const [durationByImage, setDurationByImage] = useState<Record<string, 5 | 10>>({});
 
+  // Persistência: carrega no mount + auto-save com debounce. Garante que
+  // as sugestões do Claude e edições manuais sobrevivem a refresh/F5
+  // e mudança de device.
+  const [draftsLoaded, setDraftsLoaded] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      // Primeiro o localStorage (imediato), depois Supabase (canónico).
+      try {
+        if (typeof window !== "undefined") {
+          const local = localStorage.getItem("hoje-em-mim.runway-drafts");
+          if (local) {
+            const parsed = JSON.parse(local);
+            if (!cancelled) {
+              if (parsed.motions) setMotionByImage(parsed.motions);
+              if (parsed.prompts) setPromptByImage(parsed.prompts);
+              if (parsed.durations) setDurationByImage(parsed.durations);
+            }
+          }
+        }
+        const res = await fetch("/api/admin/hoje-em-mim/motion-prompts");
+        if (cancelled) return;
+        const json = await res.json();
+        if (res.ok) {
+          if (json.motions && Object.keys(json.motions).length > 0) {
+            setMotionByImage(json.motions);
+          }
+          if (json.prompts && Object.keys(json.prompts).length > 0) {
+            setPromptByImage(json.prompts);
+          }
+          if (json.durations && Object.keys(json.durations).length > 0) {
+            setDurationByImage(json.durations);
+          }
+        }
+      } catch {
+        /* silencioso */
+      } finally {
+        if (!cancelled) setDraftsLoaded(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Auto-save debounced: localStorage imediato, Supabase com 1.5s delay.
+  useEffect(() => {
+    if (!draftsLoaded) return;
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(
+          "hoje-em-mim.runway-drafts",
+          JSON.stringify({
+            motions: motionByImage,
+            prompts: promptByImage,
+            durations: durationByImage,
+          })
+        );
+      } catch {
+        /* quota cheia? silencioso */
+      }
+    }
+    const t = setTimeout(() => {
+      fetch("/api/admin/hoje-em-mim/motion-prompts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          motions: motionByImage,
+          prompts: promptByImage,
+          durations: durationByImage,
+        }),
+      }).catch(() => {
+        /* silencioso, ainda temos localStorage */
+      });
+    }, 1500);
+    return () => clearTimeout(t);
+  }, [draftsLoaded, motionByImage, promptByImage, durationByImage]);
+
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -1534,10 +1675,10 @@ function RunwayPipelineSection() {
   const [reviewBatchStatus, setReviewBatchStatus] = useState<string>("");
   const [reviewBatchError, setReviewBatchError] = useState<string | null>(null);
 
-  const reviewAllPrompts = async () => {
+  const reviewAllPrompts = async (): Promise<Record<string, string>> => {
     if (images.length === 0) {
       setReviewBatchError("Sem imagens MJ carregadas.");
-      return;
+      return motionByImage;
     }
     setReviewBatchError(null);
     setReviewingBatch(true);
@@ -1605,6 +1746,70 @@ function RunwayPipelineSection() {
       setReviewBatchError(e instanceof Error ? e.message : String(e));
     } finally {
       setReviewingBatch(false);
+    }
+    return next;
+  };
+
+  // Combo: Claude review chunked + Runway submit num click. Usa o map
+  // de motions devolvido pelo review (evita stale closure de
+  // motionByImage entre setState e submit).
+  const reviewAndSubmitAll = async () => {
+    const nextMotions = await reviewAllPrompts();
+
+    const submittedNames = new Set(
+      state.items
+        .filter((i) => i.runwayTaskId || i.clipUrl)
+        .map((i) => i.imageName)
+        .filter((n): n is string => !!n)
+    );
+    const candidates = images
+      .filter((img) => !submittedNames.has(img.name))
+      .map((img) => {
+        const motion = (nextMotions[img.name] ?? "").trim();
+        if (!motion) return null;
+        const pid = promptByImage[img.name] || "";
+        const duration = durationByImage[img.name] || 5;
+        const safeId = img.name
+          .replace(/\.[^.]+$/, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9-]+/g, "-")
+          .slice(0, 80);
+        return {
+          id: safeId,
+          imageUrl: img.url,
+          imageName: img.name,
+          runwayMotion: motion,
+          promptRef: pid || undefined,
+          duration,
+        };
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null);
+
+    if (candidates.length === 0) {
+      setSubmitError(
+        "Sem candidatos para Runway. Claude pode ter falhado todos os prompts."
+      );
+      return;
+    }
+
+    setSubmitError(null);
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/runway/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: candidates }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      if (json.failed?.length > 0) {
+        setSubmitError(`${json.failed.length} falhou: ${json.failed[0].reason}`);
+      }
+      await loadState();
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -1678,6 +1883,22 @@ function RunwayPipelineSection() {
           }}
         />
         <button
+          onClick={reviewAndSubmitAll}
+          disabled={reviewingBatch || submitting || images.length === 0}
+          className="rounded border px-3 py-1.5 text-xs disabled:opacity-50 font-medium"
+          style={{
+            borderColor: COBRE,
+            color: "#FFF8E8",
+            background: COBRE,
+          }}
+        >
+          {reviewingBatch
+            ? "Claude a rever…"
+            : submitting
+              ? "a submeter à Runway…"
+              : `✨ Claude review + Runway submit (${images.length})`}
+        </button>
+        <button
           onClick={reviewAllPrompts}
           disabled={reviewingBatch || images.length === 0}
           className="rounded border px-3 py-1.5 text-xs disabled:opacity-50"
@@ -1685,7 +1906,7 @@ function RunwayPipelineSection() {
         >
           {reviewingBatch
             ? "Claude a rever…"
-            : `🤖 Rever todos os ${images.length} motion prompts (Claude vision)`}
+            : `🤖 Só rever com Claude (${images.length})`}
         </button>
         <button
           onClick={submitAllUnsubmitted}
@@ -1704,9 +1925,9 @@ function RunwayPipelineSection() {
             ? "a submeter…"
             : eligibleForSubmit.length === 0
               ? missingMotion.length > 0
-                ? `${missingMotion.length} sem motion prompt — corre o Claude review`
+                ? `${missingMotion.length} sem motion — corre o review primeiro`
                 : "Nada para submeter"
-              : `Submeter ${eligibleForSubmit.length} à Runway`}
+              : `▶ Só submeter ${eligibleForSubmit.length} à Runway`}
         </button>
       </div>
 
@@ -2074,12 +2295,33 @@ function AudioGeneratorSection() {
           <h3 className="font-serif text-base" style={{ color: COBRE }}>
             Library de áudios já gerados ({totalAudios})
           </h3>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <button
               onClick={loadLibrary}
               className="rounded border border-escola-border bg-escola-card px-2 py-1 text-[11px] text-escola-creme-50 hover:text-escola-creme"
             >
               Recarregar
+            </button>
+            <button
+              onClick={async () => {
+                if (!confirm("Apaga todos os áudios inválidos (corruptos/zero-bytes)?")) return;
+                try {
+                  const res = await fetch("/api/admin/hoje-em-mim/audios/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ cleanInvalid: true, minBytes: 1024 }),
+                  });
+                  const json = await res.json();
+                  if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+                  alert(`Apagados ${json.deleted} áudios inválidos.`);
+                  await loadLibrary();
+                } catch (e) {
+                  alert(e instanceof Error ? e.message : String(e));
+                }
+              }}
+              className="rounded border border-red-700/40 bg-red-900/20 px-2 py-1 text-[11px] text-red-300 hover:bg-red-900/30"
+            >
+              🗑 Limpar inválidos
             </button>
             <button
               onClick={gerarBatchTodosMoods}
@@ -2656,5 +2898,436 @@ function ClaudeReviewButton({
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * QuickRenderPanel — tudo o que precisas para fazer 1 vídeo HOJE,
+ * inline numa só vista:
+ *   1. Picker visual de motion (thumbnails do library)
+ *   2. Picker de áudio agrupado por mood
+ *   3. Picker de tema (paletas de cor + amostra)
+ *   4. Preview da frase do dia
+ *   5. Botão grande "Render para hoje"
+ *
+ * Não precisas de ir a outras tabs.
+ */
+function QuickRenderPanel({
+  media,
+  setMedia,
+  audioUrlSelected,
+  setAudioUrlSelected,
+  themeId,
+  setThemeId,
+  durationSec,
+  onRender,
+  submitting,
+  submitError,
+  phrase,
+}: {
+  media: string;
+  setMedia: (s: string) => void;
+  audioUrlSelected: string;
+  setAudioUrlSelected: (s: string) => void;
+  themeId: string;
+  setThemeId: (s: string) => void;
+  durationSec: number;
+  onRender: () => void;
+  submitting: boolean;
+  submitError: string | null;
+  phrase: Frase;
+}) {
+  const [motions, setMotions] = useState<Array<{ name: string; url: string }>>([]);
+  const [audios, setAudios] = useState<Record<string, Array<{ name: string; url: string }>>>({});
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+
+  useEffect(() => {
+    fetch("/api/admin/hoje-em-mim/motions")
+      .then((r) => r.json())
+      .then((j) => setMotions(j.motions || []))
+      .catch(() => {});
+    fetch("/api/admin/hoje-em-mim/audios")
+      .then((r) => r.json())
+      .then((j) => setAudios(j.audiosByMood || {}))
+      .catch(() => {});
+  }, []);
+
+  const theme = getTheme(themeId);
+  const audioLabel = audioUrlSelected
+    ? audioUrlSelected.split("/").pop()?.slice(0, 30)
+    : "sem som";
+  const motionLabel = media ? media.split("/").pop()?.slice(0, 40) : "nenhum";
+
+  return (
+    <section
+      className="space-y-4 rounded-lg border-2 p-4"
+      style={{ borderColor: COBRE, background: "rgba(194, 143, 96, 0.06)" }}
+    >
+      <div className="flex items-baseline justify-between flex-wrap gap-2">
+        <h2 className="text-lg font-serif" style={{ color: COBRE }}>
+          ⚡ Render para hoje
+        </h2>
+        <span className="text-[11px] text-escola-creme-50">
+          {phrase.texto.slice(0, 60)}…
+        </span>
+      </div>
+
+      {/* Resumo das escolhas + jump-to-step */}
+      <div className="grid grid-cols-3 gap-2 text-[11px]">
+        <button
+          onClick={() => setStep(1)}
+          className="rounded border p-2 text-left transition-colors"
+          style={{
+            borderColor: step === 1 ? COBRE : "rgba(245, 240, 230, 0.16)",
+            background: step === 1 ? "rgba(194, 143, 96, 0.12)" : "transparent",
+          }}
+        >
+          <div className="text-[9px] uppercase tracking-wider text-escola-creme-50">
+            1 · Imagem (motion)
+          </div>
+          <div className="mt-0.5 truncate font-mono text-[10px] text-escola-creme">
+            {motionLabel}
+          </div>
+        </button>
+        <button
+          onClick={() => setStep(2)}
+          className="rounded border p-2 text-left transition-colors"
+          style={{
+            borderColor: step === 2 ? COBRE : "rgba(245, 240, 230, 0.16)",
+            background: step === 2 ? "rgba(194, 143, 96, 0.12)" : "transparent",
+          }}
+        >
+          <div className="text-[9px] uppercase tracking-wider text-escola-creme-50">
+            2 · Som
+          </div>
+          <div className="mt-0.5 truncate text-[10px] text-escola-creme">
+            {audioLabel}
+          </div>
+        </button>
+        <button
+          onClick={() => setStep(3)}
+          className="rounded border p-2 text-left transition-colors"
+          style={{
+            borderColor: step === 3 ? COBRE : "rgba(245, 240, 230, 0.16)",
+            background: step === 3 ? "rgba(194, 143, 96, 0.12)" : "transparent",
+          }}
+        >
+          <div className="text-[9px] uppercase tracking-wider text-escola-creme-50">
+            3 · Tema (contraste)
+          </div>
+          <div className="mt-0.5 flex items-center gap-1.5">
+            <span
+              className="inline-block h-3 w-3 rounded-full"
+              style={{ background: theme.highlight }}
+            />
+            <span className="truncate text-[10px] text-escola-creme">
+              {theme.label}
+            </span>
+          </div>
+        </button>
+      </div>
+
+      {/* Step 1: Motion picker */}
+      {step === 1 && (
+        <div className="space-y-2">
+          <div className="text-xs text-escola-creme-50">
+            Clica numa imagem para escolher o motion. Carrega vídeos no Supabase
+            via tab Motions ou cola URL manual em baixo.
+          </div>
+          {motions.length === 0 ? (
+            <div className="rounded border border-escola-border bg-escola-card/40 p-3 text-[11px] text-escola-creme-50">
+              Sem motions no library. Vai à tab Motions para fazer upload, ou cola
+              URL em baixo.
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 max-h-72 overflow-y-auto">
+              {motions.map((m) => (
+                <button
+                  key={m.url}
+                  onClick={() => setMedia(m.url)}
+                  className={`relative overflow-hidden rounded border transition-all ${
+                    media === m.url
+                      ? "ring-2"
+                      : "border-escola-border hover:border-escola-dourado/60"
+                  }`}
+                  style={{
+                    borderColor: media === m.url ? COBRE : undefined,
+                    boxShadow: media === m.url ? `0 0 0 2px ${COBRE}` : undefined,
+                  }}
+                  title={m.name}
+                >
+                  <video
+                    src={m.url}
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="aspect-[9/16] w-full bg-black object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-1 text-[9px] text-escola-creme">
+                    {m.name.slice(0, 20)}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+          <label className="block text-[10px] text-escola-creme-50">
+            Ou cola URL directa:
+            <input
+              value={media}
+              onChange={(e) => setMedia(e.target.value)}
+              placeholder="https://… ou /assets/hoje-em-mim/motions/…"
+              className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 font-mono text-[10px] text-escola-creme"
+            />
+          </label>
+          <button
+            onClick={() => setStep(2)}
+            className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-[11px] text-escola-creme-50 hover:text-escola-creme"
+          >
+            → Próximo (som)
+          </button>
+        </div>
+      )}
+
+      {/* Step 2: Audio picker */}
+      {step === 2 && (
+        <div className="space-y-2">
+          <div className="text-xs text-escola-creme-50">
+            Clica num áudio para escolher. Gera novos na tab Áudios.
+          </div>
+          <button
+            onClick={() => setAudioUrlSelected("")}
+            className={`rounded border px-2 py-1 text-[11px] ${
+              !audioUrlSelected ? "ring-2" : ""
+            }`}
+            style={{
+              borderColor: !audioUrlSelected ? COBRE : "rgba(245, 240, 230, 0.16)",
+              color: !audioUrlSelected ? COBRE : undefined,
+              background: !audioUrlSelected
+                ? "rgba(194, 143, 96, 0.1)"
+                : "transparent",
+            }}
+          >
+            🔇 sem som
+          </button>
+          <div className="max-h-72 overflow-y-auto space-y-2">
+            {Object.entries(audios).map(([mood, list]) => (
+              <div key={mood} className="space-y-1">
+                <div className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+                  {NIGHT_MOOD_LABELS[mood as keyof typeof NIGHT_MOOD_LABELS] ?? mood}
+                </div>
+                <div className="grid gap-1 sm:grid-cols-2">
+                  {list.map((a) => (
+                    <AudioPickerItem
+                      key={a.url}
+                      audio={a}
+                      selected={audioUrlSelected === a.url}
+                      onSelect={() => setAudioUrlSelected(a.url)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+            {Object.keys(audios).length === 0 && (
+              <div className="rounded border border-escola-border bg-escola-card/40 p-3 text-[11px] text-escola-creme-50">
+                Sem áudios. Vai à tab Áudios e clica em "Gerar 1 áudio por cada
+                mood" para ter biblioteca.
+              </div>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setStep(1)}
+              className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-[11px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              ← Voltar
+            </button>
+            <button
+              onClick={() => setStep(3)}
+              className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-[11px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              → Próximo (tema)
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 3: Theme picker (contrast) */}
+      {step === 3 && (
+        <div className="space-y-2">
+          <div className="text-xs text-escola-creme-50">
+            Escolhe o tema visual. Muda a cor do texto, do arco, do glifo. Se a
+            tua imagem é muito escura/clara, escolhe um tema mais contrastante.
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {HEM_THEMES.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setThemeId(t.id)}
+                className="rounded border p-2.5 text-left transition-colors"
+                style={{
+                  borderColor: themeId === t.id ? COBRE : "rgba(245, 240, 230, 0.16)",
+                  background:
+                    themeId === t.id
+                      ? "rgba(194, 143, 96, 0.08)"
+                      : "transparent",
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-8 w-8 rounded-full flex items-center justify-center text-[9px]"
+                    style={{
+                      background: t.bg,
+                      border: `2px solid ${t.highlight}`,
+                      color: t.text,
+                    }}
+                  >
+                    Aa
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[12px]" style={{ color: t.highlight }}>
+                      {t.label}
+                    </div>
+                    <div className="text-[10px] text-escola-creme-50 truncate">
+                      {t.notas}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setStep(2)}
+              className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-[11px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              ← Voltar
+            </button>
+            <button
+              onClick={() => setStep(4)}
+              className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-[11px] text-escola-creme-50 hover:text-escola-creme"
+            >
+              → Confirmar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 4: Confirm + Render */}
+      {step === 4 && (
+        <div className="space-y-3">
+          <div className="rounded border border-escola-border bg-escola-card p-3 space-y-2 text-[11px]">
+            <div>
+              <span className="text-escola-creme-50">Imagem: </span>
+              <span className="font-mono text-escola-creme">{motionLabel}</span>
+            </div>
+            <div>
+              <span className="text-escola-creme-50">Som: </span>
+              <span className="text-escola-creme">{audioLabel}</span>
+            </div>
+            <div>
+              <span className="text-escola-creme-50">Tema: </span>
+              <span style={{ color: theme.highlight }}>{theme.label}</span>
+            </div>
+            <div>
+              <span className="text-escola-creme-50">Duração: </span>
+              <span className="text-escola-creme">{durationSec}s</span>
+            </div>
+            <div>
+              <span className="text-escola-creme-50">Frase de hoje: </span>
+              <span className="italic text-escola-creme">"{phrase.texto}"</span>
+            </div>
+          </div>
+          <button
+            onClick={onRender}
+            disabled={submitting || !media}
+            className="w-full rounded border-2 px-4 py-3 text-sm disabled:opacity-50 transition-colors"
+            style={{
+              borderColor: COBRE,
+              color: "#FFF8E8",
+              background: media ? COBRE : "rgba(194, 143, 96, 0.4)",
+              fontWeight: 500,
+            }}
+          >
+            {submitting ? "a submeter…" : "▶ Gerar MP4 para hoje"}
+          </button>
+          {!media && (
+            <div className="text-[11px] text-amber-300">
+              Volta ao passo 1 e escolhe um motion antes de renderizar.
+            </div>
+          )}
+          {submitError && (
+            <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[11px] text-red-300">
+              {submitError}
+            </div>
+          )}
+          <button
+            onClick={() => setStep(1)}
+            className="rounded border border-escola-border bg-escola-card px-3 py-1.5 text-[11px] text-escola-creme-50 hover:text-escola-creme"
+          >
+            ← Mudar algo
+          </button>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function AudioPickerItem({
+  audio,
+  selected,
+  onSelect,
+}: {
+  audio: { name: string; url: string };
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const [errored, setErrored] = useState(false);
+  return (
+    <button
+      onClick={onSelect}
+      disabled={errored}
+      className="rounded border p-1.5 text-left text-[10px] transition-colors disabled:opacity-60"
+      style={{
+        borderColor: errored
+          ? "rgba(220, 38, 38, 0.5)"
+          : selected
+            ? COBRE
+            : "rgba(245, 240, 230, 0.16)",
+        background: errored
+          ? "rgba(127, 29, 29, 0.12)"
+          : selected
+            ? "rgba(194, 143, 96, 0.1)"
+            : "transparent",
+      }}
+    >
+      <div className="flex items-center justify-between gap-1">
+        <span className="truncate text-escola-creme">{audio.name}</span>
+        {errored && (
+          <a
+            href={audio.url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="shrink-0 text-[9px] text-red-300 underline"
+          >
+            testar →
+          </a>
+        )}
+      </div>
+      {errored ? (
+        <div className="mt-1 text-[9px] text-red-300">
+          ✗ não carrega (clica "testar" para ver no browser)
+        </div>
+      ) : (
+        <audio
+          src={audio.url}
+          controls
+          preload="metadata"
+          className="mt-1 h-6 w-full"
+          onClick={(e) => e.stopPropagation()}
+          onError={() => setErrored(true)}
+        />
+      )}
+    </button>
   );
 }

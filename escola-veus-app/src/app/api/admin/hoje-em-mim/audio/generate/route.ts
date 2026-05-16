@@ -78,6 +78,37 @@ export async function POST(req: NextRequest) {
 
     const audioBuffer = await elevenRes.arrayBuffer();
 
+    // Guarda 1: tamanho mínimo. ElevenLabs por vezes devolve 200 OK
+    // com body vazio (rate-limit ou sem créditos).
+    if (audioBuffer.byteLength < 5 * 1024) {
+      return NextResponse.json(
+        {
+          erro: `ElevenLabs devolveu ${audioBuffer.byteLength} bytes (MP3 inválido). Verifica créditos ElevenLabs ou retry em 1 min.`,
+        },
+        { status: 502 }
+      );
+    }
+
+    // Guarda 2: magic bytes MP3. Headers MP3 começam por 'ID3' (id3v2
+    // tag) ou 0xFF 0xFB/0xF3/0xF2 (MPEG audio frame sync). Qualquer outra
+    // coisa (HTML, JSON de erro, etc.) é inválido.
+    const bytes = new Uint8Array(audioBuffer, 0, 3);
+    const isId3 = bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33; // "ID3"
+    const isMpegSync =
+      bytes[0] === 0xff && (bytes[1] === 0xfb || bytes[1] === 0xf3 || bytes[1] === 0xf2);
+    if (!isId3 && !isMpegSync) {
+      // Mostra os primeiros bytes em hex para ajudar a debugar
+      const hex = Array.from(bytes)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join(" ");
+      return NextResponse.json(
+        {
+          erro: `Resposta ElevenLabs não é MP3 válido (primeiros bytes: ${hex}). Provavelmente um erro JSON disfarçado.`,
+        },
+        { status: 502 }
+      );
+    }
+
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (!supabaseUrl || !serviceKey) {
