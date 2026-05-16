@@ -3854,7 +3854,39 @@ function BulkPreviewTable({
     onChangeOverrides(next);
   };
 
-  const theme = getTheme(themeId);
+  const [regenerating, setRegenerating] = useState<number | null>(null);
+  const [regenError, setRegenError] = useState<Record<number, string | null>>({});
+
+  const regenFrase = async (
+    dayIndex: number,
+    dia: DiaSemana,
+    especial: DiaEspecial | null
+  ) => {
+    setRegenerating(dayIndex);
+    setRegenError((p) => ({ ...p, [dayIndex]: null }));
+    try {
+      const avoid = items.map((it) => {
+        const ov = overrides[it.dayIndex];
+        return ov?.fraseTexto ?? it.fraseTexto;
+      });
+      const res = await fetch("/api/admin/hoje-em-mim/phrase/generate", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ dia, especial, avoid }),
+      });
+      const json = (await res.json()) as { phrase?: string; erro?: string };
+      if (!res.ok || !json.phrase) {
+        throw new Error(json.erro ?? "Falhou regeneracao");
+      }
+      setOverride(dayIndex, { fraseTexto: json.phrase });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setRegenError((p) => ({ ...p, [dayIndex]: msg }));
+    } finally {
+      setRegenerating(null);
+    }
+  };
+
   const overrideCount = Object.values(overrides).filter(
     (v) => v && (v.fraseTexto || v.motionUrl || v.audioUrl !== undefined || v.theme)
   ).length;
@@ -3921,15 +3953,32 @@ function BulkPreviewTable({
                     )}
                   </td>
                   <td className="py-1.5 pr-2">
-                    <textarea
-                      value={fraseEff}
-                      onChange={(e) => setOverride(it.dayIndex, { fraseTexto: e.target.value })}
-                      rows={2}
-                      className="w-full rounded border border-escola-border bg-escola-bg px-1.5 py-1 text-[10px] italic text-escola-creme"
-                      style={{
-                        borderColor: ov.fraseTexto ? COBRE : undefined,
-                      }}
-                    />
+                    <div className="flex items-start gap-1">
+                      <textarea
+                        value={fraseEff}
+                        onChange={(e) => setOverride(it.dayIndex, { fraseTexto: e.target.value })}
+                        rows={2}
+                        className="flex-1 rounded border border-escola-border bg-escola-bg px-1.5 py-1 text-[10px] italic text-escola-creme"
+                        style={{
+                          borderColor: ov.fraseTexto ? COBRE : undefined,
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => regenFrase(it.dayIndex, it.dia, it.especial)}
+                        disabled={regenerating === it.dayIndex}
+                        title="Regenerar com Claude (mantém o ritmo do dia, evita repetir frases já usadas)"
+                        className="shrink-0 rounded border px-1.5 py-1 text-[11px] hover:opacity-80 disabled:opacity-40"
+                        style={{ borderColor: COBRE_FRACO, color: COBRE }}
+                      >
+                        {regenerating === it.dayIndex ? "…" : "🤖"}
+                      </button>
+                    </div>
+                    {regenError[it.dayIndex] && (
+                      <div className="mt-0.5 text-[9px] text-red-400">
+                        {regenError[it.dayIndex]}
+                      </div>
+                    )}
                     {ov.fraseTexto && (
                       <button
                         onClick={() => clearOverride(it.dayIndex, "fraseTexto")}
@@ -3940,23 +3989,45 @@ function BulkPreviewTable({
                     )}
                   </td>
                   <td className="py-1.5 pr-2">
-                    <select
-                      value={motionEff}
-                      onChange={(e) => setOverride(it.dayIndex, { motionUrl: e.target.value })}
-                      className="w-full max-w-[200px] rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme"
-                      style={{ borderColor: ov.motionUrl ? COBRE : undefined }}
-                    >
-                      <option value={motionEff}>
-                        {motionsLib.find((m) => m.url === motionEff)?.name ?? motionEff.split("/").pop() ?? "?"}
-                      </option>
-                      {motionsLib
-                        .filter((m) => m.url !== motionEff)
-                        .map((m) => (
-                          <option key={m.url} value={m.url}>
-                            {m.name}
-                          </option>
-                        ))}
-                    </select>
+                    <div className="flex items-start gap-1.5">
+                      {motionEff && (
+                        <video
+                          src={motionEff}
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          onMouseEnter={(e) => {
+                            const v = e.currentTarget;
+                            v.play().catch(() => {});
+                          }}
+                          onMouseLeave={(e) => {
+                            const v = e.currentTarget;
+                            v.pause();
+                            v.currentTime = 0;
+                          }}
+                          className="h-16 w-9 shrink-0 rounded border border-escola-border bg-black object-cover"
+                          style={{ aspectRatio: "9 / 16" }}
+                        />
+                      )}
+                      <select
+                        value={motionEff}
+                        onChange={(e) => setOverride(it.dayIndex, { motionUrl: e.target.value })}
+                        className="w-full max-w-[180px] rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme"
+                        style={{ borderColor: ov.motionUrl ? COBRE : undefined }}
+                      >
+                        <option value={motionEff}>
+                          {motionsLib.find((m) => m.url === motionEff)?.name ?? motionEff.split("/").pop() ?? "?"}
+                        </option>
+                        {motionsLib
+                          .filter((m) => m.url !== motionEff)
+                          .map((m) => (
+                            <option key={m.url} value={m.url}>
+                              {m.name}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                   </td>
                   <td className="py-1.5 pr-2">
                     <select
