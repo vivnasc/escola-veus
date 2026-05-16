@@ -1488,6 +1488,7 @@ function RunwayPipelineSection() {
 
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
 
   const loadImages = async () => {
     setLoadingImages(true);
@@ -1649,6 +1650,7 @@ function RunwayPipelineSection() {
       return;
     }
     setSubmitError(null);
+    setSubmitSuccess(null);
     setSubmitting(true);
     try {
       const res = await fetch("/api/admin/hoje-em-mim/runway/submit", {
@@ -1658,8 +1660,15 @@ function RunwayPipelineSection() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
-      if (json.failed?.length > 0) {
-        setSubmitError(`${json.failed.length} falhou: ${json.failed[0].reason}`);
+      const submitted = json.submitted ?? 0;
+      const failedN = json.failed?.length ?? 0;
+      if (failedN > 0) {
+        setSubmitError(`${failedN} falhou: ${json.failed[0].reason}`);
+      }
+      if (submitted > 0) {
+        setSubmitSuccess(
+          `✓ ${submitted} submetidos à Runway. Vão aparecer com status "a renderizar" e a Runway entrega em 1-3 min cada.`
+        );
       }
       await loadState();
     } catch (e) {
@@ -1683,7 +1692,30 @@ function RunwayPipelineSection() {
     setReviewBatchError(null);
     setReviewingBatch(true);
 
-    const allItems = images.map((img) => {
+    // Skip images que já têm clip gerado com sucesso ou task em curso.
+    // Não vale a pena gastar Claude credits a re-rever motions já feitos.
+    const alreadyDone = new Set(
+      state.items
+        .filter((i) => i.clipUrl || i.runwayTaskId)
+        .map((i) => i.imageName)
+        .filter((n): n is string => !!n)
+    );
+    const imagesToReview = images.filter((img) => !alreadyDone.has(img.name));
+    if (imagesToReview.length === 0) {
+      setReviewBatchStatus(
+        `Todas as ${images.length} imagens já têm clip ou task em curso. Nada para rever.`
+      );
+      setReviewingBatch(false);
+      return motionByImage;
+    }
+    const skipped = images.length - imagesToReview.length;
+    if (skipped > 0) {
+      setReviewBatchStatus(
+        `A saltar ${skipped} imagens já com clip. A rever ${imagesToReview.length} pendentes…`
+      );
+    }
+
+    const allItems = imagesToReview.map((img) => {
       const pid = promptByImage[img.name] || "";
       const mj = pid ? MJ_VIDEO_PROMPTS.find((p) => p.id === pid) : null;
       return {
@@ -1793,6 +1825,7 @@ function RunwayPipelineSection() {
     }
 
     setSubmitError(null);
+    setSubmitSuccess(null);
     setSubmitting(true);
     try {
       const res = await fetch("/api/admin/hoje-em-mim/runway/submit", {
@@ -1802,8 +1835,15 @@ function RunwayPipelineSection() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
-      if (json.failed?.length > 0) {
-        setSubmitError(`${json.failed.length} falhou: ${json.failed[0].reason}`);
+      const submitted = json.submitted ?? 0;
+      const failedN = json.failed?.length ?? 0;
+      if (failedN > 0) {
+        setSubmitError(`${failedN} falhou: ${json.failed[0].reason}`);
+      }
+      if (submitted > 0) {
+        setSubmitSuccess(
+          `✓ ${submitted} submetidos à Runway. Vão aparecer com status "a renderizar" e a Runway entrega em 1-3 min cada.`
+        );
       }
       await loadState();
     } catch (e) {
@@ -1947,6 +1987,28 @@ function RunwayPipelineSection() {
       {reviewBatchError && (
         <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300">
           {reviewBatchError}
+        </div>
+      )}
+      {submitSuccess && (
+        <div className="rounded border border-emerald-700/40 bg-emerald-900/20 p-2 text-xs text-emerald-300 flex items-baseline justify-between gap-2">
+          <span>{submitSuccess}</span>
+          <button
+            onClick={() => setSubmitSuccess(null)}
+            className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+          >
+            fechar
+          </button>
+        </div>
+      )}
+      {submitError && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-xs text-red-300 flex items-baseline justify-between gap-2">
+          <span>{submitError}</span>
+          <button
+            onClick={() => setSubmitError(null)}
+            className="text-[10px] text-escola-creme-50 hover:text-escola-creme"
+          >
+            fechar
+          </button>
         </div>
       )}
 
