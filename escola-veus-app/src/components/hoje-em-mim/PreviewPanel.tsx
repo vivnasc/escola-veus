@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import seed from "@/data/hoje-em-mim-frases.seed.json";
 import { MJ_VIDEO_PROMPTS } from "@/data/hoje-em-mim-mj-prompts";
 import { HEM_THEMES, getTheme, DEFAULT_THEME_ID } from "@/lib/hoje-em-mim/themes";
@@ -34,6 +34,82 @@ const MESES_PT = [
 
 function daysInMonth(ano: number, mes: number): number {
   return new Date(ano, mes, 0).getDate();
+}
+
+function isoDate(ano: number, mes: number, dia: number): string {
+  return `${ano}-${String(mes).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+}
+
+function addDays(iso: string, days: number): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + days);
+  return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, "0")}-${String(dt.getUTCDate()).padStart(2, "0")}`;
+}
+
+function diaFromIso(iso: string): DiaSemana {
+  const [y, m, d] = iso.split("-").map(Number);
+  const w = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  return (["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as DiaSemana[])[w];
+}
+
+/** Espelha o buildItems do servidor (sem shuffle, mas mostra a rotação
+ *  que vai ser usada). Útil para preview-antes-de-submeter. */
+function computePreviewItems(opts: {
+  ano: number;
+  mes: number;
+  diaInicio: number;
+  diaFim: number;
+  motionPool: string[];
+  audioPool: string[];
+  frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string; dia: DiaSemana }>>;
+}): Array<{
+  dayIndex: number;
+  date: string;
+  dia: DiaSemana;
+  fraseId: string;
+  fraseTexto: string;
+  motionUrl: string;
+  audioUrl: string | null;
+}> {
+  const items: Array<{
+    dayIndex: number;
+    date: string;
+    dia: DiaSemana;
+    fraseId: string;
+    fraseTexto: string;
+    motionUrl: string;
+    audioUrl: string | null;
+  }> = [];
+  const fraseCursor: Record<DiaSemana, number> = {
+    mon: 0, tue: 0, wed: 0, thu: 0, fri: 0, sat: 0, sun: 0,
+  };
+  const startDate = isoDate(opts.ano, opts.mes, opts.diaInicio);
+  const numDays = opts.diaFim - opts.diaInicio + 1;
+  for (let i = 0; i < numDays; i++) {
+    const date = addDays(startDate, i);
+    const dia = diaFromIso(date);
+    const pool = opts.frasesPorDia[dia];
+    if (!pool || pool.length === 0) continue;
+    const frase = pool[fraseCursor[dia] % pool.length];
+    fraseCursor[dia]++;
+    const motionUrl = opts.motionPool.length > 0
+      ? opts.motionPool[i % opts.motionPool.length]
+      : "";
+    const audioUrl = opts.audioPool.length > 0
+      ? opts.audioPool[i % opts.audioPool.length]
+      : null;
+    items.push({
+      dayIndex: i,
+      date,
+      dia,
+      fraseId: frase.id,
+      fraseTexto: frase.texto,
+      motionUrl,
+      audioUrl,
+    });
+  }
+  return items;
 }
 
 const DIAS_PT_CURTO: Record<DiaSemana, string> = {
@@ -121,8 +197,63 @@ export function HojeEmMimPreviewPanel() {
   const [diaFim, setDiaFim] = useState<number>(() => daysInMonth(now.getFullYear(), now.getMonth() + 1));
   const [durationSec, setDurationSec] = useState<number>(15);
   const [themeId, setThemeId] = useState<string>(DEFAULT_THEME_ID);
-  const [useAllMotions, setUseAllMotions] = useState<boolean>(true);
   const [useAllAudios, setUseAllAudios] = useState<boolean>(true);
+
+  // Libraries de motions e áudios disponíveis. Cada item pode ser
+  // seleccionado ou deseleccionado individualmente para entrar no bulk.
+  type MotionLib = { name: string; url: string; sizeBytes: number; createdAt: string | null };
+  type AudioLib = { mood: string; name: string; url: string; sizeBytes: number };
+  const [motionsLib, setMotionsLib] = useState<MotionLib[]>([]);
+  const [audiosLib, setAudiosLib] = useState<AudioLib[]>([]);
+  const [loadingMotionsLib, setLoadingMotionsLib] = useState(false);
+  const [loadingAudiosLib, setLoadingAudiosLib] = useState(false);
+  const [selectedMotionUrls, setSelectedMotionUrls] = useState<Set<string>>(new Set());
+  const [selectedAudioUrls, setSelectedAudioUrls] = useState<Set<string>>(new Set());
+
+  const loadMotionsLib = useCallback(async () => {
+    setLoadingMotionsLib(true);
+    try {
+      const r = await fetch("/api/admin/hoje-em-mim/motions");
+      const j = await r.json();
+      if (r.ok && Array.isArray(j.motions)) {
+        setMotionsLib(j.motions);
+        setSelectedMotionUrls((prev) => {
+          if (prev.size > 0) return prev;
+          return new Set(j.motions.map((m: { url: string }) => m.url));
+        });
+      }
+    } finally {
+      setLoadingMotionsLib(false);
+    }
+  }, []);
+
+  const loadAudiosLib = useCallback(async () => {
+    setLoadingAudiosLib(true);
+    try {
+      const r = await fetch("/api/admin/hoje-em-mim/audios");
+      const j = await r.json();
+      if (r.ok && j.audiosByMood) {
+        const flat: AudioLib[] = [];
+        for (const [mood, list] of Object.entries(j.audiosByMood)) {
+          for (const a of list as Array<{ name: string; url: string; sizeBytes: number }>) {
+            flat.push({ mood, name: a.name, url: a.url, sizeBytes: a.sizeBytes });
+          }
+        }
+        setAudiosLib(flat);
+        setSelectedAudioUrls((prev) => {
+          if (prev.size > 0) return prev;
+          return new Set(flat.map((a) => a.url));
+        });
+      }
+    } finally {
+      setLoadingAudiosLib(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadMotionsLib();
+    loadAudiosLib();
+  }, [loadMotionsLib, loadAudiosLib]);
 
   const phrase =
     frasesDoDia.find((f) => f.id === phraseId) ?? frasesDoDia[0] ?? FRASES[0];
@@ -236,38 +367,18 @@ export function HojeEmMimPreviewPanel() {
     try {
       const id = `hoje-em-mim-${ano}-${String(mes).padStart(2, "0")}-${String(diaInicio).padStart(2, "0")}-to-${String(diaFim).padStart(2, "0")}-${Date.now().toString(36)}`;
 
-      // Se "Usar todos os motions" está on, vai buscar a library inteira.
-      // O servidor faz shuffle por defeito para evitar imagens iguais
-      // em dias consecutivos.
-      let motionPool: string[] = [media].filter(Boolean);
-      let audioPoolList: string[] = audioUrlSelected ? [audioUrlSelected] : [];
-      if (useAllMotions) {
-        try {
-          const r = await fetch("/api/admin/hoje-em-mim/motions");
-          const j = await r.json();
-          if (r.ok && Array.isArray(j.motions)) {
-            motionPool = j.motions.map((m: { url: string }) => m.url);
-          }
-        } catch {
-          /* mantém o single media como fallback */
-        }
-      }
-      if (useAllAudios) {
-        try {
-          const r = await fetch("/api/admin/hoje-em-mim/audios");
-          const j = await r.json();
-          if (r.ok && j.audiosByMood) {
-            const flat: string[] = [];
-            for (const list of Object.values(j.audiosByMood)) {
-              for (const a of list as Array<{ url: string }>) flat.push(a.url);
-            }
-            if (flat.length > 0) audioPoolList = flat;
-          }
-        } catch {
-          /* mantém o single audio */
-        }
-      }
-
+      // Usa os clips e áudios que a utilizadora seleccionou nos pickers
+      // visuais. Fallback: se nada estiver seleccionado, single media URL.
+      let motionPool: string[] =
+        selectedMotionUrls.size > 0
+          ? Array.from(selectedMotionUrls)
+          : [media].filter(Boolean);
+      let audioPoolList: string[] =
+        selectedAudioUrls.size > 0
+          ? Array.from(selectedAudioUrls)
+          : audioUrlSelected
+            ? [audioUrlSelected]
+            : [];
       const body = {
         jobId: id,
         ano,
@@ -615,59 +726,44 @@ export function HojeEmMimPreviewPanel() {
               {getTheme(themeId).notas}
             </span>
           </label>
-          <label className="flex items-start gap-2 col-span-2 text-[11px] text-escola-creme cursor-pointer">
-            <input
-              type="checkbox"
-              checked={useAllMotions}
-              onChange={(e) => setUseAllMotions(e.target.checked)}
-              className="mt-0.5"
-            />
-            <span>
-              Usar todos os motions da library, embaralhados.
-              <span className="block text-[10px] text-escola-creme-50">
-                Evita que motions parecidos (várias variações do mesmo prompt)
-                fiquem em dias consecutivos. Recomendado.
-              </span>
-            </span>
-          </label>
-          {!useAllMotions && (
-            <label className="text-[10px] block col-span-2">
-              Motion (URL único) — escolhe na tab Motions
-              <input
-                value={media}
-                onChange={(e) => setMedia(e.target.value)}
-                placeholder="/assets/hoje-em-mim/motions/…"
-                className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
-              />
-            </label>
-          )}
-          <label className="flex items-start gap-2 col-span-2 text-[11px] text-escola-creme cursor-pointer">
-            <input
-              type="checkbox"
-              checked={useAllAudios}
-              onChange={(e) => setUseAllAudios(e.target.checked)}
-              className="mt-0.5"
-            />
-            <span>
-              Usar todos os áudios da library, rodando por dia.
-              <span className="block text-[10px] text-escola-creme-50">
-                Cada dia ganha um áudio diferente do que tens em
-                course-assets/hoje-em-mim-audios/. Recomendado.
-              </span>
-            </span>
-          </label>
-          {!useAllAudios && (
-            <label className="text-[10px] block col-span-2">
-              Áudio (URL único) — gera na tab Áudios
-              <input
-                value={audioUrlSelected}
-                onChange={(e) => setAudioUrlSelected(e.target.value)}
-                placeholder="vazio = sem som"
-                className="mt-0.5 w-full rounded border border-escola-border bg-escola-bg px-2 py-1 font-mono text-[10px] text-escola-creme"
-              />
-            </label>
-          )}
         </div>
+
+        <BulkClipPicker
+          motions={motionsLib}
+          loading={loadingMotionsLib}
+          selected={selectedMotionUrls}
+          onChange={setSelectedMotionUrls}
+          onReload={loadMotionsLib}
+        />
+
+        <BulkAudioPicker
+          audios={audiosLib}
+          loading={loadingAudiosLib}
+          selected={selectedAudioUrls}
+          onChange={setSelectedAudioUrls}
+          onReload={loadAudiosLib}
+        />
+
+        <BulkPreviewTable
+          ano={ano}
+          mes={mes}
+          diaInicio={diaInicio}
+          diaFim={diaFim}
+          motionPool={
+            selectedMotionUrls.size > 0
+              ? Array.from(selectedMotionUrls)
+              : ([media].filter(Boolean) as string[])
+          }
+          audioPool={
+            selectedAudioUrls.size > 0
+              ? Array.from(selectedAudioUrls)
+              : (audioUrlSelected ? [audioUrlSelected] : [])
+          }
+          motionsLib={motionsLib}
+          audiosLib={audiosLib}
+          themeId={themeId}
+        />
+
         <button
           onClick={submitJob}
           disabled={submitting || !rangeOk}
@@ -3446,5 +3542,316 @@ function AudioPickerItem({
         />
       )}
     </button>
+  );
+}
+
+function BulkClipPicker({
+  motions,
+  loading,
+  selected,
+  onChange,
+  onReload,
+}: {
+  motions: Array<{ name: string; url: string }>;
+  loading: boolean;
+  selected: Set<string>;
+  onChange: (next: Set<string>) => void;
+  onReload: () => void;
+}) {
+  const toggle = (url: string) => {
+    const next = new Set(selected);
+    if (next.has(url)) next.delete(url);
+    else next.add(url);
+    onChange(next);
+  };
+  const selectAll = () => onChange(new Set(motions.map((m) => m.url)));
+  const clearAll = () => onChange(new Set());
+
+  return (
+    <div className="space-y-2 max-w-xl">
+      <div className="flex items-baseline justify-between flex-wrap gap-2">
+        <div className="text-xs text-escola-creme">
+          Clips a incluir <span className="text-escola-creme-50">({selected.size}/{motions.length})</span>
+        </div>
+        <div className="flex gap-1 text-[10px]">
+          <button
+            onClick={selectAll}
+            className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+          >
+            Tudo
+          </button>
+          <button
+            onClick={clearAll}
+            className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+          >
+            Limpar
+          </button>
+          <button
+            onClick={onReload}
+            className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+          >
+            ↻
+          </button>
+        </div>
+      </div>
+      {loading ? (
+        <div className="text-[10px] text-escola-creme-50">A carregar library…</div>
+      ) : motions.length === 0 ? (
+        <div className="text-[10px] text-escola-creme-50 italic">
+          Sem motions no library. Faz upload na tab Motions + Runway.
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 max-h-72 overflow-y-auto">
+          {motions.map((m) => {
+            const on = selected.has(m.url);
+            return (
+              <button
+                key={m.url}
+                onClick={() => toggle(m.url)}
+                className="relative rounded border overflow-hidden transition-all"
+                style={{
+                  borderColor: on ? COBRE : "rgba(245, 240, 230, 0.16)",
+                  boxShadow: on ? `0 0 0 1.5px ${COBRE}` : undefined,
+                  opacity: on ? 1 : 0.45,
+                }}
+                title={m.name}
+              >
+                <video
+                  src={m.url}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="aspect-[9/16] w-full bg-black object-cover"
+                />
+                <div className="absolute top-0.5 right-0.5">
+                  <div
+                    className="h-4 w-4 rounded-full flex items-center justify-center text-[10px]"
+                    style={{
+                      background: on ? COBRE : "rgba(0,0,0,0.6)",
+                      color: on ? "#1a0e05" : "#888",
+                    }}
+                  >
+                    {on ? "✓" : ""}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BulkAudioPicker({
+  audios,
+  loading,
+  selected,
+  onChange,
+  onReload,
+}: {
+  audios: Array<{ mood: string; name: string; url: string }>;
+  loading: boolean;
+  selected: Set<string>;
+  onChange: (next: Set<string>) => void;
+  onReload: () => void;
+}) {
+  const toggle = (url: string) => {
+    const next = new Set(selected);
+    if (next.has(url)) next.delete(url);
+    else next.add(url);
+    onChange(next);
+  };
+  const selectAll = () => onChange(new Set(audios.map((a) => a.url)));
+  const clearAll = () => onChange(new Set());
+
+  // Agrupa por mood para mostrar header
+  const byMood: Record<string, Array<{ mood: string; name: string; url: string }>> = {};
+  for (const a of audios) {
+    if (!byMood[a.mood]) byMood[a.mood] = [];
+    byMood[a.mood].push(a);
+  }
+
+  return (
+    <div className="space-y-2 max-w-xl">
+      <div className="flex items-baseline justify-between flex-wrap gap-2">
+        <div className="text-xs text-escola-creme">
+          Áudios a incluir <span className="text-escola-creme-50">({selected.size}/{audios.length})</span>
+        </div>
+        <div className="flex gap-1 text-[10px]">
+          <button
+            onClick={selectAll}
+            className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+          >
+            Tudo
+          </button>
+          <button
+            onClick={clearAll}
+            className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+          >
+            Sem som
+          </button>
+          <button
+            onClick={onReload}
+            className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+          >
+            ↻
+          </button>
+        </div>
+      </div>
+      {loading ? (
+        <div className="text-[10px] text-escola-creme-50">A carregar library…</div>
+      ) : audios.length === 0 ? (
+        <div className="text-[10px] text-escola-creme-50 italic">
+          Sem áudios no library. Gera na tab Áudios.
+        </div>
+      ) : (
+        <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+          {Object.entries(byMood).map(([mood, list]) => (
+            <div key={mood} className="space-y-1">
+              <div className="text-[10px] uppercase tracking-wider text-escola-creme-50">
+                {NIGHT_MOOD_LABELS[mood as keyof typeof NIGHT_MOOD_LABELS] ?? mood}
+              </div>
+              {list.map((a) => {
+                const on = selected.has(a.url);
+                return (
+                  <label
+                    key={a.url}
+                    className="flex items-center gap-2 rounded border p-1.5 text-[10px] cursor-pointer transition-colors"
+                    style={{
+                      borderColor: on ? COBRE : "rgba(245, 240, 230, 0.16)",
+                      background: on ? "rgba(194, 143, 96, 0.08)" : "transparent",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={on}
+                      onChange={() => toggle(a.url)}
+                      className="shrink-0"
+                    />
+                    <span className="flex-1 truncate text-escola-creme">{a.name}</span>
+                    <audio
+                      src={a.url}
+                      controls
+                      preload="metadata"
+                      className="h-6 w-32 shrink-0"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </label>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BulkPreviewTable({
+  ano,
+  mes,
+  diaInicio,
+  diaFim,
+  motionPool,
+  audioPool,
+  motionsLib,
+  audiosLib,
+  themeId,
+}: {
+  ano: number;
+  mes: number;
+  diaInicio: number;
+  diaFim: number;
+  motionPool: string[];
+  audioPool: string[];
+  motionsLib: Array<{ name: string; url: string }>;
+  audiosLib: Array<{ name: string; url: string; mood: string }>;
+  themeId: string;
+}) {
+  const items = useMemo(() => {
+    const frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string; dia: DiaSemana }>> = {
+      mon: [], tue: [], wed: [], thu: [], fri: [], sat: [], sun: [],
+    };
+    for (const f of FRASES) frasesPorDia[f.dia].push(f);
+    return computePreviewItems({
+      ano,
+      mes,
+      diaInicio,
+      diaFim,
+      motionPool,
+      audioPool,
+      frasesPorDia,
+    });
+  }, [ano, mes, diaInicio, diaFim, motionPool, audioPool]);
+
+  const motionName = (url: string) =>
+    motionsLib.find((m) => m.url === url)?.name ?? url.split("/").pop() ?? "?";
+  const audioName = (url: string | null) => {
+    if (!url) return "—";
+    return audiosLib.find((a) => a.url === url)?.name ?? url.split("/").pop() ?? "?";
+  };
+  const theme = getTheme(themeId);
+
+  if (items.length === 0) {
+    return (
+      <div className="rounded border border-escola-border bg-escola-card/40 p-3 text-[11px] text-escola-creme-50">
+        Sem items para pré-montar (verifica range, motions e frases).
+      </div>
+    );
+  }
+
+  return (
+    <details
+      open
+      className="rounded-lg border max-w-3xl"
+      style={{ borderColor: COBRE_FRACO, background: "rgba(194, 143, 96, 0.04)" }}
+    >
+      <summary
+        className="cursor-pointer px-3 py-2 text-xs font-medium"
+        style={{ color: COBRE }}
+      >
+        🔍 Pré-montagem ({items.length} dias) — vê o que vai sair antes de submeter
+      </summary>
+      <div className="overflow-x-auto px-3 pb-3">
+        <table className="w-full text-[10px]">
+          <thead className="text-escola-creme-50 uppercase tracking-wider">
+            <tr>
+              <th className="text-left py-1 pr-2">Data</th>
+              <th className="text-left py-1 pr-2">Dia</th>
+              <th className="text-left py-1 pr-2">Frase</th>
+              <th className="text-left py-1 pr-2">Motion</th>
+              <th className="text-left py-1 pr-2">Áudio</th>
+              <th className="text-left py-1 pr-2">Tema</th>
+            </tr>
+          </thead>
+          <tbody className="text-escola-creme">
+            {items.map((it) => (
+              <tr
+                key={it.dayIndex}
+                className="border-t border-escola-border/40"
+              >
+                <td className="py-1 pr-2 whitespace-nowrap">{it.date}</td>
+                <td className="py-1 pr-2 whitespace-nowrap">{DIA_LONGO_PT[it.dia]}</td>
+                <td className="py-1 pr-2 italic">{it.fraseTexto.slice(0, 60)}{it.fraseTexto.length > 60 ? "…" : ""}</td>
+                <td className="py-1 pr-2 truncate max-w-[150px]" title={motionName(it.motionUrl)}>
+                  {motionName(it.motionUrl).slice(0, 30)}
+                </td>
+                <td className="py-1 pr-2 truncate max-w-[120px]" title={audioName(it.audioUrl)}>
+                  {audioName(it.audioUrl).slice(0, 24)}
+                </td>
+                <td className="py-1 pr-2" style={{ color: theme.highlight }}>
+                  {theme.label.split(" ")[0]}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="mt-2 text-[10px] text-escola-creme-50 italic">
+          Rotação visível aqui é determinística. O servidor faz shuffle do motionPool
+          ao submeter para evitar repetições visuais seguidas.
+        </div>
+      </div>
+    </details>
   );
 }
