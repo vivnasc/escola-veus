@@ -75,6 +75,21 @@ export async function GET(req: NextRequest) {
     missing: results.filter((r) => r.status === "missing").length,
   };
 
+  // Verifica se o pacote ZIP ja foi gerado (HEAD)
+  let zipUrl: string | null = null;
+  let zipSize: number | null = null;
+  try {
+    const zipPath = `${supabaseUrl}/storage/v1/object/public/course-assets/vc-sabia-packages/${batchId}.zip`;
+    const head = await fetch(zipPath, { method: "HEAD", cache: "no-store" });
+    if (head.ok) {
+      zipUrl = zipPath;
+      const cl = head.headers.get("content-length");
+      if (cl) zipSize = Number(cl);
+    }
+  } catch {
+    /* ignore */
+  }
+
   return NextResponse.json({
     batchId,
     year: batch.year,
@@ -82,5 +97,7 @@ export async function GET(req: NextRequest) {
     createdAt: batch.createdAt,
     jobs: results,
     summary,
+    zipUrl,
+    zipSize,
   });
 }

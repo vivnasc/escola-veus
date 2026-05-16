@@ -72,6 +72,8 @@ interface BatchStatus {
     failed: number;
     missing: number;
   };
+  zipUrl?: string | null;
+  zipSize?: number | null;
 }
 
 type Phase = "config" | "plan" | "submitted";
@@ -144,6 +146,83 @@ export function BulkMonthPanel() {
   };
 
   const [deletingBatch, setDeletingBatch] = useState<string | null>(null);
+  const [allMotions, setAllMotions] = useState<Array<{ name: string; url: string }>>([]);
+  const [usedMotionNames, setUsedMotionNames] = useState<Set<string>>(new Set());
+  const [swapShowAll, setSwapShowAll] = useState<Record<string, boolean>>({});
+  const [swapping, setSwapping] = useState<Record<string, "loading" | { error: string } | undefined>>({});
+  const [swapPickerOpen, setSwapPickerOpen] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState<Record<string, "loading" | { error: string } | undefined>>({});
+
+  const loadAllMotions = useCallback(async () => {
+    if (allMotions.length > 0) return;
+    try {
+      const [motionsRes, histRes] = await Promise.all([
+        fetch("/api/admin/vc-sabia/motions", { cache: "no-store" }),
+        fetch("/api/admin/vc-sabia/usage-history", { cache: "no-store" }),
+      ]);
+      if (motionsRes.ok) {
+        const j = await motionsRes.json();
+        setAllMotions(j.motions || []);
+      }
+      if (histRes.ok) {
+        const h = await histRes.json();
+        setUsedMotionNames(new Set(h.usedMotionNames || []));
+      }
+    } catch {
+      /* ignore */
+    }
+  }, [allMotions.length]);
+
+  const cancelJob = async (jobId: string) => {
+    if (!confirm(`Cancelar render do job ${jobId}? O workflow no GitHub Actions vai ser parado se ainda estiver a correr.`)) return;
+    setCancelling((c) => ({ ...c, [jobId]: "loading" }));
+    try {
+      const r = await fetch("/api/admin/vc-sabia/render-cancel", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId }),
+      });
+      const j = await r.json();
+      if (!r.ok) {
+        setCancelling((c) => ({ ...c, [jobId]: { error: j.erro || `HTTP ${r.status}` } }));
+        return;
+      }
+      setCancelling((c) => {
+        const next = { ...c };
+        delete next[jobId];
+        return next;
+      });
+      await fetchStatus();
+    } catch (e) {
+      setCancelling((c) => ({ ...c, [jobId]: { error: e instanceof Error ? e.message : String(e) } }));
+    }
+  };
+
+  const swapMotion = async (jobId: string, motionUrl: string, motionName: string) => {
+    setSwapping((s) => ({ ...s, [jobId]: "loading" }));
+    try {
+      const r = await fetch("/api/admin/vc-sabia/render-update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId, motionUrl, motionName }),
+      });
+      const j = await r.json();
+      if (!r.ok) {
+        setSwapping((s) => ({ ...s, [jobId]: { error: j.erro || `HTTP ${r.status}` } }));
+        return;
+      }
+      setSwapping((s) => {
+        const next = { ...s };
+        delete next[jobId];
+        return next;
+      });
+      setSwapPickerOpen(null);
+      await fetchStatus();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setSwapping((s) => ({ ...s, [jobId]: { error: msg } }));
+    }
+  };
   const deletePastBatch = async (id: string) => {
     if (!confirm(`Apagar o batch ${id}? Apaga todos os MP4s, manifests, captions e o ZIP. Esta acção é irreversível.`)) return;
     setDeletingBatch(id);
@@ -333,7 +412,10 @@ export function BulkMonthPanel() {
         { cache: "no-store" }
       );
       if (!res.ok) return;
-      setStatus(await res.json());
+      const data = await res.json();
+      setStatus(data);
+      // Auto-popula zipUrl se ja existir o pacote em Supabase
+      if (data.zipUrl) setZipUrl((cur) => cur || data.zipUrl);
     } catch {
       /* ignore */
     }
@@ -944,6 +1026,112 @@ export function BulkMonthPanel() {
                     </a>
                   )}
 
+                  {/* Trocar motion + re-render */}
+                  <div className="space-y-1">
+                    {swapPickerOpen === j.jobId ? (
+                      <div className="space-y-1 rounded border border-amber-500/40 bg-amber-500/5 p-1.5">
+                        {(() => {
+                          const unused = allMotions.filter(
+                            (m) => m.name !== j.motionName && !usedMotionNames.has(m.name)
+                          );
+                          const all = allMotions.filter((m) => m.name !== j.motionName);
+                          const showAll = swapShowAll[j.jobId];
+                          const list = showAll ? all : unused;
+                          return (
+                            <>
+                              <div className="flex items-center justify-between text-[10px] text-amber-200">
+                                <span>
+                                  {showAll
+                                    ? `Todos (${all.length})`
+                                    : `Não usados (${unused.length} de ${all.length})`}
+                                </span>
+                                <button
+                                  onClick={() =>
+                                    setSwapShowAll((s) => ({ ...s, [j.jobId]: !showAll }))
+                                  }
+                                  className="text-[9px] text-escola-creme-50 hover:text-escola-creme"
+                                >
+                                  {showAll ? "só não-usados" : "ver todos"}
+                                </button>
+                              </div>
+                              <select
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  if (!val) return;
+                                  const m = allMotions.find((x) => x.url === val);
+                                  if (m) swapMotion(j.jobId, m.url, m.name);
+                                }}
+                                disabled={swapping[j.jobId] === "loading"}
+                                className="block w-full rounded border border-escola-border bg-escola-card px-1 py-0.5 text-[10px] text-escola-creme disabled:opacity-50"
+                                defaultValue=""
+                              >
+                                <option value="">— escolhe motion —</option>
+                                {list.map((m) => (
+                                  <option key={m.url} value={m.url}>
+                                    {usedMotionNames.has(m.name) ? "↺ " : ""}
+                                    {m.name.slice(0, 32)}
+                                  </option>
+                                ))}
+                              </select>
+                              {list.length === 0 && (
+                                <div className="text-[9px] text-red-300">
+                                  Todos os motions já foram usados. Gera mais clips
+                                  ou clica "ver todos" para reutilizar.
+                                </div>
+                              )}
+                            </>
+                          );
+                        })()}
+                        <button
+                          onClick={() => setSwapPickerOpen(null)}
+                          className="block w-full rounded border border-escola-border bg-escola-card/40 px-1.5 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                        >
+                          cancelar
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          loadAllMotions();
+                          setSwapPickerOpen(j.jobId);
+                        }}
+                        disabled={swapping[j.jobId] === "loading"}
+                        className="block w-full rounded border border-amber-500/60 bg-amber-500/10 px-2 py-0.5 text-[10px] text-amber-300 hover:bg-amber-500/20 disabled:opacity-50"
+                        title="Troca o motion e re-renderiza apenas este dia"
+                      >
+                        {swapping[j.jobId] === "loading"
+                          ? "↻ a re-renderizar..."
+                          : "↻ Trocar motion + re-render"}
+                      </button>
+                    )}
+                    {swapping[j.jobId] && swapping[j.jobId] !== "loading" && (
+                      <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
+                        {(swapping[j.jobId] as { error: string }).error}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Cancelar (so para queued/running) */}
+                  {(j.status === "queued" || j.status === "running") && (
+                    <div className="space-y-1">
+                      <button
+                        onClick={() => cancelJob(j.jobId)}
+                        disabled={cancelling[j.jobId] === "loading"}
+                        className="block w-full rounded border border-red-700/60 bg-red-900/20 px-2 py-0.5 text-[10px] text-red-300 hover:bg-red-900/40 disabled:opacity-50"
+                        title="Cancela o render no GitHub Actions"
+                      >
+                        {cancelling[j.jobId] === "loading"
+                          ? "✕ a cancelar..."
+                          : "✕ Cancelar render"}
+                      </button>
+                      {cancelling[j.jobId] && cancelling[j.jobId] !== "loading" && (
+                        <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
+                          {(cancelling[j.jobId] as { error: string }).error}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {captions && (
                     <div className="space-y-1 border-t border-escola-border/30 pt-1.5">
                       <button
@@ -1019,15 +1207,43 @@ export function BulkMonthPanel() {
                 : `📦 Espera os ${status.summary.queued + status.summary.running} em curso`}
             </button>
             {zipUrl && (
-              <a
-                href={zipUrl}
-                target="_blank"
-                rel="noreferrer"
-                download
-                className="rounded-md border border-emerald-500/60 bg-emerald-500/15 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/25"
-              >
-                ↓ Download ZIP
-              </a>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={async () => {
+                    // Fetch+blob para Safari (que ignora download attribute em cross-origin)
+                    try {
+                      const r = await fetch(zipUrl);
+                      const blob = await r.blob();
+                      const obj = URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.href = obj;
+                      a.download = `vc-sabia-${batchId}.zip`;
+                      a.click();
+                      setTimeout(() => URL.revokeObjectURL(obj), 5000);
+                    } catch {
+                      // fallback: abre noutra tab para Safari poder baixar
+                      window.open(zipUrl, "_blank");
+                    }
+                  }}
+                  className="rounded-md border border-emerald-500/60 bg-emerald-500/15 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/25"
+                >
+                  ↓ Download ZIP
+                </button>
+                <a
+                  href={zipUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-md border border-escola-border bg-escola-card/40 px-2 py-1.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                  title="Abrir ZIP em nova tab (Safari pode precisar)"
+                >
+                  ↗
+                </a>
+                {status.zipSize && (
+                  <span className="text-[10px] text-escola-creme-50">
+                    {(status.zipSize / 1024 / 1024).toFixed(1)} MB
+                  </span>
+                )}
+              </div>
             )}
             <button
               onClick={reset}
