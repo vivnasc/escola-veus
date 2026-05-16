@@ -428,6 +428,45 @@ export function BulkMonthPanel() {
     return () => clearInterval(t);
   }, [batchId, fetchStatus]);
 
+  // Download standalone do CSV Metricool (sem ZIP). Constrói o CSV no
+  // browser usando o que já está em status.jobs (videos prontos +
+  // captions derivadas das frases).
+  const downloadCsvOnly = async () => {
+    if (!status || !batchId) return;
+    const ready = status.jobs.filter(
+      (j) => j.status === "done" && j.videoUrl && j.phraseText
+    );
+    if (ready.length === 0) {
+      setError("Sem vídeos prontos para CSV.");
+      return;
+    }
+    const { buildVcSabiaCsv } = await import("@/lib/vc-sabia/metricool-csv");
+    const csvPosts = ready.map((j) => {
+      const caps = phraseToCaptions({
+        phrase: j.phraseText!,
+        theme: j.phraseTheme || "beleza-de-existir",
+      });
+      return {
+        date: j.date,
+        videoUrl: j.videoUrl!,
+        captionInstagram: caps.instagram,
+        captionTiktok: caps.tiktok,
+        timeInstagram: "10:00",
+        timeTiktok: "10:30",
+      };
+    });
+    const csv = buildVcSabiaCsv(csvPosts);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `vc-sabia-metricool-${batchId}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
   const pkg = async () => {
     if (!batchId) return;
     setPackaging(true);
@@ -1138,7 +1177,15 @@ export function BulkMonthPanel() {
             })}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={downloadCsvOnly}
+              disabled={!canPackage}
+              className="rounded-md border border-amber-500/60 bg-amber-500/15 px-3 py-1.5 text-xs text-amber-300 hover:bg-amber-500/25 disabled:opacity-50"
+              title="Descarrega só o ficheiro metricool.csv para arrastar direto para o Metricool"
+            >
+              📅 Descarregar só CSV Metricool
+            </button>
             <button
               onClick={pkg}
               disabled={!canPackage || packaging}
