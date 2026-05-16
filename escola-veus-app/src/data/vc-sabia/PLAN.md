@@ -25,6 +25,7 @@ Posts de manhã: Instagram + TikTok (via Metricool) + WhatsApp Status (manual).
 | Assinatura no vídeo | `seteveus.space` (footer pequeno) |
 | Marca destino | Vivianne dos Santos (separada de Loranne e Ancient Ground) |
 | Áudios | ElevenLabs Sound Effects API (gerados on-demand, mood: birds_dawn / stream / wind / rain) |
+| Motions | **Midjourney v6/v7 `--video`** (cinematográfico, contemplativo). Runway descartado — não consegue o tom de manhã portuguesa. Prompts gerados em `lib/vc-sabia/midjourney.ts` por tema+mood, copiáveis a partir do plano. |
 | Render | Remotion (mesma infra que Loranne) |
 | Tipografia | Cormorant Garamond italic (frase) + Inter caps (kicker, assinatura) |
 | Cadência | 7 posts/semana, manhã (~09:00 PT IG, ~09:30 PT TikTok) |
@@ -33,7 +34,7 @@ Posts de manhã: Instagram + TikTok (via Metricool) + WhatsApp Status (manual).
 ## Pendente — preciso de ti
 
 - [ ] `ELEVENLABS_API_KEY` em `.env.local` e em Vercel (necessário para Fase 2)
-- [ ] 6 MP4 motion extra do MJ (já temos 1, precisamos 7 para a 1ª semana)
+- [ ] MP4 motions Midjourney 9:16 carregados em `vc-sabia-motions/` (1 por dia da semana). Usa o botão "⌘ copy MJ prompt" no plano para obter o prompt determinista por (tema, mood).
 - [ ] Confirmar horário publicação por canal
 
 ## Arquitectura
