@@ -72,6 +72,8 @@ interface BatchStatus {
     failed: number;
     missing: number;
   };
+  zipUrl?: string | null;
+  zipSize?: number | null;
 }
 
 type Phase = "config" | "plan" | "submitted";
@@ -410,7 +412,10 @@ export function BulkMonthPanel() {
         { cache: "no-store" }
       );
       if (!res.ok) return;
-      setStatus(await res.json());
+      const data = await res.json();
+      setStatus(data);
+      // Auto-popula zipUrl se ja existir o pacote em Supabase
+      if (data.zipUrl) setZipUrl((cur) => cur || data.zipUrl);
     } catch {
       /* ignore */
     }
@@ -1155,15 +1160,43 @@ export function BulkMonthPanel() {
                 : `📦 Espera os ${status.summary.queued + status.summary.running} em curso`}
             </button>
             {zipUrl && (
-              <a
-                href={zipUrl}
-                target="_blank"
-                rel="noreferrer"
-                download
-                className="rounded-md border border-emerald-500/60 bg-emerald-500/15 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/25"
-              >
-                ↓ Download ZIP
-              </a>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={async () => {
+                    // Fetch+blob para Safari (que ignora download attribute em cross-origin)
+                    try {
+                      const r = await fetch(zipUrl);
+                      const blob = await r.blob();
+                      const obj = URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.href = obj;
+                      a.download = `vc-sabia-${batchId}.zip`;
+                      a.click();
+                      setTimeout(() => URL.revokeObjectURL(obj), 5000);
+                    } catch {
+                      // fallback: abre noutra tab para Safari poder baixar
+                      window.open(zipUrl, "_blank");
+                    }
+                  }}
+                  className="rounded-md border border-emerald-500/60 bg-emerald-500/15 px-3 py-1.5 text-xs text-emerald-300 hover:bg-emerald-500/25"
+                >
+                  ↓ Download ZIP
+                </button>
+                <a
+                  href={zipUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-md border border-escola-border bg-escola-card/40 px-2 py-1.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                  title="Abrir ZIP em nova tab (Safari pode precisar)"
+                >
+                  ↗
+                </a>
+                {status.zipSize && (
+                  <span className="text-[10px] text-escola-creme-50">
+                    {(status.zipSize / 1024 / 1024).toFixed(1)} MB
+                  </span>
+                )}
+              </div>
             )}
             <button
               onClick={reset}
