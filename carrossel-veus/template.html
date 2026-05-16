@@ -6,7 +6,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=block"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=block"
     rel="stylesheet"
   />
   <link rel="stylesheet" href="styles.css" />
@@ -31,13 +31,36 @@
       }
     }
 
+    // Camadas decorativas reutilizadas em todos os tipos de slide.
+    // `density` controla quantos pirilampos/sparkles aparecem.
+    function decor({ rainbowArc = false, rainbowStrip = false, density = "alta" } = {}) {
+      const firefliesQtd = density === "alta" ? 15 : density === "media" ? 9 : 5;
+      const sparklesQtd  = density === "alta" ? 10 : density === "media" ? 6 : 3;
+      const sizes = ["", "small", "tiny", "small", "", "tiny", "small", "", "tiny", "small", "", "tiny", "small", "", "tiny"];
+      const sparkleSizes = ["", "small", "tiny", "", "small", "", "tiny", "small", "", "tiny"];
+
+      let html = "";
+      if (rainbowArc) html += `<div class="rainbow-arc"></div>`;
+      if (rainbowStrip) html += `<div class="rainbow-strip top"></div><div class="rainbow-strip bot"></div>`;
+      html += `<div class="glow-hue"></div><div class="paper"></div><div class="vignette-light"></div>`;
+      html += `<div class="fireflies">`;
+      for (let i = 0; i < firefliesQtd; i++) {
+        html += `<span class="firefly ${sizes[i] || ""}"></span>`;
+      }
+      html += `</div><div class="stars">`;
+      for (let i = 0; i < sparklesQtd; i++) {
+        html += `<span class="sparkle ${sparkleSizes[i] || ""}"></span>`;
+      }
+      html += `</div>`;
+      return html;
+    }
+
     function renderCapa(dia, slide) {
       const numeroBig = dia.numero;
+      const isDia7 = dia.numero === 7;
       return `
-        <div class="slide capa dark">
-          <div class="grain"></div>
-          <div class="vignette"></div>
-          <div class="glow-gold"></div>
+        <div class="slide capa dia-${dia.numero}">
+          ${decor({ rainbowArc: isDia7, density: "alta" })}
           <div class="ghost-num">${numeroBig}</div>
           <div class="content">
             <div class="top">
@@ -47,7 +70,7 @@
                 <span class="rule"></span>
               </div>
               <div class="veu">${escapeHtml(dia.veu)}</div>
-              <div class="ornament">◇ &nbsp; ◇ &nbsp; ◇</div>
+              <div class="ornament">✦ &nbsp; ✧ &nbsp; ✦</div>
               <div class="subtitulo">${escapeHtml(dia.subtitulo)}</div>
             </div>
             <div class="abertura">
@@ -73,9 +96,8 @@
       const ornamentBot = ePoetico ? `<div class="ornament">~</div>` : "";
 
       return `
-        <div class="slide conteudo ${tipo} light">
-          <div class="grain"></div>
-          <div class="vignette"></div>
+        <div class="slide conteudo ${tipo} dia-${dia.numero}">
+          ${decor({ density: "media" })}
           <div class="content">
             <div class="meta-top">
               <span>os sete véus</span>
@@ -89,7 +111,7 @@
               ${ornamentBot}
             </div>
             <div class="meta-bot">
-              <span class="ornament">◇ &nbsp; ◇ &nbsp; ◇</span>
+              <span class="ornament">✦ &nbsp; ✧ &nbsp; ✦</span>
               <span class="marca">${escapeHtml(dia.veu.toLowerCase())}</span>
             </div>
           </div>
@@ -98,11 +120,10 @@
     }
 
     function renderCta(dia, slide) {
+      const isDia7 = dia.numero === 7;
       return `
-        <div class="slide cta dark">
-          <div class="grain"></div>
-          <div class="vignette"></div>
-          <div class="glow-terra"></div>
+        <div class="slide cta dia-${dia.numero}">
+          ${decor({ rainbowArc: isDia7, rainbowStrip: !isDia7, density: "alta" })}
           <div class="espiral-bg">🌀</div>
           <div class="content">
             <div class="icon-ring"><span class="icone">${escapeHtml(slide.icone || "")}</span></div>

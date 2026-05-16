@@ -1,13 +1,53 @@
+/* ─── Carrossel "A Estação dos Véus" — versão LUZ ─────────────────────
+   Paleta luminosa, hue por dia, pirilampos + estrelas + arco-íris.
+   As CSS vars históricas (--ink/--ivory/--deep/...) mantêm-se
+   compatíveis com o sistema de theme override em generate.js. */
+
 :root {
-  --ink: #1a1614;
-  --ivory: #ede4d3;
-  --parchment-dark: #d8cfb8;
-  --deep: #0a0907;
-  --deep-warm: #1f1812;
-  --terracotta: #b85c38;
-  --gold: #c9a961;
-  --mist: rgba(237, 228, 211, 0.65);
+  /* === Tons base — luminosos === */
+  --ink: #3a2e26;             /* tinta quente, não preto */
+  --ink-soft: #6b5849;
+  --ivory: #fdf8ed;           /* fundo principal */
+  --parchment-dark: #f1e3c8;  /* gradiente quente */
+  --deep: #fbf4e3;            /* "deep" invertido = luz */
+  --deep-warm: #fff9e8;       /* centro do glow */
+
+  /* === Acentos quentes === */
+  --terracotta: #d68b6c;
+  --terracotta-soft: #f0c4b0;
+  --gold: #c9a14a;
+  --gold-glow: #f6dc92;
+  --mist: rgba(58, 46, 38, 0.5);
+
+  /* === Cores por véu === */
+  --rose: #f5b8a8;            /* I — Permanência */
+  --rose-deep: #e89684;
+  --lavender: #d8c4e8;        /* II — Memória */
+  --lavender-deep: #b29bce;
+  --mint: #b8dcc8;            /* III — Turbilhão */
+  --mint-deep: #82bea4;
+  --sage: #cde0b6;            /* IV — Esforço */
+  --sage-deep: #9fbc7c;
+  --amber: #f0c890;           /* V — Desolação */
+  --amber-deep: #d8a868;
+  --sky: #bedaee;             /* VI — Horizonte */
+  --sky-deep: #8cb4d0;
+  --aurora: #e6cde8;          /* VII — Dualidade */
+  --aurora-deep: #c098c8;
+
+  /* Hue activo do slide — sobrescrito por .dia-N */
+  --hue: var(--rose);
+  --hue-deep: var(--rose-deep);
 }
+
+/* === Tema por dia === */
+.dia-1 { --hue: var(--rose);     --hue-deep: var(--rose-deep); }
+.dia-2 { --hue: var(--lavender); --hue-deep: var(--lavender-deep); }
+.dia-3 { --hue: var(--mint);     --hue-deep: var(--mint-deep); }
+.dia-4 { --hue: var(--sage);     --hue-deep: var(--sage-deep); }
+.dia-5 { --hue: var(--amber);    --hue-deep: var(--amber-deep); }
+.dia-6 { --hue: var(--sky);      --hue-deep: var(--sky-deep); }
+.dia-7 { --hue: var(--aurora);   --hue-deep: var(--aurora-deep); }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -18,52 +58,188 @@ html, body {
   font-feature-settings: "liga", "kern", "dlig";
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
+  background: var(--ivory);
 }
 
-/* ─── Texturas reutilizáveis ────────────────────────────────────────── */
+/* ─── Camadas decorativas reutilizáveis ────────────────────────────── */
 
-.grain {
+/* glow radial do hue do dia — substitui a antiga vinheta escura */
+.glow-hue {
   position: absolute; inset: 0; pointer-events: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  z-index: 1;
+  background:
+    radial-gradient(ellipse 78% 55% at 50% 28%, color-mix(in srgb, var(--hue) 70%, transparent) 0%, transparent 65%),
+    radial-gradient(ellipse 90% 70% at 50% 92%, color-mix(in srgb, var(--hue-deep) 35%, transparent) 0%, transparent 70%);
+}
+.glow-hue.soft {
+  background:
+    radial-gradient(ellipse 85% 60% at 50% 50%, color-mix(in srgb, var(--hue) 38%, transparent) 0%, transparent 70%);
+}
+
+/* tinta de fundo papel — textura suave, sem escurecer */
+.paper {
+  position: absolute; inset: 0; pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.96  0 0 0 0 0.86  0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   background-size: 400px 400px;
-  mix-blend-mode: overlay;
-  opacity: 0.45;
+  mix-blend-mode: multiply;
+  opacity: 0.22;
 }
-.slide.dark .grain { mix-blend-mode: screen; opacity: 0.18; }
 
-.vignette {
+/* moldura suave dourada */
+.vignette-light {
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 80% 60% at center, transparent 40%, rgba(0,0,0,0.55) 100%);
-}
-.slide.light .vignette {
-  background: radial-gradient(ellipse 90% 70% at center, transparent 50%, color-mix(in srgb, var(--ink) 18%, transparent) 100%);
+  z-index: 1;
+  background: radial-gradient(ellipse 92% 76% at center, transparent 58%, color-mix(in srgb, var(--hue-deep) 12%, transparent) 100%);
 }
 
-.glow-gold {
+/* ─── Pirilampos ───────────────────────────────────────────────────── */
+.fireflies {
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 60% 50% at 50% 35%, color-mix(in srgb, var(--gold) 10%, transparent) 0%, transparent 70%);
+  z-index: 2;
 }
-.glow-terra {
+.firefly {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #fffaeb;
+  box-shadow:
+    0 0 10px 3px rgba(247, 222, 148, 0.95),
+    0 0 28px 8px rgba(247, 222, 148, 0.55),
+    0 0 64px 18px rgba(247, 222, 148, 0.22);
+}
+.firefly.small {
+  width: 4px; height: 4px;
+  background: #fff5d6;
+  box-shadow:
+    0 0 7px 2px rgba(247, 222, 148, 0.85),
+    0 0 20px 5px rgba(247, 222, 148, 0.42),
+    0 0 44px 12px rgba(247, 222, 148, 0.16);
+}
+.firefly.tiny {
+  width: 3px; height: 3px;
+  background: #fff0c8;
+  box-shadow:
+    0 0 5px 1px rgba(247, 222, 148, 0.75),
+    0 0 14px 3px rgba(247, 222, 148, 0.32);
+}
+
+/* posições — fixas por nth-child para PNG estático */
+.fireflies .firefly:nth-child(1)  { top: 11%; left: 14%; }
+.fireflies .firefly:nth-child(2)  { top: 7%;  right: 18%; }
+.fireflies .firefly:nth-child(3)  { top: 22%; left: 7%; }
+.fireflies .firefly:nth-child(4)  { top: 28%; right: 11%; }
+.fireflies .firefly:nth-child(5)  { top: 40%; left: 11%; }
+.fireflies .firefly:nth-child(6)  { top: 44%; right: 7%; }
+.fireflies .firefly:nth-child(7)  { top: 56%; left: 17%; }
+.fireflies .firefly:nth-child(8)  { top: 61%; right: 21%; }
+.fireflies .firefly:nth-child(9)  { top: 72%; left: 8%; }
+.fireflies .firefly:nth-child(10) { top: 76%; right: 14%; }
+.fireflies .firefly:nth-child(11) { top: 86%; left: 22%; }
+.fireflies .firefly:nth-child(12) { top: 91%; right: 24%; }
+.fireflies .firefly:nth-child(13) { top: 33%; left: 48%; }
+.fireflies .firefly:nth-child(14) { top: 67%; left: 52%; }
+.fireflies .firefly:nth-child(15) { top: 82%; left: 44%; }
+
+/* ─── Sparkles / estrelas ──────────────────────────────────────────── */
+.stars {
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 60% 50% at 50% 60%, color-mix(in srgb, var(--terracotta) 10%, transparent) 0%, transparent 70%);
+  z-index: 2;
 }
+.sparkle {
+  position: absolute;
+  width: 16px; height: 16px;
+  opacity: 0.85;
+}
+.sparkle::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--gold-glow);
+  clip-path: polygon(50% 0%, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0% 50%, 44% 44%);
+}
+.sparkle::after {
+  content: "";
+  position: absolute; inset: -10px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--gold-glow) 80%, transparent) 0%, transparent 65%);
+  opacity: 0.55;
+  filter: blur(5px);
+}
+.sparkle.hue::before { background: color-mix(in srgb, var(--hue-deep) 70%, var(--gold-glow)); }
+.sparkle.small  { width: 11px; height: 11px; opacity: 0.7; }
+.sparkle.small::after { inset: -7px; }
+.sparkle.tiny   { width: 7px;  height: 7px;  opacity: 0.6; }
+.sparkle.tiny::after  { inset: -4px; }
 
-/* ─── Base do slide ─────────────────────────────────────────────────── */
+.stars .sparkle:nth-child(1)  { top: 16%; right: 12%; }
+.stars .sparkle:nth-child(2)  { top: 24%; left: 18%; }
+.stars .sparkle:nth-child(3)  { top: 35%; right: 26%; }
+.stars .sparkle:nth-child(4)  { top: 48%; left: 24%; }
+.stars .sparkle:nth-child(5)  { top: 58%; right: 18%; }
+.stars .sparkle:nth-child(6)  { top: 70%; left: 28%; }
+.stars .sparkle:nth-child(7)  { top: 80%; right: 28%; }
+.stars .sparkle:nth-child(8)  { top: 88%; left: 16%; }
+.stars .sparkle:nth-child(9)  { top: 12%; left: 38%; }
+.stars .sparkle:nth-child(10) { top: 92%; right: 42%; }
 
+/* ─── Arco-íris ────────────────────────────────────────────────────── */
+.rainbow-arc {
+  position: absolute;
+  top: -80px; left: 50%;
+  width: 1080px; height: 540px;
+  transform: translateX(-50%);
+  border-radius: 50% / 100% 100% 0 0;
+  background:
+    radial-gradient(ellipse 100% 100% at 50% 100%,
+      transparent 0%, transparent 62%,
+      rgba(216, 196, 232, 0.42) 62%, rgba(216, 196, 232, 0.42) 65%,
+      rgba(190, 218, 238, 0.42) 65%, rgba(190, 218, 238, 0.42) 68%,
+      rgba(184, 220, 200, 0.42) 68%, rgba(184, 220, 200, 0.42) 71%,
+      rgba(205, 224, 182, 0.42) 71%, rgba(205, 224, 182, 0.42) 74%,
+      rgba(240, 200, 144, 0.42) 74%, rgba(240, 200, 144, 0.42) 77%,
+      rgba(245, 184, 168, 0.42) 77%, rgba(245, 184, 168, 0.42) 80%,
+      transparent 80%);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+  filter: blur(0.6px);
+}
+.rainbow-strip {
+  position: absolute;
+  left: 0; right: 0; height: 6px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(245, 184, 168, 0.7) 12%,
+    rgba(240, 200, 144, 0.7) 28%,
+    rgba(205, 224, 182, 0.7) 44%,
+    rgba(184, 220, 200, 0.7) 60%,
+    rgba(190, 218, 238, 0.7) 76%,
+    rgba(216, 196, 232, 0.7) 92%,
+    transparent 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+.rainbow-strip.top { top: 0; }
+.rainbow-strip.bot { bottom: 0; }
+
+/* ─── Base do slide ────────────────────────────────────────────────── */
 .slide {
   position: relative;
   width: 1080px; height: 1920px;
   overflow: hidden;
   font-family: 'Inter', system-ui, sans-serif;
-}
-.slide .content {
-  position: relative; z-index: 2;
-  width: 100%; height: 100%;
-  display: flex; flex-direction: column;
-  padding: 110px 110px;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 35%, color-mix(in srgb, var(--hue) 35%, var(--ivory)) 0%, var(--ivory) 70%),
+    var(--ivory);
+  color: var(--ink);
 }
 
-/* dingbat / ornamentos */
+.slide .content {
+  position: relative; z-index: 5;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  padding: 110px;
+}
+
 .dingbat {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
@@ -72,27 +248,26 @@ html, body {
   opacity: 0.85;
 }
 
-/* hairline rule */
 .rule {
   display: block;
-  background: var(--gold);
+  background: color-mix(in srgb, var(--hue-deep) 65%, var(--gold));
   opacity: 0.55;
 }
 
-/* ─── CAPA ───────────────────────────────────────────────────────────── */
+/* ─── CAPA ─────────────────────────────────────────────────────────── */
 
 .slide.capa {
   background:
-    radial-gradient(ellipse 70% 50% at 50% 35%, var(--deep-warm) 0%, var(--deep) 70%),
-    var(--deep);
-  color: var(--ivory);
+    radial-gradient(ellipse 70% 50% at 50% 32%, color-mix(in srgb, var(--hue) 65%, var(--ivory)) 0%, var(--ivory) 65%),
+    radial-gradient(ellipse 90% 60% at 50% 95%, color-mix(in srgb, var(--hue-deep) 22%, var(--ivory)) 0%, var(--ivory) 70%),
+    var(--ivory);
+  color: var(--ink);
 }
-.slide.capa.dark { /* helper dark — afecta grain + vignette */ }
 
 .slide.capa .content {
   justify-content: space-between;
   align-items: center;
-  padding-top: 150px;
+  padding-top: 160px;
   padding-bottom: 200px;
 }
 
@@ -105,10 +280,10 @@ html, body {
   font-weight: 300;
   font-size: 720px;
   line-height: 1;
-  color: color-mix(in srgb, var(--gold) 5%, transparent);
+  color: color-mix(in srgb, var(--hue-deep) 14%, transparent);
   letter-spacing: -0.05em;
   user-select: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .slide.capa .top {
@@ -124,21 +299,21 @@ html, body {
 }
 .slide.capa .romano {
   font-family: 'Inter', sans-serif;
-  font-weight: 400; font-size: 22px;
+  font-weight: 500; font-size: 22px;
   letter-spacing: 0.55em;
-  color: var(--gold);
+  color: color-mix(in srgb, var(--hue-deep) 80%, var(--ink));
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 .slide.capa .veu {
   font-family: 'Cormorant Garamond', serif;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 180px;
   line-height: 0.95;
   text-align: center;
   letter-spacing: -0.025em;
-  color: var(--ivory);
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -149,17 +324,17 @@ html, body {
   font-size: 38px;
   line-height: 1.35;
   text-align: center;
-  color: var(--mist);
+  color: color-mix(in srgb, var(--ink) 75%, transparent);
   max-width: 720px;
 }
 
 .slide.capa .ornament {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: 28px;
-  color: var(--gold);
+  font-size: 30px;
+  color: color-mix(in srgb, var(--hue-deep) 90%, var(--gold));
   letter-spacing: 1.2em;
-  opacity: 0.8;
+  opacity: 0.9;
   margin-top: 8px;
 }
 
@@ -170,7 +345,7 @@ html, body {
   font-size: 56px;
   line-height: 1.4;
   text-align: center;
-  color: var(--ivory);
+  color: var(--ink);
   max-width: 820px;
 }
 
@@ -179,19 +354,19 @@ html, body {
 }
 .slide.capa .footer .marca {
   font-family: 'Inter', sans-serif;
-  font-weight: 300; font-size: 18px;
+  font-weight: 400; font-size: 18px;
   letter-spacing: 0.6em;
   text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.7;
+  color: color-mix(in srgb, var(--hue-deep) 70%, var(--ink));
+  opacity: 0.85;
 }
 .slide.capa .footer .rule { width: 80px; height: 1px; }
 
-/* ─── CONTEÚDO ──────────────────────────────────────────────────────── */
+/* ─── CONTEÚDO ─────────────────────────────────────────────────────── */
 
 .slide.conteudo {
   background:
-    radial-gradient(ellipse 80% 70% at 50% 50%, var(--ivory) 0%, var(--parchment-dark) 100%),
+    radial-gradient(ellipse 78% 65% at 50% 50%, color-mix(in srgb, var(--hue) 22%, var(--ivory)) 0%, var(--ivory) 75%),
     var(--ivory);
   color: var(--ink);
 }
@@ -206,18 +381,21 @@ html, body {
   display: flex; align-items: center; justify-content: space-between;
   width: 100%;
   font-family: 'Inter', sans-serif;
-  font-weight: 400; font-size: 18px;
+  font-weight: 500; font-size: 18px;
   letter-spacing: 0.45em;
-  color: color-mix(in srgb, var(--ink) 40%, transparent);
+  color: color-mix(in srgb, var(--hue-deep) 70%, var(--ink));
   text-transform: uppercase;
+  opacity: 0.85;
 }
 .slide.conteudo .meta-top .num {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
+  font-weight: 500;
   font-size: 32px;
   letter-spacing: 0;
-  color: color-mix(in srgb, var(--terracotta) 55%, transparent);
+  color: var(--terracotta);
   text-transform: none;
+  opacity: 0.9;
 }
 
 .slide.conteudo .corpo {
@@ -235,7 +413,7 @@ html, body {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 56px;
-  color: var(--terracotta);
+  color: color-mix(in srgb, var(--hue-deep) 90%, var(--terracotta));
   opacity: 0.7;
   line-height: 1;
 }
@@ -254,16 +432,18 @@ html, body {
 /* prosa */
 .slide.conteudo.prosa .titulo-pequeno {
   font-family: 'Inter', sans-serif;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 22px;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: var(--terracotta);
+  color: color-mix(in srgb, var(--hue-deep) 80%, var(--terracotta));
   display: flex; align-items: center; gap: 24px;
 }
 .slide.conteudo.prosa .titulo-pequeno::before,
 .slide.conteudo.prosa .titulo-pequeno::after {
-  content: ""; height: 1px; width: 64px; background: var(--terracotta); opacity: 0.5;
+  content: ""; height: 1px; width: 64px;
+  background: color-mix(in srgb, var(--hue-deep) 70%, var(--terracotta));
+  opacity: 0.55;
 }
 .slide.conteudo.prosa .texto {
   font-family: 'Cormorant Garamond', serif;
@@ -286,31 +466,33 @@ html, body {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 24px;
-  color: var(--terracotta);
+  color: color-mix(in srgb, var(--hue-deep) 80%, var(--terracotta));
   letter-spacing: 0.8em;
-  opacity: 0.6;
+  opacity: 0.7;
 }
 .slide.conteudo .meta-bot .marca {
   font-family: 'Inter', sans-serif;
-  font-weight: 300; font-size: 16px;
+  font-weight: 400; font-size: 16px;
   letter-spacing: 0.6em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--ink) 35%, transparent);
+  color: color-mix(in srgb, var(--hue-deep) 60%, var(--ink));
+  opacity: 0.8;
 }
 
 /* ─── CTA ──────────────────────────────────────────────────────────── */
 
 .slide.cta {
   background:
-    radial-gradient(ellipse 70% 60% at 50% 50%, var(--deep-warm) 0%, var(--deep) 80%),
-    var(--deep);
-  color: var(--ivory);
+    radial-gradient(ellipse 70% 55% at 50% 45%, color-mix(in srgb, var(--hue) 55%, var(--ivory)) 0%, var(--ivory) 75%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, color-mix(in srgb, var(--hue-deep) 28%, var(--ivory)) 0%, var(--ivory) 70%),
+    var(--ivory);
+  color: var(--ink);
 }
 
 .slide.cta .content {
   justify-content: space-between;
   align-items: center;
-  padding-top: 180px;
+  padding-top: 200px;
   padding-bottom: 180px;
 }
 
@@ -318,19 +500,23 @@ html, body {
   position: relative;
   width: 220px; height: 220px;
   display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle, color-mix(in srgb, var(--gold-glow) 60%, transparent) 0%, transparent 70%);
 }
 .slide.cta .icon-ring::before,
 .slide.cta .icon-ring::after {
   content: ""; position: absolute; inset: 0;
   border-radius: 50%;
-  border: 1px solid var(--gold);
-  opacity: 0.35;
+  border: 1.5px solid color-mix(in srgb, var(--hue-deep) 60%, var(--gold));
+  opacity: 0.6;
 }
 .slide.cta .icon-ring::after {
-  inset: 16px; opacity: 0.18;
+  inset: 16px;
+  border-style: dashed;
+  opacity: 0.35;
 }
 .slide.cta .icone {
   font-size: 96px; line-height: 1;
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--gold-glow) 50%, transparent));
 }
 
 .slide.cta .corpo {
@@ -344,7 +530,7 @@ html, body {
   font-weight: 400;
   font-size: 78px;
   line-height: 1.1;
-  color: var(--ivory);
+  color: var(--ink);
   letter-spacing: -0.01em;
 }
 
@@ -353,7 +539,7 @@ html, body {
   font-weight: 400;
   font-size: 38px;
   line-height: 1.45;
-  color: var(--mist);
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
   max-width: 720px;
 }
 
@@ -364,7 +550,7 @@ html, body {
 .slide.cta .url-block .rule { width: 100%; height: 1px; }
 .slide.cta .url {
   font-family: 'JetBrains Mono', 'Inter', monospace;
-  font-weight: 400; font-size: 30px;
+  font-weight: 500; font-size: 30px;
   color: var(--terracotta);
   letter-spacing: 0.04em;
 }
@@ -373,8 +559,12 @@ html, body {
   position: absolute;
   bottom: -120px; right: -120px;
   font-size: 600px; line-height: 1;
-  color: var(--gold);
-  opacity: 0.04;
+  color: var(--hue-deep);
+  opacity: 0.08;
   z-index: 1;
   user-select: none;
 }
+
+/* ─── Dia 7 — Dualidade: arco-íris explícito ───────────────────────── */
+.slide.dia-7.capa .rainbow-arc,
+.slide.dia-7.cta  .rainbow-arc { opacity: 0.95; }

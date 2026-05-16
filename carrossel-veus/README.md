@@ -65,18 +65,38 @@ Para regenerar depois de editar `content.json`: corre `npm run all` outra vez (o
 - Para usar outra voz: `ELEVENLABS_VOICE_ID=...` no env.
 - Texto narrado é derivado automaticamente de cada slide (capa: nome do véu + linhas; conteúdo: texto; CTA: recurso + descrição). Para sobrepor, adiciona `"narracao": "texto a falar"` ao slide em `content.json`.
 
-## Identidade visual
+## Identidade visual — versão LUZ
 
-Paleta:
+Paleta base luminosa (sem fundos pretos — capa, conteúdo e CTA todos sobre `--ivory`):
 
-| Token | Valor |
-|---|---|
-| `--ink` | `#1a1a1a` |
-| `--ivory` | `#f5efe6` |
-| `--deep` | `#0f1419` |
-| `--terracotta` | `#b85c38` |
-| `--gold` | `#c9a961` |
-| `--mist` | `rgba(245, 239, 230, 0.7)` |
+| Token | Valor | Notas |
+|---|---|---|
+| `--ink` | `#3a2e26` | tinta quente, não preto |
+| `--ivory` | `#fdf8ed` | creme luminoso, fundo de todos os slides |
+| `--parchment-dark` | `#f1e3c8` | gradiente quente |
+| `--terracotta` | `#d68b6c` | acento quente |
+| `--gold` | `#c9a14a` | numeração romana, rules |
+| `--gold-glow` | `#f6dc92` | halo dos pirilampos e ícones |
+
+**Cor dominante por dia** — cada véu tem uma atmosfera (definida via classe `.dia-N` no slide). Os tokens `--hue` e `--hue-deep` resolvem para a cor do dia:
+
+| Dia | Véu | Hue |
+|---|---|---|
+| 1 | Permanência | rosa-aurora |
+| 2 | Memória | lavanda |
+| 3 | Turbilhão | menta |
+| 4 | Esforço | sálvia |
+| 5 | Desolação | âmbar |
+| 6 | Horizonte | céu |
+| 7 | Dualidade | arco-íris (todas) |
+
+**Camadas decorativas** renderizadas em todos os slides:
+
+- `.fireflies` — 15 pirilampos (dots `#fffaeb` com 3 halos dourados).
+- `.stars` — 10 sparkles ✦ (4-pontas via clip-path).
+- `.rainbow-strip` — banda pastel topo+rodapé em CTAs (excepto dia 7).
+- `.rainbow-arc` — arco-íris pastel grande na capa e CTA do dia 7.
+- `.glow-hue` + `.paper` + `.vignette-light` — wash radial do hue do dia, textura de papel quente, vinheta clara.
 
 Tipografia: **Cormorant Garamond** (títulos, poesia, citações) + **Inter** (corpo, CTAs, numeração). URLs em **JetBrains Mono**.
 
