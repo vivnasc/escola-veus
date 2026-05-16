@@ -1340,14 +1340,100 @@ function JobVideoGrid({
   onCopy: (key: string, text: string) => void;
   jobId: string;
 }) {
+  const failed = videos.filter((v) => !v.url);
+  const ok = videos.filter((v) => v.url);
+  const [filter, setFilter] = useState<"all" | "failed" | "ok">(
+    failed.length > 0 ? "failed" : "all"
+  );
+  const [bulkRerendering, setBulkRerendering] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState<{
+    done: number;
+    total: number;
+    current: number;
+  } | null>(null);
+
+  const visible =
+    filter === "failed" ? failed : filter === "ok" ? ok : videos;
+  // Falhados primeiro quando "all"
+  const ordered =
+    filter === "all" ? [...failed, ...ok] : visible;
+
+  const rerenderAllFailed = async () => {
+    if (failed.length === 0) return;
+    if (!confirm(`Re-renderizar ${failed.length} dia(s) falhado(s)?`)) return;
+    setBulkRerendering(true);
+    setBulkProgress({ done: 0, total: failed.length, current: -1 });
+    for (let i = 0; i < failed.length; i++) {
+      const v = failed[i];
+      setBulkProgress({ done: i, total: failed.length, current: v.dayIndex });
+      try {
+        await fetch("/api/admin/hoje-em-mim/render-rerender", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jobId, dayIndex: v.dayIndex, overrides: {} }),
+        });
+      } catch {
+        /* segue, mostra mensagem no card */
+      }
+    }
+    setBulkProgress({ done: failed.length, total: failed.length, current: -1 });
+    setBulkRerendering(false);
+    alert(
+      `${failed.length} re-render(s) lançados. Faz Recarregar daqui a ~30s para ver os MP4 actualizados.`
+    );
+  };
+
   return (
     <div>
-      <div className="text-xs text-escola-creme-50 mb-2">
-        Todos os vídeos do pack ({videos.length}). Carrega "Editar" para
-        substituir motion, áudio, tema ou frase e re-renderizar só esse dia.
+      <div className="mb-2 flex flex-wrap items-center gap-2 text-[11px]">
+        <span className="text-escola-creme">
+          {videos.length} dias ·{" "}
+          <span className="text-emerald-400">✅ {ok.length} OK</span>
+          {failed.length > 0 && (
+            <span className="text-red-300"> · ❌ {failed.length} falhados</span>
+          )}
+        </span>
+        <div className="flex gap-1">
+          <button
+            onClick={() => setFilter("all")}
+            className={`rounded border px-2 py-0.5 ${filter === "all" ? "border-escola-dourado text-escola-dourado" : "border-escola-border text-escola-creme-50"}`}
+          >
+            Tudo
+          </button>
+          {failed.length > 0 && (
+            <button
+              onClick={() => setFilter("failed")}
+              className={`rounded border px-2 py-0.5 ${filter === "failed" ? "border-red-500 text-red-300 bg-red-900/20" : "border-escola-border text-escola-creme-50"}`}
+            >
+              Só falhados ({failed.length})
+            </button>
+          )}
+          <button
+            onClick={() => setFilter("ok")}
+            className={`rounded border px-2 py-0.5 ${filter === "ok" ? "border-emerald-500 text-emerald-300" : "border-escola-border text-escola-creme-50"}`}
+          >
+            Só OK ({ok.length})
+          </button>
+        </div>
+        {failed.length > 0 && (
+          <button
+            onClick={rerenderAllFailed}
+            disabled={bulkRerendering}
+            className="ml-auto rounded border border-red-700/60 bg-red-900/30 px-2 py-0.5 text-red-200 hover:bg-red-900/50 disabled:opacity-50"
+          >
+            {bulkRerendering
+              ? `🔄 ${bulkProgress?.done ?? 0}/${bulkProgress?.total ?? failed.length}…`
+              : `🔄 Re-renderizar ${failed.length} falhado(s)`}
+          </button>
+        )}
+      </div>
+      <div className="mb-2 text-[10px] text-escola-creme-50">
+        Carrega "Editar" num card para substituir motion, áudio, tema ou frase
+        e re-renderizar só esse dia. Para falhados, usa "Re-render" para tentar
+        de novo com a mesma config.
       </div>
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {videos.map((v) => (
+        {ordered.map((v) => (
           <JobVideoCard
             key={`${v.dayIndex}-${v.fraseId}`}
             video={v}
@@ -1452,11 +1538,23 @@ function JobVideoCard({
     }
   };
 
+  const isFailed = !video.url;
   return (
-    <div className="rounded-lg border border-escola-border bg-escola-card p-3 space-y-2">
-      <div className="flex items-baseline justify-between">
+    <div
+      className="rounded-lg border p-3 space-y-2"
+      style={{
+        borderColor: isFailed ? "rgba(220, 38, 38, 0.6)" : undefined,
+        background: isFailed ? "rgba(127, 29, 29, 0.12)" : undefined,
+      }}
+    >
+      <div className="flex items-baseline justify-between gap-2">
         <div className="text-xs" style={{ color: COBRE }}>
           {video.date} · {DIA_LONGO_PT[video.dia]}
+          {isFailed && (
+            <span className="ml-2 rounded bg-red-900/50 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-red-200">
+              ❌ falhou
+            </span>
+          )}
         </div>
         <span className="text-[10px] text-escola-creme-50">{video.fraseId}</span>
       </div>
