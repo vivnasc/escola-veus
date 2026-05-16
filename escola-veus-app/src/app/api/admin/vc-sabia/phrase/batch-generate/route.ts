@@ -85,7 +85,7 @@ EXEMPLOS PROIBIDOS (n.b. nao replicar este formato):
 - "Pergunta-te hoje..." (imperativo directo, sem natureza)
 
 Regras formais:
-- Portugues europeu (PT-PT), nunca PT-BR
+- Portugues PT-PT/PT-MZ (Mocambique, nao Brasil)
 - NUNCA usar travessao (em situacao NENHUMA). So pontos ou virgulas.
 - Cada frase entre 80 e 200 caracteres totais.
 - Imagem concreta de natureza (planta, agua, lua, ar, animal, pedra). Nao filosofia abstracta.
