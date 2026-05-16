@@ -36,7 +36,7 @@ TIME_TIKTOK = "10:30"
 HASHTAGS_BASE = [
     "viviannedossantos", "seteveus", "escoladosveus",
     "manhãs", "despertar", "consciencia", "espiritualidade",
-    "pt", "portugal",
+    "moçambique", "maputo",
 ]
 
 HASHTAGS_POR_TEMA = {
@@ -55,7 +55,7 @@ HASHTAGS_POR_TEMA = {
     "beleza-de-existir": ["beleza", "poesiadavida", "manhã"],
 }
 
-HASHTAGS_TIKTOK_EXTRA = ["fyp", "foryou", "fypシ"]
+HASHTAGS_TIKTOK_EXTRA = ["fyp", "foryou"]
 
 
 def hashes(tags):
@@ -81,7 +81,7 @@ def caption_instagram(phrase: str, theme: str) -> str:
 def caption_tiktok(phrase: str, theme: str) -> str:
     theme_tags = HASHTAGS_POR_TEMA.get(theme, [])
     tt_tags = HASHTAGS_TIKTOK_EXTRA + theme_tags + [
-        "viviannedossantos", "seteveus", "manhãs", "pt",
+        "viviannedossantos", "seteveus", "manhãs", "moçambique",
     ]
     return "\n".join([
         f"Sabias que... {phrase}",

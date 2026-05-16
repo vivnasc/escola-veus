@@ -15,8 +15,8 @@ const HASHTAGS_BASE = [
   "despertar",
   "consciencia",
   "espiritualidade",
-  "pt",
-  "portugal",
+  "moçambique",
+  "maputo",
 ];
 
 const HASHTAGS_POR_TEMA: Record<string, string[]> = {
@@ -35,7 +35,7 @@ const HASHTAGS_POR_TEMA: Record<string, string[]> = {
   "beleza-de-existir": ["beleza", "poesiadavida", "manhã"],
 };
 
-const HASHTAGS_TIKTOK_EXTRA = ["fyp", "foryou", "fypシ"];
+const HASHTAGS_TIKTOK_EXTRA = ["fyp", "foryou"];
 
 export type CaptionSet = {
   instagram: string;
@@ -78,7 +78,7 @@ export function phraseToCaptions(opts: {
     "viviannedossantos",
     "seteveus",
     "manhãs",
-    "pt",
+    "moçambique",
   ];
   const tiktok = [
     `Sabias que... ${opts.phrase}`,

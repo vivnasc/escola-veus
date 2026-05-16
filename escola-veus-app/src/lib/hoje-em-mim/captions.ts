@@ -102,8 +102,8 @@ const HASHTAGS_BASE = [
   "noite",
   "contemplativo",
   "evolução",
-  "pt",
-  "portugal",
+  "moçambique",
+  "maputo",
 ];
 
 const HASHTAGS_POR_DIA: Record<DiaSemana, string[]> = {
@@ -116,7 +116,7 @@ const HASHTAGS_POR_DIA: Record<DiaSemana, string[]> = {
   sun: ["intencao", "amanha", "manifestar"],
 };
 
-const HASHTAGS_TIKTOK_EXTRA = ["fyp", "foryou", "fypシ"];
+const HASHTAGS_TIKTOK_EXTRA = ["fyp", "foryou"];
 
 export type CaptionSet = {
   instagram: string;
@@ -163,7 +163,7 @@ export function phraseToCaptions(opts: {
     "viviannedossantos",
     "seteveus",
     "fechodoDia",
-    "pt",
+    "moçambique",
   ];
   const tiktok = [`${kicker}. ${opts.phrase}`, "", hashesJoined(tiktokTags)].join("\n");
 
