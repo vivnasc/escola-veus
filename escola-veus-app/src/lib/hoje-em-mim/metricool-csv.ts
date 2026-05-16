@@ -1,9 +1,12 @@
 /**
  * Metricool CSV builder para o pack mensal "Hoje, em Mim".
  *
- * Cada vídeo do pack gera 3 linhas no CSV (Instagram REEL, TikTok video,
- * YouTube Shorts) agendadas para 19h de cada dia (a melhor hora de noite
- * para esta produção contemplativa).
+ * Cada vídeo do pack gera 2 linhas no CSV (Instagram REEL e TikTok)
+ * agendadas para 19h de cada dia (a melhor hora de noite para esta
+ * produção contemplativa).
+ *
+ * YouTube Shorts foi retirado por decisão editorial: a produção não
+ * publica neste canal.
  */
 
 import { CSV_HEADER, csvEscape } from "@/lib/weekly-social/metricool-csv";
@@ -17,14 +20,14 @@ export type HemPost = {
     tiktok: string;
     whatsapp: string;
   };
-  fraseTexto?: string; // usado como título TikTok / YT
+  fraseTexto?: string; // usado como título TikTok
 };
 
 const DEFAULT_TIME = "19:00";
 
 function buildRow(
   post: HemPost,
-  kind: "instagram" | "tiktok" | "youtube"
+  kind: "instagram" | "tiktok"
 ): string {
   const row = new Array<string>(CSV_HEADER.length).fill("");
   const set = (name: typeof CSV_HEADER[number], value: string) => {
@@ -39,7 +42,7 @@ function buildRow(
 
   set("Instagram", kind === "instagram" ? "TRUE" : "FALSE");
   set("TikTok", kind === "tiktok" ? "TRUE" : "FALSE");
-  set("Youtube", kind === "youtube" ? "TRUE" : "FALSE");
+  set("Youtube", "FALSE");
   set("Facebook", "FALSE");
   set("Twitter/X", "FALSE");
   set("LinkedIn", "FALSE");
@@ -54,36 +57,23 @@ function buildRow(
     set("Text", post.captions.instagram);
     set("Instagram Post Type", "REEL");
     set("Instagram Show Reel On Feed", "TRUE");
-  } else if (kind === "tiktok") {
+  } else {
     set("Text", post.captions.tiktok);
     if (post.fraseTexto) set("TikTok Title", post.fraseTexto.slice(0, 80));
     set("TikTok Post Privacy", "PUBLIC_TO_EVERYONE");
     set("TikTok Auto Add Music", "FALSE");
     set("TikTok is AI generated content", "FALSE");
-  } else {
-    // YouTube Shorts: usa whatsapp caption (minimalista) como descrição
-    // porque o conteúdo é o mesmo e WA é o tom mais curto.
-    set("Text", post.captions.whatsapp);
-    set("Youtube Video Title", post.fraseTexto?.slice(0, 90) || "Hoje, em Mim");
-    set("Youtube Video Type", "SHORTS");
-    set("Youtube Video Privacy", "PUBLIC");
-    set("Youtube video for kids", "FALSE");
   }
 
   return row.map(csvEscape).join(",");
 }
 
-export function buildHemCsv(
-  posts: HemPost[],
-  opts?: { includeYoutube?: boolean }
-): string {
-  const includeYt = opts?.includeYoutube !== false;
+export function buildHemCsv(posts: HemPost[]): string {
   const lines = [CSV_HEADER.map(csvEscape).join(",")];
   for (const p of posts) {
     if (!p.videoUrl) continue;
     lines.push(buildRow(p, "instagram"));
     lines.push(buildRow(p, "tiktok"));
-    if (includeYt) lines.push(buildRow(p, "youtube"));
   }
   return lines.join("\r\n") + "\r\n";
 }
