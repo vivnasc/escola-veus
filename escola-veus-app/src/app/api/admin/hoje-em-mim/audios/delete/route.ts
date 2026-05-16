@@ -6,11 +6,14 @@ export const runtime = "nodejs";
 /**
  * POST /api/admin/hoje-em-mim/audios/delete
  *
- * Apaga áudios SFX por path completo (mood/file) ou apaga TUDO o que
- * estiver com tamanho menor do que threshold (cleanup de zero-bytes
- * deixados por falhas do ElevenLabs).
+ * Três modos:
+ *  - path: apaga 1 ficheiro
+ *  - cleanInvalid: apaga todos os <minBytes (zero-byte fails)
+ *  - keepOnePerMood: para cada mood mantém só o ficheiro mais recente
+ *    (válido) e apaga os repetidos. Útil quando geraste vários takes
+ *    para escolher e queres reduzir o library.
  *
- * Body: { path?: string, cleanInvalid?: boolean, minBytes?: number }
+ * Body: { path?, cleanInvalid?, minBytes?, keepOnePerMood? }
  *
  * Returns: { deleted: number, paths: string[] }
  */
@@ -21,7 +24,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "Supabase não configurado" }, { status: 500 });
   }
 
-  let body: { path?: string; cleanInvalid?: boolean; minBytes?: number };
+  let body: {
+    path?: string;
+    cleanInvalid?: boolean;
+    minBytes?: number;
+    keepOnePerMood?: boolean;
+  };
   try {
     body = await req.json();
   } catch {
@@ -34,6 +42,39 @@ export async function POST(req: NextRequest) {
   });
 
   const minBytes = Number(body.minBytes ?? 1024);
+
+  if (body.keepOnePerMood) {
+    // Para cada mood, mantém só o ficheiro mais recente (lex maior
+    // costuma ser o mais recente já que o nome tem timestamp). Apaga
+    // os restantes.
+    const { data: moods } = await supabase.storage
+      .from("course-assets")
+      .list("hoje-em-mim-audios", { limit: 50 });
+    const toDelete: string[] = [];
+    for (const mood of moods || []) {
+      if (!mood.name) continue;
+      const { data: files } = await supabase.storage
+        .from("course-assets")
+        .list(`hoje-em-mim-audios/${mood.name}`, { limit: 100 });
+      if (!files) continue;
+      const valid = files
+        .filter((f) => f.name?.endsWith(".mp3"))
+        .filter((f) => (f.metadata?.size ?? 0) >= minBytes)
+        .sort((a, b) => (a.name < b.name ? 1 : -1)); // mais recente primeiro
+      // Mantém o primeiro, apaga o resto
+      for (let i = 1; i < valid.length; i++) {
+        toDelete.push(`hoje-em-mim-audios/${mood.name}/${valid[i].name}`);
+      }
+    }
+    if (toDelete.length === 0) {
+      return NextResponse.json({ deleted: 0, paths: [] });
+    }
+    const { error } = await supabase.storage
+      .from("course-assets")
+      .remove(toDelete);
+    if (error) return NextResponse.json({ erro: error.message }, { status: 500 });
+    return NextResponse.json({ deleted: toDelete.length, paths: toDelete });
+  }
 
   if (body.cleanInvalid) {
     // Lista todos os moods, todos os mp3, identifica os <minBytes,
