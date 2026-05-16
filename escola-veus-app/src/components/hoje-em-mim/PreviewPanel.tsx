@@ -515,12 +515,9 @@ export function HojeEmMimPreviewPanel() {
         selectedMotionUrls.size > 0
           ? Array.from(selectedMotionUrls)
           : [media].filter(Boolean);
-      let audioPoolList: string[] =
-        selectedAudioUrls.size > 0
-          ? Array.from(selectedAudioUrls)
-          : audioUrlSelected
-            ? [audioUrlSelected]
-            : [];
+      // Pool de áudio: TUDO o que existe na library. A pairing depois
+      // escolhe o mood certo por dia. Não pedimos selecção manual.
+      let audioPoolList: string[] = audiosLib.map((a) => a.url);
       const body = {
         jobId: id,
         ano,
@@ -884,13 +881,39 @@ export function HojeEmMimPreviewPanel() {
           onReload={loadMotionsLib}
         />
 
-        <BulkAudioPicker
-          audios={audiosLib}
-          loading={loadingAudiosLib}
-          selected={selectedAudioUrls}
-          onChange={setSelectedAudioUrls}
-          onReload={loadAudiosLib}
-        />
+        <div
+          className="rounded-lg border p-3 text-[11px] max-w-xl"
+          style={{
+            borderColor: COBRE_FRACO,
+            background: "rgba(194, 143, 96, 0.04)",
+          }}
+        >
+          <div className="flex items-baseline justify-between gap-2 flex-wrap">
+            <div style={{ color: COBRE }} className="font-medium">
+              🔊 Áudios — pareamento automático por mood do dia
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-escola-creme-50">
+                {audiosLib.length} no library
+              </span>
+              <button
+                onClick={loadAudiosLib}
+                className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                title="Recarregar library"
+              >
+                ↻
+              </button>
+            </div>
+          </div>
+          <div className="mt-1 text-[10px] text-escola-creme-50 leading-snug">
+            O sistema lê todos os áudios disponíveis e escolhe automaticamente
+            o mood certo por dia: seg→grilos/brisa, ter→lareira/coro,
+            qua→chuva/maré, qui→tigela, sex→tambor/lareira,
+            sáb→coruja/brisa, dom→lua/sussurro. Vê o mood resultante por dia
+            na pré-montagem abaixo (🔊 mood com ✓ quando casa com o motion).
+            Para tirar um ficheiro mau específico do pool, vai à tab Áudios.
+          </div>
+        </div>
 
         <BulkPreviewTable
           ano={ano}
@@ -902,11 +925,7 @@ export function HojeEmMimPreviewPanel() {
               ? Array.from(selectedMotionUrls)
               : ([media].filter(Boolean) as string[])
           }
-          audioPool={
-            selectedAudioUrls.size > 0
-              ? Array.from(selectedAudioUrls)
-              : (audioUrlSelected ? [audioUrlSelected] : [])
-          }
+          audioPool={audiosLib.map((a) => a.url)}
           motionsLib={motionsLib}
           audiosLib={audiosLib}
           themeId={themeId}
@@ -3981,19 +4000,20 @@ function moodFromAudioUrlClient(url: string): string | null {
   return m ? m[1] : null;
 }
 
-/** Mini-frame 9:16 para a tabela. Replica o look do render final:
+/** Mini-frame 9:16 para a tabela. Replica fielmente o design aprovado
+ *  (variante C) do render-one.mjs:
  *
- *  - Motion em hover-to-play como fundo
- *  - Scrim escurecido tipo vignette indigo do theme.bg
- *  - Kicker no topo na cor highlight do theme escolhido para a linha
- *  - Glifo do dia no canto superior direito (igual ao frame final)
- *  - Frase central em Cormorant Garamond italic na cor text do theme
- *  - Assinatura "Vivianne · seteveus.space" no rodapé
- *  - Tag do tema activo, para confirmar visualmente qual cobre/prata/
- *    dourado/etc está aplicado a esta linha
+ *   - Cantoneira de cobre no canto sup esq
+ *   - Arco janela-de-lua (semicírculo) com o ponto de cobre no apex
+ *   - Halo radial atrás do dia da semana dentro do arco
+ *   - Nome do dia em Cormorant Garamond por baixo do apex
+ *   - Frase central multilinha
+ *   - Kicker + glifo no rodapé sup
+ *   - "SETEVEUS.SPACE" no rodapé inf
  *
- *  Permite à Vivianne ver, sem render, se o texto fica legível contra
- *  cada motion e se a paleta do tema funciona com a paleta da imagem. */
+ *  Usa o mesmo viewBox 1080×1920 do render: garante que o que se vê
+ *  no preview é o que vai sair no MP4 (escalado, com motion por
+ *  baixo via hover-to-play). */
 function RowFramePreview({
   motionUrl,
   frase,
@@ -4015,9 +4035,29 @@ function RowFramePreview({
   const glifo = especial ? GLIFO_ESPECIAL[especial] : GLIFO_POR_DIA[dia];
   const moodMatch =
     audioMood && motionMood ? audioMood === motionMood : null;
-  // Comprimento da frase decide o tamanho da fonte para não cortar
-  const fraseLen = frase.length;
-  const fraseFontPx = fraseLen > 140 ? 9 : fraseLen > 100 ? 10 : fraseLen > 60 ? 11 : 12;
+
+  // Quebra a frase em linhas para caber dentro do arco. Heurística
+  // simples: ~24 chars por linha (proporcional ao render real).
+  const fraseLines = (() => {
+    const maxChars = 26;
+    const words = frase.split(/\s+/);
+    const lines: string[] = [];
+    let cur = "";
+    for (const w of words) {
+      if ((cur + " " + w).trim().length > maxChars && cur.length > 0) {
+        lines.push(cur);
+        cur = w;
+      } else {
+        cur = (cur + " " + w).trim();
+      }
+    }
+    if (cur) lines.push(cur);
+    return lines.slice(0, 8);
+  })();
+  // Centro vertical (~960) ajustado pelo nº de linhas
+  const fraseSize = fraseLines.length > 6 ? 46 : fraseLines.length > 4 ? 54 : 62;
+  const lineH = fraseSize * 1.18;
+  const fraseStartY = 960 - ((fraseLines.length - 1) * lineH) / 2;
 
   return (
     <div className="flex flex-col items-start gap-1">
@@ -4047,35 +4087,107 @@ function RowFramePreview({
             className="absolute inset-0 h-full w-full object-cover opacity-95"
           />
         )}
-        {/* Vignette + scrim com a cor base do tema. Garante contraste do
-            texto e dá ao preview a mesma temperatura do render final. */}
-        <div
+        {/* SVG overlay no mesmo viewBox 1080×1920 do render. Tudo o que
+            está aqui é o que vai sair no MP4. */}
+        <svg
+          viewBox="0 0 1080 1920"
+          width="100%"
+          height="100%"
+          preserveAspectRatio="xMidYMid slice"
           className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse at center, rgba(0,0,0,0.0) 30%, ${theme.bg} 110%), linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.78) 100%)`,
-          }}
-        />
-        {/* Cantoneira tipo o frame real */}
-        <div
-          className="absolute left-2 top-2 right-2 flex items-start justify-between text-[8px] uppercase tracking-[0.18em]"
-          style={{ color: theme.highlight, textShadow: "0 1px 2px rgba(0,0,0,0.85)" }}
         >
-          <span className="font-semibold">{kicker}</span>
-          <span className="text-[10px]">{glifo}</span>
-        </div>
-        {/* Frase central */}
-        <div
-          className="absolute inset-x-2 top-1/2 -translate-y-1/2 text-center italic leading-snug"
-          style={{
-            color: theme.text,
-            fontFamily: "'Cormorant Garamond', 'Cormorant', serif",
-            fontSize: fraseFontPx,
-            textShadow: "0 1px 4px rgba(0,0,0,0.85)",
-            letterSpacing: 0.1,
-          }}
-        >
-          {frase}
-        </div>
+          <defs>
+            <radialGradient id={`arcDayScrim-${dia}-${especial ?? "x"}`} cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor={theme.bg} stopOpacity="0.65" />
+              <stop offset="100%" stopColor={theme.bg} stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id={`vignette-${dia}-${especial ?? "x"}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={theme.bg} stopOpacity="0.0" />
+              <stop offset="60%" stopColor={theme.bg} stopOpacity="0.5" />
+              <stop offset="100%" stopColor={theme.bg} stopOpacity="0.85" />
+            </linearGradient>
+          </defs>
+
+          {/* Vignette para legibilidade */}
+          <rect x="0" y="0" width="1080" height="1920" fill={`url(#vignette-${dia}-${especial ?? "x"})`} />
+
+          {/* Halo atrás do dia */}
+          <rect x="280" y="472" width="520" height="86" fill={`url(#arcDayScrim-${dia}-${especial ?? "x"})`} />
+
+          {/* Cantoneira topo esquerdo */}
+          <line x1="60" y1="60" x2="124" y2="60" stroke={theme.highlightSoft} strokeWidth="3" />
+          <line x1="60" y1="60" x2="60" y2="124" stroke={theme.highlightSoft} strokeWidth="3" />
+
+          {/* Arco janela de lua */}
+          <path
+            d="M 220 1098 L 220 459 A 320 320 0 0 1 860 459 L 860 1098"
+            stroke={theme.highlightSoft}
+            strokeWidth="3"
+            fill="none"
+          />
+          {/* Ponto cobre no apex do arco */}
+          <circle cx="540" cy="459" r="8" fill={theme.highlight} opacity="0.7" />
+
+          {/* Dia da semana */}
+          <text
+            x="540"
+            y="507"
+            textAnchor="middle"
+            fontFamily="'Cormorant Garamond', serif"
+            fontWeight="400"
+            fontSize="29"
+            letterSpacing="6"
+            fill={theme.highlight}
+          >
+            {DIA_LONGO_PT[dia].toUpperCase()}
+          </text>
+
+          {/* Frase, multi-linha, centrada */}
+          {fraseLines.map((line, i) => (
+            <text
+              key={i}
+              x="540"
+              y={fraseStartY + i * lineH}
+              textAnchor="middle"
+              fontFamily="'Cormorant Garamond', serif"
+              fontStyle="italic"
+              fontWeight="400"
+              fontSize={fraseSize}
+              fill={theme.text}
+            >
+              {line}
+            </text>
+          ))}
+
+          {/* Kicker + glifo */}
+          <text
+            x="540"
+            y="1770"
+            textAnchor="middle"
+            fontFamily="'Cormorant Garamond', serif"
+            fontStyle="italic"
+            fontWeight="400"
+            fontSize="36"
+            fill={theme.highlight}
+          >
+            <tspan fontSize="42" fontStyle="normal">{glifo}</tspan>
+            {"  "}{kicker}
+          </text>
+
+          {/* SETEVEUS.SPACE */}
+          <text
+            x="540"
+            y="1822"
+            textAnchor="middle"
+            fontFamily="'Cormorant Garamond', serif"
+            fontWeight="400"
+            fontSize="24"
+            letterSpacing="8"
+            fill={theme.highlightSoft}
+          >
+            SETEVEUS.SPACE
+          </text>
+        </svg>
       </div>
       <div
         className="rounded px-1 py-0.5 text-[8px]"
