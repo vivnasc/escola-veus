@@ -87,6 +87,54 @@ function shuffleSeeded<T>(arr: T[], seed: number): T[] {
   return out;
 }
 
+/** Extrai a "família" do URL/nome do motion para evitar agrupar
+ *  variações geradas a partir da mesma imagem MJ. Ex:
+ *    lua-piscina-01.mp4 → "lua-piscina"
+ *    lua-piscina-02.mp4 → "lua-piscina"
+ *    velas-mesa-v3.mp4  → "velas-mesa"
+ *  Heurística: tira a extensão e remove sufixos numéricos/v\d+ no fim. */
+export function motionFamilyKey(url: string): string {
+  const name = (url.split("/").pop() ?? url).replace(/\.[a-z0-9]+$/i, "");
+  // Remove sufixos comuns: -01, -v3, _final, _2x, etc.
+  return name
+    .replace(/[-_](v\d+|\d{1,3}|final|loop|alt|rev|copy)$/i, "")
+    .replace(/[-_](v\d+|\d{1,3})$/i, "")
+    .toLowerCase();
+}
+
+/** Reordena uma lista de motions garantindo que motions da mesma
+ *  família ficam separados por pelo menos `minGap` posições, sempre
+ *  que o pool tiver famílias suficientes. Faz best-effort: se só há
+ *  uma família, devolve a ordem inalterada. */
+function spaceByFamily(urls: string[], minGap: number): string[] {
+  if (urls.length <= 1) return urls;
+  const out: string[] = [];
+  const remaining = urls.slice();
+  while (remaining.length > 0) {
+    let pickIdx = -1;
+    for (let i = 0; i < remaining.length; i++) {
+      const fam = motionFamilyKey(remaining[i]);
+      // Verifica se alguma das últimas minGap posições é da mesma família
+      let conflict = false;
+      for (let k = 1; k <= minGap && out.length - k >= 0; k++) {
+        if (motionFamilyKey(out[out.length - k]) === fam) {
+          conflict = true;
+          break;
+        }
+      }
+      if (!conflict) {
+        pickIdx = i;
+        break;
+      }
+    }
+    // Se nada serve (todos conflitam), pega o primeiro mesmo assim
+    if (pickIdx === -1) pickIdx = 0;
+    out.push(remaining[pickIdx]);
+    remaining.splice(pickIdx, 1);
+  }
+  return out;
+}
+
 /** Pré-calcula a sequência de motions sem repetição consecutiva.
  *  Consome o pool inteiro em ordem embaralhada antes de repetir.
  *
@@ -119,9 +167,27 @@ export function planMotionSequence(
     const out: string[] = [];
     let pass = 0;
     while (out.length < numDays) {
-      let shuffled = shuffleSeeded(motionPool, seed + pass);
+      // Shuffle base + reordena para separar famílias (lua-piscina-01,
+      // lua-piscina-02 não ficam consecutivos)
+      let shuffled = spaceByFamily(
+        shuffleSeeded(motionPool, seed + pass),
+        2
+      );
       if (out.length > 0 && shuffled[0] === out[out.length - 1]) {
         shuffled = shuffled.slice(1).concat(shuffled[0]);
+      }
+      // Se o último de `out` e o primeiro de `shuffled` partilham
+      // família, troca o primeiro com algum que não conflite
+      if (out.length > 0) {
+        const lastFam = motionFamilyKey(out[out.length - 1]);
+        if (motionFamilyKey(shuffled[0]) === lastFam) {
+          const swapIdx = shuffled.findIndex(
+            (u) => motionFamilyKey(u) !== lastFam
+          );
+          if (swapIdx > 0) {
+            [shuffled[0], shuffled[swapIdx]] = [shuffled[swapIdx], shuffled[0]];
+          }
+        }
       }
       for (const url of shuffled) {
         if (out.length >= numDays) break;
@@ -189,10 +255,22 @@ export function planMotionSequence(
     const moodPref = especial ? MOOD_ESPECIAL[especial] : MOOD_POR_DIA[dia];
     let url = pickByMood(moodPref);
     if (!url) url = pickFallback();
-    if (out.length > 0 && url === out[out.length - 1] && motionPool.length > 1) {
-      // Evita consecutivo igual: tenta o próximo no mood ou fallback
-      const alt = pickFallback();
-      if (alt !== url) url = alt;
+    // Evita consecutivo igual ou da mesma família (lua-piscina-01 →
+    // lua-piscina-02). Tenta um fallback diferente até 5x.
+    const lastFam =
+      out.length > 0 ? motionFamilyKey(out[out.length - 1]) : null;
+    if (
+      lastFam &&
+      motionPool.length > 1 &&
+      (url === out[out.length - 1] || motionFamilyKey(url) === lastFam)
+    ) {
+      for (let k = 0; k < 5; k++) {
+        const alt = pickFallback();
+        if (alt !== url && motionFamilyKey(alt) !== lastFam) {
+          url = alt;
+          break;
+        }
+      }
     }
     incUse(url);
     out.push(url);
