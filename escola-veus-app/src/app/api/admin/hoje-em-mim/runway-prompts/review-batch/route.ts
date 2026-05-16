@@ -81,7 +81,7 @@ OUTPUT — JSON estrito, sem markdown:
   "concerns": []
 }
 
-Se a imagem não tem 1 elemento dinâmico claro, devolve: "ambient air moves softly, gentle natural motion of background elements, warm light".`;
+OBRIGATÓRIO: olha para a imagem e identifica 1 elemento que pode mexer. NUNCA devolvas prompt genérico. Se a imagem é difícil, escolhe o detalhe mais subtil possível (uma sombra a oscilar, um reflexo a tremular, ar a movimentar-se sobre uma superfície). Mas sempre específico ao que está nesta imagem.`;
 
 async function reviewOne(
   client: Anthropic,

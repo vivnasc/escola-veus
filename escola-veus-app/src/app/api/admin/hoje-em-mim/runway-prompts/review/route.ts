@@ -121,7 +121,7 @@ OUTPUT — JSON estrito, sem markdown:
   "concerns": []
 }
 
-Se a imagem não tem 1 elemento dinâmico claro, devolve: "ambient air moves softly, gentle natural motion of background elements, warm light".`;
+OBRIGATÓRIO: olha para a imagem real e identifica 1 elemento concreto que pode mexer. NUNCA devolvas prompt genérico. Se a imagem é difícil, escolhe o detalhe mais subtil possível (uma sombra a oscilar, um reflexo a tremular, ar a movimentar-se). Sempre específico ao que está nesta imagem.`;
 
   const userText = [
     "Olha para esta imagem que vai ser submetida ao Runway Gen4 Turbo image_to_video em ratio vertical 720:1280, com duração de 10 segundos.",
