@@ -31,6 +31,10 @@ import {
   planAudioSequence,
   planMotionSequence,
   seedFromRange,
+  motionFamilyKey,
+  MOOD_POR_DIA,
+  MOOD_ESPECIAL,
+  moodFromAudioUrl,
 } from "@/lib/hoje-em-mim/pairing";
 
 type Frase = { id: string; dia: DiaSemana; texto: string };
@@ -2690,6 +2694,33 @@ function AudioGeneratorSection() {
               🗑 Limpar inválidos
             </button>
             <button
+              onClick={async () => {
+                if (
+                  !confirm(
+                    "Apaga áudios repetidos: para cada mood mantém só o mais recente. Confirma?"
+                  )
+                )
+                  return;
+                try {
+                  const res = await fetch("/api/admin/hoje-em-mim/audios/delete", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ keepOnePerMood: true }),
+                  });
+                  const json = await res.json();
+                  if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+                  alert(`Apagados ${json.deleted} áudios repetidos (ficou 1 por mood).`);
+                  await loadLibrary();
+                } catch (e) {
+                  alert(e instanceof Error ? e.message : String(e));
+                }
+              }}
+              className="rounded border border-red-700/40 bg-red-900/20 px-2 py-1 text-[11px] text-red-300 hover:bg-red-900/30"
+              title="Mantém só o ficheiro mais recente de cada mood. Apaga os repetidos."
+            >
+              🗑 Manter só 1 por mood
+            </button>
+            <button
               onClick={gerarBatchTodosMoods}
               disabled={batchRunning}
               className="rounded border px-3 py-1 text-[11px] disabled:opacity-50"
@@ -2742,28 +2773,66 @@ function AudioGeneratorSection() {
                     </span>
                     <span className="text-[10px] text-escola-creme-50">{list.length}</span>
                   </div>
-                  {list.slice(0, 2).map((a) => (
-                    <div key={a.url} className="space-y-1">
-                      <audio src={a.url} controls className="w-full h-7" />
-                      <button
-                        onClick={async () => {
-                          try {
-                            await navigator.clipboard.writeText(a.url);
-                          } catch {
-                            /* ignore */
-                          }
-                        }}
-                        className="w-full rounded border border-escola-border px-1 py-0.5 text-[9px] text-escola-creme-50 hover:text-escola-creme"
+                  {list.map((a) => {
+                    // Extrai o path para o delete: tira tudo até bucket
+                    const match = a.url.match(
+                      /course-assets\/(hoje-em-mim-audios\/[^?]+)/
+                    );
+                    const path = match ? match[1] : null;
+                    return (
+                      <div
+                        key={a.url}
+                        className="space-y-1 rounded border border-escola-border/40 p-1"
                       >
-                        Copiar URL
-                      </button>
-                    </div>
-                  ))}
-                  {list.length > 2 && (
-                    <div className="text-[9px] text-escola-creme-50">
-                      mais {list.length - 2} mais antigo(s) no Supabase
-                    </div>
-                  )}
+                        <audio src={a.url} controls className="w-full h-7" />
+                        <div className="flex gap-1">
+                          <button
+                            onClick={async () => {
+                              try {
+                                await navigator.clipboard.writeText(a.url);
+                              } catch {
+                                /* ignore */
+                              }
+                            }}
+                            className="flex-1 rounded border border-escola-border px-1 py-0.5 text-[9px] text-escola-creme-50 hover:text-escola-creme"
+                          >
+                            Copiar URL
+                          </button>
+                          {path && (
+                            <button
+                              onClick={async () => {
+                                if (!confirm(`Apagar ${a.url.split("/").pop()}?`)) return;
+                                try {
+                                  const res = await fetch(
+                                    "/api/admin/hoje-em-mim/audios/delete",
+                                    {
+                                      method: "POST",
+                                      headers: { "Content-Type": "application/json" },
+                                      body: JSON.stringify({ path }),
+                                    }
+                                  );
+                                  const json = await res.json();
+                                  if (!res.ok)
+                                    throw new Error(
+                                      json.erro || `HTTP ${res.status}`
+                                    );
+                                  await loadLibrary();
+                                } catch (e) {
+                                  alert(
+                                    e instanceof Error ? e.message : String(e)
+                                  );
+                                }
+                              }}
+                              title="Apagar este ficheiro"
+                              className="rounded border border-red-700/40 bg-red-900/20 px-1.5 py-0.5 text-[9px] text-red-300 hover:bg-red-900/30"
+                            >
+                              🗑
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               );
             })}
@@ -4288,6 +4357,109 @@ function BulkPreviewTable({
   const [regenerating, setRegenerating] = useState<number | null>(null);
   const [regenError, setRegenError] = useState<Record<number, string | null>>({});
 
+  // Escolhe um áudio do library que case com o mood pedido.
+  // Preferência: 1) mood do motion (se tagged) → 2) mood preferido
+  // do dia → 3) primeiro áudio do pool.
+  const pickAudioForMotion = useCallback(
+    (
+      motionUrl: string,
+      dia: DiaSemana,
+      especial: DiaEspecial | null
+    ): string | null => {
+      if (audiosLib.length === 0) return null;
+      const motionMood = moodByMotion[motionUrl];
+      const moodPref = especial ? MOOD_ESPECIAL[especial] : MOOD_POR_DIA[dia];
+      const tryMoods = motionMood
+        ? [motionMood, ...moodPref.filter((m) => m !== motionMood)]
+        : moodPref;
+      for (const mood of tryMoods) {
+        const candidates = audiosLib.filter((a) => a.mood === mood);
+        if (candidates.length > 0) {
+          // Aleatório dentro do mesmo mood para variar entre runs
+          return candidates[Math.floor(Math.random() * candidates.length)].url;
+        }
+      }
+      return audiosLib[Math.floor(Math.random() * audiosLib.length)].url;
+    },
+    [audiosLib, moodByMotion]
+  );
+
+  // Escolhe um motion alternativo respeitando o mood do dia e
+  // evitando família igual ao actual e motion exactamente igual.
+  const pickAlternateMotion = useCallback(
+    (
+      currentUrl: string,
+      dia: DiaSemana,
+      especial: DiaEspecial | null
+    ): string => {
+      if (motionsLib.length <= 1) return currentUrl;
+      const moodPref = especial ? MOOD_ESPECIAL[especial] : MOOD_POR_DIA[dia];
+      const currentFam = motionFamilyKey(currentUrl);
+      const inMood = motionsLib.filter((m) => {
+        const mm = moodByMotion[m.url];
+        return mm && moodPref.includes(mm as never);
+      });
+      const tryLists = [
+        inMood.filter(
+          (m) => m.url !== currentUrl && motionFamilyKey(m.url) !== currentFam
+        ),
+        inMood.filter((m) => m.url !== currentUrl),
+        motionsLib.filter(
+          (m) => m.url !== currentUrl && motionFamilyKey(m.url) !== currentFam
+        ),
+        motionsLib.filter((m) => m.url !== currentUrl),
+      ];
+      for (const list of tryLists) {
+        if (list.length > 0) {
+          return list[Math.floor(Math.random() * list.length)].url;
+        }
+      }
+      return currentUrl;
+    },
+    [motionsLib, moodByMotion]
+  );
+
+  // Re-shuffle de uma linha: novo motion (mood-aware, anti-família)
+  // e novo áudio que case com o mood do novo motion. Setado como
+  // override para sobreviver a re-renders e ser persistido.
+  const shuffleRow = (
+    dayIndex: number,
+    dia: DiaSemana,
+    especial: DiaEspecial | null,
+    currentMotion: string
+  ) => {
+    const nextMotion = pickAlternateMotion(currentMotion, dia, especial);
+    const nextAudio = pickAudioForMotion(nextMotion, dia, especial);
+    setOverride(dayIndex, { motionUrl: nextMotion, audioUrl: nextAudio });
+  };
+
+  // Quando o utilizador troca motion via dropdown, auto-pareia o
+  // áudio com o mood do novo motion. Evita o "troquei motion mas
+  // áudio ficou estranho" — o que tu pediste hoje.
+  const changeMotion = (
+    dayIndex: number,
+    dia: DiaSemana,
+    especial: DiaEspecial | null,
+    newMotionUrl: string
+  ) => {
+    const nextAudio = pickAudioForMotion(newMotionUrl, dia, especial);
+    setOverride(dayIndex, { motionUrl: newMotionUrl, audioUrl: nextAudio });
+  };
+
+  // Re-shuffle global: re-rola todas as linhas que NÃO foram
+  // editadas manualmente (preserva overrides existentes).
+  const reshuffleAll = () => {
+    const next = { ...overrides };
+    for (const it of items) {
+      const cur = next[it.dayIndex] || {};
+      if (cur.motionUrl || cur.audioUrl !== undefined) continue;
+      const m = pickAlternateMotion(it.motionUrl, it.dia, it.especial);
+      const a = pickAudioForMotion(m, it.dia, it.especial);
+      next[it.dayIndex] = { ...cur, motionUrl: m, audioUrl: a };
+    }
+    onChangeOverrides(next);
+  };
+
   const regenFrase = async (
     dayIndex: number,
     dia: DiaSemana,
@@ -4342,7 +4514,20 @@ function BulkPreviewTable({
       >
         🔍 Pré-montagem editável ({items.length} dias{overrideCount > 0 ? ` · ${overrideCount} com override` : ""}) — clica em qualquer célula para mudar
       </summary>
-      <div className="overflow-x-auto px-3 pb-3">
+      <div className="overflow-x-auto px-3 pb-3 space-y-2">
+        <div className="flex flex-wrap items-center gap-2 text-[10px]">
+          <button
+            onClick={reshuffleAll}
+            className="rounded border px-2 py-1 text-[11px] hover:opacity-80"
+            style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.06)" }}
+            title="Re-rola motion + áudio de todas as linhas que não tens editadas manualmente. Respeita o mood do dia."
+          >
+            🎲 Re-shuffle tudo (preserva overrides)
+          </button>
+          <span className="text-escola-creme-50">
+            ou clica 🎲 numa linha para trocar só essa
+          </span>
+        </div>
         <table className="w-full text-[10px]">
           <thead className="text-escola-creme-50 uppercase tracking-wider">
             <tr>
@@ -4435,24 +4620,39 @@ function BulkPreviewTable({
                     )}
                   </td>
                   <td className="py-1.5 pr-2">
-                    <select
-                      value={motionEff}
-                      onChange={(e) => setOverride(it.dayIndex, { motionUrl: e.target.value })}
-                      className="w-full max-w-[180px] rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme"
-                      style={{ borderColor: ov.motionUrl ? COBRE : undefined }}
-                    >
-                      <option value={motionEff}>
-                        {motionsLib.find((m) => m.url === motionEff)?.name ?? motionEff.split("/").pop() ?? "?"}
-                      </option>
-                      {motionsLib
-                        .filter((m) => m.url !== motionEff)
-                        .map((m) => (
-                          <option key={m.url} value={m.url}>
-                            {m.name}
-                            {moodByMotion[m.url] ? ` · ${moodByMotion[m.url]}` : ""}
-                          </option>
-                        ))}
-                    </select>
+                    <div className="flex items-start gap-1">
+                      <select
+                        value={motionEff}
+                        onChange={(e) =>
+                          changeMotion(it.dayIndex, it.dia, it.especial, e.target.value)
+                        }
+                        className="w-full max-w-[180px] rounded border border-escola-border bg-escola-bg px-1 py-0.5 text-[10px] text-escola-creme"
+                        style={{ borderColor: ov.motionUrl ? COBRE : undefined }}
+                      >
+                        <option value={motionEff}>
+                          {motionsLib.find((m) => m.url === motionEff)?.name ?? motionEff.split("/").pop() ?? "?"}
+                        </option>
+                        {motionsLib
+                          .filter((m) => m.url !== motionEff)
+                          .map((m) => (
+                            <option key={m.url} value={m.url}>
+                              {m.name}
+                              {moodByMotion[m.url] ? ` · ${moodByMotion[m.url]}` : ""}
+                            </option>
+                          ))}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          shuffleRow(it.dayIndex, it.dia, it.especial, motionEff)
+                        }
+                        title="Sortear novo motion (mood do dia, família diferente) e áudio que case"
+                        className="shrink-0 rounded border px-1.5 py-1 text-[11px] hover:opacity-80"
+                        style={{ borderColor: COBRE_FRACO, color: COBRE }}
+                      >
+                        🎲
+                      </button>
+                    </div>
                     {moodByMotion[motionEff] && (
                       <div className="mt-0.5 text-[9px] text-escola-creme-50">
                         mood: {moodByMotion[motionEff]}
