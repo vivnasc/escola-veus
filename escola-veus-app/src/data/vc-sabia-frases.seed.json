@@ -121,6 +121,42 @@
     { "id": "vsq-0087", "tema": "florescer-no-tempo-certo", "texto": "A borboleta passou pelo casulo para abrir asas. Tu também. Confia na tua passagem." },
     { "id": "vsq-0088", "tema": "confianca-no-caminho", "texto": "A montanha não tem pressa de chegar ao céu. Tu também sabes. Confia no teu passo." },
     { "id": "vsq-0089", "tema": "florescer-no-tempo-certo", "texto": "A chuva alimenta o que parecia morto. Tu também. Confia no que volta." },
-    { "id": "vsq-0090", "tema": "suavidade-e-descanso", "texto": "O fogo precisa de respirar para arder. Tu também. Confia no teu espaço." }
+    { "id": "vsq-0090", "tema": "suavidade-e-descanso", "texto": "O fogo precisa de respirar para arder. Tu também. Confia no teu espaço." },
+
+    { "id": "vsq-0091", "tema": "autoamor", "texto": "O lótus nasce na lama e não se suja. Tu também. Confia na tua pureza." },
+    { "id": "vsq-0092", "tema": "florescer-no-tempo-certo", "texto": "O lótus fecha à noite e reabre ao amanhecer. Tu também. Confia no teu recomeço." },
+    { "id": "vsq-0093", "tema": "autoperdao", "texto": "O lótus precisa do lodo para se erguer. Tu também. Confia no que te formou." },
+
+    { "id": "vsq-0094", "tema": "florescer-no-tempo-certo", "texto": "A borboleta não se lembra de ter sido lagarta. Tu também. Confia na tua transformação." },
+    { "id": "vsq-0095", "tema": "suavidade-e-descanso", "texto": "A borboleta descansa antes de abrir as asas. Tu também. Confia na tua pausa." },
+    { "id": "vsq-0096", "tema": "confianca-no-caminho", "texto": "Nenhuma borboleta nasce a voar. Tu também. Confia no teu processo." },
+
+    { "id": "vsq-0097", "tema": "confianca-no-caminho", "texto": "O girassol segue o sol mesmo nos dias cinzentos. Tu também. Confia na tua direção." },
+    { "id": "vsq-0098", "tema": "presenca-leve", "texto": "Os girassóis viram-se uns para os outros quando o sol falta. Tu também. Confia em quem te rodeia." },
+    { "id": "vsq-0099", "tema": "sonhar-com-raizes", "texto": "O girassol nasce alto porque a raiz vai fundo. Tu também. Confia na tua base." },
+
+    { "id": "vsq-0100", "tema": "autoperdao", "texto": "A árvore perde as folhas para voltar a florir. Tu também. Confia no teu deixar ir." },
+    { "id": "vsq-0101", "tema": "inteireza", "texto": "O baobá guarda água para os anos secos. Tu também. Confia no que reservas." },
+    { "id": "vsq-0102", "tema": "sonhar-com-raizes", "texto": "A raiz cresce no escuro para o tronco subir à luz. Tu também. Confia no que ninguém vê." },
+
+    { "id": "vsq-0103", "tema": "confianca-no-caminho", "texto": "A gota fura a pedra sem nunca a empurrar. Tu também. Confia na tua constância." },
+    { "id": "vsq-0104", "tema": "confianca-no-caminho", "texto": "O rio não pede licença ao mar. Tu também. Confia no teu destino." },
+    { "id": "vsq-0105", "tema": "inteireza", "texto": "A água toma a forma do que a recebe e não se perde. Tu também. Confia na tua essência." },
+
+    { "id": "vsq-0106", "tema": "beleza-de-existir", "texto": "As estrelas só aparecem quando o céu escurece. Tu também. Confia na tua noite." },
+    { "id": "vsq-0107", "tema": "autoamor", "texto": "A lua brilha mesmo quando ninguém olha. Tu também. Confia no teu valor." },
+    { "id": "vsq-0108", "tema": "florescer-no-tempo-certo", "texto": "O céu nunca fica do mesmo tom duas vezes. Tu também. Confia na tua mudança." },
+
+    { "id": "vsq-0109", "tema": "florescer-no-tempo-certo", "texto": "A semente parte-se antes de germinar. Tu também. Confia na tua abertura." },
+    { "id": "vsq-0110", "tema": "suavidade-e-descanso", "texto": "A terra descansa no inverno para dar fruto no verão. Tu também. Confia no teu repouso." },
+    { "id": "vsq-0111", "tema": "florescer-no-tempo-certo", "texto": "Nenhuma flor floresce no dia em que foi semeada. Tu também. Confia na tua espera." },
+
+    { "id": "vsq-0112", "tema": "corpo-como-casa", "texto": "O fogo precisa de ar para crescer. Tu também. Confia no teu respirar." },
+    { "id": "vsq-0113", "tema": "confianca-no-caminho", "texto": "O vento move o que parece imóvel. Tu também. Confia no invisível." },
+    { "id": "vsq-0114", "tema": "inteireza", "texto": "A brasa guarda calor mesmo sob a cinza. Tu também. Confia no que parece adormecido." },
+
+    { "id": "vsq-0115", "tema": "confianca-no-caminho", "texto": "O pássaro canta antes do sol nascer. Tu também. Confia na tua antecipação." },
+    { "id": "vsq-0116", "tema": "confianca-no-caminho", "texto": "A ave migra sem mapa e chega sempre. Tu também. Confia no teu instinto." },
+    { "id": "vsq-0117", "tema": "florescer-no-tempo-certo", "texto": "Nenhum voo começa sem o salto. Tu também. Confia no teu impulso." }
   ]
 }
