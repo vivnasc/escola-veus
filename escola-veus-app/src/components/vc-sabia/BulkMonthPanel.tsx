@@ -154,6 +154,13 @@ export function BulkMonthPanel() {
     if (phase === "config") refreshPastBatches();
   }, [phase, refreshPastBatches]);
 
+  // Pre-carrega a library quando entra no plano, para o picker de swap
+  // abrir instantaneo.
+  useEffect(() => {
+    if (phase === "plan") loadAllMotions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
   const loadPastBatch = (id: string) => {
     setBatchId(id);
     setStatus(null);
@@ -168,6 +175,9 @@ export function BulkMonthPanel() {
   const [swapShowAll, setSwapShowAll] = useState<Record<string, boolean>>({});
   const [swapping, setSwapping] = useState<Record<string, "loading" | { error: string } | undefined>>({});
   const [swapPickerOpen, setSwapPickerOpen] = useState<string | null>(null);
+  /** Indice da linha do plano com picker de swap aberto (antes de submeter). */
+  const [planSwapOpenIdx, setPlanSwapOpenIdx] = useState<number | null>(null);
+  const [planSwapShowAll, setPlanSwapShowAll] = useState<Record<number, boolean>>({});
   const [cancelling, setCancelling] = useState<Record<string, "loading" | { error: string } | undefined>>({});
 
   const loadAllMotions = useCallback(async () => {
@@ -334,6 +344,32 @@ export function BulkMonthPanel() {
   /** Muda apenas o áudio desta linha (override pontual, não persiste). */
   const setRowAudio = (idx: number, audioUrl: string | null) => {
     setPlan((prev) => prev.map((p, i) => (i === idx ? { ...p, audioUrl } : p)));
+  };
+
+  /** Troca o motion de uma linha do plano (antes de submeter o batch).
+   *  Actualiza motion + mood + audio em cadeia: mood vem de motionTags,
+   *  audio vem de activeAudios[mood]. Marca como reused se ja foi usado
+   *  em batches passados ou ja aparece noutra linha deste plano. */
+  const swapPlanRowMotion = (idx: number, motion: { name: string; url: string }) => {
+    const mood = (motionTags[motion.name] as MorningMood | undefined) || null;
+    const audioUrl = mood ? activeAudios[mood] ?? null : null;
+    setPlan((prev) =>
+      prev.map((p, i) => {
+        if (i !== idx) return p;
+        const usedElsewhere = prev.some(
+          (q, j) => j !== idx && q.motionName === motion.name
+        );
+        return {
+          ...p,
+          motionName: motion.name,
+          motionUrl: motion.url,
+          motionReused: usedMotionNames.has(motion.name) || usedElsewhere,
+          mood,
+          audioUrl,
+        };
+      })
+    );
+    setPlanSwapOpenIdx(null);
   };
 
   const regenPhrase = async (idx: number) => {
@@ -827,24 +863,36 @@ export function BulkMonthPanel() {
                     <td className="px-2 py-1 align-top">
                       <div className="space-y-1">
                         <div className="flex items-start gap-2">
-                          <video
-                            src={p.motionUrl}
-                            preload="metadata"
-                            muted
-                            playsInline
-                            onMouseEnter={(e) => {
-                              const v = e.currentTarget;
-                              v.play().catch(() => {});
+                          <button
+                            type="button"
+                            onClick={() => {
+                              loadAllMotions();
+                              setPlanSwapOpenIdx(planSwapOpenIdx === i ? null : i);
                             }}
-                            onMouseLeave={(e) => {
-                              const v = e.currentTarget;
-                              v.pause();
-                              v.currentTime = 0;
-                            }}
-                            className={`h-16 w-9 shrink-0 rounded border bg-black object-cover ${
-                              p.motionReused ? "border-amber-500/60" : "border-escola-border"
+                            className={`relative h-16 w-9 shrink-0 overflow-hidden rounded border bg-black ${
+                              p.motionReused ? "border-amber-500/60" : "border-escola-border hover:border-emerald-500/60"
                             }`}
-                          />
+                            title="Clica para trocar este motion"
+                          >
+                            <video
+                              src={p.motionUrl}
+                              preload="metadata"
+                              muted
+                              playsInline
+                              onMouseEnter={(e) => {
+                                e.currentTarget.play().catch(() => {});
+                              }}
+                              onMouseLeave={(e) => {
+                                const v = e.currentTarget;
+                                v.pause();
+                                v.currentTime = 0;
+                              }}
+                              className="h-full w-full object-cover"
+                            />
+                            <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-black/70 py-0.5 text-center text-[8px] text-escola-creme">
+                              ↻ trocar
+                            </span>
+                          </button>
                           <div
                             className={`min-w-0 flex-1 break-all text-[10px] leading-tight ${
                               p.motionReused ? "text-amber-300" : "text-escola-creme-50"
@@ -855,6 +903,89 @@ export function BulkMonthPanel() {
                             {p.motionName.slice(0, 20)}…
                           </div>
                         </div>
+                        {planSwapOpenIdx === i && (
+                          <div className="space-y-1 rounded border border-amber-500/40 bg-amber-500/5 p-1.5">
+                            {(() => {
+                              const planMotionNames = new Set(
+                                plan.map((q, j) => (j !== i ? q.motionName : null)).filter((x): x is string => !!x)
+                              );
+                              const others = allMotions.filter((m) => m.name !== p.motionName);
+                              const unused = others.filter(
+                                (m) => !usedMotionNames.has(m.name) && !planMotionNames.has(m.name)
+                              );
+                              const showAll = planSwapShowAll[i];
+                              const list = showAll ? others : unused;
+                              return (
+                                <>
+                                  <div className="flex items-center justify-between text-[10px] text-amber-200">
+                                    <span>
+                                      {showAll
+                                        ? `Todos (${others.length})`
+                                        : `Livres (${unused.length} de ${others.length})`}
+                                    </span>
+                                    <button
+                                      onClick={() =>
+                                        setPlanSwapShowAll((s) => ({ ...s, [i]: !showAll }))
+                                      }
+                                      className="text-[9px] text-escola-creme-50 hover:text-escola-creme"
+                                    >
+                                      {showAll ? "só livres" : "ver todos"}
+                                    </button>
+                                  </div>
+                                  <div className="grid max-h-44 grid-cols-4 gap-1 overflow-y-auto">
+                                    {list.map((m) => {
+                                      const reused = usedMotionNames.has(m.name) || planMotionNames.has(m.name);
+                                      return (
+                                        <button
+                                          key={m.url}
+                                          onClick={() => swapPlanRowMotion(i, m)}
+                                          title={`${reused ? "↺ ja usado · " : ""}${m.name}`}
+                                          className={`relative overflow-hidden rounded border bg-black ${
+                                            reused
+                                              ? "border-amber-500/60"
+                                              : "border-escola-border hover:border-emerald-500/60"
+                                          }`}
+                                        >
+                                          <video
+                                            src={m.url}
+                                            preload="metadata"
+                                            muted
+                                            playsInline
+                                            onMouseEnter={(e) => {
+                                              e.currentTarget.play().catch(() => {});
+                                            }}
+                                            onMouseLeave={(e) => {
+                                              const v = e.currentTarget;
+                                              v.pause();
+                                              v.currentTime = 0;
+                                            }}
+                                            className="h-14 w-full object-cover"
+                                          />
+                                          {reused && (
+                                            <span className="absolute right-0 top-0 bg-amber-500/80 px-1 text-[8px] text-black">
+                                              ↺
+                                            </span>
+                                          )}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                  {list.length === 0 && (
+                                    <div className="text-[9px] text-red-300">
+                                      Sem motions livres. "ver todos" inclui já usados.
+                                    </div>
+                                  )}
+                                  <button
+                                    onClick={() => setPlanSwapOpenIdx(null)}
+                                    className="block w-full rounded border border-escola-border bg-escola-card/40 px-1.5 py-0.5 text-[9px] text-escola-creme-50 hover:text-escola-creme"
+                                  >
+                                    fechar
+                                  </button>
+                                </>
+                              );
+                            })()}
+                          </div>
+                        )}
                         {p.phraseTheme && (
                           <button
                             onClick={() => {
