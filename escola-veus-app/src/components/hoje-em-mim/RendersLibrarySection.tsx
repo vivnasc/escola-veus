@@ -68,6 +68,7 @@ export function RendersLibrarySection({
   const [jobs, setJobs] = useState<LibJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -89,6 +90,28 @@ export function RendersLibrarySection({
   useEffect(() => {
     load();
   }, [load]);
+
+  const deleteJob = async (jobId: string, includeMp4s: boolean) => {
+    const msg = includeMp4s
+      ? `Descartar o job ${jobId} E apagar os MP4s renderizados?`
+      : `Descartar o job ${jobId} do histórico? (Os MP4s renderizados ficam guardados em hoje-em-mim-renders/)`;
+    if (!confirm(msg)) return;
+    setDeletingId(jobId);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/jobs/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId, includeMp4s }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      await load();
+    } catch (e) {
+      alert(e instanceof Error ? e.message : String(e));
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   // Procura o item de hoje. Se houver vários jobs com o mesmo dia
   // (ex: re-renders), pega o mais recente (jobs já vêm sorted desc).
@@ -179,14 +202,15 @@ export function RendersLibrarySection({
                 })
               : "";
             const total = j.numDays ?? j.items.length;
+            const busy = deletingId === j.jobId;
             return (
               <div
                 key={j.jobId}
-                className="flex items-center justify-between gap-2 rounded border border-escola-border bg-escola-card/60 px-2 py-1.5 text-[11px]"
+                className="flex items-stretch justify-between gap-1 rounded border border-escola-border bg-escola-card/60 text-[11px]"
               >
                 <button
                   onClick={() => onLoadJob(j.jobId)}
-                  className="flex-1 text-left text-escola-creme hover:text-escola-dourado"
+                  className="flex-1 px-2 py-1.5 text-left text-escola-creme hover:text-escola-dourado"
                 >
                   <div>
                     <span className="font-mono">{range}</span>
@@ -197,6 +221,22 @@ export function RendersLibrarySection({
                   <div className="text-[9px] text-escola-creme-50">
                     {dt} · {j.jobId}
                   </div>
+                </button>
+                <button
+                  onClick={() => deleteJob(j.jobId, false)}
+                  disabled={busy}
+                  title="Descartar do histórico (mantém os MP4s renderizados)"
+                  className="border-l border-escola-border px-2 text-[12px] text-escola-creme-50 hover:bg-red-900/20 hover:text-red-300 disabled:opacity-40"
+                >
+                  {busy ? "…" : "🗑"}
+                </button>
+                <button
+                  onClick={() => deleteJob(j.jobId, true)}
+                  disabled={busy}
+                  title="Descartar tudo (histórico + MP4s)"
+                  className="border-l border-escola-border px-2 text-[12px] text-red-400 hover:bg-red-900/30 hover:text-red-300 disabled:opacity-40"
+                >
+                  {busy ? "…" : "🗑×"}
                 </button>
               </div>
             );
