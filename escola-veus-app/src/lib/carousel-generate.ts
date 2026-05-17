@@ -349,6 +349,7 @@ Contexto dos outros slides do dia (mantém coerência):
 ${contextoOutrosSlides}
 
 ${opts.hint ? `Instrução extra: ${opts.hint}\n` : ""}
+Inclui também notaVisual (cena MJ inglesa, 1 frase, sem pessoas, sem geografia, matéria primária) e fundoClaro (true se aponta ao luminoso, false se nomeia o denso).
 Devolve apenas o slide regerado via tool save_slide. Mantém o tipo "${tipo}".`;
 
   const slideToolSchemas: Record<string, unknown> = {
