@@ -1,23 +1,20 @@
 /**
- * Prompt builder para os fundos MJ do Carrossel Véus.
+ * Prompt builder MJ para os fundos do Carrossel Véus.
  *
- * O conteúdo é renovado todas as semanas (calendário anual). Em vez de
- * fixar prompts por slide, derivamos uma CENA por TEMA (véu), e usamos a
- * mesma cena nos 6 slides do dia — com pequenas variações para capa/cta.
+ * Arquitectura: o conteúdo é gerado por `lib/carousel-generate.ts` (Claude
+ * API) a partir de um `brief` do calendário. O Claude já produz a CENA
+ * visual de cada slide no campo `notaVisual` (1 frase inglesa) + o
+ * `fundoClaro` (qual scrim usar). Este builder só envelopa essa cena no
+ * preâmbulo de estilo editorial.
  *
- * Princípios:
- *  - Sem âncoras geográficas (sem "Moçambique", "savana", "tropical", etc.).
- *  - Imagens SIMBÓLICAS do estado interior que o véu encobre, não literais.
- *  - Estilo editorial contemplativo, sempre sem pessoas, sem texto.
- *  - Estabilidade visual por DIA: a foto evoca o tema, não cada frase.
- *
- * Para slides em que a cena por défice não chega, a editora força uma
- * `notaVisual` (texto livre, override total).
+ * Quando um slide legacy não tem `notaVisual` (conteúdo antigo, sem terem
+ * passado pela nova geração), caímos num fallback: dicionário de cenas
+ * simbólicas por tema, totalmente neutro (sem geografia, sem cultura).
  */
 
 import type { Dia, Slide } from "@/lib/carousel-types";
 
-/** Preâmbulo universal — sem geografia, sem cultura específica. */
+/** Preâmbulo universal. Sem geografia, sem cultura específica. */
 const STYLE_DARK =
   "cinematic editorial photograph, low contemplative light, limited warm palette, fine grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
 
@@ -25,73 +22,39 @@ const STYLE_LIGHT =
   "cinematic editorial photograph, soft natural daylight, limited muted palette, fine grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
 
 /**
- * Cena simbólica por tema. Cada entrada é uma IMAGEM concreta (objecto,
- * lugar, luz) que evoca o estado interior — não uma ilustração literal da
- * palavra-tema.
- *
- * Acrescentar entradas conforme novas campanhas. Quando o veu não está
- * mapeado, cai no TEMA_DEFAULT abaixo.
+ * Fallback simbólico para slides sem `notaVisual` (conteúdo antigo).
+ * Cada cena é matéria primária (luz, água, fio, vão, vela) — sem cultura.
  */
-const TEMA_CENAS: Record<string, string> = {
-  PERMANÊNCIA:
-    "wide slow river surface in soft flow, late golden light catching the moving water, sense that nothing stays still",
-  MEMÓRIA:
-    "old open book on a worn wooden table beside a window, dust particles suspended in a thin beam of afternoon light",
-  TURBILHÃO:
-    "still surface of dark water after the wind has passed, single point of light reflected at the centre, perfect quiet",
-  ESFORÇO:
-    "empty wooden chair by an open window, late-afternoon light spilling across the floor, no movement",
-  DESOLAÇÃO:
-    "freshly turned dark soil at dawn before anything is planted, fertile and waiting, single drop of dew on a blade of grass",
-  HORIZONTE:
-    "open doorway threshold flooded with warm morning light, the room beyond softly visible, sense of arrival",
-  DUALIDADE:
-    "two narrow streams converging into one wider river seen from above at first light, gentle merging",
-  // Temas adicionais para reutilizar em campanhas futuras
-  CONTROLO:
-    "open hand seen from above letting fine sand slip between fingers, soft side-light, dark backdrop",
-  PERFEIÇÃO:
-    "imperfect handmade clay vessel with visible cracks repaired in gold, contemplative interior light",
-  ESCASSEZ:
-    "single piece of ripe fruit on a worn wooden surface, warm low light, sense of enough",
-  URGÊNCIA:
-    "tide marks slowly receding on a wide quiet shoreline at blue hour, no urgency in the world",
-  APROVAÇÃO:
-    "single candle flame burning steadily against a textured wall, no flicker, no audience",
-  SEPARAÇÃO:
-    "two parallel paths through tall grass converging at the horizon at dawn",
+const FALLBACK_TEMA_CENAS: Record<string, string> = {
+  PERMANÊNCIA: "wide slow water surface in soft flow, late golden light catching movement, sense that nothing stays still",
+  MEMÓRIA: "open book on worn wood beside a window, dust suspended in a thin beam of afternoon light",
+  TURBILHÃO: "still surface of dark water after wind passed, single point of light reflected at the centre",
+  ESFORÇO: "empty chair by an open window, late-afternoon light spilling across the floor, no movement",
+  DESOLAÇÃO: "freshly turned dark soil at dawn before anything is planted, single drop of dew on a blade of grass",
+  HORIZONTE: "open doorway threshold flooded with warm morning light, room beyond softly visible",
+  DUALIDADE: "two narrow streams converging into one wider river seen from above at first light",
 };
 
-const TEMA_DEFAULT =
+const FALLBACK_DEFAULT =
   "quiet contemplative interior scene at the threshold between day and night, single source of soft light, no movement";
 
-/** Devolve a cena base para o tema do dia (com fallback). */
-function cenaDoTema(veu: string): string {
-  return TEMA_CENAS[veu.toUpperCase()] ?? TEMA_DEFAULT;
-}
-
-/**
- * Pequena variação por tipo de slide para criar ritmo visual no dia
- * sem perder a coerência temática.
- */
+/** Variação ligeira por tipo, para o ritmo capa→conteúdo→cta. */
 function variarPorTipo(cena: string, slide: Slide): string {
-  if (slide.tipo === "capa") {
-    return `${cena}, wide framing, sense of opening`;
-  }
-  if (slide.tipo === "cta") {
-    return `${cena}, closing of day, single warm distant glow`;
-  }
+  if (slide.tipo === "capa") return `${cena}, wide framing, sense of opening`;
+  if (slide.tipo === "cta") return `${cena}, closing of day, single warm distant glow`;
   return cena;
 }
 
 /**
- * Builder principal. Devolve o prompt completo, pronto para Midjourney.
- *
- * Override total via `slide.notaVisual` — útil quando a cena do tema não
- * serve para um slide específico.
+ * Builder principal.
+ * Prioridade: slide.notaVisual (vem do Claude) > fallback do tema do dia.
  */
 export function buildSlidePrompt(slide: Slide, dia: Dia): string {
-  const cena = slide.notaVisual?.trim() || variarPorTipo(cenaDoTema(dia.veu), slide);
+  const cena = slide.notaVisual?.trim()
+    || variarPorTipo(
+      FALLBACK_TEMA_CENAS[dia.veu.toUpperCase()] ?? FALLBACK_DEFAULT,
+      slide,
+    );
   const style = slide.fundoClaro ? STYLE_LIGHT : STYLE_DARK;
   return `${cena}, ${style}`;
 }
