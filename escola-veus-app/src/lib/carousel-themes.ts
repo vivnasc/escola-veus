@@ -17,6 +17,13 @@ export type CarouselTheme = {
   gold: string;
   /** rgba string */
   mist: string;
+  /**
+   * Modo do tema:
+   * - "luz": TODOS os slides (incluindo capa e cta) ficam em fundo claro/ivory
+   * - "sombra": TODOS os slides ficam em fundo escuro
+   * - omitido: misto (capa+cta escuros, conteúdo claros — comportamento legacy)
+   */
+  mode?: "luz" | "sombra";
 };
 
 export const THEMES: CarouselTheme[] = [
@@ -36,6 +43,7 @@ export const THEMES: CarouselTheme[] = [
   {
     id: "luz",
     label: "B · Dual — modo LUZ",
+    mode: "luz",
     ink: "#2a2118",
     ivory: "#f5ead5",
     parchmentDark: "#dccbab",
@@ -48,6 +56,7 @@ export const THEMES: CarouselTheme[] = [
   {
     id: "sombra",
     label: "B · Dual — modo SOMBRA",
+    mode: "sombra",
     ink: "#e8dcc0",
     ivory: "#0f0f1a",
     parchmentDark: "#1a1a26",
