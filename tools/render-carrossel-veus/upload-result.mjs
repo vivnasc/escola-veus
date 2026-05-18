@@ -38,23 +38,39 @@ function publicUrl(pathInBucket) {
   return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${pathInBucket}`;
 }
 
-async function uploadFile(pathInBucket, filePath, contentType) {
+async function uploadFile(pathInBucket, filePath, contentType, opts = {}) {
+  const maxAttempts = opts.maxAttempts ?? 3;
   const data = await readFile(filePath);
-  const url = `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${pathInBucket}`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${SERVICE_KEY}`,
-      "Content-Type": contentType,
-      "x-upsert": "true",
-    },
-    body: data,
-  });
-  if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`Upload ${pathInBucket} falhou ${res.status}: ${txt.slice(0, 300)}`);
+  if (data.length === 0) {
+    throw new Error(`Ficheiro 0 bytes: ${filePath}`);
   }
-  return publicUrl(pathInBucket);
+  const url = `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${pathInBucket}`;
+  let lastErr = "";
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${SERVICE_KEY}`,
+          "Content-Type": contentType,
+          "x-upsert": "true",
+        },
+        body: data,
+      });
+      if (res.ok) return publicUrl(pathInBucket);
+      const txt = await res.text();
+      lastErr = `${res.status}: ${txt.slice(0, 300)}`;
+      // Não vale a pena reterceirar 401/403/404 — só transientes (400 às vezes, 5xx, 429)
+      if (res.status === 401 || res.status === 403 || res.status === 404) break;
+    } catch (e) {
+      lastErr = e instanceof Error ? e.message : String(e);
+    }
+    if (attempt < maxAttempts) {
+      const waitMs = 500 * Math.pow(2, attempt - 1);
+      await new Promise((r) => setTimeout(r, waitMs));
+    }
+  }
+  throw new Error(`Upload ${pathInBucket} falhou após ${maxAttempts} tentativas: ${lastErr}`);
 }
 
 async function writeResult(payload) {
@@ -108,24 +124,50 @@ async function main() {
       // sem dia
     }
   }
-  console.log(`→ ${pngs.length} PNG para subir`);
-  const pngUrls = [];
-  for (const p of pngs) {
-    const remote = `${BASE_PATH}/pngs/dia-${p.dia}/${p.file}`;
-    const url = await uploadFile(remote, p.local, "image/png");
-    pngUrls.push({ dia: p.dia, file: p.file, url });
-  }
-
-  const result = {
+  // CRÍTICO: grava o result.json AGORA com os MP4s, antes de tentar PNGs.
+  // Se as PNGs falharem mais à frente, a coleção ainda fica utilizável no
+  // Metricool (que só usa os MP4s) e a editora não perde o trabalho.
+  await writeResult({
     jobId: JOB_ID,
     status: "done",
     progress: 100,
     videos,
-    pngs: pngUrls,
+    pngs: [],
     completedAt: new Date().toISOString(),
-  };
-  await writeResult(result);
-  console.log(`\n✓ result.json escrito (${videos.length} vídeos, ${pngUrls.length} PNGs)`);
+  });
+  console.log(`✓ result.json gravado com ${videos.length} MP4s (PNGs a seguir)`);
+
+  console.log(`→ ${pngs.length} PNG para subir`);
+  const pngUrls = [];
+  const pngFails = [];
+  for (const p of pngs) {
+    const remote = `${BASE_PATH}/pngs/dia-${p.dia}/${p.file}`;
+    process.stdout.write(`  · ${p.file.padEnd(22)} `);
+    try {
+      const url = await uploadFile(remote, p.local, "image/png");
+      pngUrls.push({ dia: p.dia, file: p.file, url });
+      console.log("ok");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      pngFails.push({ dia: p.dia, file: p.file, error: msg.slice(0, 200) });
+      console.log(`✗ ${msg.slice(0, 80)}`);
+    }
+  }
+
+  // Actualiza o result.json com as PNGs (mesmo que algumas tenham falhado)
+  await writeResult({
+    jobId: JOB_ID,
+    status: pngFails.length === 0 ? "done" : "done-with-png-warnings",
+    progress: 100,
+    videos,
+    pngs: pngUrls,
+    pngFails: pngFails.length > 0 ? pngFails : undefined,
+    completedAt: new Date().toISOString(),
+  });
+  console.log(
+    `\n✓ result.json final · ${videos.length} MP4s, ${pngUrls.length}/${pngs.length} PNGs` +
+      (pngFails.length > 0 ? ` (${pngFails.length} falhas listadas em pngFails)` : "")
+  );
 }
 
 main().catch(async (err) => {
