@@ -85,6 +85,34 @@ export default function ColecaoEditor({ params }: { params: Promise<{ id: string
     return data.slide as SlideType;
   }
 
+  const [regenAll, setRegenAll] = useState(false);
+  async function regenerateAll() {
+    if (!col) return;
+    if (
+      !confirm(
+        "Regerar TODOS os slides desta colecção com o Claude actual?\n\nVai perder edições manuais nos slides. O brief actual da colecção é usado.\nLeva 60-90s."
+      )
+    ) return;
+    setRegenAll(true);
+    try {
+      const r = await fetch(`/api/admin/colecoes/${col.id}/regenerate-all`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.erro || `HTTP ${r.status}`);
+      // A API já persistiu na DB; actualizar o estado local sem disparar dirty.
+      setCol({ ...col, dias: data.dias as Dia[] });
+      setDirty(false);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`Regerar falhou: ${msg}`);
+    } finally {
+      setRegenAll(false);
+    }
+  }
+
   if (loading) {
     return <p className="text-sm text-escola-creme-50">A carregar…</p>;
   }
@@ -132,13 +160,23 @@ export default function ColecaoEditor({ params }: { params: Promise<{ id: string
         regenerateSlideFn={regenerateSlideFn}
         description={<p className="italic">{col.brief}</p>}
         extraHeaderActions={
-          <button
-            onClick={save}
-            disabled={!dirty || saving}
-            className="rounded border border-escola-border px-3 py-2 text-xs text-escola-creme hover:border-escola-dourado/40 disabled:opacity-30"
-          >
-            {saving ? "…" : "💾 guardar agora"}
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={regenerateAll}
+              disabled={regenAll || saving}
+              className="rounded border border-escola-dourado/40 px-3 py-2 text-xs text-escola-dourado hover:bg-escola-dourado/10 disabled:opacity-30"
+              title="Substitui os 42 slides com geração nova do Claude (usa brief actual). Útil para passar uma colecção antiga ao prompt actualizado."
+            >
+              {regenAll ? "a regerar… 60-90s" : "✦ regerar tudo (Claude)"}
+            </button>
+            <button
+              onClick={save}
+              disabled={!dirty || saving}
+              className="rounded border border-escola-border px-3 py-2 text-xs text-escola-creme hover:border-escola-dourado/40 disabled:opacity-30"
+            >
+              {saving ? "…" : "💾 guardar agora"}
+            </button>
+          </div>
         }
       />
     </div>
