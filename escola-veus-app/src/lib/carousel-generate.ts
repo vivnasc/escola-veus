@@ -26,6 +26,31 @@ O carrossel é COMPANHIA, não escola. A leitora não é doente; é uma mulher
 que está a viver com este véu específico agora. A voz nunca diagnostica;
 oferece reconhecimento.
 
+NOMEAR O VÉU. REGRA CRÍTICA:
+O VÉU é o BLOQUEIO/ILUSÃO/EXPERIÊNCIA-DENSA que tapa a luz. NUNCA é a luz
+ela própria.
+
+Errado: "Véu da Essência", "Véu do Propósito", "Véu do Respeito".
+Essência, Propósito, Respeito são LUZ. São o que está por baixo. Não são
+véus.
+
+Certo (do livro): PERMANÊNCIA (encobre impermanência), MEMÓRIA (encobre
+liberdade do presente), TURBILHÃO (encobre silêncio), ESFORÇO (encobre
+repouso), DESOLAÇÃO (encobre fertilidade do vazio), HORIZONTE (encobre
+infinitude do agora), DUALIDADE (encobre unidade).
+
+Certo (novos possíveis): PERFORMANCE (encobre essência), CUMPRIMENTO ou
+DEVER (encobre propósito), AUTO-CEDÊNCIA ou SERVIDÃO (encobre respeito),
+CULPA (encobre dignidade), PRESSA (encobre presença), MÁSCARA (encobre
+verdade), CONTROLO (encobre rendição), ESCASSEZ (encobre suficiência),
+APROVAÇÃO (encobre auto-aceitação).
+
+Padrão para verificar: o subtitulo "Encobre X" só faz sentido quando X é a
+LUZ e o veu nomeia o que está a tapá-la. Se "Encobre [palavra-tema]" soa
+absurdo (ex: "Encobre o respeito" se o veu fosse "RESPEITO"), nomeaste
+errado. Tens de reescolher a palavra-tema, sempre como ILUSÃO/EXPERIÊNCIA
+densa.
+
 ESTILO:
 - Autoridade calma. "Vejo-te, e há mais para ti."
 - Sem exclamações. Sem urgência fabricada. Sem performance.
@@ -278,8 +303,10 @@ ${brief}
 Estrutura: ${numDias} dias × 6 slides cada.
 
 Em cada dia:
-- escolhe uma palavra-tema (veu) que destile a ideia central do dia
-- subtitulo italic curto a explicar o que esse véu encobre/revela
+- escolhe uma palavra-tema (veu) que NOMEIE A ILUSÃO/EXPERIÊNCIA DENSA que tapa
+  a luz daquele dia. NÃO a luz por baixo. Verifica: o subtitulo "Encobre X"
+  tem de soar coerente (X = luz, veu = bloqueio).
+- subtitulo italic curto no formato "Encobre [a luz que está por baixo]"
 - 6 slides na ordem: capa → conteudo×4 → cta
 - pelo menos 1 dos slides 2-5 deve ser estilo "poetico"
 - 1 dos slides 2-5 pode ter titulo (ex: "PRÁTICA", "HÁBITO DA SEMANA")
