@@ -137,6 +137,28 @@
       ]
     },
     {
+      "name": "Borboletas",
+      "tema": "florescer-no-tempo-certo",
+      "mood": "wind",
+      "atmosphere": "transformation that does not remember itself, slow first flight",
+      "subjects": [
+        "a single butterfly resting on a wildflower at sunrise, wings folded against soft pink sky",
+        "butterfly slowly opening wings on a sun-warmed stone at dawn, golden translucent wings",
+        "butterfly hovering above a meadow of wildflowers in golden hour, slow motion flight",
+        "close up of butterfly wings translucent with morning light through them, fine pattern detail",
+        "butterflies in soft flight above lavender at first light, soft purple haze",
+        "butterfly emerging from a cocoon on a branch in soft morning fog, wings drying",
+        "butterfly landing on a long blade of grass with dew drops, gentle bend of the stem",
+        "two butterflies side by side on a dry seed pod at dawn, slow wing breathing"
+      ],
+      "keywords": [
+        "borboleta",
+        "borboletas",
+        "casulo",
+        "lagarta"
+      ]
+    },
+    {
       "name": "Flores silvestres",
       "tema": "alegria-simples",
       "mood": "wind",
@@ -154,9 +176,7 @@
       "keywords": [
         "flor",
         "flores",
-        "petala",
-        "borboleta",
-        "borboletas"
+        "petala"
       ]
     },
     {
@@ -226,8 +246,7 @@
         "olivais",
         "raiz",
         "raizes",
-        "tronco",
-        "casulo"
+        "tronco"
       ]
     },
     {
@@ -254,6 +273,28 @@
       ]
     },
     {
+      "name": "Lótus na água",
+      "tema": "autoamor",
+      "mood": "silence",
+      "atmosphere": "purity rising through what holds us, second birth from softness",
+      "subjects": [
+        "a single white lotus opening at first light over still dark water, soft mist around the petals",
+        "pink lotus flower floating on a calm pond at sunrise, soft golden mist around the leaves",
+        "lotus bud half-open with morning dew sliding down a curled petal, water reflection below",
+        "cluster of lotus flowers in soft golden mist on a quiet pond at dawn, lily pads barely moving",
+        "lotus leaves and one blooming flower reflected on still water in pastel pink light",
+        "lotus emerging from murky water with sunbeams from above, water droplets on the petals",
+        "close up of a lotus stamen with dawn light catching pollen dust, soft yellow centre glowing",
+        "two lotus flowers side by side on still water at first light, faint reflection of pink sky"
+      ],
+      "keywords": [
+        "lotus",
+        "lirio-de-agua",
+        "lirio dagua",
+        "nenufar"
+      ]
+    },
+    {
       "name": "Reflexos na água",
       "tema": "autoconhecimento",
       "mood": "stream",
@@ -275,7 +316,6 @@
         "espelho",
         "gota",
         "gotas",
-        "lotus",
         "lirio",
         "chuva",
         "orvalho",
@@ -327,6 +367,31 @@
       ]
     },
     {
+      "name": "Sementes germinando",
+      "tema": "florescer-no-tempo-certo",
+      "mood": "silence",
+      "atmosphere": "trust in what grows unseen, opening that takes its time",
+      "subjects": [
+        "a single seed splitting open in damp dark earth, first tiny root emerging at sunrise",
+        "seedling pushing through cracked soil in morning sun, tiny green leaves unfurling",
+        "close up of seeds in dry soil with first drops of rain catching warm light",
+        "cluster of new shoots rising from a terracotta pot in soft dawn light, dew on the leaves",
+        "seed pod splitting open in soft morning breeze, scattering tiny seeds against pastel sky",
+        "dried grass seed heads backlit by low warm sun in a quiet meadow at dawn",
+        "tiny seedlings in a row in dark earth with morning dew on each one",
+        "open hand-thrown clay pot with a single sprouting seed at first light, soft golden glow"
+      ],
+      "keywords": [
+        "semente",
+        "sementes",
+        "germinar",
+        "broto",
+        "rebento",
+        "semeada",
+        "semeado"
+      ]
+    },
+    {
       "name": "Campos dourados",
       "tema": "gratidao",
       "mood": "wind",
@@ -347,8 +412,6 @@
         "trigo",
         "seara",
         "savana",
-        "semente",
-        "sementes",
         "espera"
       ]
     },

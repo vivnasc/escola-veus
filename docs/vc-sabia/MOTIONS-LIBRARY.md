@@ -1,6 +1,6 @@
 # VC Sabia — Biblioteca de Motions Midjourney (6 meses)
 
-Stock de **200 prompts** (25 temas × ~8 variações) prontos a colar no Midjourney v6/v7. Cobre **6 meses** de produção diária com rotação controlada — cada variante usada uma única vez por semestre.
+Stock de **224 prompts** (28 temas × ~8 variações) prontos a colar no Midjourney v6/v7. Cobre **6 meses** de produção diária com rotação controlada — cada variante usada uma única vez por semestre.
 
 ## Estilo fixo
 
@@ -24,14 +24,17 @@ Cada bloco indica o **tema vc-sabia** sugerido e o **mood de áudio** para casar
 - [Penas flutuando](#penas-flutuando) — presenca-leve · wind · 8 prompts
 - [Girassóis molhados de orvalho](#girassois-molhados-de-orvalho) — confianca-no-caminho · wind · 8 prompts
 - [Lavanda](#lavanda) — suavidade-e-descanso · wind · 8 prompts
+- [Borboletas](#borboletas) — florescer-no-tempo-certo · wind · 8 prompts
 - [Flores silvestres](#flores-silvestres) — alegria-simples · wind · 8 prompts
 - [Dente-de-leão ao vento](#dente-de-leao-ao-vento) — autoperdao · wind · 8 prompts
 - [Folhas translúcidas](#folhas-translucidas) — beleza-de-existir · wind · 8 prompts
 - [Árvores com neblina matinal](#arvores-com-neblina-matinal) — sonhar-com-raizes · silence · 8 prompts
 - [Rios com reflexos de luz](#rios-com-reflexos-de-luz) — confianca-no-caminho · stream · 8 prompts
+- [Lótus na água](#lotus-na-agua) — autoamor · silence · 8 prompts
 - [Reflexos na água](#reflexos-na-agua) — autoconhecimento · stream · 8 prompts
 - [Cervos etéreos](#cervos-etereos) — autoconhecimento · silence · 8 prompts
 - [Gatos ao sol da manhã](#gatos-ao-sol-da-manha) — suavidade-e-descanso · silence · 8 prompts
+- [Sementes germinando](#sementes-germinando) — florescer-no-tempo-certo · silence · 8 prompts
 - [Campos dourados](#campos-dourados) — gratidao · wind · 8 prompts
 - [Caminhos de floresta iluminados](#caminhos-de-floresta-iluminados) — sonhar-com-raizes · silence · 8 prompts
 - [Luas suaves no amanhecer azul](#luas-suaves-no-amanhecer-azul) — inteireza · silence · 8 prompts
@@ -370,6 +373,60 @@ single lavender sprig on a linen napkin beside a clay teacup at first light, res
 
 ---
 
+## Borboletas
+
+*vc-sabia: `florescer-no-tempo-certo` · mood: `wind`*
+
+**Variante 1.**
+
+```
+a single butterfly resting on a wildflower at sunrise, wings folded against soft pink sky, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 2.**
+
+```
+butterfly slowly opening wings on a sun-warmed stone at dawn, golden translucent wings, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 3.**
+
+```
+butterfly hovering above a meadow of wildflowers in golden hour, slow motion flight, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 4.**
+
+```
+close up of butterfly wings translucent with morning light through them, fine pattern detail, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 5.**
+
+```
+butterflies in soft flight above lavender at first light, soft purple haze, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 6.**
+
+```
+butterfly emerging from a cocoon on a branch in soft morning fog, wings drying, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 7.**
+
+```
+butterfly landing on a long blade of grass with dew drops, gentle bend of the stem, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 8.**
+
+```
+two butterflies side by side on a dry seed pod at dawn, slow wing breathing, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+---
+
 ## Flores silvestres
 
 *vc-sabia: `alegria-simples` · mood: `wind`*
@@ -640,6 +697,60 @@ ribbon of river through a forest with sun beams across the surface, the way ahea
 
 ---
 
+## Lótus na água
+
+*vc-sabia: `autoamor` · mood: `silence`*
+
+**Variante 1.**
+
+```
+a single white lotus opening at first light over still dark water, soft mist around the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 2.**
+
+```
+pink lotus flower floating on a calm pond at sunrise, soft golden mist around the leaves, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 3.**
+
+```
+lotus bud half-open with morning dew sliding down a curled petal, water reflection below, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 4.**
+
+```
+cluster of lotus flowers in soft golden mist on a quiet pond at dawn, lily pads barely moving, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 5.**
+
+```
+lotus leaves and one blooming flower reflected on still water in pastel pink light, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 6.**
+
+```
+lotus emerging from murky water with sunbeams from above, water droplets on the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 7.**
+
+```
+close up of a lotus stamen with dawn light catching pollen dust, soft yellow centre glowing, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 8.**
+
+```
+two lotus flowers side by side on still water at first light, faint reflection of pink sky, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+---
+
 ## Reflexos na água
 
 *vc-sabia: `autoconhecimento` · mood: `stream`*
@@ -798,6 +909,60 @@ cat watching dust particles in a sun ray, body still on a wooden chair, rest as 
 
 ```
 two cats curled together on a warm stoop at dawn, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+---
+
+## Sementes germinando
+
+*vc-sabia: `florescer-no-tempo-certo` · mood: `silence`*
+
+**Variante 1.**
+
+```
+a single seed splitting open in damp dark earth, first tiny root emerging at sunrise, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 2.**
+
+```
+seedling pushing through cracked soil in morning sun, tiny green leaves unfurling, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 3.**
+
+```
+close up of seeds in dry soil with first drops of rain catching warm light, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 4.**
+
+```
+cluster of new shoots rising from a terracotta pot in soft dawn light, dew on the leaves, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 5.**
+
+```
+seed pod splitting open in soft morning breeze, scattering tiny seeds against pastel sky, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 6.**
+
+```
+dried grass seed heads backlit by low warm sun in a quiet meadow at dawn, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 7.**
+
+```
+tiny seedlings in a row in dark earth with morning dew on each one, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+**Variante 8.**
+
+```
+open hand-thrown clay pot with a single sprouting seed at first light, soft golden glow, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1410,208 +1575,208 @@ Rotação determinista — cada dia mapeia para uma categoria e variante. Em 180
 | 4 | 2026-06-04 | Penas flutuando | v1 |
 | 5 | 2026-06-05 | Girassóis molhados de orvalho | v1 |
 | 6 | 2026-06-06 | Lavanda | v1 |
-| 7 | 2026-06-07 | Flores silvestres | v1 |
-| 8 | 2026-06-08 | Dente-de-leão ao vento | v1 |
-| 9 | 2026-06-09 | Folhas translúcidas | v1 |
-| 10 | 2026-06-10 | Árvores com neblina matinal | v1 |
-| 11 | 2026-06-11 | Rios com reflexos de luz | v1 |
-| 12 | 2026-06-12 | Reflexos na água | v1 |
-| 13 | 2026-06-13 | Cervos etéreos | v1 |
-| 14 | 2026-06-14 | Gatos ao sol da manhã | v1 |
-| 15 | 2026-06-15 | Campos dourados | v1 |
-| 16 | 2026-06-16 | Caminhos de floresta iluminados | v1 |
-| 17 | 2026-06-17 | Luas suaves no amanhecer azul | v1 |
-| 18 | 2026-06-18 | Céu pastel com nuvens brilhantes | v1 |
-| 19 | 2026-06-19 | Montanhas etéreas | v1 |
-| 20 | 2026-06-20 | Chá fumegante junto à janela | v1 |
-| 21 | 2026-06-21 | Janelas abertas com cortinas leves | v1 |
-| 22 | 2026-06-22 | Lanternas suaves | v1 |
-| 23 | 2026-06-23 | Café da manhã minimalista poético | v1 |
-| 24 | 2026-06-24 | Livros + luz dourada | v1 |
-| 25 | 2026-06-25 | Vela acesa ao nascer do sol | v1 |
-| 26 | 2026-06-26 | Pássaros pequenos ao amanhecer | v2 |
-| 27 | 2026-06-27 | Colibris | v2 |
-| 28 | 2026-06-28 | Andorinhas | v2 |
-| 29 | 2026-06-29 | Penas flutuando | v2 |
-| 30 | 2026-06-30 | Girassóis molhados de orvalho | v2 |
+| 7 | 2026-06-07 | Borboletas | v1 |
+| 8 | 2026-06-08 | Flores silvestres | v1 |
+| 9 | 2026-06-09 | Dente-de-leão ao vento | v1 |
+| 10 | 2026-06-10 | Folhas translúcidas | v1 |
+| 11 | 2026-06-11 | Árvores com neblina matinal | v1 |
+| 12 | 2026-06-12 | Rios com reflexos de luz | v1 |
+| 13 | 2026-06-13 | Lótus na água | v1 |
+| 14 | 2026-06-14 | Reflexos na água | v1 |
+| 15 | 2026-06-15 | Cervos etéreos | v1 |
+| 16 | 2026-06-16 | Gatos ao sol da manhã | v1 |
+| 17 | 2026-06-17 | Sementes germinando | v1 |
+| 18 | 2026-06-18 | Campos dourados | v1 |
+| 19 | 2026-06-19 | Caminhos de floresta iluminados | v1 |
+| 20 | 2026-06-20 | Luas suaves no amanhecer azul | v1 |
+| 21 | 2026-06-21 | Céu pastel com nuvens brilhantes | v1 |
+| 22 | 2026-06-22 | Montanhas etéreas | v1 |
+| 23 | 2026-06-23 | Chá fumegante junto à janela | v1 |
+| 24 | 2026-06-24 | Janelas abertas com cortinas leves | v1 |
+| 25 | 2026-06-25 | Lanternas suaves | v1 |
+| 26 | 2026-06-26 | Café da manhã minimalista poético | v1 |
+| 27 | 2026-06-27 | Livros + luz dourada | v1 |
+| 28 | 2026-06-28 | Vela acesa ao nascer do sol | v1 |
+| 29 | 2026-06-29 | Pássaros pequenos ao amanhecer | v2 |
+| 30 | 2026-06-30 | Colibris | v2 |
 
 ### Julho 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-07-01 | Lavanda | v2 |
-| 2 | 2026-07-02 | Flores silvestres | v2 |
-| 3 | 2026-07-03 | Dente-de-leão ao vento | v2 |
-| 4 | 2026-07-04 | Folhas translúcidas | v2 |
-| 5 | 2026-07-05 | Árvores com neblina matinal | v2 |
-| 6 | 2026-07-06 | Rios com reflexos de luz | v2 |
-| 7 | 2026-07-07 | Reflexos na água | v2 |
-| 8 | 2026-07-08 | Cervos etéreos | v2 |
-| 9 | 2026-07-09 | Gatos ao sol da manhã | v2 |
-| 10 | 2026-07-10 | Campos dourados | v2 |
-| 11 | 2026-07-11 | Caminhos de floresta iluminados | v2 |
-| 12 | 2026-07-12 | Luas suaves no amanhecer azul | v2 |
-| 13 | 2026-07-13 | Céu pastel com nuvens brilhantes | v2 |
-| 14 | 2026-07-14 | Montanhas etéreas | v2 |
-| 15 | 2026-07-15 | Chá fumegante junto à janela | v2 |
-| 16 | 2026-07-16 | Janelas abertas com cortinas leves | v2 |
-| 17 | 2026-07-17 | Lanternas suaves | v2 |
-| 18 | 2026-07-18 | Café da manhã minimalista poético | v2 |
-| 19 | 2026-07-19 | Livros + luz dourada | v2 |
-| 20 | 2026-07-20 | Vela acesa ao nascer do sol | v2 |
-| 21 | 2026-07-21 | Pássaros pequenos ao amanhecer | v3 |
-| 22 | 2026-07-22 | Colibris | v3 |
-| 23 | 2026-07-23 | Andorinhas | v3 |
-| 24 | 2026-07-24 | Penas flutuando | v3 |
-| 25 | 2026-07-25 | Girassóis molhados de orvalho | v3 |
-| 26 | 2026-07-26 | Lavanda | v3 |
-| 27 | 2026-07-27 | Flores silvestres | v3 |
-| 28 | 2026-07-28 | Dente-de-leão ao vento | v3 |
-| 29 | 2026-07-29 | Folhas translúcidas | v3 |
-| 30 | 2026-07-30 | Árvores com neblina matinal | v3 |
-| 31 | 2026-07-31 | Rios com reflexos de luz | v3 |
+| 1 | 2026-07-01 | Andorinhas | v2 |
+| 2 | 2026-07-02 | Penas flutuando | v2 |
+| 3 | 2026-07-03 | Girassóis molhados de orvalho | v2 |
+| 4 | 2026-07-04 | Lavanda | v2 |
+| 5 | 2026-07-05 | Borboletas | v2 |
+| 6 | 2026-07-06 | Flores silvestres | v2 |
+| 7 | 2026-07-07 | Dente-de-leão ao vento | v2 |
+| 8 | 2026-07-08 | Folhas translúcidas | v2 |
+| 9 | 2026-07-09 | Árvores com neblina matinal | v2 |
+| 10 | 2026-07-10 | Rios com reflexos de luz | v2 |
+| 11 | 2026-07-11 | Lótus na água | v2 |
+| 12 | 2026-07-12 | Reflexos na água | v2 |
+| 13 | 2026-07-13 | Cervos etéreos | v2 |
+| 14 | 2026-07-14 | Gatos ao sol da manhã | v2 |
+| 15 | 2026-07-15 | Sementes germinando | v2 |
+| 16 | 2026-07-16 | Campos dourados | v2 |
+| 17 | 2026-07-17 | Caminhos de floresta iluminados | v2 |
+| 18 | 2026-07-18 | Luas suaves no amanhecer azul | v2 |
+| 19 | 2026-07-19 | Céu pastel com nuvens brilhantes | v2 |
+| 20 | 2026-07-20 | Montanhas etéreas | v2 |
+| 21 | 2026-07-21 | Chá fumegante junto à janela | v2 |
+| 22 | 2026-07-22 | Janelas abertas com cortinas leves | v2 |
+| 23 | 2026-07-23 | Lanternas suaves | v2 |
+| 24 | 2026-07-24 | Café da manhã minimalista poético | v2 |
+| 25 | 2026-07-25 | Livros + luz dourada | v2 |
+| 26 | 2026-07-26 | Vela acesa ao nascer do sol | v2 |
+| 27 | 2026-07-27 | Pássaros pequenos ao amanhecer | v3 |
+| 28 | 2026-07-28 | Colibris | v3 |
+| 29 | 2026-07-29 | Andorinhas | v3 |
+| 30 | 2026-07-30 | Penas flutuando | v3 |
+| 31 | 2026-07-31 | Girassóis molhados de orvalho | v3 |
 
 ### Agosto 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-08-01 | Reflexos na água | v3 |
-| 2 | 2026-08-02 | Cervos etéreos | v3 |
-| 3 | 2026-08-03 | Gatos ao sol da manhã | v3 |
-| 4 | 2026-08-04 | Campos dourados | v3 |
-| 5 | 2026-08-05 | Caminhos de floresta iluminados | v3 |
-| 6 | 2026-08-06 | Luas suaves no amanhecer azul | v3 |
-| 7 | 2026-08-07 | Céu pastel com nuvens brilhantes | v3 |
-| 8 | 2026-08-08 | Montanhas etéreas | v3 |
-| 9 | 2026-08-09 | Chá fumegante junto à janela | v3 |
-| 10 | 2026-08-10 | Janelas abertas com cortinas leves | v3 |
-| 11 | 2026-08-11 | Lanternas suaves | v3 |
-| 12 | 2026-08-12 | Café da manhã minimalista poético | v3 |
-| 13 | 2026-08-13 | Livros + luz dourada | v3 |
-| 14 | 2026-08-14 | Vela acesa ao nascer do sol | v3 |
-| 15 | 2026-08-15 | Pássaros pequenos ao amanhecer | v4 |
-| 16 | 2026-08-16 | Colibris | v4 |
-| 17 | 2026-08-17 | Andorinhas | v4 |
-| 18 | 2026-08-18 | Penas flutuando | v4 |
-| 19 | 2026-08-19 | Girassóis molhados de orvalho | v4 |
-| 20 | 2026-08-20 | Lavanda | v4 |
-| 21 | 2026-08-21 | Flores silvestres | v4 |
-| 22 | 2026-08-22 | Dente-de-leão ao vento | v4 |
-| 23 | 2026-08-23 | Folhas translúcidas | v4 |
-| 24 | 2026-08-24 | Árvores com neblina matinal | v4 |
-| 25 | 2026-08-25 | Rios com reflexos de luz | v4 |
-| 26 | 2026-08-26 | Reflexos na água | v4 |
-| 27 | 2026-08-27 | Cervos etéreos | v4 |
-| 28 | 2026-08-28 | Gatos ao sol da manhã | v4 |
-| 29 | 2026-08-29 | Campos dourados | v4 |
-| 30 | 2026-08-30 | Caminhos de floresta iluminados | v4 |
-| 31 | 2026-08-31 | Luas suaves no amanhecer azul | v4 |
+| 1 | 2026-08-01 | Lavanda | v3 |
+| 2 | 2026-08-02 | Borboletas | v3 |
+| 3 | 2026-08-03 | Flores silvestres | v3 |
+| 4 | 2026-08-04 | Dente-de-leão ao vento | v3 |
+| 5 | 2026-08-05 | Folhas translúcidas | v3 |
+| 6 | 2026-08-06 | Árvores com neblina matinal | v3 |
+| 7 | 2026-08-07 | Rios com reflexos de luz | v3 |
+| 8 | 2026-08-08 | Lótus na água | v3 |
+| 9 | 2026-08-09 | Reflexos na água | v3 |
+| 10 | 2026-08-10 | Cervos etéreos | v3 |
+| 11 | 2026-08-11 | Gatos ao sol da manhã | v3 |
+| 12 | 2026-08-12 | Sementes germinando | v3 |
+| 13 | 2026-08-13 | Campos dourados | v3 |
+| 14 | 2026-08-14 | Caminhos de floresta iluminados | v3 |
+| 15 | 2026-08-15 | Luas suaves no amanhecer azul | v3 |
+| 16 | 2026-08-16 | Céu pastel com nuvens brilhantes | v3 |
+| 17 | 2026-08-17 | Montanhas etéreas | v3 |
+| 18 | 2026-08-18 | Chá fumegante junto à janela | v3 |
+| 19 | 2026-08-19 | Janelas abertas com cortinas leves | v3 |
+| 20 | 2026-08-20 | Lanternas suaves | v3 |
+| 21 | 2026-08-21 | Café da manhã minimalista poético | v3 |
+| 22 | 2026-08-22 | Livros + luz dourada | v3 |
+| 23 | 2026-08-23 | Vela acesa ao nascer do sol | v3 |
+| 24 | 2026-08-24 | Pássaros pequenos ao amanhecer | v4 |
+| 25 | 2026-08-25 | Colibris | v4 |
+| 26 | 2026-08-26 | Andorinhas | v4 |
+| 27 | 2026-08-27 | Penas flutuando | v4 |
+| 28 | 2026-08-28 | Girassóis molhados de orvalho | v4 |
+| 29 | 2026-08-29 | Lavanda | v4 |
+| 30 | 2026-08-30 | Borboletas | v4 |
+| 31 | 2026-08-31 | Flores silvestres | v4 |
 
 ### Setembro 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-09-01 | Céu pastel com nuvens brilhantes | v4 |
-| 2 | 2026-09-02 | Montanhas etéreas | v4 |
-| 3 | 2026-09-03 | Chá fumegante junto à janela | v4 |
-| 4 | 2026-09-04 | Janelas abertas com cortinas leves | v4 |
-| 5 | 2026-09-05 | Lanternas suaves | v4 |
-| 6 | 2026-09-06 | Café da manhã minimalista poético | v4 |
-| 7 | 2026-09-07 | Livros + luz dourada | v4 |
-| 8 | 2026-09-08 | Vela acesa ao nascer do sol | v4 |
-| 9 | 2026-09-09 | Pássaros pequenos ao amanhecer | v5 |
-| 10 | 2026-09-10 | Colibris | v5 |
-| 11 | 2026-09-11 | Andorinhas | v5 |
-| 12 | 2026-09-12 | Penas flutuando | v5 |
-| 13 | 2026-09-13 | Girassóis molhados de orvalho | v5 |
-| 14 | 2026-09-14 | Lavanda | v5 |
-| 15 | 2026-09-15 | Flores silvestres | v5 |
-| 16 | 2026-09-16 | Dente-de-leão ao vento | v5 |
-| 17 | 2026-09-17 | Folhas translúcidas | v5 |
-| 18 | 2026-09-18 | Árvores com neblina matinal | v5 |
-| 19 | 2026-09-19 | Rios com reflexos de luz | v5 |
-| 20 | 2026-09-20 | Reflexos na água | v5 |
-| 21 | 2026-09-21 | Cervos etéreos | v5 |
-| 22 | 2026-09-22 | Gatos ao sol da manhã | v5 |
-| 23 | 2026-09-23 | Campos dourados | v5 |
-| 24 | 2026-09-24 | Caminhos de floresta iluminados | v5 |
-| 25 | 2026-09-25 | Luas suaves no amanhecer azul | v5 |
-| 26 | 2026-09-26 | Céu pastel com nuvens brilhantes | v5 |
-| 27 | 2026-09-27 | Montanhas etéreas | v5 |
-| 28 | 2026-09-28 | Chá fumegante junto à janela | v5 |
-| 29 | 2026-09-29 | Janelas abertas com cortinas leves | v5 |
-| 30 | 2026-09-30 | Lanternas suaves | v5 |
+| 1 | 2026-09-01 | Dente-de-leão ao vento | v4 |
+| 2 | 2026-09-02 | Folhas translúcidas | v4 |
+| 3 | 2026-09-03 | Árvores com neblina matinal | v4 |
+| 4 | 2026-09-04 | Rios com reflexos de luz | v4 |
+| 5 | 2026-09-05 | Lótus na água | v4 |
+| 6 | 2026-09-06 | Reflexos na água | v4 |
+| 7 | 2026-09-07 | Cervos etéreos | v4 |
+| 8 | 2026-09-08 | Gatos ao sol da manhã | v4 |
+| 9 | 2026-09-09 | Sementes germinando | v4 |
+| 10 | 2026-09-10 | Campos dourados | v4 |
+| 11 | 2026-09-11 | Caminhos de floresta iluminados | v4 |
+| 12 | 2026-09-12 | Luas suaves no amanhecer azul | v4 |
+| 13 | 2026-09-13 | Céu pastel com nuvens brilhantes | v4 |
+| 14 | 2026-09-14 | Montanhas etéreas | v4 |
+| 15 | 2026-09-15 | Chá fumegante junto à janela | v4 |
+| 16 | 2026-09-16 | Janelas abertas com cortinas leves | v4 |
+| 17 | 2026-09-17 | Lanternas suaves | v4 |
+| 18 | 2026-09-18 | Café da manhã minimalista poético | v4 |
+| 19 | 2026-09-19 | Livros + luz dourada | v4 |
+| 20 | 2026-09-20 | Vela acesa ao nascer do sol | v4 |
+| 21 | 2026-09-21 | Pássaros pequenos ao amanhecer | v5 |
+| 22 | 2026-09-22 | Colibris | v5 |
+| 23 | 2026-09-23 | Andorinhas | v5 |
+| 24 | 2026-09-24 | Penas flutuando | v5 |
+| 25 | 2026-09-25 | Girassóis molhados de orvalho | v5 |
+| 26 | 2026-09-26 | Lavanda | v5 |
+| 27 | 2026-09-27 | Borboletas | v5 |
+| 28 | 2026-09-28 | Flores silvestres | v5 |
+| 29 | 2026-09-29 | Dente-de-leão ao vento | v5 |
+| 30 | 2026-09-30 | Folhas translúcidas | v5 |
 
 ### Outubro 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-10-01 | Café da manhã minimalista poético | v5 |
-| 2 | 2026-10-02 | Livros + luz dourada | v5 |
-| 3 | 2026-10-03 | Vela acesa ao nascer do sol | v5 |
-| 4 | 2026-10-04 | Pássaros pequenos ao amanhecer | v6 |
-| 5 | 2026-10-05 | Colibris | v6 |
-| 6 | 2026-10-06 | Andorinhas | v6 |
-| 7 | 2026-10-07 | Penas flutuando | v6 |
-| 8 | 2026-10-08 | Girassóis molhados de orvalho | v6 |
-| 9 | 2026-10-09 | Lavanda | v6 |
-| 10 | 2026-10-10 | Flores silvestres | v6 |
-| 11 | 2026-10-11 | Dente-de-leão ao vento | v6 |
-| 12 | 2026-10-12 | Folhas translúcidas | v6 |
-| 13 | 2026-10-13 | Árvores com neblina matinal | v6 |
-| 14 | 2026-10-14 | Rios com reflexos de luz | v6 |
-| 15 | 2026-10-15 | Reflexos na água | v6 |
-| 16 | 2026-10-16 | Cervos etéreos | v6 |
-| 17 | 2026-10-17 | Gatos ao sol da manhã | v6 |
-| 18 | 2026-10-18 | Campos dourados | v6 |
-| 19 | 2026-10-19 | Caminhos de floresta iluminados | v6 |
-| 20 | 2026-10-20 | Luas suaves no amanhecer azul | v6 |
-| 21 | 2026-10-21 | Céu pastel com nuvens brilhantes | v6 |
-| 22 | 2026-10-22 | Montanhas etéreas | v6 |
-| 23 | 2026-10-23 | Chá fumegante junto à janela | v6 |
-| 24 | 2026-10-24 | Janelas abertas com cortinas leves | v6 |
-| 25 | 2026-10-25 | Lanternas suaves | v6 |
-| 26 | 2026-10-26 | Café da manhã minimalista poético | v6 |
-| 27 | 2026-10-27 | Livros + luz dourada | v6 |
-| 28 | 2026-10-28 | Vela acesa ao nascer do sol | v6 |
-| 29 | 2026-10-29 | Pássaros pequenos ao amanhecer | v7 |
-| 30 | 2026-10-30 | Colibris | v7 |
-| 31 | 2026-10-31 | Andorinhas | v7 |
+| 1 | 2026-10-01 | Árvores com neblina matinal | v5 |
+| 2 | 2026-10-02 | Rios com reflexos de luz | v5 |
+| 3 | 2026-10-03 | Lótus na água | v5 |
+| 4 | 2026-10-04 | Reflexos na água | v5 |
+| 5 | 2026-10-05 | Cervos etéreos | v5 |
+| 6 | 2026-10-06 | Gatos ao sol da manhã | v5 |
+| 7 | 2026-10-07 | Sementes germinando | v5 |
+| 8 | 2026-10-08 | Campos dourados | v5 |
+| 9 | 2026-10-09 | Caminhos de floresta iluminados | v5 |
+| 10 | 2026-10-10 | Luas suaves no amanhecer azul | v5 |
+| 11 | 2026-10-11 | Céu pastel com nuvens brilhantes | v5 |
+| 12 | 2026-10-12 | Montanhas etéreas | v5 |
+| 13 | 2026-10-13 | Chá fumegante junto à janela | v5 |
+| 14 | 2026-10-14 | Janelas abertas com cortinas leves | v5 |
+| 15 | 2026-10-15 | Lanternas suaves | v5 |
+| 16 | 2026-10-16 | Café da manhã minimalista poético | v5 |
+| 17 | 2026-10-17 | Livros + luz dourada | v5 |
+| 18 | 2026-10-18 | Vela acesa ao nascer do sol | v5 |
+| 19 | 2026-10-19 | Pássaros pequenos ao amanhecer | v6 |
+| 20 | 2026-10-20 | Colibris | v6 |
+| 21 | 2026-10-21 | Andorinhas | v6 |
+| 22 | 2026-10-22 | Penas flutuando | v6 |
+| 23 | 2026-10-23 | Girassóis molhados de orvalho | v6 |
+| 24 | 2026-10-24 | Lavanda | v6 |
+| 25 | 2026-10-25 | Borboletas | v6 |
+| 26 | 2026-10-26 | Flores silvestres | v6 |
+| 27 | 2026-10-27 | Dente-de-leão ao vento | v6 |
+| 28 | 2026-10-28 | Folhas translúcidas | v6 |
+| 29 | 2026-10-29 | Árvores com neblina matinal | v6 |
+| 30 | 2026-10-30 | Rios com reflexos de luz | v6 |
+| 31 | 2026-10-31 | Lótus na água | v6 |
 
 ### Novembro 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-11-01 | Penas flutuando | v7 |
-| 2 | 2026-11-02 | Girassóis molhados de orvalho | v7 |
-| 3 | 2026-11-03 | Lavanda | v7 |
-| 4 | 2026-11-04 | Flores silvestres | v7 |
-| 5 | 2026-11-05 | Dente-de-leão ao vento | v7 |
-| 6 | 2026-11-06 | Folhas translúcidas | v7 |
-| 7 | 2026-11-07 | Árvores com neblina matinal | v7 |
-| 8 | 2026-11-08 | Rios com reflexos de luz | v7 |
-| 9 | 2026-11-09 | Reflexos na água | v7 |
-| 10 | 2026-11-10 | Cervos etéreos | v7 |
-| 11 | 2026-11-11 | Gatos ao sol da manhã | v7 |
-| 12 | 2026-11-12 | Campos dourados | v7 |
-| 13 | 2026-11-13 | Caminhos de floresta iluminados | v7 |
-| 14 | 2026-11-14 | Luas suaves no amanhecer azul | v7 |
-| 15 | 2026-11-15 | Céu pastel com nuvens brilhantes | v7 |
-| 16 | 2026-11-16 | Montanhas etéreas | v7 |
-| 17 | 2026-11-17 | Chá fumegante junto à janela | v7 |
-| 18 | 2026-11-18 | Janelas abertas com cortinas leves | v7 |
-| 19 | 2026-11-19 | Lanternas suaves | v7 |
-| 20 | 2026-11-20 | Café da manhã minimalista poético | v7 |
-| 21 | 2026-11-21 | Livros + luz dourada | v7 |
-| 22 | 2026-11-22 | Vela acesa ao nascer do sol | v7 |
-| 23 | 2026-11-23 | Pássaros pequenos ao amanhecer | v8 |
-| 24 | 2026-11-24 | Colibris | v8 |
-| 25 | 2026-11-25 | Andorinhas | v8 |
-| 26 | 2026-11-26 | Penas flutuando | v8 |
-| 27 | 2026-11-27 | Girassóis molhados de orvalho | v8 |
-| 28 | 2026-11-28 | Lavanda | v8 |
-| 29 | 2026-11-29 | Flores silvestres | v8 |
-| 30 | 2026-11-30 | Dente-de-leão ao vento | v8 |
+| 1 | 2026-11-01 | Reflexos na água | v6 |
+| 2 | 2026-11-02 | Cervos etéreos | v6 |
+| 3 | 2026-11-03 | Gatos ao sol da manhã | v6 |
+| 4 | 2026-11-04 | Sementes germinando | v6 |
+| 5 | 2026-11-05 | Campos dourados | v6 |
+| 6 | 2026-11-06 | Caminhos de floresta iluminados | v6 |
+| 7 | 2026-11-07 | Luas suaves no amanhecer azul | v6 |
+| 8 | 2026-11-08 | Céu pastel com nuvens brilhantes | v6 |
+| 9 | 2026-11-09 | Montanhas etéreas | v6 |
+| 10 | 2026-11-10 | Chá fumegante junto à janela | v6 |
+| 11 | 2026-11-11 | Janelas abertas com cortinas leves | v6 |
+| 12 | 2026-11-12 | Lanternas suaves | v6 |
+| 13 | 2026-11-13 | Café da manhã minimalista poético | v6 |
+| 14 | 2026-11-14 | Livros + luz dourada | v6 |
+| 15 | 2026-11-15 | Vela acesa ao nascer do sol | v6 |
+| 16 | 2026-11-16 | Pássaros pequenos ao amanhecer | v7 |
+| 17 | 2026-11-17 | Colibris | v7 |
+| 18 | 2026-11-18 | Andorinhas | v7 |
+| 19 | 2026-11-19 | Penas flutuando | v7 |
+| 20 | 2026-11-20 | Girassóis molhados de orvalho | v7 |
+| 21 | 2026-11-21 | Lavanda | v7 |
+| 22 | 2026-11-22 | Borboletas | v7 |
+| 23 | 2026-11-23 | Flores silvestres | v7 |
+| 24 | 2026-11-24 | Dente-de-leão ao vento | v7 |
+| 25 | 2026-11-25 | Folhas translúcidas | v7 |
+| 26 | 2026-11-26 | Árvores com neblina matinal | v7 |
+| 27 | 2026-11-27 | Rios com reflexos de luz | v7 |
+| 28 | 2026-11-28 | Lótus na água | v7 |
+| 29 | 2026-11-29 | Reflexos na água | v7 |
+| 30 | 2026-11-30 | Cervos etéreos | v7 |
 
 ---
 
