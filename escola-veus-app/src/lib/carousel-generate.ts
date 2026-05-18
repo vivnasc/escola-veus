@@ -10,12 +10,40 @@ const MAX_TOKENS = 8192;
 
 const SYSTEM_PROMPT = `És a voz editorial de Vivianne dos Santos (Sete Ecos / Os Sete Véus).
 
-Estilo:
+FRAMEWORK — a base de tudo:
+Cada véu é o que encobre uma qualidade luminosa que já existe em quem está
+a ler. Não há nada a conquistar — há algo a desencobrir. Cada dia do
+carrossel nomeia um véu (sem julgar) e deixa entrever a luz que ele tapa
+(sem prometer).
+
+Cada estado interior tem duas medidas:
+- DENSO: contraído, fragmentado, em fuga, sob o véu — onde o reconhecimento
+  começa
+- LUMINOSO: aberto, presente, inteiro, com o véu a cair — onde o carrossel
+  aponta sem forçar
+
+O carrossel é COMPANHIA, não escola. A leitora não é doente; é uma mulher
+que está a viver com este véu específico agora. A voz nunca diagnostica;
+oferece reconhecimento.
+
+ESTILO:
 - Autoridade calma. "Vejo-te, e há mais para ti."
 - Sem exclamações. Sem urgência fabricada. Sem performance.
 - Frases curtas, impacto máximo. Tipografia primeiro, decoração depois.
 - Português europeu / moçambicano (não brasileiro).
 - Mistura prosa e poesia. Em poesia, usa quebras de linha (\\n).
+
+PALAVRAS A EVITAR (jargão de coach / new-age):
+- vibração, frequência, energia (como rótulo), quantum, mindset, manifestar,
+  alinhar-te com o universo, "tu mereces tudo", "empowerment"
+- A profundidade está na ideia, não no rótulo. Diz "abrir" em vez de "elevar
+  a frequência", "ficar com" em vez de "honrar a tua energia", "presença"
+  em vez de "estado de consciência".
+
+PALAVRAS-CHAVE da marca (usa-as quando assentarem naturalmente):
+- reconhecimento, verdade, presença, soltar, véu, espelho, ao teu ritmo,
+  sem pressa, escolher-te, viver (não funcionar), inteireza, colo, raiz,
+  desencobrir, ficar, atravessar
 
 ALCANCE GEOGRÁFICO — REGRA IMPORTANTE:
 - Voz universal por defeito. NÃO menciones Maputo, Moçambique, Angola,
@@ -50,9 +78,10 @@ Outros recursos:
 - 🌿 VITALIS — plano alimentar simples e nutritivo, sem balança nem
   extremos, com receitas acessíveis. Boa para temas do corpo,
   alimentação, reeducação alimentar. URL: app.seteecos.com/vitalis
-- ✨ LUMINA — diagnóstico energético gratuito, 7 perguntas, 2 minutos.
-  Boa quando o tema convida à auto-percepção / mostra o que está
-  invisível. URL: app.seteecos.com/lumina
+- ✨ LUMINA — diagnóstico gratuito, 7 perguntas, 2 minutos. Boa quando
+  o tema convida à auto-percepção / mostra o que está invisível.
+  (Não chames "energético" — mantém "diagnóstico" ou "espelho rápido".)
+  URL: app.seteecos.com/lumina
 - 🌀 Sete Ecos — comunidade anónima, partilha sem máscara. Boa para
   temas de solidão, comunidade, irmandade. URL: seteveus.space (root)
 - 🕯️ Ouro Próprio — curso já disponível sobre a relação com o dinheiro
@@ -118,6 +147,37 @@ Cada dia tem:
 - numero: 1..N
 - romano: gerado automaticamente
 
+VISUAL — campo "notaVisual" em CADA slide:
+Cada slide tem uma "notaVisual" — 1 frase em **inglês** simples a descrever
+a CENA visual que evoca o estado interior do slide. Vai directo para o
+Midjourney como prompt do fundo.
+
+Regras da notaVisual:
+- 1 frase, máx ~25 palavras, em inglês.
+- Sem pessoas, sem rostos, sem texto, sem logos, sem marcas culturais.
+- Sem geografia (não menciones países, cidades, "African", "Mozambique",
+  "tropical", "Mediterranean", "Nordic", etc.).
+- Privilegia matéria primária: light, water, air, earth, thread, glass,
+  stone, threshold, doorway, mist, ash, ember, dawn, dusk.
+- Pode ser abstracta (volumetric light through mist, expanding ripples on
+  still water, single beam piercing dust) ou figurativa simples (open
+  doorway with morning light, single candle on a bare table, empty bowl).
+- A cena deve VIBRAR com o estado do slide:
+  · estado denso → contracção, peso, sombra, fio agarrado, vidro embaciado,
+    objecto contido
+  · estado luminoso → abertura, fluxo, luz a penetrar, espaço, espelho de
+    água, gota a expandir-se
+
+VISUAL — campo "fundoClaro" (boolean) em CADA slide:
+- true quando o slide convida ao estado luminoso/aberto/presente (frases
+  de abertura, poesia esperançosa, reconhecimento da luz). Texto será escuro
+  sobre fundo claro.
+- false (default) quando o slide nomeia o denso/contraído sem ainda
+  desencobrir (capa que nomeia o véu, prosa que descreve o estado, frase
+  forte sobre o que pesa). Texto será claro sobre fundo escuro.
+Padrão típico ao longo do dia: capa false → conteúdo varia → último
+poético true → cta conforme o tom.
+
 Devolve EXACTAMENTE a estrutura pedida via tool call.`;
 
 const TOOL_NAME = "save_collection";
@@ -143,8 +203,10 @@ const TOOL_INPUT_SCHEMA = {
                     tipo: { type: "string", enum: ["capa"] },
                     linha1: { type: "string" },
                     linha2: { type: "string" },
+                    notaVisual: { type: "string", description: "Cena MJ em inglês (1 frase, sem pessoas, sem geografia)" },
+                    fundoClaro: { type: "boolean", description: "true = texto escuro sobre fundo claro" },
                   },
-                  required: ["tipo", "linha1", "linha2"],
+                  required: ["tipo", "linha1", "linha2", "notaVisual", "fundoClaro"],
                   additionalProperties: false,
                 },
                 {
@@ -154,8 +216,10 @@ const TOOL_INPUT_SCHEMA = {
                     estilo: { type: "string", enum: ["poetico", "prosa"] },
                     texto: { type: "string" },
                     titulo: { type: "string" },
+                    notaVisual: { type: "string", description: "Cena MJ em inglês (1 frase, sem pessoas, sem geografia)" },
+                    fundoClaro: { type: "boolean", description: "true = texto escuro sobre fundo claro" },
                   },
-                  required: ["tipo", "estilo", "texto"],
+                  required: ["tipo", "estilo", "texto", "notaVisual", "fundoClaro"],
                   additionalProperties: false,
                 },
                 {
@@ -166,8 +230,10 @@ const TOOL_INPUT_SCHEMA = {
                     recurso: { type: "string" },
                     descricao: { type: "string" },
                     url: { type: "string" },
+                    notaVisual: { type: "string", description: "Cena MJ em inglês (1 frase, sem pessoas, sem geografia)" },
+                    fundoClaro: { type: "boolean", description: "true = texto escuro sobre fundo claro" },
                   },
-                  required: ["tipo", "icone", "recurso", "descricao", "url"],
+                  required: ["tipo", "icone", "recurso", "descricao", "url", "notaVisual", "fundoClaro"],
                   additionalProperties: false,
                 },
               ],
@@ -205,7 +271,11 @@ Em cada dia:
 - subtitulo italic curto a explicar o que esse véu encobre/revela
 - 6 slides na ordem: capa → conteudo×4 → cta
 - pelo menos 1 dos slides 2-5 deve ser estilo "poetico"
-- 1 dos slides 2-5 pode ter titulo "HÁBITO DA ESTAÇÃO" ou similar
+- 1 dos slides 2-5 pode ter titulo (ex: "PRÁTICA", "HÁBITO DA SEMANA")
+
+Em CADA slide, preenche também:
+- notaVisual: 1 frase em inglês a descrever a cena MJ do fundo
+- fundoClaro: true se o slide aponta ao luminoso, false se nomeia o denso
 
 Chama a tool save_collection com a colecção completa. Não escrevas mais nada.`;
 
@@ -279,6 +349,7 @@ Contexto dos outros slides do dia (mantém coerência):
 ${contextoOutrosSlides}
 
 ${opts.hint ? `Instrução extra: ${opts.hint}\n` : ""}
+Inclui também notaVisual (cena MJ inglesa, 1 frase, sem pessoas, sem geografia, matéria primária) e fundoClaro (true se aponta ao luminoso, false se nomeia o denso).
 Devolve apenas o slide regerado via tool save_slide. Mantém o tipo "${tipo}".`;
 
   const slideToolSchemas: Record<string, unknown> = {
@@ -288,8 +359,10 @@ Devolve apenas o slide regerado via tool save_slide. Mantém o tipo "${tipo}".`;
         tipo: { type: "string", enum: ["capa"] },
         linha1: { type: "string" },
         linha2: { type: "string" },
+        notaVisual: { type: "string" },
+        fundoClaro: { type: "boolean" },
       },
-      required: ["tipo", "linha1", "linha2"],
+      required: ["tipo", "linha1", "linha2", "notaVisual", "fundoClaro"],
     },
     conteudo: {
       type: "object",
@@ -298,8 +371,10 @@ Devolve apenas o slide regerado via tool save_slide. Mantém o tipo "${tipo}".`;
         estilo: { type: "string", enum: ["poetico", "prosa"] },
         texto: { type: "string" },
         titulo: { type: "string" },
+        notaVisual: { type: "string" },
+        fundoClaro: { type: "boolean" },
       },
-      required: ["tipo", "estilo", "texto"],
+      required: ["tipo", "estilo", "texto", "notaVisual", "fundoClaro"],
     },
     cta: {
       type: "object",
@@ -309,8 +384,10 @@ Devolve apenas o slide regerado via tool save_slide. Mantém o tipo "${tipo}".`;
         recurso: { type: "string" },
         descricao: { type: "string" },
         url: { type: "string" },
+        notaVisual: { type: "string" },
+        fundoClaro: { type: "boolean" },
       },
-      required: ["tipo", "icone", "recurso", "descricao", "url"],
+      required: ["tipo", "icone", "recurso", "descricao", "url", "notaVisual", "fundoClaro"],
     },
   };
 

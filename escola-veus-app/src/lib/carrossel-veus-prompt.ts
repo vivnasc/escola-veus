@@ -1,74 +1,60 @@
 /**
- * Prompt builder para os fundos MJ do Carrossel Véus.
+ * Prompt builder MJ para os fundos do Carrossel Véus.
  *
- * Os 42 slides são renovados todas as semanas (calendário anual). Não fixamos
- * prompts; em vez disso derivamos um prompt do texto + véu do dia, com um
- * preâmbulo de estilo coerente com `thinkdiffusion-prompts.json` (Moçambique
- * tropical, editorial, sem pessoas).
+ * Arquitectura: o conteúdo é gerado por `lib/carousel-generate.ts` (Claude
+ * API) a partir de um `brief` do calendário. O Claude já produz a CENA
+ * visual de cada slide no campo `notaVisual` (1 frase inglesa) + o
+ * `fundoClaro` (qual scrim usar). Este builder só envelopa essa cena no
+ * preâmbulo de estilo editorial.
  *
- * Quando o texto do slide é insuficiente, a editora pode forçar uma `notaVisual`
- * no slide e este builder usa-a como cena principal.
+ * Quando um slide legacy não tem `notaVisual` (conteúdo antigo, sem terem
+ * passado pela nova geração), caímos num fallback: dicionário de cenas
+ * simbólicas por tema, totalmente neutro (sem geografia, sem cultura).
  */
 
 import type { Dia, Slide } from "@/lib/carousel-types";
 
-/** Preâmbulo de estilo — alinhado com a estética da Estação dos Véus. */
+/** Preâmbulo universal. Sem geografia, sem cultura específica. */
 const STYLE_DARK =
-  "cinematic editorial photograph, Mozambique tropical setting, deep indigo and warm amber palette, low contemplative light, soft grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
+  "cinematic editorial photograph, low contemplative light, limited warm palette, fine grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
 
-/** Preâmbulo para slides com base clara (paisagens diurnas, marfim, manhã). */
 const STYLE_LIGHT =
-  "cinematic editorial photograph, Mozambique tropical setting, warm ivory and parchment palette, soft morning light, soft grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
+  "cinematic editorial photograph, soft natural daylight, limited muted palette, fine grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
 
-/** Ambientes derivados da palavra-tema (véu) do dia. */
-const VEU_AMBIENTES: Record<string, string> = {
-  PERMANÊNCIA: "ancient baobab tree silhouette at dusk, slow river surface reflecting fading sky",
-  CONTROLO: "open hand letting fine sand fall, low golden side-light, dark backdrop",
-  PERFEIÇÃO: "imperfect handmade clay vessel with kintsugi-style gold cracks, dim contemplative light",
-  ESCASSEZ: "single ripe mango on a worn wooden bench in a quiet kitchen, warm low light",
-  URGÊNCIA: "tide marks slowly receding on a wide empty Mozambique beach at blue hour",
-  APROVAÇÃO: "single candle burning steadily against a textured stucco wall, no movement",
-  SEPARAÇÃO: "two parallel paths through tall savana grass converging at the horizon at dawn",
+/**
+ * Fallback simbólico para slides sem `notaVisual` (conteúdo antigo).
+ * Cada cena é matéria primária (luz, água, fio, vão, vela) — sem cultura.
+ */
+const FALLBACK_TEMA_CENAS: Record<string, string> = {
+  PERMANÊNCIA: "wide slow water surface in soft flow, late golden light catching movement, sense that nothing stays still",
+  MEMÓRIA: "open book on worn wood beside a window, dust suspended in a thin beam of afternoon light",
+  TURBILHÃO: "still surface of dark water after wind passed, single point of light reflected at the centre",
+  ESFORÇO: "empty chair by an open window, late-afternoon light spilling across the floor, no movement",
+  DESOLAÇÃO: "freshly turned dark soil at dawn before anything is planted, single drop of dew on a blade of grass",
+  HORIZONTE: "open doorway threshold flooded with warm morning light, room beyond softly visible",
+  DUALIDADE: "two narrow streams converging into one wider river seen from above at first light",
 };
 
-/** Sugestão de ambiente quando o véu não está mapeado. */
-const VEU_DEFAULT = "vast quiet Mozambique landscape at the threshold between day and night";
+const FALLBACK_DEFAULT =
+  "quiet contemplative interior scene at the threshold between day and night, single source of soft light, no movement";
 
-/**
- * Limpa o texto do slide para uso como "cena": remove pontuação heavy,
- * caracteres de markup e quebras múltiplas. Mantém poesia legível em prosa.
- */
-function limparTexto(texto: string): string {
-  return texto
-    .replace(/\s+/g, " ")
-    .replace(/["""'']/g, "")
-    .trim();
-}
-
-/** Constrói uma cena curta (≤140 chars) a partir do conteúdo do slide. */
-function cenaDoSlide(slide: Slide, dia: Dia): string {
-  if (slide.notaVisual) return slide.notaVisual.trim();
-
-  const ambiente = VEU_AMBIENTES[dia.veu.toUpperCase()] ?? VEU_DEFAULT;
-
-  if (slide.tipo === "capa") {
-    return ambiente;
-  }
-  if (slide.tipo === "cta") {
-    // CTA é fim de dia — fecho contemplativo.
-    return `${ambiente}, closing of day, single warm lantern glow in the distance`;
-  }
-  // conteudo: usa o texto (cortado) como ancho da cena
-  const t = limparTexto(slide.texto);
-  const trecho = t.length > 140 ? t.slice(0, 137) + "..." : t;
-  return `${ambiente}, evoking: "${trecho}"`;
+/** Variação ligeira por tipo, para o ritmo capa→conteúdo→cta. */
+function variarPorTipo(cena: string, slide: Slide): string {
+  if (slide.tipo === "capa") return `${cena}, wide framing, sense of opening`;
+  if (slide.tipo === "cta") return `${cena}, closing of day, single warm distant glow`;
+  return cena;
 }
 
 /**
- * Builder principal. Devolve o prompt completo, pronto para Midjourney.
+ * Builder principal.
+ * Prioridade: slide.notaVisual (vem do Claude) > fallback do tema do dia.
  */
 export function buildSlidePrompt(slide: Slide, dia: Dia): string {
-  const cena = cenaDoSlide(slide, dia);
+  const cena = slide.notaVisual?.trim()
+    || variarPorTipo(
+      FALLBACK_TEMA_CENAS[dia.veu.toUpperCase()] ?? FALLBACK_DEFAULT,
+      slide,
+    );
   const style = slide.fundoClaro ? STYLE_LIGHT : STYLE_DARK;
   return `${cena}, ${style}`;
 }
