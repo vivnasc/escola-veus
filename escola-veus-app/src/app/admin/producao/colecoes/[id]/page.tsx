@@ -113,6 +113,42 @@ export default function ColecaoEditor({ params }: { params: Promise<{ id: string
     }
   }
 
+  const [packaging, setPackaging] = useState(false);
+  const [zipUrl, setZipUrl] = useState<string | null>(null);
+  async function packageZip() {
+    if (!col) return;
+    setPackaging(true);
+    setZipUrl(null);
+    try {
+      const r = await fetch(`/api/admin/colecoes/${col.id}/package`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.erro || `HTTP ${r.status}`);
+      setZipUrl(data.zipUrl);
+      // Auto-download
+      try {
+        const blobRes = await fetch(data.zipUrl);
+        const blob = await blobRes.blob();
+        const obj = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = obj;
+        a.download = `${col.slug}-metricool.zip`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(obj), 5000);
+      } catch {
+        window.open(data.zipUrl, "_blank");
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      alert(`Pacote falhou: ${msg}`);
+    } finally {
+      setPackaging(false);
+    }
+  }
+
   if (loading) {
     return <p className="text-sm text-escola-creme-50">A carregar…</p>;
   }
@@ -134,13 +170,25 @@ export default function ColecaoEditor({ params }: { params: Promise<{ id: string
           ← colecções
         </Link>
         <span>/ {col.slug}</span>
-        <Link
-          href={`/admin/producao/colecoes/${col.id}/metricool`}
-          className="ml-3 rounded border border-escola-dourado/40 px-2 py-0.5 text-[11px] text-escola-dourado hover:bg-escola-dourado/10"
-          title="Exportar CSV Metricool desta coleção (Instagram Reel + TikTok)"
+        <button
+          onClick={packageZip}
+          disabled={packaging}
+          className="ml-3 rounded border border-emerald-500/40 px-2 py-0.5 text-[11px] text-emerald-300 hover:bg-emerald-500/10 disabled:opacity-40"
+          title="ZIP com MP4s + captions/ + metricool.csv pronto a importar"
         >
-          📊 CSV Metricool
-        </Link>
+          {packaging ? "a empacotar…" : "📦 Pacote Metricool (ZIP)"}
+        </button>
+        {zipUrl && (
+          <a
+            href={zipUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded border border-emerald-500/40 px-2 py-0.5 text-[10px] text-emerald-300 hover:bg-emerald-500/10"
+            title="Re-abrir o ZIP gerado"
+          >
+            ↓ link
+          </a>
+        )}
         <span className="ml-auto">
           {saving ? "a guardar…" : dirty ? "alterações por guardar" : "✓ guardado"}
         </span>
