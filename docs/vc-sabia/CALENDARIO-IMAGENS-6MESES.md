@@ -115,7 +115,7 @@ dewdrop on a leaf reflecting the entire morning landscape upside down, introspec
 
 ---
 
-## DIA 008 · Segunda 2026-06-08 · Livros + luz dourada
+## DIA 008 · Segunda 2026-06-08 · Lótus na água
 
 **Frase:** *Sabias que… Trata-te hoje como tratarias a tua melhor amiga: com paciência, com ternura, com fé.*
 
@@ -124,12 +124,12 @@ dewdrop on a leaf reflecting the entire morning landscape upside down, introspec
 ### Prompt Midjourney
 
 ```
-an open vintage book on a worn wooden desk, golden morning light catching the pages, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single white lotus opening at first light over still dark water, soft mist around the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 009 · Terça 2026-06-09 · Livros + luz dourada
+## DIA 009 · Terça 2026-06-09 · Lótus na água
 
 **Frase:** *Sabias que… O amor próprio não se prova a ninguém. Vive-se em silêncio, todos os dias.*
 
@@ -138,12 +138,12 @@ an open vintage book on a worn wooden desk, golden morning light catching the pa
 ### Prompt Midjourney
 
 ```
-stack of old books on a windowsill bathed in warm dawn light, dust particles in the rays, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+pink lotus flower floating on a calm pond at sunrise, soft golden mist around the leaves, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 010 · Quarta 2026-06-10 · Livros + luz dourada
+## DIA 010 · Quarta 2026-06-10 · Lótus na água
 
 **Frase:** *Sabias que… Diz a ti, ao espelho: 'estou contigo'. É a frase que muda o resto.*
 
@@ -152,12 +152,12 @@ stack of old books on a windowsill bathed in warm dawn light, dust particles in 
 ### Prompt Midjourney
 
 ```
-leather-bound notebook open on a stone wall with morning sun across one page, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus bud half-open with morning dew sliding down a curled petal, water reflection below, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 011 · Quinta 2026-06-11 · Livros + luz dourada
+## DIA 011 · Quinta 2026-06-11 · Lótus na água
 
 **Frase:** *Sabias que… Cuida do que te faz bem antes de cuidares do que te faz importante.*
 
@@ -166,12 +166,12 @@ leather-bound notebook open on a stone wall with morning sun across one page, te
 ### Prompt Midjourney
 
 ```
-books and a small clay cup on a wooden table in soft golden light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+cluster of lotus flowers in soft golden mist on a quiet pond at dawn, lily pads barely moving, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 012 · Sexta 2026-06-12 · Livros + luz dourada
+## DIA 012 · Sexta 2026-06-12 · Lótus na água
 
 **Frase:** *Sabias que… Amares-te começa por dares a ti o que ofereces aos outros sem hesitar.*
 
@@ -180,12 +180,12 @@ books and a small clay cup on a wooden table in soft golden light, tender warmth
 ### Prompt Midjourney
 
 ```
-single book open with a pressed flower between pages at sunrise, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus leaves and one blooming flower reflected on still water in pastel pink light, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 013 · Sábado 2026-06-13 · Livros + luz dourada
+## DIA 013 · Sábado 2026-06-13 · Lótus na água
 
 **Frase:** *Sabias que… Dizer 'não' a algo que te esvazia é a forma mais suave de dizer 'sim' a ti.*
 
@@ -194,12 +194,12 @@ single book open with a pressed flower between pages at sunrise, tender warmth, 
 ### Prompt Midjourney
 
 ```
-library shelf with sun streaking across the spines at dawn, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus emerging from murky water with sunbeams from above, water droplets on the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 014 · Domingo 2026-06-14 · Livros + luz dourada  ·  *meio do mês · domingo*
+## DIA 014 · Domingo 2026-06-14 · Lótus na água  ·  *meio do mês · domingo*
 
 **Frase:** *Sabias que… A tua presença é néctar. Não a desperdices a tentar agradar.*
 
@@ -208,7 +208,7 @@ library shelf with sun streaking across the spines at dawn, tender warmth, self-
 ### Prompt Midjourney
 
 ```
-open book on a linen cloth on a balcony at first light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of a lotus stamen with dawn light catching pollen dust, soft yellow centre glowing, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -297,16 +297,16 @@ a baobab tree silhouette emerging from low golden mist at dawn, savannah floor, 
 
 ---
 
-## DIA 021 · Domingo 2026-06-21 · Reflexos na água  ·  *domingo · solstício de verão*
+## DIA 021 · Domingo 2026-06-21 · Lótus na água  ·  *domingo · solstício de verão*
 
 **Frase:** *Sabias que… O lótus aprendeu a florescer na lama. Tu também sabes. Confia no teu tempo.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0021` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v7/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoamor` (frase `vsq-0021` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v8/8
 
 ### Prompt Midjourney
 
 ```
-still water in a clay basin on a stone wall reflecting golden clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two lotus flowers side by side on still water at first light, faint reflection of pink sky, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -325,58 +325,58 @@ a meadow of wildflowers in muted yellow white and lilac at sunrise, dew clinging
 
 ---
 
-## DIA 023 · Terça 2026-06-23 · Pássaros pequenos ao amanhecer
+## DIA 023 · Terça 2026-06-23 · Sementes germinando
 
 **Frase:** *Sabias que… O que está a germinar em ti agora pede paciência, não pressa.*
 
-**Alinhamento:** ⚠ fallback  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0023` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0023` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
 ```
-tiny sparrows perched on a wire at first light, gentle silhouettes against soft pink sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single seed splitting open in damp dark earth, first tiny root emerging at sunrise, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 024 · Quarta 2026-06-24 · Campos dourados
+## DIA 024 · Quarta 2026-06-24 · Sementes germinando
 
 **Frase:** *Sabias que… Confia: a tua semente sabe quando abrir, mesmo que tu ainda não saibas.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `gratidao` (frase `vsq-0024` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0024` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v2/8
 
 ### Prompt Midjourney
 
 ```
-a wheat field at golden hour with low sun grazing the tops, rolling slow waves of light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+seedling pushing through cracked soil in morning sun, tiny green leaves unfurling, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 025 · Quinta 2026-06-25 · Pássaros pequenos ao amanhecer
+## DIA 025 · Quinta 2026-06-25 · Borboletas
 
 **Frase:** *Sabias que… Florescer não é um esforço, é uma rendição luminosa ao tempo certo.*
 
-**Alinhamento:** ⚠ fallback  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0025` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0025` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
 ```
-small finches drinking from a clay bowl on a wooden windowsill at dawn, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single butterfly resting on a wildflower at sunrise, wings folded against soft pink sky, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 026 · Sexta 2026-06-26 · Pássaros pequenos ao amanhecer
+## DIA 026 · Sexta 2026-06-26 · Borboletas
 
 **Frase:** *Sabias que… Hoje, planta uma intenção pequena. Amanhã, rega-a com presença.*
 
-**Alinhamento:** ⚠ fallback  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0026` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0026` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v2/8
 
 ### Prompt Midjourney
 
 ```
-a single robin singing on a fence post at sunrise, breath visible in cool air, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterfly slowly opening wings on a sun-warmed stone at dawn, golden translucent wings, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -454,16 +454,16 @@ two hummingbirds in mirrored flight above a still garden pond at dawn, here-now 
 
 ---
 
-## DIA 032 · Quinta 2026-07-02 · Campos dourados
+## DIA 032 · Quinta 2026-07-02 · Sementes germinando
 
 **Frase:** *Sabias que… Este momento é a única semente que podes plantar agora. E é suficiente.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `gratidao` (frase `vsq-0032` · tema `presenca-leve`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0032` · tema `presenca-leve`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v3/8
 
 ### Prompt Midjourney
 
 ```
-amber savannah grass at sunrise with distant acacia silhouettes, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of seeds in dry soil with first drops of rain catching warm light, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -766,12 +766,12 @@ white cotton curtains gently rising in morning breeze through an open balcony do
 
 **Frase:** *Sabias que… Bebe água ao acordar. É a primeira forma de dizeres 'amo-te' ao teu corpo.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0054` · tema `corpo-como-casa`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v8/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0054` · tema `corpo-como-casa`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v7/8
 
 ### Prompt Midjourney
 
 ```
-garden fountain still at dawn, surface mirror-flat with first light, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+still water in a clay basin on a stone wall reflecting golden clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -808,12 +808,12 @@ open wooden window framing a misty garden, curtain barely moving, body as dwelli
 
 **Frase:** *Sabias que… Avança um passo, mesmo sem ver o caminho. A aurora também não pede licença para chegar.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0057` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v4/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0057` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
 ```
-small birds gathering on a flowering branch in soft pink dawn light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+tiny sparrows perched on a wire at first light, gentle silhouettes against soft pink sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -822,12 +822,12 @@ small birds gathering on a flowering branch in soft pink dawn light, the way ahe
 
 **Frase:** *Sabias que… O que está para ti não passa por ti sem te tocar. Confia.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0058` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v5/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0058` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v2/8
 
 ### Prompt Midjourney
 
 ```
-wagtail perched on a wet stone by a stream at first light, tail flicking, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small finches drinking from a clay bowl on a wooden windowsill at dawn, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -850,12 +850,12 @@ wild daisies and small grasses backlit by warm low sun, butterflies barely visib
 
 **Frase:** *Sabias que… O atraso que sentes é, quase sempre, preparação. Continua.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0060` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v6/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0060` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v3/8
 
 ### Prompt Midjourney
 
 ```
-swallows on a rooftop antenna against a pale lilac dawn sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single robin singing on a fence post at sunrise, breath visible in cool air, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -864,12 +864,12 @@ swallows on a rooftop antenna against a pale lilac dawn sky, the way ahead unhur
 
 **Frase:** *Sabias que… Hoje, deixa de tentar controlar. Faz o teu, o resto floresce.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0061` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v7/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0061` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v4/8
 
 ### Prompt Midjourney
 
 ```
-tiny goldcrest among pine needles backlit by warm morning sun, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small birds gathering on a flowering branch in soft pink dawn light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -881,12 +881,12 @@ tiny goldcrest among pine needles backlit by warm morning sun, the way ahead unh
 
 **Frase:** *Sabias que… Confiar não é ter a certeza. É caminhares mesmo sem ela, com leveza.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0062` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v8/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0062` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v5/8
 
 ### Prompt Midjourney
 
 ```
-house sparrows bathing in a shallow puddle on terracotta tiles at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wagtail perched on a wet stone by a stream at first light, tail flicking, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -895,7 +895,35 @@ house sparrows bathing in a shallow puddle on terracotta tiles at sunrise, the w
 
 **Frase:** *Sabias que… Começa o dia a notar três pequenas bênçãos. A gratidão multiplica o que existe.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0063` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0063` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v1/8
+
+### Prompt Midjourney
+
+```
+a wheat field at golden hour with low sun grazing the tops, rolling slow waves of light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+---
+
+## DIA 064 · Segunda 2026-08-03 · Campos dourados
+
+**Frase:** *Sabias que… Diz 'obrigada' à manhã. É um gesto silencioso que muda o teu olhar.*
+
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0064` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v2/8
+
+### Prompt Midjourney
+
+```
+amber savannah grass at sunrise with distant acacia silhouettes, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+---
+
+## DIA 065 · Terça 2026-08-04 · Campos dourados
+
+**Frase:** *Sabias que… Há, no banal, um néctar escondido. Só os atentos o sabem colher.*
+
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0065` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v3/8
 
 ### Prompt Midjourney
 
@@ -905,11 +933,11 @@ field of barley with single tree on horizon at first light, grateful attention t
 
 ---
 
-## DIA 064 · Segunda 2026-08-03 · Campos dourados
+## DIA 066 · Quarta 2026-08-05 · Campos dourados
 
-**Frase:** *Sabias que… Diz 'obrigada' à manhã. É um gesto silencioso que muda o teu olhar.*
+**Frase:** *Sabias que… Hoje, agradece ao que te trouxe até aqui: ao pão, à luz, à própria respiração.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0064` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v4/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0066` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v4/8
 
 ### Prompt Midjourney
 
@@ -919,11 +947,11 @@ rolling hills of golden wheat with morning mist between them, grateful attention
 
 ---
 
-## DIA 065 · Terça 2026-08-04 · Campos dourados
+## DIA 067 · Quinta 2026-08-06 · Campos dourados
 
-**Frase:** *Sabias que… Há, no banal, um néctar escondido. Só os atentos o sabem colher.*
+**Frase:** *Sabias que… Agradecer é o gesto mais leve que multiplica a beleza onde já existe.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0065` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v5/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0067` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v5/8
 
 ### Prompt Midjourney
 
@@ -933,44 +961,16 @@ rye field with dew on tips, soft pink dawn sky above, grateful attention to smal
 
 ---
 
-## DIA 066 · Quarta 2026-08-05 · Campos dourados
+## DIA 068 · Sexta 2026-08-07 · Campos dourados
 
-**Frase:** *Sabias que… Hoje, agradece ao que te trouxe até aqui: ao pão, à luz, à própria respiração.*
+**Frase:** *Sabias que… Lembra-te: a tua vida tem mais pequenos milagres do que dias para os notar.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0066` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v6/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0068` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v6/8
 
 ### Prompt Midjourney
 
 ```
 tall dry grass at sunset golden hour, slow swaying, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
-```
-
----
-
-## DIA 067 · Quinta 2026-08-06 · Campos dourados
-
-**Frase:** *Sabias que… Agradecer é o gesto mais leve que multiplica a beleza onde já existe.*
-
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0067` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v7/8
-
-### Prompt Midjourney
-
-```
-wheat field with a single bird flying across at dawn, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
-```
-
----
-
-## DIA 068 · Sexta 2026-08-07 · Campos dourados
-
-**Frase:** *Sabias que… Lembra-te: a tua vida tem mais pequenos milagres do que dias para os notar.*
-
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0068` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v8/8
-
-### Prompt Midjourney
-
-```
-endless meadow of yellow grass with one dirt path through it, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1143,16 +1143,16 @@ translucent eucalyptus leaves with a single dewdrop catching first light, awe at
 
 ---
 
-## DIA 081 · Quinta 2026-08-20 · Campos dourados
+## DIA 081 · Quinta 2026-08-20 · Sementes germinando
 
 **Frase:** *Sabias que… A semente cresce no escuro antes de ver a luz. Tu também. Confia no que ainda não se vê.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `gratidao` (frase `vsq-0081` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0081` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v4/8
 
 ### Prompt Midjourney
 
 ```
-a wheat field at golden hour with low sun grazing the tops, rolling slow waves of light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+cluster of new shoots rising from a terracotta pot in soft dawn light, dew on the leaves, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1227,16 +1227,16 @@ a fading pale moon over soft blue dawn sky above a sleeping valley, wholeness, r
 
 ---
 
-## DIA 087 · Quarta 2026-08-26 · Flores silvestres
+## DIA 087 · Quarta 2026-08-26 · Borboletas
 
 **Frase:** *Sabias que… A borboleta passou pelo casulo para abrir asas. Tu também. Confia na tua passagem.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0087` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0087` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v3/8
 
 ### Prompt Midjourney
 
 ```
-a meadow of wildflowers in muted yellow white and lilac at sunrise, dew clinging to petals, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterfly hovering above a meadow of wildflowers in golden hour, slow motion flight, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1259,12 +1259,12 @@ layers of misty mountain ridges fading into pink dawn light, no foreground detai
 
 **Frase:** *Sabias que… A chuva alimenta o que parecia morto. Tu também. Confia no que volta.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0089` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0089` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v8/8
 
 ### Prompt Midjourney
 
 ```
-still surface of a pond reflecting a single tree and pale morning sky, single leaf falling, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+garden fountain still at dawn, surface mirror-flat with first light, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1283,30 +1283,30 @@ a single beeswax candle burning on a wooden table at dawn, soft pink light from 
 
 ---
 
-## DIA 091 · Domingo 2026-08-30 · Reflexos na água  ·  *domingo*
+## DIA 091 · Domingo 2026-08-30 · Lótus na água  ·  *domingo*
 
 **Frase:** *Sabias que… O lótus nasce na lama e não se suja. Tu também. Confia na tua pureza.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0091` · tema `autoamor`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoamor` (frase `vsq-0091` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
 ```
-mirror puddle on red stone after night rain reflecting pink dawn clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single white lotus opening at first light over still dark water, soft mist around the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 092 · Segunda 2026-08-31 · Reflexos na água  ·  *encerramento de mês*
+## DIA 092 · Segunda 2026-08-31 · Lótus na água  ·  *encerramento de mês*
 
 **Frase:** *Sabias que… O lótus fecha à noite e reabre ao amanhecer. Tu também. Confia no teu recomeço.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0092` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoamor` (frase `vsq-0092` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v2/8
 
 ### Prompt Midjourney
 
 ```
-still lake at dawn with perfect symmetrical reflection of mountains, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+pink lotus flower floating on a calm pond at sunrise, soft golden mist around the leaves, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1314,58 +1314,58 @@ still lake at dawn with perfect symmetrical reflection of mountains, introspecti
 
 # Setembro 2026
 
-## DIA 093 · Terça 2026-09-01 · Reflexos na água  ·  *abertura de mês*
+## DIA 093 · Terça 2026-09-01 · Lótus na água  ·  *abertura de mês*
 
 **Frase:** *Sabias que… O lótus precisa do lodo para se erguer. Tu também. Confia no que te formou.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0093` · tema `autoperdao`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v4/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoamor` (frase `vsq-0093` · tema `autoperdao`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v3/8
 
 ### Prompt Midjourney
 
 ```
-rain barrel filled to the brim reflecting morning sky and one branch above, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus bud half-open with morning dew sliding down a curled petal, water reflection below, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 094 · Quarta 2026-09-02 · Flores silvestres
+## DIA 094 · Quarta 2026-09-02 · Borboletas
 
 **Frase:** *Sabias que… A borboleta não se lembra de ter sido lagarta. Tu também. Confia na tua transformação.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0094` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0094` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v4/8
 
 ### Prompt Midjourney
 
 ```
-wild daisies and small grasses backlit by warm low sun, butterflies barely visible, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of butterfly wings translucent with morning light through them, fine pattern detail, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 095 · Quinta 2026-09-03 · Flores silvestres
+## DIA 095 · Quinta 2026-09-03 · Borboletas
 
 **Frase:** *Sabias que… A borboleta descansa antes de abrir as asas. Tu também. Confia na tua pausa.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0095` · tema `suavidade-e-descanso`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0095` · tema `suavidade-e-descanso`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v5/8
 
 ### Prompt Midjourney
 
 ```
-poppies and chamomile in a stone-walled garden at golden hour, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterflies in soft flight above lavender at first light, soft purple haze, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 096 · Sexta 2026-09-04 · Flores silvestres
+## DIA 096 · Sexta 2026-09-04 · Borboletas
 
 **Frase:** *Sabias que… Nenhuma borboleta nasce a voar. Tu também. Confia no teu processo.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0096` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v4/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0096` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v6/8
 
 ### Prompt Midjourney
 
 ```
-wild yellow daffodils bending over a quiet path at first light, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterfly emerging from a cocoon on a branch in soft morning fog, wings drying, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1458,12 +1458,12 @@ ancient olive trees half-veiled in soft morning fog, red earth between roots, dr
 
 **Frase:** *Sabias que… A gota fura a pedra sem nunca a empurrar. Tu também. Confia na tua constância.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0103` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v5/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0103` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
 ```
-small pond at first light with a single ripple expanding from the centre, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+still surface of a pond reflecting a single tree and pale morning sky, single leaf falling, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1486,12 +1486,12 @@ a quiet river bend with overhanging branches, fragments of sunlight dancing on t
 
 **Frase:** *Sabias que… A água toma a forma do que a recebe e não se perde. Tu também. Confia na tua essência.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0105` · tema `inteireza`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v6/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0105` · tema `inteireza`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v2/8
 
 ### Prompt Midjourney
 
 ```
-dewdrop on a leaf reflecting the entire morning landscape upside down, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+mirror puddle on red stone after night rain reflecting pink dawn clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1538,16 +1538,16 @@ peach and lilac dawn sky above a still ocean horizon, single sail far away, awe 
 
 ---
 
-## DIA 109 · Quinta 2026-09-17 · Campos dourados
+## DIA 109 · Quinta 2026-09-17 · Sementes germinando
 
 **Frase:** *Sabias que… A semente parte-se antes de germinar. Tu também. Confia na tua abertura.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `gratidao` (frase `vsq-0109` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0109` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v5/8
 
 ### Prompt Midjourney
 
 ```
-amber savannah grass at sunrise with distant acacia silhouettes, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+seed pod splitting open in soft morning breeze, scattering tiny seeds against pastel sky, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1570,12 +1570,12 @@ lavender stems in a glass jar with dew condensing on the inside, rest as virtue,
 
 **Frase:** *Sabias que… Nenhuma flor floresce no dia em que foi semeada. Tu também. Confia na tua espera.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0111` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v5/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0111` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
 ```
-blue cornflowers among wheat at dawn, single bee in soft focus, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a meadow of wildflowers in muted yellow white and lilac at sunrise, dew clinging to petals, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1626,12 +1626,12 @@ three small candles on a stone altar at first light, slow flickering, here-now s
 
 **Frase:** *Sabias que… O pássaro canta antes do sol nascer. Tu também. Confia na tua antecipação.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0115` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0115` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v6/8
 
 ### Prompt Midjourney
 
 ```
-tiny sparrows perched on a wire at first light, gentle silhouettes against soft pink sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+swallows on a rooftop antenna against a pale lilac dawn sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1640,12 +1640,12 @@ tiny sparrows perched on a wire at first light, gentle silhouettes against soft 
 
 **Frase:** *Sabias que… A ave migra sem mapa e chega sempre. Tu também. Confia no teu instinto.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0116` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0116` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v7/8
 
 ### Prompt Midjourney
 
 ```
-small finches drinking from a clay bowl on a wooden windowsill at dawn, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+tiny goldcrest among pine needles backlit by warm morning sun, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1654,12 +1654,12 @@ small finches drinking from a clay bowl on a wooden windowsill at dawn, the way 
 
 **Frase:** *Sabias que… Nenhum voo começa sem o salto. Tu também. Confia no teu impulso.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0117` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0117` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v8/8
 
 ### Prompt Midjourney
 
 ```
-a single robin singing on a fence post at sunrise, breath visible in cool air, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+house sparrows bathing in a shallow puddle on terracotta tiles at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1668,12 +1668,12 @@ a single robin singing on a fence post at sunrise, breath visible in cool air, t
 
 **Frase:** *Sabias que… Antes de procurares respostas no mundo, escuta a tua primeira voz. A que fala antes do julgamento.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0001` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v7/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0001` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v3/8
 
 ### Prompt Midjourney
 
 ```
-still water in a clay basin on a stone wall reflecting golden clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+still lake at dawn with perfect symmetrical reflection of mountains, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1682,12 +1682,12 @@ still water in a clay basin on a stone wall reflecting golden clouds, introspect
 
 **Frase:** *Sabias que… Repara hoje no que repetes sem perceber: é aí que começa o teu mapa.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0002` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v8/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0002` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v4/8
 
 ### Prompt Midjourney
 
 ```
-garden fountain still at dawn, surface mirror-flat with first light, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rain barrel filled to the brim reflecting morning sky and one branch above, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1696,12 +1696,12 @@ garden fountain still at dawn, surface mirror-flat with first light, introspecti
 
 **Frase:** *Sabias que… O que te incomoda nos outros é, quase sempre, um convite a olhares para ti com mais ternura.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0003` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0003` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v5/8
 
 ### Prompt Midjourney
 
 ```
-still surface of a pond reflecting a single tree and pale morning sky, single leaf falling, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small pond at first light with a single ripple expanding from the centre, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1724,12 +1724,12 @@ a baobab tree silhouette emerging from low golden mist at dawn, savannah floor, 
 
 **Frase:** *Sabias que… Pergunta-te hoje: 'do que tenho saudade?'. A resposta diz-te onde voltar.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0005` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0005` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v6/8
 
 ### Prompt Midjourney
 
 ```
-mirror puddle on red stone after night rain reflecting pink dawn clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+dewdrop on a leaf reflecting the entire morning landscape upside down, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1741,12 +1741,12 @@ mirror puddle on red stone after night rain reflecting pink dawn clouds, introsp
 
 **Frase:** *Sabias que… Quanto mais te conheces, menos precisas que o mundo te explique.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0006` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0006` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v7/8
 
 ### Prompt Midjourney
 
 ```
-still lake at dawn with perfect symmetrical reflection of mountains, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+still water in a clay basin on a stone wall reflecting golden clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1755,110 +1755,110 @@ still lake at dawn with perfect symmetrical reflection of mountains, introspecti
 
 **Frase:** *Sabias que… Conhecer-te é aprender a distinguir a tua voz da voz do medo.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0007` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v4/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoconhecimento` (frase `vsq-0007` · tema `autoconhecimento`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v8/8
 
 ### Prompt Midjourney
 
 ```
-rain barrel filled to the brim reflecting morning sky and one branch above, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+garden fountain still at dawn, surface mirror-flat with first light, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 125 · Sábado 2026-10-03 · Livros + luz dourada
+## DIA 125 · Sábado 2026-10-03 · Lótus na água
 
 **Frase:** *Sabias que… Trata-te hoje como tratarias a tua melhor amiga: com paciência, com ternura, com fé.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0008` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v8/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0008` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v4/8
 
 ### Prompt Midjourney
 
 ```
-old hardback book and round glasses on a desk in warm morning light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+cluster of lotus flowers in soft golden mist on a quiet pond at dawn, lily pads barely moving, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 126 · Domingo 2026-10-04 · Livros + luz dourada  ·  *domingo*
+## DIA 126 · Domingo 2026-10-04 · Lótus na água  ·  *domingo*
 
 **Frase:** *Sabias que… O amor próprio não se prova a ninguém. Vive-se em silêncio, todos os dias.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0009` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0009` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v5/8
 
 ### Prompt Midjourney
 
 ```
-an open vintage book on a worn wooden desk, golden morning light catching the pages, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus leaves and one blooming flower reflected on still water in pastel pink light, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 127 · Segunda 2026-10-05 · Livros + luz dourada
+## DIA 127 · Segunda 2026-10-05 · Lótus na água
 
 **Frase:** *Sabias que… Diz a ti, ao espelho: 'estou contigo'. É a frase que muda o resto.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0010` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0010` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v6/8
 
 ### Prompt Midjourney
 
 ```
-stack of old books on a windowsill bathed in warm dawn light, dust particles in the rays, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus emerging from murky water with sunbeams from above, water droplets on the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 128 · Terça 2026-10-06 · Livros + luz dourada
+## DIA 128 · Terça 2026-10-06 · Lótus na água
 
 **Frase:** *Sabias que… Cuida do que te faz bem antes de cuidares do que te faz importante.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0011` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0011` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v7/8
 
 ### Prompt Midjourney
 
 ```
-leather-bound notebook open on a stone wall with morning sun across one page, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of a lotus stamen with dawn light catching pollen dust, soft yellow centre glowing, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 129 · Quarta 2026-10-07 · Livros + luz dourada
+## DIA 129 · Quarta 2026-10-07 · Lótus na água
 
 **Frase:** *Sabias que… Amares-te começa por dares a ti o que ofereces aos outros sem hesitar.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0012` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v4/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0012` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v8/8
 
 ### Prompt Midjourney
 
 ```
-books and a small clay cup on a wooden table in soft golden light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two lotus flowers side by side on still water at first light, faint reflection of pink sky, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 130 · Quinta 2026-10-08 · Livros + luz dourada
+## DIA 130 · Quinta 2026-10-08 · Lótus na água
 
 **Frase:** *Sabias que… Dizer 'não' a algo que te esvazia é a forma mais suave de dizer 'sim' a ti.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0013` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v5/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0013` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
 ```
-single book open with a pressed flower between pages at sunrise, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single white lotus opening at first light over still dark water, soft mist around the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 131 · Sexta 2026-10-09 · Livros + luz dourada
+## DIA 131 · Sexta 2026-10-09 · Lótus na água
 
 **Frase:** *Sabias que… A tua presença é néctar. Não a desperdices a tentar agradar.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0014` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v6/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `autoamor` (frase `vsq-0014` · tema `autoamor`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v2/8
 
 ### Prompt Midjourney
 
 ```
-library shelf with sun streaking across the spines at dawn, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+pink lotus flower floating on a calm pond at sunrise, soft golden mist around the leaves, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1947,16 +1947,16 @@ row of cypress trees in deep fog at sunrise, soft warm halos around tops, dream 
 
 ---
 
-## DIA 138 · Sexta 2026-10-16 · Reflexos na água  ·  *meio do mês*
+## DIA 138 · Sexta 2026-10-16 · Lótus na água  ·  *meio do mês*
 
 **Frase:** *Sabias que… O lótus aprendeu a florescer na lama. Tu também sabes. Confia no teu tempo.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0021` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v5/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoamor` (frase `vsq-0021` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v3/8
 
 ### Prompt Midjourney
 
 ```
-small pond at first light with a single ripple expanding from the centre, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus bud half-open with morning dew sliding down a curled petal, water reflection below, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1965,68 +1965,68 @@ small pond at first light with a single ripple expanding from the centre, intros
 
 **Frase:** *Sabias que… Não compares a tua estação com a dos outros. Cada flor abre quando é a sua hora.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0022` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v6/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0022` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v2/8
 
 ### Prompt Midjourney
 
 ```
-small white wildflowers along a sunlit forest edge with dust in the air, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wild daisies and small grasses backlit by warm low sun, butterflies barely visible, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 140 · Domingo 2026-10-18 · Pássaros pequenos ao amanhecer  ·  *domingo*
+## DIA 140 · Domingo 2026-10-18 · Sementes germinando  ·  *domingo*
 
 **Frase:** *Sabias que… O que está a germinar em ti agora pede paciência, não pressa.*
 
-**Alinhamento:** ⚠ fallback  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0023` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v4/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0023` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v6/8
 
 ### Prompt Midjourney
 
 ```
-small birds gathering on a flowering branch in soft pink dawn light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+dried grass seed heads backlit by low warm sun in a quiet meadow at dawn, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 141 · Segunda 2026-10-19 · Campos dourados
+## DIA 141 · Segunda 2026-10-19 · Sementes germinando
 
 **Frase:** *Sabias que… Confia: a tua semente sabe quando abrir, mesmo que tu ainda não saibas.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `gratidao` (frase `vsq-0024` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0024` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v7/8
 
 ### Prompt Midjourney
 
 ```
-field of barley with single tree on horizon at first light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+tiny seedlings in a row in dark earth with morning dew on each one, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 142 · Terça 2026-10-20 · Pássaros pequenos ao amanhecer
+## DIA 142 · Terça 2026-10-20 · Borboletas
 
 **Frase:** *Sabias que… Florescer não é um esforço, é uma rendição luminosa ao tempo certo.*
 
-**Alinhamento:** ⚠ fallback  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0025` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v5/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0025` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v7/8
 
 ### Prompt Midjourney
 
 ```
-wagtail perched on a wet stone by a stream at first light, tail flicking, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterfly landing on a long blade of grass with dew drops, gentle bend of the stem, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
 
-## DIA 143 · Quarta 2026-10-21 · Pássaros pequenos ao amanhecer
+## DIA 143 · Quarta 2026-10-21 · Borboletas
 
 **Frase:** *Sabias que… Hoje, planta uma intenção pequena. Amanhã, rega-a com presença.*
 
-**Alinhamento:** ⚠ fallback  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0026` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v6/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0026` · tema `florescer-no-tempo-certo`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v8/8
 
 ### Prompt Midjourney
 
 ```
-swallows on a rooftop antenna against a pale lilac dawn sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two butterflies side by side on a dry seed pod at dawn, slow wing breathing, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -2101,16 +2101,16 @@ hummingbird approaching a dew-covered hibiscus in slow motion, ultra detailed fe
 
 ---
 
-## DIA 149 · Terça 2026-10-27 · Campos dourados
+## DIA 149 · Terça 2026-10-27 · Sementes germinando
 
 **Frase:** *Sabias que… Este momento é a única semente que podes plantar agora. E é suficiente.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `gratidao` (frase `vsq-0032` · tema `presenca-leve`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v4/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `florescer-no-tempo-certo` (frase `vsq-0032` · tema `presenca-leve`)  ·  **Mood áudio:** `silence`  ·  **Variante visual:** v8/8
 
 ### Prompt Midjourney
 
 ```
-rolling hills of golden wheat with morning mist between them, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+open hand-thrown clay pot with a single sprouting seed at first light, soft golden glow, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -2416,12 +2416,12 @@ linen curtains breathing in summer wind through an open wooden window, soft gold
 
 **Frase:** *Sabias que… Bebe água ao acordar. É a primeira forma de dizeres 'amo-te' ao teu corpo.*
 
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0054` · tema `corpo-como-casa`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v6/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `autoconhecimento` (frase `vsq-0054` · tema `corpo-como-casa`)  ·  **Mood áudio:** `stream`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
 ```
-dewdrop on a leaf reflecting the entire morning landscape upside down, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+still surface of a pond reflecting a single tree and pale morning sky, single leaf falling, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -2458,49 +2458,7 @@ white cotton curtains gently rising in morning breeze through an open balcony do
 
 **Frase:** *Sabias que… Avança um passo, mesmo sem ver o caminho. A aurora também não pede licença para chegar.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0057` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v7/8
-
-### Prompt Midjourney
-
-```
-tiny goldcrest among pine needles backlit by warm morning sun, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
-```
-
----
-
-## DIA 175 · Domingo 2026-11-22 · Pássaros pequenos ao amanhecer  ·  *domingo*
-
-**Frase:** *Sabias que… O que está para ti não passa por ti sem te tocar. Confia.*
-
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0058` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v8/8
-
-### Prompt Midjourney
-
-```
-house sparrows bathing in a shallow puddle on terracotta tiles at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
-```
-
----
-
-## DIA 176 · Segunda 2026-11-23 · Flores silvestres
-
-**Frase:** *Sabias que… As raízes confiam no escuro. Por isso é que as flores podem confiar na luz.*
-
-**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0059` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v7/8
-
-### Prompt Midjourney
-
-```
-patch of clover with morning dew, soft sun rays from one side, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
-```
-
----
-
-## DIA 177 · Terça 2026-11-24 · Pássaros pequenos ao amanhecer
-
-**Frase:** *Sabias que… O atraso que sentes é, quase sempre, preparação. Continua.*
-
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0060` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v1/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0057` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v1/8
 
 ### Prompt Midjourney
 
@@ -2510,11 +2468,11 @@ tiny sparrows perched on a wire at first light, gentle silhouettes against soft 
 
 ---
 
-## DIA 178 · Quarta 2026-11-25 · Pássaros pequenos ao amanhecer
+## DIA 175 · Domingo 2026-11-22 · Pássaros pequenos ao amanhecer  ·  *domingo*
 
-**Frase:** *Sabias que… Hoje, deixa de tentar controlar. Faz o teu, o resto floresce.*
+**Frase:** *Sabias que… O que está para ti não passa por ti sem te tocar. Confia.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0061` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v2/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0058` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v2/8
 
 ### Prompt Midjourney
 
@@ -2524,11 +2482,25 @@ small finches drinking from a clay bowl on a wooden windowsill at dawn, the way 
 
 ---
 
-## DIA 179 · Quinta 2026-11-26 · Pássaros pequenos ao amanhecer
+## DIA 176 · Segunda 2026-11-23 · Flores silvestres
 
-**Frase:** *Sabias que… Confiar não é ter a certeza. É caminhares mesmo sem ela, com leveza.*
+**Frase:** *Sabias que… As raízes confiam no escuro. Por isso é que as flores podem confiar na luz.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0062` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v3/8
+**Alinhamento:** 🎯 keyword  ·  **Tema:** `alegria-simples` (frase `vsq-0059` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v3/8
+
+### Prompt Midjourney
+
+```
+poppies and chamomile in a stone-walled garden at golden hour, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+---
+
+## DIA 177 · Terça 2026-11-24 · Pássaros pequenos ao amanhecer
+
+**Frase:** *Sabias que… O atraso que sentes é, quase sempre, preparação. Continua.*
+
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0060` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v3/8
 
 ### Prompt Midjourney
 
@@ -2538,16 +2510,44 @@ a single robin singing on a fence post at sunrise, breath visible in cool air, t
 
 ---
 
-## DIA 180 · Sexta 2026-11-27 · Campos dourados
+## DIA 178 · Quarta 2026-11-25 · Pássaros pequenos ao amanhecer
 
-**Frase:** *Sabias que… Começa o dia a notar três pequenas bênçãos. A gratidão multiplica o que existe.*
+**Frase:** *Sabias que… Hoje, deixa de tentar controlar. Faz o teu, o resto floresce.*
 
-**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0063` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v5/8
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0061` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v4/8
 
 ### Prompt Midjourney
 
 ```
-rye field with dew on tips, soft pink dawn sky above, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small birds gathering on a flowering branch in soft pink dawn light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+---
+
+## DIA 179 · Quinta 2026-11-26 · Pássaros pequenos ao amanhecer
+
+**Frase:** *Sabias que… Confiar não é ter a certeza. É caminhares mesmo sem ela, com leveza.*
+
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `confianca-no-caminho` (frase `vsq-0062` · tema `confianca-no-caminho`)  ·  **Mood áudio:** `birds_dawn`  ·  **Variante visual:** v5/8
+
+### Prompt Midjourney
+
+```
+wagtail perched on a wet stone by a stream at first light, tail flicking, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+```
+
+---
+
+## DIA 180 · Sexta 2026-11-27 · Campos dourados
+
+**Frase:** *Sabias que… Começa o dia a notar três pequenas bênçãos. A gratidão multiplica o que existe.*
+
+**Alinhamento:** 🎨 por tema  ·  **Tema:** `gratidao` (frase `vsq-0063` · tema `gratidao`)  ·  **Mood áudio:** `wind`  ·  **Variante visual:** v7/8
+
+### Prompt Midjourney
+
+```
+wheat field with a single bird flying across at dawn, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -2557,21 +2557,24 @@ rye field with dew on tips, soft pink dawn sky above, grateful attention to smal
 
 | Categoria | Tema | Usos | Vezes variante 1× repete |
 |---|---|---|---|
-| Pássaros pequenos ao amanhecer | `confianca-no-caminho` | 19 | 11 |
+| Pássaros pequenos ao amanhecer | `confianca-no-caminho` | 13 | 5 |
 | Colibris | `presenca-leve` | 10 | 2 |
 | Andorinhas | `confianca-no-caminho` | 0 | 0 |
 | Penas flutuando | `presenca-leve` | 0 | 0 |
 | Girassóis molhados de orvalho | `confianca-no-caminho` | 3 | 0 |
 | Lavanda | `suavidade-e-descanso` | 10 | 2 |
-| Flores silvestres | `alegria-simples` | 15 | 7 |
+| Borboletas | `florescer-no-tempo-certo` | 8 | 0 |
+| Flores silvestres | `alegria-simples` | 11 | 3 |
 | Dente-de-leão ao vento | `autoperdao` | 8 | 0 |
 | Folhas translúcidas | `beleza-de-existir` | 9 | 1 |
 | Árvores com neblina matinal | `sonhar-com-raizes` | 15 | 7 |
 | Rios com reflexos de luz | `confianca-no-caminho` | 2 | 0 |
-| Reflexos na água | `autoconhecimento` | 22 | 14 |
+| Lótus na água | `autoamor` | 19 | 11 |
+| Reflexos na água | `autoconhecimento` | 17 | 9 |
 | Cervos etéreos | `autoconhecimento` | 0 | 0 |
 | Gatos ao sol da manhã | `suavidade-e-descanso` | 0 | 0 |
-| Campos dourados | `gratidao` | 13 | 5 |
+| Sementes germinando | `florescer-no-tempo-certo` | 8 | 0 |
+| Campos dourados | `gratidao` | 7 | 0 |
 | Caminhos de floresta iluminados | `sonhar-com-raizes` | 4 | 0 |
 | Luas suaves no amanhecer azul | `inteireza` | 18 | 10 |
 | Céu pastel com nuvens brilhantes | `beleza-de-existir` | 3 | 0 |
@@ -2580,6 +2583,6 @@ rye field with dew on tips, soft pink dawn sky above, grateful attention to smal
 | Janelas abertas com cortinas leves | `corpo-como-casa` | 11 | 3 |
 | Lanternas suaves | `beleza-de-existir` | 0 | 0 |
 | Café da manhã minimalista poético | `gratidao` | 0 | 0 |
-| Livros + luz dourada | `autoamor` | 14 | 6 |
+| Livros + luz dourada | `autoamor` | 0 | 0 |
 | Vela acesa ao nascer do sol | `presenca-leve` | 3 | 0 |
 
