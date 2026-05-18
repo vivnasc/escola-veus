@@ -14,19 +14,24 @@
 
 import type { Dia, Slide } from "@/lib/carousel-types";
 
-/** Preâmbulo universal. Sem geografia, sem cultura específica. */
-const STYLE_DARK =
-  "cinematic editorial photograph, low contemplative light, limited warm palette, fine grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
-
 /**
- * STYLE_LIGHT — modo LUZ.
- * Pálido, translúcido, etéreo. NÃO morno-dourado, NÃO denso-terra,
- * NÃO fogo-pedra. Pensa: véu de seda, gauze ao sol, neblina ao amanhecer,
- * luz a atravessar tecido, pétala sobre água, ar a vibrar. Matéria
- * desmaterializada.
+ * Estilo visual do carrossel — A IDENTIDADE AINDA NÃO ESTÁ ESCOLHIDA.
+ *
+ * Em discussão (Vivianne vai escolher):
+ *  A. "Limiar Véu"      — tecidos translúcidos, cortinas de luz, gauze
+ *  B. "Ofício Sagrado"  — detalhes íntimos de gestos/objectos rituais
+ *  C. "Paisagens Interiores" — paisagens abstratas dream-like
+ *
+ * Enquanto não estiver decidido, mantemos um STYLE neutro editorial.
+ * Não é o brand-video flat illustration (esse é para Aulas/Funil).
+ * Não é hoje-em-mim (noite amber íntimo).
+ * Não é vc-sabia (fantasia natureza vívida).
  */
-const STYLE_LIGHT =
-  "ethereal luminous photograph, pale ivory and soft cream palette, translucent gauze atmosphere, weightless and airy, diffused dawn light, soft mist, delicate and breath-thin matter, no dense objects, no stone no fire no earth, fine luminous grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
+const STYLE_BASE =
+  "editorial photograph, contemplative atmosphere, navy and cream and soft gold palette, painterly composition, no people, no faces, no text, no logos, no watermarks, 8k, --ar 9:16";
+
+const STYLE_DARK = STYLE_BASE;
+const STYLE_LIGHT = STYLE_BASE;
 
 /**
  * Fallback simbólico para slides sem `notaVisual` (conteúdo antigo).
