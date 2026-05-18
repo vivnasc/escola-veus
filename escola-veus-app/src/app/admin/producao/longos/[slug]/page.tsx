@@ -2899,33 +2899,47 @@ export default function LongoDetailPage() {
                 <p className="text-[11px] font-semibold text-escola-creme">
                   Título · descrição · hashtags
                 </p>
-                {!project.seo && (
-                  <button
-                    onClick={async () => {
-                      setInfo("✨ Claude a gerar SEO YouTube...");
-                      try {
-                        const r = await fetch("/api/admin/longos/gen-seo", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ slug: project.slug }),
-                        });
-                        const d = await r.json();
-                        if (!r.ok || d.erro)
-                          throw new Error(d.erro || `HTTP ${r.status}`);
-                        setInfo("✓ SEO gerado");
-                        setTimeout(() => setInfo(null), 3000);
-                        await load();
-                      } catch (e) {
-                        setInfo(
-                          `Erro: ${e instanceof Error ? e.message : String(e)}`,
-                        );
-                      }
-                    }}
-                    className="rounded bg-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-bg"
-                  >
-                    ✨ gerar SEO (~$0.10)
-                  </button>
-                )}
+                <button
+                  onClick={async () => {
+                    const isRegen = !!project.seo;
+                    if (
+                      isRegen &&
+                      !confirm(
+                        "Já existe SEO. Regenerar com o prompt actual (sobrescreve)?",
+                      )
+                    ) {
+                      return;
+                    }
+                    setInfo(
+                      isRegen
+                        ? "✨ Claude a regenerar SEO..."
+                        : "✨ Claude a gerar SEO YouTube...",
+                    );
+                    try {
+                      const r = await fetch("/api/admin/longos/gen-seo", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          slug: project.slug,
+                          force: isRegen,
+                        }),
+                      });
+                      const d = await r.json();
+                      if (!r.ok || d.erro)
+                        throw new Error(d.erro || `HTTP ${r.status}`);
+                      setInfo(isRegen ? "✓ SEO regenerado" : "✓ SEO gerado");
+                      setTimeout(() => setInfo(null), 3000);
+                      await load();
+                    } catch (e) {
+                      setInfo(
+                        `Erro: ${e instanceof Error ? e.message : String(e)}`,
+                      );
+                    }
+                  }}
+                  className="rounded bg-escola-dourado px-3 py-1 text-[10px] font-semibold text-escola-bg"
+                >
+                  {project.seo ? "↻ regenerar SEO" : "✨ gerar SEO (~$0.10)"}
+                </button>
               </div>
               {project.seo ? (
                 <div className="space-y-2">

@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
+import {
+  genSeoPackage,
+  hashtagsInstruction,
+  SHARED_SYSTEM_PROMPT,
+} from "@/lib/seo/gen-seo-core";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -8,11 +13,12 @@ export const maxDuration = 60;
 /**
  * POST /api/admin/longos/gen-seo
  *
- * Claude lê (titulo + tema + script) e gera SEO YouTube:
+ * Claude lê (titulo + tema + script) e gera SEO YouTube long-form:
  *   - postTitle: título optimizado YouTube (≤100 chars, sem clickbait)
- *   - description: descrição com 3-4 parágrafos (intro + sobre o canal +
- *     CTA não-agressivo + créditos música/imagens)
- *   - hashtags: array de 8-12 hashtags relevantes
+ *   - description: descrição em texto simples com 4-5 parágrafos
+ *     (intro · sobre o canal · "também no canal" placeholder · créditos · timestamps)
+ *   - hashtags: array de 12-15 hashtags em 4 camadas
+ *     (discovery alto volume + temática + mood + brand)
  *
  * Salva no projecto (project.seo) e o render.mjs grava companion file
  * <slug>-seo.json para upload posterior.
@@ -96,61 +102,57 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "Projecto sem título ou script" }, { status: 400 });
   }
 
+  const hashtagBlock = hashtagsInstruction({
+    totalCount: "12-15",
+    discoveryCount: "4-5",
+    thematicCount: "4-5",
+    moodCount: "2-3",
+  });
+
   const userMessage =
-    `Cria pacote SEO YouTube para um vídeo long-form contemplativo do canal "Escola dos Véus" ` +
-    `(Vivianne dos Santos, autora portuguesa). Audiência: mulheres entre 30-65 anos, em busca de ` +
-    `reflexão sobre herança feminina, culpa pré-verbal, vergonha doméstica, dinheiro como prova ` +
-    `de amor, silêncio entre gerações.\n\n` +
-    `Estilo: NUNCA clickbait. Nunca "TENS DE VER", "SHOCKING", "VAI MUDAR A TUA VIDA". Voz da Vivianne — ` +
-    `íntima, contemplativa, dignificante. Português europeu (PT-PT, não BR).\n\n` +
-    `Devolve JSON com:\n` +
-    `1. postTitle (≤100 chars): título YouTube. Sugere mistério ou nomeação, não promessa de resultado. ` +
-    `Ex: "Há frases que o teu corpo já sabe de cor", "O peso de quem veio antes". Pode usar 2 pontos ` +
-    `para subtítulo curto: "A culpa que herdaste : e como começar a devolvê-la".\n` +
-    `2. description (markdown, 3-4 parágrafos):\n` +
-    `   - Parágrafo 1: 2-3 frases sobre o vídeo, no tom da Vivianne. Não "neste vídeo" — descreve.\n` +
-    `   - Parágrafo 2: sobre o canal "Escola dos Véus" (1 frase) + convite a inscreverem (não-agressivo).\n` +
-    `   - Parágrafo 3: créditos breves (música: Ancient Ground; voz: ElevenLabs; imagens: Midjourney).\n` +
-    `   - Parágrafo 4: timestamps dos capítulos se relevante (ou omitir).\n` +
-    `3. hashtags (array 8-12): #escoladosveus + tags temáticas ` +
-    `(ex: #herançafeminina, #contemplação, #dignidade, #presença, #silêncio, #PTpt). Sem # nem espaços ` +
-    `nos itens — só a string da tag (a UI adiciona # depois).\n\n` +
+    `Cria pacote SEO YouTube para um vídeo LONG-FORM (15-25 min) contemplativo do canal ` +
+    `"Escola dos Véus" (Vivianne dos Santos, autora portuguesa). Audiência: mulheres entre ` +
+    `30-65 anos, em busca de reflexão sobre herança feminina, culpa pré-verbal, vergonha ` +
+    `doméstica, dinheiro como prova de amor, silêncio entre gerações.\n\n` +
+    `Estilo: NUNCA clickbait. Nunca "TENS DE VER", "SHOCKING", "VAI MUDAR A TUA VIDA". Voz da ` +
+    `Vivianne — íntima, contemplativa, dignificante. Português europeu (PT-PT, não BR).\n\n` +
+    `Devolve JSON com:\n\n` +
+    `1. postTitle (≤100 chars): título YouTube. Sugere mistério ou nomeação, não promessa de ` +
+    `resultado. Ex: "Há frases que o teu corpo já sabe de cor", "O peso de quem veio antes". ` +
+    `Pode usar 2 pontos para subtítulo curto: "A culpa que herdaste : e como começar a ` +
+    `devolvê-la". NUNCA termina com pipe + nome do canal ("| Escola dos Véus") — YouTube já ` +
+    `mostra o canal por baixo do título; o pipe come caracteres visíveis no mobile e baixa CTR.\n\n` +
+    `2. description (TEXTO SIMPLES — YouTube não renderiza markdown, asteriscos aparecem ` +
+    `literalmente. 4-5 parágrafos separados por linha em branco):\n` +
+    `   - Parágrafo 1: 2-3 frases sobre o vídeo, no tom da Vivianne. NÃO comeces com "Neste ` +
+    `vídeo" — descreve diretamente. Inclui 2-3 keywords do tema (heran[ç/c]a, culpa, ` +
+    `vergonha, etc.) — os primeiros 100 chars são o que o YouTube indexa com peso máximo.\n` +
+    `   - Parágrafo 2: 1-2 frases sobre o canal "Escola dos Véus" + convite a subscreverem ` +
+    `(não-agressivo: "Se isto te nomeou alguma coisa, subscreve para continuar a ouvir.").\n` +
+    `   - Parágrafo 3: bloco "Também no canal:" seguido de 3 linhas com placeholders no ` +
+    `formato exacto:\n` +
+    `       Também no canal:\n` +
+    `       » [[EP_ANTERIOR]]\n` +
+    `       » [[EP_RELACIONADO]]\n` +
+    `       » [[TRAILER]]\n` +
+    `     A Vivianne preenche os placeholders à mão com os títulos + URLs reais antes de ` +
+    `publicar. Mantém os 3 placeholders com EXACTAMENTE este formato [[NOME]] para grep fácil.\n` +
+    `   - Parágrafo 4: créditos breves em UMA linha: "Música: Ancient Ground · Voz: ` +
+    `ElevenLabs · Imagens: Midjourney."\n` +
+    `   - Parágrafo 5 (opcional, omitir se não fizer sentido): timestamps dos capítulos ` +
+    `no formato "0:00 — Título do capítulo".\n\n` +
+    `3. ${hashtagBlock}\n\n` +
     `TÍTULO original: "${proj.titulo}"\n` +
     `TEMA: "${proj.tema ?? "(não declarado)"}"\n\n` +
     `SCRIPT (excerto):\n${proj.script.slice(0, 4000)}`;
 
-  const client = new Anthropic({ apiKey, maxRetries: 4 });
-
-  let seo: { postTitle: string; description: string; hashtags: string[] };
+  let seo;
   try {
-    const stream = client.messages.stream({
-      model: "claude-sonnet-4-6",
-      max_tokens: 4000,
-      system:
-        "És copywriter da Vivianne dos Santos. Escreves SEO YouTube que respeita o tom contemplativo do canal — nunca clickbait, nunca promessa, sempre dignidade. Português europeu (PT-PT) sempre.",
-      messages: [{ role: "user", content: userMessage }],
-      output_config: {
-        format: {
-          type: "json_schema",
-          schema: {
-            type: "object",
-            properties: {
-              postTitle: { type: "string" },
-              description: { type: "string" },
-              hashtags: { type: "array", items: { type: "string" } },
-            },
-            required: ["postTitle", "description", "hashtags"],
-            additionalProperties: false,
-          },
-        },
-      },
+    seo = await genSeoPackage({
+      apiKey,
+      systemPrompt: SHARED_SYSTEM_PROMPT,
+      userPrompt: userMessage,
     });
-    const response = await stream.finalMessage();
-    const textBlock = response.content.find((b) => b.type === "text");
-    if (!textBlock || textBlock.type !== "text") {
-      throw new Error(`Claude sem text block. stop_reason=${response.stop_reason}`);
-    }
-    seo = JSON.parse(textBlock.text);
   } catch (e) {
     if (e instanceof Anthropic.APIError) {
       const err = e as unknown as {
