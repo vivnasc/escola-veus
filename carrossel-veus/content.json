@@ -1,6 +1,6 @@
 {
   "campanha": "A Estação dos Véus",
-  "contexto": "Status diário do WhatsApp — Maputo está a esfriar. 7 véus, 6 slides por dia. Versão luz: mesma promessa de cada véu, lado luminoso.",
+  "contexto": "Status diário do WhatsApp. Maputo está a esfriar. 7 véus, 6 slides por dia. Versão luz: mesma promessa de cada véu, lado luminoso.",
   "dias": [
     {
       "numero": 1,
@@ -32,7 +32,7 @@
           "tipo": "conteudo",
           "estilo": "prosa",
           "titulo": "Hábito da estação",
-          "texto": "Escreve uma frase por dia sobre algo que floresce em ti — mesmo que pareça mínimo."
+          "texto": "Escreve uma frase por dia sobre algo que floresce em ti, mesmo que pareça mínimo."
         },
         {
           "tipo": "cta",
@@ -57,18 +57,18 @@
         {
           "tipo": "conteudo",
           "estilo": "prosa",
-          "texto": "O frio que vem aí convida ao recolhimento. E no recolhimento, a memória vem visitar — não para te prender, para se despedir com ternura."
+          "texto": "O frio que vem aí convida ao recolhimento. E no recolhimento, a memória vem visitar. Não para te prender. Para se despedir com ternura."
         },
         {
           "tipo": "conteudo",
           "estilo": "prosa",
-          "texto": "Por baixo do Véu da Memória há uma escolha nova à tua espera. O passado é só um conselho — tu não és obrigada a segui-lo."
+          "texto": "Por baixo do Véu da Memória há uma escolha nova à tua espera. O passado é só um conselho. Tu não és obrigada a segui-lo."
         },
         {
           "tipo": "conteudo",
           "estilo": "prosa",
           "titulo": "Hábito da estação",
-          "texto": "Identifica uma história antiga sobre ti — e celebra a versão tua que já não cabe nela."
+          "texto": "Identifica uma história antiga sobre ti. Celebra a versão tua que já não cabe nela."
         },
         {
           "tipo": "conteudo",
@@ -114,7 +114,7 @@
         {
           "tipo": "conteudo",
           "estilo": "prosa",
-          "texto": "Quando o silêncio for muito, há som feito pra te acompanhar dentro dele — não pra preencher. Paisagens Interiores, em Music Véus."
+          "texto": "Quando o silêncio for muito, há som feito pra te acompanhar dentro dele, não pra preencher. Paisagens Interiores, em Music Véus."
         },
         {
           "tipo": "cta",
@@ -144,12 +144,12 @@
         {
           "tipo": "conteudo",
           "estilo": "prosa",
-          "texto": "Por baixo do Véu do Esforço, o teu corpo já sabe. Esta estação vai pedir-te calma — e isso, por si, é uma forma de chegada."
+          "texto": "Por baixo do Véu do Esforço, o teu corpo já sabe. Esta estação vai pedir-te calma. E isso, por si, é uma forma de chegada."
         },
         {
           "tipo": "conteudo",
           "estilo": "prosa",
-          "texto": "A estação fria em Maputo é breve. Usa-a pra parar, não pra acelerar. E pra cuidar do corpo com calma — sem dieta, sem culpa."
+          "texto": "A estação fria em Maputo é breve. Usa-a pra parar, não pra acelerar. E pra cuidar do corpo com calma. Sem dieta, sem culpa."
         },
         {
           "tipo": "conteudo",
@@ -196,12 +196,12 @@
         {
           "tipo": "conteudo",
           "estilo": "prosa",
-          "texto": "Há um diagnóstico gratuito que ilumina onde estás agora — corpo, mente, emoção. Sete perguntas, dois minutos. Chama-se LUMINA."
+          "texto": "Há um diagnóstico gratuito que ilumina onde estás agora: corpo, mente, emoção. Sete perguntas, dois minutos. Chama-se LUMINA."
         },
         {
           "tipo": "cta",
           "icone": "✨",
-          "recurso": "LUMINA — Diagnóstico Energético",
+          "recurso": "LUMINA · Diagnóstico",
           "descricao": "Gratuito. 2 minutos. Mostra o que estava à espera de luz.",
           "url": "app.seteecos.com/lumina"
         }
@@ -221,7 +221,7 @@
         {
           "tipo": "conteudo",
           "estilo": "prosa",
-          "texto": "Por baixo do Véu do Horizonte mora um segredo simples: a vida que esperas começar quando emagreceres, quando o livro sair, quando os filhos crescerem — já começou. Está aqui."
+          "texto": "Por baixo do Véu do Horizonte mora um segredo simples: a vida que esperas começar quando emagreceres, quando o livro sair, quando os filhos crescerem. Já começou. Está aqui."
         },
         {
           "tipo": "conteudo",
@@ -237,12 +237,12 @@
         {
           "tipo": "conteudo",
           "estilo": "prosa",
-          "texto": "Estão a chegar 10 cursos de transformação interior — Ouro Próprio, Limite Sagrado, A Arte da Inteireza, e mais. Manifesta interesse pra seres das primeiras a entrar."
+          "texto": "Estão a chegar 10 cursos de transformação interior: Ouro Próprio, Limite Sagrado, A Arte da Inteireza, e mais. Manifesta interesse pra seres das primeiras a entrar."
         },
         {
           "tipo": "cta",
           "icone": "🕯️",
-          "recurso": "Escola dos Véus — em breve",
+          "recurso": "Escola dos Véus · em breve",
           "descricao": "Manifesta interesse e recebe acesso prioritário.",
           "url": "seteveus.space/cursos"
         }
