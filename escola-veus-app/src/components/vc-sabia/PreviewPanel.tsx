@@ -10,6 +10,7 @@ import { ManualDownloadPanel } from "./ManualDownloadPanel";
 import { BulkMonthPanel } from "./BulkMonthPanel";
 import { DesignSettingsPanel, useDesignSettings } from "./DesignSettingsPanel";
 import { PhrasesPanel } from "./PhrasesPanel";
+import { PromptsLibrary } from "./PromptsLibrary";
 
 type Variant = "A" | "B" | "C";
 
@@ -23,12 +24,13 @@ function formatDatePT(d: Date) {
   return `${d.getDate()} de ${MESES_PT[d.getMonth()]} de ${d.getFullYear()}`;
 }
 
-type Tab = "bulk" | "preview" | "phrases" | "motions" | "audios" | "design";
+type Tab = "bulk" | "preview" | "phrases" | "motions" | "audios" | "design" | "prompts-mj";
 const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: "bulk", label: "Produção mensal", icon: "📦" },
   { id: "preview", label: "Preview de hoje", icon: "🎬" },
   { id: "phrases", label: "Frases", icon: "📝" },
   { id: "motions", label: "Motions", icon: "🎞" },
+  { id: "prompts-mj", label: "Prompts MJ", icon: "✨" },
   { id: "audios", label: "Áudios", icon: "🔊" },
   { id: "design", label: "Design", icon: "🎨" },
 ];
@@ -157,6 +159,8 @@ export function VcSabiaPreviewPanel() {
       {activeTab === "bulk" && <BulkMonthPanel />}
 
       {activeTab === "phrases" && <PhrasesPanel />}
+
+      {activeTab === "prompts-mj" && <PromptsLibrary />}
 
       {activeTab === "motions" && (
         <MotionLibrary
