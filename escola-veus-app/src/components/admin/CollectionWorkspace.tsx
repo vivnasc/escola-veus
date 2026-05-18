@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as htmlToImage from "html-to-image";
 import JSZip from "jszip";
 import { Slide } from "@/app/admin/producao/carrossel-veus/Slide";
-import { EditModal, FullscreenSlide } from "./CarouselEditor";
+import { EditModal, FullscreenSlide, InlineFundoControl } from "./CarouselEditor";
 import type { Dia, Slide as SlideType } from "@/lib/carousel-types";
 import { audioKey, captionFor, deriveText, tipoLabel } from "@/lib/carousel-helpers";
 import { DEFAULT_THEME, type CarouselTheme, THEMES } from "@/lib/carousel-themes";
@@ -797,6 +797,39 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
                   );
                 })}
               </div>
+
+              {/* Imagens MJ — só capa + fecho. Slides internos partilham o
+                  ambiente do dia ou ficam sem fundo. */}
+              {(() => {
+                const capaIdx = dia.slides.findIndex((s) => s.tipo === "capa");
+                const ctaIdx = dia.slides.findIndex((s) => s.tipo === "cta");
+                if (capaIdx < 0 && ctaIdx < 0) return null;
+                return (
+                  <div className="mt-4 rounded-lg border border-escola-border/40 bg-escola-bg/30 p-3">
+                    <p className="mb-2 text-[11px] uppercase tracking-wider text-escola-creme-50">
+                      Imagens MJ deste dia · só capa + fecho
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      {capaIdx >= 0 && (
+                        <InlineFundoControl
+                          dia={dia}
+                          slide={dia.slides[capaIdx]}
+                          slideIdx={capaIdx}
+                          onChange={(patch) => updateSlide(diaIdx, capaIdx, patch)}
+                        />
+                      )}
+                      {ctaIdx >= 0 && (
+                        <InlineFundoControl
+                          dia={dia}
+                          slide={dia.slides[ctaIdx]}
+                          slideIdx={ctaIdx}
+                          onChange={(patch) => updateSlide(diaIdx, ctaIdx, patch)}
+                        />
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           ))}
         </div>

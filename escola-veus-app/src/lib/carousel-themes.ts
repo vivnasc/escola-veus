@@ -20,6 +20,44 @@ export type CarouselTheme = {
 };
 
 export const THEMES: CarouselTheme[] = [
+  // ── Paletas anti-candy (Maio 2026). Aplicação na dropdown 🎨 Paleta do editor.
+  {
+    id: "editorial",
+    label: "A · Editorial sóbrio",
+    ink: "#26221c",
+    ivory: "#f3ece0",
+    parchmentDark: "#d8d0c1",
+    deep: "#1a1714",
+    deepWarm: "#2a2520",
+    terracotta: "#8a8378",
+    gold: "#b69a6e",
+    mist: "rgba(243, 236, 224, 0.65)",
+  },
+  {
+    id: "luz",
+    label: "B · Dual — modo LUZ",
+    ink: "#2a2118",
+    ivory: "#f5ead5",
+    parchmentDark: "#dccbab",
+    deep: "#1c150e",
+    deepWarm: "#2e2418",
+    terracotta: "#a8704a",
+    gold: "#c9a14a",
+    mist: "rgba(245, 234, 213, 0.70)",
+  },
+  {
+    id: "sombra",
+    label: "B · Dual — modo SOMBRA",
+    ink: "#e8dcc0",
+    ivory: "#0f0f1a",
+    parchmentDark: "#1a1a26",
+    deep: "#06070d",
+    deepWarm: "#13141f",
+    terracotta: "#b08458",
+    gold: "#d4b46a",
+    mist: "rgba(232, 220, 192, 0.55)",
+  },
+  // ── Paletas antigas, mantidas por compatibilidade com coleções já criadas.
   {
     id: "veus",
     label: "Clássica (creme + ouro)",

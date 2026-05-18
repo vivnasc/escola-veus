@@ -193,26 +193,8 @@ export function EditModal({
             </>
           )}
 
-          {!isDia && slide && (
-            <FundoMJSection
-              dia={dia}
-              slide={slide}
-              slideIdx={slideIdx}
-              draftSlide={
-                slide.tipo === "capa"
-                  ? { tipo: "capa", linha1, linha2, notaVisual, fundo, fundoClaro }
-                  : slide.tipo === "conteudo"
-                  ? { tipo: "conteudo", estilo, titulo, texto, notaVisual, fundo, fundoClaro }
-                  : { tipo: "cta", icone, recurso, descricao, url, notaVisual, fundo, fundoClaro }
-              }
-              fundo={fundo}
-              fundoClaro={fundoClaro}
-              notaVisual={notaVisual}
-              onFundoChange={setFundo}
-              onFundoClaroChange={setFundoClaro}
-              onNotaVisualChange={setNotaVisual}
-            />
-          )}
+          {/* Fundo MJ vive agora INLINE na grelha do CollectionWorkspace
+              (só para capa + cta). Não duplicar aqui. */}
         </div>
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-2">
@@ -260,6 +242,163 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       </span>
       {children}
     </label>
+  );
+}
+
+/**
+ * Controle inline para o Fundo MJ — pensado para viver directamente na
+ * grelha do CollectionWorkspace, sob a capa e o CTA de cada dia.
+ *
+ * Mostra: id do asset, prompt MJ derivado, botão copiar, dropzone, thumbnail
+ * + remover. Sem modal, sem draft — quando arrastas a imagem, o slide é
+ * atualizado imediatamente via onChange (que dispara o save automático
+ * do parent).
+ *
+ * Para os slides internos (poetico/prosa) este componente NÃO se renderiza
+ * (decisão de UX — só capa+cta precisam de imagem MJ; os internos partilham
+ * o ambiente do dia ou ficam sem fundo).
+ */
+export function InlineFundoControl({
+  dia,
+  slide,
+  slideIdx,
+  onChange,
+}: {
+  dia: Dia;
+  slide: SlideType;
+  slideIdx: number;
+  onChange: (patch: Partial<SlideType>) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+  const [copiou, setCopiou] = useState(false);
+
+  const prompt = buildSlidePrompt(slide, dia);
+  const assetId = slideAssetId(dia, slideIdx);
+  const fundo = slide.fundo ?? "";
+  const fundoClaro = !!slide.fundoClaro;
+
+  async function uploadFiles(files: FileList | File[]) {
+    setErro(null);
+    const img = Array.from(files).find((f) => /\.(jpe?g|png|webp)$/i.test(f.name));
+    if (!img) {
+      setErro("Arrasta um ficheiro .jpg / .png / .webp");
+      return;
+    }
+    setBusy(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", img);
+      fd.append("slideId", assetId);
+      const r = await fetch("/api/admin/carrossel-veus/upload-fundo", {
+        method: "POST",
+        body: fd,
+      });
+      const json = (await r.json()) as { url?: string; erro?: string };
+      if (!r.ok || !json.url) throw new Error(json.erro || "Upload falhou");
+      onChange({ fundo: json.url } as Partial<SlideType>);
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function onDrop(e: React.DragEvent) {
+    e.preventDefault();
+    if (e.dataTransfer.files?.length) uploadFiles(e.dataTransfer.files);
+  }
+  function onPick(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files?.length) uploadFiles(e.target.files);
+  }
+  async function copiar() {
+    try {
+      await navigator.clipboard.writeText(prompt);
+      setCopiou(true);
+      setTimeout(() => setCopiou(false), 1500);
+    } catch {
+      setErro("Não consegui copiar. Usa cmd/ctrl-C manualmente.");
+    }
+  }
+
+  const role = slide.tipo === "capa" ? "Capa" : slide.tipo === "cta" ? "Fecho (CTA)" : "Slide";
+
+  return (
+    <div
+      onDrop={onDrop}
+      onDragOver={(e) => e.preventDefault()}
+      className="rounded-lg border border-escola-border/60 bg-escola-bg/40 p-3 space-y-2"
+    >
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[11px] uppercase tracking-wider text-escola-dourado">
+          {role} · {assetId}
+        </span>
+        <label className="flex items-center gap-1 text-[10px] text-escola-creme-50">
+          <input
+            type="checkbox"
+            checked={fundoClaro}
+            onChange={(e) => onChange({ fundoClaro: e.target.checked } as Partial<SlideType>)}
+          />
+          base clara
+        </label>
+      </div>
+
+      <div className="relative">
+        <textarea
+          value={prompt}
+          readOnly
+          rows={3}
+          className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1 text-[11px] leading-snug text-escola-creme-50"
+        />
+        <button
+          type="button"
+          onClick={copiar}
+          className="absolute right-1 top-1 rounded bg-escola-card/80 px-2 py-0.5 text-[10px] text-escola-creme hover:bg-escola-bg-light"
+        >
+          {copiou ? "✓" : "Copiar"}
+        </button>
+      </div>
+
+      {fundo ? (
+        <div className="flex items-center gap-3 rounded bg-escola-card/40 p-2">
+          <img
+            src={fundo}
+            alt={assetId}
+            className="h-16 w-9 rounded border border-escola-border object-cover"
+          />
+          <div className="min-w-0 flex-1 text-[10px] text-escola-creme-50">
+            <p className="truncate" title={fundo}>
+              {fundo.split("/").pop()?.split("?")[0]}
+            </p>
+            <p className="mt-0.5 text-[9px] opacity-60">Arrasta nova imagem para substituir</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onChange({ fundo: undefined } as Partial<SlideType>)}
+            className="rounded border border-red-700/40 px-2 py-1 text-[10px] text-red-300 hover:border-red-500"
+          >
+            remover
+          </button>
+        </div>
+      ) : (
+        <label className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded border-2 border-dashed border-escola-border bg-escola-card/40 p-3 text-center text-[11px] text-escola-creme-50 hover:border-escola-dourado/50">
+          <span>{busy ? "A carregar…" : "Arrasta JPG/PNG/WebP — ou clica para escolher"}</span>
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={onPick}
+            disabled={busy}
+            className="hidden"
+          />
+        </label>
+      )}
+
+      {erro && (
+        <div className="rounded border border-red-700/40 bg-red-900/20 p-2 text-[10px] text-red-300">
+          {erro}
+        </div>
+      )}
+    </div>
   );
 }
 
