@@ -95,7 +95,7 @@ function main() {
       ? `  ·  *${e.especial.replace("_", " ")}*`
       : "";
     lines.push(
-      `## DIA ${String(dayCounter).padStart(3, "0")} · ${DOW_PT[e.dia]} ${e.iso} · ${e.prompt.id}${especialBadge}`
+      `## DIA ${String(dayCounter).padStart(3, "0")} · ${DOW_PT[e.dia]} ${e.iso} · ${e.category.id} v${e.variantIdx + 1}${especialBadge}`
     );
     lines.push("");
     lines.push(`**Frase:** *${e.fraseTexto}*`);
@@ -107,19 +107,19 @@ function main() {
           ? `🎨 por mood`
           : `ciclo`;
     lines.push(
-      `**Alinhamento:** ${matchLabel}  ·  **Áudio:** \`${e.prompt.audioMood}\`  ·  **Frase id:** \`${e.fraseId}\``
+      `**Alinhamento:** ${matchLabel}  ·  **Áudio:** \`${e.category.audioMood}\`  ·  **Frase id:** \`${e.fraseId}\``
     );
     lines.push("");
     lines.push("### Prompt Midjourney");
     lines.push("");
     lines.push("```");
-    lines.push(e.prompt.prompt);
+    lines.push(e.promptText);
     lines.push("```");
     lines.push("");
     lines.push("### Runway motion");
     lines.push("");
     lines.push("```");
-    lines.push(e.prompt.runwayMotion);
+    lines.push(e.runwayMotion);
     lines.push("```");
     lines.push("");
     lines.push("---");
