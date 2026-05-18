@@ -37,6 +37,7 @@ import {
   MOOD_ESPECIAL,
   moodFromAudioUrl,
 } from "@/lib/hoje-em-mim/pairing";
+import { dailyMjRotation } from "@/lib/hoje-em-mim/calendar";
 
 type Frase = { id: string; dia: DiaSemana; texto: string };
 
@@ -3012,6 +3013,7 @@ function MjPromptsSection({
   copied: string | null;
   onCopy: (key: string, text: string) => void;
 }) {
+  const [view, setView] = useState<"browse" | "calendar">("browse");
   const [onlyPrior, setOnlyPrior] = useState(false);
   const list = onlyPrior ? MJ_VIDEO_PROMPTS.filter((p) => p.prioritario) : MJ_VIDEO_PROMPTS;
   const totalShown = list.length;
@@ -3020,36 +3022,220 @@ function MjPromptsSection({
   return (
     <section className="space-y-3">
       <div className="flex items-baseline justify-between gap-3 flex-wrap">
-        <h2 className="font-serif text-lg" style={{ color: COBRE }}>
-          Library de clips. {totalShown} de {totalAll} prompts
-        </h2>
-        <label className="flex items-center gap-2 text-xs text-escola-creme-50">
-          <input
-            type="checkbox"
-            checked={onlyPrior}
-            onChange={(e) => setOnlyPrior(e.target.checked)}
-          />
-          mostrar só os 5 prioritários ★
-        </label>
+        <div>
+          <h2 className="font-serif text-lg" style={{ color: COBRE }}>
+            Library de clips. {totalShown} de {totalAll} prompts
+          </h2>
+          <p className="text-xs text-escola-creme-50">
+            30 prompts no total (1 por dia, com folga para 1 mês). Cada cartão tem
+            o prompt Midjourney 9:16 e o mood ElevenLabs sugerido.
+          </p>
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex gap-1 rounded-md border border-escola-border bg-escola-card p-0.5">
+            <button
+              onClick={() => setView("browse")}
+              className={`rounded px-3 py-1 text-xs ${
+                view === "browse"
+                  ? "text-escola-dourado"
+                  : "text-escola-creme-50 hover:text-escola-creme"
+              }`}
+              style={view === "browse" ? { background: "rgba(212, 168, 83, 0.15)" } : undefined}
+            >
+              Browse
+            </button>
+            <button
+              onClick={() => setView("calendar")}
+              className={`rounded px-3 py-1 text-xs ${
+                view === "calendar"
+                  ? "text-escola-dourado"
+                  : "text-escola-creme-50 hover:text-escola-creme"
+              }`}
+              style={view === "calendar" ? { background: "rgba(212, 168, 83, 0.15)" } : undefined}
+            >
+              📅 Calendário 6 meses
+            </button>
+          </div>
+          {view === "browse" && (
+            <label className="flex items-center gap-2 text-xs text-escola-creme-50">
+              <input
+                type="checkbox"
+                checked={onlyPrior}
+                onChange={(e) => setOnlyPrior(e.target.checked)}
+              />
+              só os 5 prioritários ★
+            </label>
+          )}
+        </div>
       </div>
-      <p className="text-xs text-escola-creme-50">
-        30 prompts no total (1 por dia, com folga para 1 mês). Cada cartão tem
-        o prompt Midjourney 9:16 e o mood ElevenLabs sugerido. Copia o MJ e
-        gera o vídeo. O áudio gera direto aqui com o teu API key ElevenLabs
-        configurado.
-      </p>
 
-      <div className="grid gap-3 md:grid-cols-2">
-        {list.map((p) => (
-          <PromptCard
-            key={p.id}
-            prompt={p}
-            copied={copied}
-            onCopy={onCopy}
-          />
-        ))}
-      </div>
+      {view === "browse" ? (
+        <div className="grid gap-3 md:grid-cols-2">
+          {list.map((p) => (
+            <PromptCard
+              key={p.id}
+              prompt={p}
+              copied={copied}
+              onCopy={onCopy}
+            />
+          ))}
+        </div>
+      ) : (
+        <MjCalendarView copied={copied} onCopy={onCopy} />
+      )}
     </section>
+  );
+}
+
+function MjCalendarView({
+  copied,
+  onCopy,
+}: {
+  copied: string | null;
+  onCopy: (key: string, text: string) => void;
+}) {
+  const today = new Date();
+  const defaultStart = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const [startDate, setStartDate] = useState<string>(defaultStart);
+  const [days, setDays] = useState<number>(180);
+
+  const rotation = useMemo(() => {
+    const [y, m, d] = startDate.split("-").map(Number);
+    if (!y || !m || !d) return [];
+    return dailyMjRotation(new Date(Date.UTC(y, m - 1, d)), days);
+  }, [startDate, days]);
+
+  const byMonth = useMemo(() => {
+    const groups = new Map<string, typeof rotation>();
+    for (const r of rotation) {
+      const key = `${r.date.getUTCFullYear()}-${String(r.date.getUTCMonth() + 1).padStart(2, "0")}`;
+      const list = groups.get(key) || [];
+      list.push(r);
+      groups.set(key, list);
+    }
+    return Array.from(groups.entries());
+  }, [rotation]);
+
+  const monthsPT = MESES_PT;
+
+  // Conta uso de cada prompt para detectar prompts pouco usados
+  const usageCount = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const r of rotation) m.set(r.prompt.id, (m.get(r.prompt.id) ?? 0) + 1);
+    return m;
+  }, [rotation]);
+  const totalPrompts = MJ_VIDEO_PROMPTS.length;
+  const usedPrompts = usageCount.size;
+
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-wrap items-end gap-3 rounded-lg border border-escola-border bg-escola-card/40 p-3">
+        <label className="flex flex-col gap-1 text-xs text-escola-creme-50">
+          Data de início
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-xs text-escola-creme-50">
+          Nº de dias
+          <input
+            type="number"
+            min={7}
+            max={365}
+            value={days}
+            onChange={(e) =>
+              setDays(Math.max(7, Math.min(365, Number(e.target.value))))
+            }
+            className="w-24 rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
+          />
+        </label>
+        <div className="ml-auto text-[10px] text-escola-creme-50">
+          {rotation.length} dias · {usedPrompts}/{totalPrompts} prompts em rotação
+        </div>
+      </div>
+
+      {byMonth.map(([key, entries]) => {
+        const [y, m] = key.split("-").map(Number);
+        return (
+          <div
+            key={key}
+            className="rounded-lg border border-escola-border bg-escola-card/40 p-3"
+          >
+            <h3 className="mb-2 text-sm font-medium" style={{ color: COBRE }}>
+              {monthsPT[m - 1]} {y} · {entries.length} dias
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-[11px] text-escola-creme-50">
+                <thead className="text-escola-creme">
+                  <tr>
+                    <th className="px-2 py-1 text-left">Data</th>
+                    <th className="px-2 py-1 text-left">Dia</th>
+                    <th className="px-2 py-1 text-left">Prompt MJ</th>
+                    <th className="px-2 py-1 text-left">Mood áudio</th>
+                    <th className="px-2 py-1 text-right"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map((r) => {
+                    const key = `cal-${r.iso}`;
+                    return (
+                      <tr
+                        key={key}
+                        className="border-t border-escola-border/30 align-top"
+                      >
+                        <td className="px-2 py-1 whitespace-nowrap">
+                          {r.date.getUTCDate()}
+                          {r.especial && (
+                            <div className="text-[9px]" style={{ color: COBRE }}>
+                              {r.especial}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-2 py-1 whitespace-nowrap">
+                          {DIA_LONGO_PT[r.dia]}
+                        </td>
+                        <td className="px-2 py-1">
+                          <div className="text-escola-creme">{r.prompt.id}</div>
+                          {r.prompt.prioritario && (
+                            <span className="text-[9px] text-escola-dourado">★ prioritário</span>
+                          )}
+                        </td>
+                        <td className="px-2 py-1 text-[10px]">
+                          <span
+                            className="rounded px-1 py-0.5"
+                            style={{
+                              background: "rgba(194, 143, 96, 0.15)",
+                              color: COBRE,
+                            }}
+                          >
+                            {r.prompt.audioMood}
+                          </span>
+                        </td>
+                        <td className="px-2 py-1 text-right">
+                          <button
+                            onClick={() => onCopy(key, r.prompt.prompt)}
+                            className="rounded border px-2 py-0.5 text-[10px] hover:opacity-80"
+                            style={{
+                              borderColor: COBRE_FRACO,
+                              color: COBRE,
+                            }}
+                          >
+                            {copied === key ? "✓" : "⌘ MJ"}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
