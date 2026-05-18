@@ -157,17 +157,23 @@ function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "
   }, [dia.veu]);
 
   const fundoUrl = slide.fundo ?? dia.fundo;
+  // Modo luz: capa fica ivory (em vez de deep). Texto fica ink.
+  const luz = C.mode === "luz";
+  const bg = luz
+    ? `radial-gradient(ellipse 70% 50% at 50% 35%, ${C.ivory} 0%, ${C.parchmentDark} 70%)`
+    : `radial-gradient(ellipse 70% 50% at 50% 35%, ${C.deepWarm} 0%, ${C.deep} 70%)`;
+  const txt = luz ? C.ink : C.ivory;
   return (
     <div
       style={{
         ...slideBase,
-        background: `radial-gradient(ellipse 70% 50% at 50% 35%, ${C.deepWarm} 0%, ${C.deep} 70%)`,
-        color: C.ivory,
+        background: bg,
+        color: txt,
       }}
     >
-      {fundoUrl && <FundoLayer url={fundoUrl} claro={slide.fundoClaro} />}
-      <div style={grainDarkStyle} />
-      <div style={vignetteDark} />
+      {fundoUrl && <FundoLayer url={fundoUrl} claro={luz || slide.fundoClaro} />}
+      <div style={luz ? grainStyle : grainDarkStyle} />
+      <div style={luz ? vignetteLight : vignetteDark} />
       <div style={glowGold} />
       <div
         style={{
@@ -312,21 +318,27 @@ function Conteudo({
   const ePoetico = slide.estilo === "poetico";
   const longo = slide.texto.length > 200;
   const fundoUrl = slide.fundo ?? dia.fundo;
-  // Conteúdo tem texto escuro sobre base clara → scrim "claro" por default
-  // (escurece o fundo o suficiente? não: aqui queremos clarear o fundo).
-  const fundoClaro = slide.fundoClaro ?? true;
+  const sombra = C.mode === "sombra";
+  const luz = C.mode === "luz";
+  // Conteúdo: default base clara. Modo sombra força fundo escuro + texto claro.
+  const fundoClaro = sombra ? !!slide.fundoClaro : slide.fundoClaro ?? true;
+  const bg = sombra
+    ? `radial-gradient(ellipse 80% 70% at 50% 50%, ${C.deepWarm} 0%, ${C.deep} 100%)`
+    : `radial-gradient(ellipse 80% 70% at 50% 50%, ${C.ivory} 0%, ${C.parchmentDark} 100%)`;
+  const txt = sombra ? C.ivory : C.ink;
+  void luz;
 
   return (
     <div
       style={{
         ...slideBase,
-        background: `radial-gradient(ellipse 80% 70% at 50% 50%, ${C.ivory} 0%, ${C.parchmentDark} 100%)`,
-        color: C.ink,
+        background: bg,
+        color: txt,
       }}
     >
       {fundoUrl && <FundoLayer url={fundoUrl} claro={fundoClaro} />}
-      <div style={grainStyle} />
-      <div style={vignetteLight} />
+      <div style={sombra ? grainDarkStyle : grainStyle} />
+      <div style={sombra ? vignetteDark : vignetteLight} />
 
       <div
         style={{
@@ -513,17 +525,22 @@ function Cta({ slide, C }: { slide: Extract<SlideType, { tipo: "cta" }>; C: Caro
   }, [slide.recurso]);
 
   const fundoUrl = slide.fundo;
+  const luz = C.mode === "luz";
+  const bg = luz
+    ? `radial-gradient(ellipse 70% 60% at 50% 50%, ${C.ivory} 0%, ${C.parchmentDark} 80%)`
+    : `radial-gradient(ellipse 70% 60% at 50% 50%, ${C.deepWarm} 0%, ${C.deep} 80%)`;
+  const txt = luz ? C.ink : C.ivory;
   return (
     <div
       style={{
         ...slideBase,
-        background: `radial-gradient(ellipse 70% 60% at 50% 50%, ${C.deepWarm} 0%, ${C.deep} 80%)`,
-        color: C.ivory,
+        background: bg,
+        color: txt,
       }}
     >
-      {fundoUrl && <FundoLayer url={fundoUrl} claro={slide.fundoClaro} />}
-      <div style={grainDarkStyle} />
-      <div style={vignetteDark} />
+      {fundoUrl && <FundoLayer url={fundoUrl} claro={luz || slide.fundoClaro} />}
+      <div style={luz ? grainStyle : grainDarkStyle} />
+      <div style={luz ? vignetteLight : vignetteDark} />
       <div style={glowTerra} />
       <div
         style={{

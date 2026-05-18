@@ -582,10 +582,20 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
       )}
 
       {/* ─── VOZES ──────────────────────────────────── */}
-      <section className="mb-10 rounded-lg border border-escola-border bg-escola-card p-5">
+      {/* Colapsado por defeito — só interessa quando vai gerar vídeo.
+          A leitora vê slides primeiro; abre vozes quando precisar. */}
+      <details className="mb-10 rounded-lg border border-escola-border bg-escola-card">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 px-5 py-3 text-sm text-escola-creme hover:bg-escola-bg-light">
+          <span className="font-serif text-base">Vozes (ElevenLabs)</span>
+          <span className="text-xs text-escola-creme-50">
+            {withoutVoice
+              ? "modo sem voz activo"
+              : `${audiosCount}/${totalSlides} geradas — clica para expandir`}
+          </span>
+        </summary>
+        <div className="border-t border-escola-border px-5 py-4">
         <header className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <h3 className="font-serif text-lg text-escola-creme">1. Vozes (ElevenLabs)</h3>
             <p className="text-xs text-escola-creme-50">
               {withoutVoice ? (
                 <>
@@ -727,7 +737,8 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
             </details>
           ))}
         </div>
-      </section>
+        </div>
+      </details>
 
       {/* ─── SLIDES ─────────────────────────────────── */}
       <section className="mb-10">
