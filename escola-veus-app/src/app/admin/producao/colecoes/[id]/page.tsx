@@ -134,6 +134,13 @@ export default function ColecaoEditor({ params }: { params: Promise<{ id: string
           ← colecções
         </Link>
         <span>/ {col.slug}</span>
+        <Link
+          href={`/admin/producao/colecoes/${col.id}/metricool`}
+          className="ml-3 rounded border border-escola-dourado/40 px-2 py-0.5 text-[11px] text-escola-dourado hover:bg-escola-dourado/10"
+          title="Exportar CSV Metricool desta coleção (Instagram Reel + TikTok)"
+        >
+          📊 CSV Metricool
+        </Link>
         <span className="ml-auto">
           {saving ? "a guardar…" : dirty ? "alterações por guardar" : "✓ guardado"}
         </span>
