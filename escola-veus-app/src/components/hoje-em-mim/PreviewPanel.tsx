@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import seed from "@/data/hoje-em-mim-frases.seed.json";
-import { MJ_VIDEO_PROMPTS } from "@/data/hoje-em-mim-mj-prompts";
+import { MJ_VIDEO_PROMPTS, buildMjPrompt } from "@/data/hoje-em-mim-mj-prompts";
 import { HEM_THEMES, getTheme, DEFAULT_THEME_ID } from "@/lib/hoje-em-mim/themes";
 import {
   DIA_LONGO_PT,
@@ -2184,7 +2184,7 @@ function RunwayPipelineSection() {
       return {
         id: img.name,
         imageUrl: img.url,
-        scene: mj?.prompt,
+        scene: mj ? buildMjPrompt(mj, 0) : undefined,
         currentPrompt: motionByImage[img.name] ?? mj?.runwayMotion ?? "",
       };
     });
@@ -2574,7 +2574,14 @@ function RunwayPipelineSection() {
                 <ClaudeReviewButton
                   imageUrl={img.url}
                   currentPrompt={motion}
-                  scene={promptId ? MJ_VIDEO_PROMPTS.find((p) => p.id === promptId)?.prompt : undefined}
+                  scene={
+                    promptId
+                      ? (() => {
+                          const c = MJ_VIDEO_PROMPTS.find((p) => p.id === promptId);
+                          return c ? buildMjPrompt(c, 0) : undefined;
+                        })()
+                      : undefined
+                  }
                   onAccept={(newPrompt) =>
                     setMotionByImage((m) => ({ ...m, [img.name]: newPrompt }))
                   }
@@ -3252,8 +3259,10 @@ function MjCalendarView({
                           )}
                         </td>
                         <td className="px-2 py-1">
-                          <div className="text-escola-creme">{r.prompt.id}</div>
-                          {r.prompt.prioritario && (
+                          <div className="text-escola-creme">
+                            {r.category.id} <span className="text-[9px] text-escola-creme-50">v{r.variantIdx + 1}</span>
+                          </div>
+                          {r.category.prioritario && (
                             <span className="text-[9px] text-escola-dourado">★</span>
                           )}
                         </td>
@@ -3265,12 +3274,12 @@ function MjCalendarView({
                               color: COBRE,
                             }}
                           >
-                            {r.prompt.audioMood}
+                            {r.category.audioMood}
                           </span>
                         </td>
                         <td className="px-2 py-1 text-right">
                           <button
-                            onClick={() => onCopy(k, r.prompt.prompt)}
+                            onClick={() => onCopy(k, r.promptText)}
                             className="rounded border px-2 py-0.5 text-[10px] hover:opacity-80"
                             style={{
                               borderColor: COBRE_FRACO,
@@ -3338,7 +3347,7 @@ function buildCalendarMarkdown(
     }
     const especialBadge = e.especial ? `  ·  *${e.especial.replace("_", " ")}*` : "";
     lines.push(
-      `## DIA ${String(dayCounter).padStart(3, "0")} · ${dowPt[e.dia]} ${e.iso} · ${e.prompt.id}${especialBadge}`
+      `## DIA ${String(dayCounter).padStart(3, "0")} · ${dowPt[e.dia]} ${e.iso} · ${e.category.id} v${e.variantIdx + 1}${especialBadge}`
     );
     lines.push("");
     lines.push(`**Frase:** *${e.fraseTexto}*`);
@@ -3350,19 +3359,19 @@ function buildCalendarMarkdown(
           ? `🎨 por mood`
           : `ciclo`;
     lines.push(
-      `**Alinhamento:** ${matchLabel}  ·  **Áudio:** \`${e.prompt.audioMood}\`  ·  **Frase id:** \`${e.fraseId}\``
+      `**Alinhamento:** ${matchLabel}  ·  **Áudio:** \`${e.category.audioMood}\`  ·  **Frase id:** \`${e.fraseId}\``
     );
     lines.push("");
     lines.push("### Prompt Midjourney");
     lines.push("");
     lines.push("```");
-    lines.push(e.prompt.prompt);
+    lines.push(e.promptText);
     lines.push("```");
     lines.push("");
     lines.push("### Runway motion");
     lines.push("");
     lines.push("```");
-    lines.push(e.prompt.runwayMotion);
+    lines.push(e.runwayMotion);
     lines.push("```");
     lines.push("");
     lines.push("---");
@@ -3459,21 +3468,52 @@ function PromptCard({
 
       <div className="rounded border border-escola-border bg-escola-bg p-2">
         <div className="mb-1 flex items-center justify-between">
-          <span className="text-[10px] text-escola-creme-50">Midjourney (imagem)</span>
+          <span className="text-[10px] text-escola-creme-50">
+            Midjourney (imagem) · {prompt.subjects.length} variantes
+          </span>
           <button
-            onClick={() => onCopy(keyMj, prompt.prompt)}
+            onClick={() => onCopy(keyMj, buildMjPrompt(prompt, 0))}
             className={`rounded px-1.5 py-0.5 text-[10px] transition-colors ${
               copied === keyMj
                 ? "bg-escola-dourado text-escola-bg"
                 : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
             }`}
           >
-            {copied === keyMj ? "✓" : "Copiar"}
+            {copied === keyMj ? "✓" : "Copiar v1"}
           </button>
         </div>
         <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
-          {prompt.prompt}
+          {buildMjPrompt(prompt, 0)}
         </pre>
+        {prompt.subjects.length > 1 && (
+          <details className="mt-1">
+            <summary className="cursor-pointer text-[9px] text-escola-creme-50 hover:text-escola-creme">
+              Ver {prompt.subjects.length - 1} variantes adicionais
+            </summary>
+            <div className="mt-1 space-y-1">
+              {prompt.subjects.slice(1).map((_, idx) => {
+                const vIdx = idx + 1;
+                const vKey = `mj-${prompt.id}-v${vIdx}`;
+                return (
+                  <div key={vIdx} className="rounded border border-escola-border/40 p-1.5">
+                    <div className="mb-0.5 flex items-center justify-between">
+                      <span className="text-[9px] text-escola-creme-50">v{vIdx + 1}</span>
+                      <button
+                        onClick={() => onCopy(vKey, buildMjPrompt(prompt, vIdx))}
+                        className="rounded border border-escola-border px-1 text-[9px] text-escola-creme-50 hover:text-escola-creme"
+                      >
+                        {copied === vKey ? "✓" : "copiar"}
+                      </button>
+                    </div>
+                    <pre className="whitespace-pre-wrap break-words font-mono text-[9px] leading-snug text-escola-creme-50">
+                      {buildMjPrompt(prompt, vIdx)}
+                    </pre>
+                  </div>
+                );
+              })}
+            </div>
+          </details>
+        )}
       </div>
 
       <div className="rounded border border-escola-border bg-escola-bg p-2">

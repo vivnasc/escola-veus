@@ -20,7 +20,11 @@
  */
 
 import seed from "@/data/hoje-em-mim-frases.seed.json";
-import { MJ_VIDEO_PROMPTS, type MjVideoPrompt } from "@/data/hoje-em-mim-mj-prompts";
+import {
+  MJ_VIDEO_PROMPTS,
+  buildMjPrompt,
+  type MjVideoPrompt,
+} from "@/data/hoje-em-mim-mj-prompts";
 import {
   detectDiaEspecial,
   type DiaSemana,
@@ -37,7 +41,16 @@ export type CalendarEntry = {
   especial: DiaEspecial | null;
   fraseId: string;
   fraseTexto: string;
-  prompt: MjVideoPrompt;
+  /** Categoria escolhida para o dia (cada categoria tem N subjects). */
+  category: MjVideoPrompt;
+  /** Índice da variante dentro da categoria (0..subjects.length-1).
+   *  Cada vez que uma categoria é escolhida o cursor avança, para que
+   *  dois dias da mesma categoria recebam subjects diferentes. */
+  variantIdx: number;
+  /** Prompt MJ completo (subject + style suffix). */
+  promptText: string;
+  /** Motion Runway (igual a category.runwayMotion). */
+  runwayMotion: string;
   matchMode: MatchMode;
   matchedKeyword?: string;
 };
@@ -106,8 +119,11 @@ export function dailyMjRotation(
   const especialCursor: Record<DiaEspecial, number> = {
     fim_mes: 0, inicio_mes: 0, fim_ano: 0, inicio_ano: 0,
   };
-  // Cursor por prompt para variar dentro da mesma categoria entre dias
-  // que matcham o mesmo prompt
+  // Cursor de variante por categoria: cada vez que uma categoria é
+  // escolhida, o próximo subject (variante) é usado. Garante que
+  // dias diferentes que matcham a mesma categoria recebem subjects
+  // diferentes — visualização única em 180 dias.
+  const variantCursor = new Map<string, number>();
   const promptUseCount = new Map<string, number>();
   const moodCursor: Record<string, number> = {};
   let fallbackCursor = 0;
@@ -140,13 +156,13 @@ export function dailyMjRotation(
     }
 
     // Match: keyword → mood → fallback
-    let prompt: MjVideoPrompt | null = null;
+    let category: MjVideoPrompt | null = null;
     let matchMode: MatchMode = "fallback";
     let matchedKeyword: string | undefined;
 
     const kwHit = matchByKeyword(frase.texto);
     if (kwHit) {
-      prompt = kwHit.prompt;
+      category = kwHit.prompt;
       matchMode = "keyword";
       matchedKeyword = kwHit.keyword;
     } else {
@@ -155,18 +171,20 @@ export function dailyMjRotation(
         const inMood = MJ_VIDEO_PROMPTS.filter((p) => p.audioMood === m);
         if (inMood.length === 0) continue;
         const cur = moodCursor[m] ?? 0;
-        prompt = inMood[cur % inMood.length];
+        category = inMood[cur % inMood.length];
         moodCursor[m] = cur + 1;
         matchMode = "mood";
         break;
       }
-      if (!prompt) {
-        prompt = MJ_VIDEO_PROMPTS[fallbackCursor % MJ_VIDEO_PROMPTS.length];
+      if (!category) {
+        category = MJ_VIDEO_PROMPTS[fallbackCursor % MJ_VIDEO_PROMPTS.length];
         fallbackCursor++;
       }
     }
 
-    promptUseCount.set(prompt.id, (promptUseCount.get(prompt.id) ?? 0) + 1);
+    const variantIdx = variantCursor.get(category.id) ?? 0;
+    variantCursor.set(category.id, variantIdx + 1);
+    promptUseCount.set(category.id, (promptUseCount.get(category.id) ?? 0) + 1);
 
     out.push({
       date: d,
@@ -175,7 +193,10 @@ export function dailyMjRotation(
       especial,
       fraseId: frase.id,
       fraseTexto: frase.texto,
-      prompt,
+      category,
+      variantIdx: variantIdx % category.subjects.length,
+      promptText: buildMjPrompt(category, variantIdx),
+      runwayMotion: category.runwayMotion,
       matchMode,
       matchedKeyword,
     });
@@ -195,7 +216,7 @@ export function rotationStats(entries: CalendarEntry[]): {
     fallback: 0,
   };
   for (const e of entries) {
-    byPrompt.set(e.prompt.id, (byPrompt.get(e.prompt.id) ?? 0) + 1);
+    byPrompt.set(e.category.id, (byPrompt.get(e.category.id) ?? 0) + 1);
     byMode[e.matchMode]++;
   }
   return { byPrompt, byMode };

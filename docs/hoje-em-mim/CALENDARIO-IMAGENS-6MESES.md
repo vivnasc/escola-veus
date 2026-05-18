@@ -11,7 +11,7 @@ Plano dia-a-dia de **180 posts** (2026-06-01 → 2026-11-27), no formato do cale
 
 # Junho 2026
 
-## DIA 001 · Segunda 2026-06-01 · mj-12-cha-quente  ·  *inicio mes*
+## DIA 001 · Segunda 2026-06-01 · mj-12-cha-quente v1  ·  *inicio mes*
 
 **Frase:** *Começo este mês com mãos vazias, abertas. O que pedir para entrar, terá lugar.*
 
@@ -20,18 +20,18 @@ Plano dia-a-dia de **180 posts** (2026-06-01 → 2026-11-27), no formato do cale
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 002 · Terça 2026-06-02 · mj-12-cha-quente
+## DIA 002 · Terça 2026-06-02 · mj-12-cha-quente v2
 
 **Frase:** *Pelo gesto mínimo que segurou o meu dia, agradeço com a mão no peito.*
 
@@ -40,18 +40,18 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Single hand holding a small ceramic teacup over a wooden table, candlelight, no face visible, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 003 · Quarta 2026-06-03 · mj-08-cortina-linho
+## DIA 003 · Quarta 2026-06-03 · mj-08-cortina-linho v1
 
 **Frase:** *Uma frase que me magoou hoje, devolvo ao vento. Não é minha para guardar.*
 
@@ -60,7 +60,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16
+White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -71,7 +71,7 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 
 ---
 
-## DIA 004 · Quinta 2026-06-04 · mj-05-incenso
+## DIA 004 · Quinta 2026-06-04 · mj-05-incenso v1
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
@@ -80,7 +80,7 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+White incense smoke rising in a dark room, single beam of warm light cutting through, very still, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -91,7 +91,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 005 · Sexta 2026-06-05 · mj-16-tambor-shadow
+## DIA 005 · Sexta 2026-06-05 · mj-16-tambor-shadow v1
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -100,7 +100,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -111,7 +111,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 ---
 
-## DIA 006 · Sábado 2026-06-06 · mj-12-cha-quente
+## DIA 006 · Sábado 2026-06-06 · mj-12-cha-quente v3
 
 **Frase:** *Hoje, no corpo, pouso a mão no peito e digo 'estás em casa'.*
 
@@ -120,18 +120,18 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Two hands cradling a vintage enamel mug of tea, soft warm side light, no face, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 007 · Domingo 2026-06-07 · mj-20-silhueta-janela
+## DIA 007 · Domingo 2026-06-07 · mj-20-silhueta-janela v1
 
 **Frase:** *Amanhã, escolho começar devagar. A pressa não me serve.*
 
@@ -140,7 +140,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -151,7 +151,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 008 · Segunda 2026-06-08 · mj-09-pirilampos
+## DIA 008 · Segunda 2026-06-08 · mj-09-pirilampos v1
 
 **Frase:** *Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça.*
 
@@ -160,7 +160,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -171,7 +171,7 @@ static camera, small fireflies gently floating and blinking on and off in the da
 
 ---
 
-## DIA 009 · Terça 2026-06-09 · mj-01-vela-stucco
+## DIA 009 · Terça 2026-06-09 · mj-01-vela-stucco v1
 
 **Frase:** *Por quem me olhou sem pressa hoje, agradeço com presença.*
 
@@ -180,18 +180,18 @@ static camera, small fireflies gently floating and blinking on and off in the da
 ### Prompt Midjourney
 
 ```
-Single warm beeswax candle flame against a dark stucco wall, shadow play, intimate sanctuary mood, deep navy background --ar 9:16
+Single warm beeswax candle flame against a dark stucco wall, shadow play, deep navy background, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single candle flame gently flickering and dancing in place, soft shadow flickering on the stucco wall, slow contemplative night atmosphere, no zoom, no pan, no rotation, no people, no sudden movements
+static camera, single candle flame gently flickering and dancing in place, soft shadow flickering on the wall, slow contemplative night atmosphere, no zoom, no pan, no rotation, no people, no sudden movements
 ```
 
 ---
 
-## DIA 010 · Quarta 2026-06-10 · mj-04-chuva-janela
+## DIA 010 · Quarta 2026-06-10 · mj-04-chuva-janela v1
 
 **Frase:** *O peso de querer ter feito mais, pouso aqui, ao fim do dia.*
 
@@ -200,7 +200,7 @@ static camera, single candle flame gently flickering and dancing in place, soft 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -211,7 +211,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 
 ---
 
-## DIA 011 · Quinta 2026-06-11 · mj-11-via-lactea
+## DIA 011 · Quinta 2026-06-11 · mj-11-via-lactea v1
 
 **Frase:** *Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta.*
 
@@ -220,18 +220,18 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 ### Prompt Midjourney
 
 ```
-Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 012 · Sexta 2026-06-12 · mj-25-aldeia-distante
+## DIA 012 · Sexta 2026-06-12 · mj-25-aldeia-distante v1
 
 **Frase:** *Celebro a versão de mim de há um ano que não desistiu. Ela trouxe-me até aqui.*
 
@@ -240,18 +240,18 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 013 · Sábado 2026-06-13 · mj-07-baobab-lua
+## DIA 013 · Sábado 2026-06-13 · mj-07-baobab-lua v1
 
 **Frase:** *Hoje, no corpo, inspiro fundo três vezes e devolvo o dia ao chão.*
 
@@ -260,7 +260,7 @@ static camera, distant yellow window lights softly twinkling and pulsing on and 
 ### Prompt Midjourney
 
 ```
-Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
+Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -271,7 +271,7 @@ static camera, silver clouds slowly drifting horizontally across the full moon f
 
 ---
 
-## DIA 014 · Domingo 2026-06-14 · mj-20-silhueta-janela
+## DIA 014 · Domingo 2026-06-14 · mj-20-silhueta-janela v2
 
 **Frase:** *Amanhã, escolho um gesto pequeno por mim antes de cuidar de mais ninguém.*
 
@@ -280,7 +280,7 @@ static camera, silver clouds slowly drifting horizontally across the full moon f
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette from behind seated by a tall window, moonlight on the wall, soft contemplation, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -291,7 +291,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 015 · Segunda 2026-06-15 · mj-13-rede-verandah
+## DIA 015 · Segunda 2026-06-15 · mj-13-rede-verandah v1
 
 **Frase:** *Em algum momento de hoje escolhi pela minha verdade, mesmo sem aplauso. Esse instante é semente.*
 
@@ -300,7 +300,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
+Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -311,7 +311,7 @@ static camera, hammock gently swaying back and forth in slow rhythm, amber lante
 
 ---
 
-## DIA 016 · Terça 2026-06-16 · mj-03-brasas
+## DIA 016 · Terça 2026-06-16 · mj-03-brasas v1
 
 **Frase:** *Pelo corpo que me trouxe até aqui, ainda que cansado, agradeço com ternura.*
 
@@ -320,7 +320,7 @@ static camera, hammock gently swaying back and forth in slow rhythm, amber lante
 ### Prompt Midjourney
 
 ```
-Glowing embers in a low brazier, dark earthy background, contemplative atmosphere, dust particles in warm air --ar 9:16
+Glowing embers in a low brazier, dark earthy background, dust particles in warm air, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -331,7 +331,7 @@ static camera, glowing orange embers slowly pulsing and breathing in place, smal
 
 ---
 
-## DIA 017 · Quarta 2026-06-17 · mj-02-tropical-amber
+## DIA 017 · Quarta 2026-06-17 · mj-02-tropical-amber v1
 
 **Frase:** *Aquela conversa que ficou a girar na minha cabeça, entrego à noite.*
 
@@ -340,7 +340,7 @@ static camera, glowing orange embers slowly pulsing and breathing in place, smal
 ### Prompt Midjourney
 
 ```
-Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -351,7 +351,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 018 · Quinta 2026-06-18 · mj-05-incenso
+## DIA 018 · Quinta 2026-06-18 · mj-05-incenso v2
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
@@ -360,7 +360,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Smoke ribbon from a stick of sandalwood incense in a clay holder, dim ochre wall behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -371,7 +371,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 019 · Sexta 2026-06-19 · mj-27-fogueira-silhuetas
+## DIA 019 · Sexta 2026-06-19 · mj-27-fogueira-silhuetas v1
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -380,7 +380,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -391,7 +391,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 020 · Sábado 2026-06-20 · mj-06-bambu-ocre
+## DIA 020 · Sábado 2026-06-20 · mj-06-bambu-ocre v1
 
 **Frase:** *Hoje, no corpo, solto os ombros. O dia já não me precisa carregada.*
 
@@ -400,18 +400,18 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-Bamboo grove against an earthen ochre wall at night, low warm lantern light, soft long shadows --ar 9:16
+Bamboo grove against an earthen ochre wall at night, low warm lantern light, soft long shadows, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people
+static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the wall, slow gentle motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 021 · Domingo 2026-06-21 · mj-20-silhueta-janela
+## DIA 021 · Domingo 2026-06-21 · mj-20-silhueta-janela v3
 
 **Frase:** *Amanhã, escolho dizer 'sim' só ao que me faz expandir.*
 
@@ -420,7 +420,7 @@ static camera, slender bamboo leaves gently swaying left and right in soft night
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Outline of a person from behind standing in a doorway at moonrise, deep blue night beyond, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -431,7 +431,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 022 · Segunda 2026-06-22 · mj-14-diario-cera
+## DIA 022 · Segunda 2026-06-22 · mj-14-diario-cera v1
 
 **Frase:** *Uma palavra ficou a vibrar no meu peito ao fim do dia. Repara qual foi, ela está a dizer-te algo.*
 
@@ -440,7 +440,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Pages of an old leather journal open under candlelight, warm shadows, intimate writing nook --ar 9:16
+Pages of an old leather journal open under candlelight, warm shadows, intimate writing nook, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -451,7 +451,7 @@ static camera, single page of the open journal slowly turning upward and folding
 
 ---
 
-## DIA 023 · Terça 2026-06-23 · mj-04-chuva-janela
+## DIA 023 · Terça 2026-06-23 · mj-04-chuva-janela v2
 
 **Frase:** *Pela luz que entrou pela janela e me fez parar um segundo, agradeço com memória.*
 
@@ -460,7 +460,7 @@ static camera, single page of the open journal slowly turning upward and folding
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Rain trails on a kitchen window at night, warm soft yellow light blurred behind, intimate, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -471,7 +471,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 
 ---
 
-## DIA 024 · Quarta 2026-06-24 · mj-20-silhueta-janela
+## DIA 024 · Quarta 2026-06-24 · mj-20-silhueta-janela v4
 
 **Frase:** *Solto a versão de mim que tentou agradar a toda a gente. Amanhã sou só minha outra vez.*
 
@@ -480,7 +480,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a head and shoulders against a moonlit curtain, intimate room scale, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -491,7 +491,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 025 · Quinta 2026-06-25 · mj-05-incenso
+## DIA 025 · Quinta 2026-06-25 · mj-05-incenso v3
 
 **Frase:** *Hoje aprendi que pedir ajuda não me torna menor. Torna-me mais inteira.*
 
@@ -500,7 +500,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Curling palo santo smoke in a single shaft of moonlight on a wooden altar, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -511,7 +511,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 026 · Sexta 2026-06-26 · mj-29-caminho-lanternas
+## DIA 026 · Sexta 2026-06-26 · mj-29-caminho-lanternas v1
 
 **Frase:** *Celebro hoje o passo pequeno que dei. Pequeno também é caminho.*
 
@@ -520,18 +520,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 027 · Sábado 2026-06-27 · mj-05-incenso
+## DIA 027 · Sábado 2026-06-27 · mj-05-incenso v4
 
 **Frase:** *Hoje, no corpo, escuto onde está apertado e respiro para lá.*
 
@@ -540,7 +540,7 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Incense smoke rising past a small bronze bowl on dark fabric, deep navy background, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -551,7 +551,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 028 · Domingo 2026-06-28 · mj-20-silhueta-janela
+## DIA 028 · Domingo 2026-06-28 · mj-20-silhueta-janela v5
 
 **Frase:** *Amanhã, escolho escutar antes de responder. Em mim e nos outros.*
 
@@ -560,7 +560,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Faceless silhouette by an oval window, hands holding a cup, soft moon glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -571,7 +571,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 029 · Segunda 2026-06-29 · mj-26-teia-orvalho
+## DIA 029 · Segunda 2026-06-29 · mj-26-teia-orvalho v1
 
 **Frase:** *Há coisas que fiz hoje sem pensar. Aí mora um pedaço de quem realmente sou.*
 
@@ -580,18 +580,18 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16
+Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
+static camera, dew drops gently glistening and slowly catching the moonlight on the web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 030 · Terça 2026-06-30 · mj-05-incenso  ·  *fim mes*
+## DIA 030 · Terça 2026-06-30 · mj-05-incenso v5  ·  *fim mes*
 
 **Frase:** *Olho para trás neste mês: o que cresceu em mim sem barulho? Honro essa raiz silenciosa.*
 
@@ -600,7 +600,7 @@ static camera, dew drops gently glistening and slowly catching the moonlight on 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Coil of frankincense smoke against a black wall, warm side lamp casting it golden, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -614,7 +614,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 # Julho 2026
 
-## DIA 031 · Quarta 2026-07-01 · mj-29-caminho-lanternas  ·  *inicio mes*
+## DIA 031 · Quarta 2026-07-01 · mj-29-caminho-lanternas v2  ·  *inicio mes*
 
 **Frase:** *Hoje começo. Sem mapa rígido, com fé suave de quem confia no caminho que se faz a andar.*
 
@@ -623,18 +623,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Stone path through a dark garden lined with paper lanterns, deep emerald shrubs, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 032 · Quinta 2026-07-02 · mj-05-incenso
+## DIA 032 · Quinta 2026-07-02 · mj-05-incenso v6
 
 **Frase:** *Hoje aprendi que descansar é parte do trabalho de evoluir.*
 
@@ -643,7 +643,7 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Slow column of white smoke from a smudge stick on dark stone, intimate sanctuary, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -654,7 +654,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 033 · Sexta 2026-07-03 · mj-16-tambor-shadow
+## DIA 033 · Sexta 2026-07-03 · mj-16-tambor-shadow v2
 
 **Frase:** *Celebro hoje a minha capacidade de recomeçar, vezes sem conta, sem perder a luz.*
 
@@ -663,7 +663,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Small djembe drum on a wooden floor at night, single side lamp casting deep shadow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -674,7 +674,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 ---
 
-## DIA 034 · Sábado 2026-07-04 · mj-24-pes-areia
+## DIA 034 · Sábado 2026-07-04 · mj-24-pes-areia v1
 
 **Frase:** *Hoje, no corpo, agradeço aos pés que me levaram a cada lugar deste dia.*
 
@@ -683,18 +683,18 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Bare feet on dark cool night sand at the water edge, moonlight reflection, sensorial intimate framing --ar 9:16
+Bare feet on dark cool night sand at the water edge, moonlight reflection, sensorial intimate framing, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, gentle ripple of water lapping at the bare feet on the dark night sand, moonlight reflection rippling on the wet sand, feet remain still, very slow contemplative motion, no zoom, no pan, no rotation, no face visible
+static camera, gentle ripple of water lapping at the bare feet on the dark sand, moonlight reflection rippling on the wet sand, feet remain still, very slow contemplative motion, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 035 · Domingo 2026-07-05 · mj-20-silhueta-janela
+## DIA 035 · Domingo 2026-07-05 · mj-20-silhueta-janela v6
 
 **Frase:** *Amanhã, escolho confiar, mesmo quando não vejo ainda o caminho inteiro.*
 
@@ -703,7 +703,7 @@ static camera, gentle ripple of water lapping at the bare feet on the dark night
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Outline of a figure seated at a low altar by a window, candle on the sill, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -714,7 +714,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 036 · Segunda 2026-07-06 · mj-29-caminho-lanternas
+## DIA 036 · Segunda 2026-07-06 · mj-29-caminho-lanternas v3
 
 **Frase:** *Uma verdade pequena minha apareceu hoje, devagarinho. Acolhe, ela vem em paz.*
 
@@ -723,18 +723,18 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Forest path with small hanging lanterns between trees, soft mist on the ground, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 037 · Terça 2026-07-07 · mj-12-cha-quente
+## DIA 037 · Terça 2026-07-07 · mj-12-cha-quente v4
 
 **Frase:** *Pelo que correu bem sem eu forçar, agradeço com fé.*
 
@@ -743,18 +743,18 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hands holding a small Moroccan tea glass with steam rising, dark wood table, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 038 · Quarta 2026-07-08 · mj-02-tropical-amber
+## DIA 038 · Quarta 2026-07-08 · mj-02-tropical-amber v2
 
 **Frase:** *Deixo cair, como folha, tudo o que hoje me foi dito sem cuidado.*
 
@@ -763,7 +763,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
+Banana leaves swaying behind a single warm hurricane lantern on a wooden verandah railing at night, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -774,7 +774,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 039 · Quinta 2026-07-09 · mj-05-incenso
+## DIA 039 · Quinta 2026-07-09 · mj-05-incenso v1
 
 **Frase:** *Hoje aprendi que cuidar de mim é o primeiro recado que dou ao mundo.*
 
@@ -783,7 +783,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+White incense smoke rising in a dark room, single beam of warm light cutting through, very still, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -794,7 +794,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 040 · Sexta 2026-07-10 · mj-25-aldeia-distante
+## DIA 040 · Sexta 2026-07-10 · mj-25-aldeia-distante v2
 
 **Frase:** *Celebro hoje quem me amou mesmo nos meus dias menos brilhantes.*
 
@@ -803,18 +803,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Tiny mountain village in the distance at dusk, single road lit by warm lamps, cool night sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 041 · Sábado 2026-07-11 · mj-18-sombra-planta
+## DIA 041 · Sábado 2026-07-11 · mj-18-sombra-planta v1
 
 **Frase:** *Hoje, no corpo, fecho os olhos um instante. Aqui dentro também é templo.*
 
@@ -823,7 +823,7 @@ static camera, distant yellow window lights softly twinkling and pulsing on and 
 ### Prompt Midjourney
 
 ```
-Soft shadow of a single house plant on a creamy plaster wall, warm lamp light, intimate room composition --ar 9:16
+Soft shadow of a single house plant on a creamy plaster wall, warm lamp light, intimate room, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -834,7 +834,7 @@ static camera, soft shadow of the house plant slowly swaying left and right on t
 
 ---
 
-## DIA 042 · Domingo 2026-07-12 · mj-20-silhueta-janela
+## DIA 042 · Domingo 2026-07-12 · mj-20-silhueta-janela v1
 
 **Frase:** *Amanhã, escolho a minha verdade, mesmo que ela peça coragem.*
 
@@ -843,7 +843,7 @@ static camera, soft shadow of the house plant slowly swaying left and right on t
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -854,7 +854,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 043 · Segunda 2026-07-13 · mj-29-caminho-lanternas
+## DIA 043 · Segunda 2026-07-13 · mj-29-caminho-lanternas v4
 
 **Frase:** *Houve um momento de inteireza, e outro de ausência. Os dois fazem parte do mesmo caminho.*
 
@@ -863,18 +863,18 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Wooden walkway lit by low pole lanterns at night, deep blue sky above, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 044 · Terça 2026-07-14 · mj-14-diario-cera
+## DIA 044 · Terça 2026-07-14 · mj-14-diario-cera v2
 
 **Frase:** *Pela paciência que me apareceu na hora certa, agradeço mesmo sem saber de onde veio.*
 
@@ -883,7 +883,7 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-Pages of an old leather journal open under candlelight, warm shadows, intimate writing nook --ar 9:16
+Open notebook with a fountain pen resting on it, single candle beside, dark wood desk, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -894,7 +894,7 @@ static camera, single page of the open journal slowly turning upward and folding
 
 ---
 
-## DIA 045 · Quarta 2026-07-15 · mj-15-mar-noite
+## DIA 045 · Quarta 2026-07-15 · mj-15-mar-noite v1
 
 **Frase:** *Liberto a urgência. O que é meu chega no seu tempo.*
 
@@ -903,7 +903,7 @@ static camera, single page of the open journal slowly turning upward and folding
 ### Prompt Midjourney
 
 ```
-Calm small waves on dark sand at night, distant moon reflection, contemplative composition --ar 9:16
+Calm small waves on dark sand at night, distant moon reflection, contemplative composition, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -914,7 +914,7 @@ static camera, small calm waves slowly rolling onto dark sand, moon reflection r
 
 ---
 
-## DIA 046 · Quinta 2026-07-16 · mj-30-pena-cai
+## DIA 046 · Quinta 2026-07-16 · mj-30-pena-cai v1
 
 **Frase:** *Hoje aprendi que a minha intuição fala baixinho. Vale a pena parar para a escutar.*
 
@@ -923,18 +923,18 @@ static camera, small calm waves slowly rolling onto dark sand, moon reflection r
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, single feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 047 · Sexta 2026-07-17 · mj-27-fogueira-silhuetas
+## DIA 047 · Sexta 2026-07-17 · mj-27-fogueira-silhuetas v2
 
 **Frase:** *Celebro hoje a coragem silenciosa que ninguém aplaude, mas que me sustenta.*
 
@@ -943,7 +943,7 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Bonfire on a quiet beach at night, distant figures around it, dark sea behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -954,7 +954,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 048 · Sábado 2026-07-18 · mj-22-coruja-ramo
+## DIA 048 · Sábado 2026-07-18 · mj-22-coruja-ramo v1
 
 **Frase:** *Hoje, no corpo, espreguiço-me como gata e devolvo o dia à terra.*
 
@@ -963,7 +963,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
+Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -974,7 +974,7 @@ static camera, owl silhouette slowly turning its head once to the side and back,
 
 ---
 
-## DIA 049 · Domingo 2026-07-19 · mj-11-via-lactea
+## DIA 049 · Domingo 2026-07-19 · mj-11-via-lactea v2
 
 **Frase:** *Amanhã, escolho lembrar-me que estou a evoluir, mesmo quando parece silêncio.*
 
@@ -983,18 +983,18 @@ static camera, owl silhouette slowly turning its head once to the side and back,
 ### Prompt Midjourney
 
 ```
-Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
+Star field above a long quiet horizon, single faint shooting star, deep indigo sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 050 · Segunda 2026-07-20 · mj-12-cha-quente
+## DIA 050 · Segunda 2026-07-20 · mj-12-cha-quente v5
 
 **Frase:** *Uma parte de mim pediu colo hoje. Volta a ela, agora, com mão pousada no peito.*
 
@@ -1003,18 +1003,18 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hand resting beside a cup of tea on a windowsill at night, warm interior lamp, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 051 · Terça 2026-07-21 · mj-17-velas-mesa
+## DIA 051 · Terça 2026-07-21 · mj-17-velas-mesa v1
 
 **Frase:** *Por estar viva neste fecho de dia, agradeço, simplesmente.*
 
@@ -1023,18 +1023,18 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Three warm beeswax candles on a dark wood table, soft amber halo, deep navy room beyond, intimate altar feel --ar 9:16
+Three warm beeswax candles on a dark wood table, soft amber halo, deep navy room beyond, intimate altar, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, three candle flames independently flickering and dancing in place on the dark wood table, soft amber halos gently pulsing around each, no zoom, no pan, no rotation, no people
+static camera, multiple candle flames independently flickering and dancing in place, soft amber halos gently pulsing around each, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 052 · Quarta 2026-07-22 · mj-30-pena-cai
+## DIA 052 · Quarta 2026-07-22 · mj-30-pena-cai v2
 
 **Frase:** *Solto o controlo do que não me cabe. Confio no que está em movimento.*
 
@@ -1043,18 +1043,18 @@ static camera, three candle flames independently flickering and dancing in place
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Pale grey feather floating slowly against a dark velvet backdrop, soft side glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, single feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 053 · Quinta 2026-07-23 · mj-05-incenso
+## DIA 053 · Quinta 2026-07-23 · mj-05-incenso v2
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
@@ -1063,7 +1063,7 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Smoke ribbon from a stick of sandalwood incense in a clay holder, dim ochre wall behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1074,7 +1074,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 054 · Sexta 2026-07-24 · mj-16-tambor-shadow
+## DIA 054 · Sexta 2026-07-24 · mj-16-tambor-shadow v3
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -1083,7 +1083,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Pair of clay hand drums on a dark rug, warm side glow, dim room, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1094,7 +1094,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 ---
 
-## DIA 055 · Sábado 2026-07-25 · mj-12-cha-quente
+## DIA 055 · Sábado 2026-07-25 · mj-12-cha-quente v6
 
 **Frase:** *Hoje, no corpo, pouso a mão no peito e digo 'estás em casa'.*
 
@@ -1103,18 +1103,18 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hands warming on a chunky stoneware mug of tea, deep navy wall behind, no face, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 056 · Domingo 2026-07-26 · mj-20-silhueta-janela
+## DIA 056 · Domingo 2026-07-26 · mj-20-silhueta-janela v2
 
 **Frase:** *Amanhã, escolho começar devagar. A pressa não me serve.*
 
@@ -1123,7 +1123,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette from behind seated by a tall window, moonlight on the wall, soft contemplation, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1134,7 +1134,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 057 · Segunda 2026-07-27 · mj-09-pirilampos
+## DIA 057 · Segunda 2026-07-27 · mj-09-pirilampos v2
 
 **Frase:** *Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça.*
 
@@ -1143,7 +1143,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Cluster of fireflies dancing above tall night grass, deep velvet blue sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1154,7 +1154,7 @@ static camera, small fireflies gently floating and blinking on and off in the da
 
 ---
 
-## DIA 058 · Terça 2026-07-28 · mj-12-cha-quente
+## DIA 058 · Terça 2026-07-28 · mj-12-cha-quente v1
 
 **Frase:** *Pelo gesto mínimo que segurou o meu dia, agradeço com a mão no peito.*
 
@@ -1163,18 +1163,18 @@ static camera, small fireflies gently floating and blinking on and off in the da
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 059 · Quarta 2026-07-29 · mj-08-cortina-linho
+## DIA 059 · Quarta 2026-07-29 · mj-08-cortina-linho v2
 
 **Frase:** *Uma frase que me magoou hoje, devolvo ao vento. Não é minha para guardar.*
 
@@ -1183,7 +1183,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16
+Long cream linen drape against an open balcony door at night, moon glow behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1194,7 +1194,7 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 
 ---
 
-## DIA 060 · Quinta 2026-07-30 · mj-11-via-lactea
+## DIA 060 · Quinta 2026-07-30 · mj-11-via-lactea v3
 
 **Frase:** *Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta.*
 
@@ -1203,18 +1203,18 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 ### Prompt Midjourney
 
 ```
-Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
+Milky way arcing over a dark mountain ridge, no foreground details, vast cosmic stillness, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 061 · Sexta 2026-07-31 · mj-05-incenso  ·  *fim mes*
+## DIA 061 · Sexta 2026-07-31 · mj-05-incenso v3  ·  *fim mes*
 
 **Frase:** *Fecho este ciclo com uma respiração funda. O que termina agora deixa espaço para o próximo.*
 
@@ -1223,7 +1223,7 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Curling palo santo smoke in a single shaft of moonlight on a wooden altar, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1237,7 +1237,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 # Agosto 2026
 
-## DIA 062 · Sábado 2026-08-01 · mj-20-silhueta-janela  ·  *inicio mes*
+## DIA 062 · Sábado 2026-08-01 · mj-20-silhueta-janela v3  ·  *inicio mes*
 
 **Frase:** *Que intenção quero plantar hoje, sementeira deste mês novo? Escolho-a com calma.*
 
@@ -1246,7 +1246,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Outline of a person from behind standing in a doorway at moonrise, deep blue night beyond, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1257,7 +1257,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 063 · Domingo 2026-08-02 · mj-20-silhueta-janela
+## DIA 063 · Domingo 2026-08-02 · mj-20-silhueta-janela v4
 
 **Frase:** *Amanhã, escolho um gesto pequeno por mim antes de cuidar de mais ninguém.*
 
@@ -1266,7 +1266,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a head and shoulders against a moonlit curtain, intimate room scale, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1277,7 +1277,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 064 · Segunda 2026-08-03 · mj-13-rede-verandah
+## DIA 064 · Segunda 2026-08-03 · mj-13-rede-verandah v2
 
 **Frase:** *Em algum momento de hoje escolhi pela minha verdade, mesmo sem aplauso. Esse instante é semente.*
 
@@ -1286,7 +1286,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
+Empty rope hammock between two trees at night, single hurricane lantern beside, soft mood, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1297,7 +1297,7 @@ static camera, hammock gently swaying back and forth in slow rhythm, amber lante
 
 ---
 
-## DIA 065 · Terça 2026-08-04 · mj-19-vapor-cha
+## DIA 065 · Terça 2026-08-04 · mj-19-vapor-cha v1
 
 **Frase:** *Por quem me olhou sem pressa hoje, agradeço com presença.*
 
@@ -1306,18 +1306,18 @@ static camera, hammock gently swaying back and forth in slow rhythm, amber lante
 ### Prompt Midjourney
 
 ```
-Steam rising from a dark stoneware cup of tea on a wooden surface, soft warm side light, dark navy background --ar 9:16
+Steam rising from a dark stoneware cup of tea on a wooden surface, soft warm side light, dark navy background, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white steam rising slowly from the dark stoneware cup curling upward in soft tendrils, steam dissipates and renews continuously, warm side light gently pulsing, no zoom, no pan, no rotation, no people
+static camera, white steam rising slowly from the cup curling upward in soft tendrils, steam dissipates and renews continuously, warm side light gently pulsing, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 066 · Quarta 2026-08-05 · mj-04-chuva-janela
+## DIA 066 · Quarta 2026-08-05 · mj-04-chuva-janela v3
 
 **Frase:** *O peso de querer ter feito mais, pouso aqui, ao fim do dia.*
 
@@ -1326,7 +1326,7 @@ static camera, white steam rising slowly from the dark stoneware cup curling upw
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Window covered in rain droplets, single bedside lamp glowing behind, indigo night outside, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1337,7 +1337,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 
 ---
 
-## DIA 067 · Quinta 2026-08-06 · mj-05-incenso
+## DIA 067 · Quinta 2026-08-06 · mj-05-incenso v4
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
@@ -1346,7 +1346,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Incense smoke rising past a small bronze bowl on dark fabric, deep navy background, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1357,7 +1357,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 068 · Sexta 2026-08-07 · mj-25-aldeia-distante
+## DIA 068 · Sexta 2026-08-07 · mj-25-aldeia-distante v3
 
 **Frase:** *Celebro a versão de mim de há um ano que não desistiu. Ela trouxe-me até aqui.*
 
@@ -1366,18 +1366,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Hamlet across a wide field at night, lit windows like fireflies, dark blue mood, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 069 · Sábado 2026-08-08 · mj-07-baobab-lua
+## DIA 069 · Sábado 2026-08-08 · mj-07-baobab-lua v2
 
 **Frase:** *Hoje, no corpo, inspiro fundo três vezes e devolvo o dia ao chão.*
 
@@ -1386,7 +1386,7 @@ static camera, distant yellow window lights softly twinkling and pulsing on and 
 ### Prompt Midjourney
 
 ```
-Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
+Twin baobabs in silhouette under a rising moon, vast empty savannah, deep purple sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1397,7 +1397,7 @@ static camera, silver clouds slowly drifting horizontally across the full moon f
 
 ---
 
-## DIA 070 · Domingo 2026-08-09 · mj-20-silhueta-janela
+## DIA 070 · Domingo 2026-08-09 · mj-20-silhueta-janela v5
 
 **Frase:** *Amanhã, escolho dizer 'sim' só ao que me faz expandir.*
 
@@ -1406,7 +1406,7 @@ static camera, silver clouds slowly drifting horizontally across the full moon f
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Faceless silhouette by an oval window, hands holding a cup, soft moon glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1417,7 +1417,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 071 · Segunda 2026-08-10 · mj-14-diario-cera
+## DIA 071 · Segunda 2026-08-10 · mj-14-diario-cera v3
 
 **Frase:** *Uma palavra ficou a vibrar no meu peito ao fim do dia. Repara qual foi, ela está a dizer-te algo.*
 
@@ -1426,7 +1426,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Pages of an old leather journal open under candlelight, warm shadows, intimate writing nook --ar 9:16
+Half-open leather book of poetry on a worn wooden table, warm lamp light, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1437,7 +1437,7 @@ static camera, single page of the open journal slowly turning upward and folding
 
 ---
 
-## DIA 072 · Terça 2026-08-11 · mj-23-jasmim-vela
+## DIA 072 · Terça 2026-08-11 · mj-23-jasmim-vela v1
 
 **Frase:** *Pelo corpo que me trouxe até aqui, ainda que cansado, agradeço com ternura.*
 
@@ -1446,18 +1446,18 @@ static camera, single page of the open journal slowly turning upward and folding
 ### Prompt Midjourney
 
 ```
-White jasmine flowers in a clay bowl beside a single warm candle, dark earthy background, soft amber glow --ar 9:16
+White jasmine flowers in a clay bowl beside a single warm candle, dark earthy background, soft amber glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, candle flame gently flickering beside the bowl of white jasmine flowers, soft amber glow pulsing on the white petals, very slight petal movement, slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera, candle flame gently flickering beside the flowers, soft amber glow pulsing on the white petals, very slight petal movement, slow contemplative motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 073 · Quarta 2026-08-12 · mj-02-tropical-amber
+## DIA 073 · Quarta 2026-08-12 · mj-02-tropical-amber v3
 
 **Frase:** *Aquela conversa que ficou a girar na minha cabeça, entrego à noite.*
 
@@ -1466,7 +1466,7 @@ static camera, candle flame gently flickering beside the bowl of white jasmine f
 ### Prompt Midjourney
 
 ```
-Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
+Palm fronds in moonlight overlapping a softly-lit covered veranda, deep blue dusk, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1477,7 +1477,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 074 · Quinta 2026-08-13 · mj-05-incenso
+## DIA 074 · Quinta 2026-08-13 · mj-05-incenso v5
 
 **Frase:** *Hoje aprendi que pedir ajuda não me torna menor. Torna-me mais inteira.*
 
@@ -1486,7 +1486,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Coil of frankincense smoke against a black wall, warm side lamp casting it golden, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1497,7 +1497,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 075 · Sexta 2026-08-14 · mj-27-fogueira-silhuetas
+## DIA 075 · Sexta 2026-08-14 · mj-27-fogueira-silhuetas v3
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -1506,7 +1506,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Open fire in a clearing of a forest at night, three silhouettes around, faint mist, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1517,7 +1517,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 076 · Sábado 2026-08-15 · mj-06-bambu-ocre
+## DIA 076 · Sábado 2026-08-15 · mj-06-bambu-ocre v2
 
 **Frase:** *Hoje, no corpo, solto os ombros. O dia já não me precisa carregada.*
 
@@ -1526,18 +1526,18 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-Bamboo grove against an earthen ochre wall at night, low warm lantern light, soft long shadows --ar 9:16
+Single bamboo stalk in a black vase against a cob wall, side amber lamp casting long shadow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people
+static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the wall, slow gentle motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 077 · Domingo 2026-08-16 · mj-20-silhueta-janela
+## DIA 077 · Domingo 2026-08-16 · mj-20-silhueta-janela v6
 
 **Frase:** *Amanhã, escolho escutar antes de responder. Em mim e nos outros.*
 
@@ -1546,7 +1546,7 @@ static camera, slender bamboo leaves gently swaying left and right in soft night
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Outline of a figure seated at a low altar by a window, candle on the sill, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1557,7 +1557,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 078 · Segunda 2026-08-17 · mj-26-teia-orvalho
+## DIA 078 · Segunda 2026-08-17 · mj-26-teia-orvalho v2
 
 **Frase:** *Há coisas que fiz hoje sem pensar. Aí mora um pedaço de quem realmente sou.*
 
@@ -1566,18 +1566,18 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16
+Single dewdrop on a fern frond at dawn-night transition, moon halo behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
+static camera, dew drops gently glistening and slowly catching the moonlight on the web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 079 · Terça 2026-08-18 · mj-04-chuva-janela
+## DIA 079 · Terça 2026-08-18 · mj-04-chuva-janela v4
 
 **Frase:** *Pela luz que entrou pela janela e me fez parar um segundo, agradeço com memória.*
 
@@ -1586,7 +1586,7 @@ static camera, dew drops gently glistening and slowly catching the moonlight on 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Wet window glass at night with city haze of warm orange streetlights blurred through, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1597,7 +1597,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 
 ---
 
-## DIA 080 · Quarta 2026-08-19 · mj-20-silhueta-janela
+## DIA 080 · Quarta 2026-08-19 · mj-20-silhueta-janela v1
 
 **Frase:** *Solto a versão de mim que tentou agradar a toda a gente. Amanhã sou só minha outra vez.*
 
@@ -1606,7 +1606,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1617,7 +1617,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 081 · Quinta 2026-08-20 · mj-05-incenso
+## DIA 081 · Quinta 2026-08-20 · mj-05-incenso v6
 
 **Frase:** *Hoje aprendi que descansar é parte do trabalho de evoluir.*
 
@@ -1626,7 +1626,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Slow column of white smoke from a smudge stick on dark stone, intimate sanctuary, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1637,7 +1637,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 082 · Sexta 2026-08-21 · mj-29-caminho-lanternas
+## DIA 082 · Sexta 2026-08-21 · mj-29-caminho-lanternas v5
 
 **Frase:** *Celebro hoje o passo pequeno que dei. Pequeno também é caminho.*
 
@@ -1646,18 +1646,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Curving sand path with bamboo torches, mist drifting low between palms, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 083 · Sábado 2026-08-22 · mj-05-incenso
+## DIA 083 · Sábado 2026-08-22 · mj-05-incenso v1
 
 **Frase:** *Hoje, no corpo, escuto onde está apertado e respiro para lá.*
 
@@ -1666,7 +1666,7 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+White incense smoke rising in a dark room, single beam of warm light cutting through, very still, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1677,7 +1677,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 084 · Domingo 2026-08-23 · mj-20-silhueta-janela
+## DIA 084 · Domingo 2026-08-23 · mj-20-silhueta-janela v2
 
 **Frase:** *Amanhã, escolho confiar, mesmo quando não vejo ainda o caminho inteiro.*
 
@@ -1686,7 +1686,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette from behind seated by a tall window, moonlight on the wall, soft contemplation, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1697,7 +1697,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 085 · Segunda 2026-08-24 · mj-29-caminho-lanternas
+## DIA 085 · Segunda 2026-08-24 · mj-29-caminho-lanternas v6
 
 **Frase:** *Uma verdade pequena minha apareceu hoje, devagarinho. Acolhe, ela vem em paz.*
 
@@ -1706,18 +1706,18 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Cobblestone path with iron lanterns at intervals, soft glow on damp stones, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 086 · Terça 2026-08-25 · mj-28-chocolate-vapor
+## DIA 086 · Terça 2026-08-25 · mj-28-chocolate-vapor v1
 
 **Frase:** *Pelo que correu bem sem eu forçar, agradeço com fé.*
 
@@ -1726,18 +1726,18 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-Hands cradling a mug of dark cacao in soft amber kitchen light at night, intimate close framing --ar 9:16
+Hands cradling a mug of dark cacao in soft amber kitchen light at night, intimate close framing, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white steam rising slowly from the mug of dark cacao curling upward and dissipating, hands stay still cradling the mug, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, white steam rising slowly from the mug curling upward and dissipating, hands stay still cradling the mug, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 087 · Quarta 2026-08-26 · mj-02-tropical-amber
+## DIA 087 · Quarta 2026-08-26 · mj-02-tropical-amber v4
 
 **Frase:** *Deixo cair, como folha, tudo o que hoje me foi dito sem cuidado.*
 
@@ -1746,7 +1746,7 @@ static camera, white steam rising slowly from the mug of dark cacao curling upwa
 ### Prompt Midjourney
 
 ```
-Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
+Monstera leaves in silhouette against a glowing paper lantern, intimate verandah corner, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1757,7 +1757,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 088 · Quinta 2026-08-27 · mj-05-incenso
+## DIA 088 · Quinta 2026-08-27 · mj-05-incenso v2
 
 **Frase:** *Hoje aprendi que cuidar de mim é o primeiro recado que dou ao mundo.*
 
@@ -1766,7 +1766,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Smoke ribbon from a stick of sandalwood incense in a clay holder, dim ochre wall behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1777,7 +1777,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 089 · Sexta 2026-08-28 · mj-16-tambor-shadow
+## DIA 089 · Sexta 2026-08-28 · mj-16-tambor-shadow v4
 
 **Frase:** *Celebro hoje a minha capacidade de recomeçar, vezes sem conta, sem perder a luz.*
 
@@ -1786,7 +1786,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Goblet drum on a low table, leather skin catching warm light, deep umber walls, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1797,7 +1797,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 ---
 
-## DIA 090 · Sábado 2026-08-29 · mj-24-pes-areia
+## DIA 090 · Sábado 2026-08-29 · mj-24-pes-areia v2
 
 **Frase:** *Hoje, no corpo, agradeço aos pés que me levaram a cada lugar deste dia.*
 
@@ -1806,18 +1806,18 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Bare feet on dark cool night sand at the water edge, moonlight reflection, sensorial intimate framing --ar 9:16
+Two feet half-buried in cool sand at night, faint moon glow, no face visible, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, gentle ripple of water lapping at the bare feet on the dark night sand, moonlight reflection rippling on the wet sand, feet remain still, very slow contemplative motion, no zoom, no pan, no rotation, no face visible
+static camera, gentle ripple of water lapping at the bare feet on the dark sand, moonlight reflection rippling on the wet sand, feet remain still, very slow contemplative motion, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 091 · Domingo 2026-08-30 · mj-20-silhueta-janela
+## DIA 091 · Domingo 2026-08-30 · mj-20-silhueta-janela v3
 
 **Frase:** *Amanhã, escolho a minha verdade, mesmo que ela peça coragem.*
 
@@ -1826,7 +1826,7 @@ static camera, gentle ripple of water lapping at the bare feet on the dark night
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Outline of a person from behind standing in a doorway at moonrise, deep blue night beyond, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1837,7 +1837,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 092 · Segunda 2026-08-31 · mj-30-pena-cai  ·  *fim mes*
+## DIA 092 · Segunda 2026-08-31 · mj-30-pena-cai v3  ·  *fim mes*
 
 **Frase:** *Não levo tudo deste mês para o próximo. Solto o que pesa, guardo o que ensinou.*
 
@@ -1846,13 +1846,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Feather caught mid-fall in a shaft of warm lamp light, deep navy room, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, single feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1860,7 +1860,7 @@ static camera, single white feather falling slowly downward through the beam of 
 
 # Setembro 2026
 
-## DIA 093 · Terça 2026-09-01 · mj-10-fonte-pedra  ·  *inicio mes*
+## DIA 093 · Terça 2026-09-01 · mj-10-fonte-pedra v1  ·  *inicio mes*
 
 **Frase:** *Não preciso ter tudo resolvido para abrir capítulo. Hoje basta a presença e a vontade.*
 
@@ -1869,18 +1869,18 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Water trickling from a black stone fountain in a moonlit African garden, single low warm lantern nearby --ar 9:16
+Water trickling from a black stone fountain in a moonlit African garden, single low warm lantern, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, water gently trickling continuously down the black stone fountain, water droplets falling and pooling, lantern flame softly flickering nearby, slow continuous flow, no zoom, no pan, no rotation, no people
+static camera, water gently trickling continuously down the stone fountain, water droplets falling and pooling, lantern flame softly flickering nearby, slow continuous flow, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 094 · Quarta 2026-09-02 · mj-15-mar-noite
+## DIA 094 · Quarta 2026-09-02 · mj-15-mar-noite v2
 
 **Frase:** *Liberto a urgência. O que é meu chega no seu tempo.*
 
@@ -1889,7 +1889,7 @@ static camera, water gently trickling continuously down the black stone fountain
 ### Prompt Midjourney
 
 ```
-Calm small waves on dark sand at night, distant moon reflection, contemplative composition --ar 9:16
+Quiet ocean shore at night with phosphorescent foam, deep blue water, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1900,7 +1900,7 @@ static camera, small calm waves slowly rolling onto dark sand, moon reflection r
 
 ---
 
-## DIA 095 · Quinta 2026-09-03 · mj-30-pena-cai
+## DIA 095 · Quinta 2026-09-03 · mj-30-pena-cai v4
 
 **Frase:** *Hoje aprendi que a minha intuição fala baixinho. Vale a pena parar para a escutar.*
 
@@ -1909,18 +1909,18 @@ static camera, small calm waves slowly rolling onto dark sand, moon reflection r
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Long owl feather drifting against a starry indigo sky, magical realism, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, single feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 096 · Sexta 2026-09-04 · mj-25-aldeia-distante
+## DIA 096 · Sexta 2026-09-04 · mj-25-aldeia-distante v4
 
 **Frase:** *Celebro hoje quem me amou mesmo nos meus dias menos brilhantes.*
 
@@ -1929,18 +1929,18 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Distant fishing village on a quiet coast at night, warm pier light, calm sea, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 097 · Sábado 2026-09-05 · mj-18-sombra-planta
+## DIA 097 · Sábado 2026-09-05 · mj-18-sombra-planta v2
 
 **Frase:** *Hoje, no corpo, fecho os olhos um instante. Aqui dentro também é templo.*
 
@@ -1949,7 +1949,7 @@ static camera, distant yellow window lights softly twinkling and pulsing on and 
 ### Prompt Midjourney
 
 ```
-Soft shadow of a single house plant on a creamy plaster wall, warm lamp light, intimate room composition --ar 9:16
+Shadow of fern leaves dancing on a cream wall, side amber lamp, abstract pattern, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -1960,7 +1960,7 @@ static camera, soft shadow of the house plant slowly swaying left and right on t
 
 ---
 
-## DIA 098 · Domingo 2026-09-06 · mj-11-via-lactea
+## DIA 098 · Domingo 2026-09-06 · mj-11-via-lactea v4
 
 **Frase:** *Amanhã, escolho lembrar-me que estou a evoluir, mesmo quando parece silêncio.*
 
@@ -1969,18 +1969,18 @@ static camera, soft shadow of the house plant slowly swaying left and right on t
 ### Prompt Midjourney
 
 ```
-Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
+Sky full of stars over a still desert horizon, faint zodiacal light glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 099 · Segunda 2026-09-07 · mj-29-caminho-lanternas
+## DIA 099 · Segunda 2026-09-07 · mj-29-caminho-lanternas v1
 
 **Frase:** *Houve um momento de inteireza, e outro de ausência. Os dois fazem parte do mesmo caminho.*
 
@@ -1989,18 +1989,18 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 100 · Terça 2026-09-08 · mj-01-vela-stucco
+## DIA 100 · Terça 2026-09-08 · mj-01-vela-stucco v2
 
 **Frase:** *Pela paciência que me apareceu na hora certa, agradeço mesmo sem saber de onde veio.*
 
@@ -2009,18 +2009,18 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-Single warm beeswax candle flame against a dark stucco wall, shadow play, intimate sanctuary mood, deep navy background --ar 9:16
+Tall white taper candle burning slowly against a moss green plaster wall, single warm flame, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single candle flame gently flickering and dancing in place, soft shadow flickering on the stucco wall, slow contemplative night atmosphere, no zoom, no pan, no rotation, no people, no sudden movements
+static camera, single candle flame gently flickering and dancing in place, soft shadow flickering on the wall, slow contemplative night atmosphere, no zoom, no pan, no rotation, no people, no sudden movements
 ```
 
 ---
 
-## DIA 101 · Quarta 2026-09-09 · mj-30-pena-cai
+## DIA 101 · Quarta 2026-09-09 · mj-30-pena-cai v5
 
 **Frase:** *Solto o controlo do que não me cabe. Confio no que está em movimento.*
 
@@ -2029,18 +2029,18 @@ static camera, single candle flame gently flickering and dancing in place, soft 
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Soft down feather floating above a wooden floor, single moon beam from a window, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, single feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 102 · Quinta 2026-09-10 · mj-05-incenso
+## DIA 102 · Quinta 2026-09-10 · mj-05-incenso v3
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
@@ -2049,7 +2049,7 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Curling palo santo smoke in a single shaft of moonlight on a wooden altar, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2060,7 +2060,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 103 · Sexta 2026-09-11 · mj-27-fogueira-silhuetas
+## DIA 103 · Sexta 2026-09-11 · mj-27-fogueira-silhuetas v4
 
 **Frase:** *Celebro hoje a coragem silenciosa que ninguém aplaude, mas que me sustenta.*
 
@@ -2069,7 +2069,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Small ritual fire in a stone circle at night, deep amber flames, no faces visible, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2080,7 +2080,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 104 · Sábado 2026-09-12 · mj-22-coruja-ramo
+## DIA 104 · Sábado 2026-09-12 · mj-22-coruja-ramo v2
 
 **Frase:** *Hoje, no corpo, espreguiço-me como gata e devolvo o dia à terra.*
 
@@ -2089,7 +2089,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
+Barn owl on a fence post at night, soft moon glow, deep blue field behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2100,7 +2100,7 @@ static camera, owl silhouette slowly turning its head once to the side and back,
 
 ---
 
-## DIA 105 · Domingo 2026-09-13 · mj-20-silhueta-janela
+## DIA 105 · Domingo 2026-09-13 · mj-20-silhueta-janela v4
 
 **Frase:** *Amanhã, escolho começar devagar. A pressa não me serve.*
 
@@ -2109,7 +2109,7 @@ static camera, owl silhouette slowly turning its head once to the side and back,
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a head and shoulders against a moonlit curtain, intimate room scale, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2120,7 +2120,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 106 · Segunda 2026-09-14 · mj-12-cha-quente
+## DIA 106 · Segunda 2026-09-14 · mj-12-cha-quente v2
 
 **Frase:** *Uma parte de mim pediu colo hoje. Volta a ela, agora, com mão pousada no peito.*
 
@@ -2129,18 +2129,18 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Single hand holding a small ceramic teacup over a wooden table, candlelight, no face visible, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 107 · Terça 2026-09-15 · mj-03-brasas
+## DIA 107 · Terça 2026-09-15 · mj-03-brasas v2
 
 **Frase:** *Por estar viva neste fecho de dia, agradeço, simplesmente.*
 
@@ -2149,7 +2149,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Glowing embers in a low brazier, dark earthy background, contemplative atmosphere, dust particles in warm air --ar 9:16
+Bed of dying embers in a clay pot at night, deep amber and red glow, intimate close framing, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2160,7 +2160,7 @@ static camera, glowing orange embers slowly pulsing and breathing in place, smal
 
 ---
 
-## DIA 108 · Quarta 2026-09-16 · mj-08-cortina-linho
+## DIA 108 · Quarta 2026-09-16 · mj-08-cortina-linho v3
 
 **Frase:** *Uma frase que me magoou hoje, devolvo ao vento. Não é minha para guardar.*
 
@@ -2169,7 +2169,7 @@ static camera, glowing orange embers slowly pulsing and breathing in place, smal
 ### Prompt Midjourney
 
 ```
-White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16
+Pale curtain billowing gently in a dark bedroom, blue moonlight on the wall behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2180,7 +2180,7 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 
 ---
 
-## DIA 109 · Quinta 2026-09-17 · mj-11-via-lactea
+## DIA 109 · Quinta 2026-09-17 · mj-11-via-lactea v5
 
 **Frase:** *Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta.*
 
@@ -2189,18 +2189,18 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 ### Prompt Midjourney
 
 ```
-Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
+Galactic core above silhouetted palm trees, deep violet and dust orange, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 110 · Sexta 2026-09-18 · mj-16-tambor-shadow
+## DIA 110 · Sexta 2026-09-18 · mj-16-tambor-shadow v5
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -2209,7 +2209,7 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Wooden frame drum hanging on a clay wall, soft lantern beside, dark shadows, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2220,7 +2220,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 ---
 
-## DIA 111 · Sábado 2026-09-19 · mj-12-cha-quente
+## DIA 111 · Sábado 2026-09-19 · mj-12-cha-quente v3
 
 **Frase:** *Hoje, no corpo, pouso a mão no peito e digo 'estás em casa'.*
 
@@ -2229,18 +2229,18 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Two hands cradling a vintage enamel mug of tea, soft warm side light, no face, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 112 · Domingo 2026-09-20 · mj-20-silhueta-janela
+## DIA 112 · Domingo 2026-09-20 · mj-20-silhueta-janela v5
 
 **Frase:** *Amanhã, escolho um gesto pequeno por mim antes de cuidar de mais ninguém.*
 
@@ -2249,7 +2249,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Faceless silhouette by an oval window, hands holding a cup, soft moon glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2260,7 +2260,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 113 · Segunda 2026-09-21 · mj-09-pirilampos
+## DIA 113 · Segunda 2026-09-21 · mj-09-pirilampos v3
 
 **Frase:** *Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça.*
 
@@ -2269,7 +2269,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Single firefly glowing on a leaf at night, dark forest depth behind, magical close-up, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2280,7 +2280,7 @@ static camera, small fireflies gently floating and blinking on and off in the da
 
 ---
 
-## DIA 114 · Terça 2026-09-22 · mj-12-cha-quente
+## DIA 114 · Terça 2026-09-22 · mj-12-cha-quente v4
 
 **Frase:** *Pelo gesto mínimo que segurou o meu dia, agradeço com a mão no peito.*
 
@@ -2289,18 +2289,18 @@ static camera, small fireflies gently floating and blinking on and off in the da
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hands holding a small Moroccan tea glass with steam rising, dark wood table, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 115 · Quarta 2026-09-23 · mj-04-chuva-janela
+## DIA 115 · Quarta 2026-09-23 · mj-04-chuva-janela v5
 
 **Frase:** *O peso de querer ter feito mais, pouso aqui, ao fim do dia.*
 
@@ -2309,7 +2309,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Old wooden window frame with rain streaking down, candle flickering inside, deep blue night, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2320,7 +2320,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 
 ---
 
-## DIA 116 · Quinta 2026-09-24 · mj-05-incenso
+## DIA 116 · Quinta 2026-09-24 · mj-05-incenso v4
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
@@ -2329,7 +2329,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Incense smoke rising past a small bronze bowl on dark fabric, deep navy background, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2340,7 +2340,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 117 · Sexta 2026-09-25 · mj-25-aldeia-distante
+## DIA 117 · Sexta 2026-09-25 · mj-25-aldeia-distante v5
 
 **Frase:** *Celebro a versão de mim de há um ano que não desistiu. Ela trouxe-me até aqui.*
 
@@ -2349,18 +2349,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Small clay village in a valley at night, single chimney smoke rising, deep navy sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 118 · Sábado 2026-09-26 · mj-07-baobab-lua
+## DIA 118 · Sábado 2026-09-26 · mj-07-baobab-lua v3
 
 **Frase:** *Hoje, no corpo, inspiro fundo três vezes e devolvo o dia ao chão.*
 
@@ -2369,7 +2369,7 @@ static camera, distant yellow window lights softly twinkling and pulsing on and 
 ### Prompt Midjourney
 
 ```
-Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
+Single baobab against a starry African sky, low horizon, faint moon halo, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2380,7 +2380,7 @@ static camera, silver clouds slowly drifting horizontally across the full moon f
 
 ---
 
-## DIA 119 · Domingo 2026-09-27 · mj-20-silhueta-janela
+## DIA 119 · Domingo 2026-09-27 · mj-20-silhueta-janela v6
 
 **Frase:** *Amanhã, escolho dizer 'sim' só ao que me faz expandir.*
 
@@ -2389,7 +2389,7 @@ static camera, silver clouds slowly drifting horizontally across the full moon f
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Outline of a figure seated at a low altar by a window, candle on the sill, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2400,7 +2400,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 120 · Segunda 2026-09-28 · mj-13-rede-verandah
+## DIA 120 · Segunda 2026-09-28 · mj-13-rede-verandah v3
 
 **Frase:** *Em algum momento de hoje escolhi pela minha verdade, mesmo sem aplauso. Esse instante é semente.*
 
@@ -2409,7 +2409,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
+Striped hammock on a wide wooden porch at night, palm leaves in dark background, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2420,7 +2420,7 @@ static camera, hammock gently swaying back and forth in slow rhythm, amber lante
 
 ---
 
-## DIA 121 · Terça 2026-09-29 · mj-12-cha-quente
+## DIA 121 · Terça 2026-09-29 · mj-12-cha-quente v5
 
 **Frase:** *Por quem me olhou sem pressa hoje, agradeço com presença.*
 
@@ -2429,18 +2429,18 @@ static camera, hammock gently swaying back and forth in slow rhythm, amber lante
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hand resting beside a cup of tea on a windowsill at night, warm interior lamp, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 122 · Quarta 2026-09-30 · mj-05-incenso  ·  *fim mes*
+## DIA 122 · Quarta 2026-09-30 · mj-05-incenso v5  ·  *fim mes*
 
 **Frase:** *Que aprendizagem deste mês me acompanha como talismã? Hoje agradeço-a.*
 
@@ -2449,7 +2449,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Coil of frankincense smoke against a black wall, warm side lamp casting it golden, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2463,7 +2463,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 # Outubro 2026
 
-## DIA 123 · Quinta 2026-10-01 · mj-21-estrelas-poca  ·  *inicio mes*
+## DIA 123 · Quinta 2026-10-01 · mj-21-estrelas-poca v1  ·  *inicio mes*
 
 **Frase:** *Este mês traz dias que ainda não sei. Recebo-os com gratidão antecipada.*
 
@@ -2472,7 +2472,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Stars reflected in a still puddle of water on dark earth, magical realism, contemplative composition --ar 9:16
+Stars reflected in a still puddle of water on dark earth, magical realism, contemplative composition, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2483,7 +2483,7 @@ static camera, gentle ripple expanding slowly across the still water puddle from
 
 ---
 
-## DIA 124 · Sexta 2026-10-02 · mj-27-fogueira-silhuetas
+## DIA 124 · Sexta 2026-10-02 · mj-27-fogueira-silhuetas v5
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -2492,7 +2492,7 @@ static camera, gentle ripple expanding slowly across the still water puddle from
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Outdoor cooking fire in a savannah camp, distant silhouettes, starry sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2503,7 +2503,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 125 · Sábado 2026-10-03 · mj-06-bambu-ocre
+## DIA 125 · Sábado 2026-10-03 · mj-06-bambu-ocre v3
 
 **Frase:** *Hoje, no corpo, solto os ombros. O dia já não me precisa carregada.*
 
@@ -2512,18 +2512,18 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-Bamboo grove against an earthen ochre wall at night, low warm lantern light, soft long shadows --ar 9:16
+Bamboo shoots clustered in moonlight against a sienna stucco wall, faint silhouettes, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people
+static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the wall, slow gentle motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 126 · Domingo 2026-10-04 · mj-20-silhueta-janela
+## DIA 126 · Domingo 2026-10-04 · mj-20-silhueta-janela v1
 
 **Frase:** *Amanhã, escolho escutar antes de responder. Em mim e nos outros.*
 
@@ -2532,7 +2532,7 @@ static camera, slender bamboo leaves gently swaying left and right in soft night
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2543,7 +2543,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 127 · Segunda 2026-10-05 · mj-14-diario-cera
+## DIA 127 · Segunda 2026-10-05 · mj-14-diario-cera v4
 
 **Frase:** *Uma palavra ficou a vibrar no meu peito ao fim do dia. Repara qual foi, ela está a dizer-te algo.*
 
@@ -2552,7 +2552,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Pages of an old leather journal open under candlelight, warm shadows, intimate writing nook --ar 9:16
+Open journal with handwritten lines (illegible) by lamp light, soft amber tones, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2563,7 +2563,7 @@ static camera, single page of the open journal slowly turning upward and folding
 
 ---
 
-## DIA 128 · Terça 2026-10-06 · mj-14-diario-cera
+## DIA 128 · Terça 2026-10-06 · mj-14-diario-cera v5
 
 **Frase:** *Pelo corpo que me trouxe até aqui, ainda que cansado, agradeço com ternura.*
 
@@ -2572,7 +2572,7 @@ static camera, single page of the open journal slowly turning upward and folding
 ### Prompt Midjourney
 
 ```
-Pages of an old leather journal open under candlelight, warm shadows, intimate writing nook --ar 9:16
+Stack of old letters tied with twine and an open journal page, candle nearby, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2583,7 +2583,7 @@ static camera, single page of the open journal slowly turning upward and folding
 
 ---
 
-## DIA 129 · Quarta 2026-10-07 · mj-02-tropical-amber
+## DIA 129 · Quarta 2026-10-07 · mj-02-tropical-amber v5
 
 **Frase:** *Aquela conversa que ficou a girar na minha cabeça, entrego à noite.*
 
@@ -2592,7 +2592,7 @@ static camera, single page of the open journal slowly turning upward and folding
 ### Prompt Midjourney
 
 ```
-Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
+Bird-of-paradise leaves at night with a low amber sconce lighting them from below, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2603,7 +2603,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 130 · Quinta 2026-10-08 · mj-05-incenso
+## DIA 130 · Quinta 2026-10-08 · mj-05-incenso v6
 
 **Frase:** *Hoje aprendi que pedir ajuda não me torna menor. Torna-me mais inteira.*
 
@@ -2612,7 +2612,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Slow column of white smoke from a smudge stick on dark stone, intimate sanctuary, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2623,7 +2623,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 131 · Sexta 2026-10-09 · mj-29-caminho-lanternas
+## DIA 131 · Sexta 2026-10-09 · mj-29-caminho-lanternas v2
 
 **Frase:** *Celebro hoje o passo pequeno que dei. Pequeno também é caminho.*
 
@@ -2632,18 +2632,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Stone path through a dark garden lined with paper lanterns, deep emerald shrubs, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 132 · Sábado 2026-10-10 · mj-05-incenso
+## DIA 132 · Sábado 2026-10-10 · mj-05-incenso v1
 
 **Frase:** *Hoje, no corpo, escuto onde está apertado e respiro para lá.*
 
@@ -2652,7 +2652,7 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+White incense smoke rising in a dark room, single beam of warm light cutting through, very still, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2663,7 +2663,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 133 · Domingo 2026-10-11 · mj-20-silhueta-janela
+## DIA 133 · Domingo 2026-10-11 · mj-20-silhueta-janela v2
 
 **Frase:** *Amanhã, escolho confiar, mesmo quando não vejo ainda o caminho inteiro.*
 
@@ -2672,7 +2672,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette from behind seated by a tall window, moonlight on the wall, soft contemplation, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2683,7 +2683,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 134 · Segunda 2026-10-12 · mj-26-teia-orvalho
+## DIA 134 · Segunda 2026-10-12 · mj-26-teia-orvalho v3
 
 **Frase:** *Há coisas que fiz hoje sem pensar. Aí mora um pedaço de quem realmente sou.*
 
@@ -2692,18 +2692,18 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16
+Cobweb stretched between two branches at night, beaded with dew, soft blue glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
+static camera, dew drops gently glistening and slowly catching the moonlight on the web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 135 · Terça 2026-10-13 · mj-04-chuva-janela
+## DIA 135 · Terça 2026-10-13 · mj-04-chuva-janela v6
 
 **Frase:** *Pela luz que entrou pela janela e me fez parar um segundo, agradeço com memória.*
 
@@ -2712,7 +2712,7 @@ static camera, dew drops gently glistening and slowly catching the moonlight on 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Tall arched window with fine rain at night, warm fire light inside, contemplative, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2723,7 +2723,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 
 ---
 
-## DIA 136 · Quarta 2026-10-14 · mj-20-silhueta-janela
+## DIA 136 · Quarta 2026-10-14 · mj-20-silhueta-janela v3
 
 **Frase:** *Solto a versão de mim que tentou agradar a toda a gente. Amanhã sou só minha outra vez.*
 
@@ -2732,7 +2732,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Outline of a person from behind standing in a doorway at moonrise, deep blue night beyond, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2743,7 +2743,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 137 · Quinta 2026-10-15 · mj-05-incenso
+## DIA 137 · Quinta 2026-10-15 · mj-05-incenso v2
 
 **Frase:** *Hoje aprendi que descansar é parte do trabalho de evoluir.*
 
@@ -2752,7 +2752,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Smoke ribbon from a stick of sandalwood incense in a clay holder, dim ochre wall behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2763,7 +2763,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 138 · Sexta 2026-10-16 · mj-16-tambor-shadow
+## DIA 138 · Sexta 2026-10-16 · mj-16-tambor-shadow v6
 
 **Frase:** *Celebro hoje a minha capacidade de recomeçar, vezes sem conta, sem perder a luz.*
 
@@ -2772,7 +2772,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Talking drum upright on a hand-woven mat, single oil lamp lighting one side, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2783,7 +2783,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 ---
 
-## DIA 139 · Sábado 2026-10-17 · mj-24-pes-areia
+## DIA 139 · Sábado 2026-10-17 · mj-24-pes-areia v3
 
 **Frase:** *Hoje, no corpo, agradeço aos pés que me levaram a cada lugar deste dia.*
 
@@ -2792,18 +2792,18 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Bare feet on dark cool night sand at the water edge, moonlight reflection, sensorial intimate framing --ar 9:16
+Feet on wet smooth pebbles at the shore at night, water lapping softly, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, gentle ripple of water lapping at the bare feet on the dark night sand, moonlight reflection rippling on the wet sand, feet remain still, very slow contemplative motion, no zoom, no pan, no rotation, no face visible
+static camera, gentle ripple of water lapping at the bare feet on the dark sand, moonlight reflection rippling on the wet sand, feet remain still, very slow contemplative motion, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 140 · Domingo 2026-10-18 · mj-20-silhueta-janela
+## DIA 140 · Domingo 2026-10-18 · mj-20-silhueta-janela v4
 
 **Frase:** *Amanhã, escolho a minha verdade, mesmo que ela peça coragem.*
 
@@ -2812,7 +2812,7 @@ static camera, gentle ripple of water lapping at the bare feet on the dark night
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a head and shoulders against a moonlit curtain, intimate room scale, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2823,7 +2823,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 141 · Segunda 2026-10-19 · mj-29-caminho-lanternas
+## DIA 141 · Segunda 2026-10-19 · mj-29-caminho-lanternas v3
 
 **Frase:** *Uma verdade pequena minha apareceu hoje, devagarinho. Acolhe, ela vem em paz.*
 
@@ -2832,18 +2832,18 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Forest path with small hanging lanterns between trees, soft mist on the ground, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 142 · Terça 2026-10-20 · mj-17-velas-mesa
+## DIA 142 · Terça 2026-10-20 · mj-17-velas-mesa v2
 
 **Frase:** *Pelo que correu bem sem eu forçar, agradeço com fé.*
 
@@ -2852,18 +2852,18 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-Three warm beeswax candles on a dark wood table, soft amber halo, deep navy room beyond, intimate altar feel --ar 9:16
+Cluster of five small votive candles on a stone slab altar at night, soft glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, three candle flames independently flickering and dancing in place on the dark wood table, soft amber halos gently pulsing around each, no zoom, no pan, no rotation, no people
+static camera, multiple candle flames independently flickering and dancing in place, soft amber halos gently pulsing around each, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 143 · Quarta 2026-10-21 · mj-02-tropical-amber
+## DIA 143 · Quarta 2026-10-21 · mj-02-tropical-amber v6
 
 **Frase:** *Deixo cair, como folha, tudo o que hoje me foi dito sem cuidado.*
 
@@ -2872,7 +2872,7 @@ static camera, three candle flames independently flickering and dancing in place
 ### Prompt Midjourney
 
 ```
-Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
+Heliconia leaves backlit by a single dim verandah bulb, deep tropical garden behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2883,7 +2883,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 144 · Quinta 2026-10-22 · mj-05-incenso
+## DIA 144 · Quinta 2026-10-22 · mj-05-incenso v3
 
 **Frase:** *Hoje aprendi que cuidar de mim é o primeiro recado que dou ao mundo.*
 
@@ -2892,7 +2892,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Curling palo santo smoke in a single shaft of moonlight on a wooden altar, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2903,7 +2903,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 145 · Sexta 2026-10-23 · mj-25-aldeia-distante
+## DIA 145 · Sexta 2026-10-23 · mj-25-aldeia-distante v6
 
 **Frase:** *Celebro hoje quem me amou mesmo nos meus dias menos brilhantes.*
 
@@ -2912,18 +2912,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Faraway settlement under a starry sky, two warm windows visible, vast empty landscape, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 146 · Sábado 2026-10-24 · mj-18-sombra-planta
+## DIA 146 · Sábado 2026-10-24 · mj-18-sombra-planta v3
 
 **Frase:** *Hoje, no corpo, fecho os olhos um instante. Aqui dentro também é templo.*
 
@@ -2932,7 +2932,7 @@ static camera, distant yellow window lights softly twinkling and pulsing on and 
 ### Prompt Midjourney
 
 ```
-Soft shadow of a single house plant on a creamy plaster wall, warm lamp light, intimate room composition --ar 9:16
+Silhouette of a potted snake plant cast on an ochre wall by a single bulb, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -2943,7 +2943,7 @@ static camera, soft shadow of the house plant slowly swaying left and right on t
 
 ---
 
-## DIA 147 · Domingo 2026-10-25 · mj-11-via-lactea
+## DIA 147 · Domingo 2026-10-25 · mj-11-via-lactea v6
 
 **Frase:** *Amanhã, escolho lembrar-me que estou a evoluir, mesmo quando parece silêncio.*
 
@@ -2952,18 +2952,18 @@ static camera, soft shadow of the house plant slowly swaying left and right on t
 ### Prompt Midjourney
 
 ```
-Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
+Dense star cluster above a dark ocean horizon, no moon, only stars, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 148 · Segunda 2026-10-26 · mj-29-caminho-lanternas
+## DIA 148 · Segunda 2026-10-26 · mj-29-caminho-lanternas v4
 
 **Frase:** *Houve um momento de inteireza, e outro de ausência. Os dois fazem parte do mesmo caminho.*
 
@@ -2972,18 +2972,18 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Wooden walkway lit by low pole lanterns at night, deep blue sky above, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 149 · Terça 2026-10-27 · mj-19-vapor-cha
+## DIA 149 · Terça 2026-10-27 · mj-19-vapor-cha v2
 
 **Frase:** *Pela paciência que me apareceu na hora certa, agradeço mesmo sem saber de onde veio.*
 
@@ -2992,18 +2992,18 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-Steam rising from a dark stoneware cup of tea on a wooden surface, soft warm side light, dark navy background --ar 9:16
+Curling steam over a small ceramic bowl of broth, dim warm lamp on the side, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white steam rising slowly from the dark stoneware cup curling upward in soft tendrils, steam dissipates and renews continuously, warm side light gently pulsing, no zoom, no pan, no rotation, no people
+static camera, white steam rising slowly from the cup curling upward in soft tendrils, steam dissipates and renews continuously, warm side light gently pulsing, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 150 · Quarta 2026-10-28 · mj-15-mar-noite
+## DIA 150 · Quarta 2026-10-28 · mj-15-mar-noite v3
 
 **Frase:** *Liberto a urgência. O que é meu chega no seu tempo.*
 
@@ -3012,7 +3012,7 @@ static camera, white steam rising slowly from the dark stoneware cup curling upw
 ### Prompt Midjourney
 
 ```
-Calm small waves on dark sand at night, distant moon reflection, contemplative composition --ar 9:16
+Long exposure of gentle waves on black volcanic sand at dusk turning to night, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3023,7 +3023,7 @@ static camera, small calm waves slowly rolling onto dark sand, moon reflection r
 
 ---
 
-## DIA 151 · Quinta 2026-10-29 · mj-30-pena-cai
+## DIA 151 · Quinta 2026-10-29 · mj-30-pena-cai v6
 
 **Frase:** *Hoje aprendi que a minha intuição fala baixinho. Vale a pena parar para a escutar.*
 
@@ -3032,18 +3032,18 @@ static camera, small calm waves slowly rolling onto dark sand, moon reflection r
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Single dove feather suspended in a quiet dark room, dust particles around it, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, single feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 152 · Sexta 2026-10-30 · mj-27-fogueira-silhuetas
+## DIA 152 · Sexta 2026-10-30 · mj-27-fogueira-silhuetas v6
 
 **Frase:** *Celebro hoje a coragem silenciosa que ninguém aplaude, mas que me sustenta.*
 
@@ -3052,7 +3052,7 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Fire in a brazier on a rooftop at night, two seated silhouettes, city lights below, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3063,7 +3063,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 153 · Sábado 2026-10-31 · mj-05-incenso  ·  *fim mes*
+## DIA 153 · Sábado 2026-10-31 · mj-05-incenso v4  ·  *fim mes*
 
 **Frase:** *Há um eu deste mês de quem me despeço hoje. Obrigada, próxima versão já espera.*
 
@@ -3072,7 +3072,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Incense smoke rising past a small bronze bowl on dark fabric, deep navy background, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3086,7 +3086,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 # Novembro 2026
 
-## DIA 154 · Domingo 2026-11-01 · mj-12-cha-quente  ·  *inicio mes*
+## DIA 154 · Domingo 2026-11-01 · mj-12-cha-quente v6  ·  *inicio mes*
 
 **Frase:** *Começo este mês com mãos vazias, abertas. O que pedir para entrar, terá lugar.*
 
@@ -3095,18 +3095,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hands warming on a chunky stoneware mug of tea, deep navy wall behind, no face, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 155 · Segunda 2026-11-02 · mj-12-cha-quente
+## DIA 155 · Segunda 2026-11-02 · mj-12-cha-quente v1
 
 **Frase:** *Uma parte de mim pediu colo hoje. Volta a ela, agora, com mão pousada no peito.*
 
@@ -3115,18 +3115,18 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 156 · Terça 2026-11-03 · mj-23-jasmim-vela
+## DIA 156 · Terça 2026-11-03 · mj-23-jasmim-vela v2
 
 **Frase:** *Por estar viva neste fecho de dia, agradeço, simplesmente.*
 
@@ -3135,18 +3135,18 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-White jasmine flowers in a clay bowl beside a single warm candle, dark earthy background, soft amber glow --ar 9:16
+Single white gardenia floating in a dish of water beside a candle on a wooden table, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, candle flame gently flickering beside the bowl of white jasmine flowers, soft amber glow pulsing on the white petals, very slight petal movement, slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera, candle flame gently flickering beside the flowers, soft amber glow pulsing on the white petals, very slight petal movement, slow contemplative motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 157 · Quarta 2026-11-04 · mj-30-pena-cai
+## DIA 157 · Quarta 2026-11-04 · mj-30-pena-cai v1
 
 **Frase:** *Solto o controlo do que não me cabe. Confio no que está em movimento.*
 
@@ -3155,18 +3155,18 @@ static camera, candle flame gently flickering beside the bowl of white jasmine f
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, single feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 158 · Quinta 2026-11-05 · mj-05-incenso
+## DIA 158 · Quinta 2026-11-05 · mj-05-incenso v5
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
@@ -3175,7 +3175,7 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Coil of frankincense smoke against a black wall, warm side lamp casting it golden, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3186,7 +3186,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 159 · Sexta 2026-11-06 · mj-16-tambor-shadow
+## DIA 159 · Sexta 2026-11-06 · mj-16-tambor-shadow v1
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -3195,7 +3195,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3206,7 +3206,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 ---
 
-## DIA 160 · Sábado 2026-11-07 · mj-22-coruja-ramo
+## DIA 160 · Sábado 2026-11-07 · mj-22-coruja-ramo v3
 
 **Frase:** *Hoje, no corpo, espreguiço-me como gata e devolvo o dia à terra.*
 
@@ -3215,7 +3215,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
+Tawny owl in silhouette against a full moon, gnarled branch in foreground, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3226,7 +3226,7 @@ static camera, owl silhouette slowly turning its head once to the side and back,
 
 ---
 
-## DIA 161 · Domingo 2026-11-08 · mj-20-silhueta-janela
+## DIA 161 · Domingo 2026-11-08 · mj-20-silhueta-janela v5
 
 **Frase:** *Amanhã, escolho começar devagar. A pressa não me serve.*
 
@@ -3235,7 +3235,7 @@ static camera, owl silhouette slowly turning its head once to the side and back,
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Faceless silhouette by an oval window, hands holding a cup, soft moon glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3246,7 +3246,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 162 · Segunda 2026-11-09 · mj-09-pirilampos
+## DIA 162 · Segunda 2026-11-09 · mj-09-pirilampos v4
 
 **Frase:** *Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça.*
 
@@ -3255,7 +3255,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Fireflies above a still pond in dense forest, faint moon reflection on water, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3266,7 +3266,7 @@ static camera, small fireflies gently floating and blinking on and off in the da
 
 ---
 
-## DIA 163 · Terça 2026-11-10 · mj-12-cha-quente
+## DIA 163 · Terça 2026-11-10 · mj-12-cha-quente v2
 
 **Frase:** *Pelo gesto mínimo que segurou o meu dia, agradeço com a mão no peito.*
 
@@ -3275,18 +3275,18 @@ static camera, small fireflies gently floating and blinking on and off in the da
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Single hand holding a small ceramic teacup over a wooden table, candlelight, no face visible, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 164 · Quarta 2026-11-11 · mj-08-cortina-linho
+## DIA 164 · Quarta 2026-11-11 · mj-08-cortina-linho v4
 
 **Frase:** *Uma frase que me magoou hoje, devolvo ao vento. Não é minha para guardar.*
 
@@ -3295,7 +3295,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16
+Sheer linen panel half-tucked at a tall window, candle glow inside, indigo night outside, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3306,7 +3306,7 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 
 ---
 
-## DIA 165 · Quinta 2026-11-12 · mj-11-via-lactea
+## DIA 165 · Quinta 2026-11-12 · mj-11-via-lactea v1
 
 **Frase:** *Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta.*
 
@@ -3315,18 +3315,18 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 ### Prompt Midjourney
 
 ```
-Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 166 · Sexta 2026-11-13 · mj-25-aldeia-distante
+## DIA 166 · Sexta 2026-11-13 · mj-25-aldeia-distante v1
 
 **Frase:** *Celebro a versão de mim de há um ano que não desistiu. Ela trouxe-me até aqui.*
 
@@ -3335,18 +3335,18 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 167 · Sábado 2026-11-14 · mj-12-cha-quente
+## DIA 167 · Sábado 2026-11-14 · mj-12-cha-quente v3
 
 **Frase:** *Hoje, no corpo, pouso a mão no peito e digo 'estás em casa'.*
 
@@ -3355,18 +3355,18 @@ static camera, distant yellow window lights softly twinkling and pulsing on and 
 ### Prompt Midjourney
 
 ```
-Hands wrapped around a warm clay cup of tea, soft amber kitchen light at night, intimate close framing --ar 9:16
+Two hands cradling a vintage enamel mug of tea, soft warm side light, no face, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, steam rising slowly from the cup curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 168 · Domingo 2026-11-15 · mj-20-silhueta-janela
+## DIA 168 · Domingo 2026-11-15 · mj-20-silhueta-janela v6
 
 **Frase:** *Amanhã, escolho um gesto pequeno por mim antes de cuidar de mais ninguém.*
 
@@ -3375,7 +3375,7 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Outline of a figure seated at a low altar by a window, candle on the sill, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3386,7 +3386,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 169 · Segunda 2026-11-16 · mj-13-rede-verandah
+## DIA 169 · Segunda 2026-11-16 · mj-13-rede-verandah v4
 
 **Frase:** *Em algum momento de hoje escolhi pela minha verdade, mesmo sem aplauso. Esse instante é semente.*
 
@@ -3395,7 +3395,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
+Macrame hammock with linen pillows on a verandah, low amber lamp casting warm light, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3406,7 +3406,7 @@ static camera, hammock gently swaying back and forth in slow rhythm, amber lante
 
 ---
 
-## DIA 170 · Terça 2026-11-17 · mj-28-chocolate-vapor
+## DIA 170 · Terça 2026-11-17 · mj-28-chocolate-vapor v2
 
 **Frase:** *Por quem me olhou sem pressa hoje, agradeço com presença.*
 
@@ -3415,18 +3415,18 @@ static camera, hammock gently swaying back and forth in slow rhythm, amber lante
 ### Prompt Midjourney
 
 ```
-Hands cradling a mug of dark cacao in soft amber kitchen light at night, intimate close framing --ar 9:16
+Single hand holding a stoneware mug of cacao on a wooden table, candle on the side, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white steam rising slowly from the mug of dark cacao curling upward and dissipating, hands stay still cradling the mug, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
+static camera, white steam rising slowly from the mug curling upward and dissipating, hands stay still cradling the mug, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible
 ```
 
 ---
 
-## DIA 171 · Quarta 2026-11-18 · mj-04-chuva-janela
+## DIA 171 · Quarta 2026-11-18 · mj-04-chuva-janela v1
 
 **Frase:** *O peso de querer ter feito mais, pouso aqui, ao fim do dia.*
 
@@ -3435,7 +3435,7 @@ static camera, white steam rising slowly from the mug of dark cacao curling upwa
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3446,7 +3446,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 
 ---
 
-## DIA 172 · Quinta 2026-11-19 · mj-05-incenso
+## DIA 172 · Quinta 2026-11-19 · mj-05-incenso v6
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
@@ -3455,7 +3455,7 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Slow column of white smoke from a smudge stick on dark stone, intimate sanctuary, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3466,7 +3466,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 173 · Sexta 2026-11-20 · mj-27-fogueira-silhuetas
+## DIA 173 · Sexta 2026-11-20 · mj-27-fogueira-silhuetas v1
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -3475,7 +3475,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3486,7 +3486,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 174 · Sábado 2026-11-21 · mj-07-baobab-lua
+## DIA 174 · Sábado 2026-11-21 · mj-07-baobab-lua v4
 
 **Frase:** *Hoje, no corpo, inspiro fundo três vezes e devolvo o dia ao chão.*
 
@@ -3495,7 +3495,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
+Baobab in foreground with a distant warm village light, full moon rising behind, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3506,7 +3506,7 @@ static camera, silver clouds slowly drifting horizontally across the full moon f
 
 ---
 
-## DIA 175 · Domingo 2026-11-22 · mj-20-silhueta-janela
+## DIA 175 · Domingo 2026-11-22 · mj-20-silhueta-janela v1
 
 **Frase:** *Amanhã, escolho dizer 'sim' só ao que me faz expandir.*
 
@@ -3515,7 +3515,7 @@ static camera, silver clouds slowly drifting horizontally across the full moon f
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3526,7 +3526,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 176 · Segunda 2026-11-23 · mj-14-diario-cera
+## DIA 176 · Segunda 2026-11-23 · mj-14-diario-cera v6
 
 **Frase:** *Uma palavra ficou a vibrar no meu peito ao fim do dia. Repara qual foi, ela está a dizer-te algo.*
 
@@ -3535,7 +3535,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Pages of an old leather journal open under candlelight, warm shadows, intimate writing nook --ar 9:16
+Worn diary with pressed flower between pages, candle glow on the cream paper, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3546,7 +3546,7 @@ static camera, single page of the open journal slowly turning upward and folding
 
 ---
 
-## DIA 177 · Terça 2026-11-24 · mj-01-vela-stucco
+## DIA 177 · Terça 2026-11-24 · mj-01-vela-stucco v3
 
 **Frase:** *Pelo corpo que me trouxe até aqui, ainda que cansado, agradeço com ternura.*
 
@@ -3555,18 +3555,18 @@ static camera, single page of the open journal slowly turning upward and folding
 ### Prompt Midjourney
 
 ```
-Single warm beeswax candle flame against a dark stucco wall, shadow play, intimate sanctuary mood, deep navy background --ar 9:16
+Short stubby candle in an iron holder on a stone ledge, dark room behind, golden flame, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single candle flame gently flickering and dancing in place, soft shadow flickering on the stucco wall, slow contemplative night atmosphere, no zoom, no pan, no rotation, no people, no sudden movements
+static camera, single candle flame gently flickering and dancing in place, soft shadow flickering on the wall, slow contemplative night atmosphere, no zoom, no pan, no rotation, no people, no sudden movements
 ```
 
 ---
 
-## DIA 178 · Quarta 2026-11-25 · mj-02-tropical-amber
+## DIA 178 · Quarta 2026-11-25 · mj-02-tropical-amber v1
 
 **Frase:** *Aquela conversa que ficou a girar na minha cabeça, entrego à noite.*
 
@@ -3575,7 +3575,7 @@ static camera, single candle flame gently flickering and dancing in place, soft 
 ### Prompt Midjourney
 
 ```
-Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3586,7 +3586,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 179 · Quinta 2026-11-26 · mj-05-incenso
+## DIA 179 · Quinta 2026-11-26 · mj-05-incenso v1
 
 **Frase:** *Hoje aprendi que pedir ajuda não me torna menor. Torna-me mais inteira.*
 
@@ -3595,7 +3595,7 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+White incense smoke rising in a dark room, single beam of warm light cutting through, very still, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
@@ -3606,7 +3606,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 180 · Sexta 2026-11-27 · mj-29-caminho-lanternas
+## DIA 180 · Sexta 2026-11-27 · mj-29-caminho-lanternas v5
 
 **Frase:** *Celebro hoje o passo pequeno que dei. Pequeno também é caminho.*
 
@@ -3615,13 +3615,13 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Curving sand path with bamboo torches, mist drifting low between palms, contemplative night atmosphere, intimate sanctuary mood, cinematic film grain 35mm, muted earth tones cobre cream indigo, shallow depth of field, no people no faces no text no logos --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
