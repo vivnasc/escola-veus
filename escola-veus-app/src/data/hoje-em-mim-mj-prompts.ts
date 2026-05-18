@@ -59,7 +59,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people",
     audioMood: "brisa-bambu",
-    keywords: ["verandah", "lanterna", "tropical", "folha", "folhas"],
+    keywords: ["verandah", "lanterna", "tropical", "folha", "folhas", "noite"],
   },
   {
     id: "mj-03-brasas",
@@ -98,7 +98,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people",
     audioMood: "brisa-bambu",
-    keywords: ["bambu", "sombra"],
+    keywords: ["bambu", "sombra", "ombro", "ombros"],
   },
   {
     id: "mj-07-baobab-lua",
@@ -143,7 +143,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people",
     audioMood: "sussurro-coro-feminino",
-    keywords: ["estrela", "estrelas", "via láctea", "cosmos", "céu", "cósmico"],
+    keywords: ["estrela", "estrelas", "via láctea", "cosmos", "céu", "cósmico", "silêncio"],
   },
   {
     id: "mj-12-cha-quente",
@@ -181,7 +181,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, small calm waves slowly rolling onto dark sand, moon reflection rippling gently on the wet sand and water surface, slow continuous wave motion, no zoom, no pan, no rotation, no people",
     audioMood: "mare-noturna",
-    keywords: ["mar", "onda", "ondas", "costa"],
+    keywords: ["mar", "onda", "ondas", "costa", "tempo", "ciclo", "passagem"],
   },
   {
     id: "mj-16-tambor-shadow",
@@ -209,7 +209,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, soft shadow of the house plant slowly swaying left and right on the creamy plaster wall, warm lamp light softly pulsing, very slow rhythmic shadow movement, no zoom, no pan, no rotation",
     audioMood: "brisa-bambu",
-    keywords: ["planta", "parede", "sombras"],
+    keywords: ["planta", "parede", "sombras", "olhos"],
     notas: "Bom para quarta (soltar). Movimento mínimo, quase abstrato.",
   },
   {

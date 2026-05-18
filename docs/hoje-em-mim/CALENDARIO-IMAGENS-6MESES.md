@@ -51,22 +51,22 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 
 ---
 
-## DIA 003 · Quarta 2026-06-03 · mj-04-chuva-janela
+## DIA 003 · Quarta 2026-06-03 · mj-08-cortina-linho
 
 **Frase:** *Uma frase que me magoou hoje, devolvo ao vento. Não é minha para guardar.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0015`
+**Alinhamento:** 🎯 keyword `vento`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0015`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, sheer white linen curtain gently billowing inward and outward in moonlit night breeze, fabric folds rippling slowly and organically, silvery light pulsing softly behind, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -211,22 +211,22 @@ static camera, fine rain droplets sliding down the window glass at varying speed
 
 ---
 
-## DIA 011 · Quinta 2026-06-11 · mj-05-incenso
+## DIA 011 · Quinta 2026-06-11 · mj-11-via-lactea
 
 **Frase:** *Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0023`
+**Alinhamento:** 🎯 keyword `silêncio`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0023`
 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
@@ -331,22 +331,22 @@ static camera, glowing orange embers slowly pulsing and breathing in place, smal
 
 ---
 
-## DIA 017 · Quarta 2026-06-17 · mj-04-chuva-janela
+## DIA 017 · Quarta 2026-06-17 · mj-02-tropical-amber
 
 **Frase:** *Aquela conversa que ficou a girar na minha cabeça, entrego à noite.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0017`
+**Alinhamento:** 🎯 keyword `noite`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0017`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -391,22 +391,22 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 020 · Sábado 2026-06-20 · mj-30-pena-cai
+## DIA 020 · Sábado 2026-06-20 · mj-06-bambu-ocre
 
 **Frase:** *Hoje, no corpo, solto os ombros. O dia já não me precisa carregada.*
 
-**Alinhamento:** 🎯 keyword `solto`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0038`
+**Alinhamento:** 🎯 keyword `ombro`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0038`
 
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Bamboo grove against an earthen ochre wall at night, low warm lantern light, soft long shadows --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -511,22 +511,22 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 026 · Sexta 2026-06-26 · mj-16-tambor-shadow
+## DIA 026 · Sexta 2026-06-26 · mj-29-caminho-lanternas
 
 **Frase:** *Celebro hoje o passo pequeno que dei. Pequeno também é caminho.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tambor-lento-distante`  ·  **Frase id:** `hem-0032`
+**Alinhamento:** 🎯 keyword `caminho`  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0032`
 
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -654,7 +654,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 033 · Sexta 2026-07-03 · mj-25-aldeia-distante
+## DIA 033 · Sexta 2026-07-03 · mj-16-tambor-shadow
 
 **Frase:** *Celebro hoje a minha capacidade de recomeçar, vezes sem conta, sem perder a luz.*
 
@@ -663,13 +663,13 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
 ```
 
 ---
@@ -754,22 +754,22 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 
 ---
 
-## DIA 038 · Quarta 2026-07-08 · mj-30-pena-cai
+## DIA 038 · Quarta 2026-07-08 · mj-02-tropical-amber
 
 **Frase:** *Deixo cair, como folha, tudo o que hoje me foi dito sem cuidado.*
 
-**Alinhamento:** 🎯 keyword `deixo`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0019`
+**Alinhamento:** 🎯 keyword `folha`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0019`
 
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -794,7 +794,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 040 · Sexta 2026-07-10 · mj-27-fogueira-silhuetas
+## DIA 040 · Sexta 2026-07-10 · mj-25-aldeia-distante
 
 **Frase:** *Celebro hoje quem me amou mesmo nos meus dias menos brilhantes.*
 
@@ -803,33 +803,33 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 041 · Sábado 2026-07-11 · mj-22-coruja-ramo
+## DIA 041 · Sábado 2026-07-11 · mj-18-sombra-planta
 
 **Frase:** *Hoje, no corpo, fecho os olhos um instante. Aqui dentro também é templo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `coruja-distante`  ·  **Frase id:** `hem-0041`
+**Alinhamento:** 🎯 keyword `olhos`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0041`
 
 ### Prompt Midjourney
 
 ```
-Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
+Soft shadow of a single house plant on a creamy plaster wall, warm lamp light, intimate room composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, owl silhouette slowly turning its head once to the side and back, soft mist drifting horizontally behind, blue moon light softly pulsing, no zoom, no pan, no rotation, no people
+static camera, soft shadow of the house plant slowly swaying left and right on the creamy plaster wall, warm lamp light softly pulsing, very slow rhythmic shadow movement, no zoom, no pan, no rotation
 ```
 
 ---
@@ -854,22 +854,22 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 043 · Segunda 2026-07-13 · mj-09-pirilampos
+## DIA 043 · Segunda 2026-07-13 · mj-29-caminho-lanternas
 
 **Frase:** *Houve um momento de inteireza, e outro de ausência. Os dois fazem parte do mesmo caminho.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0006`
+**Alinhamento:** 🎯 keyword `caminho`  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0006`
 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -894,22 +894,22 @@ static camera, single page of the open journal slowly turning upward and folding
 
 ---
 
-## DIA 045 · Quarta 2026-07-15 · mj-04-chuva-janela
+## DIA 045 · Quarta 2026-07-15 · mj-15-mar-noite
 
 **Frase:** *Liberto a urgência. O que é meu chega no seu tempo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0020`
+**Alinhamento:** 🎯 keyword `tempo`  ·  **Áudio:** `mare-noturna`  ·  **Frase id:** `hem-0020`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Calm small waves on dark sand at night, distant moon reflection, contemplative composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, small calm waves slowly rolling onto dark sand, moon reflection rippling gently on the wet sand and water surface, slow continuous wave motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -934,7 +934,7 @@ static camera, single white feather falling slowly downward through the beam of 
 
 ---
 
-## DIA 047 · Sexta 2026-07-17 · mj-16-tambor-shadow
+## DIA 047 · Sexta 2026-07-17 · mj-27-fogueira-silhuetas
 
 **Frase:** *Celebro hoje a coragem silenciosa que ninguém aplaude, mas que me sustenta.*
 
@@ -943,18 +943,18 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
 ```
 
 ---
 
-## DIA 048 · Sábado 2026-07-18 · mj-07-baobab-lua
+## DIA 048 · Sábado 2026-07-18 · mj-22-coruja-ramo
 
 **Frase:** *Hoje, no corpo, espreguiço-me como gata e devolvo o dia à terra.*
 
@@ -963,33 +963,33 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
+Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, silver clouds slowly drifting horizontally across the full moon from left to right, full moon stays in place, baobab silhouette unmoving in foreground, very slow drift, no zoom, no rotation, no people
+static camera, owl silhouette slowly turning its head once to the side and back, soft mist drifting horizontally behind, blue moon light softly pulsing, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 049 · Domingo 2026-07-19 · mj-20-silhueta-janela
+## DIA 049 · Domingo 2026-07-19 · mj-11-via-lactea
 
 **Frase:** *Amanhã, escolho lembrar-me que estou a evoluir, mesmo quando parece silêncio.*
 
-**Alinhamento:** 🎯 keyword `escolho`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0049`
+**Alinhamento:** 🎯 keyword `silêncio`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0049`
 
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft moonlight slowly shifting on the arched window frame, woman silhouette unmoving in contemplative pose, light pulsing gently, very subtle slow motion, no zoom, no pan, no rotation
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
@@ -1074,7 +1074,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 054 · Sexta 2026-07-24 · mj-25-aldeia-distante
+## DIA 054 · Sexta 2026-07-24 · mj-16-tambor-shadow
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -1083,13 +1083,13 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
 ```
 
 ---
@@ -1134,7 +1134,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 057 · Segunda 2026-07-27 · mj-13-rede-verandah
+## DIA 057 · Segunda 2026-07-27 · mj-09-pirilampos
 
 **Frase:** *Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça.*
 
@@ -1143,13 +1143,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
+Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1174,42 +1174,42 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 
 ---
 
-## DIA 059 · Quarta 2026-07-29 · mj-04-chuva-janela
+## DIA 059 · Quarta 2026-07-29 · mj-08-cortina-linho
 
 **Frase:** *Uma frase que me magoou hoje, devolvo ao vento. Não é minha para guardar.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0015`
+**Alinhamento:** 🎯 keyword `vento`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0015`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, sheer white linen curtain gently billowing inward and outward in moonlit night breeze, fabric folds rippling slowly and organically, silvery light pulsing softly behind, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 060 · Quinta 2026-07-30 · mj-05-incenso
+## DIA 060 · Quinta 2026-07-30 · mj-11-via-lactea
 
 **Frase:** *Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0023`
+**Alinhamento:** 🎯 keyword `silêncio`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0023`
 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
@@ -1277,7 +1277,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 064 · Segunda 2026-08-03 · mj-26-teia-orvalho
+## DIA 064 · Segunda 2026-08-03 · mj-13-rede-verandah
 
 **Frase:** *Em algum momento de hoje escolhi pela minha verdade, mesmo sem aplauso. Esse instante é semente.*
 
@@ -1286,13 +1286,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16
+Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
+static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1357,7 +1357,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 068 · Sexta 2026-08-07 · mj-27-fogueira-silhuetas
+## DIA 068 · Sexta 2026-08-07 · mj-25-aldeia-distante
 
 **Frase:** *Celebro a versão de mim de há um ano que não desistiu. Ela trouxe-me até aqui.*
 
@@ -1366,18 +1366,18 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 069 · Sábado 2026-08-08 · mj-22-coruja-ramo
+## DIA 069 · Sábado 2026-08-08 · mj-07-baobab-lua
 
 **Frase:** *Hoje, no corpo, inspiro fundo três vezes e devolvo o dia ao chão.*
 
@@ -1386,13 +1386,13 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
+Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, owl silhouette slowly turning its head once to the side and back, soft mist drifting horizontally behind, blue moon light softly pulsing, no zoom, no pan, no rotation, no people
+static camera, silver clouds slowly drifting horizontally across the full moon from left to right, full moon stays in place, baobab silhouette unmoving in foreground, very slow drift, no zoom, no rotation, no people
 ```
 
 ---
@@ -1457,22 +1457,22 @@ static camera, candle flame gently flickering beside the bowl of white jasmine f
 
 ---
 
-## DIA 073 · Quarta 2026-08-12 · mj-04-chuva-janela
+## DIA 073 · Quarta 2026-08-12 · mj-02-tropical-amber
 
 **Frase:** *Aquela conversa que ficou a girar na minha cabeça, entrego à noite.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0017`
+**Alinhamento:** 🎯 keyword `noite`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0017`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1497,7 +1497,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 075 · Sexta 2026-08-14 · mj-16-tambor-shadow
+## DIA 075 · Sexta 2026-08-14 · mj-27-fogueira-silhuetas
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -1506,33 +1506,33 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
 ```
 
 ---
 
-## DIA 076 · Sábado 2026-08-15 · mj-30-pena-cai
+## DIA 076 · Sábado 2026-08-15 · mj-06-bambu-ocre
 
 **Frase:** *Hoje, no corpo, solto os ombros. O dia já não me precisa carregada.*
 
-**Alinhamento:** 🎯 keyword `solto`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0038`
+**Alinhamento:** 🎯 keyword `ombro`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0038`
 
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Bamboo grove against an earthen ochre wall at night, low warm lantern light, soft long shadows --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1557,7 +1557,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 078 · Segunda 2026-08-17 · mj-29-caminho-lanternas
+## DIA 078 · Segunda 2026-08-17 · mj-26-teia-orvalho
 
 **Frase:** *Há coisas que fiz hoje sem pensar. Aí mora um pedaço de quem realmente sou.*
 
@@ -1566,13 +1566,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1637,22 +1637,22 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 082 · Sexta 2026-08-21 · mj-25-aldeia-distante
+## DIA 082 · Sexta 2026-08-21 · mj-29-caminho-lanternas
 
 **Frase:** *Celebro hoje o passo pequeno que dei. Pequeno também é caminho.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tambor-lento-distante`  ·  **Frase id:** `hem-0032`
+**Alinhamento:** 🎯 keyword `caminho`  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0032`
 
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -1697,7 +1697,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 085 · Segunda 2026-08-24 · mj-09-pirilampos
+## DIA 085 · Segunda 2026-08-24 · mj-29-caminho-lanternas
 
 **Frase:** *Uma verdade pequena minha apareceu hoje, devagarinho. Acolhe, ela vem em paz.*
 
@@ -1706,13 +1706,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -1737,22 +1737,22 @@ static camera, white steam rising slowly from the mug of dark cacao curling upwa
 
 ---
 
-## DIA 087 · Quarta 2026-08-26 · mj-30-pena-cai
+## DIA 087 · Quarta 2026-08-26 · mj-02-tropical-amber
 
 **Frase:** *Deixo cair, como folha, tudo o que hoje me foi dito sem cuidado.*
 
-**Alinhamento:** 🎯 keyword `deixo`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0019`
+**Alinhamento:** 🎯 keyword `folha`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0019`
 
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1777,7 +1777,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 089 · Sexta 2026-08-28 · mj-27-fogueira-silhuetas
+## DIA 089 · Sexta 2026-08-28 · mj-16-tambor-shadow
 
 **Frase:** *Celebro hoje a minha capacidade de recomeçar, vezes sem conta, sem perder a luz.*
 
@@ -1786,13 +1786,13 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
+static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
 ```
 
 ---
@@ -1880,22 +1880,22 @@ static camera, water gently trickling continuously down the black stone fountain
 
 ---
 
-## DIA 094 · Quarta 2026-09-02 · mj-04-chuva-janela
+## DIA 094 · Quarta 2026-09-02 · mj-15-mar-noite
 
 **Frase:** *Liberto a urgência. O que é meu chega no seu tempo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0020`
+**Alinhamento:** 🎯 keyword `tempo`  ·  **Áudio:** `mare-noturna`  ·  **Frase id:** `hem-0020`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Calm small waves on dark sand at night, distant moon reflection, contemplative composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, small calm waves slowly rolling onto dark sand, moon reflection rippling gently on the wet sand and water surface, slow continuous wave motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1920,7 +1920,7 @@ static camera, single white feather falling slowly downward through the beam of 
 
 ---
 
-## DIA 096 · Sexta 2026-09-04 · mj-16-tambor-shadow
+## DIA 096 · Sexta 2026-09-04 · mj-25-aldeia-distante
 
 **Frase:** *Celebro hoje quem me amou mesmo nos meus dias menos brilhantes.*
 
@@ -1929,73 +1929,73 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 097 · Sábado 2026-09-05 · mj-07-baobab-lua
+## DIA 097 · Sábado 2026-09-05 · mj-18-sombra-planta
 
 **Frase:** *Hoje, no corpo, fecho os olhos um instante. Aqui dentro também é templo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `coruja-distante`  ·  **Frase id:** `hem-0041`
+**Alinhamento:** 🎯 keyword `olhos`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0041`
 
 ### Prompt Midjourney
 
 ```
-Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
+Soft shadow of a single house plant on a creamy plaster wall, warm lamp light, intimate room composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, silver clouds slowly drifting horizontally across the full moon from left to right, full moon stays in place, baobab silhouette unmoving in foreground, very slow drift, no zoom, no rotation, no people
+static camera, soft shadow of the house plant slowly swaying left and right on the creamy plaster wall, warm lamp light softly pulsing, very slow rhythmic shadow movement, no zoom, no pan, no rotation
 ```
 
 ---
 
-## DIA 098 · Domingo 2026-09-06 · mj-20-silhueta-janela
+## DIA 098 · Domingo 2026-09-06 · mj-11-via-lactea
 
 **Frase:** *Amanhã, escolho lembrar-me que estou a evoluir, mesmo quando parece silêncio.*
 
-**Alinhamento:** 🎯 keyword `escolho`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0049`
+**Alinhamento:** 🎯 keyword `silêncio`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0049`
 
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft moonlight slowly shifting on the arched window frame, woman silhouette unmoving in contemplative pose, light pulsing gently, very subtle slow motion, no zoom, no pan, no rotation
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 099 · Segunda 2026-09-07 · mj-13-rede-verandah
+## DIA 099 · Segunda 2026-09-07 · mj-29-caminho-lanternas
 
 **Frase:** *Houve um momento de inteireza, e outro de ausência. Os dois fazem parte do mesmo caminho.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0006`
+**Alinhamento:** 🎯 keyword `caminho`  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0006`
 
 ### Prompt Midjourney
 
 ```
-Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -2060,7 +2060,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 103 · Sexta 2026-09-11 · mj-25-aldeia-distante
+## DIA 103 · Sexta 2026-09-11 · mj-27-fogueira-silhuetas
 
 **Frase:** *Celebro hoje a coragem silenciosa que ninguém aplaude, mas que me sustenta.*
 
@@ -2069,13 +2069,13 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
 ```
 
 ---
@@ -2160,47 +2160,47 @@ static camera, glowing orange embers slowly pulsing and breathing in place, smal
 
 ---
 
-## DIA 108 · Quarta 2026-09-16 · mj-04-chuva-janela
+## DIA 108 · Quarta 2026-09-16 · mj-08-cortina-linho
 
 **Frase:** *Uma frase que me magoou hoje, devolvo ao vento. Não é minha para guardar.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0015`
+**Alinhamento:** 🎯 keyword `vento`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0015`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, sheer white linen curtain gently billowing inward and outward in moonlit night breeze, fabric folds rippling slowly and organically, silvery light pulsing softly behind, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 109 · Quinta 2026-09-17 · mj-05-incenso
+## DIA 109 · Quinta 2026-09-17 · mj-11-via-lactea
 
 **Frase:** *Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0023`
+**Alinhamento:** 🎯 keyword `silêncio`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0023`
 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 110 · Sexta 2026-09-18 · mj-27-fogueira-silhuetas
+## DIA 110 · Sexta 2026-09-18 · mj-16-tambor-shadow
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -2209,13 +2209,13 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
+static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
 ```
 
 ---
@@ -2260,7 +2260,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 113 · Segunda 2026-09-21 · mj-26-teia-orvalho
+## DIA 113 · Segunda 2026-09-21 · mj-09-pirilampos
 
 **Frase:** *Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça.*
 
@@ -2269,13 +2269,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16
+Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
+static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2340,7 +2340,7 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 117 · Sexta 2026-09-25 · mj-16-tambor-shadow
+## DIA 117 · Sexta 2026-09-25 · mj-25-aldeia-distante
 
 **Frase:** *Celebro a versão de mim de há um ano que não desistiu. Ela trouxe-me até aqui.*
 
@@ -2349,13 +2349,13 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2400,7 +2400,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 120 · Segunda 2026-09-28 · mj-29-caminho-lanternas
+## DIA 120 · Segunda 2026-09-28 · mj-13-rede-verandah
 
 **Frase:** *Em algum momento de hoje escolhi pela minha verdade, mesmo sem aplauso. Esse instante é semente.*
 
@@ -2409,13 +2409,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2483,7 +2483,7 @@ static camera, gentle ripple expanding slowly across the still water puddle from
 
 ---
 
-## DIA 124 · Sexta 2026-10-02 · mj-25-aldeia-distante
+## DIA 124 · Sexta 2026-10-02 · mj-27-fogueira-silhuetas
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -2492,33 +2492,33 @@ static camera, gentle ripple expanding slowly across the still water puddle from
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
 ```
 
 ---
 
-## DIA 125 · Sábado 2026-10-03 · mj-30-pena-cai
+## DIA 125 · Sábado 2026-10-03 · mj-06-bambu-ocre
 
 **Frase:** *Hoje, no corpo, solto os ombros. O dia já não me precisa carregada.*
 
-**Alinhamento:** 🎯 keyword `solto`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0038`
+**Alinhamento:** 🎯 keyword `ombro`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0038`
 
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Bamboo grove against an earthen ochre wall at night, low warm lantern light, soft long shadows --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2583,22 +2583,22 @@ static camera, single page of the open journal slowly turning upward and folding
 
 ---
 
-## DIA 129 · Quarta 2026-10-07 · mj-04-chuva-janela
+## DIA 129 · Quarta 2026-10-07 · mj-02-tropical-amber
 
 **Frase:** *Aquela conversa que ficou a girar na minha cabeça, entrego à noite.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0017`
+**Alinhamento:** 🎯 keyword `noite`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0017`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2623,22 +2623,22 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 131 · Sexta 2026-10-09 · mj-27-fogueira-silhuetas
+## DIA 131 · Sexta 2026-10-09 · mj-29-caminho-lanternas
 
 **Frase:** *Celebro hoje o passo pequeno que dei. Pequeno também é caminho.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tambor-lento-distante`  ·  **Frase id:** `hem-0032`
+**Alinhamento:** 🎯 keyword `caminho`  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0032`
 
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -2683,7 +2683,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 134 · Segunda 2026-10-12 · mj-09-pirilampos
+## DIA 134 · Segunda 2026-10-12 · mj-26-teia-orvalho
 
 **Frase:** *Há coisas que fiz hoje sem pensar. Aí mora um pedaço de quem realmente sou.*
 
@@ -2692,13 +2692,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2823,7 +2823,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 141 · Segunda 2026-10-19 · mj-13-rede-verandah
+## DIA 141 · Segunda 2026-10-19 · mj-29-caminho-lanternas
 
 **Frase:** *Uma verdade pequena minha apareceu hoje, devagarinho. Acolhe, ela vem em paz.*
 
@@ -2832,13 +2832,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -2863,22 +2863,22 @@ static camera, three candle flames independently flickering and dancing in place
 
 ---
 
-## DIA 143 · Quarta 2026-10-21 · mj-30-pena-cai
+## DIA 143 · Quarta 2026-10-21 · mj-02-tropical-amber
 
 **Frase:** *Deixo cair, como folha, tudo o que hoje me foi dito sem cuidado.*
 
-**Alinhamento:** 🎯 keyword `deixo`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0019`
+**Alinhamento:** 🎯 keyword `folha`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0019`
 
 ### Prompt Midjourney
 
 ```
-Single white feather suspended in a beam of moonlight, deep dark background, dreamlike composition --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2923,62 +2923,62 @@ static camera, distant yellow window lights softly twinkling and pulsing on and 
 
 ---
 
-## DIA 146 · Sábado 2026-10-24 · mj-22-coruja-ramo
+## DIA 146 · Sábado 2026-10-24 · mj-18-sombra-planta
 
 **Frase:** *Hoje, no corpo, fecho os olhos um instante. Aqui dentro também é templo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `coruja-distante`  ·  **Frase id:** `hem-0041`
+**Alinhamento:** 🎯 keyword `olhos`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0041`
 
 ### Prompt Midjourney
 
 ```
-Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
+Soft shadow of a single house plant on a creamy plaster wall, warm lamp light, intimate room composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, owl silhouette slowly turning its head once to the side and back, soft mist drifting horizontally behind, blue moon light softly pulsing, no zoom, no pan, no rotation, no people
+static camera, soft shadow of the house plant slowly swaying left and right on the creamy plaster wall, warm lamp light softly pulsing, very slow rhythmic shadow movement, no zoom, no pan, no rotation
 ```
 
 ---
 
-## DIA 147 · Domingo 2026-10-25 · mj-20-silhueta-janela
+## DIA 147 · Domingo 2026-10-25 · mj-11-via-lactea
 
 **Frase:** *Amanhã, escolho lembrar-me que estou a evoluir, mesmo quando parece silêncio.*
 
-**Alinhamento:** 🎯 keyword `escolho`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0049`
+**Alinhamento:** 🎯 keyword `silêncio`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0049`
 
 ### Prompt Midjourney
 
 ```
-Silhouette of a woman from behind looking out an arched window at the moon, deep indigo room, single soft lamp glow --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft moonlight slowly shifting on the arched window frame, woman silhouette unmoving in contemplative pose, light pulsing gently, very subtle slow motion, no zoom, no pan, no rotation
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
 
-## DIA 148 · Segunda 2026-10-26 · mj-26-teia-orvalho
+## DIA 148 · Segunda 2026-10-26 · mj-29-caminho-lanternas
 
 **Frase:** *Houve um momento de inteireza, e outro de ausência. Os dois fazem parte do mesmo caminho.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0006`
+**Alinhamento:** 🎯 keyword `caminho`  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0006`
 
 ### Prompt Midjourney
 
 ```
-Close-up of a spider web with dew drops glistening under moonlight, dark forest background, delicate composition --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -3003,22 +3003,22 @@ static camera, white steam rising slowly from the dark stoneware cup curling upw
 
 ---
 
-## DIA 150 · Quarta 2026-10-28 · mj-04-chuva-janela
+## DIA 150 · Quarta 2026-10-28 · mj-15-mar-noite
 
 **Frase:** *Liberto a urgência. O que é meu chega no seu tempo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0020`
+**Alinhamento:** 🎯 keyword `tempo`  ·  **Áudio:** `mare-noturna`  ·  **Frase id:** `hem-0020`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Calm small waves on dark sand at night, distant moon reflection, contemplative composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, small calm waves slowly rolling onto dark sand, moon reflection rippling gently on the wet sand and water surface, slow continuous wave motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -3206,7 +3206,7 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 ---
 
-## DIA 160 · Sábado 2026-11-07 · mj-07-baobab-lua
+## DIA 160 · Sábado 2026-11-07 · mj-22-coruja-ramo
 
 **Frase:** *Hoje, no corpo, espreguiço-me como gata e devolvo o dia à terra.*
 
@@ -3215,13 +3215,13 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 ### Prompt Midjourney
 
 ```
-Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
+Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, silver clouds slowly drifting horizontally across the full moon from left to right, full moon stays in place, baobab silhouette unmoving in foreground, very slow drift, no zoom, no rotation, no people
+static camera, owl silhouette slowly turning its head once to the side and back, soft mist drifting horizontally behind, blue moon light softly pulsing, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -3246,7 +3246,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 162 · Segunda 2026-11-09 · mj-29-caminho-lanternas
+## DIA 162 · Segunda 2026-11-09 · mj-09-pirilampos
 
 **Frase:** *Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça.*
 
@@ -3255,13 +3255,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
+Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
+static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -3286,42 +3286,42 @@ static camera, steam rising slowly from the clay cup of tea curling upward, hand
 
 ---
 
-## DIA 164 · Quarta 2026-11-11 · mj-04-chuva-janela
+## DIA 164 · Quarta 2026-11-11 · mj-08-cortina-linho
 
 **Frase:** *Uma frase que me magoou hoje, devolvo ao vento. Não é minha para guardar.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0015`
+**Alinhamento:** 🎯 keyword `vento`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0015`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+White sheer linen curtain at a moonlit window, silvery blue light, soft fabric folds --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, sheer white linen curtain gently billowing inward and outward in moonlit night breeze, fabric folds rippling slowly and organically, silvery light pulsing softly behind, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 165 · Quinta 2026-11-12 · mj-05-incenso
+## DIA 165 · Quinta 2026-11-12 · mj-11-via-lactea
 
 **Frase:** *Hoje aprendi que o meu silêncio é, muitas vezes, a resposta mais honesta.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0023`
+**Alinhamento:** 🎯 keyword `silêncio`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0023`
 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Milky Way over silhouetted acacia trees, deep cosmic blues and purples, time-lapse aesthetic --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people
 ```
 
 ---
@@ -3386,7 +3386,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 169 · Segunda 2026-11-16 · mj-09-pirilampos
+## DIA 169 · Segunda 2026-11-16 · mj-13-rede-verandah
 
 **Frase:** *Em algum momento de hoje escolhi pela minha verdade, mesmo sem aplauso. Esse instante é semente.*
 
@@ -3395,13 +3395,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -3486,7 +3486,7 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 
 ---
 
-## DIA 174 · Sábado 2026-11-21 · mj-22-coruja-ramo
+## DIA 174 · Sábado 2026-11-21 · mj-07-baobab-lua
 
 **Frase:** *Hoje, no corpo, inspiro fundo três vezes e devolvo o dia ao chão.*
 
@@ -3495,13 +3495,13 @@ static camera, fire pit flames flickering and dancing in place, sparks rising sl
 ### Prompt Midjourney
 
 ```
-Owl silhouette perched on a bare branch under a misty moon, faint blue light, quiet still composition --ar 9:16
+Full moon behind silver clouds, silhouette of a single baobab tree, African savannah at night, wide cinematic frame --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, owl silhouette slowly turning its head once to the side and back, soft mist drifting horizontally behind, blue moon light softly pulsing, no zoom, no pan, no rotation, no people
+static camera, silver clouds slowly drifting horizontally across the full moon from left to right, full moon stays in place, baobab silhouette unmoving in foreground, very slow drift, no zoom, no rotation, no people
 ```
 
 ---
@@ -3566,22 +3566,22 @@ static camera, single candle flame gently flickering and dancing in place, soft 
 
 ---
 
-## DIA 178 · Quarta 2026-11-25 · mj-04-chuva-janela
+## DIA 178 · Quarta 2026-11-25 · mj-02-tropical-amber
 
 **Frase:** *Aquela conversa que ficou a girar na minha cabeça, entrego à noite.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `chuva-fina-no-telhado`  ·  **Frase id:** `hem-0017`
+**Alinhamento:** 🎯 keyword `noite`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0017`
 
 ### Prompt Midjourney
 
 ```
-Fine rain on a window pane at night, warm interior amber light glowing behind, blurred droplets, melancholic peace --ar 9:16
+Tropical broadleaf plants in night air, backlit by amber lantern, deep indigo surround, African verandah at night, cinematic depth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -3606,22 +3606,22 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 
 ---
 
-## DIA 180 · Sexta 2026-11-27 · mj-16-tambor-shadow
+## DIA 180 · Sexta 2026-11-27 · mj-29-caminho-lanternas
 
 **Frase:** *Celebro hoje o passo pequeno que dei. Pequeno também é caminho.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tambor-lento-distante`  ·  **Frase id:** `hem-0032`
+**Alinhamento:** 🎯 keyword `caminho`  ·  **Áudio:** `grilos-tropicais`  ·  **Frase id:** `hem-0032`
 
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Garden path lined with low warm lanterns at night, soft fog, no people, depth of field --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people
 ```
 
 ---
@@ -3629,29 +3629,35 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 
 # Auditoria
 
-- Match por **keyword**: 69 dias
-- Match por **mood**: 111 dias
+- Match por **keyword**: 94 dias
+- Match por **mood**: 86 dias
 - **Fallback** ciclo: 0 dias
 
 ## Uso por prompt
 
-- `mj-05-incenso` — 29 dias
-- `mj-20-silhueta-janela` — 28 dias
-- `mj-04-chuva-janela` — 18 dias
+- `mj-05-incenso` — 25 dias
+- `mj-20-silhueta-janela` — 25 dias
 - `mj-12-cha-quente` — 15 dias
-- `mj-30-pena-cai` — 13 dias
-- `mj-16-tambor-shadow` — 9 dias
-- `mj-25-aldeia-distante` — 8 dias
-- `mj-27-fogueira-silhuetas` — 8 dias
+- `mj-29-caminho-lanternas` — 11 dias
+- `mj-16-tambor-shadow` — 7 dias
+- `mj-04-chuva-janela` — 7 dias
+- `mj-11-via-lactea` — 7 dias
+- `mj-25-aldeia-distante` — 7 dias
+- `mj-02-tropical-amber` — 7 dias
+- `mj-27-fogueira-silhuetas` — 7 dias
+- `mj-30-pena-cai` — 7 dias
 - `mj-14-diario-cera` — 6 dias
-- `mj-09-pirilampos` — 5 dias
-- `mj-07-baobab-lua` — 5 dias
-- `mj-29-caminho-lanternas` — 5 dias
-- `mj-22-coruja-ramo` — 5 dias
+- `mj-08-cortina-linho` — 4 dias
+- `mj-09-pirilampos` — 4 dias
+- `mj-07-baobab-lua` — 4 dias
 - `mj-13-rede-verandah` — 4 dias
-- `mj-26-teia-orvalho` — 4 dias
 - `mj-01-vela-stucco` — 3 dias
+- `mj-06-bambu-ocre` — 3 dias
+- `mj-26-teia-orvalho` — 3 dias
 - `mj-24-pes-areia` — 3 dias
+- `mj-18-sombra-planta` — 3 dias
+- `mj-15-mar-noite` — 3 dias
+- `mj-22-coruja-ramo` — 3 dias
 - `mj-03-brasas` — 2 dias
 - `mj-17-velas-mesa` — 2 dias
 - `mj-19-vapor-cha` — 2 dias
@@ -3659,12 +3665,3 @@ static camera, soft amber light gently pulsing on the wooden drum surface, faint
 - `mj-28-chocolate-vapor` — 2 dias
 - `mj-10-fonte-pedra` — 1 dias
 - `mj-21-estrelas-poca` — 1 dias
-
-### Prompts não usados (6/30)
-Nenhuma frase faz match. Considera acrescentar keywords ou frases que toquem nestes substantivos:
-- `mj-02-tropical-amber` — keywords: `verandah`, `lanterna`, `tropical`, `folha`, `folhas`
-- `mj-06-bambu-ocre` — keywords: `bambu`, `sombra`
-- `mj-08-cortina-linho` — keywords: `cortina`, `linho`, `vento`, `brisa`
-- `mj-11-via-lactea` — keywords: `estrela`, `estrelas`, `via láctea`, `cosmos`, `céu`, `cósmico`
-- `mj-15-mar-noite` — keywords: `mar`, `onda`, `ondas`, `costa`
-- `mj-18-sombra-planta` — keywords: `planta`, `parede`, `sombras`

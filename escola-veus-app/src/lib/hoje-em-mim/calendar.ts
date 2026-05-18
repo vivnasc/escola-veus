@@ -55,7 +55,6 @@ function matchByKeyword(
   phrase: string
 ): { prompt: MjVideoPrompt; keyword: string } | null {
   const norm = normalize(phrase);
-  const padded = ` ${norm} `;
   for (const p of MJ_VIDEO_PROMPTS) {
     for (const kw of p.keywords ?? []) {
       const kn = normalize(kw);
@@ -63,8 +62,10 @@ function matchByKeyword(
         // keyword multi-palavra (ex: "via láctea"): substring match
         if (norm.includes(kn)) return { prompt: p, keyword: kw };
       } else {
-        // palavra inteira, com tolerância a plural simples (+s)
-        if (padded.includes(` ${kn} `) || padded.includes(` ${kn}s `)) {
+        // palavra inteira via \b. Tolera plural simples (+s) e
+        // pontuação adjacente (vírgula, ponto, etc).
+        const re = new RegExp(`\\b${kn}s?\\b`, "i");
+        if (re.test(norm)) {
           return { prompt: p, keyword: kw };
         }
       }
