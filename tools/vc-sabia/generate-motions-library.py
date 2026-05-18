@@ -26,7 +26,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SEED_PATH = REPO_ROOT / "escola-veus-app" / "src" / "data" / "vc-sabia-motions.seed.json"
+PHRASES_PATH = REPO_ROOT / "escola-veus-app" / "src" / "data" / "vc-sabia-frases.seed.json"
 OUT_PATH = REPO_ROOT / "docs" / "vc-sabia" / "MOTIONS-LIBRARY.md"
+CAL_OUT_PATH = REPO_ROOT / "docs" / "vc-sabia" / "CALENDARIO-IMAGENS-6MESES.md"
 
 
 def load_seed() -> dict:
@@ -180,13 +182,197 @@ def render_doc() -> str:
     return "\n".join(lines) + "\n"
 
 
+DOW_PT = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"]
+
+
+def _normalize(s: str) -> str:
+    import unicodedata
+    n = unicodedata.normalize("NFD", s)
+    n = "".join(c for c in n if unicodedata.category(c) != "Mn")
+    return n.lower()
+
+
+def match_category_for_phrase(
+    phrase_text: str,
+    phrase_tema: str,
+) -> tuple[dict, str]:
+    """Devolve (categoria, modo) — modo em {"keyword", "tema", "fallback"}.
+
+    1. Procura keyword da categoria em qualquer parte da frase normalizada.
+       Primeira categoria que matcha (pela ordem do JSON) ganha. Por isso
+       no JSON pomos Rios antes de Reflexos (que apanha 'agua' generico).
+    2. Se nenhuma keyword matcha, cai para categoria cujo tema vc-sabia
+       seja o mesmo da frase.
+    3. Ultimo recurso: primeira categoria (mantem determinismo).
+    """
+    norm = _normalize(phrase_text)
+    norm_padded = f" {norm} "
+    for cat in CATEGORIES:
+        for kw in cat.get("keywords", []):
+            kn = _normalize(kw)
+            # match palavra inteira ou substring (alguns kws sao multi-palavra)
+            if " " in kn:
+                if kn in norm:
+                    return cat, "keyword"
+            else:
+                if f" {kn} " in norm_padded or f" {kn}s " in norm_padded:
+                    return cat, "keyword"
+    # fallback tema
+    for cat in CATEGORIES:
+        if cat["tema"] == phrase_tema:
+            return cat, "tema"
+    return CATEGORIES[0], "fallback"
+
+
+def calendar_markers(d: date) -> list[str]:
+    """Marcadores do dia: abertura/encerramento de mes ou ano, solsticios, equinocios."""
+    markers: list[str] = []
+    next_day = d + timedelta(days=1)
+    last_of_month = next_day.day == 1
+    if d.month == 1 and d.day == 1:
+        markers.append("1.º dia do ano")
+    if d.month == 12 and d.day == 31:
+        markers.append("último dia do ano")
+    if d.day == 1:
+        markers.append("abertura de mês")
+    if last_of_month:
+        markers.append("encerramento de mês")
+    if 14 <= d.day <= 16:
+        markers.append("meio do mês")
+    if d.weekday() == 6:
+        markers.append("domingo")
+    def in_window(m: int, target_d: int) -> bool:
+        return d.month == m and abs(d.day - target_d) <= 1
+    if in_window(12, 21):
+        markers.append("solstício de inverno")
+    if in_window(6, 21):
+        markers.append("solstício de verão")
+    if in_window(3, 20):
+        markers.append("equinócio da primavera")
+    if in_window(9, 22):
+        markers.append("equinócio de outono")
+    return markers
+
+
+def render_calendar() -> str:
+    phrases = json.loads(PHRASES_PATH.read_text(encoding="utf-8"))["frases"]
+    n_phrases = len(phrases)
+    start = date(2026, 6, 1)
+    total_days = 180
+
+    # cursor por categoria para rodar entre as 8 variantes ao longo dos meses
+    variant_cursor: dict[str, int] = {}
+
+    lines: list[str] = []
+    lines.append("# VC Sabia · Calendário de Imagens · 6 meses")
+    lines.append("")
+    lines.append(
+        f"Plano dia-a-dia de **{total_days} posts** ({start.isoformat()} → "
+        f"{(start + timedelta(days=total_days - 1)).isoformat()}), no mesmo "
+        "formato do `MES-01-JUNHO-2026-SLIDESHOW.md` (Trinta Manhãs)."
+    )
+    lines.append("")
+    lines.append(
+        "**Alinhamento frase ↔ imagem:** a categoria visual é escolhida pelo "
+        "substantivo da frase (girassol → Girassóis, lótus → Reflexos na água "
+        "com keyword `lotus`, baobá → Árvores com neblina, etc). Se a frase não "
+        "tem substantivo natureza claro, cai por tema vc-sabia. Variante visual "
+        "roda por categoria (cursor independente), nunca repete a mesma imagem "
+        "antes de esgotar as 8 variantes."
+    )
+    lines.append("")
+    lines.append("## Estilo fixo")
+    lines.append("")
+    lines.append("> *" + STYLE_BASE + "*")
+    lines.append("")
+    lines.append("```")
+    lines.append(SUFFIX)
+    lines.append("```")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+
+    current_month = (0, 0)
+    months_pt = [
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+    ]
+
+    for i in range(total_days):
+        d = start + timedelta(days=i)
+        if (d.year, d.month) != current_month:
+            current_month = (d.year, d.month)
+            lines.append("")
+            lines.append(f"# {months_pt[d.month - 1]} {d.year}")
+            lines.append("")
+
+        phrase = phrases[i % n_phrases]
+        cat, match_mode = match_category_for_phrase(phrase["texto"], phrase["tema"])
+        cursor = variant_cursor.get(cat["name"], 0)
+        variant_idx = cursor % len(cat["subjects"])
+        variant_cursor[cat["name"]] = cursor + 1
+        subject = cat["subjects"][variant_idx]
+
+        markers = calendar_markers(d)
+        marker_str = " · ".join(markers) if markers else ""
+        dow = DOW_PT[d.weekday()]
+
+        header = f"## DIA {i + 1:03d} · {dow} {d.isoformat()} · {cat['name']}"
+        if marker_str:
+            header += f"  ·  *{marker_str}*"
+        lines.append(header)
+        lines.append("")
+        lines.append(f"**Frase:** *Sabias que… {phrase['texto']}*")
+        lines.append("")
+        match_label = {
+            "keyword": "🎯 keyword",
+            "tema": "🎨 por tema",
+            "fallback": "⚠ fallback",
+        }[match_mode]
+        lines.append(
+            f"**Alinhamento:** {match_label}  ·  "
+            f"**Tema:** `{cat['tema']}` (frase `{phrase['id']}` · tema `{phrase['tema']}`)  ·  "
+            f"**Mood áudio:** `{cat['mood']}`  ·  "
+            f"**Variante visual:** v{variant_idx + 1}/{len(cat['subjects'])}"
+        )
+        lines.append("")
+        lines.append("### Prompt Midjourney")
+        lines.append("")
+        lines.append("```")
+        lines.append(build_prompt(subject, cat["atmosphere"], cat["mood"]))
+        lines.append("```")
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+
+    # estatistica final
+    counts: dict[str, int] = {}
+    for c in CATEGORIES:
+        counts[c["name"]] = variant_cursor.get(c["name"], 0)
+    lines.append("")
+    lines.append("## Distribuição (180 dias)")
+    lines.append("")
+    lines.append("| Categoria | Tema | Usos | Vezes variante 1× repete |")
+    lines.append("|---|---|---|---|")
+    for c in CATEGORIES:
+        n = counts[c["name"]]
+        rep = max(0, n - len(c["subjects"]))
+        lines.append(f"| {c['name']} | `{c['tema']}` | {n} | {rep} |")
+    lines.append("")
+
+    return "\n".join(lines) + "\n"
+
+
 def main():
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    content = render_doc()
-    OUT_PATH.write_text(content, encoding="utf-8")
+    OUT_PATH.write_text(render_doc(), encoding="utf-8")
     total = sum(len(c["subjects"]) for c in CATEGORIES)
     print(f"OK · {total} prompts ({len(CATEGORIES)} categorias) escritos em {OUT_PATH.relative_to(REPO_ROOT)}")
-    print(f"  · Calendário: 6 meses (2026-06-01 → 2026-11-30, ~180 dias)")
+    print(f"  · Calendário (tabelas): 6 meses (2026-06-01 → 2026-11-30, ~180 dias)")
+
+    CAL_OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CAL_OUT_PATH.write_text(render_calendar(), encoding="utf-8")
+    print(f"OK · 180 dias dia-a-dia escritos em {CAL_OUT_PATH.relative_to(REPO_ROOT)}")
 
 
 if __name__ == "__main__":
