@@ -199,12 +199,31 @@ VISUAL. Campo "notaVisual" em CADA slide. Identidade "OFÍCIO DO VÉU":
 A imagem é editorial still life com gramática FIXA. Documento completo em
 docs/IDENTIDADE-VISUAL-CARROSSEL.md. Tudo fora desta gramática é proibido.
 
-MATERIAIS — lista fechada (a cena tem de mostrar pelo menos 1 do núcleo):
-- Núcleo: raw linen (linho cru, dobrado/drapeado/bordado), navy wool
-  serge (sarja navy vincada), natural raffia weave (rafia trançada,
-  mel-dourado), rustic ceramic (cerâmica rústica, terracota ou navy-glaze).
-- Suportes: dark walnut wood (madeira escura), pale stone (pedra clara).
-- ZERO outros materiais (sem plástico, sem metal, sem vidro moderno).
+MATERIAIS — lista fechada (a cena tem de combinar elementos destas
+categorias; capa MAIS rica, cta MAIS minimal):
+
+CATEGORIA A — Têxteis/cerâmica (núcleo, sempre presente):
+  raw linen (linho cru dobrado/drapeado/bordado), navy wool serge
+  (sarja navy vincada), natural raffia weave (rafia trançada),
+  rustic ceramic (cerâmica rústica terracota ou navy-glaze),
+  jute/sisal weave (juta/sisal natural cru).
+
+CATEGORIA B — Botânica (uso boho contido, sem geografia explícita):
+  strelitzia flower or leaf (estrelícia, bird-of-paradise),
+  palm fronds / banana leaf / areca palm / fan palm,
+  monstera leaf (recortada, escultural), dried pampas grass plumes,
+  bare dried branch / twig / dried botanicals, broadleaf tropical
+  foliage. UM elemento botânico por cena; nunca paisagem aberta.
+
+CATEGORIA C — Artesanato leve (acentos pequenos, nunca dominantes):
+  small bone or wooden beads, macramé bracelet, small woven basket,
+  small handmade clay vase, naturally-dyed cloth (indigo or clay).
+
+SUPORTES (apoio cenográfico): dark walnut wood, pale stone, hand-troweled
+cream stucco wall.
+
+ZERO outros materiais (sem plástico, metal moderno, vidro brilhante,
+papel, livros, electrónica).
 
 PALETA — Hex exactos só:
 - Deep navy #1A1A2E (fundo, sarja navy, cerâmica glaze escura)
@@ -232,10 +251,28 @@ da semana e o tema do dia):
 - Início/manhã → LINHO seco a vento, luz limpa
 - (default) → LINHO + cerâmica isolada, contemplativo
 
-COMPOSIÇÃO por tipo de slide:
-- Capa: single subject forte, ample silence ao redor
-- Conteúdo (slides 2-5): detalhe/textura próximo, macro suave da matéria
-- CTA: pilha/altar de 2-3 objetos do núcleo em diálogo
+COMPOSIÇÃO por tipo de slide — REGRA CRÍTICA:
+
+CAPA (slide 1) = DETALHADA e RICA
+  Cena composta: têxtil base (categoria A) + 1 elemento botânico
+  (categoria B) + 1-2 acentos de artesanato (categoria C) +
+  suporte. Boho contido, várias camadas. Atrai com densidade
+  visual. NÃO minimal.
+  Exemplo: "Jarro de cerâmica terracota com folha de estrelícia
+  inclinada, sobre linho cru drapeado, contas de osso ao lado,
+  sombra de palma na parede stucco creme, luz oblíqua da tarde,
+  deep navy ao fundo, editorial still life painterly"
+
+CTA / fecho (slide 6) = SIMBÓLICA e SIMPLES
+  Single subject minimal, espaço amplo, evocativo, contemplativo.
+  UM objecto do núcleo (cerâmica vazia) OU UMA planta (ramo seco
+  em jarro). NÃO bohemia carregada. É o silêncio depois da história.
+  Exemplo: "Single rustic ceramic vessel on pale stone, vast empty
+  navy space, single shaft of warm light, editorial still life,
+  contemplative"
+
+CONTEÚDO interno (slides 2-5): SEM fundo MJ (notaVisual ainda gerada
+para compatibilidade mas slides internos ficam só com tipografia).
 
 PROIBIDO sempre:
 - Pessoas, rostos, mãos, corpos
@@ -250,16 +287,25 @@ ESTRUTURA da notaVisual (em inglês, máx ~30 palavras):
 <luz oblíqua + paleta navy linen terracotta raffia> ,
 editorial still life painterly contemplative
 
-Exemplos certos:
-- Aconchego capa: "heavy navy wool serge blanket folded over dark walnut bench, cream linen sheet partly visible underneath, warm raffia-gold lamp light from the left, deep navy background, painterly editorial still life, contemplative"
-- Solidão fértil capa: "single rustic terracotta ceramic vessel on a pale stone surface, vast empty deep-navy space around, single oblique soft afternoon light, painterly editorial still life, contemplative silence"
-- Brotar capa: "small rustic ceramic jar holding a single bare twig on folded cream linen, dark walnut beneath, single drop of dew, soft morning light, deep navy background, painterly still life"
+Exemplos CERTOS (capa rica, cta minimal):
 
-Exemplos errados (NÃO uses):
+CAPA — boho contido, várias camadas:
+- Aconchego: "Heavy navy wool serge blanket folded over dark walnut bench, cream linen sheet underneath, dried pampas grass in small clay vase, jute weave runner, sombra de palma na parede stucco, warm afternoon light, deep navy ambient, editorial still life painterly"
+- Solidão fértil: "Rustic terracotta vessel on pale stone, single strelitzia leaf inclining over it, folded raw linen drapeado, small bone beads on the linen, soft oblique light, deep navy backdrop, painterly editorial"
+- Brotar: "Small clay vase with bare dried twig, cream linen folded beside, monstera leaf shadow on stucco wall, macramé bracelet pousada, single drop of dew on twig, soft morning light, painterly editorial"
+
+CTA / fecho — single subject minimal:
+- "Single rustic ceramic vessel on pale stone, vast empty navy space, single shaft of warm light, contemplative"
+- "Single dried branch in small terracotta vase against cream stucco wall, soft long shadow, deep navy floor, contemplative"
+- "Folded cream linen sheet on dark walnut, nothing else, oblique afternoon light, deep navy ambient"
+
+Exemplos ERRADOS (NÃO uses):
 - "ethereal luminous translucent gauze" (fluff genérico)
-- "weathered stone wall lit by ember light" (não pertence à gramática)
-- "wheat field at golden hour" (geografia, paisagem aberta fora da gramática)
-- "open book on worn wood" (livro não está na lista de materiais)
+- "weathered stone wall lit by ember light" (peso/fogo fora da gramática)
+- "wheat field at golden hour" (paisagem aberta, geografia)
+- "open book on worn wood" (livro não está nos materiais)
+- Capa minimal "single ceramic on stone" → ERRADO, capa tem de ser RICA
+- CTA com 5 elementos botânicos → ERRADO, cta tem de ser SIMBÓLICO/SIMPLES
 
 VISUAL. Campo "fundoClaro" (boolean) em CADA slide:
 - true quando o slide convida ao estado luminoso/aberto/presente (frases
