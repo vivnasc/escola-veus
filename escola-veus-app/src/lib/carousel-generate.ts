@@ -189,51 +189,71 @@ Cada dia tem:
 - numero: 1..N
 - romano: gerado automaticamente
 
-VISUAL. Campo "notaVisual" em CADA slide:
-Cada slide tem uma "notaVisual" — 1 frase em **inglês** simples descrevendo
-a CENA visual que vai directo para o Midjourney como prompt do fundo.
+VISUAL. Campo "notaVisual" em CADA slide. Identidade "OFÍCIO DO VÉU":
+A imagem é editorial still life com gramática FIXA. Documento completo em
+docs/IDENTIDADE-VISUAL-CARROSSEL.md. Tudo fora desta gramática é proibido.
 
-A IMAGEM TEM DE SER BELA POR DENTRO DO TEMA. Não há receita fixa de "luz"
-ou "sombra" para todos os dias. Cada tema (Solidão fértil, Aconchego,
-Brotar, Recolhimento, Memória do Corpo, Limite que Ensina, etc.) tem a
-SUA beleza, com a SUA matéria:
-- "Aconchego" → tecido pesado de lã, luz quente de candeeiro, cobertor
-  dobrado — calor e densidade SÃO beleza aqui.
-- "Brotar sem pressa" → rebento tenro a sair de terra escura, gota de
-  orvalho — terra É beleza aqui.
-- "Solidão fértil" → árvore única numa paisagem vasta com névoa — vazio
-  é beleza.
-- "Limite que ensina" → linha fina entre dois espaços (mar/areia,
-  sombra/luz) — fronteira é beleza.
-- "Recolhimento" → interior de quarto à tarde com luz oblíqua, livro
-  fechado — clausura é beleza.
-- "Memória do Corpo" → mão velha sobre tecido bordado — gesto é beleza.
+MATERIAIS — lista fechada (a cena tem de mostrar pelo menos 1 do núcleo):
+- Núcleo: raw linen (linho cru, dobrado/drapeado/bordado), navy wool
+  serge (sarja navy vincada), natural raffia weave (rafia trançada,
+  mel-dourado), rustic ceramic (cerâmica rústica, terracota ou navy-glaze).
+- Suportes: dark walnut wood (madeira escura), pale stone (pedra clara).
+- ZERO outros materiais (sem plástico, sem metal, sem vidro moderno).
 
-Regras da notaVisual:
-- 1 frase, máx ~25 palavras, em inglês.
-- Sem pessoas (rostos, corpos), sem texto, sem logos.
-- Sem geografia ou cultura específica (sem "African", "Mozambique",
-  "tropical", "Mediterranean", "Nordic", etc.).
-- Escolhe a matéria, a luz, o enquadramento, a paleta QUE EXPRESSAM ESTE
-  tema ESPECÍFICO. Não há vocabulário universal — há resposta visual
-  específica a cada brief.
-- A imagem tem de ser BELA por si só — composição forte, luz com qualidade
-  (não chapada), cor harmoniosa.
-- VARIA entre os 7 dias: matérias diferentes, paletas diferentes, escalas
-  diferentes. Um dia interior íntimo, outro paisagem vasta, outro
-  macro-detalhe, outro arquitectura.
-- A imagem AMPLIFICA o texto, não o ilustra literal. Evoca o estado
-  emocional do dia através de algo concreto e visualmente preciso.
+PALETA — Hex exactos só:
+- Deep navy #1A1A2E (fundo, sarja navy, cerâmica glaze escura)
+- Cream linen #E8DCC0 (linho cru, base de tecido)
+- Soft terracotta #B85C38 (cerâmica rústica, acentos quentes)
+- Raffia gold #C9A14A (palha, luz subtil)
+- Cream stone #D8CFB8 (pedra clara)
 
-Exemplos por tema:
-- Solidão fértil capa: "single bare tree on a vast misty plain at first
-  light, soft pale palette, painterly silence".
-- Brotar capa: "delicate green shoot emerging from dark fertile soil,
-  single drop of dew catching morning light, macro close-up".
-- Aconchego capa: "thick handwoven wool blanket folded on a wooden bench
-  beside a warm lamp glow, intimate interior, soft amber".
-- Limite capa: "sharp horizon line where calm pale sea meets soft
-  overcast sky, minimal composition, contemplative".
+LUZ: única, oblíqua, suave. Tarde dourada OU manhã. NUNCA flash, NUNCA
+HDR, NUNCA meio-dia chapado. Chiaroscuro suave que desenha textura.
+
+MAPPING TEMA → material em destaque (escolhe o destaque conforme o brief
+da semana e o tema do dia):
+- Aconchego/lar/calor/ninho → SARJA pesada + linho dobrado, lamp glow
+- Solidão/contemplação/vazio → CERÂMICA isolada + pedra, vasto espaço
+- Brotar/semente/recomeço → CERÂMICA com ramo seco + linho, orvalho
+- Limite/fronteira/decisão → LINHO liso + madeira escura, sombra nítida
+- Recolhimento/silêncio → tecidos empilhados em interior fechado
+- Memória/linhagem/herança → LINHO bordado à mão, textura macro
+- Fluidez/soltar/passagem → LINHO drapeado, dobra a desfazer-se
+- Corpo/presença → SARJA macro, trama em close-up
+- Verdade/despir → LINHO cru limpo, sem ornamento
+- Comunidade/partilha → conjunto de objetos agrupados, altar
+- Festa/gratidão → CERÂMICA + RAFIA + ramo, luz quente
+- Início/manhã → LINHO seco a vento, luz limpa
+- (default) → LINHO + cerâmica isolada, contemplativo
+
+COMPOSIÇÃO por tipo de slide:
+- Capa: single subject forte, ample silence ao redor
+- Conteúdo (slides 2-5): detalhe/textura próximo, macro suave da matéria
+- CTA: pilha/altar de 2-3 objetos do núcleo em diálogo
+
+PROIBIDO sempre:
+- Pessoas, rostos, mãos, corpos
+- Fotorrealismo HDR, stock-photo gloss
+- Cores saturadas, néon
+- Texto, logos, watermarks
+- Geografia identificável ("African", "tropical", "Mediterranean")
+- Tecnologia moderna (vidro, metal, plástico, ecrãs)
+
+ESTRUTURA da notaVisual (em inglês, máx ~30 palavras):
+<destaque material núcleo + objetos núcleo + suporte> ,
+<luz oblíqua + paleta navy linen terracotta raffia> ,
+editorial still life painterly contemplative
+
+Exemplos certos:
+- Aconchego capa: "heavy navy wool serge blanket folded over dark walnut bench, cream linen sheet partly visible underneath, warm raffia-gold lamp light from the left, deep navy background, painterly editorial still life, contemplative"
+- Solidão fértil capa: "single rustic terracotta ceramic vessel on a pale stone surface, vast empty deep-navy space around, single oblique soft afternoon light, painterly editorial still life, contemplative silence"
+- Brotar capa: "small rustic ceramic jar holding a single bare twig on folded cream linen, dark walnut beneath, single drop of dew, soft morning light, deep navy background, painterly still life"
+
+Exemplos errados (NÃO uses):
+- "ethereal luminous translucent gauze" (fluff genérico)
+- "weathered stone wall lit by ember light" (não pertence à gramática)
+- "wheat field at golden hour" (geografia, paisagem aberta fora da gramática)
+- "open book on worn wood" (livro não está na lista de materiais)
 
 VISUAL. Campo "fundoClaro" (boolean) em CADA slide:
 - true quando o slide convida ao estado luminoso/aberto/presente (frases
