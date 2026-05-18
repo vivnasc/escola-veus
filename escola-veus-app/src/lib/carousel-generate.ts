@@ -190,33 +190,50 @@ Cada dia tem:
 - romano: gerado automaticamente
 
 VISUAL. Campo "notaVisual" em CADA slide:
-Cada slide tem uma "notaVisual". 1 frase em **inglês** simples a descrever
-a CENA visual que evoca o estado interior do slide. Vai directo para o
-Midjourney como prompt do fundo.
+Cada slide tem uma "notaVisual" — 1 frase em **inglês** simples descrevendo
+a CENA visual que vai directo para o Midjourney como prompt do fundo.
+
+A IMAGEM TEM DE SER BELA POR DENTRO DO TEMA. Não há receita fixa de "luz"
+ou "sombra" para todos os dias. Cada tema (Solidão fértil, Aconchego,
+Brotar, Recolhimento, Memória do Corpo, Limite que Ensina, etc.) tem a
+SUA beleza, com a SUA matéria:
+- "Aconchego" → tecido pesado de lã, luz quente de candeeiro, cobertor
+  dobrado — calor e densidade SÃO beleza aqui.
+- "Brotar sem pressa" → rebento tenro a sair de terra escura, gota de
+  orvalho — terra É beleza aqui.
+- "Solidão fértil" → árvore única numa paisagem vasta com névoa — vazio
+  é beleza.
+- "Limite que ensina" → linha fina entre dois espaços (mar/areia,
+  sombra/luz) — fronteira é beleza.
+- "Recolhimento" → interior de quarto à tarde com luz oblíqua, livro
+  fechado — clausura é beleza.
+- "Memória do Corpo" → mão velha sobre tecido bordado — gesto é beleza.
 
 Regras da notaVisual:
 - 1 frase, máx ~25 palavras, em inglês.
-- Sem pessoas, sem rostos, sem texto, sem logos, sem marcas culturais.
-- Sem geografia (não menciones países, cidades, "African", "Mozambique",
+- Sem pessoas (rostos, corpos), sem texto, sem logos.
+- Sem geografia ou cultura específica (sem "African", "Mozambique",
   "tropical", "Mediterranean", "Nordic", etc.).
-- **Privilegia matéria-LUZ, NÃO matéria-densa.** O carrossel é luz, não fogo.
-  · MATÉRIA-LUZ (usa esta): silk, gauze, veil, mist, fog, dawn light,
-    diffused light, translucent fabric, lace shadow, soft cloud, breath,
-    vapor, petal floating on water, light through curtain, pale sky,
-    still pale water reflecting sky, dust dancing in soft sunlight,
-    prism reflection on cream wall.
-  · MATÉRIA-DENSA (EVITA): stone, rock, fire, ember, ash, earth, soil,
-    root, dense wood, old book, dark interior, heavy fabric, metal, iron,
-    cracked ground, fissures. Tudo isto é peso, não luz.
-- A cena VIBRA com a luz que o dia oferece (presença, abertura, fluxo,
-  intimidade silenciosa) — nunca com a sombra ou a densidade.
-- Exemplos CERTOS: "sunlight passing through a translucent silk curtain
-  swaying gently", "single white petal floating on still pale water",
-  "morning mist clearing over a pale soft meadow", "delicate lace
-  shadow on cream stone wall, soft dawn light".
-- Exemplos ERRADOS: "weathered stone wall lit by ember light",
-  "single candle burning against textured wall", "open book on worn
-  wood", "cracked dry earth at dusk". Densos, sombra, terra-fogo.
+- Escolhe a matéria, a luz, o enquadramento, a paleta QUE EXPRESSAM ESTE
+  tema ESPECÍFICO. Não há vocabulário universal — há resposta visual
+  específica a cada brief.
+- A imagem tem de ser BELA por si só — composição forte, luz com qualidade
+  (não chapada), cor harmoniosa.
+- VARIA entre os 7 dias: matérias diferentes, paletas diferentes, escalas
+  diferentes. Um dia interior íntimo, outro paisagem vasta, outro
+  macro-detalhe, outro arquitectura.
+- A imagem AMPLIFICA o texto, não o ilustra literal. Evoca o estado
+  emocional do dia através de algo concreto e visualmente preciso.
+
+Exemplos por tema:
+- Solidão fértil capa: "single bare tree on a vast misty plain at first
+  light, soft pale palette, painterly silence".
+- Brotar capa: "delicate green shoot emerging from dark fertile soil,
+  single drop of dew catching morning light, macro close-up".
+- Aconchego capa: "thick handwoven wool blanket folded on a wooden bench
+  beside a warm lamp glow, intimate interior, soft amber".
+- Limite capa: "sharp horizon line where calm pale sea meets soft
+  overcast sky, minimal composition, contemplative".
 
 VISUAL. Campo "fundoClaro" (boolean) em CADA slide:
 - true quando o slide convida ao estado luminoso/aberto/presente (frases
