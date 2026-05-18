@@ -1,20 +1,23 @@
 name: Hoje em Mim · Runway Poll
 
-# Cron de 30 em 30 min que chama o endpoint de polling do Runway. Garante
-# que clips Runway são descarregados mesmo com browser fechado, antes que
-# a CDN do Runway expire as URLs (vive ~7 dias mas mais vale prevenir).
+# Workflow de polling do Runway: descarrega clips gerados via Runway
+# API e faz upload para Supabase antes que a CDN do Runway expire.
 #
-# Justificação do intervalo (30 min):
-#  - Free tier GitHub Actions: 2000 min/mês. Cada run consome ~1 min
-#    (curl + parse). 48 runs/dia x 30 dias = 1440 min. Cabe.
-#  - 5 min seria 8640 runs/mês, fora do budget free.
-#  - 30 min é largamente suficiente: Runway leva 1-3 min a renderizar
-#    cada vídeo e a CDN aguenta horas.
+# AGENDA DESATIVADA: a produção mudou para Midjourney como source de
+# clips, por isso não há Runway jobs pendentes para sondar. O cron a
+# correr de 30/30min só queimava minutes do GitHub Actions e enchia
+# o painel de runs falhadas.
+#
+# Quando voltares a usar a pipeline Runway → Supabase, descomenta o
+# bloco `schedule:` abaixo. O secret HEM_RUNWAY_POLL_URL e
+# CRON_SECRET no repo continuam válidos.
+#
+# Para correr manualmente: Actions → Hoje em Mim · Runway Poll →
+# "Run workflow" (workflow_dispatch).
 
 on:
-  schedule:
-    # A cada 30 minutos, todos os dias
-    - cron: "*/30 * * * *"
+  # schedule:
+  #   - cron: "*/30 * * * *"
   workflow_dispatch:
     # Permite disparar manualmente a partir do GitHub UI
     inputs:
@@ -23,7 +26,7 @@ on:
         required: false
         type: string
 
-run-name: "hoje-em-mim/runway-poll: ${{ github.event_name == 'workflow_dispatch' && (inputs.reason || 'manual') || 'cron' }}"
+run-name: "hoje-em-mim/runway-poll: ${{ inputs.reason || 'manual' }}"
 
 jobs:
   poll:
