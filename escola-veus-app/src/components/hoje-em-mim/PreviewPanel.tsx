@@ -37,7 +37,11 @@ import {
   MOOD_ESPECIAL,
   moodFromAudioUrl,
 } from "@/lib/hoje-em-mim/pairing";
-import { dailyMjRotation } from "@/lib/hoje-em-mim/calendar";
+import {
+  dailyMjRotation,
+  rotationStats,
+  type CalendarEntry,
+} from "@/lib/hoje-em-mim/calendar";
 
 type Frase = { id: string; dia: DiaSemana; texto: string };
 
@@ -3099,14 +3103,14 @@ function MjCalendarView({
   const [startDate, setStartDate] = useState<string>(defaultStart);
   const [days, setDays] = useState<number>(180);
 
-  const rotation = useMemo(() => {
+  const rotation = useMemo<CalendarEntry[]>(() => {
     const [y, m, d] = startDate.split("-").map(Number);
     if (!y || !m || !d) return [];
     return dailyMjRotation(new Date(Date.UTC(y, m - 1, d)), days);
   }, [startDate, days]);
 
   const byMonth = useMemo(() => {
-    const groups = new Map<string, typeof rotation>();
+    const groups = new Map<string, CalendarEntry[]>();
     for (const r of rotation) {
       const key = `${r.date.getUTCFullYear()}-${String(r.date.getUTCMonth() + 1).padStart(2, "0")}`;
       const list = groups.get(key) || [];
@@ -3116,16 +3120,20 @@ function MjCalendarView({
     return Array.from(groups.entries());
   }, [rotation]);
 
-  const monthsPT = MESES_PT;
-
-  // Conta uso de cada prompt para detectar prompts pouco usados
-  const usageCount = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const r of rotation) m.set(r.prompt.id, (m.get(r.prompt.id) ?? 0) + 1);
-    return m;
-  }, [rotation]);
+  const stats = useMemo(() => rotationStats(rotation), [rotation]);
   const totalPrompts = MJ_VIDEO_PROMPTS.length;
-  const usedPrompts = usageCount.size;
+  const usedPrompts = stats.byPrompt.size;
+
+  const downloadMarkdown = () => {
+    const md = buildCalendarMarkdown(rotation, stats);
+    const blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `CALENDARIO-IMAGENS-HOJE-EM-MIM-${startDate}-${days}d.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="space-y-3">
@@ -3152,8 +3160,22 @@ function MjCalendarView({
             className="w-24 rounded border border-escola-border bg-escola-card px-2 py-1 text-xs text-escola-creme"
           />
         </label>
-        <div className="ml-auto text-[10px] text-escola-creme-50">
-          {rotation.length} dias · {usedPrompts}/{totalPrompts} prompts em rotação
+        <button
+          onClick={downloadMarkdown}
+          className="rounded border px-3 py-1 text-xs hover:opacity-80"
+          style={{
+            borderColor: COBRE,
+            color: COBRE,
+            background: "rgba(194, 143, 96, 0.08)",
+          }}
+        >
+          ↓ Exportar .md (formato Trinta Manhãs)
+        </button>
+        <div className="ml-auto text-[10px] text-escola-creme-50 text-right">
+          {rotation.length} dias · {usedPrompts}/{totalPrompts} prompts ·{" "}
+          <span style={{ color: COBRE }}>🎯 {stats.byMode.keyword}</span> keyword ·{" "}
+          <span>🎨 {stats.byMode.mood}</span> por mood ·{" "}
+          <span>{stats.byMode.fallback}</span> fallback
         </div>
       </div>
 
@@ -3165,7 +3187,7 @@ function MjCalendarView({
             className="rounded-lg border border-escola-border bg-escola-card/40 p-3"
           >
             <h3 className="mb-2 text-sm font-medium" style={{ color: COBRE }}>
-              {monthsPT[m - 1]} {y} · {entries.length} dias
+              {MESES_PT[m - 1]} {y} · {entries.length} dias
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-[11px] text-escola-creme-50">
@@ -3173,17 +3195,19 @@ function MjCalendarView({
                   <tr>
                     <th className="px-2 py-1 text-left">Data</th>
                     <th className="px-2 py-1 text-left">Dia</th>
+                    <th className="px-2 py-1 text-left min-w-[260px]">Frase</th>
+                    <th className="px-2 py-1 text-left">Match</th>
                     <th className="px-2 py-1 text-left">Prompt MJ</th>
-                    <th className="px-2 py-1 text-left">Mood áudio</th>
+                    <th className="px-2 py-1 text-left">Áudio</th>
                     <th className="px-2 py-1 text-right"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {entries.map((r) => {
-                    const key = `cal-${r.iso}`;
+                    const k = `cal-${r.iso}`;
                     return (
                       <tr
-                        key={key}
+                        key={k}
                         className="border-t border-escola-border/30 align-top"
                       >
                         <td className="px-2 py-1 whitespace-nowrap">
@@ -3197,10 +3221,40 @@ function MjCalendarView({
                         <td className="px-2 py-1 whitespace-nowrap">
                           {DIA_LONGO_PT[r.dia]}
                         </td>
+                        <td className="px-2 py-1 italic text-escola-creme">
+                          {r.fraseTexto}
+                          <div className="text-[9px] text-escola-creme-50 not-italic">
+                            {r.fraseId}
+                          </div>
+                        </td>
+                        <td className="px-2 py-1 text-[10px]">
+                          {r.matchMode === "keyword" && (
+                            <span
+                              className="rounded px-1 py-0.5"
+                              style={{ background: "rgba(123, 179, 128, 0.18)", color: "#a5d6a8" }}
+                              title={`keyword: ${r.matchedKeyword}`}
+                            >
+                              🎯 {r.matchedKeyword}
+                            </span>
+                          )}
+                          {r.matchMode === "mood" && (
+                            <span
+                              className="rounded px-1 py-0.5"
+                              style={{ background: "rgba(194, 143, 96, 0.15)", color: COBRE }}
+                            >
+                              🎨 mood
+                            </span>
+                          )}
+                          {r.matchMode === "fallback" && (
+                            <span className="rounded px-1 py-0.5 bg-escola-border/30">
+                              ciclo
+                            </span>
+                          )}
+                        </td>
                         <td className="px-2 py-1">
                           <div className="text-escola-creme">{r.prompt.id}</div>
                           {r.prompt.prioritario && (
-                            <span className="text-[9px] text-escola-dourado">★ prioritário</span>
+                            <span className="text-[9px] text-escola-dourado">★</span>
                           )}
                         </td>
                         <td className="px-2 py-1 text-[10px]">
@@ -3216,14 +3270,14 @@ function MjCalendarView({
                         </td>
                         <td className="px-2 py-1 text-right">
                           <button
-                            onClick={() => onCopy(key, r.prompt.prompt)}
+                            onClick={() => onCopy(k, r.prompt.prompt)}
                             className="rounded border px-2 py-0.5 text-[10px] hover:opacity-80"
                             style={{
                               borderColor: COBRE_FRACO,
                               color: COBRE,
                             }}
                           >
-                            {copied === key ? "✓" : "⌘ MJ"}
+                            {copied === k ? "✓" : "⌘ MJ"}
                           </button>
                         </td>
                       </tr>
@@ -3237,6 +3291,116 @@ function MjCalendarView({
       })}
     </div>
   );
+}
+
+/** Constrói o documento markdown estilo Trinta Manhãs com 1 entrada
+ *  por dia: frase + match info + bloco de prompt MJ. */
+function buildCalendarMarkdown(
+  rotation: CalendarEntry[],
+  stats: ReturnType<typeof rotationStats>
+): string {
+  if (rotation.length === 0) return "# Calendário Hoje, em Mim — sem dias\n";
+  const dowPt: Record<DiaSemana, string> = {
+    mon: "Segunda",
+    tue: "Terça",
+    wed: "Quarta",
+    thu: "Quinta",
+    fri: "Sexta",
+    sat: "Sábado",
+    sun: "Domingo",
+  };
+  const first = rotation[0].iso;
+  const last = rotation[rotation.length - 1].iso;
+  const lines: string[] = [];
+  lines.push(`# Hoje, em Mim · Calendário de Imagens · ${rotation.length} dias`);
+  lines.push("");
+  lines.push(
+    `Plano dia-a-dia de **${rotation.length} posts** (${first} → ${last}), no formato do calendário VC Sabia.`
+  );
+  lines.push("");
+  lines.push(
+    "**Alinhamento frase ↔ imagem:** o prompt MJ é escolhido pela palavra-chave que aparece na frase (jasmim → mj-23-jasmim-vela, chuva → mj-04-chuva-janela, etc). Sem keyword, cai para o mood do dia (mon→grilos, ter→lareira, qui→tigela…). Sem mood, ciclo simples."
+  );
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+
+  let currentMonth = "";
+  let dayCounter = 0;
+  for (const e of rotation) {
+    dayCounter++;
+    const monthKey = `${e.date.getUTCFullYear()}-${String(e.date.getUTCMonth() + 1).padStart(2, "0")}`;
+    if (monthKey !== currentMonth) {
+      lines.push("");
+      lines.push(`# ${MESES_PT[e.date.getUTCMonth()]} ${e.date.getUTCFullYear()}`);
+      lines.push("");
+      currentMonth = monthKey;
+    }
+    const especialBadge = e.especial ? `  ·  *${e.especial.replace("_", " ")}*` : "";
+    lines.push(
+      `## DIA ${String(dayCounter).padStart(3, "0")} · ${dowPt[e.dia]} ${e.iso} · ${e.prompt.id}${especialBadge}`
+    );
+    lines.push("");
+    lines.push(`**Frase:** *${e.fraseTexto}*`);
+    lines.push("");
+    const matchLabel =
+      e.matchMode === "keyword"
+        ? `🎯 keyword \`${e.matchedKeyword}\``
+        : e.matchMode === "mood"
+          ? `🎨 por mood`
+          : `ciclo`;
+    lines.push(
+      `**Alinhamento:** ${matchLabel}  ·  **Áudio:** \`${e.prompt.audioMood}\`  ·  **Frase id:** \`${e.fraseId}\``
+    );
+    lines.push("");
+    lines.push("### Prompt Midjourney");
+    lines.push("");
+    lines.push("```");
+    lines.push(e.prompt.prompt);
+    lines.push("```");
+    lines.push("");
+    lines.push("### Runway motion");
+    lines.push("");
+    lines.push("```");
+    lines.push(e.prompt.runwayMotion);
+    lines.push("```");
+    lines.push("");
+    lines.push("---");
+    lines.push("");
+  }
+
+  // Auditoria final: distribuição
+  lines.push("");
+  lines.push("# Auditoria");
+  lines.push("");
+  lines.push(
+    `- Match por keyword: **${stats.byMode.keyword}** dias`
+  );
+  lines.push(`- Match por mood: **${stats.byMode.mood}** dias`);
+  lines.push(`- Fallback ciclo: **${stats.byMode.fallback}** dias`);
+  lines.push("");
+  lines.push("## Uso por prompt");
+  lines.push("");
+  const sortedUsage = [...stats.byPrompt.entries()].sort((a, b) => b[1] - a[1]);
+  for (const [id, n] of sortedUsage) {
+    lines.push(`- \`${id}\` — ${n} dias`);
+  }
+  const unused = MJ_VIDEO_PROMPTS.filter((p) => !stats.byPrompt.has(p.id));
+  if (unused.length > 0) {
+    lines.push("");
+    lines.push(
+      `### Prompts não usados (${unused.length}/${MJ_VIDEO_PROMPTS.length})`
+    );
+    lines.push(
+      "Sem frase a fazer match. Considera acrescentar keywords ou adaptar frases:"
+    );
+    for (const p of unused) {
+      lines.push(
+        `- \`${p.id}\` — keywords: ${(p.keywords ?? []).map((k) => `\`${k}\``).join(", ") || "(sem keywords)"}`
+      );
+    }
+  }
+  return lines.join("\n") + "\n";
 }
 
 function PromptCard({

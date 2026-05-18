@@ -29,6 +29,13 @@ export type MjVideoPrompt = {
   prompt: string;
   runwayMotion: string;
   audioMood: NightMood;
+  /** Palavras-chave PT-PT que, se aparecerem na frase do dia,
+   *  fazem o calendário escolher este prompt. Ordem importa: a
+   *  primeira categoria que matcha (na ordem do array MJ_VIDEO_PROMPTS)
+   *  ganha, por isso prompts específicos (jasmim, baobá, chuva) vêm
+   *  antes de genéricos (vela aparece em vários, vela específico fica
+   *  para o final). */
+  keywords?: string[];
   notas?: string;
   prioritario?: boolean;
 };
@@ -42,6 +49,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, single candle flame gently flickering and dancing in place, soft shadow flickering on the stucco wall, slow contemplative night atmosphere, no zoom, no pan, no rotation, no people, no sudden movements",
     audioMood: "lareira-respira",
+    keywords: ["vela", "chama"],
   },
   {
     id: "mj-02-tropical-amber",
@@ -51,6 +59,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, large tropical broadleaves gently swaying left and right in soft night breeze, amber lantern light slightly pulsing, leaves move organically and slowly, no zoom, no pan, no rotation, no people",
     audioMood: "brisa-bambu",
+    keywords: ["verandah", "lanterna", "tropical", "folha", "folhas"],
   },
   {
     id: "mj-03-brasas",
@@ -60,6 +69,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, glowing orange embers slowly pulsing and breathing in place, small sparks rising slowly upward, dust particles drifting gently in warm light, no zoom, no pan, no rotation, no people",
     audioMood: "lareira-respira",
+    keywords: ["brasa", "brasas", "lume"],
   },
   {
     id: "mj-04-chuva-janela",
@@ -69,6 +79,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, fine rain droplets sliding down the window glass at varying speeds, occasional new drops appearing and joining the trails, warm amber light pulsing softly behind the glass, slow contemplative pace, no zoom, no pan, no rotation, no people",
     audioMood: "chuva-fina-no-telhado",
+    keywords: ["chuva", "janela", "pingo", "pingos"],
   },
   {
     id: "mj-05-incenso",
@@ -78,6 +89,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people",
     audioMood: "tigela-grave",
+    keywords: ["incenso", "fumo", "respira", "respiração", "respirar", "respiro"],
   },
   {
     id: "mj-06-bambu-ocre",
@@ -86,6 +98,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, slender bamboo leaves gently swaying left and right in soft night breeze, soft long shadows moving rhythmically on the ochre wall, slow gentle motion, no zoom, no pan, no rotation, no people",
     audioMood: "brisa-bambu",
+    keywords: ["bambu", "sombra"],
   },
   {
     id: "mj-07-baobab-lua",
@@ -94,6 +107,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, silver clouds slowly drifting horizontally across the full moon from left to right, full moon stays in place, baobab silhouette unmoving in foreground, very slow drift, no zoom, no rotation, no people",
     audioMood: "coruja-distante",
+    keywords: ["baobá", "baobab", "savana"],
   },
   {
     id: "mj-08-cortina-linho",
@@ -102,6 +116,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, sheer white linen curtain gently billowing inward and outward in moonlit night breeze, fabric folds rippling slowly and organically, silvery light pulsing softly behind, no zoom, no pan, no rotation, no people",
     audioMood: "brisa-bambu",
+    keywords: ["cortina", "linho", "vento", "brisa"],
   },
   {
     id: "mj-09-pirilampos",
@@ -110,6 +125,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people",
     audioMood: "grilos-tropicais",
+    keywords: ["pirilampo", "pirilampos", "vagalume", "floresta"],
   },
   {
     id: "mj-10-fonte-pedra",
@@ -118,6 +134,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, water gently trickling continuously down the black stone fountain, water droplets falling and pooling, lantern flame softly flickering nearby, slow continuous flow, no zoom, no pan, no rotation, no people",
     audioMood: "lua-sobre-agua",
+    keywords: ["fonte", "pedra", "jardim"],
   },
   {
     id: "mj-11-via-lactea",
@@ -126,6 +143,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera with very subtle parallax drift, milky way slowly drifting horizontally across the sky, stars twinkling softly throughout, acacia silhouettes unmoving on horizon, very slow celestial motion, no zoom, no rotation, no people",
     audioMood: "sussurro-coro-feminino",
+    keywords: ["estrela", "estrelas", "via láctea", "cosmos", "céu", "cósmico"],
   },
   {
     id: "mj-12-cha-quente",
@@ -134,6 +152,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, steam rising slowly from the clay cup of tea curling upward, hands stay still gently wrapped around the cup, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible",
     audioMood: "lareira-respira",
+    keywords: ["chá", "mão", "mãos"],
     notas: "Bom para sábado (corpo). Mãos como protagonistas, sem rosto.",
   },
   {
@@ -143,6 +162,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people",
     audioMood: "grilos-tropicais",
+    keywords: ["rede"],
   },
   {
     id: "mj-14-diario-cera",
@@ -151,6 +171,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, single page of the open journal slowly turning upward and folding over, candle flame gently flickering in background warm shadows pulsing, slow contemplative pace, no zoom, no pan, no rotation, no hands visible",
     audioMood: "lareira-respira",
+    keywords: ["diário", "página", "páginas", "livro", "escrevo", "escrever", "palavra", "palavras"],
     notas: "Bom para segunda (convite) e quinta (aprendi).",
   },
   {
@@ -160,6 +181,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, small calm waves slowly rolling onto dark sand, moon reflection rippling gently on the wet sand and water surface, slow continuous wave motion, no zoom, no pan, no rotation, no people",
     audioMood: "mare-noturna",
+    keywords: ["mar", "onda", "ondas", "costa"],
   },
   {
     id: "mj-16-tambor-shadow",
@@ -168,6 +190,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible",
     audioMood: "tambor-lento-distante",
+    keywords: ["tambor"],
     notas: "Pode tentar 'djembe' se udu não devolver bem.",
   },
   {
@@ -177,6 +200,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, three candle flames independently flickering and dancing in place on the dark wood table, soft amber halos gently pulsing around each, no zoom, no pan, no rotation, no people",
     audioMood: "lareira-respira",
+    keywords: ["velas", "altar", "mesa", "ritual"],
   },
   {
     id: "mj-18-sombra-planta",
@@ -185,6 +209,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, soft shadow of the house plant slowly swaying left and right on the creamy plaster wall, warm lamp light softly pulsing, very slow rhythmic shadow movement, no zoom, no pan, no rotation",
     audioMood: "brisa-bambu",
+    keywords: ["planta", "parede", "sombras"],
     notas: "Bom para quarta (soltar). Movimento mínimo, quase abstrato.",
   },
   {
@@ -194,6 +219,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, white steam rising slowly from the dark stoneware cup curling upward in soft tendrils, steam dissipates and renews continuously, warm side light gently pulsing, no zoom, no pan, no rotation, no people",
     audioMood: "lareira-respira",
+    keywords: ["vapor"],
   },
   {
     id: "mj-20-silhueta-janela",
@@ -202,6 +228,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, soft moonlight slowly shifting on the arched window frame, woman silhouette unmoving in contemplative pose, light pulsing gently, very subtle slow motion, no zoom, no pan, no rotation",
     audioMood: "sussurro-coro-feminino",
+    keywords: ["intenção", "escolho", "escolher", "silhueta", "amanhã"],
     notas: "Bom para domingo (intenção).",
   },
   {
@@ -211,6 +238,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, gentle ripple expanding slowly across the still water puddle from a single point, stars reflection rippling and re-settling, surface returns to stillness then ripples again, very subtle slow motion, no zoom, no pan, no rotation, no people",
     audioMood: "lua-sobre-agua",
+    keywords: ["poça", "reflexo"],
   },
   {
     id: "mj-22-coruja-ramo",
@@ -219,6 +247,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, owl silhouette slowly turning its head once to the side and back, soft mist drifting horizontally behind, blue moon light softly pulsing, no zoom, no pan, no rotation, no people",
     audioMood: "coruja-distante",
+    keywords: ["coruja", "ramo"],
   },
   {
     id: "mj-23-jasmim-vela",
@@ -227,6 +256,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, candle flame gently flickering beside the bowl of white jasmine flowers, soft amber glow pulsing on the white petals, very slight petal movement, slow contemplative motion, no zoom, no pan, no rotation, no people",
     audioMood: "lareira-respira",
+    keywords: ["jasmim", "flor", "flores"],
     notas: "Bom para terça (gratidão) e sexta (celebrar).",
   },
   {
@@ -236,6 +266,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, gentle ripple of water lapping at the bare feet on the dark night sand, moonlight reflection rippling on the wet sand, feet remain still, very slow contemplative motion, no zoom, no pan, no rotation, no face visible",
     audioMood: "mare-noturna",
+    keywords: ["pé", "pés", "areia", "praia"],
     notas: "Bom para sábado (corpo).",
   },
   {
@@ -245,6 +276,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people",
     audioMood: "tambor-lento-distante",
+    keywords: ["aldeia", "casa", "distante"],
   },
   {
     id: "mj-26-teia-orvalho",
@@ -253,6 +285,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, dew drops gently glistening and slowly catching the moonlight on the spider web threads, very subtle web movement in soft breeze, no zoom, no pan, no rotation, no people",
     audioMood: "grilos-tropicais",
+    keywords: ["orvalho", "teia", "gota", "gotas"],
   },
   {
     id: "mj-27-fogueira-silhuetas",
@@ -261,6 +294,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation",
     audioMood: "tambor-lento-distante",
+    keywords: ["fogueira", "fogo", "deserto"],
   },
   {
     id: "mj-28-chocolate-vapor",
@@ -269,6 +303,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, white steam rising slowly from the mug of dark cacao curling upward and dissipating, hands stay still cradling the mug, warm amber light gently pulsing, no zoom, no pan, no rotation, no face visible",
     audioMood: "lareira-respira",
+    keywords: ["cacau", "chocolate"],
   },
   {
     id: "mj-29-caminho-lanternas",
@@ -277,6 +312,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera with very subtle slow forward drift, lanterns lining the garden path softly pulsing one by one in random order, mist drifting horizontally low to the ground, slow contemplative pace, no zoom, no rotation, no people",
     audioMood: "grilos-tropicais",
+    keywords: ["caminho", "lanternas", "neblina"],
   },
   {
     id: "mj-30-pena-cai",
@@ -285,6 +321,7 @@ export const MJ_VIDEO_PROMPTS: MjVideoPrompt[] = [
     runwayMotion:
       "static camera, single white feather falling slowly downward through the beam of moonlight with gentle horizontal drift, soft glow on the feather, very slow contemplative pace, no zoom, no pan, no rotation, no people",
     audioMood: "sussurro-coro-feminino",
+    keywords: ["pena", "peito", "soltar", "solto", "deixo"],
     notas: "Bom para quarta (soltar) e domingo (intenção).",
   },
 ];
