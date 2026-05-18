@@ -158,7 +158,7 @@ export async function POST(req: NextRequest) {
   const system = [
     {
       type: "text" as const,
-      text: `És o escritor e director de arte de "Escola dos Véus", canal YouTube long-form contemplativo de Vivianne Nascimento, autora portuguesa.
+      text: `És o escritor e director de arte de "Escola dos Véus", canal YouTube long-form contemplativo de Vivianne dos Santos, autora portuguesa.
 
 REGISTO E ÂNGULO (importante — NÃO é Corvo Seco apesar do formato similar):
 - INSPIRAÇÃO formal: long-form 15-25 min, narração lenta com pausas, cross-fades cinemáticos, editorial escuro, voz única no canal todo, sem clickbait

@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
 
   const userMessage =
     `Cria pacote SEO YouTube para um vídeo long-form contemplativo do canal "Escola dos Véus" ` +
-    `(Vivianne Nascimento, autora portuguesa). Audiência: mulheres entre 30-65 anos, em busca de ` +
+    `(Vivianne dos Santos, autora portuguesa). Audiência: mulheres entre 30-65 anos, em busca de ` +
     `reflexão sobre herança feminina, culpa pré-verbal, vergonha doméstica, dinheiro como prova ` +
     `de amor, silêncio entre gerações.\n\n` +
     `Estilo: NUNCA clickbait. Nunca "TENS DE VER", "SHOCKING", "VAI MUDAR A TUA VIDA". Voz da Vivianne — ` +
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
       model: "claude-sonnet-4-6",
       max_tokens: 4000,
       system:
-        "És copywriter da Vivianne Nascimento. Escreves SEO YouTube que respeita o tom contemplativo do canal — nunca clickbait, nunca promessa, sempre dignidade. Português europeu (PT-PT) sempre.",
+        "És copywriter da Vivianne dos Santos. Escreves SEO YouTube que respeita o tom contemplativo do canal — nunca clickbait, nunca promessa, sempre dignidade. Português europeu (PT-PT) sempre.",
       messages: [{ role: "user", content: userMessage }],
       output_config: {
         format: {

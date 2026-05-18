@@ -383,7 +383,7 @@ export async function POST(req: NextRequest) {
           const claude = new Anthropic({ apiKey: anthropicKey, maxRetries: 4 });
 
           const sysPrompt =
-            "És o editor de timing dum vídeo contemplativo long-form 'Escola dos Véus' (canal da Vivianne Nascimento, conteúdo sobre herança feminina, culpa, vergonha doméstica). Empacotas clips visuais a segmentos de narração para criar coerência semântica.";
+            "És o editor de timing dum vídeo contemplativo long-form 'Escola dos Véus' (canal da Vivianne dos Santos, conteúdo sobre herança feminina, culpa, vergonha doméstica). Empacotas clips visuais a segmentos de narração para criar coerência semântica.";
 
           const userMsg =
             `Empareja cada segmento de narração (PT) ao clip semanticamente mais próximo do catálogo. Catálogo é mistura PT/EN (filenames PT, mood PT).\n\n` +
