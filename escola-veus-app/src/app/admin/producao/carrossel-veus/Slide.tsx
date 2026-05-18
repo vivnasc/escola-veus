@@ -96,14 +96,14 @@ const glowTerra: React.CSSProperties = {
 function FundoLayer({ url, claro }: { url: string; claro?: boolean }) {
   const scrim: React.CSSProperties = claro
     ? {
-        // Slide com texto escuro: cobrir centro com ivory translúcido.
+        // Texto escuro: cobrir centro com ivory denso para garantir leitura.
         background:
-          "radial-gradient(ellipse 75% 60% at center, rgba(245,234,213,0.78) 0%, rgba(245,234,213,0.30) 80%)",
+          "radial-gradient(ellipse 78% 62% at center, rgba(245,234,213,0.94) 0%, rgba(245,234,213,0.62) 100%)",
       }
     : {
-        // Slide com texto claro: escurecer o fundo com warm-dark.
+        // Texto claro: escurecer o fundo com warm-dark forte.
         background:
-          "radial-gradient(ellipse 70% 55% at center, rgba(15,12,10,0.55) 0%, rgba(15,12,10,0.85) 100%)",
+          "radial-gradient(ellipse 72% 58% at center, rgba(15,12,10,0.68) 0%, rgba(15,12,10,0.92) 100%)",
       };
   return (
     <>
@@ -131,6 +131,61 @@ function FundoLayer({ url, claro }: { url: string; claro?: boolean }) {
           ...scrim,
         }}
       />
+    </>
+  );
+}
+
+/* ─── ORNAMENTOS ────────────────────────────────────────── */
+/**
+ * "Véus a levantar" — três hair-lines horizontais empilhadas, decrescentes
+ * em comprimento e opacidade. Metáfora literal dos véus que se vão
+ * soltando. Exclusivo da marca, não copiado.
+ */
+function VeusAsLevantar({ color, dir = "down" }: { color: string; dir?: "up" | "down" }) {
+  const lines = dir === "down"
+    ? [{ w: 320, o: 0.65 }, { w: 200, o: 0.45 }, { w: 100, o: 0.28 }]
+    : [{ w: 100, o: 0.28 }, { w: 200, o: 0.45 }, { w: 320, o: 0.65 }];
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+      {lines.map((l, i) => (
+        <span
+          key={i}
+          style={{ width: l.w, height: 1, background: color, opacity: l.o }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Cantoneiras nos 4 cantos do slide — 1px gold, 56px de braço. Frame
+ * delicado que desenha o limite do slide sem peso.
+ */
+function Cantoneiras({ color }: { color: string }) {
+  const ARM = 56;
+  const INSET = 60;
+  const stroke = 1;
+  const common: React.CSSProperties = {
+    position: "absolute",
+    background: color,
+    opacity: 0.55,
+    pointerEvents: "none",
+    zIndex: 3,
+  };
+  return (
+    <>
+      {/* top-left */}
+      <span style={{ ...common, top: INSET, left: INSET, width: ARM, height: stroke }} />
+      <span style={{ ...common, top: INSET, left: INSET, width: stroke, height: ARM }} />
+      {/* top-right */}
+      <span style={{ ...common, top: INSET, right: INSET, width: ARM, height: stroke }} />
+      <span style={{ ...common, top: INSET, right: INSET, width: stroke, height: ARM }} />
+      {/* bottom-left */}
+      <span style={{ ...common, bottom: INSET, left: INSET, width: ARM, height: stroke }} />
+      <span style={{ ...common, bottom: INSET, left: INSET, width: stroke, height: ARM }} />
+      {/* bottom-right */}
+      <span style={{ ...common, bottom: INSET, right: INSET, width: ARM, height: stroke }} />
+      <span style={{ ...common, bottom: INSET, right: INSET, width: stroke, height: ARM }} />
     </>
   );
 }
@@ -175,6 +230,7 @@ function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "
       <div style={luz ? grainStyle : grainDarkStyle} />
       <div style={luz ? vignetteLight : vignetteDark} />
       <div style={glowGold} />
+      <Cantoneiras color={C.gold} />
       <div
         style={{
           position: "absolute",
@@ -209,23 +265,7 @@ function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 36, width: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18, width: "100%" }}>
-            <span style={{ flex: 1, maxWidth: 240, height: 1, background: C.gold, opacity: 0.5 }} />
-            <span
-              style={{
-                fontFamily: '"Cormorant Garamond", serif',
-                fontStyle: "italic",
-                fontSize: 26,
-                color: C.gold,
-                opacity: 0.7,
-                letterSpacing: "0.4em",
-                lineHeight: 1,
-              }}
-            >
-              ◇
-            </span>
-            <span style={{ flex: 1, maxWidth: 240, height: 1, background: C.gold, opacity: 0.5 }} />
-          </div>
+          <VeusAsLevantar color={C.gold} dir="down" />
           <div
             ref={veuRef}
             style={{
@@ -236,6 +276,11 @@ function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "
               textAlign: "center",
               letterSpacing: "-0.025em",
               whiteSpace: "nowrap",
+              textShadow: fundoUrl
+                ? (luz
+                    ? "0 1px 6px rgba(245,234,213,0.85), 0 0 14px rgba(245,234,213,0.55)"
+                    : "0 1px 6px rgba(15,12,10,0.85), 0 0 14px rgba(15,12,10,0.55)")
+                : "none",
             }}
           >
             {dia.veu}
@@ -340,6 +385,7 @@ function Conteudo({
       {fundoUrl && <FundoLayer url={fundoUrl} claro={fundoClaro} />}
       <div style={sombra ? grainDarkStyle : grainStyle} />
       <div style={sombra ? vignetteDark : vignetteLight} />
+      <Cantoneiras color={sombra ? C.gold : C.terracotta} />
 
       <div
         style={{
@@ -542,6 +588,7 @@ function Cta({ slide, C }: { slide: Extract<SlideType, { tipo: "cta" }>; C: Caro
       <div style={luz ? grainStyle : grainDarkStyle} />
       <div style={luz ? vignetteLight : vignetteDark} />
       <div style={glowTerra} />
+      <Cantoneiras color={C.gold} />
       <div
         style={{
           position: "absolute",
