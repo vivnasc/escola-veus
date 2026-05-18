@@ -424,7 +424,7 @@ export default function ColecaoMetricoolPage({
           />
         </label>
         <label className="text-xs text-escola-creme-50">
-          Hora default (HH:MM)
+          Hora default (HH:MM Maputo · CAT)
           <input
             type="time"
             value={defaultTime}
