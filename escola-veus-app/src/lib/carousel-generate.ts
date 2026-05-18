@@ -199,16 +199,24 @@ Regras da notaVisual:
 - Sem pessoas, sem rostos, sem texto, sem logos, sem marcas culturais.
 - Sem geografia (não menciones países, cidades, "African", "Mozambique",
   "tropical", "Mediterranean", "Nordic", etc.).
-- Privilegia matéria primária: light, water, air, earth, thread, glass,
-  stone, threshold, doorway, mist, ash, ember, dawn, dusk.
-- Pode ser abstracta (volumetric light through mist, expanding ripples on
-  still water, single beam piercing dust) ou figurativa simples (open
-  doorway with morning light, single candle on a bare table, empty bowl).
-- A cena deve VIBRAR com o estado do slide:
-  · estado denso → contracção, peso, sombra, fio agarrado, vidro embaciado,
-    objecto contido
-  · estado luminoso → abertura, fluxo, luz a penetrar, espaço, espelho de
-    água, gota a expandir-se
+- **Privilegia matéria-LUZ, NÃO matéria-densa.** O carrossel é luz, não fogo.
+  · MATÉRIA-LUZ (usa esta): silk, gauze, veil, mist, fog, dawn light,
+    diffused light, translucent fabric, lace shadow, soft cloud, breath,
+    vapor, petal floating on water, light through curtain, pale sky,
+    still pale water reflecting sky, dust dancing in soft sunlight,
+    prism reflection on cream wall.
+  · MATÉRIA-DENSA (EVITA): stone, rock, fire, ember, ash, earth, soil,
+    root, dense wood, old book, dark interior, heavy fabric, metal, iron,
+    cracked ground, fissures. Tudo isto é peso, não luz.
+- A cena VIBRA com a luz que o dia oferece (presença, abertura, fluxo,
+  intimidade silenciosa) — nunca com a sombra ou a densidade.
+- Exemplos CERTOS: "sunlight passing through a translucent silk curtain
+  swaying gently", "single white petal floating on still pale water",
+  "morning mist clearing over a pale soft meadow", "delicate lace
+  shadow on cream stone wall, soft dawn light".
+- Exemplos ERRADOS: "weathered stone wall lit by ember light",
+  "single candle burning against textured wall", "open book on worn
+  wood", "cracked dry earth at dusk". Densos, sombra, terra-fogo.
 
 VISUAL. Campo "fundoClaro" (boolean) em CADA slide:
 - true quando o slide convida ao estado luminoso/aberto/presente (frases

@@ -18,8 +18,15 @@ import type { Dia, Slide } from "@/lib/carousel-types";
 const STYLE_DARK =
   "cinematic editorial photograph, low contemplative light, limited warm palette, fine grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
 
+/**
+ * STYLE_LIGHT — modo LUZ.
+ * Pálido, translúcido, etéreo. NÃO morno-dourado, NÃO denso-terra,
+ * NÃO fogo-pedra. Pensa: véu de seda, gauze ao sol, neblina ao amanhecer,
+ * luz a atravessar tecido, pétala sobre água, ar a vibrar. Matéria
+ * desmaterializada.
+ */
 const STYLE_LIGHT =
-  "cinematic editorial photograph, soft natural daylight, limited muted palette, fine grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
+  "ethereal luminous photograph, pale ivory and soft cream palette, translucent gauze atmosphere, weightless and airy, diffused dawn light, soft mist, delicate and breath-thin matter, no dense objects, no stone no fire no earth, fine luminous grain, no people, no faces, no text, no logos, no watermarks, hyperrealistic, 8k, --ar 9:16";
 
 /**
  * Fallback simbólico para slides sem `notaVisual` (conteúdo antigo).
