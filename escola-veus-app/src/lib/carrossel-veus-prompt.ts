@@ -28,14 +28,19 @@ import type { Dia, Slide } from "@/lib/carousel-types";
  *  - aulas/cursos: flat editorial illustration com silhuetas terracota
  */
 const STYLE_BASE =
-  "editorial still life photograph, painterly contemplative atmosphere, " +
+  "editorial still life photograph, painterly boho contemplative atmosphere, " +
   "fixed palette: deep navy #1A1A2E, cream linen #E8DCC0, soft terracotta #B85C38, " +
   "raffia gold #C9A14A, cream stone #D8CFB8; " +
-  "materials only from: raw linen, navy wool serge, natural raffia weave, rustic ceramic, " +
-  "dark walnut wood, pale stone (no other materials); " +
+  "allowed materials: raw linen, navy wool serge, natural raffia weave, " +
+  "jute or sisal, rustic ceramic, small bone or wooden beads, macramé, " +
+  "small clay vase, naturally-dyed cloth; " +
+  "allowed botanicals (one per scene): strelitzia (bird-of-paradise) flower or leaf, " +
+  "palm fronds, banana leaf, monstera leaf, dried pampas grass, bare dried branch, " +
+  "tropical broadleaf foliage; " +
+  "supports: dark walnut wood, pale stone, hand-troweled cream stucco wall; " +
   "single oblique soft afternoon or morning light, gentle chiaroscuro, no harsh shadows; " +
   "no people, no faces, no hands, no text, no logos, no watermarks; " +
-  "no HDR, no stock-photo gloss, no saturated colors, no modern technology; " +
+  "no HDR, no stock-photo gloss, no saturated colors, no modern technology, no open landscape; " +
   "8k, --ar 9:16";
 
 const STYLE_DARK = STYLE_BASE;

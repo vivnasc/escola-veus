@@ -1,6 +1,6 @@
 # Identidade Visual dos Carrosséis — "Ofício do Véu"
 
-**Versão:** 2026-05-18
+**Versão:** 2026-05-18 (rev. 2 — adiciona boho/botânica/artesanato leve, distinção capa/fecho)
 **Estado:** activo (single source of truth)
 **Aplica a:** todas as colecções de carrossel (52 semanas/ano + Estação dos Véus)
 
@@ -19,7 +19,7 @@ semana é o material em destaque dentro dessa gramática, conforme o brief.
 
 ### 1.1 Materiais autorizados — lista fechada
 
-**Núcleo (4 materiais — a imagem tem de mostrar pelo menos um):**
+**Núcleo têxtil/cerâmica (a imagem tem de mostrar pelo menos um):**
 
 | Material | Descrição | Uso |
 |---|---|---|
@@ -27,6 +27,28 @@ semana é o material em destaque dentro dessa gramática, conforme o brief.
 | **Sarja navy** | wool serge dark navy or smoke-grey, vincos verticais pesados | Camadas, mantas, drapeados em peso |
 | **Rafia natural** | woven palm fibre, mel-dourado, trama visível | Cestas, mats, detalhes em trança |
 | **Cerâmica rústica** | handmade clay, terracota ou navy-glaze, formas simples | Tigelas, jarros, peças centrais |
+| **Juta / sisal** | natural jute or sisal weave, tons crus | Mantas leves, runners, contexto boho |
+
+**Botânica autorizada (boho tropical contido, sem geografia explícita):**
+
+| Planta | Descrição | Onde usar |
+|---|---|---|
+| **Estrelícia** | strelitzia / bird-of-paradise flower or leaf, deep orange + navy bract | Acento de cor forte, único elemento botânico vivo |
+| **Palmeira** | palm fronds (areca, fan), banana leaves | Folha como sombra/textura, não paisagem |
+| **Monstera** | monstera leaf, recortada, dramática | Detalhe escultural |
+| **Pampas seca** | dried pampas grass, beige/cream plumes | Vaso/jarro, soft texture |
+| **Ramos secos** | bare branch, twig, dried botanicals | Em cerâmica, minimal |
+| **Folha tropical** | broadleaf tropical foliage, navy-green | Sombra, fundo textural |
+
+**Artesanato leve (peças pequenas, não opressivas):**
+
+| Item | Descrição |
+|---|---|
+| Contas de osso/madeira | small bone or wooden beads, beige/cream, em fio simples |
+| Pulseiras macramé | macramé bracelet, natural fibre |
+| Cesto pequeno | small woven basket, jute or raffia |
+| Vaso de barro | small handmade clay vase |
+| Pano tingido natural | indigo/clay-dyed natural cloth, irregular pattern |
 
 **Suportes (apoio cenográfico, secundário):**
 
@@ -34,6 +56,7 @@ semana é o material em destaque dentro dessa gramática, conforme o brief.
 |---|---|
 | Madeira escura | walnut/oak velho, mesa ou banco |
 | Pedra clara | limestone/cream stone, parede ou superfície |
+| Parede stucco | hand-troweled cream stucco, textured |
 
 ### 1.2 Paleta — Hex fixos
 
@@ -96,17 +119,41 @@ ou ausentes.
 
 ## 3. Composição por tipo de slide
 
-Cada dia tem 6 slides. A ÊNFASE escolhida acima aplica-se aos 3 slides com
-fundo MJ (capa + 1-2 internos + cta), mas com micro-variação por tipo:
+Cada dia tem 6 slides. A ÊNFASE escolhida acima aplica-se aos 2 slides com
+fundo MJ (capa + cta), mas com **distinção CRÍTICA**:
 
-| Slide | Composição | Exemplo |
-|---|---|---|
-| **Capa** (slide 1) | Single subject forte, ample silence | "Jarro de cerâmica rústica vazio sobre tecido de linho cru, único raio oblíquo, fundo navy" |
-| **Conteúdo c/ MJ** (slides 2-5) | Detalhe/textura próximo, macro suave | "Macro da trama de rafia natural mel-dourada, profundidade rasa, luz lateral" |
-| **CTA** (slide 6) | Pilha/altar — 2-3 objetos em diálogo | "Pilha de tecidos dobrados, sarja navy sobre linho cru com cesta de rafia ao lado, luz lateral suave" |
+### CAPA — DETALHADA e RICA
 
-Slides internos sem MJ ficam só com tipografia e o template editorial — não
-forçar fundo onde não há.
+Cena editorial composta, várias camadas, vários elementos do núcleo +
+botânica + artesanato leve em diálogo. Boho contido. Atrai o olhar com
+densidade visual de matéria. NÃO é minimal.
+
+Exemplos:
+- "Jarro de cerâmica terracota com folha de estrelícia inclinada, sobre
+  linho cru drapeado, contas de osso ao lado, sombra de palma na parede
+  stucco creme, luz oblíqua da tarde, deep navy ao fundo"
+- "Manta de juta sobre madeira escura com cesto pequeno de rafia, ramos
+  secos no jarro, palma de banana folha pendurada à esquerda, luz
+  manhã suave"
+- "Sarja navy drapeada sobre banco com pampas seca em vaso de barro,
+  pulseira de macramé pousada, sombra de monstera atrás, golden hour"
+
+### FECHO/CTA — SIMBÓLICA e SIMPLES
+
+Single subject minimal, espaço amplo, evocativo, contemplativo. Um único
+objecto do núcleo OU uma única planta. NÃO bohemia carregada. É o silêncio
+depois da história. Quase altar.
+
+Exemplos:
+- "Single ceramic vessel on pale stone, vast empty navy space, single
+  shaft of warm light"
+- "Single dried branch in small clay vase against stucco wall, soft
+  shadow"
+- "Folded linen sheet on dark wood, nothing else, oblique light"
+
+### CONTEÚDO interno (slides 2-5) — sem MJ
+
+Ficam só com tipografia + template editorial. Não forçar fundo onde não há.
 
 ---
 
