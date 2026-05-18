@@ -209,21 +209,22 @@ function Capa({ dia, slide, C }: { dia: Dia; slide: Extract<SlideType, { tipo: "
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 36, width: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 28, width: "100%" }}>
-            <span style={{ flex: 1, maxWidth: 220, height: 1, background: C.gold, opacity: 0.55 }} />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18, width: "100%" }}>
+            <span style={{ flex: 1, maxWidth: 240, height: 1, background: C.gold, opacity: 0.5 }} />
             <span
               style={{
-                fontWeight: 400,
-                fontSize: 22,
-                letterSpacing: "0.55em",
+                fontFamily: '"Cormorant Garamond", serif',
+                fontStyle: "italic",
+                fontSize: 26,
                 color: C.gold,
-                textTransform: "uppercase",
-                whiteSpace: "nowrap",
+                opacity: 0.7,
+                letterSpacing: "0.4em",
+                lineHeight: 1,
               }}
             >
-              {dia.romano}
+              ◇
             </span>
-            <span style={{ flex: 1, maxWidth: 220, height: 1, background: C.gold, opacity: 0.55 }} />
+            <span style={{ flex: 1, maxWidth: 240, height: 1, background: C.gold, opacity: 0.5 }} />
           </div>
           <div
             ref={veuRef}
@@ -378,7 +379,6 @@ function Conteudo({
           >
             {num} / 06
           </span>
-          <span>{dia.romano}</span>
         </div>
 
         <div
