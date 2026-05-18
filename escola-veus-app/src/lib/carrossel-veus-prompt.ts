@@ -15,20 +15,28 @@
 import type { Dia, Slide } from "@/lib/carousel-types";
 
 /**
- * Estilo visual do carrossel — A IDENTIDADE AINDA NÃO ESTÁ ESCOLHIDA.
+ * Estilo visual do carrossel — "Ofício do Véu".
  *
- * Em discussão (Vivianne vai escolher):
- *  A. "Limiar Véu"      — tecidos translúcidos, cortinas de luz, gauze
- *  B. "Ofício Sagrado"  — detalhes íntimos de gestos/objectos rituais
- *  C. "Paisagens Interiores" — paisagens abstratas dream-like
+ * Identidade fechada e documentada em docs/IDENTIDADE-VISUAL-CARROSSEL.md.
+ * Gramática fixa (materiais, paleta, luz, regras de composição). O Claude
+ * gera a `notaVisual` de cada slide escolhendo o material em destaque
+ * conforme o tema da semana (mapping no SYSTEM_PROMPT de carousel-generate).
  *
- * Enquanto não estiver decidido, mantemos um STYLE neutro editorial.
- * Não é o brand-video flat illustration (esse é para Aulas/Funil).
- * Não é hoje-em-mim (noite amber íntimo).
- * Não é vc-sabia (fantasia natureza vívida).
+ * Distinta de:
+ *  - hoje-em-mim: noite amber íntimo (vela, brasa, chuva)
+ *  - vc-sabia: fantasia natureza vívida, cor forte
+ *  - aulas/cursos: flat editorial illustration com silhuetas terracota
  */
 const STYLE_BASE =
-  "editorial photograph, contemplative atmosphere, navy and cream and soft gold palette, painterly composition, no people, no faces, no text, no logos, no watermarks, 8k, --ar 9:16";
+  "editorial still life photograph, painterly contemplative atmosphere, " +
+  "fixed palette: deep navy #1A1A2E, cream linen #E8DCC0, soft terracotta #B85C38, " +
+  "raffia gold #C9A14A, cream stone #D8CFB8; " +
+  "materials only from: raw linen, navy wool serge, natural raffia weave, rustic ceramic, " +
+  "dark walnut wood, pale stone (no other materials); " +
+  "single oblique soft afternoon or morning light, gentle chiaroscuro, no harsh shadows; " +
+  "no people, no faces, no hands, no text, no logos, no watermarks; " +
+  "no HDR, no stock-photo gloss, no saturated colors, no modern technology; " +
+  "8k, --ar 9:16";
 
 const STYLE_DARK = STYLE_BASE;
 const STYLE_LIGHT = STYLE_BASE;
