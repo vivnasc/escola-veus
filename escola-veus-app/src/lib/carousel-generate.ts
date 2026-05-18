@@ -120,10 +120,16 @@ Outros recursos:
 - 🌿 VITALIS · plano alimentar simples e nutritivo, sem balança nem
   extremos, com receitas acessíveis. Boa para temas do corpo,
   alimentação, reeducação alimentar. URL: app.seteecos.com/vitalis
-- ✨ LUMINA · diagnóstico gratuito, 7 perguntas, 2 minutos. Boa quando
-  o tema convida à auto-percepção / mostra o que está invisível.
-  (Não chames "energético". Mantém "diagnóstico" ou "espelho rápido".)
-  URL: app.seteecos.com/lumina
+- ✨ LUMINA · ESPELHO rápido (NÃO "diagnóstico", NÃO "diagnóstico
+  energético"), 7 perguntas, 2 minutos. Boa quando o tema convida à
+  auto-percepção. **REGRA DURA:** NUNCA uses "diagnóstico" em nenhum
+  slide quando o CTA é LUMINA. A marca é ANTI-diagnóstica ("Vejo-te,
+  não te diagnostico"). Slides que falem de "não és um problema a
+  resolver", "não és um diagnóstico à espera" são coerentes com o
+  CTA SE ele disser "espelho", "bússola", "reconhecimento" — NUNCA
+  "diagnóstico". Para o "recurso" do CTA usa por ordem de preferência:
+  "LUMINA · espelho gratuito", "LUMINA · bússola", "LUMINA",
+  "LUMINA · reconhecimento". URL: app.seteecos.com/lumina
 - 🌀 Sete Ecos · comunidade anónima, partilha sem máscara. Boa para
   temas de solidão, comunidade, irmandade. URL: seteveus.space (root)
 - 🕯️ Ouro Próprio · curso já disponível sobre a relação com o dinheiro
