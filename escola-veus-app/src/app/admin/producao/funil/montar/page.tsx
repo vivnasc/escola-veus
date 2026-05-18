@@ -1092,43 +1092,80 @@ function VideoStamp({ url }: { url: string }) {
 // Desenhado para minimizar cliques: 3 passos, visíveis, numerados.
 
 function buildYoutubeMetadata(epLabel: string, episodeText: string) {
-  // Título: "ep01 — A culpa | Nomear · A Escola dos Véus" (máx 100 chars)
-  const cleanLabel = epLabel.replace(/^(\w+)\s*—\s*/, (_m, pref) => `${pref} · `);
-  const title = `${cleanLabel} | Nomear · A Escola dos Véus`.slice(0, 100);
+  // Título: `ep01 · A culpa que chega antes da compra`
+  // NUNCA adicionar "| Nomear · A Escola dos Véus" — YouTube já mostra o nome
+  // do canal por baixo do título; o pipe come ~30 chars visíveis no mobile e
+  // baixa CTR. Quanto mais curto e específico, melhor.
+  const cleanLabel = epLabel
+    .replace(/^(\w+)\s*—\s*/, (_m, pref) => `${pref} · `)
+    .trim();
+  const title = cleanLabel.slice(0, 100);
 
-  // Descrição: texto do episódio + CTA + hashtags
-  const cta = [
-    "",
-    "━━━━━━━━━━━━━━━━",
-    "A Escola dos Véus é um espaço para mulheres que querem nomear o que nunca teve nome.",
-    "",
-    "→ Subscreve para receberes novos episódios da série Nomear.",
-    "→ Junta-te à escola: https://seteveus.space",
-    "",
-    "#EscolaDosVéus #Nomear #Mulheres #Consciência #Herança",
-  ].join("\n");
-
-  // Remove marcações [long pause] / [pause] / CTA duplicado do script
+  // ── Body ────────────────────────────────────────────────────────────
+  // Texto do episódio com marcações [pause] limpas e CTAs duplicados
+  // removidos (vão na secção de canal abaixo).
   const body = episodeText
-    .replace(/\[(long pause|pause)\]/gi, "")
+    .replace(/\[(long pause|short pause|pause|calm|thoughtful)\]/gi, "")
     .replace(/Escola dos Véus\.\s*seteveus\.space\.?/gi, "")
     .replace(/Se isto te nomeou alguma coisa[^.]*\./gi, "")
+    .replace(/\n{3,}/g, "\n\n")
     .trim();
 
-  const description = `${body}\n${cta}`.slice(0, 5000);
+  // ── Secção de canal + cross-links + créditos + hashtags ─────────────
+  // Os placeholders [[EP_ANTERIOR]] / [[EP_RELACIONADO]] / [[TRAILER]]
+  // têm de ser preenchidos à mão antes de publicar — grep fácil para a
+  // Vivianne saber o que falta.
+  //
+  // Hashtags em 4 camadas (sem acentos, YouTube indexa sem acentos):
+  //   DISCOVERY (alto volume): psicologia, autoconhecimento, culpa, feminilidade
+  //   TEMÁTICA: herancafeminina, ancestralidade, mulhereshereditarias
+  //   MOOD:     contemplacao, reflexao
+  //   BRAND:    escoladosveus, viviannedossantos
+  const sections = [
+    "",
+    "━━━━━━━━━━━━━━━━",
+    "",
+    "Série Nomear · Escola dos Véus.",
+    "Cada vídeo nomeia uma frase que o teu corpo já sabia.",
+    "",
+    "Se isto te nomeou alguma coisa, subscreve.",
+    "",
+    "Também no canal:",
+    "» [[EP_ANTERIOR]]",
+    "» [[EP_RELACIONADO]]",
+    "» [[TRAILER]]",
+    "",
+    "Junta-te à escola: https://seteveus.space",
+    "",
+    "Música: Ancient Ground · Voz: ElevenLabs · Imagens: Midjourney",
+    "",
+    "#escoladosveus #nomear #psicologia #autoconhecimento #culpa #feminilidade #herancafeminina #ancestralidade #mulher #contemplacao #viviannedossantos",
+  ];
+  const description = `${body}\n${sections.join("\n")}`.slice(0, 5000);
 
-  // Tags
+  // ── Tags ────────────────────────────────────────────────────────────
+  // Discovery (alto volume) → Temática → Brand. Sem acentos (YouTube indexa
+  // sem acentos). Sem "vivianne nascimento" — autora é vivianne dos santos.
   const tags = [
-    "escola dos véus",
-    "nomear",
-    "mulheres",
-    "consciência",
-    "herança",
-    "dinheiro",
-    "culpa",
-    "vergonha",
+    // Discovery (alto volume YouTube)
+    "psicologia",
     "autoconhecimento",
-    "vivianne nascimento",
+    "culpa",
+    "feminilidade",
+    "mulher",
+    "heranca",
+    "ancestralidade",
+    // Temática (médio volume, nicho contemplativo)
+    "heranca feminina",
+    "mulheres",
+    "consciencia",
+    "vergonha",
+    "dinheiro",
+    "contemplacao",
+    // Brand
+    "escola dos veus",
+    "nomear",
+    "vivianne dos santos",
   ];
 
   return { title, description, tags };
