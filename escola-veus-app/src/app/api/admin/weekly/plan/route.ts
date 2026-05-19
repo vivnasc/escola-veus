@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { BRANDS, ALL_PLATFORMS, DAY_ORDER, type BrandSlug } from "@/data/weekly-social/brand-config";
 import {
   pickWeekLoranneFromPool,
-  pickWeeklyAG,
   getTrackTitle,
   getAlbumTitle,
   getTrackLang,
   getDayMood,
   LORANNE_ROTATION,
 } from "@/data/weekly-social/weekly-rotation";
+import { pickWeekAG } from "@/data/weekly-social/ag-picker";
 import { scheduleFor, currentYear } from "@/lib/weekly-social/schedule";
 import { buildLoranneCaptions, buildAGCaptions } from "@/lib/weekly-social/captions";
 import { findTrackUrl, extractTrackNumbers, closestTrackNumber } from "@/lib/weekly-social/clip-picker";
@@ -20,7 +20,7 @@ import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
 import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx, sanitizeLyricLine } from "@/lib/shorts/lyrics-stanzas";
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
-import { loadRecentAGStories } from "@/lib/shorts/ag-history";
+import { loadAGHistory } from "@/lib/shorts/ag-history";
 import { generateLoranneSynopsis } from "@/lib/shorts/loranne-synopsis-generator";
 import { ALL_LYRICS } from "@/lib/loranne";
 import { deriveMotionSeed, loranneTrackId, agTrackId } from "@/lib/shorts/motion-seed";
@@ -308,18 +308,23 @@ export async function POST(req: NextRequest) {
       const brand = BRANDS["ancient-ground"];
       const agTracks = await listAlbumTracks("ancient-ground");
 
-      // Histórico de 6 semanas — Claude vê título+1ª frase de cada conto AG
-      // recente e tem instrução para não os repetir. Best-effort; falha
-      // de IO degrada para [] (sem memória, mas a geração continua).
-      const recentAGStories = await loadRecentAGStories(year, week, {
+      // Histórico de 6 semanas em uma só leitura: contos recentes (anti-
+      // repetição no system prompt) + contagem de temas (alimenta os pesos
+      // inverso-frequência do picker generativo). Best-effort.
+      const agHistory = await loadAGHistory(year, week, {
         weeksBack: 6,
         maxStories: 12,
       });
+      const recentAGStories = agHistory.stories;
 
-      // Processa os 3 posts em paralelo — cada post chama Claude duas vezes
-      // (suggest-ag + story). Sequencial estoura os 60s do Hobby plan.
+      // Substitui AG_ROTATION (40 hardcoded) por gerador: 3 temas por slot
+      // sampleados sem reposição de RAIZES_TEMAS com pesos 1/(1+count). Os
+      // 3 slots da semana partilham o estado para não dar dois "anciao"
+      // na mesma semana. Determinístico por (year, week, history).
+      const agSlotEntries = pickWeekAG(year, week, agHistory.temaCounts, brand.publishDays.length);
+
       const dayEntries = brand.publishDays.map((day, slotIdx) => ({
-        day, slotIdx, entry: pickWeeklyAG(week, slotIdx),
+        day, slotIdx, entry: agSlotEntries[slotIdx],
       }));
 
       const results = await Promise.all(dayEntries.map(async ({ day, slotIdx, entry }) => {

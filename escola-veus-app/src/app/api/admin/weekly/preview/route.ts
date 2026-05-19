@@ -4,8 +4,10 @@ import {
   BRANDS, ALL_PLATFORMS, DAY_ORDER,
 } from "@/data/weekly-social/brand-config";
 import {
-  pickWeeklyLoranne, pickWeeklyAG, getTrackTitle, getAlbumTitle,
+  pickWeeklyLoranne, getTrackTitle, getAlbumTitle,
 } from "@/data/weekly-social/weekly-rotation";
+import { pickWeekAG } from "@/data/weekly-social/ag-picker";
+import { loadAGHistory } from "@/lib/shorts/ag-history";
 import { ALL_LYRICS } from "@/lib/loranne";
 import { scheduleFor, currentYear } from "@/lib/weekly-social/schedule";
 
@@ -51,9 +53,11 @@ export async function GET(req: NextRequest) {
     };
   });
 
-  // AG
+  // AG — picker generativo com histórico (pesos inverso-frequência).
+  const agHistory = await loadAGHistory(year, week, { weeksBack: 6 });
+  const agEntries = pickWeekAG(year, week, agHistory.temaCounts, BRANDS["ancient-ground"].publishDays.length);
   const ag = BRANDS["ancient-ground"].publishDays.map((day, slotIdx) => {
-    const entry = pickWeeklyAG(week, slotIdx);
+    const entry = agEntries[slotIdx];
     return {
       day,
       label: entry.label,

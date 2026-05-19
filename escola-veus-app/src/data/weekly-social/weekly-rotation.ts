@@ -1,22 +1,19 @@
 /**
- * Rotação semanal determinística para Loranne + Ancient Ground.
+ * Rotação semanal determinística para Loranne.
  *
  * - **Loranne**: derivada de `ALL_LYRICS` (loranne.ts). Filtra curso-/livro-,
  *   pontua cada faixa com o `scoreLine` do `suggest/route.ts` (top-3 lines),
  *   limita 3 faixas por álbum (diversidade), e ordena por score. Resultado:
- *   pool ≥50 entries (album, trackNumber).
+ *   pool ≥50 entries (album, trackNumber). Selecção: `pickWeeklyLoranne`.
  *
- * - **Ancient Ground**: lista hardcoded de tripletes de temas raízes
- *   (combinações cinematicamente coesas) + sugestão de track AG.
- *
- * Selecção semanal: `pickWeeklyLoranne(weekNumber, dayIndex)` e
- * `pickWeeklyAG(weekNumber, slotIndex)` — determinístico, varia por semana.
+ * - **Ancient Ground**: já não mora aqui. Foi migrado para `./ag-picker.ts`
+ *   (picker generativo histórico-aware, C(15,3)=455 combinações,
+ *   auto-equilíbrio). A entry-function é `pickWeekAG`.
  *
  * Server-only: importa `loranne.ts` que carrega ~MB de letras.
  */
 
 import { ALL_LYRICS } from "@/lib/loranne";
-import type { RaizTema } from "@/lib/ag-raizes-temas";
 import trackTitlesJson from "./loranne-track-titles.json";
 import trackMetaJson from "./loranne-track-meta.json";
 import moodTagsJson from "./loranne-mood-tags.json";
@@ -274,84 +271,16 @@ export const LORANNE_ROTATION: readonly LoranneRotationEntry[] = Object.freeze(
 );
 
 // ─── Ancient Ground — tripletes de temas raízes ────────────────────────────
-
-export type AGRotationEntry = {
-  /** 3 temas para os 3 clips do short (variedade visual em 30s). */
-  temas: [RaizTema, RaizTema, RaizTema];
-  /** Faixa AG sugerida (1-100). Configurável. */
-  trackNumber: number;
-  /** Etiqueta humana — mood/foco do triplete. */
-  label: string;
-};
-
-/**
- * 40 tripletes — combinações cinematicamente coesas.
- * Padrões usados:
- *  - Energia comunitária: batuque + danca + crianca
- *  - Sabedoria/transmissão: anciao + transmissao + machamba
- *  - Trabalho da terra: machamba + trabalho-coletivo + casa
- *  - Sagrado/rito: rito + anciao + casa
- *  - Mar/pesca: pesca + gente-paisagem + aldeia
- *  - Mercado/cor: mercado + danca + crianca
- *  - Retrato/intimidade: retrato + casa + transmissao
- *  - Aldeia/wide: aldeia + gente-paisagem + retrato
- *
- * AUDITORIA (out-2026): a tabela está enviesada para anciao/transmissao
- *   anciao=14, rito=11, casa=11, aldeia=11, transmissao=10 (cap teórico=8)
- *   artesanato=4, mercado=4, trabalho-coletivo=4, batuque=5 (sub-representados)
- *
- * Isto explica porque os contos AG saem repetitivos no eixo "transmissão/
- * ancião/artesanato": cada semana tem >50% de probabilidade de calhar com
- * pelo menos um triplete ancestral. Rebalanceamento sugerido: trocar
- * `anciao` por temas sub-representados em 6 entradas (escolhe quais com
- * mais sensibilidade aos labels). Os prompts já estão "anti-ancião" mas
- * só conseguem compensar até certo ponto se a entrada empurra para lá.
- */
-export const AG_ROTATION: readonly AGRotationEntry[] = Object.freeze([
-  { temas: ["batuque", "danca", "crianca"],                  trackNumber: 12, label: "Energia comunitária" },
-  { temas: ["anciao", "transmissao", "machamba"],            trackNumber: 5,  label: "Sabedoria que passa" },
-  { temas: ["machamba", "trabalho-coletivo", "casa"],        trackNumber: 8,  label: "Terra e lar" },
-  { temas: ["rito", "anciao", "casa"],                       trackNumber: 22, label: "Sagrado quotidiano" },
-  { temas: ["pesca", "gente-paisagem", "aldeia"],            trackNumber: 14, label: "Costa e vida" },
-  { temas: ["mercado", "danca", "crianca"],                  trackNumber: 31, label: "Mercado e cor" },
-  { temas: ["retrato", "casa", "transmissao"],               trackNumber: 7,  label: "Intimidade e herança" },
-  { temas: ["aldeia", "gente-paisagem", "retrato"],          trackNumber: 19, label: "Aldeia e rosto" },
-  { temas: ["artesanato", "transmissao", "anciao"],          trackNumber: 11, label: "Mãos que ensinam" },
-  { temas: ["batuque", "rito", "anciao"],                    trackNumber: 28, label: "Tambor e ancestralidade" },
-
-  { temas: ["danca", "gente-paisagem", "aldeia"],            trackNumber: 4,  label: "Movimento" },
-  { temas: ["crianca", "aldeia", "gente-paisagem"],          trackNumber: 17, label: "Futuro no presente" },
-  { temas: ["machamba", "anciao", "rito"],                   trackNumber: 23, label: "Terra como altar" },
-  { temas: ["pesca", "trabalho-coletivo", "anciao"],         trackNumber: 9,  label: "Mar comum" },
-  { temas: ["casa", "retrato", "anciao"],                    trackNumber: 33, label: "Lar interior" },
-  { temas: ["danca", "batuque", "rito"],                     trackNumber: 41, label: "Cerimónia" },
-  { temas: ["mercado", "artesanato", "transmissao"],         trackNumber: 6,  label: "Ofício e troca" },
-  { temas: ["gente-paisagem", "pesca", "retrato"],           trackNumber: 25, label: "Silhueta na água" },
-  { temas: ["aldeia", "casa", "rito"],                       trackNumber: 38, label: "Comunidade ao entardecer" },
-  { temas: ["crianca", "transmissao", "machamba"],           trackNumber: 13, label: "Aprender com a terra" },
-
-  { temas: ["anciao", "retrato", "casa"],                    trackNumber: 44, label: "Olhar antigo" },
-  { temas: ["batuque", "danca", "aldeia"],                   trackNumber: 16, label: "Praça em festa" },
-  { temas: ["transmissao", "artesanato", "crianca"],         trackNumber: 27, label: "Mãos pequenas" },
-  { temas: ["pesca", "aldeia", "casa"],                      trackNumber: 35, label: "Regresso da praia" },
-  { temas: ["machamba", "gente-paisagem", "casa"],           trackNumber: 2,  label: "Caminho de volta" },
-  { temas: ["rito", "casa", "retrato"],                      trackNumber: 49, label: "Lume interior" },
-  { temas: ["danca", "crianca", "aldeia"],                   trackNumber: 21, label: "Roda livre" },
-  { temas: ["trabalho-coletivo", "machamba", "anciao"],      trackNumber: 3,  label: "Comunhão na lavoura" },
-  { temas: ["artesanato", "casa", "retrato"],                trackNumber: 36, label: "Ofício silencioso" },
-  { temas: ["pesca", "anciao", "rito"],                      trackNumber: 47, label: "Velho do mar" },
-
-  { temas: ["mercado", "gente-paisagem", "aldeia"],          trackNumber: 10, label: "Vida em fluxo" },
-  { temas: ["batuque", "anciao", "transmissao"],             trackNumber: 29, label: "Ritmo herdado" },
-  { temas: ["casa", "crianca", "rito"],                      trackNumber: 18, label: "Lar sagrado" },
-  { temas: ["transmissao", "pesca", "gente-paisagem"],       trackNumber: 42, label: "Aprender o mar" },
-  { temas: ["aldeia", "rito", "anciao"],                     trackNumber: 1,  label: "Memória da praça" },
-  { temas: ["danca", "retrato", "mercado"],                  trackNumber: 26, label: "Dança e rosto" },
-  { temas: ["machamba", "transmissao", "crianca"],           trackNumber: 39, label: "Semente em mãos novas" },
-  { temas: ["trabalho-coletivo", "pesca", "aldeia"],         trackNumber: 15, label: "Rede que une" },
-  { temas: ["rito", "transmissao", "anciao"],                trackNumber: 32, label: "Passagem" },
-  { temas: ["retrato", "anciao", "rito"],                    trackNumber: 50, label: "Face do tempo" },
-]);
+//
+// A rotação AG deixou de ser uma lista fixa. Os tripletes são gerados a
+// cada semana por `pickWeekAG` em `./ag-picker.ts`, samplando 3 dos 15
+// RAIZES_TEMAS com pesos inverso-frequência derivados do histórico
+// recente (lib/shorts/ag-history.ts).
+//
+// Porquê: a lista anterior tinha 40 entradas com cycle ~13 semanas, e
+// `anciao` aparecia em 35% delas — os contos saíam todos no eixo
+// transmissão/ancião/artesanato. C(15,3) = 455 combinações possíveis,
+// com auto-equilíbrio histórico-aware → sistema efectivamente infinito.
 
 // ─── Selecção determinística por semana ────────────────────────────────────
 
@@ -462,16 +391,5 @@ export function getDayMood(dayIndex: number): LoranneMood {
 // Suppress unused warning — LORANNE_MOODS reservado para validação futura.
 void LORANNE_MOODS;
 
-/**
- * AG: 3 slots/semana. Garante 3 labels distintos baralhando o pool por semana.
- */
-export function pickWeeklyAG(
-  weekNumber: number,
-  slotIndex: number,
-): AGRotationEntry {
-  if (AG_ROTATION.length === 0) {
-    throw new Error("AG_ROTATION está vazia.");
-  }
-  const shuffled = deterministicShuffle(AG_ROTATION, weekNumber + 100); // offset para descorrelacionar de Loranne
-  return shuffled[slotIndex % shuffled.length];
-}
+// pickWeeklyAG foi removido — usa pickWeekAG de ./ag-picker.ts, que aceita
+// (year, week, history) e devolve as 3 entradas da semana de uma vez.
