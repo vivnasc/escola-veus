@@ -41,10 +41,13 @@ export const BRANDS: Record<BrandSlug, BrandConfig> = {
     displayName: "Loranne",
     // 1/dia × 7 dias
     publishDays: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+    // Horário único 10:00 (hora de maior alcance segundo Metricool).
+    // Antes era staggered YT 18h / IG 20h / TT 20h30; o staggering
+    // diluía o pico — todos a 10:00 maximiza reach por post.
     hoursByPlatform: {
-      youtube: "18:00",
-      instagram: "20:00",
-      tiktok: "20:30",
+      youtube: "10:00",
+      instagram: "10:00",
+      tiktok: "10:00",
     },
     hashtagsByPlatform: {
       // IG: 15 tags — mistura volume alto + nicho
@@ -99,10 +102,11 @@ export const BRANDS: Record<BrandSlug, BrandConfig> = {
     // Fulls (3-5min YT canal): 3/sem Seg/Qua/Sex (alterna com clips,
     // primes audiência um dia antes do clip social)
     publishDaysFull: ["mon", "wed", "fri"],
+    // Horário único 10:00 (hora de maior alcance segundo Metricool).
     hoursByPlatform: {
-      youtube: "18:00",
-      instagram: "20:00",
-      tiktok: "20:30",
+      youtube: "10:00",
+      instagram: "10:00",
+      tiktok: "10:00",
     },
     hashtagsByPlatform: {
       instagram: [
