@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { posterFrag } from "@/lib/video-poster";
 import {
   buildCarouselCaption,
   buildCarouselCsv,
@@ -290,7 +291,7 @@ export default function CarrosselMetricoolPage() {
                       title={v.file}
                     >
                       <video
-                        src={v.url}
+                        src={posterFrag(v.url)}
                         muted
                         playsInline
                         preload="metadata"
@@ -501,7 +502,7 @@ function DiaCard({
         <div className="w-40">
           {row.videoUrl ? (
             <video
-              src={row.videoUrl}
+              src={posterFrag(row.videoUrl)}
               muted
               playsInline
               preload="metadata"

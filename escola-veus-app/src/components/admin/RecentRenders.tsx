@@ -12,6 +12,7 @@
 
 import { useEffect, useState } from "react";
 import { ShareVideoActions } from "./ShareVideoActions";
+import { posterFrag } from "@/lib/video-poster";
 
 type VideoKind = "long" | "short";
 
@@ -206,7 +207,7 @@ function VideoCard({
           />
         ) : (
           <video
-            src={video.url}
+            src={posterFrag(video.url)}
             className="h-full w-full object-cover"
             muted
             preload="metadata"
@@ -257,7 +258,7 @@ function VideoCard({
 
         {open && (
           <div className="border-t border-escola-border/50 pt-2">
-            <video src={video.url} controls className="w-full rounded" />
+            <video src={posterFrag(video.url)} controls className="w-full rounded" />
           </div>
         )}
       </div>

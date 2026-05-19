@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
+import { posterFrag } from "@/lib/video-poster";
 
 export interface Motion {
   name: string;
@@ -405,7 +406,7 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
                   title={m.name}
                 >
                   <video
-                    src={m.url}
+                    src={posterFrag(m.url)}
                     muted
                     playsInline
                     preload="metadata"

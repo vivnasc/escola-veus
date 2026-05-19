@@ -11,6 +11,7 @@ import { BulkMonthPanel } from "./BulkMonthPanel";
 import { DesignSettingsPanel, useDesignSettings } from "./DesignSettingsPanel";
 import { PhrasesPanel } from "./PhrasesPanel";
 import { PromptsLibrary } from "./PromptsLibrary";
+import { posterFrag } from "@/lib/video-poster";
 
 type Variant = "A" | "B" | "C";
 
@@ -433,7 +434,7 @@ function Frame({
     >
       {isVideo ? (
         <video
-          src={media}
+          src={posterFrag(media)}
           autoPlay
           loop
           muted

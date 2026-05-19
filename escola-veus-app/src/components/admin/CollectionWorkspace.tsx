@@ -8,6 +8,7 @@ import { EditModal, FullscreenSlide, InlineFundoControl } from "./CarouselEditor
 import type { Dia, Slide as SlideType } from "@/lib/carousel-types";
 import { audioKey, captionFor, deriveText, tipoLabel } from "@/lib/carousel-helpers";
 import { DEFAULT_THEME, type CarouselTheme, THEMES } from "@/lib/carousel-themes";
+import { posterFrag } from "@/lib/video-poster";
 
 const PREVIEW_SCALE = 0.18;
 const EXPORT_PIXEL_RATIO = 2;
@@ -1190,7 +1191,7 @@ function VideoResultCard({
       </div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-[200px_1fr]">
         <video
-          src={url}
+          src={posterFrag(url)}
           controls
           playsInline
           preload="metadata"

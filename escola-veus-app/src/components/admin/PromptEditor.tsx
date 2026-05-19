@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { NOMEAR_PRESETS } from "@/data/nomear-scripts";
+import { posterFrag } from "@/lib/video-poster";
 
 type PromptItem = {
   id: string;
@@ -1062,7 +1063,7 @@ function PoolSuggestions({
               >
                 <div className="relative">
                   <video
-                    src={c.clipUrl}
+                    src={posterFrag(c.clipUrl)}
                     className="aspect-video w-full"
                     muted
                     preload="none"

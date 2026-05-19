@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
 import { phraseToCaptions } from "@/lib/vc-sabia/captions";
 import { buildMjPrompt } from "@/lib/vc-sabia/midjourney";
+import { posterFrag } from "@/lib/video-poster";
 
 const MESES_PT = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -1129,14 +1130,14 @@ export function BulkMonthPanel() {
 
                   {j.videoUrl ? (
                     <video
-                      src={j.videoUrl}
+                      src={posterFrag(j.videoUrl)}
                       controls
                       playsInline
                       preload="metadata"
-                      className="aspect-[9/16] w-full rounded bg-black"
+                      className="mx-auto aspect-[9/16] w-full max-w-[260px] rounded bg-black"
                     />
                   ) : (
-                    <div className="flex aspect-[9/16] w-full items-center justify-center rounded bg-escola-card/60 text-[11px] text-escola-creme-50">
+                    <div className="mx-auto flex aspect-[9/16] w-full max-w-[260px] items-center justify-center rounded bg-escola-card/60 text-[11px] text-escola-creme-50">
                       {j.status === "failed" ? "✗ falhou" : "a aguardar..."}
                     </div>
                   )}

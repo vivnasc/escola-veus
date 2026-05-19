@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { posterFrag } from "@/lib/video-poster";
 
 interface Props {
   motionUrl: string;
@@ -204,7 +205,7 @@ export function ManualDownloadPanel({
         {render.phase === "done" && (
           <div className="space-y-2 rounded border border-emerald-500/40 bg-emerald-500/10 p-3">
             <video
-              src={render.videoUrl}
+              src={posterFrag(render.videoUrl)}
               controls
               className="w-full max-w-[400px] rounded"
             />

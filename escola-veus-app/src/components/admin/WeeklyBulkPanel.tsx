@@ -10,6 +10,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { posterFrag } from "@/lib/video-poster";
 
 import { RENDER_VERSION } from "@/lib/shorts/render-version";
 
@@ -662,10 +663,10 @@ function PostCard({
         })}
       </div>
 
-      <div className={`${activeMode === "full" ? "aspect-[16/9]" : "aspect-[9/16]"} bg-black`}>
+      <div className={`${activeMode === "full" ? "aspect-[16/9]" : "aspect-[9/16]"} relative mx-auto w-full max-w-[280px] bg-black`}>
         {active?.videoUrl ? (
           <video
-            src={active.videoUrl}
+            src={posterFrag(active.videoUrl)}
             poster={active.thumbnailUrl || undefined}
             controls
             preload="metadata"

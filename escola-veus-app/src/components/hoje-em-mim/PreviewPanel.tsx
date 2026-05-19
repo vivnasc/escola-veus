@@ -42,6 +42,7 @@ import {
   rotationStats,
   type CalendarEntry,
 } from "@/lib/hoje-em-mim/calendar";
+import { posterFrag } from "@/lib/video-poster";
 
 type Frase = { id: string; dia: DiaSemana; texto: string };
 
@@ -1332,7 +1333,7 @@ function TodayWidget({
       </div>
       {video.url && (
         <video
-          src={video.url}
+          src={posterFrag(video.url)}
           controls
           playsInline
           preload="metadata"
@@ -1631,7 +1632,7 @@ function JobVideoCard({
       {video.url ? (
         <>
           <video
-            src={video.url}
+            src={posterFrag(video.url)}
             controls
             playsInline
             preload="metadata"
@@ -2623,7 +2624,7 @@ function RunwayPipelineSection() {
 
                 {stateItem?.clipUrl && (
                   <video
-                    src={stateItem.clipUrl}
+                    src={posterFrag(stateItem.clipUrl)}
                     controls
                     playsInline
                     preload="metadata"

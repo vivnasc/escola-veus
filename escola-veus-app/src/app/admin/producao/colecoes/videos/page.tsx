@@ -5,6 +5,7 @@ import Link from "next/link";
 import JSZip from "jszip";
 import type { Dia } from "@/lib/carousel-types";
 import { captionFor } from "@/lib/carousel-helpers";
+import { posterFrag } from "@/lib/video-poster";
 
 type Video = { file: string; url: string; sizeBytes: number };
 type Job = {
@@ -285,7 +286,7 @@ export default function VideosPage() {
                       <div key={v.file} className="rounded border border-escola-border bg-escola-bg p-3">
                         <div className="grid grid-cols-1 gap-3 sm:grid-cols-[180px_1fr]">
                           <video
-                            src={v.url}
+                            src={posterFrag(v.url)}
                             controls
                             playsInline
                             preload="metadata"
