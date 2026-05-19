@@ -7,10 +7,12 @@
 //   npx tsx scripts/weekly/preview-week.mjs 20   # semana 20
 
 import rotation from "../../src/data/weekly-social/weekly-rotation.ts";
+import agPicker from "../../src/data/weekly-social/ag-picker.ts";
 import loranne from "../../src/lib/loranne.ts";
 import brandConfig from "../../src/data/weekly-social/brand-config.ts";
 
-const { pickWeeklyLoranne, pickWeeklyAG, getTrackTitle, getAlbumTitle } = rotation;
+const { pickWeeklyLoranne, getTrackTitle, getAlbumTitle } = rotation;
+const { pickWeekAG } = agPicker;
 const { ALL_LYRICS } = loranne;
 const { BRANDS, DAY_ORDER } = brandConfig;
 
@@ -61,11 +63,15 @@ BRANDS.loranne.publishDays.forEach((day, i) => {
 });
 
 // ── Ancient Ground ────────────────────────────────────────────────────────
-console.log(`\n🌍 ANCIENT GROUND (${BRANDS["ancient-ground"].publishDays.length} shorts)\n`);
+// Picker generativo — CLI passa history vazio (não tem Supabase). Para ver
+// previsão com history real, usa o endpoint /api/admin/weekly/preview.
+console.log(`\n🌍 ANCIENT GROUND (${BRANDS["ancient-ground"].publishDays.length} shorts) — picker generativo, sem history\n`);
+const year = new Date().getFullYear();
+const agEntries = pickWeekAG(year, week, new Map(), BRANDS["ancient-ground"].publishDays.length);
 BRANDS["ancient-ground"].publishDays.forEach((day, i) => {
-  const entry = pickWeeklyAG(week, i);
+  const entry = agEntries[i];
   console.log(
-    `  ${DAY_NAMES[day].padEnd(8)} → ${entry.label.padEnd(28)} (faixa AG ${entry.trackNumber})`,
+    `  ${DAY_NAMES[day].padEnd(8)} → ${entry.label.padEnd(40)} (faixa AG ${entry.trackNumber})`,
   );
   console.log(`            temas: ${entry.temas.join(" + ")}\n`);
 });

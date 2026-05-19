@@ -49,42 +49,95 @@ export const AG_REGRAS_TONAIS = `
    ferramenta ("não X, Y").
 `.trim();
 
-/** 30 versos-semente: 10 originais + 20 gerados e validados pela autora. */
-export const AG_SEED_VERSOS: string[] = [
-  // Originais (10)
-  "o fogo lembra\no que a água esqueceu",
-  "a pedra também respira\nsó mais devagar",
-  "o ritmo existia\nantes do tambor",
-  "os teus antepassados\njá ouviram este som",
-  "não viemos de África\nsomos África",
-  "a terra não pertence a ninguém\npertence a todos os que já dormiram nela",
-  "as raízes de duas árvores\nque nunca se viram\npartilham o mesmo solo",
-  "aqui começou tudo\no primeiro fogo, a primeira voz",
-  "isto não é música nova\né memória antiga que voltou",
-  "o vento não tem fronteiras\nnunca teve",
-
-  // Validados (20)
-  "a cinza sabe\no que a madeira viveu",
-  "há uma avó em cada brasa",
-  "o primeiro nome\nainda está na tua boca",
-  "não é silêncio\né a terra a descansar",
-  "o que pertence à noite\nnão precisa de nome",
-  "o tambor não se inventou\nfoi lembrado",
-  "somos feitos do que nunca morre\nterra, fogo, osso",
-  "cada gota de chuva\njá foi mar, já foi nuvem, já foi lágrima",
-  "primeiro veio o som\ndepois a palavra",
-  "a árvore nunca está sozinha\nmesmo quando cai",
-  "o sol também nasceu aqui",
-  "entre a semente e o fruto\nhá milhares de avós",
-  "o ritmo não precisa de ser ensinado\njá bate no peito",
-  "a água do teu corpo\njá correu em rios que não existem mais",
-  "a noite não é ausência\né outro tipo de luz",
-  "o que a raiz sabe\na folha ainda vai descobrir",
-  "o silêncio tem sotaque",
-  "ninguém ensinou o rio a correr\nninguém o vai parar",
-  "a tua voz\né um fogo mais antigo do que tu",
-  "não há terras estrangeiras\nhá pessoas que esqueceram",
+/** Versos-semente agrupados por motivo. O suggest-ag mostra-os a Claude
+ *  com cabeçalhos por grupo para que extraia padrões variados — não só
+ *  o eixo avó/tambor/transmissão que dominava o bank original. */
+export const AG_SEED_GROUPS: { motivo: string; versos: string[] }[] = [
+  {
+    motivo: "Ancestral / parentesco",
+    versos: [
+      "os teus antepassados\njá ouviram este som",
+      "há uma avó em cada brasa",
+      "entre a semente e o fruto\nhá milhares de avós",
+      "o primeiro nome\nainda está na tua boca",
+      "a tua voz\né um fogo mais antigo do que tu",
+      "o tambor não se inventou\nfoi lembrado",
+      "isto não é música nova\né memória antiga que voltou",
+    ],
+  },
+  {
+    motivo: "Elementos (fogo, pedra, vento, água)",
+    versos: [
+      "o fogo lembra\no que a água esqueceu",
+      "a pedra também respira\nsó mais devagar",
+      "a cinza sabe\no que a madeira viveu",
+      "o vento não tem fronteiras\nnunca teve",
+      "cada gota de chuva\njá foi mar, já foi nuvem, já foi lágrima",
+      "a água do teu corpo\njá correu em rios que não existem mais",
+      "somos feitos do que nunca morre\nterra, fogo, osso",
+    ],
+  },
+  {
+    motivo: "Paisagem, mar, costa (sem voltar a avós)",
+    versos: [
+      "o mar não tem dono\né só vez de cada um",
+      "a maré sabe contar\nsem precisar de números",
+      "ninguém ensinou o rio a correr\nninguém o vai parar",
+      "o sal fica\nquando a água parte",
+      "a praia escreve\no que o vento dita",
+      "as raízes de duas árvores\nque nunca se viram\npartilham o mesmo solo",
+      "a árvore nunca está sozinha\nmesmo quando cai",
+    ],
+  },
+  {
+    motivo: "Mercado, ofício quotidiano, gesto sem mestre",
+    versos: [
+      "o pão da manhã\nnão faz cerimónia",
+      "a capulana muda de cor\nconsoante a tarde",
+      "o cesto trançado\né uma forma de pensar",
+      "no mercado, o preço\né o último a falar",
+      "a roupa estendida\ntambém é música",
+      "a mão que pesca\nnão escreve, mas conta",
+      "o que se carrega à cabeça\nensina a coluna",
+    ],
+  },
+  {
+    motivo: "Corpo, presente, sensorial (anti-mística)",
+    versos: [
+      "o ritmo não precisa de ser ensinado\njá bate no peito",
+      "a pele tem boa memória\nainda que cale",
+      "o silêncio tem sotaque",
+      "o calor a essa hora\nnão é castigo\né companhia",
+      "respirar devagar\né uma forma de chegar",
+      "a sombra também faz casa",
+      "dormir cedo\né um luxo antigo",
+    ],
+  },
+  {
+    motivo: "Tempo, cosmologia, escala não-ancestral",
+    versos: [
+      "o sol também nasceu aqui",
+      "a noite não é ausência\né outro tipo de luz",
+      "o que pertence à noite\nnão precisa de nome",
+      "não é silêncio\né a terra a descansar",
+      "primeiro veio o som\ndepois a palavra",
+      "o que a raiz sabe\na folha ainda vai descobrir",
+      "não há terras estrangeiras\nhá pessoas que esqueceram",
+    ],
+  },
+  {
+    motivo: "Permanências (centralidade africana)",
+    versos: [
+      "não viemos de África\nsomos África",
+      "a terra não pertence a ninguém\npertence a todos os que já dormiram nela",
+      "aqui começou tudo\no primeiro fogo, a primeira voz",
+    ],
+  },
 ];
+
+/** Lista plana — back-compat para consumidores que iteram sobre o bank
+ *  sem cuidar dos grupos. Derivada de AG_SEED_GROUPS. */
+export const AG_SEED_VERSOS: string[] = AG_SEED_GROUPS.flatMap((g) => g.versos);
 
 /** Vocabulário PROIBIDO — o prompt tem de o listar explicitamente senão
  *  Claude (e outros LLMs) tendem a derivar para o registo New Age ocidental. */

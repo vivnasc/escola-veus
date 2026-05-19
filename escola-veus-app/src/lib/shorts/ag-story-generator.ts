@@ -25,13 +25,23 @@ export type AGStoryInput = {
   label: string;
   temas: RaizTema[];
   trackNumber?: number;
+  /** Contos recentes — Claude evita títulos similares e aberturas
+   *  iguais. Cada item é o título + primeira frase do conto. Passar
+   *  os últimos 6-12. */
+  recentStories?: { title: string; opening: string }[];
 };
 
-const SYSTEM = `És uma contadora de histórias moçambicana — voz de quem se senta junto ao fogo ao fim do dia e narra. Escreves contos curtos para acompanhar música ambient instrumental Ancient Ground.
+const SYSTEM = `És uma contadora de histórias moçambicana. Escreves contos curtos para acompanhar música ambient instrumental Ancient Ground.
 
 # Identidade Ancient Ground
 
-Música enraizada em Moçambique: capulanas, baobás, oceano Índico, savana, machambas, batuques, anciãos. Centralidade africana. Ubuntu. Tempo profundo. Elementos como sujeitos vivos. Sem misticismo New Age.
+Música enraizada em Moçambique: capulanas, baobás, oceano Índico, savana, machambas, batuques, mercados, vida de costa, infância, gestos quotidianos. Centralidade africana. Ubuntu. Tempo profundo. Elementos como sujeitos vivos. Sem misticismo New Age.
+
+A voz NÃO é obrigatoriamente "avó ao fogo". Pode ser:
+- um adulto a fazer um gesto banal (estender roupa, esperar o autocarro, pesar peixe);
+- uma criança a notar algo pela primeira vez;
+- um pescador a ler o mar; uma vendedora a arrumar a banca; uma machambeira a cavar antes do calor;
+- ou um observador anónimo à beira de uma cena.
 
 # O que escrever
 
@@ -42,14 +52,23 @@ Conto inédito de **300-450 palavras**, dividido em **22 a 28 capítulos muito c
 
 A história tem ARCO completo: abertura (1-3), desenvolvimento (4-N-3), viragem (N-2), fecho (N). Mas cada frase é mínima — corta tudo o que não é gesto ou imagem.
 
-Exemplo de pacing:
-1. "Era ainda escuro quando a avó acendeu o fogo."
-2. "A panela esperava na pedra fria."
-3. "Os galos calaram-se quando ela cantou baixinho."
-4. "Pôs a água, mexeu o sal, esperou."
-...
+Exemplos de aberturas POSSÍVEIS — escolhe um registo diferente em cada conto:
+- "Ao meio-dia o mercado está vazio por dentro do som."  (mercado, presente)
+- "O autocarro parou à beira do milho." (paisagem-quotidiana)
+- "Era a quarta vez que ele lançava a rede sem peixe." (pesca, fracasso)
+- "Era ainda escuro quando a avó acendeu o fogo." (ancestral — usa SÓ ocasionalmente)
+- "A criança seguia o cão sem saber para onde ia." (infância, presente)
+- "A capulana ainda estava molhada quando ela a estendeu." (gesto, casa)
 
 Exemplo de fecho concreto: "Há coisas que não se ensinam por palavras. Passam pelas mãos." Não escrevas fecho moralizante tipo "e assim aprendeu que…" ou "a lição é que…".
+
+# Anti-repetição (CRÍTICO)
+
+Os contos AG estão a sair repetitivos: a maioria começa com "avó/avô a acender o fogo / a panela / o galo a cantar / a mão que ensina / o saber que passa". Quando os temas dos clips NÃO forem **anciao** ou **transmissao**, evita esse registo.
+
+- Pelo menos 70% dos contos NÃO podem começar com personagem-ancião ou cena ao fogo. Usa um adulto-presente, uma criança, um anónimo, um animal, um elemento (mar, vento, calor).
+- O verbo "ensinar / passar / herdar / transmitir / lembrar" deve aparecer no MÁXIMO 2 vezes em todo o conto, e nunca no capítulo 1.
+- Se o triplete de temas inclui anciao OU transmissao, podes ir nesse registo — mas mesmo assim varia: o ancião pode estar a falhar, a hesitar, a mudar; a transmissão pode ser involuntária ou imperfeita.
 
 # Tom
 
@@ -76,13 +95,22 @@ function buildUserMessage(input: AGStoryInput): string {
     .map((t) => `- ${RAIZES_TEMA_LABELS[t] || t}: ${RAIZES_TEMA_DESCRICOES[t] || ""}`)
     .join("\n");
 
+  // Bloco de histórico — quando presente, Claude tem de evitar títulos
+  // semelhantes e aberturas iguais. Reforça a diversidade entre contos.
+  const recents = input.recentStories ?? [];
+  const recentsBlock = recents.length > 0
+    ? `\n\n# Contos AG recentes (EVITAR repetir títulos, aberturas, motivos centrais)\n\n${recents
+        .map((r, i) => `${i + 1}. "${r.title}" — abertura: "${r.opening}"`)
+        .join("\n")}\n\nO teu título tem de ser claramente diferente. A primeira frase tem de partir de outro lugar (outro sujeito, outra hora do dia, outro elemento). Não repitas o cenário "avó/anciã ao fogo de madrugada" se já apareceu acima.`
+    : "";
+
   return `Escreve um conto inédito para acompanhar este Ancient Ground:
 
 **Label do triplete:** ${input.label}
 **Temas raízes:**
 ${temasInfo}
 
-O conto deve ressoar com estes temas — directamente (cenas com avó, machamba, pesca) ou obliquamente (o que a mão sabe, o que o ritmo lembra). Mas é uma HISTÓRIA — tem cenas, gente, gestos, tempo a passar — não poesia abstracta.
+O conto deve ressoar com estes temas — directamente (cenas com mercado, machamba, pesca, batuque, criança, gente-paisagem) ou obliquamente (o que a mão sabe, o que o ritmo lembra). Mas é uma HISTÓRIA — tem cenas, gente, gestos, tempo a passar — não poesia abstracta.${recentsBlock}
 
 Devolve JSON com:
 - title: título curto (3-6 palavras)

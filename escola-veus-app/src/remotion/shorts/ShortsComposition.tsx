@@ -330,8 +330,10 @@ export const ShortsComposition: React.FC<ShortsManifest> = (props) => {
       }}
     >
       {/* 1. Background motion — ambas as marcas aceitam accent + seed agora.
-           Sem seed (vídeos antigos) os motions caem no comportamento histórico. */}
-      <Motion frame={frame} accent={accent} seed={props.motionSeed} />
+           Sem seed (vídeos antigos) os motions caem no comportamento histórico.
+           isLandscape: motions com SVGs preserveAspectRatio="none" precisam
+           saber a orientação para evitar distorção do conteúdo em fulls 16:9. */}
+      <Motion frame={frame} accent={accent} seed={props.motionSeed} isLandscape={canvasW > canvasH} />
 
       {/* 2. Texto — story chapters (AG full), lyrics sync (Loranne) ou 2 versos */}
       {hasStory ? (

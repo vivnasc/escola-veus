@@ -1,23 +1,20 @@
 #!/usr/bin/env node
-// print-rotation.mjs — imprime a rotação Loranne+AG resolvida para validação.
+// print-rotation.mjs — imprime a rotação Loranne resolvida para validação,
+// e simula 12 semanas do picker AG generativo para inspeccionar distribuição.
 //
 // Uso (do dir escola-veus-app/):
 //   npx tsx scripts/weekly/print-rotation.mjs
-//
-// Mostra:
-//   - Top 80 faixas Loranne ordenadas por score, com primeiro verso forte.
-//   - 40 tripletes AG com label.
-//   - Estatísticas: cobertura por álbum, distribuição.
 
 import rotation from "../../src/data/weekly-social/weekly-rotation.ts";
+import agPicker from "../../src/data/weekly-social/ag-picker.ts";
 import loranne from "../../src/lib/loranne.ts";
 
 const {
   LORANNE_ROTATION,
-  AG_ROTATION,
   LORANNE_AVAILABLE_ALBUMS,
   findProductionSuggestions,
 } = rotation;
+const { pickWeekAG } = agPicker;
 const { ALL_LYRICS } = loranne;
 
 function pickFirstStrongLine(lyrics) {
@@ -75,25 +72,38 @@ sugg.forEach((s, i) => {
 });
 
 console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-console.log(`  ANCIENT GROUND ROTATION — ${AG_ROTATION.length} tripletes`);
+console.log(`  ANCIENT GROUND — simulação de 12 semanas (picker generativo)`);
 console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
-AG_ROTATION.forEach((e, i) => {
-  const temas = e.temas.join(" + ");
-  console.log(
-    `${String(i + 1).padStart(3)}. ${e.label.padEnd(30)} ${temas.padEnd(45)} faixa ${e.trackNumber}`,
-  );
-});
+// Simula 12 semanas com history acumulada (proxy do que aconteceria em
+// produção). Cada semana herda a contagem da anterior + as escolhas que
+// fez. Mostra como o picker auto-equilibra ao longo do tempo.
+const year = new Date().getFullYear();
+const cumulativeCounts = new Map();
+const WEEKS_TO_SIM = 12;
+const SLOTS_PER_WEEK = 3;
+
+for (let w = 1; w <= WEEKS_TO_SIM; w++) {
+  const entries = pickWeekAG(year, w, cumulativeCounts, SLOTS_PER_WEEK);
+  console.log(`semana ${String(w).padStart(2)} ─`);
+  entries.forEach((e, i) => {
+    const temas = e.temas.join(" + ");
+    console.log(
+      `   slot ${i + 1}: ${e.label.padEnd(45)} ${temas.padEnd(50)} faixa ${e.trackNumber}`,
+    );
+    for (const t of e.temas) cumulativeCounts.set(t, (cumulativeCounts.get(t) ?? 0) + 1);
+  });
+}
 
 console.log("\n──────────────────────────────────────────────────────────────────");
-const temaCount = new Map();
-for (const e of AG_ROTATION) {
-  for (const t of e.temas) {
-    temaCount.set(t, (temaCount.get(t) ?? 0) + 1);
-  }
+console.log(`  Distribuição cumulativa após ${WEEKS_TO_SIM} semanas (${WEEKS_TO_SIM * SLOTS_PER_WEEK * 3} slots-tema):`);
+const temaSorted = [...cumulativeCounts.entries()].sort((a, b) => b[1] - a[1]);
+const cap = (WEEKS_TO_SIM * SLOTS_PER_WEEK * 3) / 15;
+for (const [t, n] of temaSorted) {
+  const bar = "█".repeat(n);
+  const flag = n > cap * 1.3 ? " ⚠" : n < cap * 0.7 ? " ↓" : "";
+  console.log(`    · ${t.padEnd(22)} ${String(n).padStart(2)}x  ${bar}${flag}`);
 }
-console.log(`  Distribuição de temas (${temaCount.size}/15 raízes usadas):`);
-const temaSorted = [...temaCount.entries()].sort((a, b) => b[1] - a[1]);
-for (const [t, n] of temaSorted) console.log(`    · ${t.padEnd(22)} ${n}x`);
+console.log(`    (uniforme teórica: ${cap.toFixed(1)}x por tema)`);
 
 console.log();
