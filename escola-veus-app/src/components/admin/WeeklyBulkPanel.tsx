@@ -86,6 +86,14 @@ const DAY_LABELS: Record<string, string> = {
   mon: "Seg", tue: "Ter", wed: "Qua", thu: "Qui", fri: "Sex", sat: "Sáb", sun: "Dom",
 };
 
+/** Quais dias cada marca publica. Tem de coincidir com brand-config.publishDays.
+ *  Mantido aqui (em vez de importado) para evitar arrastar todo o brand-config
+ *  para o bundle do cliente. */
+const BRAND_PUBLISH_DAYS: Record<BrandSlug, readonly string[]> = {
+  loranne: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+  "ancient-ground": ["tue", "thu", "sat"],
+};
+
 function isoWeekNow(): number {
   const d = new Date();
   const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -114,6 +122,12 @@ export default function WeeklyBulkPanel({
   const [zip, setZip] = useState<{ url: string; zipName: string; missing: string[] } | null>(null);
   const [pollOn, setPollOn] = useState(false);
   const pollTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Filtro de dias para empacotar parcial. Default = null (semana toda).
+  // Quando o user clica num chip de dia, fica só esse dia seleccionado;
+  // re-clicar reset a null. Atalho para "carreguei mon-sat no Metricool,
+  // agora só preciso de empacotar domingo".
+  const [packDays, setPackDays] = useState<string[] | null>(null);
 
   const brandsParam = `brands=${brand}`;
 
@@ -223,18 +237,22 @@ export default function WeeklyBulkPanel({
       const r = await fetch("/api/admin/weekly/package", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ week, year, brands: [brand] }),
+        body: JSON.stringify({
+          week, year, brands: [brand],
+          ...(packDays && packDays.length > 0 ? { days: packDays } : {}),
+        }),
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.erro || `HTTP ${r.status}`);
       const z = j[brand];
+      if (z?.erro) throw new Error(z.erro);
       if (z?.url) setZip({ url: z.url, zipName: z.zipName, missing: z.missing || [] });
     } catch (e) {
       setErrors([(e as Error).message]);
     } finally {
       setBusy(null);
     }
-  }, [week, year, brand]);
+  }, [week, year, brand, packDays]);
 
   const cleanupOrphans = useCallback(async () => {
     setBusy("cleanup");
@@ -340,9 +358,58 @@ export default function WeeklyBulkPanel({
               onClick={packageZip}
               disabled={busy !== null || !planExists}
               className="rounded border border-escola-dourado bg-escola-dourado/10 px-3 py-1 text-xs font-semibold text-escola-dourado hover:bg-escola-dourado/20 disabled:opacity-50"
+              title={packDays && packDays.length > 0
+                ? `Empacotar apenas ${packDays.join("+")} (zip parcial; CSV só com esses dias).`
+                : "Empacotar a semana toda."}
             >
-              {busy === "package" ? "..." : "3. Empacotar"}
+              {busy === "package"
+                ? "..."
+                : packDays && packDays.length > 0
+                  ? `3. Empacotar (${packDays.join("+")})`
+                  : "3. Empacotar"}
             </button>
+            {/* Chips de dia para empacotamento parcial. Click adiciona/remove;
+                "limpar" volta a semana toda. Útil para "carreguei mon-sat
+                no Metricool, agora só preciso do CSV de domingo". */}
+            <div className="flex items-center gap-0.5 rounded border border-escola-dourado/20 bg-escola-creme/5 px-1.5 py-0.5">
+              <span className="mr-1 text-[10px] uppercase tracking-wide text-escola-creme-50">só:</span>
+              {(["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const).map((d) => {
+                const on = packDays?.includes(d) ?? false;
+                return (
+                  <button
+                    key={d}
+                    onClick={() => {
+                      setPackDays((prev) => {
+                        const set = new Set(prev ?? []);
+                        if (set.has(d)) set.delete(d);
+                        else set.add(d);
+                        const arr = [...set];
+                        return arr.length > 0 ? arr : null;
+                      });
+                    }}
+                    disabled={busy !== null}
+                    className={`rounded px-1 py-0.5 text-[10px] font-mono uppercase transition disabled:opacity-50 ${
+                      on
+                        ? "bg-escola-dourado/30 text-escola-dourado"
+                        : "text-escola-creme-50 hover:bg-escola-creme/10"
+                    }`}
+                    title={on ? `Remover ${d} do filtro` : `Empacotar só ${d}`}
+                  >
+                    {d}
+                  </button>
+                );
+              })}
+              {packDays && packDays.length > 0 && (
+                <button
+                  onClick={() => setPackDays(null)}
+                  disabled={busy !== null}
+                  className="ml-1 rounded px-1 py-0.5 text-[10px] text-escola-creme-50 hover:bg-escola-creme/10 disabled:opacity-50"
+                  title="Limpar filtro — voltar a semana toda."
+                >
+                  ✕
+                </button>
+              )}
+            </div>
             <button
               onClick={cleanupOrphans}
               disabled={busy !== null}
@@ -393,6 +460,21 @@ export default function WeeklyBulkPanel({
               </ul>
             </div>
           )}
+
+          {/* Aviso persistente quando o plano tem dias em falta — geralmente
+              porque o MP3 desse dia não existia em Supabase no momento da
+              geração. Não desaparece com setErrors([]). */}
+          {statusEntry?.plan && (() => {
+            const expectedDays = BRAND_PUBLISH_DAYS[brand];
+            const haveDays = new Set(statusEntry.plan.posts.map((p) => p.day));
+            const missingDays = expectedDays.filter((d) => !haveDays.has(d));
+            if (missingDays.length === 0) return null;
+            return (
+              <div className="rounded border border-amber-700/50 bg-amber-950/30 p-2 text-xs text-amber-200">
+                ⚠ Plano incompleto: faltam {missingDays.length}/{expectedDays.length} dia(s) — <strong>{missingDays.map((d) => DAY_LABELS[d]).join(", ")}</strong>. Provavelmente o MP3 desses dias não estava em Supabase. Faz upload e clica em &quot;1. Gerar plano&quot; outra vez (ou empacota só esses dias depois com os chips abaixo).
+              </div>
+            );
+          })()}
 
           {/* Status & progresso */}
           {statusEntry?.plan && statusEntry.plan.posts.length > 0 && (
