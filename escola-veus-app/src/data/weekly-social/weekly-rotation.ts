@@ -295,6 +295,17 @@ export type AGRotationEntry = {
  *  - Mercado/cor: mercado + danca + crianca
  *  - Retrato/intimidade: retrato + casa + transmissao
  *  - Aldeia/wide: aldeia + gente-paisagem + retrato
+ *
+ * AUDITORIA (out-2026): a tabela está enviesada para anciao/transmissao
+ *   anciao=14, rito=11, casa=11, aldeia=11, transmissao=10 (cap teórico=8)
+ *   artesanato=4, mercado=4, trabalho-coletivo=4, batuque=5 (sub-representados)
+ *
+ * Isto explica porque os contos AG saem repetitivos no eixo "transmissão/
+ * ancião/artesanato": cada semana tem >50% de probabilidade de calhar com
+ * pelo menos um triplete ancestral. Rebalanceamento sugerido: trocar
+ * `anciao` por temas sub-representados em 6 entradas (escolhe quais com
+ * mais sensibilidade aos labels). Os prompts já estão "anti-ancião" mas
+ * só conseguem compensar até certo ponto se a entrada empurra para lá.
  */
 export const AG_ROTATION: readonly AGRotationEntry[] = Object.freeze([
   { temas: ["batuque", "danca", "crianca"],                  trackNumber: 12, label: "Energia comunitária" },

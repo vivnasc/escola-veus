@@ -7,7 +7,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import {
   AG_FILOSOFIA,
   AG_REGRAS_TONAIS,
-  AG_SEED_VERSOS,
+  AG_SEED_GROUPS,
   AG_ANTI_PADRAO,
   AG_CAPTION_RULES,
 } from "@/lib/ag-tom";
@@ -34,9 +34,17 @@ export type SuggestAGResult = {
 };
 
 function buildSystemPrompt(): string {
-  const seedBlock = AG_SEED_VERSOS
-    .map((v, i) => `${String(i + 1).padStart(2, "0")}. ${v.replace(/\n/g, " / ")}`)
-    .join("\n");
+  // Versos agrupados por motivo — Claude vê os cabeçalhos e percebe que
+  // o bank cobre múltiplos eixos (não só ancestral).
+  let seedCounter = 0;
+  const seedBlock = AG_SEED_GROUPS
+    .map((g) => {
+      const lines = g.versos
+        .map((v) => `${String(++seedCounter).padStart(2, "0")}. ${v.replace(/\n/g, " / ")}`)
+        .join("\n");
+      return `## ${g.motivo}\n${lines}`;
+    })
+    .join("\n\n");
 
   const antiPadraoBlock = AG_ANTI_PADRAO.map((w) => `- ${w}`).join("\n");
 
@@ -50,12 +58,30 @@ ${AG_REGRAS_TONAIS}
 
 # Seed bank (exemplos do tom que procuramos)
 
-Cada entrada abaixo é um overlay já validado pela autora do projecto.
-Extrai o padrão destes 30 versos. Não os copies — gera novos respeitando
-o mesmo ADN (inversão, tempo profundo, elementos como sujeitos, ubuntu,
-parentesco, vocabulário da terra).
+Cada entrada abaixo é um overlay já validado pela autora do projecto. As
+secções agrupam-nas por motivo (ancestral, elementos, paisagem/mar, ofício
+quotidiano, corpo-presente, tempo-cosmologia). Extrai o padrão. Não os
+copies — gera novos respeitando o mesmo ADN (inversão, tempo profundo,
+elementos como sujeitos, ubuntu, parentesco, vocabulário da terra).
 
 ${seedBlock}
+
+# Anti-repetição (CRÍTICO)
+
+Os shorts AG estão a sair repetitivos: a maioria dos versos cai no eixo
+avó/antepassados/tambor/transmissão/mãos-que-ensinam, mesmo quando os
+temas dos clips não puxam para aí. Quando gerares os 8 versos:
+
+- No máximo 2 dos 8 versos podem usar AVÓ, ANTEPASSADOS, MÃOS-QUE-PASSAM,
+  TAMBOR ou MEMÓRIA HERDADA como sujeito ou motor.
+- Os outros 6 devem puxar para: elementos vivos (pedra, vento, sal, sol,
+  chuva), paisagem específica (machamba, costa, mercado, dhow, praça),
+  corpo no presente (pele, respiração, sombra, calor, peso), gesto
+  quotidiano sem mestre (estender, pesar, varrer, esperar, carregar),
+  tempo cósmico não-ancestral (escala geológica, ciclo da maré, noite
+  como entidade).
+- Nem todo o verso precisa de ser "ancestral". A presença sensorial e o
+  parentesco com elementos contam — sem nomear avós.
 
 # Vocabulário PROIBIDO
 

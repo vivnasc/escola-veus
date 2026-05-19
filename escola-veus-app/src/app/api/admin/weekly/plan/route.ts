@@ -20,6 +20,7 @@ import { runSuggest } from "@/lib/shorts/suggest-core";
 import { runSuggestAG } from "@/lib/shorts/suggest-ag-core";
 import { getLoranneStanzas, getLoranneStanzasWithKind, detectClipStartStanzaIdx, sanitizeLyricLine } from "@/lib/shorts/lyrics-stanzas";
 import { generateAGStory } from "@/lib/shorts/ag-story-generator";
+import { loadRecentAGStories } from "@/lib/shorts/ag-history";
 import { generateLoranneSynopsis } from "@/lib/shorts/loranne-synopsis-generator";
 import { ALL_LYRICS } from "@/lib/loranne";
 import { deriveMotionSeed, loranneTrackId, agTrackId } from "@/lib/shorts/motion-seed";
@@ -307,6 +308,14 @@ export async function POST(req: NextRequest) {
       const brand = BRANDS["ancient-ground"];
       const agTracks = await listAlbumTracks("ancient-ground");
 
+      // Histórico de 6 semanas — Claude vê título+1ª frase de cada conto AG
+      // recente e tem instrução para não os repetir. Best-effort; falha
+      // de IO degrada para [] (sem memória, mas a geração continua).
+      const recentAGStories = await loadRecentAGStories(year, week, {
+        weeksBack: 6,
+        maxStories: 12,
+      });
+
       // Processa os 3 posts em paralelo — cada post chama Claude duas vezes
       // (suggest-ag + story). Sequencial estoura os 60s do Hobby plan.
       const dayEntries = brand.publishDays.map((day, slotIdx) => ({
@@ -326,6 +335,7 @@ export async function POST(req: NextRequest) {
               label: entry.label,
               temas: entry.temas,
               trackNumber: entry.trackNumber,
+              recentStories: recentAGStories,
             }).catch((storyErr) => {
               const msg = storyErr instanceof Error ? storyErr.message : String(storyErr);
               return { _error: msg } as const;
