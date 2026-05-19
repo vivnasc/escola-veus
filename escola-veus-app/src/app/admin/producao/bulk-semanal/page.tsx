@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import WeeklyBulkPanel from "@/components/admin/WeeklyBulkPanel";
+import RangeBulkPanel from "@/components/admin/RangeBulkPanel";
 import { VcSabiaPreviewPanel } from "@/components/vc-sabia/PreviewPanel";
 import { HojeEmMimPreviewPanel } from "@/components/hoje-em-mim/PreviewPanel";
 
 /**
- * Bulk semanal. Quatro sub-produções:
- *  - Loranne e Ancient Ground (geram ZIPs Metricool: CSV + media)
+ * Bulk por período. Quatro sub-produções:
+ *  - Loranne e Ancient Ground (RangeBulkPanel: range de dias → ZIP
+ *    Metricool com 1 CSV por semana ISO; substituiu o WeeklyBulkPanel)
  *  - VC Sabia Que…?, post da manhã (conta pessoal), motion + frase
  *  - Hoje, em Mim, post da noite (conta pessoal), fecho do dia,
  *    rotação editorial por dia da semana
@@ -29,11 +30,12 @@ export default function BulkSemanalPage() {
     <div>
       <div className="mb-6">
         <h2 className="font-serif text-2xl font-semibold text-escola-creme">
-          Bulk semanal · Metricool
+          Bulk por período · Metricool
         </h2>
         <p className="mt-1 text-sm text-escola-creme-50">
-          Gera todos os shorts da semana de uma vez, por marca. CSV pronto
-          para drag-drop em Planning &gt; Calendar &gt; Import CSV.
+          Gera shorts para um intervalo de dias (semanas, mês, mês parcial).
+          Empacota 1 CSV por semana ISO para drag-drop em Planning &gt;
+          Calendar &gt; Import CSV.
         </p>
       </div>
 
@@ -58,7 +60,7 @@ export default function BulkSemanalPage() {
       ) : tab === "hoje-em-mim" ? (
         <HojeEmMimPreviewPanel />
       ) : (
-        <WeeklyBulkPanel key={tab} brand={tab as "loranne" | "ancient-ground"} defaultOpen />
+        <RangeBulkPanel key={tab} brand={tab as "loranne" | "ancient-ground"} />
       )}
     </div>
   );
