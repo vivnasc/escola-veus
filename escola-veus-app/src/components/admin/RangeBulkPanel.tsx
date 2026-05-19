@@ -14,7 +14,8 @@
  * faz o bundling final.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import WeeklyBulkPanel from "@/components/admin/WeeklyBulkPanel";
 
 type BrandSlug = "loranne" | "ancient-ground";
 
@@ -104,6 +105,16 @@ export default function RangeBulkPanel({ brand }: { brand: BrandSlug }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [zipOutput, setZipOutput] = useState<ZipOutput | null>(null);
+  /** Semanas expandidas para edição per-post (mostra WeeklyBulkPanel inline). */
+  const [expandedWeeks, setExpandedWeeks] = useState<Set<number>>(new Set());
+  const toggleWeek = useCallback((w: number) => {
+    setExpandedWeeks((prev) => {
+      const next = new Set(prev);
+      if (next.has(w)) next.delete(w);
+      else next.add(w);
+      return next;
+    });
+  }, []);
 
   // Polling para acompanhar dispatches em curso.
   const [pollOn, setPollOn] = useState(false);
@@ -476,7 +487,7 @@ export default function RangeBulkPanel({ brand }: { brand: BrandSlug }) {
         </div>
       )}
 
-      {/* Per-week table */}
+      {/* Per-week table + accordion para editar cada semana */}
       {weeks.length > 0 && (
         <div className="overflow-x-auto rounded border border-escola-border bg-escola-card/40">
           <table className="w-full text-[11px] text-escola-creme-50">
@@ -487,48 +498,76 @@ export default function RangeBulkPanel({ brand }: { brand: BrandSlug }) {
                 <th className="px-2 py-1.5 text-left">Posts</th>
                 <th className="px-2 py-1.5 text-left">Render</th>
                 <th className="px-2 py-1.5 text-left">Notas</th>
+                <th className="px-2 py-1.5 text-left"></th>
               </tr>
             </thead>
             <tbody>
               {weeks.map((w) => {
                 const s = weekStates.get(w);
+                const isOpen = expandedWeeks.has(w);
                 return (
-                  <tr key={w} className="border-t border-escola-border/30">
-                    <td className="px-2 py-1 font-mono text-escola-creme">W{String(w).padStart(2, "0")}</td>
-                    <td className="px-2 py-1">
-                      {s?.planExists ? (
-                        <span className="text-emerald-300">✓ gerado</span>
-                      ) : (
-                        <span className="text-escola-creme-50">— sem plano</span>
-                      )}
-                    </td>
-                    <td className="px-2 py-1">{s?.posts ?? 0}</td>
-                    <td className="px-2 py-1">
-                      {s?.summary ? (
-                        <span>
-                          {s.summary.done}/{s.summary.total}
-                          {s.summary.rendering > 0 && (
-                            <span className="ml-1 text-amber-300">· {s.summary.rendering} a render</span>
-                          )}
-                          {s.summary.failed > 0 && (
-                            <span className="ml-1 text-red-300">· {s.summary.failed} falh</span>
-                          )}
-                        </span>
-                      ) : (
-                        <span className="text-escola-creme-50">—</span>
-                      )}
-                    </td>
-                    <td className="px-2 py-1 text-[10px]">
-                      {s?.missingDays && s.missingDays.length > 0 && (
-                        <span className="text-amber-300">
-                          ⚠ faltam {s.missingDays.map((d) => DAY_LABELS[d]).join(", ")}
-                        </span>
-                      )}
-                      {s?.error && (
-                        <span className="text-red-300">{s.error}</span>
-                      )}
-                    </td>
-                  </tr>
+                  <Fragment key={w}>
+                    <tr className="border-t border-escola-border/30">
+                      <td className="px-2 py-1 font-mono text-escola-creme">W{String(w).padStart(2, "0")}</td>
+                      <td className="px-2 py-1">
+                        {s?.planExists ? (
+                          <span className="text-emerald-300">✓ gerado</span>
+                        ) : (
+                          <span className="text-escola-creme-50">— sem plano</span>
+                        )}
+                      </td>
+                      <td className="px-2 py-1">{s?.posts ?? 0}</td>
+                      <td className="px-2 py-1">
+                        {s?.summary ? (
+                          <span>
+                            {s.summary.done}/{s.summary.total}
+                            {s.summary.rendering > 0 && (
+                              <span className="ml-1 text-amber-300">· {s.summary.rendering} a render</span>
+                            )}
+                            {s.summary.failed > 0 && (
+                              <span className="ml-1 text-red-300">· {s.summary.failed} falh</span>
+                            )}
+                          </span>
+                        ) : (
+                          <span className="text-escola-creme-50">—</span>
+                        )}
+                      </td>
+                      <td className="px-2 py-1 text-[10px]">
+                        {s?.missingDays && s.missingDays.length > 0 && (
+                          <span className="text-amber-300">
+                            ⚠ faltam {s.missingDays.map((d) => DAY_LABELS[d]).join(", ")}
+                          </span>
+                        )}
+                        {s?.error && (
+                          <span className="text-red-300">{s.error}</span>
+                        )}
+                      </td>
+                      <td className="px-2 py-1 text-right">
+                        <button
+                          onClick={() => toggleWeek(w)}
+                          disabled={!s?.planExists}
+                          className="rounded border border-escola-border px-2 py-0.5 text-[10px] text-escola-creme hover:border-escola-dourado/40 disabled:opacity-30"
+                          title={s?.planExists
+                            ? (isOpen ? "Esconder detalhe" : "Ver/editar posts desta semana")
+                            : "Gera o plano primeiro"}
+                        >
+                          {isOpen ? "▾ esconder" : "▸ ver/editar"}
+                        </button>
+                      </td>
+                    </tr>
+                    {isOpen && s?.planExists && (
+                      <tr className="border-t border-escola-border/30">
+                        <td colSpan={6} className="bg-escola-bg-card/40 p-2">
+                          <WeeklyBulkPanel
+                            brand={brand}
+                            week={w}
+                            year={year}
+                            embedded
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
                 );
               })}
             </tbody>

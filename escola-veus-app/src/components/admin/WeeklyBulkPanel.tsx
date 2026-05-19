@@ -106,14 +106,26 @@ function isoWeekNow(): number {
 export default function WeeklyBulkPanel({
   brand,
   defaultOpen = false,
+  week: weekProp,
+  year: yearProp,
+  embedded = false,
 }: {
   brand: BrandSlug;
   defaultOpen?: boolean;
+  /** Quando definido, fixa a semana (modo controlado para embedding em RangeBulkPanel). */
+  week?: number;
+  year?: number;
+  /** Esconde o toggle/header colapsável; força aberto e remove o seletor de semana. */
+  embedded?: boolean;
 }) {
   const brandLabel = brand === "loranne" ? "Loranne" : "Ancient Ground";
-  const [open, setOpen] = useState(defaultOpen);
-  const [week, setWeek] = useState<number>(isoWeekNow());
-  const [year] = useState<number>(new Date().getFullYear());
+  const [open, setOpen] = useState(embedded || defaultOpen);
+  const [internalWeek, setInternalWeek] = useState<number>(weekProp ?? isoWeekNow());
+  const week = weekProp ?? internalWeek;
+  const setWeek = (w: number) => {
+    if (weekProp === undefined) setInternalWeek(w);
+  };
+  const [year] = useState<number>(yearProp ?? new Date().getFullYear());
   const [preview, setPreview] = useState<PreviewLoranne[] | PreviewAG[] | null>(null);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [statusEntry, setStatusEntry] = useState<StatusEntry | null>(null);
@@ -290,39 +302,50 @@ export default function WeeklyBulkPanel({
   );
 
   return (
-    <section className="rounded-lg border border-escola-dourado/40 bg-escola-card">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between px-4 py-3 text-left"
-      >
-        <div>
-          <span className="text-sm font-semibold text-escola-dourado">
-            {open ? "▾" : "▸"} Bulk semanal → Metricool
-          </span>
-          <span className="ml-2 text-xs text-escola-creme-50">
-            Gera todos os shorts da semana de uma vez · CSV pronto para import
-          </span>
-        </div>
-        {statusEntry?.summary && (
-          <span className="text-xs text-escola-creme-50">
-            sem {statusEntry.plan?.week ?? "?"}: {statusEntry.summary.done}/{statusEntry.summary.total}
-          </span>
-        )}
-      </button>
+    <section className={embedded
+      ? "rounded-lg border border-escola-border bg-escola-card/40"
+      : "rounded-lg border border-escola-dourado/40 bg-escola-card"}>
+      {!embedded && (
+        <button
+          onClick={() => setOpen((o) => !o)}
+          className="flex w-full items-center justify-between px-4 py-3 text-left"
+        >
+          <div>
+            <span className="text-sm font-semibold text-escola-dourado">
+              {open ? "▾" : "▸"} Bulk semanal → Metricool
+            </span>
+            <span className="ml-2 text-xs text-escola-creme-50">
+              Gera todos os shorts da semana de uma vez · CSV pronto para import
+            </span>
+          </div>
+          {statusEntry?.summary && (
+            <span className="text-xs text-escola-creme-50">
+              sem {statusEntry.plan?.week ?? "?"}: {statusEntry.summary.done}/{statusEntry.summary.total}
+            </span>
+          )}
+        </button>
+      )}
 
       {open && (
-        <div className="border-t border-escola-border p-4 space-y-4">
-          {/* Selector + actions */}
+        <div className={embedded ? "p-3 space-y-3" : "border-t border-escola-border p-4 space-y-4"}>
+          {/* Selector + actions. Em modo embedded, a semana é fixa pelo pai
+              (RangeBulkPanel), por isso esconde o input e mostra só label. */}
           <div className="flex flex-wrap items-center gap-2">
             <label className="text-xs text-escola-creme-50">Semana</label>
-            <input
-              type="number"
-              min={1}
-              max={53}
-              value={week}
-              onChange={(e) => setWeek(parseInt(e.target.value, 10) || 1)}
-              className="w-16 rounded border border-escola-border bg-escola-bg-card px-2 py-1 text-xs text-escola-creme"
-            />
+            {embedded ? (
+              <span className="rounded border border-escola-border bg-escola-bg-card px-2 py-1 text-xs font-mono text-escola-creme">
+                {week}
+              </span>
+            ) : (
+              <input
+                type="number"
+                min={1}
+                max={53}
+                value={week}
+                onChange={(e) => setWeek(parseInt(e.target.value, 10) || 1)}
+                className="w-16 rounded border border-escola-border bg-escola-bg-card px-2 py-1 text-xs text-escola-creme"
+              />
+            )}
             <span className="text-xs text-escola-creme-50">de {year}</span>
             <button
               onClick={() => { void loadPreview(); void loadStatus(); }}
