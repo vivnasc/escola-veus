@@ -3,6 +3,26 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ANNUAL_WEEKS, type WeekSeed } from "@/lib/carousel-calendar";
+import { isoWeekToMonday } from "@/lib/weekly-social/schedule";
+
+const MONTHS_PT = [
+  "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+  "Jul", "Ago", "Set", "Out", "Nov", "Dez",
+];
+
+function isoRangeLabel(year: number, week: number): string {
+  const mon = isoWeekToMonday(year, week);
+  const sun = new Date(mon);
+  sun.setUTCDate(mon.getUTCDate() + 6);
+  const monD = mon.getUTCDate();
+  const sunD = sun.getUTCDate();
+  const monM = MONTHS_PT[mon.getUTCMonth()];
+  const sunM = MONTHS_PT[sun.getUTCMonth()];
+  if (monM === sunM) return `${monD}–${sunD} ${monM}`;
+  return `${monD} ${monM}–${sunD} ${sunM}`;
+}
+
+const TARGET_YEAR = new Date().getUTCFullYear();
 
 type Existing = { id: string; title: string; slug: string };
 
@@ -152,7 +172,7 @@ export default function CalendarioPage() {
                     <div className="mb-2 flex items-baseline justify-between gap-2">
                       <div className="min-w-0">
                         <p className="text-xs text-escola-creme-50">
-                          Semana {w.week} · <span className="text-escola-dourado">{w.tag}</span>
+                          Semana ISO {w.week} · <span className="text-escola-creme">{isoRangeLabel(TARGET_YEAR, w.week)}</span> · <span className="text-escola-dourado">{w.tag}</span>
                         </p>
                         <p className="font-serif text-base text-escola-creme">{w.title}</p>
                       </div>
