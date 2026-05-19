@@ -13,11 +13,16 @@ export const maxDuration = 30;
 
 /**
  * POST /api/admin/weekly/package
- * Body: { week, year?, brands?: BrandSlug[] }
+ * Body: { week, year?, brands?: BrandSlug[], days?: string[] }
  *
  * Gera metricool.csv + ZIP por marca e sobe para Supabase em
  * course-assets/weekly-social/<year>-W<NN>/<brand>-<year>-W<NN>.zip.
  * Devolve URLs públicos.
+ *
+ * Se `days` for fornecido (ex: ["sun"]), filtra os posts a esses dias.
+ * O ZIP é gravado em path separado (sufixo `-d-<days>.zip`) para não
+ * sobrescrever o ZIP da semana completa. Útil quando carregaste mon-sat
+ * no Metricool e só precisas de adicionar domingo depois.
  */
 
 const BUCKET = "course-assets";
@@ -41,11 +46,19 @@ function planToCsvPosts(plan: WeeklyPlan): CsvPost[] {
   });
 }
 
-function buildReadme(plan: WeeklyPlan, missingClip: string[], missingFull: string[]): string {
+function buildReadme(
+  plan: WeeklyPlan,
+  missingClip: string[],
+  missingFull: string[],
+  filteredDays: readonly string[] | null,
+): string {
   const dn = plan.brand === "loranne" ? "Loranne" : "Ancient Ground";
   const withFull = plan.posts.filter((p) => p.renderJobs?.full?.videoUrl).length;
+  const partialNote = filteredDays && filteredDays.length > 0
+    ? ` (parcial: ${filteredDays.join(", ")})`
+    : "";
   const lines = [
-    `${dn} — Semana ${plan.week} de ${plan.year}`,
+    `${dn} — Semana ${plan.week} de ${plan.year}${partialNote}`,
     "═".repeat(60),
     "",
     `Posts planeados: ${plan.posts.length}`,
@@ -74,7 +87,20 @@ function buildReadme(plan: WeeklyPlan, missingClip: string[], missingFull: strin
   return lines.join("\n");
 }
 
-async function packBrand(plan: WeeklyPlan): Promise<{
+const DAY_ORDER = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+
+/** Sufixo determinístico para zips parciais — ordem fixa mon→sun para que
+ *  {sun,mon} e {mon,sun} cheguem ao mesmo path. */
+function daysSuffix(days: readonly string[]): string {
+  const sorted = [...new Set(days.map((d) => d.toLowerCase()))]
+    .sort((a, b) => DAY_ORDER.indexOf(a) - DAY_ORDER.indexOf(b));
+  return sorted.join("+");
+}
+
+async function packBrand(
+  plan: WeeklyPlan,
+  filteredDays: readonly string[] | null,
+): Promise<{
   url: string; zipName: string; sizeBytes: number;
   missing: string[]; missingFull: string[];
 }> {
@@ -89,24 +115,33 @@ async function packBrand(plan: WeeklyPlan): Promise<{
   const zip = new JSZip();
   zip.file("metricool.csv", csv);
   zip.file("posts.json", JSON.stringify(plan, null, 2));
-  zip.file("README.txt", buildReadme(plan, missingClip, missingFull));
+  zip.file("README.txt", buildReadme(plan, missingClip, missingFull, filteredDays));
 
   const buf = await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" });
-  const path = zipStoragePath(plan.year, plan.week, plan.brand);
+
+  // Path separado para zips parciais (não sobrescreve o da semana completa).
+  const w = String(plan.week).padStart(2, "0");
+  const suffix = filteredDays && filteredDays.length > 0 ? `-d-${daysSuffix(filteredDays)}` : "";
+  const path = suffix
+    ? `weekly-social/${plan.year}-W${w}/${plan.brand}-${plan.year}-W${w}${suffix}.zip`
+    : zipStoragePath(plan.year, plan.week, plan.brand);
   const { error } = await admin.storage
     .from(BUCKET)
     .upload(path, buf, { contentType: "application/zip", upsert: true });
   if (error) throw new Error(`upload zip ${path}: ${error.message}`);
 
   const url = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${path}?t=${Date.now()}`;
-  const w = String(plan.week).padStart(2, "0");
-  const zipName = `${plan.brand}-${plan.year}-W${w}.zip`;
+  const zipName = `${plan.brand}-${plan.year}-W${w}${suffix}.zip`;
   return { url, zipName, sizeBytes: buf.length, missing: missingClip, missingFull };
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as { week?: number; year?: number; brands?: BrandSlug[] };
+    const body = (await req.json()) as {
+      week?: number; year?: number;
+      brands?: BrandSlug[];
+      days?: string[];
+    };
     const week = Number(body.week);
     const year = Number(body.year ?? currentYear());
     if (!Number.isFinite(week)) {
@@ -115,6 +150,16 @@ export async function POST(req: NextRequest) {
     const brands: BrandSlug[] = body.brands && body.brands.length > 0
       ? body.brands : ["loranne", "ancient-ground"];
 
+    // Filtro de dias opcional. Aceita ["sun"] ou ["mon","wed","fri"]. Normaliza
+    // para lowercase e valida contra o calendário (DAY_ORDER).
+    const dayFilter = body.days && body.days.length > 0
+      ? new Set(
+          body.days
+            .map((d) => d.toLowerCase().trim())
+            .filter((d) => DAY_ORDER.includes(d)),
+        )
+      : null;
+
     const result: Record<string, {
       url?: string; zipName?: string; sizeBytes?: number;
       missing?: string[]; missingFull?: string[]; erro?: string;
@@ -122,7 +167,22 @@ export async function POST(req: NextRequest) {
     for (const brand of brands) {
       const plan = await loadPlan(year, week, brand);
       if (!plan) { result[brand] = { erro: "plan inexistente" }; continue; }
-      result[brand] = await packBrand(plan);
+
+      if (dayFilter) {
+        const filteredPosts = plan.posts.filter((p) => dayFilter.has(p.day.toLowerCase()));
+        if (filteredPosts.length === 0) {
+          result[brand] = {
+            erro: `marca ${brand} não publica em ${[...dayFilter].join(", ")} nesta semana`,
+          };
+          continue;
+        }
+        result[brand] = await packBrand(
+          { ...plan, posts: filteredPosts },
+          [...dayFilter],
+        );
+      } else {
+        result[brand] = await packBrand(plan, null);
+      }
     }
     return NextResponse.json(result);
   } catch (err) {
