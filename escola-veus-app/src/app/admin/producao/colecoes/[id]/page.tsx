@@ -120,10 +120,14 @@ export default function ColecaoEditor({ params }: { params: Promise<{ id: string
     setPackaging(true);
     setZipUrl(null);
     try {
+      // Extrai weekNumber do título se vier do calendário ("...(Sem 22)")
+      const m = col.title.match(/\(Sem\s+(\d+)\)\s*$/i);
+      const payload: { weekNumber?: number } = {};
+      if (m) payload.weekNumber = Number(m[1]);
       const r = await fetch(`/api/admin/colecoes/${col.id}/package`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify(payload),
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.erro || `HTTP ${r.status}`);

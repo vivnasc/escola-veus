@@ -7,6 +7,7 @@ import {
   type CarouselPost,
 } from "@/lib/carousel-social/metricool-csv";
 import type { Dia, Slide } from "@/lib/carousel-types";
+import { isoWeekToMonday, formatDate } from "@/lib/weekly-social/schedule";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -37,10 +38,19 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   const { id } = await ctx.params;
   const body = (await req.json().catch(() => ({}))) as {
     startDate?: string;
+    /** Se enviado, calcula startDate = segunda da semana ISO N (ano opcional, default ano corrente). */
+    weekNumber?: number;
+    year?: number;
     time?: string;
     cta?: string;
   };
-  const startDate = body.startDate || isoToday();
+  let startDate = body.startDate;
+  if (!startDate && Number.isFinite(body.weekNumber)) {
+    const year = Number(body.year) || new Date().getUTCFullYear();
+    const monday = isoWeekToMonday(year, Number(body.weekNumber));
+    startDate = formatDate(monday);
+  }
+  if (!startDate) startDate = isoToday();
   const time = body.time || "13:00";
   const cta = body.cta ?? "Guarda este post para voltares mais tarde 💛";
 
