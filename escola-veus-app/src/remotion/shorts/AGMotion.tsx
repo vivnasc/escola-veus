@@ -14,7 +14,7 @@ function sin01(t: number): number {
 
 const AG_ACCENT_DEFAULT = "#D4923E";
 
-type SeedProps = { frame: number; accent?: string; seed?: MotionSeed };
+type SeedProps = { frame: number; accent?: string; seed?: MotionSeed; isLandscape?: boolean };
 
 function seededT(frame: number, seed: MotionSeed | undefined, basePeriod: number): number {
   const t = frame / FPS;
@@ -32,10 +32,16 @@ function seedDensity(seed: MotionSeed | undefined, base: number, min: number, ma
 }
 
 // ─── A — Capulana abstracta (panorama horizontal lento) ───────────────────
-export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedProps) {
+export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT, seed, isLandscape }: SeedProps) {
   const t = seededT(frame, seed, 12);
   const dir = seedDir(seed);
   const tx = (-3 + sin01(t / 12) * 6) * dir;
+  // Swap viewBox para landscape (200×100) — preserveAspectRatio="none" deixaria
+  // os triângulos da capulana achatados em fulls 16:9 com viewBox vertical.
+  const vbW = isLandscape ? 200 : 100;
+  const vbH = isLandscape ? 100 : 200;
+  // Bandas: 4 stripes ao longo do eixo maior do viewBox.
+  // Em portrait, distribuem-se em y; em landscape, em x (capulana lida na vertical).
   return (
     <div
       style={{
@@ -44,7 +50,7 @@ export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedPro
       }}
     >
       <svg
-        viewBox="0 0 100 200" preserveAspectRatio="none"
+        viewBox={`0 0 ${vbW} ${vbH}`} preserveAspectRatio="none"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", transform: `translateX(${tx}%)` }}
       >
         <defs>
@@ -56,10 +62,22 @@ export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedPro
             <circle cx="7" cy="7" r="3" fill="none" stroke={accent} strokeWidth="0.5" opacity="0.6" />
           </pattern>
         </defs>
-        <rect x="-20" y="20" width="140" height="40" fill="url(#capulana-tri)" />
-        <rect x="-20" y="80" width="140" height="20" fill="url(#capulana-circ)" />
-        <rect x="-20" y="120" width="140" height="40" fill="url(#capulana-tri)" />
-        <rect x="-20" y="180" width="140" height="20" fill="url(#capulana-circ)" />
+        {isLandscape ? (
+          <>
+            {/* 4 bandas verticais ao longo dos 200 viewBox-units */}
+            <rect x="20" y="-20" width="40" height="140" fill="url(#capulana-tri)" />
+            <rect x="80" y="-20" width="20" height="140" fill="url(#capulana-circ)" />
+            <rect x="120" y="-20" width="40" height="140" fill="url(#capulana-tri)" />
+            <rect x="180" y="-20" width="20" height="140" fill="url(#capulana-circ)" />
+          </>
+        ) : (
+          <>
+            <rect x="-20" y="20" width="140" height="40" fill="url(#capulana-tri)" />
+            <rect x="-20" y="80" width="140" height="20" fill="url(#capulana-circ)" />
+            <rect x="-20" y="120" width="140" height="40" fill="url(#capulana-tri)" />
+            <rect x="-20" y="180" width="140" height="20" fill="url(#capulana-circ)" />
+          </>
+        )}
       </svg>
       <div
         style={{
@@ -72,7 +90,7 @@ export function AGCapulanaA({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedPro
 }
 
 // ─── B — Sol pulsante + horizonte (fixo, expande/retrai) ──────────────────
-export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedProps) {
+export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT, seed, isLandscape }: SeedProps) {
   const t = seededT(frame, seed, 3);
   const dir = seedDir(seed);
   // sun-pulse: 3s loop, scale 0.92..1.15
@@ -139,25 +157,44 @@ export function AGSolHorizonteB({ frame, accent = AG_ACCENT_DEFAULT, seed }: See
           );
         })}
       </svg>
-      {/* horizonte com baobá */}
-      <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        <path d="M 0 130 L 100 130 L 100 200 L 0 200 Z" fill="#1a0806" />
-        <g fill="#000000">
-          <rect x="48" y="105" width="4" height="25" />
-          <ellipse cx="50" cy="100" rx="14" ry="7" />
-          <path d="M 40 100 Q 35 90 38 80 M 60 100 Q 65 90 62 80 M 50 95 Q 50 80 53 75" stroke="#000" strokeWidth="0.8" fill="none" />
-        </g>
-        <path d="M 0 128 Q 30 124 60 130 T 100 128" stroke="#3a1a0a" strokeWidth="0.5" fill="none" opacity="0.5" />
-      </svg>
+      {/* horizonte com baobá — em landscape o ground sobe (y=70/100) e o
+          baobá vai para a direita (x=145/200) para não distorcer. */}
+      {isLandscape ? (
+        <svg viewBox="0 0 200 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+          <path d="M 0 70 L 200 70 L 200 100 L 0 100 Z" fill="#1a0806" />
+          <g fill="#000000">
+            <rect x="143" y="58" width="4" height="14" />
+            <ellipse cx="145" cy="55" rx="14" ry="7" />
+            <path d="M 135 55 Q 130 45 133 35 M 155 55 Q 160 45 157 35 M 145 50 Q 145 35 148 30" stroke="#000" strokeWidth="0.8" fill="none" />
+          </g>
+          <path d="M 0 68 Q 60 64 120 70 T 200 68" stroke="#3a1a0a" strokeWidth="0.5" fill="none" opacity="0.5" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+          <path d="M 0 130 L 100 130 L 100 200 L 0 200 Z" fill="#1a0806" />
+          <g fill="#000000">
+            <rect x="48" y="105" width="4" height="25" />
+            <ellipse cx="50" cy="100" rx="14" ry="7" />
+            <path d="M 40 100 Q 35 90 38 80 M 60 100 Q 65 90 62 80 M 50 95 Q 50 80 53 75" stroke="#000" strokeWidth="0.8" fill="none" />
+          </g>
+          <path d="M 0 128 Q 30 124 60 130 T 100 128" stroke="#3a1a0a" strokeWidth="0.5" fill="none" opacity="0.5" />
+        </svg>
+      )}
     </div>
   );
 }
 
 // ─── C — Padrão tradicional + brisa ───────────────────────────────────────
-export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedProps) {
+export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT, seed, isLandscape }: SeedProps) {
   const t = seededT(frame, seed, 4);
   const dir = seedDir(seed);
   const rowsN = seedDensity(seed, 6, 5, 7);
+  // Em landscape, troca papéis de linhas/colunas para manter densidade visual
+  // e evitar que os polígonos esticados horizontalmente fiquem flat.
+  const vbW = isLandscape ? 200 : 100;
+  const vbH = isLandscape ? 100 : 200;
+  const colCount = isLandscape ? rowsN : 5;
+  const rowCount = isLandscape ? 5 : rowsN;
   return (
     <div
       style={{
@@ -165,8 +202,8 @@ export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT, seed }
         background: "linear-gradient(180deg, #3a1a0a 0%, #6a2810 50%, #1a0806 100%)",
       }}
     >
-      <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        {Array.from({ length: rowsN }).map((_, row) => {
+      <svg viewBox={`0 0 ${vbW} ${vbH}`} preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+        {Array.from({ length: rowCount }).map((_, row) => {
           const tt = ((t + row * 0.5) % 4) / 4;
           const sway = Math.sin(tt * Math.PI * 2) * 2 * dir;
           const scale = 1 + sin01((t + row * 0.5) / 4) * 0.04;
@@ -176,9 +213,9 @@ export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT, seed }
               transform={`translate(${sway} 0) scale(${scale})`}
               style={{ transformOrigin: "50% 50%", transformBox: "fill-box" }}
             >
-              {Array.from({ length: 5 }).map((_, col) => {
-                const cx = col * 25 - 5;
-                const cy = row * 35 + 15;
+              {Array.from({ length: colCount }).map((_, col) => {
+                const cx = isLandscape ? col * 35 + 15 : col * 25 - 5;
+                const cy = isLandscape ? row * 25 - 5 : row * 35 + 15;
                 const isCircle = (row + col) % 3 === 0;
                 const isSpiral = (row + col) % 3 === 1;
                 if (isCircle) {
@@ -215,7 +252,7 @@ export function AGPadraoTradicionalC({ frame, accent = AG_ACCENT_DEFAULT, seed }
 }
 
 // ─── D — Combinação (horizonte + padrão capulana + areia) ─────────────────
-export function AGCombinacaoD({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedProps) {
+export function AGCombinacaoD({ frame, accent = AG_ACCENT_DEFAULT, seed, isLandscape }: SeedProps) {
   const t = seededT(frame, seed, 12);
   const dir = seedDir(seed);
   const sandN = seedDensity(seed, 20, 16, 24);
@@ -228,17 +265,27 @@ export function AGCombinacaoD({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedP
         background: "linear-gradient(180deg, #4a1a0a 0%, #7a2810 50%, #1a0806 100%)",
       }}
     >
-      {/* horizonte */}
-      <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-        <path d="M 0 140 Q 30 134 60 142 T 100 138 L 100 200 L 0 200 Z" fill="#1a0806" />
-        <g fill="#000000" opacity="0.85">
-          <rect x="73" y="118" width="3" height="22" />
-          <ellipse cx="74" cy="115" rx="9" ry="5" />
-        </g>
-      </svg>
+      {/* horizonte — landscape repõe ground a y=75/100 e baobá a x=150/200 */}
+      {isLandscape ? (
+        <svg viewBox="0 0 200 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+          <path d="M 0 75 Q 60 71 120 77 T 200 73 L 200 100 L 0 100 Z" fill="#1a0806" />
+          <g fill="#000000" opacity="0.85">
+            <rect x="148" y="62" width="3" height="13" />
+            <ellipse cx="150" cy="58" rx="9" ry="5" />
+          </g>
+        </svg>
+      ) : (
+        <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+          <path d="M 0 140 Q 30 134 60 142 T 100 138 L 100 200 L 0 200 Z" fill="#1a0806" />
+          <g fill="#000000" opacity="0.85">
+            <rect x="73" y="118" width="3" height="22" />
+            <ellipse cx="74" cy="115" rx="9" ry="5" />
+          </g>
+        </svg>
+      )}
       {/* padrão */}
       <svg
-        viewBox="0 0 100 200" preserveAspectRatio="none"
+        viewBox={isLandscape ? "0 0 200 100" : "0 0 100 200"} preserveAspectRatio="none"
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.4, transform: `translateX(${tx}%)` }}
       >
         <defs>
@@ -247,7 +294,11 @@ export function AGCombinacaoD({ frame, accent = AG_ACCENT_DEFAULT, seed }: SeedP
             <path d="M 10 4 L 14 10 L 10 16 L 6 10 Z" fill={accent} opacity="0.7" />
           </pattern>
         </defs>
-        <rect x="-20" y="30" width="140" height="80" fill="url(#combo-pat)" />
+        {isLandscape ? (
+          <rect x="20" y="-20" width="80" height="140" fill="url(#combo-pat)" />
+        ) : (
+          <rect x="-20" y="30" width="140" height="80" fill="url(#combo-pat)" />
+        )}
       </svg>
       {/* areia */}
       {Array.from({ length: sandN }).map((_, i) => {

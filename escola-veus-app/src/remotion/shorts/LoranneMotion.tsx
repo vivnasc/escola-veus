@@ -16,7 +16,7 @@ function sin01(t: number): number {
   return (Math.sin(t * Math.PI * 2) + 1) / 2;
 }
 
-type SeedProps = { frame: number; accent: string; seed?: MotionSeed };
+type SeedProps = { frame: number; accent: string; seed?: MotionSeed; isLandscape?: boolean };
 
 /** Tempo virtual: aplica seed.phase (offset) + seed.speedMul (multiplicador).
  *  Sem seed = comportamento histórico (t = frame/FPS, sem offset). */
@@ -117,10 +117,14 @@ export function LoranneMandalaA({ frame, accent, seed }: SeedProps) {
 }
 
 // ─── B — Véus em fluxo ─────────────────────────────────────────────────────
-export function LoranneVeusB({ frame, accent, seed }: SeedProps) {
+export function LoranneVeusB({ frame, accent, seed, isLandscape }: SeedProps) {
   const t = seededT(frame, seed, 5);
   const dir = seedDir(seed);
   const veusN = seedDensity(seed, 7, 6, 9);
+  // viewBox 1:2 em portrait (1080×1920); 2:1 em landscape (1920×1080). Sem este
+  // swap, preserveAspectRatio="none" achata os véus horizontalmente em fulls.
+  const vbW = isLandscape ? 200 : 100;
+  const vbH = isLandscape ? 100 : 200;
   return (
     <div
       style={{
@@ -128,17 +132,22 @@ export function LoranneVeusB({ frame, accent, seed }: SeedProps) {
         background: "linear-gradient(180deg, #0a0612 0%, #1a0d2a 50%, #0a0612 100%)",
       }}
     >
-      <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+      <svg viewBox={`0 0 ${vbW} ${vbH}`} preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         {Array.from({ length: veusN }).map((_, i) => {
-          const offset = i * (200 / veusN);
+          const offset = i * (vbH / veusN);
           // veu: 5s loop, translate -30% to +30%, opacity rises mid
           const tt = ((t + i * 0.7) % 5) / 5; // 0..1
           const tx = (-30 + tt * 60) * dir; // -30..30 (direcção invertida com dir=-1)
           const opacity = (1 - Math.abs(tt - 0.5) * 2) * (0.15 + i * 0.04 + 0.4);
+          // Bezier escalado à largura do viewBox para manter forma proporcional.
+          const x0 = -vbW * 0.2;
+          const x1 = vbW * 0.3;
+          const x2 = vbW * 0.6;
+          const x3 = vbW * 1.2;
           return (
             <path
               key={i}
-              d={`M -20 ${offset} Q 30 ${offset + 20} 60 ${offset + 5} T 120 ${offset + 15}`}
+              d={`M ${x0} ${offset} Q ${x1} ${offset + 20} ${x2} ${offset + 5} T ${x3} ${offset + 15}`}
               stroke={accent} strokeWidth="0.6" fill="none"
               opacity={Math.max(0, opacity)}
               transform={`translate(${tx} 0)`}
@@ -222,12 +231,14 @@ export function LoranneCosmicC({ frame, accent, seed }: SeedProps) {
 }
 
 // ─── D — Combinação (mandala filigrana + véu + pó) ────────────────────────
-export function LoranneCombinacaoD({ frame, accent, seed }: SeedProps) {
+export function LoranneCombinacaoD({ frame, accent, seed, isLandscape }: SeedProps) {
   const t = seededT(frame, seed, 5);
   const dir = seedDir(seed);
   const ringsN = seedDensity(seed, 8, 6, 10);
   const dustN = seedDensity(seed, 30, 24, 36);
   const rot = (t / 30) * 360 * dir;
+  const vbW = isLandscape ? 200 : 100;
+  const vbH = isLandscape ? 100 : 200;
 
   return (
     <div
@@ -251,16 +262,21 @@ export function LoranneCombinacaoD({ frame, accent, seed }: SeedProps) {
         </g>
       </svg>
       {/* 2 véus em fases diferentes */}
-      <svg viewBox="0 0 100 200" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+      <svg viewBox={`0 0 ${vbW} ${vbH}`} preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
         {[0, 3].map((delay, idx) => {
           const tt = ((t + delay) % 5) / 5;
           const tx = (-30 + tt * 60) * dir;
           const opacity = (1 - Math.abs(tt - 0.5) * 2) * 0.4;
-          const yOffset = idx === 0 ? 60 : 130;
+          // Posições proporcionais (~30% e ~65% da altura) em vez de absolutas.
+          const yOffset = idx === 0 ? vbH * 0.3 : vbH * 0.65;
+          const x0 = -vbW * 0.2;
+          const x1 = vbW * 0.3;
+          const x2 = vbW * 0.6;
+          const x3 = vbW * 1.2;
           return (
             <path
               key={idx}
-              d={`M -20 ${yOffset} Q 30 ${yOffset + 20} 60 ${yOffset + 5} T 120 ${yOffset + 15}`}
+              d={`M ${x0} ${yOffset} Q ${x1} ${yOffset + 20} ${x2} ${yOffset + 5} T ${x3} ${yOffset + 15}`}
               stroke={accent} strokeWidth="0.5" fill="none"
               opacity={Math.max(0, opacity)}
               transform={`translate(${tx} 0)`}
