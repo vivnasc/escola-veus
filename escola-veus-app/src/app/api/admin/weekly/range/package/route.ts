@@ -4,6 +4,7 @@ import JSZip from "jszip";
 import { type BrandSlug } from "@/data/weekly-social/brand-config";
 import { loadPlan } from "@/lib/weekly-social/plan-storage";
 import { buildCsv, type CsvPost } from "@/lib/weekly-social/metricool-csv";
+import { MOOD_META, type LoranneMood } from "@/data/weekly-social/loranne-moods";
 import { currentYear } from "@/lib/weekly-social/schedule";
 import { type WeeklyPlan } from "@/lib/weekly-social/types";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
@@ -52,6 +53,10 @@ function planToCsvPosts(plan: WeeklyPlan): CsvPost[] {
     const clipUrl = p.renderJobs?.clip?.videoUrl ?? p.videoUrl ?? null;
     const fullUrl = p.renderJobs?.full?.videoUrl ?? null;
     const thumb = p.renderJobs?.clip?.thumbnailUrl ?? p.thumbnailUrl ?? null;
+    const playlist =
+      plan.brand === "loranne" && p.mood
+        ? MOOD_META[p.mood as LoranneMood]?.label
+        : undefined;
     return {
       id: p.id,
       videoUrl: clipUrl,
@@ -61,6 +66,7 @@ function planToCsvPosts(plan: WeeklyPlan): CsvPost[] {
       captions: p.captions,
       schedule: p.schedule,
       fullSchedule: p.fullSchedule,
+      youtubePlaylist: playlist,
     };
   });
 }

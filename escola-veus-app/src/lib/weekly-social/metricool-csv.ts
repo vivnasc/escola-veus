@@ -64,6 +64,13 @@ export type CsvPost = {
   schedule: Record<Platform, ScheduleSlot>;
   /** Schedule alternativo do full (AG: Mon/Wed/Fri vs clip Tue/Thu/Sat). Default = schedule. */
   fullSchedule?: Record<Platform, ScheduleSlot>;
+  /**
+   * Nome da playlist YouTube — se presente, populado na coluna
+   * "Youtube playlist" do CSV (Shorts + YT canal). Para Loranne, vem do
+   * mood: "Elevar", "Aterrar", "Acordar", "Lembrar", "Reunir-se",
+   * "Respirar", "Atravessar".
+   */
+  youtubePlaylist?: string;
 };
 
 export function csvEscape(v: string | number | null | undefined): string {
@@ -125,12 +132,14 @@ export function buildRow(post: CsvPost, kind: CsvLineKind): string {
     col("Youtube Video Type", "SHORTS");
     col("Youtube Video Privacy", "PUBLIC");
     col("Youtube video for kids", "FALSE");
+    if (post.youtubePlaylist) col("Youtube playlist", post.youtubePlaylist);
   } else if (isYoutubeCanal) {
     col("Text", post.captions.youtube.description);
     col("Youtube Video Title", post.captions.youtube.title);
     col("Youtube Video Type", "VIDEO");
     col("Youtube Video Privacy", "PUBLIC");
     col("Youtube video for kids", "FALSE");
+    if (post.youtubePlaylist) col("Youtube playlist", post.youtubePlaylist);
   }
 
   return row.map(csvEscape).join(",");
