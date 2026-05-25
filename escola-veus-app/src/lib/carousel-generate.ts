@@ -196,116 +196,77 @@ Cada dia tem:
 - romano: gerado automaticamente
 
 VISUAL. Campo "notaVisual" em CADA slide. Identidade "OFÍCIO DO VÉU":
-A imagem é editorial still life com gramática FIXA. Documento completo em
-docs/IDENTIDADE-VISUAL-CARROSSEL.md. Tudo fora desta gramática é proibido.
+REGRA CENTRAL: a notaVisual descreve uma CENA QUE EVOCA O TEMA do dia.
+Não é uma lista de materiais. É uma imagem que conta o estado emocional
+do dia, usando os materiais da gramática como vocabulário visual.
 
-MATERIAIS — lista fechada (a cena tem de combinar elementos destas
-categorias; capa MAIS rica, cta MAIS minimal):
+A cena deve responder à pergunta: "como se PARECE este tema, traduzido
+em objectos, luz e espaço?". Não "que materiais usar".
 
-CATEGORIA A — Têxteis/cerâmica (núcleo, sempre presente):
-  raw linen (linho cru dobrado/drapeado/bordado), navy wool serge
-  (sarja navy vincada), natural raffia weave (rafia trançada),
-  rustic ceramic (cerâmica rústica terracota ou navy-glaze),
-  jute/sisal weave (juta/sisal natural cru).
+MATERIAIS autorizados (vocabulário visual, não sujeito):
+- Têxteis: linho cru, sarja navy, rafia, juta/sisal
+- Cerâmica rústica (terracota, navy-glaze)
+- Botânica (1 por cena): estrelícia, palmeira, monstera, pampas, ramo seco
+- Artesanato leve: contas de osso, macramé, cesto, vaso barro, pano tingido
+- Suportes: madeira escura, pedra clara, parede stucco creme
+- Paleta: navy #1A1A2E, linho #E8DCC0, terracota #B85C38, rafia #C9A14A
+- Luz: única, oblíqua, suave
 
-CATEGORIA B — Botânica (uso boho contido, sem geografia explícita):
-  strelitzia flower or leaf (estrelícia, bird-of-paradise),
-  palm fronds / banana leaf / areca palm / fan palm,
-  monstera leaf (recortada, escultural), dried pampas grass plumes,
-  bare dried branch / twig / dried botanicals, broadleaf tropical
-  foliage. UM elemento botânico por cena; nunca paisagem aberta.
+COMO COMPOR A CENA (tema-primeiro):
+1. LÊ o tema do dia (ex: "Solidão fértil", "Aconchego", "Limite")
+2. TRADUZ o tema numa SITUAÇÃO VISUAL: que arrumação de objectos, que
+   quantidade de espaço vazio, que tipo de luz, que gesto (dobrar,
+   desdobrar, isolar, empilhar) CONTA esta emoção?
+3. Escolhe materiais da gramática que SERVEM essa situação.
+A notaVisual NÃO é uma lista de compras ("ceramic + linen + strelitzia").
+É uma cena com direcção emocional ("the bowl sits alone in vast
+emptiness, the space around it is the subject").
 
-CATEGORIA C — Artesanato leve (acentos pequenos, nunca dominantes):
-  small bone or wooden beads, macramé bracelet, small woven basket,
-  small handmade clay vase, naturally-dyed cloth (indigo or clay).
+Exemplos tema-primeiro (CAPA):
 
-SUPORTES (apoio cenográfico): dark walnut wood, pale stone, hand-troweled
-cream stucco wall.
+TEMA "Solidão fértil" (vazio que gera):
+"A single empty ceramic bowl sitting alone on vast pale stone floor,
+deep navy emptiness surrounding it, one soft shaft of afternoon light
+touching the bowl rim, cream linen cloth folded far in background
+almost invisible, editorial still life, contemplative silence"
 
-ZERO outros materiais (sem plástico, metal moderno, vidro brilhante,
-papel, livros, electrónica).
+TEMA "Aconchego" (calor que acolhe):
+"Thick layers of navy wool and cream linen nested into each other on
+dark walnut bench, folds creating a cocoon embrace, small clay lamp
+glowing soft gold beside, dried pampas leaning against stucco wall,
+everything gathered close, warm intimate light, editorial still life"
 
-PALETA — Hex exactos só:
-- Deep navy #1A1A2E (fundo, sarja navy, cerâmica glaze escura)
-- Cream linen #E8DCC0 (linho cru, base de tecido)
-- Soft terracotta #B85C38 (cerâmica rústica, acentos quentes)
-- Raffia gold #C9A14A (palha, luz subtil)
-- Cream stone #D8CFB8 (pedra clara)
+TEMA "Limite que ensina" (fronteira que protege):
+"Sharp clean fold of cream linen draped over edge of dark walnut table,
+half hanging into deep navy shadow below, one side warmly lit the other
+in shadow, strelitzia leaf casting diagonal line, editorial still life,
+painterly tension"
 
-LUZ: única, oblíqua, suave. Tarde dourada OU manhã. NUNCA flash, NUNCA
-HDR, NUNCA meio-dia chapado. Chiaroscuro suave que desenha textura.
+TEMA "Fluidez" (soltar para fluir):
+"Cream linen cloth mid-unfurl caught in a breath of movement, one
+corner still held by pale stone weight, rest cascading softly off dark
+walnut surface, palm frond shadow swaying on stucco wall, golden
+afternoon light, editorial still life, painterly grace"
 
-MAPPING TEMA → material em destaque (escolhe o destaque conforme o brief
-da semana e o tema do dia):
-- Aconchego/lar/calor/ninho → SARJA pesada + linho dobrado, lamp glow
-- Solidão/contemplação/vazio → CERÂMICA isolada + pedra, vasto espaço
-- Brotar/semente/recomeço → CERÂMICA com ramo seco + linho, orvalho
-- Limite/fronteira/decisão → LINHO liso + madeira escura, sombra nítida
-- Recolhimento/silêncio → tecidos empilhados em interior fechado
-- Memória/linhagem/herança → LINHO bordado à mão, textura macro
-- Fluidez/soltar/passagem → LINHO drapeado, dobra a desfazer-se
-- Corpo/presença → SARJA macro, trama em close-up
-- Verdade/despir → LINHO cru limpo, sem ornamento
-- Comunidade/partilha → conjunto de objetos agrupados, altar
-- Festa/gratidão → CERÂMICA + RAFIA + ramo, luz quente
-- Início/manhã → LINHO seco a vento, luz limpa
-- (default) → LINHO + cerâmica isolada, contemplativo
+Exemplos CTA (fecho simbólico, 1 objecto, muito espaço):
+"Single empty ceramic bowl on pale stone, vast deep navy around, single
+shaft of warm light, editorial still life, contemplative"
+"Single dried branch in small clay vase against cream stucco, soft long
+shadow, deep navy floor, contemplative"
 
-COMPOSIÇÃO por tipo de slide — REGRA CRÍTICA:
+NÃO FAÇAS ISTO (genérico/material-first):
+- "Rustic ceramic vessel on linen cloth with strelitzia" → lista de
+  compras, não conta nenhum tema.
+- "Heavy navy wool serge blanket folded over dark walnut bench" → podia
+  ser qualquer tema, não evoca nada específico.
 
-CAPA (slide 1) = DETALHADA e RICA
-  Cena composta: têxtil base (categoria A) + 1 elemento botânico
-  (categoria B) + 1-2 acentos de artesanato (categoria C) +
-  suporte. Boho contido, várias camadas. Atrai com densidade
-  visual. NÃO minimal.
-  Exemplo: "Jarro de cerâmica terracota com folha de estrelícia
-  inclinada, sobre linho cru drapeado, contas de osso ao lado,
-  sombra de palma na parede stucco creme, luz oblíqua da tarde,
-  deep navy ao fundo, editorial still life painterly"
+COMPOSIÇÃO por tipo de slide:
+CAPA (slide 1) = cena RICA que conta o tema com densidade visual.
+CTA (slide 6) = cena SIMBÓLICA e SIMPLES. 1 objecto, muito espaço.
+CONTEÚDO (slides 2-5) = sem fundo MJ (só tipografia).
 
-CTA / fecho (slide 6) = SIMBÓLICA e SIMPLES
-  Single subject minimal, espaço amplo, evocativo, contemplativo.
-  UM objecto do núcleo (cerâmica vazia) OU UMA planta (ramo seco
-  em jarro). NÃO bohemia carregada. É o silêncio depois da história.
-  Exemplo: "Single rustic ceramic vessel on pale stone, vast empty
-  navy space, single shaft of warm light, editorial still life,
-  contemplative"
-
-CONTEÚDO interno (slides 2-5): SEM fundo MJ (notaVisual ainda gerada
-para compatibilidade mas slides internos ficam só com tipografia).
-
-PROIBIDO sempre:
-- Pessoas, rostos, mãos, corpos
-- Fotorrealismo HDR, stock-photo gloss
-- Cores saturadas, néon
-- Texto, logos, watermarks
-- Geografia identificável ("African", "tropical", "Mediterranean")
-- Tecnologia moderna (vidro, metal, plástico, ecrãs)
-
-ESTRUTURA da notaVisual (em inglês, máx ~30 palavras):
-<destaque material núcleo + objetos núcleo + suporte> ,
-<luz oblíqua + paleta navy linen terracotta raffia> ,
-editorial still life painterly contemplative
-
-Exemplos CERTOS (capa rica, cta minimal):
-
-CAPA — boho contido, várias camadas:
-- Aconchego: "Heavy navy wool serge blanket folded over dark walnut bench, cream linen sheet underneath, dried pampas grass in small clay vase, jute weave runner, sombra de palma na parede stucco, warm afternoon light, deep navy ambient, editorial still life painterly"
-- Solidão fértil: "Rustic terracotta vessel on pale stone, single strelitzia leaf inclining over it, folded raw linen drapeado, small bone beads on the linen, soft oblique light, deep navy backdrop, painterly editorial"
-- Brotar: "Small clay vase with bare dried twig, cream linen folded beside, monstera leaf shadow on stucco wall, macramé bracelet pousada, single drop of dew on twig, soft morning light, painterly editorial"
-
-CTA / fecho — single subject minimal:
-- "Single rustic ceramic vessel on pale stone, vast empty navy space, single shaft of warm light, contemplative"
-- "Single dried branch in small terracotta vase against cream stucco wall, soft long shadow, deep navy floor, contemplative"
-- "Folded cream linen sheet on dark walnut, nothing else, oblique afternoon light, deep navy ambient"
-
-Exemplos ERRADOS (NÃO uses):
-- "ethereal luminous translucent gauze" (fluff genérico)
-- "weathered stone wall lit by ember light" (peso/fogo fora da gramática)
-- "wheat field at golden hour" (paisagem aberta, geografia)
-- "open book on worn wood" (livro não está nos materiais)
-- Capa minimal "single ceramic on stone" → ERRADO, capa tem de ser RICA
-- CTA com 5 elementos botânicos → ERRADO, cta tem de ser SIMBÓLICO/SIMPLES
+PROIBIDO: pessoas, rostos, mãos, HDR, cores saturadas, texto, logos,
+geografia, tecnologia moderna.
 
 VISUAL. Campo "fundoClaro" (boolean) em CADA slide:
 - true quando o slide convida ao estado luminoso/aberto/presente (frases
