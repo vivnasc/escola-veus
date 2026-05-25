@@ -535,15 +535,19 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
         </div>
       </div>
 
-      {/* ─── VÍDEOS GERADOS ANTERIORMENTE ─────────────── */}
-      {historicalJobs.length > 0 && (
+      {/* ─── VÍDEOS GERADOS ─────────────── */}
+      {historicalJobs.length > 0 && (() => {
+        const doneJobs = historicalJobs.filter((j) => j.status === "done" && j.videos?.length);
+        if (doneJobs.length === 0) return null;
+        const latest = doneJobs[0];
+        const older = doneJobs.slice(1);
+        return (
         <section className="mb-10 rounded-lg border border-escola-border bg-escola-card p-5">
           <header className="mb-4 flex items-baseline justify-between gap-3">
             <div>
-              <h3 className="font-serif text-lg text-escola-creme">Vídeos gerados</h3>
+              <h3 className="font-serif text-lg text-escola-creme">Vídeos (versão actual)</h3>
               <p className="text-xs text-escola-creme-50">
-                {historicalJobs.reduce((a, j) => a + (j.videos?.length ?? 0), 0)} MP4 prontos.
-                Clica para reproduzir, copiar legenda ou descarregar.
+                {latest.videos?.length ?? 0} MP4 · job {latest.jobId?.slice(0, 20)}…
               </p>
             </div>
             <button
@@ -560,27 +564,51 @@ export default function CollectionWorkspace(props: CollectionWorkspaceProps) {
             </button>
           </header>
           <div className="space-y-6">
-            {historicalJobs.flatMap((job) => {
-              if (job.status !== "done" || !job.videos) return [];
-              return job.videos.map((v) => {
-                const m = v.file.match(/dia-(\d+)/);
-                const diaNum = m ? Number(m[1]) : 0;
-                const dia = dias.find((d) => d.numero === diaNum);
-                return (
-                  <VideoResultCard
-                    key={`${job.jobId}-${v.file}`}
-                    file={v.file}
-                    url={v.url}
-                    sizeBytes={v.sizeBytes}
-                    dia={dia}
-                    totalDias={totalDias}
-                  />
-                );
-              });
+            {(latest.videos ?? []).map((v) => {
+              const m = v.file.match(/dia-(\d+)/);
+              const diaNum = m ? Number(m[1]) : 0;
+              const dia = dias.find((d) => d.numero === diaNum);
+              return (
+                <VideoResultCard
+                  key={`${latest.jobId}-${v.file}`}
+                  file={v.file}
+                  url={v.url}
+                  sizeBytes={v.sizeBytes}
+                  dia={dia}
+                  totalDias={totalDias}
+                />
+              );
             })}
           </div>
+          {older.length > 0 && (
+            <details className="mt-4">
+              <summary className="cursor-pointer text-[11px] text-escola-creme-50 hover:text-escola-creme">
+                {older.length} versão(ões) anterior(es) · clica para ver
+              </summary>
+              <div className="mt-3 space-y-6 border-t border-escola-border/40 pt-3">
+                {older.flatMap((job) =>
+                  (job.videos ?? []).map((v) => {
+                    const m2 = v.file.match(/dia-(\d+)/);
+                    const diaNum2 = m2 ? Number(m2[1]) : 0;
+                    const dia2 = dias.find((d) => d.numero === diaNum2);
+                    return (
+                      <VideoResultCard
+                        key={`${job.jobId}-${v.file}`}
+                        file={v.file}
+                        url={v.url}
+                        sizeBytes={v.sizeBytes}
+                        dia={dia2}
+                        totalDias={totalDias}
+                      />
+                    );
+                  })
+                )}
+              </div>
+            </details>
+          )}
         </section>
-      )}
+        );
+      })()}
 
       {/* ─── VOZES ──────────────────────────────────── */}
       {/* Colapsado por defeito — só interessa quando vai gerar vídeo.
