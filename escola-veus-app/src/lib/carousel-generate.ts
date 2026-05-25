@@ -195,78 +195,39 @@ Cada dia tem:
 - numero: 1..N
 - romano: gerado automaticamente
 
-VISUAL. Campo "notaVisual" em CADA slide. Identidade "OFÍCIO DO VÉU":
-REGRA CENTRAL: a notaVisual descreve uma CENA QUE EVOCA O TEMA do dia.
-Não é uma lista de materiais. É uma imagem que conta o estado emocional
-do dia, usando os materiais da gramática como vocabulário visual.
+VISUAL. Campo "notaVisual" em CADA slide:
+A notaVisual é 1 frase em inglês (~30-50 palavras) que descreve uma
+CENA VISUAL que TRADUZ O TEMA do dia em imagem. Vai directo para o
+Midjourney como prompt do fundo.
 
-A cena deve responder à pergunta: "como se PARECE este tema, traduzido
-em objectos, luz e espaço?". Não "que materiais usar".
+REGRA CENTRAL: a imagem REFLECTE o tema. Não há lista fixa de materiais.
+O tema decide a matéria, a paisagem, a atmosfera, a escala.
 
-MATERIAIS autorizados (vocabulário visual, não sujeito):
-- Têxteis: linho cru, sarja navy, rafia, juta/sisal
-- Cerâmica rústica (terracota, navy-glaze)
-- Botânica (1 por cena): estrelícia, palmeira, monstera, pampas, ramo seco
-- Artesanato leve: contas de osso, macramé, cesto, vaso barro, pano tingido
-- Suportes: madeira escura, pedra clara, parede stucco creme
-- Paleta: navy #1A1A2E, linho #E8DCC0, terracota #B85C38, rafia #C9A14A
-- Luz: única, oblíqua, suave
+Se o tema é "Solstício/escuro como mestre" → usa escuridão, crepúsculo,
+lanternas, caminhos na floresta, luz dourada a emergir do escuro.
+Se o tema é "Brotar" → usa terra fértil, rebentos, orvalho, manhã.
+Se o tema é "Aconchego" → usa tecidos quentes, interior íntimo, candeeiro.
+Se o tema é "Solidão fértil" → usa vazio vasto, objecto solitário, silêncio.
+Se o tema é "Fluidez" → usa água, vento, cortinas a mover, dissolução.
+Se o tema é "Limite" → usa fronteiras, linhas de sombra/luz, limiares.
 
-COMO COMPOR A CENA (tema-primeiro):
-1. LÊ o tema do dia (ex: "Solidão fértil", "Aconchego", "Limite")
-2. TRADUZ o tema numa SITUAÇÃO VISUAL: que arrumação de objectos, que
-   quantidade de espaço vazio, que tipo de luz, que gesto (dobrar,
-   desdobrar, isolar, empilhar) CONTA esta emoção?
-3. Escolhe materiais da gramática que SERVEM essa situação.
-A notaVisual NÃO é uma lista de compras ("ceramic + linen + strelitzia").
-É uma cena com direcção emocional ("the bowl sits alone in vast
-emptiness, the space around it is the subject").
-
-Exemplos tema-primeiro (CAPA):
-
-TEMA "Solidão fértil" (vazio que gera):
-"A single empty ceramic bowl sitting alone on vast pale stone floor,
-deep navy emptiness surrounding it, one soft shaft of afternoon light
-touching the bowl rim, cream linen cloth folded far in background
-almost invisible, editorial still life, contemplative silence"
-
-TEMA "Aconchego" (calor que acolhe):
-"Thick layers of navy wool and cream linen nested into each other on
-dark walnut bench, folds creating a cocoon embrace, small clay lamp
-glowing soft gold beside, dried pampas leaning against stucco wall,
-everything gathered close, warm intimate light, editorial still life"
-
-TEMA "Limite que ensina" (fronteira que protege):
-"Sharp clean fold of cream linen draped over edge of dark walnut table,
-half hanging into deep navy shadow below, one side warmly lit the other
-in shadow, strelitzia leaf casting diagonal line, editorial still life,
-painterly tension"
-
-TEMA "Fluidez" (soltar para fluir):
-"Cream linen cloth mid-unfurl caught in a breath of movement, one
-corner still held by pale stone weight, rest cascading softly off dark
-walnut surface, palm frond shadow swaying on stucco wall, golden
-afternoon light, editorial still life, painterly grace"
-
-Exemplos CTA (fecho simbólico, 1 objecto, muito espaço):
-"Single empty ceramic bowl on pale stone, vast deep navy around, single
-shaft of warm light, editorial still life, contemplative"
-"Single dried branch in small clay vase against cream stucco, soft long
-shadow, deep navy floor, contemplative"
-
-NÃO FAÇAS ISTO (genérico/material-first):
-- "Rustic ceramic vessel on linen cloth with strelitzia" → lista de
-  compras, não conta nenhum tema.
-- "Heavy navy wool serge blanket folded over dark walnut bench" → podia
-  ser qualquer tema, não evoca nada específico.
+Cada tema pede o SEU mundo visual. Não forces sempre os mesmos objectos.
 
 COMPOSIÇÃO por tipo de slide:
-CAPA (slide 1) = cena RICA que conta o tema com densidade visual.
-CTA (slide 6) = cena SIMBÓLICA e SIMPLES. 1 objecto, muito espaço.
-CONTEÚDO (slides 2-5) = sem fundo MJ (só tipografia).
+- CAPA (slide 1): cena RICA, atmosférica, com densidade visual e profundidade.
+  Pode ser paisagem, interior, macro, abstracta — o que o tema pedir.
+- CTA (slide 6): cena SIMBÓLICA e SIMPLES. 1 elemento, muito espaço,
+  contemplativa. É o silêncio depois da história.
+- CONTEÚDO (slides 2-5): sem fundo MJ (só tipografia).
 
-PROIBIDO: pessoas, rostos, mãos, HDR, cores saturadas, texto, logos,
-geografia, tecnologia moderna.
+ESTÉTICA (sempre):
+- Editorial, painterly, contemplativa
+- Paleta quente contida (navy, cream, terracota, dourado)
+- Luz com qualidade (oblíqua, suave, chiaroscuro)
+- Sem pessoas, rostos, mãos, corpos
+- Sem HDR, sem stock-photo, sem cores saturadas
+- Sem texto, logos, watermarks
+- Sem geografia explícita ("African", "Mozambique", etc.)
 
 VISUAL. Campo "fundoClaro" (boolean) em CADA slide:
 - true quando o slide convida ao estado luminoso/aberto/presente (frases
