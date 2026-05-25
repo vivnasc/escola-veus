@@ -42,6 +42,7 @@ import {
   rotationStats,
   type CalendarEntry,
 } from "@/lib/hoje-em-mim/calendar";
+
 import { posterFrag } from "@/lib/video-poster";
 
 type Frase = { id: string; dia: DiaSemana; texto: string };
@@ -116,33 +117,75 @@ function computePreviewItems(opts: {
   const startDate = isoDate(opts.ano, opts.mes, opts.diaInicio);
   const numDays = opts.diaFim - opts.diaInicio + 1;
 
-  // Pré-calcula sequências sem repetição (motions) e por mood (audios)
+  // Usa o calendário de prompts MJ para saber qual prompt pertence a
+  // cada dia. Se houver um clip no pool cujo filename contenha o id do
+  // prompt do calendário, usa esse clip (match directo). Senão cai
+  // para o shuffle determinístico anterior.
+  const [calY, calM, calD] = startDate.split("-").map(Number);
+  const calRotation = dailyMjRotation(
+    new Date(Date.UTC(calY, calM - 1, calD)),
+    numDays
+  );
+
   const seed = seedFromRange(opts.ano, opts.mes, opts.diaInicio);
   const diasMeta: Array<{ dia: DiaSemana; especial: DiaEspecial | null }> = [];
   for (let i = 0; i < numDays; i++) {
     const date = addDays(startDate, i);
     diasMeta.push({ dia: diaFromIso(date), especial: detectDiaEspecial(date) });
   }
-  const motionSeq = planMotionSequence(opts.motionPool, numDays, seed, {
+
+  // Fallback: shuffle por mood (para dias sem match do calendário)
+  const motionSeqFallback = planMotionSequence(opts.motionPool, numDays, seed, {
     moodByMotion: opts.moodByMotion,
     dias: diasMeta,
   });
   const audioSeq = planAudioSequence(opts.audioPool, diasMeta, seed);
 
+  // Procura match do calendário: clip cujo filename contenha o prompt id
+  function findCalendarMotion(promptId: string): string | null {
+    // Normaliza o id para ser procurável no filename (hem-m02-15 → hem-m02-15)
+    const norm = promptId.toLowerCase().replace(/[^a-z0-9-]/g, "");
+    for (const url of opts.motionPool) {
+      const fname = (url.split("/").pop() ?? "").toLowerCase();
+      if (fname.includes(norm)) return url;
+    }
+    return null;
+  }
+
+  // Constrói a sequência de motions: calendário first, fallback shuffle
+  const motionSeq: string[] = [];
+  for (let i = 0; i < numDays; i++) {
+    const calEntry = calRotation[i];
+    const calMatch = calEntry ? findCalendarMotion(calEntry.category.id) : null;
+    motionSeq.push(calMatch ?? motionSeqFallback[i] ?? "");
+  }
+
   for (let i = 0; i < numDays; i++) {
     const date = addDays(startDate, i);
     const { dia, especial } = diasMeta[i];
 
-    let frase: { id: string; texto: string } | null = null;
-    if (especial && opts.frasesEspeciais[especial]?.length > 0) {
-      const epool = opts.frasesEspeciais[especial];
-      frase = epool[especialCursor[especial] % epool.length];
-      especialCursor[especial]++;
+    // Usa a frase do calendário (já alinhada com o prompt MJ) quando
+    // disponível, senão cai para a rotação local.
+    const calEntry = calRotation[i];
+    let fraseId: string;
+    let fraseTexto: string;
+    if (calEntry) {
+      fraseId = calEntry.fraseId;
+      fraseTexto = calEntry.fraseTexto;
     } else {
-      const pool = opts.frasesPorDia[dia];
-      if (!pool || pool.length === 0) continue;
-      frase = pool[fraseCursor[dia] % pool.length];
-      fraseCursor[dia]++;
+      let frase: { id: string; texto: string } | null = null;
+      if (especial && opts.frasesEspeciais[especial]?.length > 0) {
+        const epool = opts.frasesEspeciais[especial];
+        frase = epool[especialCursor[especial] % epool.length];
+        especialCursor[especial]++;
+      } else {
+        const pool = opts.frasesPorDia[dia];
+        if (!pool || pool.length === 0) continue;
+        frase = pool[fraseCursor[dia] % pool.length];
+        fraseCursor[dia]++;
+      }
+      fraseId = frase.id;
+      fraseTexto = frase.texto;
     }
 
     items.push({
@@ -150,8 +193,8 @@ function computePreviewItems(opts: {
       date,
       dia,
       especial,
-      fraseId: frase.id,
-      fraseTexto: frase.texto,
+      fraseId,
+      fraseTexto,
       motionUrl: motionSeq[i] ?? "",
       audioUrl: audioSeq[i] ?? null,
     });
