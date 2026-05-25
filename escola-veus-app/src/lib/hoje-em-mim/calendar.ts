@@ -182,8 +182,7 @@ export function dailyMjRotation(
       }
     }
 
-    const variantIdx = variantCursor.get(category.id) ?? 0;
-    variantCursor.set(category.id, variantIdx + 1);
+    const variantIdx = 0; // flat structure: 1 prompt per entry
     promptUseCount.set(category.id, (promptUseCount.get(category.id) ?? 0) + 1);
 
     out.push({
@@ -194,8 +193,8 @@ export function dailyMjRotation(
       fraseId: frase.id,
       fraseTexto: frase.texto,
       category,
-      variantIdx: variantIdx % category.subjects.length,
-      promptText: buildMjPrompt(category, variantIdx),
+      variantIdx,
+      promptText: category.prompt,
       runwayMotion: category.runwayMotion,
       matchMode,
       matchedKeyword,
