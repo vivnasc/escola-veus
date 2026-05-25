@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { parseClaudeJson } from "@/lib/vc-sabia/parse-claude-json";
 
 export const maxDuration = 120;
 export const runtime = "nodejs";
@@ -168,29 +169,24 @@ OUTPUT — JSON estrito, sem markdown:
     );
   }
 
-  let cleaned = raw.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
-  }
-  let parsed: {
+  const result = parseClaudeJson<{
     suggestedPrompt?: string;
     reasoning?: string;
     observed?: string;
     dynamicElement?: string;
     concerns?: string[];
-  };
-  try {
-    parsed = JSON.parse(cleaned);
-  } catch {
+  }>(raw);
+  if (!result.ok) {
     return NextResponse.json(
-      { erro: "Claude devolveu JSON inválido", raw: cleaned.slice(0, 500) },
+      { erro: `Claude: ${result.error}`, raw: result.raw },
       { status: 502 }
     );
   }
+  const parsed = result.data;
 
   if (!parsed.suggestedPrompt || typeof parsed.suggestedPrompt !== "string") {
     return NextResponse.json(
-      { erro: "Claude não devolveu suggestedPrompt", raw: cleaned.slice(0, 500) },
+      { erro: "Claude não devolveu suggestedPrompt", raw: result.ok ? result.cleaned.slice(0, 500) : "" },
       { status: 502 }
     );
   }

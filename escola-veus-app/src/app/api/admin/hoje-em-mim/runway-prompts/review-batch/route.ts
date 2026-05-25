@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { parseClaudeJson } from "@/lib/vc-sabia/parse-claude-json";
 
 export const maxDuration = 300;
 export const runtime = "nodejs";
@@ -150,34 +151,30 @@ async function reviewOne(
     };
   }
 
-  let cleaned = raw.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
+  const result = parseClaudeJson<{
+    suggestedPrompt?: string;
+    reasoning?: string;
+    observed?: string;
+    dynamicElement?: string;
+    concerns?: string[];
+  }>(raw);
+  if (!result.ok) {
+    return { id: item.id, result: { error: `Claude: ${result.error}` } };
   }
-  try {
-    const parsed = JSON.parse(cleaned) as {
-      suggestedPrompt?: string;
-      reasoning?: string;
-      observed?: string;
-      dynamicElement?: string;
-      concerns?: string[];
-    };
-    if (!parsed.suggestedPrompt) {
-      return { id: item.id, result: { error: "Sem suggestedPrompt" } };
-    }
-    return {
-      id: item.id,
-      result: {
-        suggestedPrompt: parsed.suggestedPrompt.trim(),
-        reasoning: parsed.reasoning ?? "",
-        observed: parsed.observed,
-        dynamicElement: parsed.dynamicElement,
-        concerns: Array.isArray(parsed.concerns) ? parsed.concerns : [],
-      },
-    };
-  } catch {
-    return { id: item.id, result: { error: "JSON inválido do Claude" } };
+  const parsed = result.data;
+  if (!parsed.suggestedPrompt) {
+    return { id: item.id, result: { error: "Sem suggestedPrompt" } };
   }
+  return {
+    id: item.id,
+    result: {
+      suggestedPrompt: parsed.suggestedPrompt.trim(),
+      reasoning: parsed.reasoning ?? "",
+      observed: parsed.observed,
+      dynamicElement: parsed.dynamicElement,
+      concerns: Array.isArray(parsed.concerns) ? parsed.concerns : [],
+    },
+  };
 }
 
 export async function POST(req: NextRequest) {
