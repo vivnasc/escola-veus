@@ -89,22 +89,32 @@ export function NightMotionLibrary({ selectedUrl, onSelect }: Props) {
         currentName: `${file.name} (${(file.size / 1024 / 1024).toFixed(1)} MB)`,
       });
 
-      const form = new FormData();
-      form.append("file", file);
       try {
-        const res = await fetch("/api/admin/hoje-em-mim/motions/upload", {
+        // 1. Pede signed URL ao servidor (pedido pequeno, sem body pesado)
+        const signRes = await fetch("/api/admin/hoje-em-mim/motions/signed-url", {
           method: "POST",
-          body: form,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: file.name,
+            contentType: file.type || "video/mp4",
+          }),
         });
-        const json = await res.json();
-        if (!res.ok) {
-          setFeedback({
-            kind: "error",
-            message: `${file.name}: ${json.erro || `HTTP ${res.status}`}`,
-          });
-          // recarrega lista para mostrar os que já passaram
-          await load();
-          return;
+        const signJson = await signRes.json();
+        if (!signRes.ok) {
+          throw new Error(signJson.erro || `HTTP ${signRes.status}`);
+        }
+
+        // 2. Upload directo ao Supabase (sem limite Vercel de 4.5 MB)
+        const putRes = await fetch(signJson.signedUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type || "video/mp4",
+          },
+          body: file,
+        });
+        if (!putRes.ok) {
+          const txt = await putRes.text().catch(() => "");
+          throw new Error(`Supabase PUT: ${putRes.status} ${txt.slice(0, 200)}`);
         }
         okCount++;
       } catch (e) {
