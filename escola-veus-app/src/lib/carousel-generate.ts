@@ -390,13 +390,19 @@ export async function gerarColecaoComClaude(opts: {
   apiKey: string;
   title: string;
   brief: string;
-  numDias?: number; // default 7
-  slidesPorDia?: number; // default 6 (atenção: estrutura assume 6)
+  numDias?: number;
+  slidesPorDia?: number;
+  /** Nomes de véu/dia já usados em coleções anteriores — Claude evita repetir. */
+  usedNames?: string[];
 }): Promise<{ dias: Dia[]; usage: unknown }> {
   const { apiKey, title, brief } = opts;
   const numDias = opts.numDias ?? 7;
 
   const client = new Anthropic({ apiKey });
+
+  const usedBlock = opts.usedNames && opts.usedNames.length > 0
+    ? `\nNomes de dia JÁ USADOS em coleções anteriores (EVITA repetir, escolhe sinónimos ou palavras frescas):\n${opts.usedNames.join(", ")}\n`
+    : "";
 
   const userMessage = `Cria uma colecção chamada "${title}".
 
@@ -417,7 +423,7 @@ Em cada dia:
 Em CADA slide, preenche também:
 - notaVisual: 1 frase em inglês a descrever a cena MJ do fundo
 - fundoClaro: true se o slide aponta ao luminoso, false se nomeia o denso
-
+${usedBlock}
 Chama a tool save_collection com a colecção completa. Não escrevas mais nada.`;
 
   const res = await client.messages.create({

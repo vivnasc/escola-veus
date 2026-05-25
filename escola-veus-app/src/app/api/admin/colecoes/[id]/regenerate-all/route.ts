@@ -1,7 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/lib/supabase-server";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { gerarColecaoComClaude } from "@/lib/carousel-generate";
 import type { Dia } from "@/lib/carousel-types";
+
+async function loadUsedDayNames(admin: SupabaseClient, excludeId?: string): Promise<string[]> {
+  try {
+    let q = admin.from("carousel_collections").select("id, dias");
+    if (excludeId) q = q.neq("id", excludeId);
+    const { data } = await q;
+    if (!data) return [];
+    const names = new Set<string>();
+    for (const row of data) {
+      const dias = row.dias as Dia[] | null;
+      if (!Array.isArray(dias)) continue;
+      for (const d of dias) {
+        if (d.veu) names.add(d.veu.toUpperCase().trim());
+      }
+    }
+    return [...names].sort();
+  } catch {
+    return [];
+  }
+}
 
 export const dynamic = "force-dynamic";
 // Igual ao /create — Claude leva 30-90s para 7×6 slides.
@@ -54,9 +75,12 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
 
   const numDias = Array.isArray(col.dias) ? Math.max(1, (col.dias as Dia[]).length) : 7;
 
+  // Nomes já usados noutras coleções (excluindo esta) para Claude evitar
+  const usedNames = await loadUsedDayNames(admin, id);
+
   let generated: { dias: Dia[]; usage: unknown };
   try {
-    generated = await gerarColecaoComClaude({ apiKey, title, brief, numDias });
+    generated = await gerarColecaoComClaude({ apiKey, title, brief, numDias, usedNames });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ erro: `Claude falhou: ${msg}` }, { status: 502 });
