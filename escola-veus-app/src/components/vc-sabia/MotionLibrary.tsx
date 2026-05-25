@@ -21,6 +21,7 @@ interface Props {
 export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
   const [motions, setMotions] = useState<Motion[]>([]);
   const [tags, setTags] = useState<Record<string, MorningMood>>({});
+  const [categories, setCategories] = useState<Record<string, string>>({});
   const [tagsHydrated, setTagsHydrated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState<{
@@ -55,6 +56,7 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
       ]);
       setMotions(motionsRes.motions || []);
       setTags(tagsRes.tags || {});
+      setCategories(tagsRes.categories || {});
       setTagsHydrated(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -80,11 +82,11 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
     fetch("/api/admin/vc-sabia/motion-tags", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tags }),
+      body: JSON.stringify({ tags, categories }),
     }).catch(() => {
       /* erros silenciosos para tags, sao auto-save em background */
     });
-  }, [tags, tagsHydrated, onTagsChange]);
+  }, [tags, categories, tagsHydrated, onTagsChange]);
 
   const setMotionTag = (motionName: string, mood: MorningMood | "") => {
     setTags((prev) => {
@@ -178,22 +180,37 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
     if (motions.length === 0) return;
     setError(null);
     setAutoTagResult(null);
-    setAutoTagging({ phase: "extracting", done: 0, total: motions.length });
-    console.log(`[auto-tag] A extrair frames de ${motions.length} motions`);
+
+    // Saltar motions que ja tem mood + categoria visual classificados.
+    const needsClassification = motions.filter(
+      (m) => !tags[m.name] || !categories[m.name]
+    );
+    const alreadyDone = motions.length - needsClassification.length;
+    if (needsClassification.length === 0) {
+      setAutoTagResult({
+        classified: 0,
+        skipped: 0,
+        reasoning: `Todos os ${motions.length} motions ja estao classificados (mood + categoria). Nada a fazer.`,
+      });
+      return;
+    }
+
+    setAutoTagging({ phase: "extracting", done: 0, total: needsClassification.length });
+    console.log(`[auto-tag] ${needsClassification.length} motions por classificar (${alreadyDone} ja feitos)`);
 
     const frames: Array<{ name: string; base64: string }> = [];
     const failed: string[] = [];
-    for (let i = 0; i < motions.length; i++) {
-      const m = motions[i];
+    for (let i = 0; i < needsClassification.length; i++) {
+      const m = needsClassification[i];
       try {
         const base64 = await extractFrame(m.url);
         frames.push({ name: m.name, base64 });
-        console.log(`[auto-tag]   ${i + 1}/${motions.length} ${m.name} OK`);
+        console.log(`[auto-tag]   ${i + 1}/${needsClassification.length} ${m.name} OK`);
       } catch (e) {
         failed.push(m.name);
-        console.warn(`[auto-tag]   ${i + 1}/${motions.length} ${m.name} FAIL`, e);
+        console.warn(`[auto-tag]   ${i + 1}/${needsClassification.length} ${m.name} FAIL`, e);
       }
-      setAutoTagging({ phase: "extracting", done: i + 1, total: motions.length });
+      setAutoTagging({ phase: "extracting", done: i + 1, total: needsClassification.length });
     }
 
     if (frames.length === 0) {
@@ -220,22 +237,25 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
         setError(json.erro || `HTTP ${res.status}`);
       } else {
         const mergedTags = { ...tags, ...json.tags };
+        const mergedCategories = { ...categories, ...(json.categories || {}) };
         setTags(mergedTags);
-        // Gravar tags + categories no Supabase automaticamente
+        setCategories(mergedCategories);
         try {
           await fetch("/api/admin/vc-sabia/motion-tags", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ tags: mergedTags, categories: json.categories || {} }),
+            body: JSON.stringify({ tags: mergedTags, categories: mergedCategories }),
           });
         } catch { /* retry manual */ }
         onTagsChange?.(mergedTags);
+        const newCats = Object.keys(json.categories || {}).length;
         setAutoTagResult({
           classified: json.classified,
           skipped: json.skipped + failed.length,
           reasoning:
+            (alreadyDone > 0 ? `${alreadyDone} motions ja classificados (saltados). ` : "") +
             (json.reasoning || "") +
-            (json.categories ? ` · ${Object.keys(json.categories).length} categorias visuais classificadas.` : "") +
+            (newCats > 0 ? ` · ${newCats} categorias visuais classificadas.` : "") +
             (failed.length
               ? ` · ${failed.length} clips não foram extraídos: ${failed.slice(0, 3).join(", ")}${failed.length > 3 ? "…" : ""}`
               : ""),
