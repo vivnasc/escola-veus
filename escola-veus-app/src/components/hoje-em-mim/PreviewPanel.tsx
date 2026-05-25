@@ -258,7 +258,14 @@ export function HojeEmMimPreviewPanel() {
   const [audiosLib, setAudiosLib] = useState<AudioLib[]>([]);
   const [loadingMotionsLib, setLoadingMotionsLib] = useState(false);
   const [loadingAudiosLib, setLoadingAudiosLib] = useState(false);
-  const [selectedMotionUrls, setSelectedMotionUrls] = useState<Set<string>>(new Set());
+  const [selectedMotionUrls, setSelectedMotionUrls] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set<string>();
+    try {
+      const raw = localStorage.getItem("hoje-em-mim.selectedMotionUrls");
+      if (raw) return new Set(JSON.parse(raw) as string[]);
+    } catch { /* ignore */ }
+    return new Set<string>();
+  });
   const [selectedAudioUrls, setSelectedAudioUrls] = useState<Set<string>>(new Set());
 
   // Overrides per-dayIndex que a Vivianne edita inline na pré-montagem.
@@ -389,6 +396,17 @@ export function HojeEmMimPreviewPanel() {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [overridesByDay, monthKey, overridesLoaded]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && selectedMotionUrls.size > 0) {
+      try {
+        localStorage.setItem(
+          "hoje-em-mim.selectedMotionUrls",
+          JSON.stringify([...selectedMotionUrls])
+        );
+      } catch { /* quota */ }
+    }
+  }, [selectedMotionUrls]);
 
   const loadMotionsLib = useCallback(async () => {
     setLoadingMotionsLib(true);
