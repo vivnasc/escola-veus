@@ -141,22 +141,43 @@ function computePreviewItems(opts: {
   });
   const audioSeq = planAudioSequence(opts.audioPool, diasMeta, seed);
 
-  // Procura match do calendário: clip cujo filename contenha o prompt id
-  function findCalendarMotion(promptId: string): string | null {
-    // Normaliza o id para ser procurável no filename (hem-m02-15 → hem-m02-15)
-    const norm = promptId.toLowerCase().replace(/[^a-z0-9-]/g, "");
+  // Procura match do calendário: clip cujo filename contenha alguma
+  // keyword do prompt. A Vivianne não renomeia ficheiros — o nome
+  // vem natural do MJ ou do telemóvel (ex: "lua-piscina.mp4",
+  // "velas-altar-02.mp4"). O sistema descobre o match pelas keywords
+  // do prompt (ex: prompt tem keywords ["lua"] → "lua-piscina.mp4" casa).
+  function findCalendarMotion(calEntry: CalendarEntry): string | null {
+    const keywords = calEntry.category.keywords ?? [];
+    if (keywords.length === 0) return null;
+    const normKws = keywords.map((k) =>
+      k.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
+    );
     for (const url of opts.motionPool) {
-      const fname = (url.split("/").pop() ?? "").toLowerCase();
-      if (fname.includes(norm)) return url;
+      const fname = (url.split("/").pop() ?? "")
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .toLowerCase()
+        .replace(/\.[a-z0-9]+$/, "")
+        .replace(/[-_]+/g, " ");
+      for (const kw of normKws) {
+        if (fname.includes(kw)) return url;
+      }
     }
     return null;
   }
 
   // Constrói a sequência de motions: calendário first, fallback shuffle
   const motionSeq: string[] = [];
+  const usedCalUrls = new Set<string>();
   for (let i = 0; i < numDays; i++) {
     const calEntry = calRotation[i];
-    const calMatch = calEntry ? findCalendarMotion(calEntry.category.id) : null;
+    let calMatch: string | null = null;
+    if (calEntry) {
+      calMatch = findCalendarMotion(calEntry);
+      // Evita usar o mesmo clip para dois dias diferentes
+      if (calMatch && usedCalUrls.has(calMatch)) calMatch = null;
+      if (calMatch) usedCalUrls.add(calMatch);
+    }
     motionSeq.push(calMatch ?? motionSeqFallback[i] ?? "");
   }
 
