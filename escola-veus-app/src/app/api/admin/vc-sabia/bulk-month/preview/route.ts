@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { loadMergedFrases } from "@/lib/vc-sabia/phrases";
 import { loadUsageHistory } from "@/lib/vc-sabia/usage-history";
 import { calendarContextFor, preferredThemesFor } from "@/lib/vc-sabia/calendar";
+import { matchCategoryForPhrase } from "@/lib/vc-sabia/phrase-motion-match";
 
 export const maxDuration = 30;
 export const runtime = "nodejs";
@@ -84,9 +85,12 @@ export async function POST(req: NextRequest) {
     }));
 
   let motionTags: Record<string, string> = {};
+  let motionCategories: Record<string, string> = {};
   if (tagsRes.data) {
     try {
-      motionTags = (JSON.parse(await tagsRes.data.text())).tags || {};
+      const parsed = JSON.parse(await tagsRes.data.text());
+      motionTags = parsed.tags || {};
+      motionCategories = parsed.categories || {};
     } catch {
       /* ignore */
     }
@@ -175,7 +179,6 @@ export async function POST(req: NextRequest) {
   };
 
   // Motions: não-usados primeiro (shuffled) + usados depois (shuffled).
-  // Garante que motions novos que o user acabou de carregar têm prioridade.
   const shuffleSeed = year * 100 + month;
   const unusedMotions = deterministicShuffle(
     motions.filter((m) => !history.usedMotionNames.has(m.name)),
@@ -187,12 +190,44 @@ export async function POST(req: NextRequest) {
   );
   const orderedMotions = [...unusedMotions, ...usedMotions];
 
-  const plan = days.map((day, i) => {
+  // Agrupar motions por categoria visual (se classificados pelo auto-tagger).
+  const motionsByCategory = new Map<string, typeof motions>();
+  for (const m of orderedMotions) {
+    const cat = motionCategories[m.name];
+    if (cat) {
+      const list = motionsByCategory.get(cat) || [];
+      list.push(m);
+      motionsByCategory.set(cat, list);
+    }
+  }
+  const categoryCursors = new Map<string, number>();
+
+  // Escolhe o motion que combina com a frase:
+  // 1. Se a frase tem keyword → encontra categoria visual → motions dessa categoria
+  // 2. Se nao ha motions nessa categoria → fallback para orderedMotions por indice
+  let fallbackCursor = motionStartIndex;
+  const pickMotionForPhrase = (phraseText: string, phraseTema: string) => {
+    const targetCategory = matchCategoryForPhrase(phraseText, phraseTema);
+    if (targetCategory) {
+      const pool = motionsByCategory.get(targetCategory);
+      if (pool && pool.length > 0) {
+        const cursor = categoryCursors.get(targetCategory) || 0;
+        const pick = pool[cursor % pool.length];
+        categoryCursors.set(targetCategory, cursor + 1);
+        return pick;
+      }
+    }
+    const pick = orderedMotions[fallbackCursor % orderedMotions.length];
+    fallbackCursor++;
+    return pick;
+  };
+
+  const plan = days.map((day) => {
     const date = new Date(Date.UTC(year, month - 1, day));
     const ctx = calendarContextFor(year, month, day);
     const preferred = preferredThemesFor(ctx);
     const { phrase, reused: phraseReused, matchedTheme } = pickNextPhrase(preferred);
-    const motion = orderedMotions[(i + motionStartIndex) % orderedMotions.length];
+    const motion = pickMotionForPhrase(phrase.texto, phrase.tema);
     const motionReused = history.usedMotionNames.has(motion.name);
     const mood = motionTags[motion.name];
     const audioUrl = mood ? activeAudios[mood] ?? null : null;

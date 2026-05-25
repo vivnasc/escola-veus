@@ -219,12 +219,23 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
       if (!res.ok) {
         setError(json.erro || `HTTP ${res.status}`);
       } else {
-        setTags((prev) => ({ ...prev, ...json.tags }));
+        const mergedTags = { ...tags, ...json.tags };
+        setTags(mergedTags);
+        // Gravar tags + categories no Supabase automaticamente
+        try {
+          await fetch("/api/admin/vc-sabia/motion-tags", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tags: mergedTags, categories: json.categories || {} }),
+          });
+        } catch { /* retry manual */ }
+        onTagsChange?.(mergedTags);
         setAutoTagResult({
           classified: json.classified,
           skipped: json.skipped + failed.length,
           reasoning:
             (json.reasoning || "") +
+            (json.categories ? ` · ${Object.keys(json.categories).length} categorias visuais classificadas.` : "") +
             (failed.length
               ? ` · ${failed.length} clips não foram extraídos: ${failed.slice(0, 3).join(", ")}${failed.length > 3 ? "…" : ""}`
               : ""),

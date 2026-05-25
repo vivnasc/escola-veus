@@ -29,12 +29,12 @@ export async function GET() {
   });
 
   const { data, error } = await supabase.storage.from("course-assets").download(PATH);
-  if (error) return NextResponse.json({ tags: {} });
+  if (error) return NextResponse.json({ tags: {}, categories: {} });
   try {
     const parsed = JSON.parse(await data.text());
-    return NextResponse.json({ tags: parsed.tags ?? {} });
+    return NextResponse.json({ tags: parsed.tags ?? {}, categories: parsed.categories ?? {} });
   } catch {
-    return NextResponse.json({ tags: {} });
+    return NextResponse.json({ tags: {}, categories: {} });
   }
 }
 
@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ erro: "JSON invalido" }, { status: 400 });
   }
   const tags = (body as { tags?: unknown })?.tags;
+  const categories = (body as { categories?: unknown })?.categories;
   if (!tags || typeof tags !== "object") {
     return NextResponse.json({ erro: "tags em falta" }, { status: 400 });
   }
@@ -57,7 +58,11 @@ export async function POST(req: NextRequest) {
     auth: { persistSession: false },
   });
 
-  const payload = JSON.stringify({ tags, updatedAt: new Date().toISOString() });
+  const payload = JSON.stringify({
+    tags,
+    categories: categories && typeof categories === "object" ? categories : {},
+    updatedAt: new Date().toISOString(),
+  });
   const { error } = await supabase.storage
     .from("course-assets")
     .upload(PATH, new Blob([payload], { type: "application/json" }), {
