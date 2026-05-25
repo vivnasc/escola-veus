@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { calendarContextFor, calendarLabel } from "@/lib/vc-sabia/calendar";
 import { buildAvoidSet, normalizePhraseForDedup } from "@/lib/vc-sabia/dedupe";
+import { parseClaudeJson } from "@/lib/vc-sabia/parse-claude-json";
 
 export const maxDuration = 120;
 export const runtime = "nodejs";
@@ -135,14 +136,11 @@ async function callClaude(
   for (const block of res.content) {
     if (block.type === "text") raw += block.text;
   }
-  let cleaned = raw.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
-  }
-  const parsed = JSON.parse(cleaned) as {
+  const result = parseClaudeJson<{
     phrases?: Array<{ phrase?: string; theme?: string; reasoning?: string }>;
-  };
-  return (parsed.phrases ?? [])
+  }>(raw);
+  if (!result.ok) throw new Error(result.error);
+  return (result.data.phrases ?? [])
     .map((p) => ({
       phrase: (p.phrase || "").replace(/[—–]/g, ",").trim(),
       theme: p.theme || "",
