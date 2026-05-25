@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
   const [motionsRes, tagsRes, audiosRes] = await Promise.all([
     supabase.storage.from("course-assets").list("vc-sabia-motions", {
       limit: 200,
-      sortBy: { column: "created_at", order: "asc" },
+      sortBy: { column: "created_at", order: "desc" },
     }),
     supabase.storage.from("course-assets").download("vc-sabia-meta/motion-tags.json"),
     supabase.storage.from("course-assets").download("vc-sabia-meta/active-audios.json"),
@@ -103,6 +103,22 @@ export async function POST(req: NextRequest) {
 
   if (motions.length === 0) {
     return NextResponse.json({ erro: "Motion library vazio" }, { status: 400 });
+  }
+
+  // Shuffle determinista (Fisher-Yates com seed) para variar a ordem dos
+  // motions sem ser aleatorio a cada refresh. Seed = year*100+month.
+  function deterministicShuffle<T>(arr: T[], seed: number): T[] {
+    const a = [...arr];
+    let s = seed;
+    const next = () => {
+      s = (s * 1664525 + 1013904223) & 0x7fffffff;
+      return s / 0x7fffffff;
+    };
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(next() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
 
   const frases = await loadMergedFrases(supabaseUrl);
@@ -158,12 +174,25 @@ export async function POST(req: NextRequest) {
     return { phrase: p, reused: true, matchedTheme: false };
   };
 
+  // Motions: não-usados primeiro (shuffled) + usados depois (shuffled).
+  // Garante que motions novos que o user acabou de carregar têm prioridade.
+  const shuffleSeed = year * 100 + month;
+  const unusedMotions = deterministicShuffle(
+    motions.filter((m) => !history.usedMotionNames.has(m.name)),
+    shuffleSeed
+  );
+  const usedMotions = deterministicShuffle(
+    motions.filter((m) => history.usedMotionNames.has(m.name)),
+    shuffleSeed + 1
+  );
+  const orderedMotions = [...unusedMotions, ...usedMotions];
+
   const plan = days.map((day, i) => {
     const date = new Date(Date.UTC(year, month - 1, day));
     const ctx = calendarContextFor(year, month, day);
     const preferred = preferredThemesFor(ctx);
     const { phrase, reused: phraseReused, matchedTheme } = pickNextPhrase(preferred);
-    const motion = motions[(i + motionStartIndex) % motions.length];
+    const motion = orderedMotions[(i + motionStartIndex) % orderedMotions.length];
     const motionReused = history.usedMotionNames.has(motion.name);
     const mood = motionTags[motion.name];
     const audioUrl = mood ? activeAudios[mood] ?? null : null;
