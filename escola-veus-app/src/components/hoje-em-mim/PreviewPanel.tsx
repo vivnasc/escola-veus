@@ -5088,16 +5088,40 @@ function BulkPreviewTable({
     setOverride(dayIndex, { motionUrl: newMotionUrl, audioUrl: nextAudio });
   };
 
-  // Re-shuffle global: re-rola todas as linhas que NÃO foram
-  // editadas manualmente (preserva overrides existentes).
+  // Re-shuffle global: re-rola todas as linhas usando clips do
+  // pool ACTUAL. Limpa overrides de motion/áudio e atribui frescos.
   const reshuffleAll = () => {
     const next = { ...overrides };
     for (const it of items) {
       const cur = next[it.dayIndex] || {};
-      if (cur.motionUrl || cur.audioUrl !== undefined) continue;
       const m = pickAlternateMotion(it.motionUrl, it.dia, it.especial);
       const a = pickAudioForMotion(m, it.dia, it.especial);
       next[it.dayIndex] = { ...cur, motionUrl: m, audioUrl: a };
+    }
+    onChangeOverrides(next);
+  };
+
+  // Limpa TODOS os overrides para o mês. A pré-montagem recalcula
+  // do zero com o pool actual + calendário.
+  const clearAllOverrides = () => {
+    onChangeOverrides({});
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("hoje-em-mim.selectedMotionUrls");
+    }
+  };
+
+  // Limpa só os overrides de motion/áudio (mantém frase e tema
+  // editados). Usa-se quando se carregaram clips novos e se quer
+  // que a pré-montagem os adopte.
+  const refreshMotionOverrides = () => {
+    const next: Record<number, typeof overrides[number]> = {};
+    for (const [k, v] of Object.entries(overrides)) {
+      const clean = { ...v };
+      delete clean.motionUrl;
+      delete clean.audioUrl;
+      if (Object.keys(clean).length > 0) {
+        next[Number(k)] = clean;
+      }
     }
     onChangeOverrides(next);
   };
@@ -5162,12 +5186,33 @@ function BulkPreviewTable({
             onClick={reshuffleAll}
             className="rounded border px-2 py-1 text-[11px] hover:opacity-80"
             style={{ borderColor: COBRE, color: COBRE, background: "rgba(194, 143, 96, 0.06)" }}
-            title="Re-rola motion + áudio de todas as linhas que não tens editadas manualmente. Respeita o mood do dia."
+            title="Re-rola motion + áudio de TODAS as linhas com clips do pool actual."
           >
-            🎲 Re-shuffle tudo (preserva overrides)
+            🎲 Re-shuffle tudo
           </button>
+          <button
+            onClick={refreshMotionOverrides}
+            className="rounded border px-2 py-1 text-[11px] hover:opacity-80"
+            style={{ borderColor: "rgb(16, 185, 129)", color: "rgb(16, 185, 129)", background: "rgba(16, 185, 129, 0.06)" }}
+            title="Limpa overrides de motion/áudio (mantém frases e temas editados). A pré-montagem recalcula com os novos clips e o calendário."
+          >
+            ↻ Actualizar motions (usar clips novos)
+          </button>
+          {overrideCount > 0 && (
+            <button
+              onClick={() => {
+                if (confirm(`Limpar ${overrideCount} overrides? As edições manuais (frases, temas) também se perdem.`)) {
+                  clearAllOverrides();
+                }
+              }}
+              className="rounded border border-red-700/40 bg-red-900/10 px-2 py-1 text-[11px] text-red-300 hover:bg-red-900/20"
+              title="Limpa TUDO: frases, motions, áudios, temas editados. Recomeça do zero."
+            >
+              🗑 Limpar {overrideCount} overrides
+            </button>
+          )}
           <span className="text-escola-creme-50">
-            ou clica 🎲 numa linha para trocar só essa
+            🎲 na linha para trocar só essa
           </span>
         </div>
         <table className="w-full text-[10px]">
