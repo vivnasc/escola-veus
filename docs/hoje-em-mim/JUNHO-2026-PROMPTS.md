@@ -71,22 +71,22 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 
 ---
 
-## DIA 004 · Quinta 2026-06-04 · hem-m01-05 v1
+## DIA 004 · Quinta 2026-06-04 · hem-m06-11 v1
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0022`
+**Alinhamento:** 🎯 keyword `amor`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0022`
 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Raw rose quartz cluster on a dark sill at night, moonlight finding its pink depths, gentle mineral warmth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera, moonlight slowly shifting on the rose quartz crystal faces, soft pink reflections moving, deep mineral stillness, very slow ambient, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -351,22 +351,22 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 018 · Quinta 2026-06-18 · hem-m02-01 v1
+## DIA 018 · Quinta 2026-06-18 · hem-m03-12 v1
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0024`
+**Alinhamento:** 🎯 keyword `só`  ·  **Áudio:** `lareira-respira`  ·  **Frase id:** `hem-0024`
 
 ### Prompt Midjourney
 
 ```
-Single Tibetan singing bowl on a dark velvet cushion at night, faint vibration rings in the air, warm side light --ar 9:16
+Single oil lamp on a dark stone floor in an empty room at night, flame reflected in a small pool of spilled oil beside it, intimate and vulnerable --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, faint vibration rings expanding from the singing bowl rim, dust particles suspended in warm side light, very slow pulse, no zoom, no pan, no rotation, no people
+static camera, oil lamp flame gently flickering, reflection of the flame rippling in the small oil pool beside it, warm amber glow pulsing on the stone floor, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -614,17 +614,17 @@ static camera, lotus flower gently bobbing on the still water surface, moonlight
 
 # Auditoria
 
-- Match por **keyword**: 24 dias
-- Match por **mood**: 6 dias
+- Match por **keyword**: 26 dias
+- Match por **mood**: 4 dias
 - **Fallback** ciclo: 0 dias
 
 ## Uso por prompt
 
 - `hem-m01-20` — 5 dias
 - `hem-m01-12` — 3 dias
-- `hem-m01-05` — 2 dias
 - `hem-m02-02` — 2 dias
 - `hem-m01-08` — 1 dias
+- `hem-m06-11` — 1 dias
 - `hem-m01-16` — 1 dias
 - `hem-m01-09` — 1 dias
 - `hem-m02-10` — 1 dias
@@ -633,17 +633,18 @@ static camera, lotus flower gently bobbing on the still water surface, moonlight
 - `hem-m02-24` — 1 dias
 - `hem-m02-29` — 1 dias
 - `hem-m01-02` — 1 dias
-- `hem-m02-01` — 1 dias
+- `hem-m03-12` — 1 dias
 - `hem-m01-25` — 1 dias
 - `hem-m01-06` — 1 dias
 - `hem-m01-14` — 1 dias
 - `hem-m01-04` — 1 dias
 - `hem-m02-20` — 1 dias
 - `hem-m01-29` — 1 dias
+- `hem-m01-05` — 1 dias
 - `hem-m01-13` — 1 dias
 - `hem-m02-03` — 1 dias
 
-### Prompts não usados (38/60)
+### Prompts não usados (157/180)
 Nenhuma frase faz match. Considera acrescentar keywords ou frases que toquem nestes substantivos:
 - `hem-m01-01` — keywords: `vela`, `chama`
 - `hem-m01-03` — keywords: `brasa`, `brasas`, `lume`
@@ -661,6 +662,7 @@ Nenhuma frase faz match. Considera acrescentar keywords ou frases que toquem nes
 - `hem-m01-27` — keywords: `fogueira`, `fogo`, `deserto`
 - `hem-m01-28` — keywords: `cacau`, `chocolate`
 - `hem-m01-30` — keywords: `pena`, `peito`, `soltar`, `solto`, `deixo`
+- `hem-m02-01` — keywords: `tigela`, `som`, `vibração`
 - `hem-m02-04` — keywords: `passo`, `escada`, `subir`, `caminho`
 - `hem-m02-05` — keywords: `erva`, `ervas`, `essência`
 - `hem-m02-07` — keywords: `sal`, `cristal`, `limpar`, `limpo`
@@ -683,3 +685,121 @@ Nenhuma frase faz match. Considera acrescentar keywords ou frases que toquem nes
 - `hem-m02-27` — keywords: `música`, `canção`, `canto`, `melodia`, `voz`
 - `hem-m02-28` — keywords: `lua`, `crescente`, `noite`
 - `hem-m02-30` — keywords: `porta`, `limiar`, `passagem`, `entre`
+- `hem-m03-01` — keywords: `lanterna`, `soltar`, `elevar`, `subir`, `luz`
+- `hem-m03-02` — keywords: `lâmpada`, `chama`, `claridade`, `interior`
+- `hem-m03-03` — keywords: `tecido`, `reflexo`, `calor`, `noite`
+- `hem-m03-04` — keywords: `oceano`, `brilho`, `mistério`, `azul`, `vivo`
+- `hem-m03-05` — keywords: `vagalume`, `brilho`, `pequeno`, `guardo`
+- `hem-m03-06` — keywords: `descida`, `profundidade`, `dentro`, `escuridão`
+- `hem-m03-07` — keywords: `lampião`, `varandah`, `passado`, `memória`
+- `hem-m03-08` — keywords: `luz`, `fragmento`, `sagrado`, `cor`
+- `hem-m03-09` — keywords: `reflexo`, `cidade`, `noite`, `cor`, `molhado`
+- `hem-m03-10` — keywords: `raio`, `buraco`, `segredo`, `esperar`
+- `hem-m03-11` — keywords: `festa`, `alegria`, `noite`, `jardim`
+- `hem-m03-13` — keywords: `profundo`, `fundo`, `nadar`, `mergulhar`
+- `hem-m03-14` — keywords: `intenção`, `oferta`, `água`, `ritual`
+- `hem-m03-15` — keywords: `tecido`, `cesto`, `feito`, `mão`
+- `hem-m03-16` — keywords: `tecto`, `fenda`, `brilha`, `chão`
+- `hem-m03-17` — keywords: `chão`, `quarto`, `suave`, `aconchego`
+- `hem-m03-18` — keywords: `frasco`, `transparente`, `dentro`, `fora`
+- `hem-m03-19` — keywords: `tocha`, `campo`, `escuridão`, `resistir`
+- `hem-m03-20` — keywords: `porta`, `esperar`, `dentro`, `chamado`
+- `hem-m03-21` — keywords: `abundância`, `comunidade`, `luz`, `partilhar`
+- `hem-m03-22` — keywords: `canoa`, `rio`, `viagem`, `destino`
+- `hem-m03-23` — keywords: `mão`, `ecrã`, `silêncio`, `noite`
+- `hem-m03-24` — keywords: `brasa`, `fim`, `terminar`, `permanece`
+- `hem-m03-25` — keywords: `cerimónia`, `silêncio`, `presente`, `ofereço`
+- `hem-m03-26` — keywords: `sombra`, `padrão`, `artesanato`, `luz`
+- `hem-m03-27` — keywords: `liberdade`, `elevar`, `soltar`, `múltiplo`
+- `hem-m03-28` — keywords: `cogumelo`, `brilho`, `floresta`, `mistério`
+- `hem-m03-29` — keywords: `escrever`, `sombra`, `mão`, `noite`
+- `hem-m03-30` — keywords: `amanhecer`, `fim`, `começo`, `transição`
+- `hem-m04-01` — keywords: `lua`, `vermelha`, `sangue`, `horizonte`
+- `hem-m04-02` — keywords: `colheita`, `lua`, `amplitude`, `terra`
+- `hem-m04-03` — keywords: `eclipse`, `sombra`, `passagem`, `ciclo`
+- `hem-m04-04` — keywords: `queda`, `água`, `cachoeira`, `força`
+- `hem-m04-05` — keywords: `gelo`, `espelho`, `frio`, `perfeição`
+- `hem-m04-06` — keywords: `vapor`, `calor`, `terra`, `cura`
+- `hem-m04-07` — keywords: `orvalho`, `pétala`, `reflexo`, `despertar`
+- `hem-m04-08` — keywords: `cheio`, `transbordar`, `excesso`, `deixar`
+- `hem-m04-09` — keywords: `piscina`, `maré`, `estrela`, `vida`
+- `hem-m04-10` — keywords: `rio`, `curva`, `fluir`, `caminho`
+- `hem-m04-11` — keywords: `olho`, `lua`, `folha`, `ver`
+- `hem-m04-12` — keywords: `profundidade`, `debaixo`, `ver`, `superfície`
+- `hem-m04-13` — keywords: `lágrima`, `choro`, `sentir`, `liberta`
+- `hem-m04-14` — keywords: `mangal`, `raiz`, `água`, `costa`
+- `hem-m04-15` — keywords: `chuva`, `círculo`, `ritmo`, `padrão`
+- `hem-m04-16` — keywords: `luar`, `pote`, `cozinhar`, `comunidade`
+- `hem-m04-17` — keywords: `dobro`, `reflexo`, `espelho`, `estrada`
+- `hem-m04-18` — keywords: `baleia`, `grandeza`, `profundo`, `salto`
+- `hem-m04-19` — keywords: `banho`, `ritual`, `corpo`, `cura`
+- `hem-m04-20` — keywords: `nascente`, `fonte`, `origem`, `começar`
+- `hem-m04-21` — keywords: `estuário`, `crescent`, `silêncio`, `teal`
+- `hem-m04-22` — keywords: `rayo`, `peixe`, `silêncio`, `azul`
+- `hem-m04-23` — keywords: `pote`, `recolher`, `chuva`, `paciência`
+- `hem-m04-24` — keywords: `onda`, `crise`, `força`, `passar`
+- `hem-m04-25` — keywords: `jardim`, `abre`, `noite`, `perfume`
+- `hem-m04-26` — keywords: `solidão`, `presença`, `único`, `basta`
+- `hem-m04-27` — keywords: `lago`, `infinito`, `reflexo`, `unidade`
+- `hem-m04-28` — keywords: `tartaruga`, `ancestral`, `tempo`, `paciência`
+- `hem-m04-29` — keywords: `halo`, `raro`, `círculo`, `sagrado`
+- `hem-m04-30` — keywords: `despedida`, `transição`, `amanhecer`, `soltar`
+- `hem-m05-01` — keywords: `veado`, `hesitação`, `limiar`, `escuta`
+- `hem-m05-02` — keywords: `raposa`, `astúcia`, `noite`, `vigília`
+- `hem-m05-03` — keywords: `tartaruga`, `ninho`, `instinto`, `cosmos`
+- `hem-m05-04` — keywords: `mariposa`, `atração`, `chama`, `risco`
+- `hem-m05-05` — keywords: `garça`, `silêncio`, `esperar`, `paciência`
+- `hem-m05-06` — keywords: `coelho`, `campo`, `noite`, `quietude`
+- `hem-m05-07` — keywords: `gato`, `dormir`, `descanso`, `lar`
+- `hem-m05-08` — keywords: `gecko`, `parede`, `tropical`, `observar`
+- `hem-m05-09` — keywords: `cavalo`, `força`, `liberdade`, `horizonte`
+- `hem-m05-10` — keywords: `borboleta`, `romper`, `nascer`, `transformação`
+- `hem-m05-11` — keywords: `elefante`, `sabedoria`, `água`, `memória`
+- `hem-m05-12` — keywords: `floresta`, `magia`, `reunir`, `luz`
+- `hem-m05-13` — keywords: `par`, `companheir`, `silêncio`, `juntos`
+- `hem-m05-14` — keywords: `porco`, `terra`, `instinto`, `busca`
+- `hem-m05-15` — keywords: `camaleão`, `adaptar`, `mudar`, `ver`
+- `hem-m05-16` — keywords: `morcego`, `emergir`, `noite`, `libertar`
+- `hem-m05-17` — keywords: `ancestral`, `vigiar`, `paciência`, `rio`
+- `hem-m05-18` — keywords: `rã`, `chuva`, `chamada`, `voz`
+- `hem-m05-19` — keywords: `descanso`, `depois`, `corpo`, `quieto`
+- `hem-m05-20` — keywords: `ninho`, `ovo`, `esperar`, `cuidar`
+- `hem-m05-21` — keywords: `gazela`, `alerta`, `beber`, `saúde`
+- `hem-m05-22` — keywords: `aranha`, `construir`, `fio`, `paciência`
+- `hem-m05-23` — keywords: `cobra`, `espiral`, `primal`, `força`
+- `hem-m05-24` — keywords: `minhoca`, `terra`, `invisível`, `transformar`
+- `hem-m05-25` — keywords: `corvo`, `inteligência`, `observar`, `noite`
+- `hem-m05-26` — keywords: `leoa`, `poder`, `descanso`, `noite`
+- `hem-m05-27` — keywords: `abelha`, `regresso`, `lar`, `pertencer`
+- `hem-m05-28` — keywords: `raiz`, `baobá`, `fundação`, `ancient`
+- `hem-m05-29` — keywords: `macaco`, `árvore`, `sono`, `seguro`
+- `hem-m05-30` — keywords: `formiga`, `cidade`, `construção`, `coletivo`
+- `hem-m06-01` — keywords: `ametista`, `cristal`, `púrpura`, `proteção`
+- `hem-m06-02` — keywords: `espelho`, `obsidiana`, `ver`, `reflexo`
+- `hem-m06-03` — keywords: `jade`, `amuleto`, `herança`, `verde`
+- `hem-m06-04` — keywords: `capulana`, `tecido`, `cor`, `identidade`
+- `hem-m06-05` — keywords: `renda`, `delicado`, `padrão`, `memória`
+- `hem-m06-06` — keywords: `manta`, `calor`, `proteção`, `dobra`
+- `hem-m06-07` — keywords: `cerâmica`, `coleção`, `guardar`, `nutrir`
+- `hem-m06-08` — keywords: `almofariz`, `bronze`, `moer`, `ancestral`
+- `hem-m06-09` — keywords: `prisma`, `espectro`, `cor`, `luz`
+- `hem-m06-10` — keywords: `erva`, `seco`, `cheiro`, `cura`
+- `hem-m06-12` — keywords: `índigo`, `tecelagem`, `artesanato`, `noite`
+- `hem-m06-13` — keywords: `vaso`, `antigo`, `guardar`, `tempo`
+- `hem-m06-14` — keywords: `vidro`, `mar`, `suave`, `desgaste`
+- `hem-m06-15` — keywords: `malaquita`, `espiral`, `verde`, `profundo`
+- `hem-m06-16` — keywords: `tear`, `tecer`, `pausa`, `continuar`
+- `hem-m06-17` — keywords: `basalto`, `pedra`, `água`, `reflexo`
+- `hem-m06-18` — keywords: `cobre`, `tigela`, `potencial`, `vibração`
+- `hem-m06-19` — keywords: `carta`, `memória`, `palavra`, `passado`
+- `hem-m06-20` — keywords: `tinta`, `azul`, `intensidade`, `cor`
+- `hem-m06-21` — keywords: `contas`, `artesanato`, `oração`, `terra`
+- `hem-m06-22` — keywords: `ouro`, `bruto`, `valor`, `raro`
+- `hem-m06-23` — keywords: `pote`, `água`, `comunidade`, `tradição`
+- `hem-m06-24` — keywords: `batik`, `cera`, `pintar`, `processo`
+- `hem-m06-25` — keywords: `pedra`, `círculo`, `ritual`, `terra`
+- `hem-m06-26` — keywords: `espelho`, `virar`, `esconder`, `mostrar`
+- `hem-m06-27` — keywords: `lápis`, `azul`, `cosmos`, `mineral`
+- `hem-m06-28` — keywords: `azulejo`, `barro`, `ofício`, `pilha`
+- `hem-m06-29` — keywords: `mercado`, `cor`, `cultura`, `herança`
+- `hem-m06-30` — keywords: `geode`, `interior`, `segredo`, `revelar`

@@ -71,22 +71,22 @@ static camera, sheer white linen curtain gently billowing inward and outward in 
 
 ---
 
-## DIA 004 · Quinta 2026-06-04 · hem-m01-05 v1
+## DIA 004 · Quinta 2026-06-04 · hem-m06-11 v1
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0022`
+**Alinhamento:** 🎯 keyword `amor`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0022`
 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Raw rose quartz cluster on a dark sill at night, moonlight finding its pink depths, gentle mineral warmth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera, moonlight slowly shifting on the rose quartz crystal faces, soft pink reflections moving, deep mineral stillness, very slow ambient, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -351,22 +351,22 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 018 · Quinta 2026-06-18 · hem-m02-01 v1
+## DIA 018 · Quinta 2026-06-18 · hem-m03-12 v1
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0024`
+**Alinhamento:** 🎯 keyword `só`  ·  **Áudio:** `lareira-respira`  ·  **Frase id:** `hem-0024`
 
 ### Prompt Midjourney
 
 ```
-Single Tibetan singing bowl on a dark velvet cushion at night, faint vibration rings in the air, warm side light --ar 9:16
+Single oil lamp on a dark stone floor in an empty room at night, flame reflected in a small pool of spilled oil beside it, intimate and vulnerable --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, faint vibration rings expanding from the singing bowl rim, dust particles suspended in warm side light, very slow pulse, no zoom, no pan, no rotation, no people
+static camera, oil lamp flame gently flickering, reflection of the flame rippling in the small oil pool beside it, warm amber glow pulsing on the stone floor, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -634,7 +634,7 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 
 ---
 
-## DIA 032 · Quinta 2026-07-02 · hem-m02-07 v1
+## DIA 032 · Quinta 2026-07-02 · hem-m01-05 v1
 
 **Frase:** *Hoje aprendi que descansar é parte do trabalho de evoluir.*
 
@@ -643,13 +643,13 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 ### Prompt Midjourney
 
 ```
-Shallow clay bowl of coarse salt crystals on a dark linen cloth at night, warm side lamp, mineral texture --ar 9:16
+White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, warm lamp light gently pulsing on the salt crystal surfaces, tiny light reflections shifting, very slow ambient, no zoom, no pan, no rotation, no people
+static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -774,22 +774,22 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 039 · Quinta 2026-07-09 · hem-m02-14 v1
+## DIA 039 · Quinta 2026-07-09 · hem-m05-20 v1
 
 **Frase:** *Hoje aprendi que cuidar de mim é o primeiro recado que dou ao mundo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0027`
+**Alinhamento:** 🎯 keyword `cuidar`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0027`
 
 ### Prompt Midjourney
 
 ```
-Potters wheel with wet clay form in a dark workshop at night, single amber overhead lamp, hands absent, work paused --ar 9:16
+Nest of woven grass with three eggs at night, warm amber light from below, delicate and precarious, bird absent --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, amber lamp light gently pulsing on the wet clay surface, soft reflections on the moist form, very slow ambient, wheel still, no zoom, no pan, no rotation, no people
+static camera, woven grass nest resting on a branch, warm amber light softly pulsing below, three eggs unmoving, very gentle branch sway, delicate shadow patterns, no zoom, no pan, no rotation
 ```
 
 ---
@@ -934,7 +934,7 @@ static camera, single white feather falling slowly downward through the beam of 
 
 ---
 
-## DIA 047 · Sexta 2026-07-17 · hem-m01-16 v1
+## DIA 047 · Sexta 2026-07-17 · hem-m03-19 v1
 
 **Frase:** *Celebro hoje a coragem silenciosa que ninguém aplaude, mas que me sustenta.*
 
@@ -943,13 +943,13 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Single torch planted in dark earth in an open Mozambican field at night, orange flame in wide darkness, stars overhead --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera, torch flame flickering strongly in a gentle night wind, orange sparks rising and fading, stars softly twinkling above, surrounding darkness deep, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1054,27 +1054,27 @@ static camera, single white feather falling slowly downward through the beam of 
 
 ---
 
-## DIA 053 · Quinta 2026-07-23 · hem-m02-18 v1
+## DIA 053 · Quinta 2026-07-23 · hem-m06-11 v1
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0022`
+**Alinhamento:** 🎯 keyword `amor`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0022`
 
 ### Prompt Midjourney
 
 ```
-Hourglass with dark sand flowing on a wooden desk at night, single warm lamp, time passing visibly --ar 9:16
+Raw rose quartz cluster on a dark sill at night, moonlight finding its pink depths, gentle mineral warmth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, dark sand grains flowing continuously through the hourglass neck, warm lamp light on the glass surface, very slow contemplative focus, no zoom, no pan, no rotation, no people
+static camera, moonlight slowly shifting on the rose quartz crystal faces, soft pink reflections moving, deep mineral stillness, very slow ambient, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 054 · Sexta 2026-07-24 · hem-m01-25 v1
+## DIA 054 · Sexta 2026-07-24 · hem-m04-02 v1
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -1083,13 +1083,13 @@ static camera, dark sand grains flowing continuously through the hourglass neck,
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Harvest moon behind silhouetted African savannah grasses, deep amber disc, still and enormous, warm night --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, enormous harvest moon slowly rising behind silhouetted savannah grasses, deep amber disc creeping upward, grasses unmoving in the foreground, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1337,22 +1337,22 @@ static camera, water flowing gently around the stacked stones, moonlight reflect
 
 ---
 
-## DIA 067 · Quinta 2026-08-06 · hem-m02-23 v1
+## DIA 067 · Quinta 2026-08-06 · hem-m03-12 v1
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0024`
+**Alinhamento:** 🎯 keyword `só`  ·  **Áudio:** `lareira-respira`  ·  **Frase id:** `hem-0024`
 
 ### Prompt Midjourney
 
 ```
-Old copper bell hanging from a dark wooden beam at night, not ringing, just waiting, warm patina in candlelight --ar 9:16
+Single oil lamp on a dark stone floor in an empty room at night, flame reflected in a small pool of spilled oil beside it, intimate and vulnerable --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, candlelight gently pulsing on the copper bell surface, warm patina reflections shifting, bell hangs still, very slow ambient, no zoom, no pan, no rotation, no people
+static camera, oil lamp flame gently flickering, reflection of the flame rippling in the small oil pool beside it, warm amber glow pulsing on the stone floor, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1497,7 +1497,7 @@ static camera, warm side light gently pulsing on the needle and thread, soft sha
 
 ---
 
-## DIA 075 · Sexta 2026-08-14 · hem-m01-27 v1
+## DIA 075 · Sexta 2026-08-14 · hem-m04-16 v1
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -1506,13 +1506,13 @@ static camera, warm side light gently pulsing on the needle and thread, soft sha
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Full moon seen through steam rising from a clay cooking pot outside at night, tropical African courtyard, hazy golden halo --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
+static camera, steam rising from the clay pot slowly drifting upward and partially obscuring the full moon, moon halo visible through the steam, steam continuously rising, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1617,7 +1617,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 081 · Quinta 2026-08-20 · hem-m01-05 v1
+## DIA 081 · Quinta 2026-08-20 · hem-m02-01 v1
 
 **Frase:** *Hoje aprendi que descansar é parte do trabalho de evoluir.*
 
@@ -1626,13 +1626,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Single Tibetan singing bowl on a dark velvet cushion at night, faint vibration rings in the air, warm side light --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera, faint vibration rings expanding from the singing bowl rim, dust particles suspended in warm side light, very slow pulse, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -1757,22 +1757,22 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 088 · Quinta 2026-08-27 · hem-m02-01 v1
+## DIA 088 · Quinta 2026-08-27 · hem-m05-20 v1
 
 **Frase:** *Hoje aprendi que cuidar de mim é o primeiro recado que dou ao mundo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0027`
+**Alinhamento:** 🎯 keyword `cuidar`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0027`
 
 ### Prompt Midjourney
 
 ```
-Single Tibetan singing bowl on a dark velvet cushion at night, faint vibration rings in the air, warm side light --ar 9:16
+Nest of woven grass with three eggs at night, warm amber light from below, delicate and precarious, bird absent --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, faint vibration rings expanding from the singing bowl rim, dust particles suspended in warm side light, very slow pulse, no zoom, no pan, no rotation, no people
+static camera, woven grass nest resting on a branch, warm amber light softly pulsing below, three eggs unmoving, very gentle branch sway, delicate shadow patterns, no zoom, no pan, no rotation
 ```
 
 ---
@@ -1920,7 +1920,7 @@ static camera, single white feather falling slowly downward through the beam of 
 
 ---
 
-## DIA 096 · Sexta 2026-09-04 · hem-m01-16 v1
+## DIA 096 · Sexta 2026-09-04 · hem-m05-09 v1
 
 **Frase:** *Celebro hoje quem me amou mesmo nos meus dias menos brilhantes.*
 
@@ -1929,13 +1929,13 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Horse silhouette on a moonlit hill at night, mane caught in a soft wind, powerful and still, deep blue sky --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera, horse silhouette standing on the moonlit hill, mane and tail gently rippling in a soft night wind, moon behind thin clouds softly pulsing, horse absolutely still, no zoom, no pan, no rotation
 ```
 
 ---
@@ -2040,27 +2040,27 @@ static camera, single white feather falling slowly downward through the beam of 
 
 ---
 
-## DIA 102 · Quinta 2026-09-10 · hem-m02-07 v1
+## DIA 102 · Quinta 2026-09-10 · hem-m06-11 v1
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0022`
+**Alinhamento:** 🎯 keyword `amor`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0022`
 
 ### Prompt Midjourney
 
 ```
-Shallow clay bowl of coarse salt crystals on a dark linen cloth at night, warm side lamp, mineral texture --ar 9:16
+Raw rose quartz cluster on a dark sill at night, moonlight finding its pink depths, gentle mineral warmth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, warm lamp light gently pulsing on the salt crystal surfaces, tiny light reflections shifting, very slow ambient, no zoom, no pan, no rotation, no people
+static camera, moonlight slowly shifting on the rose quartz crystal faces, soft pink reflections moving, deep mineral stillness, very slow ambient, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 103 · Sexta 2026-09-11 · hem-m01-25 v1
+## DIA 103 · Sexta 2026-09-11 · hem-m05-11 v1
 
 **Frase:** *Celebro hoje a coragem silenciosa que ninguém aplaude, mas que me sustenta.*
 
@@ -2069,13 +2069,13 @@ static camera, warm lamp light gently pulsing on the salt crystal surfaces, tiny
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Elephant drinking from a moonlit waterhole at night, dark bulk against the pale reflection, savanah quiet --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, elephant slowly lowering trunk into the moonlit waterhole, water rippling outward, dark bulk still against the pale reflection, very slow majestic motion, no zoom, no pan, no rotation
 ```
 
 ---
@@ -2200,7 +2200,7 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 
 ---
 
-## DIA 110 · Sexta 2026-09-18 · hem-m01-27 v1
+## DIA 110 · Sexta 2026-09-18 · hem-m05-17 v1
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -2209,13 +2209,13 @@ static camera with very subtle parallax drift, milky way slowly drifting horizon
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Crocodile resting on a dark sandy bank under the moon at night, prehistoric stillness, ancient river presence --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
+static camera, crocodile lying absolutely still on the dark sand, moonlight on its scaled back, distant water rippling in the background, eyes reflecting faint light, extreme prehistoric stillness, no zoom, no pan, no rotation
 ```
 
 ---
@@ -2320,22 +2320,22 @@ static camera, water flowing gently around the stacked stones, moonlight reflect
 
 ---
 
-## DIA 116 · Quinta 2026-09-24 · hem-m02-14 v1
+## DIA 116 · Quinta 2026-09-24 · hem-m03-12 v1
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0024`
+**Alinhamento:** 🎯 keyword `só`  ·  **Áudio:** `lareira-respira`  ·  **Frase id:** `hem-0024`
 
 ### Prompt Midjourney
 
 ```
-Potters wheel with wet clay form in a dark workshop at night, single amber overhead lamp, hands absent, work paused --ar 9:16
+Single oil lamp on a dark stone floor in an empty room at night, flame reflected in a small pool of spilled oil beside it, intimate and vulnerable --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, amber lamp light gently pulsing on the wet clay surface, soft reflections on the moist form, very slow ambient, wheel still, no zoom, no pan, no rotation, no people
+static camera, oil lamp flame gently flickering, reflection of the flame rippling in the small oil pool beside it, warm amber glow pulsing on the stone floor, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2483,7 +2483,7 @@ static camera, warm lamplight slowly pulsing on the honey jar surface, golden gl
 
 ---
 
-## DIA 124 · Sexta 2026-10-02 · hem-m01-16 v1
+## DIA 124 · Sexta 2026-10-02 · hem-m05-19 v1
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -2492,13 +2492,13 @@ static camera, warm lamplight slowly pulsing on the honey jar surface, golden gl
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+African wild dog resting at the edge of a moonlit clearing, head on paws, calm after the hunt, deep breathing --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera, wild dog lying still at the moonlit edge, head on paws, gentle breathing rising and falling, moonlight shifting subtly, very slow peaceful ambient, no zoom, no pan, no rotation
 ```
 
 ---
@@ -2743,7 +2743,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 137 · Quinta 2026-10-15 · hem-m02-18 v1
+## DIA 137 · Quinta 2026-10-15 · hem-m02-07 v1
 
 **Frase:** *Hoje aprendi que descansar é parte do trabalho de evoluir.*
 
@@ -2752,13 +2752,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Hourglass with dark sand flowing on a wooden desk at night, single warm lamp, time passing visibly --ar 9:16
+Shallow clay bowl of coarse salt crystals on a dark linen cloth at night, warm side lamp, mineral texture --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, dark sand grains flowing continuously through the hourglass neck, warm lamp light on the glass surface, very slow contemplative focus, no zoom, no pan, no rotation, no people
+static camera, warm lamp light gently pulsing on the salt crystal surfaces, tiny light reflections shifting, very slow ambient, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2823,7 +2823,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 141 · Segunda 2026-10-19 · hem-m01-09 v1
+## DIA 141 · Segunda 2026-10-19 · hem-m03-05 v1
 
 **Frase:** *Uma verdade pequena minha apareceu hoje, devagarinho. Acolhe, ela vem em paz.*
 
@@ -2832,13 +2832,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Fireflies floating in a dark forest clearing, faint blue moon above, dreamy mood --ar 9:16
+Glass jar of fireflies on a dark wooden table at night, soft intermittent golden blinks, warm bokeh background, close vertical framing --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, small fireflies gently floating and blinking on and off in the dark forest clearing, light points appearing and disappearing slowly at random positions, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, fireflies blinking on and off at irregular intervals inside the glass jar, soft golden light pulses from within the jar, very slow ambient motion, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -2883,27 +2883,27 @@ static camera, large tropical broadleaves gently swaying left and right in soft 
 
 ---
 
-## DIA 144 · Quinta 2026-10-22 · hem-m02-23 v1
+## DIA 144 · Quinta 2026-10-22 · hem-m05-20 v1
 
 **Frase:** *Hoje aprendi que cuidar de mim é o primeiro recado que dou ao mundo.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0027`
+**Alinhamento:** 🎯 keyword `cuidar`  ·  **Áudio:** `brisa-bambu`  ·  **Frase id:** `hem-0027`
 
 ### Prompt Midjourney
 
 ```
-Old copper bell hanging from a dark wooden beam at night, not ringing, just waiting, warm patina in candlelight --ar 9:16
+Nest of woven grass with three eggs at night, warm amber light from below, delicate and precarious, bird absent --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, candlelight gently pulsing on the copper bell surface, warm patina reflections shifting, bell hangs still, very slow ambient, no zoom, no pan, no rotation, no people
+static camera, woven grass nest resting on a branch, warm amber light softly pulsing below, three eggs unmoving, very gentle branch sway, delicate shadow patterns, no zoom, no pan, no rotation
 ```
 
 ---
 
-## DIA 145 · Sexta 2026-10-23 · hem-m01-25 v1
+## DIA 145 · Sexta 2026-10-23 · hem-m05-26 v1
 
 **Frase:** *Celebro hoje quem me amou mesmo nos meus dias menos brilhantes.*
 
@@ -2912,13 +2912,13 @@ static camera, candlelight gently pulsing on the copper bell surface, warm patin
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Lioness resting at night in dark savannah grass, only eyes and breathing visible, deep amber reflection --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, lioness lying in dark grass almost invisible, only amber eyes reflecting faint moonlight, gentle breathing rising and falling, grass unmoving, very slow powerful stillness, no zoom, no pan, no rotation
 ```
 
 ---
@@ -3043,7 +3043,7 @@ static camera, single white feather falling slowly downward through the beam of 
 
 ---
 
-## DIA 152 · Sexta 2026-10-30 · hem-m01-27 v1
+## DIA 152 · Sexta 2026-10-30 · hem-m06-04 v1
 
 **Frase:** *Celebro hoje a coragem silenciosa que ninguém aplaude, mas que me sustenta.*
 
@@ -3052,13 +3052,13 @@ static camera, single white feather falling slowly downward through the beam of 
 ### Prompt Midjourney
 
 ```
-Small fire pit in the desert at night, silhouettes of people sitting around in distance, warm amber light, deep starry sky --ar 9:16
+Capulana fabric draped over a dark wooden chair at night, warm lamp from the side, deep African textile colours, blue and orange patterns --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, fire pit flames flickering and dancing in place, sparks rising slowly upward and fading, silhouettes of people sitting around remain still, stars softly twinkling above, slow ambient atmosphere, no zoom, no pan, no rotation
+static camera, warm lamp light gently pulsing on the capulana fabric patterns, blue and orange colours shifting in the light, fabric folds holding still, very slow ambient, no zoom, no pan, no rotation
 ```
 
 ---
@@ -3166,27 +3166,27 @@ static camera, single white feather falling slowly downward through the beam of 
 
 ---
 
-## DIA 158 · Quinta 2026-11-05 · hem-m01-05 v1
+## DIA 158 · Quinta 2026-11-05 · hem-m06-11 v1
 
 **Frase:** *Hoje aprendi que dizer 'não consigo agora' também é um gesto de amor.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0022`
+**Alinhamento:** 🎯 keyword `amor`  ·  **Áudio:** `sussurro-coro-feminino`  ·  **Frase id:** `hem-0022`
 
 ### Prompt Midjourney
 
 ```
-White incense smoke rising in a dark room, single beam of warm light cutting through, very still composition --ar 9:16
+Raw rose quartz cluster on a dark sill at night, moonlight finding its pink depths, gentle mineral warmth --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, white incense smoke rising slowly and curling upward in elegant tendrils, dust particles drifting in the warm light beam, very slow contemplative motion, no zoom, no pan, no rotation, no people
+static camera, moonlight slowly shifting on the rose quartz crystal faces, soft pink reflections moving, deep mineral stillness, very slow ambient, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 159 · Sexta 2026-11-06 · hem-m01-16 v1
+## DIA 159 · Sexta 2026-11-06 · hem-m06-08 v1
 
 **Frase:** *Celebro hoje o que comecei sem garantia. Foi corajoso.*
 
@@ -3195,13 +3195,13 @@ static camera, white incense smoke rising slowly and curling upward in elegant t
 ### Prompt Midjourney
 
 ```
-Single low African udu drum in soft amber light, faint shadow on dark wall, contemplative still composition --ar 9:16
+Heavy bronze mortar and pestle on a dark kitchen counter at night, warm lamp, trace of dark powder remaining, ancestral tool --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, soft amber light gently pulsing on the wooden drum surface, faint shadow moving subtly on the dark wall, very slow ambient motion, no zoom, no pan, no rotation, no hands visible
+static camera, warm lamp light gently pulsing on the bronze mortar surface, warm patina reflections shifting, dark powder inside catching the light, very slow ambient, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -3246,7 +3246,7 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 
 ---
 
-## DIA 162 · Segunda 2026-11-09 · hem-m01-13 v1
+## DIA 162 · Segunda 2026-11-09 · hem-m03-07 v1
 
 **Frase:** *Houve um momento hoje em que algo me pediu mais do que eu queria dar. Repara nele, antes que se esqueça.*
 
@@ -3255,13 +3255,13 @@ static camera, soft moonlight slowly shifting on the arched window frame, woman 
 ### Prompt Midjourney
 
 ```
-Soft amber-lit hammock on a verandah, dark tropical garden beyond, warm dusk to night transition --ar 9:16
+Old kerosene lampião hanging from a verandah beam at night, warm golden halo, tropical garden dark beyond, Mozambican colonial memory --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, hammock gently swaying back and forth in slow rhythm, amber lantern light softly pulsing, dark tropical garden unmoving in background, slow contemplative pace, no zoom, no pan, no rotation, no people
+static camera, kerosene lampião flame gently pulsing inside the glass, warm golden halo softly breathing, lampião swaying very slightly on the beam, dark tropical garden unmoving beyond, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -3446,27 +3446,27 @@ static camera, water flowing gently around the stacked stones, moonlight reflect
 
 ---
 
-## DIA 172 · Quinta 2026-11-19 · hem-m02-01 v1
+## DIA 172 · Quinta 2026-11-19 · hem-m03-12 v1
 
 **Frase:** *Hoje aprendi que a pressa não me leva mais longe. Só me afasta de mim.*
 
-**Alinhamento:** 🎨 por mood  ·  **Áudio:** `tigela-grave`  ·  **Frase id:** `hem-0024`
+**Alinhamento:** 🎯 keyword `só`  ·  **Áudio:** `lareira-respira`  ·  **Frase id:** `hem-0024`
 
 ### Prompt Midjourney
 
 ```
-Single Tibetan singing bowl on a dark velvet cushion at night, faint vibration rings in the air, warm side light --ar 9:16
+Single oil lamp on a dark stone floor in an empty room at night, flame reflected in a small pool of spilled oil beside it, intimate and vulnerable --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, faint vibration rings expanding from the singing bowl rim, dust particles suspended in warm side light, very slow pulse, no zoom, no pan, no rotation, no people
+static camera, oil lamp flame gently flickering, reflection of the flame rippling in the small oil pool beside it, warm amber glow pulsing on the stone floor, no zoom, no pan, no rotation, no people
 ```
 
 ---
 
-## DIA 173 · Sexta 2026-11-20 · hem-m01-25 v1
+## DIA 173 · Sexta 2026-11-20 · hem-m06-20 v1
 
 **Frase:** *Celebro hoje uma pequena vitória daquelas que ninguém vê, mas que eu sinto.*
 
@@ -3475,13 +3475,13 @@ static camera, faint vibration rings expanding from the singing bowl rim, dust p
 ### Prompt Midjourney
 
 ```
-Distant African village at night with small warm yellow window lights, silhouettes of acacia trees, deep blue sky --ar 9:16
+Deep blue indigo dye in a dark clay pot at night, single lamp from above, surface shimmering with quiet intensity --ar 9:16
 ```
 
 ### Runway motion
 
 ```
-static camera, distant yellow window lights softly twinkling and pulsing on and off in the village, stars slowly twinkling above, acacia silhouettes unmoving on horizon, very slow ambient motion, no zoom, no pan, no rotation, no people
+static camera, lamp light from above pulsing on the indigo dye surface, deep blue shimmering with subtle iridescence, very slow ambient, no zoom, no pan, no rotation, no people
 ```
 
 ---
@@ -3629,8 +3629,8 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 
 # Auditoria
 
-- Match por **keyword**: 142 dias
-- Match por **mood**: 38 dias
+- Match por **keyword**: 153 dias
+- Match por **mood**: 27 dias
 - **Fallback** ciclo: 0 dias
 
 ## Uso por prompt
@@ -3639,42 +3639,55 @@ static camera with very subtle slow forward drift, lanterns lining the garden pa
 - `hem-m02-02` — 19 dias
 - `hem-m01-12` — 13 dias
 - `hem-m01-29` — 9 dias
-- `hem-m01-05` — 7 dias
 - `hem-m01-11` — 7 dias
 - `hem-m02-24` — 7 dias
 - `hem-m01-02` — 7 dias
 - `hem-m01-30` — 7 dias
-- `hem-m01-16` — 5 dias
 - `hem-m02-06` — 5 dias
-- `hem-m01-25` — 5 dias
+- `hem-m01-05` — 5 dias
 - `hem-m01-08` — 4 dias
+- `hem-m06-11` — 4 dias
 - `hem-m02-10` — 4 dias
 - `hem-m02-29` — 4 dias
+- `hem-m03-12` — 4 dias
 - `hem-m01-14` — 4 dias
 - `hem-m02-20` — 4 dias
-- `hem-m01-27` — 4 dias
-- `hem-m02-01` — 3 dias
 - `hem-m01-06` — 3 dias
 - `hem-m01-04` — 3 dias
 - `hem-m02-25` — 3 dias
 - `hem-m01-24` — 3 dias
+- `hem-m05-20` — 3 dias
 - `hem-m01-18` — 3 dias
 - `hem-m01-15` — 3 dias
-- `hem-m01-09` — 2 dias
-- `hem-m01-13` — 2 dias
-- `hem-m02-07` — 2 dias
-- `hem-m02-14` — 2 dias
-- `hem-m02-18` — 2 dias
-- `hem-m02-23` — 2 dias
+- `hem-m01-16` — 1 dias
+- `hem-m01-09` — 1 dias
+- `hem-m01-25` — 1 dias
+- `hem-m01-13` — 1 dias
 - `hem-m02-03` — 1 dias
 - `hem-m01-26` — 1 dias
+- `hem-m01-27` — 1 dias
+- `hem-m03-19` — 1 dias
+- `hem-m04-02` — 1 dias
+- `hem-m04-16` — 1 dias
 - `hem-m02-08` — 1 dias
+- `hem-m02-01` — 1 dias
 - `hem-m02-11` — 1 dias
 - `hem-m02-15` — 1 dias
+- `hem-m05-09` — 1 dias
+- `hem-m05-11` — 1 dias
+- `hem-m05-17` — 1 dias
 - `hem-m02-22` — 1 dias
+- `hem-m05-19` — 1 dias
 - `hem-m02-30` — 1 dias
+- `hem-m02-07` — 1 dias
+- `hem-m03-05` — 1 dias
+- `hem-m05-26` — 1 dias
+- `hem-m06-04` — 1 dias
+- `hem-m06-08` — 1 dias
+- `hem-m03-07` — 1 dias
+- `hem-m06-20` — 1 dias
 
-### Prompts não usados (22/60)
+### Prompts não usados (129/180)
 Nenhuma frase faz match. Considera acrescentar keywords ou frases que toquem nestes substantivos:
 - `hem-m01-01` — keywords: `vela`, `chama`
 - `hem-m01-03` — keywords: `brasa`, `brasas`, `lume`
@@ -3691,10 +3704,117 @@ Nenhuma frase faz match. Considera acrescentar keywords ou frases que toquem nes
 - `hem-m02-09` — keywords: `papel`, `dobra`, `delicado`, `frágil`
 - `hem-m02-12` — keywords: `acender`, `início`, `começo`, `começar`, `começa`
 - `hem-m02-13` — keywords: `direção`, `norte`, `orientar`, `confio`, `confiança`
+- `hem-m02-14` — keywords: `barro`, `forma`, `moldar`, `criar`
 - `hem-m02-16` — keywords: `barco`, `lago`, `travessia`, `viagem`
 - `hem-m02-17` — keywords: `seco`, `seca`, `preservar`, `guardar`, `guardo`
+- `hem-m02-18` — keywords: `hora`, `relógio`, `urgência`, `pausa`, `parar`
 - `hem-m02-19` — keywords: `folha`, `peso`, `pesa`, `gota`
 - `hem-m02-21` — keywords: `pedra`, `leve`, `suave`, `segurar`
+- `hem-m02-23` — keywords: `sino`, `som`, `escutar`, `escuta`, `ouvir`
 - `hem-m02-26` — keywords: `pão`, `alimentar`, `nutrir`, `alimento`, `sustento`
 - `hem-m02-27` — keywords: `música`, `canção`, `canto`, `melodia`, `voz`
 - `hem-m02-28` — keywords: `lua`, `crescente`, `noite`
+- `hem-m03-01` — keywords: `lanterna`, `soltar`, `elevar`, `subir`, `luz`
+- `hem-m03-02` — keywords: `lâmpada`, `chama`, `claridade`, `interior`
+- `hem-m03-03` — keywords: `tecido`, `reflexo`, `calor`, `noite`
+- `hem-m03-04` — keywords: `oceano`, `brilho`, `mistério`, `azul`, `vivo`
+- `hem-m03-06` — keywords: `descida`, `profundidade`, `dentro`, `escuridão`
+- `hem-m03-08` — keywords: `luz`, `fragmento`, `sagrado`, `cor`
+- `hem-m03-09` — keywords: `reflexo`, `cidade`, `noite`, `cor`, `molhado`
+- `hem-m03-10` — keywords: `raio`, `buraco`, `segredo`, `esperar`
+- `hem-m03-11` — keywords: `festa`, `alegria`, `noite`, `jardim`
+- `hem-m03-13` — keywords: `profundo`, `fundo`, `nadar`, `mergulhar`
+- `hem-m03-14` — keywords: `intenção`, `oferta`, `água`, `ritual`
+- `hem-m03-15` — keywords: `tecido`, `cesto`, `feito`, `mão`
+- `hem-m03-16` — keywords: `tecto`, `fenda`, `brilha`, `chão`
+- `hem-m03-17` — keywords: `chão`, `quarto`, `suave`, `aconchego`
+- `hem-m03-18` — keywords: `frasco`, `transparente`, `dentro`, `fora`
+- `hem-m03-20` — keywords: `porta`, `esperar`, `dentro`, `chamado`
+- `hem-m03-21` — keywords: `abundância`, `comunidade`, `luz`, `partilhar`
+- `hem-m03-22` — keywords: `canoa`, `rio`, `viagem`, `destino`
+- `hem-m03-23` — keywords: `mão`, `ecrã`, `silêncio`, `noite`
+- `hem-m03-24` — keywords: `brasa`, `fim`, `terminar`, `permanece`
+- `hem-m03-25` — keywords: `cerimónia`, `silêncio`, `presente`, `ofereço`
+- `hem-m03-26` — keywords: `sombra`, `padrão`, `artesanato`, `luz`
+- `hem-m03-27` — keywords: `liberdade`, `elevar`, `soltar`, `múltiplo`
+- `hem-m03-28` — keywords: `cogumelo`, `brilho`, `floresta`, `mistério`
+- `hem-m03-29` — keywords: `escrever`, `sombra`, `mão`, `noite`
+- `hem-m03-30` — keywords: `amanhecer`, `fim`, `começo`, `transição`
+- `hem-m04-01` — keywords: `lua`, `vermelha`, `sangue`, `horizonte`
+- `hem-m04-03` — keywords: `eclipse`, `sombra`, `passagem`, `ciclo`
+- `hem-m04-04` — keywords: `queda`, `água`, `cachoeira`, `força`
+- `hem-m04-05` — keywords: `gelo`, `espelho`, `frio`, `perfeição`
+- `hem-m04-06` — keywords: `vapor`, `calor`, `terra`, `cura`
+- `hem-m04-07` — keywords: `orvalho`, `pétala`, `reflexo`, `despertar`
+- `hem-m04-08` — keywords: `cheio`, `transbordar`, `excesso`, `deixar`
+- `hem-m04-09` — keywords: `piscina`, `maré`, `estrela`, `vida`
+- `hem-m04-10` — keywords: `rio`, `curva`, `fluir`, `caminho`
+- `hem-m04-11` — keywords: `olho`, `lua`, `folha`, `ver`
+- `hem-m04-12` — keywords: `profundidade`, `debaixo`, `ver`, `superfície`
+- `hem-m04-13` — keywords: `lágrima`, `choro`, `sentir`, `liberta`
+- `hem-m04-14` — keywords: `mangal`, `raiz`, `água`, `costa`
+- `hem-m04-15` — keywords: `chuva`, `círculo`, `ritmo`, `padrão`
+- `hem-m04-17` — keywords: `dobro`, `reflexo`, `espelho`, `estrada`
+- `hem-m04-18` — keywords: `baleia`, `grandeza`, `profundo`, `salto`
+- `hem-m04-19` — keywords: `banho`, `ritual`, `corpo`, `cura`
+- `hem-m04-20` — keywords: `nascente`, `fonte`, `origem`, `começar`
+- `hem-m04-21` — keywords: `estuário`, `crescent`, `silêncio`, `teal`
+- `hem-m04-22` — keywords: `rayo`, `peixe`, `silêncio`, `azul`
+- `hem-m04-23` — keywords: `pote`, `recolher`, `chuva`, `paciência`
+- `hem-m04-24` — keywords: `onda`, `crise`, `força`, `passar`
+- `hem-m04-25` — keywords: `jardim`, `abre`, `noite`, `perfume`
+- `hem-m04-26` — keywords: `solidão`, `presença`, `único`, `basta`
+- `hem-m04-27` — keywords: `lago`, `infinito`, `reflexo`, `unidade`
+- `hem-m04-28` — keywords: `tartaruga`, `ancestral`, `tempo`, `paciência`
+- `hem-m04-29` — keywords: `halo`, `raro`, `círculo`, `sagrado`
+- `hem-m04-30` — keywords: `despedida`, `transição`, `amanhecer`, `soltar`
+- `hem-m05-01` — keywords: `veado`, `hesitação`, `limiar`, `escuta`
+- `hem-m05-02` — keywords: `raposa`, `astúcia`, `noite`, `vigília`
+- `hem-m05-03` — keywords: `tartaruga`, `ninho`, `instinto`, `cosmos`
+- `hem-m05-04` — keywords: `mariposa`, `atração`, `chama`, `risco`
+- `hem-m05-05` — keywords: `garça`, `silêncio`, `esperar`, `paciência`
+- `hem-m05-06` — keywords: `coelho`, `campo`, `noite`, `quietude`
+- `hem-m05-07` — keywords: `gato`, `dormir`, `descanso`, `lar`
+- `hem-m05-08` — keywords: `gecko`, `parede`, `tropical`, `observar`
+- `hem-m05-10` — keywords: `borboleta`, `romper`, `nascer`, `transformação`
+- `hem-m05-12` — keywords: `floresta`, `magia`, `reunir`, `luz`
+- `hem-m05-13` — keywords: `par`, `companheir`, `silêncio`, `juntos`
+- `hem-m05-14` — keywords: `porco`, `terra`, `instinto`, `busca`
+- `hem-m05-15` — keywords: `camaleão`, `adaptar`, `mudar`, `ver`
+- `hem-m05-16` — keywords: `morcego`, `emergir`, `noite`, `libertar`
+- `hem-m05-18` — keywords: `rã`, `chuva`, `chamada`, `voz`
+- `hem-m05-21` — keywords: `gazela`, `alerta`, `beber`, `saúde`
+- `hem-m05-22` — keywords: `aranha`, `construir`, `fio`, `paciência`
+- `hem-m05-23` — keywords: `cobra`, `espiral`, `primal`, `força`
+- `hem-m05-24` — keywords: `minhoca`, `terra`, `invisível`, `transformar`
+- `hem-m05-25` — keywords: `corvo`, `inteligência`, `observar`, `noite`
+- `hem-m05-27` — keywords: `abelha`, `regresso`, `lar`, `pertencer`
+- `hem-m05-28` — keywords: `raiz`, `baobá`, `fundação`, `ancient`
+- `hem-m05-29` — keywords: `macaco`, `árvore`, `sono`, `seguro`
+- `hem-m05-30` — keywords: `formiga`, `cidade`, `construção`, `coletivo`
+- `hem-m06-01` — keywords: `ametista`, `cristal`, `púrpura`, `proteção`
+- `hem-m06-02` — keywords: `espelho`, `obsidiana`, `ver`, `reflexo`
+- `hem-m06-03` — keywords: `jade`, `amuleto`, `herança`, `verde`
+- `hem-m06-05` — keywords: `renda`, `delicado`, `padrão`, `memória`
+- `hem-m06-06` — keywords: `manta`, `calor`, `proteção`, `dobra`
+- `hem-m06-07` — keywords: `cerâmica`, `coleção`, `guardar`, `nutrir`
+- `hem-m06-09` — keywords: `prisma`, `espectro`, `cor`, `luz`
+- `hem-m06-10` — keywords: `erva`, `seco`, `cheiro`, `cura`
+- `hem-m06-12` — keywords: `índigo`, `tecelagem`, `artesanato`, `noite`
+- `hem-m06-13` — keywords: `vaso`, `antigo`, `guardar`, `tempo`
+- `hem-m06-14` — keywords: `vidro`, `mar`, `suave`, `desgaste`
+- `hem-m06-15` — keywords: `malaquita`, `espiral`, `verde`, `profundo`
+- `hem-m06-16` — keywords: `tear`, `tecer`, `pausa`, `continuar`
+- `hem-m06-17` — keywords: `basalto`, `pedra`, `água`, `reflexo`
+- `hem-m06-18` — keywords: `cobre`, `tigela`, `potencial`, `vibração`
+- `hem-m06-19` — keywords: `carta`, `memória`, `palavra`, `passado`
+- `hem-m06-21` — keywords: `contas`, `artesanato`, `oração`, `terra`
+- `hem-m06-22` — keywords: `ouro`, `bruto`, `valor`, `raro`
+- `hem-m06-23` — keywords: `pote`, `água`, `comunidade`, `tradição`
+- `hem-m06-24` — keywords: `batik`, `cera`, `pintar`, `processo`
+- `hem-m06-25` — keywords: `pedra`, `círculo`, `ritual`, `terra`
+- `hem-m06-26` — keywords: `espelho`, `virar`, `esconder`, `mostrar`
+- `hem-m06-27` — keywords: `lápis`, `azul`, `cosmos`, `mineral`
+- `hem-m06-28` — keywords: `azulejo`, `barro`, `ofício`, `pilha`
+- `hem-m06-29` — keywords: `mercado`, `cor`, `cultura`, `herança`
+- `hem-m06-30` — keywords: `geode`, `interior`, `segredo`, `revelar`
