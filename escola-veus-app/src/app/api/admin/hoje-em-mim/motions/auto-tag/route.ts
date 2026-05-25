@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 
+import { parseClaudeJson } from "@/lib/vc-sabia/parse-claude-json";
 import {
   NIGHT_MOOD_LABELS,
   NIGHT_MOODS,
@@ -129,19 +130,14 @@ Output APENAS JSON estrito, sem markdown, sem code fences:
     return NextResponse.json({ erro: `Claude: ${msg}` }, { status: 502 });
   }
 
-  let cleaned = raw.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
-  }
-  let parsed: { tags?: Record<string, string>; reasoning?: string };
-  try {
-    parsed = JSON.parse(cleaned);
-  } catch {
+  const result = parseClaudeJson<{ tags?: Record<string, string>; reasoning?: string }>(raw);
+  if (!result.ok) {
     return NextResponse.json(
-      { erro: "Claude devolveu JSON inválido", raw: cleaned.slice(0, 500) },
+      { erro: `Claude: ${result.error}`, raw: result.raw },
       { status: 502 }
     );
   }
+  const parsed = result.data;
 
   const validSlugs = new Set<string>(NIGHT_MOODS);
   // Mapeia filename → url para devolver pelo url (mais útil ao cliente)

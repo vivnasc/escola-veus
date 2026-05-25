@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { parseClaudeJson } from "@/lib/vc-sabia/parse-claude-json";
 
 export const maxDuration = 60;
 export const runtime = "nodejs";
@@ -126,20 +127,14 @@ Output strict JSON, sem markdown, sem code fences:
     return NextResponse.json({ erro: `Claude: ${msg}` }, { status: 502 });
   }
 
-  let cleaned = raw.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
-  }
-
-  let parsed: { phrase?: string; reasoning?: string };
-  try {
-    parsed = JSON.parse(cleaned);
-  } catch {
+  const result = parseClaudeJson<{ phrase?: string; reasoning?: string }>(raw);
+  if (!result.ok) {
     return NextResponse.json(
-      { erro: "Claude devolveu JSON invalido", raw: cleaned.slice(0, 500) },
+      { erro: `Claude: ${result.error}`, raw: result.raw },
       { status: 502 }
     );
   }
+  const parsed = result.data;
 
   let phrase = (parsed.phrase || "").trim();
   phrase = phrase.replace(/[—–]/g, ",");

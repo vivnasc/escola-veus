@@ -3,6 +3,7 @@ import Anthropic from "@anthropic-ai/sdk";
 
 import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
 import { VISUAL_CATEGORY_NAMES } from "@/lib/vc-sabia/phrase-motion-match";
+import { parseClaudeJson } from "@/lib/vc-sabia/parse-claude-json";
 
 export const maxDuration = 120;
 export const runtime = "nodejs";
@@ -152,20 +153,18 @@ Sem texto fora do JSON. Sem markdown. Sem code fences.`;
     );
   }
 
-  // Parse JSON (tolerante a code fences se Claude derrapar).
-  let cleaned = raw.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "");
-  }
-  let parsed: { tags?: Record<string, string>; reasoning?: string };
-  try {
-    parsed = JSON.parse(cleaned);
-  } catch {
+  const result = parseClaudeJson<{
+    tags?: Record<string, string>;
+    categories?: Record<string, string>;
+    reasoning?: string;
+  }>(raw);
+  if (!result.ok) {
     return NextResponse.json(
-      { erro: "Claude devolveu JSON invalido", raw: cleaned.slice(0, 500) },
+      { erro: `Claude: ${result.error}`, raw: result.raw },
       { status: 502 }
     );
   }
+  const parsed = result.data;
 
   // Validar slugs.
   const validSlugs = new Set<string>(MORNING_MOODS);
