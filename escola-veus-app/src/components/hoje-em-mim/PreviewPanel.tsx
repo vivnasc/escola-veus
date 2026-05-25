@@ -3469,52 +3469,21 @@ function PromptCard({
 
       <div className="rounded border border-escola-border bg-escola-bg p-2">
         <div className="mb-1 flex items-center justify-between">
-          <span className="text-[10px] text-escola-creme-50">
-            Midjourney (imagem) · {prompt.subjects.length} variantes
-          </span>
+          <span className="text-[10px] text-escola-creme-50">Midjourney (imagem)</span>
           <button
-            onClick={() => onCopy(keyMj, buildMjPrompt(prompt, 0))}
+            onClick={() => onCopy(keyMj, prompt.prompt)}
             className={`rounded px-1.5 py-0.5 text-[10px] transition-colors ${
               copied === keyMj
                 ? "bg-escola-dourado text-escola-bg"
                 : "border border-escola-border text-escola-creme-50 hover:text-escola-creme"
             }`}
           >
-            {copied === keyMj ? "✓" : "Copiar v1"}
+            {copied === keyMj ? "✓" : "Copiar"}
           </button>
         </div>
         <pre className="whitespace-pre-wrap break-words font-mono text-[10px] leading-snug text-escola-creme">
-          {buildMjPrompt(prompt, 0)}
+          {prompt.prompt}
         </pre>
-        {prompt.subjects.length > 1 && (
-          <details className="mt-1">
-            <summary className="cursor-pointer text-[9px] text-escola-creme-50 hover:text-escola-creme">
-              Ver {prompt.subjects.length - 1} variantes adicionais
-            </summary>
-            <div className="mt-1 space-y-1">
-              {prompt.subjects.slice(1).map((_, idx) => {
-                const vIdx = idx + 1;
-                const vKey = `mj-${prompt.id}-v${vIdx}`;
-                return (
-                  <div key={vIdx} className="rounded border border-escola-border/40 p-1.5">
-                    <div className="mb-0.5 flex items-center justify-between">
-                      <span className="text-[9px] text-escola-creme-50">v{vIdx + 1}</span>
-                      <button
-                        onClick={() => onCopy(vKey, buildMjPrompt(prompt, vIdx))}
-                        className="rounded border border-escola-border px-1 text-[9px] text-escola-creme-50 hover:text-escola-creme"
-                      >
-                        {copied === vKey ? "✓" : "copiar"}
-                      </button>
-                    </div>
-                    <pre className="whitespace-pre-wrap break-words font-mono text-[9px] leading-snug text-escola-creme-50">
-                      {buildMjPrompt(prompt, vIdx)}
-                    </pre>
-                  </div>
-                );
-              })}
-            </div>
-          </details>
-        )}
       </div>
 
       <div className="rounded border border-escola-border bg-escola-bg p-2">
