@@ -77,6 +77,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
 
   // Nomes já usados noutras coleções (excluindo esta) para Claude evitar
   const usedNames = await loadUsedDayNames(admin, id);
+  console.log(`[carousel-regen-all] ${usedNames.length} nomes proibidos:`, usedNames.slice(0, 20).join(", "));
 
   let generated: { dias: Dia[]; usage: unknown };
   try {

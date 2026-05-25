@@ -401,7 +401,7 @@ export async function gerarColecaoComClaude(opts: {
   const client = new Anthropic({ apiKey });
 
   const usedBlock = opts.usedNames && opts.usedNames.length > 0
-    ? `\nNomes de dia JÁ USADOS em coleções anteriores (EVITA repetir, escolhe sinónimos ou palavras frescas):\n${opts.usedNames.join(", ")}\n`
+    ? `\n**NOMES PROIBIDOS** — JÁ foram usados em coleções anteriores. NÃO PODES usar NENHUM destes como palavra-tema (veu) de nenhum dia. Escolhe sinónimos, variações ou palavras completamente diferentes:\n${opts.usedNames.join(", ")}\n\nSe usares algum destes nomes, a coleção vai ser REJEITADA e terás de regerar. Sê criativo.\n`
     : "";
 
   const userMessage = `Cria uma colecção chamada "${title}".

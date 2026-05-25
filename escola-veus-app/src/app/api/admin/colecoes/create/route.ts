@@ -102,6 +102,7 @@ export async function POST(req: NextRequest) {
     generated = { dias: blankDias(numDias), usage: null };
   } else {
     const usedNames = await loadUsedDayNames(admin);
+    console.log(`[carousel-create] ${usedNames.length} nomes proibidos carregados:`, usedNames.slice(0, 20).join(", "));
     try {
       generated = await gerarColecaoComClaude({ apiKey, title, brief: briefEffective, numDias, usedNames });
     } catch (err) {
