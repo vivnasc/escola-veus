@@ -23,7 +23,13 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
   const [tags, setTags] = useState<Record<string, MorningMood>>({});
   const [tagsHydrated, setTagsHydrated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState<{ done: number; total: number } | null>(
+  const [uploading, setUploading] = useState<{
+    done: number;
+    total: number;
+    currentFile?: string;
+    currentSizeMB?: string;
+    percent?: number;
+  } | null>(
     null
   );
   const [autoTagging, setAutoTagging] = useState<{
@@ -231,6 +237,22 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
     }
   };
 
+  const uploadFileXhr = (url: string, file: File, onProgress: (pct: number) => void): Promise<number> => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", url, true);
+      xhr.setRequestHeader("Content-Type", file.type || "video/mp4");
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+      };
+      xhr.onload = () => resolve(xhr.status);
+      xhr.onerror = () => reject(new Error("Network error"));
+      xhr.ontimeout = () => reject(new Error("Timeout (ficheiro demasiado grande para a ligação)"));
+      xhr.timeout = 300_000; // 5 min por ficheiro
+      xhr.send(file);
+    });
+  };
+
   const uploadFiles = async (files: FileList | File[]) => {
     const list = Array.from(files).filter((f) => /\.(mp4|webm|mov)$/i.test(f.name));
     if (list.length === 0) {
@@ -245,9 +267,9 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
       const file = list[i];
       const sizeMB = (file.size / 1024 / 1024).toFixed(1);
       console.log(`[MotionLibrary] ${i + 1}/${list.length}: ${file.name} (${sizeMB} MB)`);
+      setUploading({ done: i, total: list.length, currentFile: file.name, currentSizeMB: sizeMB, percent: 0 });
 
       try {
-        // Passo 1: pedir signed URL ao backend
         const sigRes = await fetch("/api/admin/vc-sabia/motions/signed-url", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -256,36 +278,27 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
         const sigText = await sigRes.text();
         if (!sigRes.ok) {
           setError(`${file.name}: signed-url HTTP ${sigRes.status}: ${sigText.slice(0, 200)}`);
-          console.error("[MotionLibrary] signed-url falhou", sigRes.status, sigText);
           break;
         }
         const sig = JSON.parse(sigText) as { signedUrl: string; path: string };
-        console.log(`[MotionLibrary]   signed URL OK → ${sig.path}`);
 
-        // Passo 2: upload directo para Supabase via PUT
-        const upRes = await fetch(sig.signedUrl, {
-          method: "PUT",
-          headers: { "Content-Type": file.type || "video/mp4" },
-          body: file,
+        const status = await uploadFileXhr(sig.signedUrl, file, (pct) => {
+          setUploading({ done: i, total: list.length, currentFile: file.name, currentSizeMB: sizeMB, percent: pct });
         });
-        if (!upRes.ok) {
-          const upText = await upRes.text();
-          setError(`${file.name}: upload HTTP ${upRes.status}: ${upText.slice(0, 200)}`);
-          console.error("[MotionLibrary] upload falhou", upRes.status, upText);
+        if (status < 200 || status >= 300) {
+          setError(`${file.name}: upload HTTP ${status}`);
           break;
         }
-        console.log(`[MotionLibrary]   upload OK`);
+        console.log(`[MotionLibrary]   upload OK (${sizeMB} MB)`);
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e);
         setError(`${file.name}: ${msg}`);
-        console.error("[MotionLibrary] excepção", e);
         break;
       }
       setUploading({ done: i + 1, total: list.length });
     }
 
     setUploading(null);
-    console.log("[MotionLibrary] Upload concluído. A refrescar lista");
     await load();
   };
 
@@ -346,7 +359,7 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
         onDragOver={(e) => e.preventDefault()}
         className="rounded-lg border-2 border-dashed border-escola-border bg-escola-card/40 p-4 text-center text-xs text-escola-creme-50"
       >
-        Arrasta vídeos MP4/WebM/MOV para aqui
+        Arrasta vídeos MP4/WebM/MOV para aqui (até 50 MB por ficheiro)
       </div>
 
       {error && (
@@ -375,8 +388,28 @@ export function MotionLibrary({ selectedUrl, onSelect, onTagsChange }: Props) {
       )}
 
       {uploading && (
-        <div className="rounded border border-escola-dourado/40 bg-escola-dourado/10 p-3 text-xs text-escola-dourado">
-          A carregar {uploading.done} / {uploading.total}…
+        <div className="space-y-1.5 rounded border border-escola-dourado/40 bg-escola-dourado/10 p-3 text-xs text-escola-dourado">
+          <div>
+            A carregar {uploading.done + 1} / {uploading.total}
+            {uploading.currentFile && (
+              <span className="text-escola-creme-50">
+                {" "}· {uploading.currentFile} · {uploading.currentSizeMB} MB
+              </span>
+            )}
+          </div>
+          {typeof uploading.percent === "number" && (
+            <div className="h-2 w-full overflow-hidden rounded-full bg-escola-border/40">
+              <div
+                className="h-full rounded-full bg-escola-dourado transition-all duration-300"
+                style={{ width: `${uploading.percent}%` }}
+              />
+            </div>
+          )}
+          {typeof uploading.percent === "number" && (
+            <div className="text-right text-[10px] text-escola-creme-50">
+              {uploading.percent}%
+            </div>
+          )}
         </div>
       )}
 
