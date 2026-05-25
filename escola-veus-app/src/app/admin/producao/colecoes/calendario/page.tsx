@@ -24,7 +24,7 @@ function isoRangeLabel(year: number, week: number): string {
 
 const TARGET_YEAR = new Date().getUTCFullYear();
 
-type Existing = { id: string; title: string; slug: string };
+type Existing = { id: string; title: string; slug: string; createdAt?: string };
 
 export default function CalendarioPage() {
   const [existing, setExisting] = useState<Existing[]>([]);
@@ -132,18 +132,37 @@ export default function CalendarioPage() {
                 7 véus do livro · sempre disponível
               </p>
             </li>
-            {existing.map((it) => (
+            {[...existing]
+              .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""))
+              .map((it, idx) => (
               <li
                 key={it.id}
-                className="rounded-xl border border-escola-border bg-escola-card p-4 hover:border-escola-dourado/40"
+                className={`rounded-xl border bg-escola-card p-4 hover:border-escola-dourado/40 ${
+                  idx === 0 ? "border-escola-dourado/50" : "border-escola-border"
+                }`}
               >
-                <Link
-                  href={`/admin/producao/colecoes/${it.id}`}
-                  className="block text-sm font-semibold text-escola-creme hover:text-escola-dourado"
-                >
-                  {it.title}
-                </Link>
-                <p className="mt-1 text-xs text-escola-creme-50">abrir editor →</p>
+                <div className="mb-1 flex items-baseline justify-between gap-2">
+                  <Link
+                    href={`/admin/producao/colecoes/${it.id}`}
+                    className="block text-sm font-semibold text-escola-creme hover:text-escola-dourado"
+                  >
+                    {it.title}
+                  </Link>
+                  {idx === 0 && (
+                    <span className="shrink-0 rounded bg-escola-dourado/20 px-2 py-0.5 text-[10px] text-escola-dourado">
+                      mais recente
+                    </span>
+                  )}
+                </div>
+                <p className="text-[10px] text-escola-creme-50">
+                  {it.createdAt
+                    ? new Date(it.createdAt).toLocaleDateString("pt", { day: "numeric", month: "short", year: "numeric" })
+                    : ""}
+                  {" · "}
+                  <Link href={`/admin/producao/colecoes/${it.id}`} className="text-escola-dourado hover:underline">
+                    abrir editor →
+                  </Link>
+                </p>
               </li>
             ))}
           </ul>

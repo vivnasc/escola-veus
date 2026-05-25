@@ -4,9 +4,11 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { gerarColecaoComClaude } from "@/lib/carousel-generate";
 import type { Dia } from "@/lib/carousel-types";
 
-async function loadUsedDayNames(admin: SupabaseClient, excludeId?: string): Promise<string[]> {
+async function loadUsedDayNames(admin: SupabaseClient, excludeId?: string, recentCount = 4): Promise<string[]> {
   try {
-    let q = admin.from("carousel_collections").select("id, dias");
+    let q = admin.from("carousel_collections").select("id, dias")
+      .order("created_at", { ascending: false })
+      .limit(recentCount + 1);
     if (excludeId) q = q.neq("id", excludeId);
     const { data } = await q;
     if (!data) return [];

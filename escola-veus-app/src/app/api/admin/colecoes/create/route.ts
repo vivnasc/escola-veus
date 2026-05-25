@@ -5,14 +5,17 @@ import { gerarColecaoComClaude } from "@/lib/carousel-generate";
 import { slugify, romanFor, type Dia } from "@/lib/carousel-types";
 
 /**
- * Carrega todos os nomes de dia (veu) já usados em coleções existentes.
- * Deduplicado, maiúsculas. Claude recebe a lista para evitar repetir.
+ * Carrega nomes de dia (veu) das ÚLTIMAS N coleções (não de todas — nomes
+ * podem ser reutilizados depois de ~1 mês). Evita repetir da semana anterior
+ * sem esgotar o vocabulário.
  */
-async function loadUsedDayNames(admin: SupabaseClient): Promise<string[]> {
+async function loadUsedDayNames(admin: SupabaseClient, recentCount = 4): Promise<string[]> {
   try {
     const { data } = await admin
       .from("carousel_collections")
-      .select("dias");
+      .select("dias")
+      .order("created_at", { ascending: false })
+      .limit(recentCount);
     if (!data) return [];
     const names = new Set<string>();
     for (const row of data) {
