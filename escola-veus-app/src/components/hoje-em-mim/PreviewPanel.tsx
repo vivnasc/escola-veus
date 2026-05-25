@@ -4484,6 +4484,10 @@ function BulkClipPicker({
           </button>
         </div>
       </div>
+      <div className="text-[9px] text-escola-creme-50 italic">
+        Arrasta um clip para o dia certo na pré-montagem abaixo. Ou clica
+        para seleccionar/desseleccionar do pool.
+      </div>
       {loading ? (
         <div className="text-[10px] text-escola-creme-50">A carregar library…</div>
       ) : motions.length === 0 ? (
@@ -4499,7 +4503,12 @@ function BulkClipPicker({
               <button
                 key={m.url}
                 onClick={() => toggle(m.url)}
-                className="relative rounded border overflow-hidden transition-all"
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("text/plain", m.url);
+                  e.dataTransfer.effectAllowed = "copy";
+                }}
+                className="relative rounded border overflow-hidden transition-all cursor-grab active:cursor-grabbing"
                 style={{
                   borderColor: on
                     ? used
@@ -5280,7 +5289,24 @@ function BulkPreviewTable({
                       ritmo: {it.especial ?? it.dia}
                     </div>
                   </td>
-                  <td className="py-1.5 pr-2">
+                  <td
+                    className="py-1.5 pr-2"
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.currentTarget.style.outline = `2px solid ${COBRE}`;
+                    }}
+                    onDragLeave={(e) => {
+                      e.currentTarget.style.outline = "";
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      e.currentTarget.style.outline = "";
+                      const url = e.dataTransfer.getData("text/plain");
+                      if (url) {
+                        changeMotion(it.dayIndex, it.dia, it.especial, url);
+                      }
+                    }}
+                  >
                     <RowFramePreview
                       motionUrl={motionEff}
                       frase={fraseEff}
@@ -5327,7 +5353,24 @@ function BulkPreviewTable({
                       </button>
                     )}
                   </td>
-                  <td className="py-1.5 pr-2">
+                  <td
+                    className="py-1.5 pr-2"
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      e.currentTarget.style.outline = `2px solid ${COBRE}`;
+                    }}
+                    onDragLeave={(e) => {
+                      e.currentTarget.style.outline = "";
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      e.currentTarget.style.outline = "";
+                      const url = e.dataTransfer.getData("text/plain");
+                      if (url) {
+                        changeMotion(it.dayIndex, it.dia, it.especial, url);
+                      }
+                    }}
+                  >
                     <div className="flex items-start gap-1">
                       <select
                         value={motionEff}
