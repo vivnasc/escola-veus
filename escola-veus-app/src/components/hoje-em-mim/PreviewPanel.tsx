@@ -139,7 +139,6 @@ function computePreviewItems(opts: {
     moodByMotion: opts.moodByMotion,
     dias: diasMeta,
   });
-  const audioSeq = planAudioSequence(opts.audioPool, diasMeta, seed);
 
   // Procura match do calendário: clip cujo filename contenha alguma
   // keyword do prompt. A Vivianne não renomeia ficheiros — o nome
@@ -167,18 +166,63 @@ function computePreviewItems(opts: {
   }
 
   // Constrói a sequência de motions: calendário first, fallback shuffle
+  // + resolve o áudio DEPOIS de saber o motion, usando o mood DO CLIP
+  // (não do dia). Se o dia tem um clip de mar, o áudio é mare-noturna
+  // mesmo que seja quarta (que no MOOD_POR_DIA diz chuva).
   const motionSeq: string[] = [];
+  const audioSeqResolved: Array<string | null> = [];
   const usedCalUrls = new Set<string>();
+
+  // Agrupa áudios por mood para pick rápido
+  const audioByMood = new Map<string, string[]>();
+  for (const url of opts.audioPool) {
+    const m = moodFromAudioUrl(url);
+    if (m) {
+      if (!audioByMood.has(m)) audioByMood.set(m, []);
+      audioByMood.get(m)!.push(url);
+    }
+  }
+  const audioCursorByMood: Record<string, number> = {};
+
+  function pickAudioForMood(mood: string): string | null {
+    const list = audioByMood.get(mood);
+    if (!list || list.length === 0) return null;
+    const cur = audioCursorByMood[mood] ?? 0;
+    const url = list[cur % list.length];
+    audioCursorByMood[mood] = cur + 1;
+    return url;
+  }
+
+  // Fallback de áudio por weekday (usado quando nem calendário nem
+  // moodByMotion dão pista)
+  const audioSeqFallback = planAudioSequence(opts.audioPool, diasMeta, seed);
+
   for (let i = 0; i < numDays; i++) {
     const calEntry = calRotation[i];
     let calMatch: string | null = null;
     if (calEntry) {
       calMatch = findCalendarMotion(calEntry);
-      // Evita usar o mesmo clip para dois dias diferentes
       if (calMatch && usedCalUrls.has(calMatch)) calMatch = null;
       if (calMatch) usedCalUrls.add(calMatch);
     }
-    motionSeq.push(calMatch ?? motionSeqFallback[i] ?? "");
+    const motionUrl = calMatch ?? motionSeqFallback[i] ?? "";
+    motionSeq.push(motionUrl);
+
+    // Áudio: prioridade ao mood do CLIP, não do dia.
+    // 1. Calendário sabe o audioMood do prompt MJ → usa esse
+    // 2. Auto-tag (moodByMotion) → usa esse
+    // 3. Fallback: weekday mood (planAudioSequence)
+    let audio: string | null = null;
+    if (calMatch && calEntry) {
+      audio = pickAudioForMood(calEntry.category.audioMood);
+    }
+    if (!audio && opts.moodByMotion?.[motionUrl]) {
+      audio = pickAudioForMood(opts.moodByMotion[motionUrl]);
+    }
+    if (!audio) {
+      audio = audioSeqFallback[i];
+    }
+    audioSeqResolved.push(audio);
   }
 
   for (let i = 0; i < numDays; i++) {
@@ -217,7 +261,7 @@ function computePreviewItems(opts: {
       fraseId,
       fraseTexto,
       motionUrl: motionSeq[i] ?? "",
-      audioUrl: audioSeq[i] ?? null,
+      audioUrl: audioSeqResolved[i] ?? null,
     });
   }
   return items;
