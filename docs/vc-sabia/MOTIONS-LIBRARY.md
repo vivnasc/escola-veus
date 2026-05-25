@@ -12,7 +12,7 @@ Todos os prompts terminam em:
 
 Paleta partilhada:
 
-> *contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos*
+> *contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos*
 
 Cada bloco indica o **tema vc-sabia** sugerido e o **mood de áudio** para casar com a frase do post.
 
@@ -56,49 +56,49 @@ Cada bloco indica o **tema vc-sabia** sugerido e o **mood de áudio** para casar
 **Variante 1.**
 
 ```
-tiny sparrows perched on a wire at first light, gentle silhouettes against soft pink sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+tiny sparrows perched on a wire at first light, gentle silhouettes against soft pink sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-small finches drinking from a clay bowl on a wooden windowsill at dawn, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small finches drinking from a clay bowl on a wooden windowsill at dawn, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-a single robin singing on a fence post at sunrise, breath visible in cool air, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single robin singing on a fence post at sunrise, breath visible in cool air, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-small birds gathering on a flowering branch in soft pink dawn light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small birds gathering on a flowering branch in soft pink dawn light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-wagtail perched on a wet stone by a stream at first light, tail flicking, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wagtail perched on a wet stone by a stream at first light, tail flicking, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-swallows on a rooftop antenna against a pale lilac dawn sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+swallows on a rooftop antenna against a pale lilac dawn sky, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-tiny goldcrest among pine needles backlit by warm morning sun, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+tiny goldcrest among pine needles backlit by warm morning sun, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-house sparrows bathing in a shallow puddle on terracotta tiles at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+house sparrows bathing in a shallow puddle on terracotta tiles at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -110,49 +110,49 @@ house sparrows bathing in a shallow puddle on terracotta tiles at sunrise, the w
 **Variante 1.**
 
 ```
-a single hummingbird hovering at a wild orange flower at sunrise, frozen suspended motion, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single hummingbird hovering at a wild orange flower at sunrise, frozen suspended motion, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-hummingbird approaching a dew-covered hibiscus in slow motion, ultra detailed feathers, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+hummingbird approaching a dew-covered hibiscus in slow motion, ultra detailed feathers, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-hummingbird drinking from a trumpet flower at golden hour, iridescent throat glowing, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+hummingbird drinking from a trumpet flower at golden hour, iridescent throat glowing, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-hummingbird suspended beside a red bottlebrush flower against soft morning sky, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+hummingbird suspended beside a red bottlebrush flower against soft morning sky, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-two hummingbirds in mirrored flight above a still garden pond at dawn, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two hummingbirds in mirrored flight above a still garden pond at dawn, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-hummingbird at a single hibiscus bloom with morning mist around the leaves, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+hummingbird at a single hibiscus bloom with morning mist around the leaves, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-hummingbird hovering at a passionflower with soft sun rays in the background, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+hummingbird hovering at a passionflower with soft sun rays in the background, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-hummingbird perched briefly on a thin branch at first light, wings folded, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
+hummingbird perched briefly on a thin branch at first light, wings folded, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, distant birds and very subtle leaf movement --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -164,49 +164,49 @@ hummingbird perched briefly on a thin branch at first light, wings folded, here-
 **Variante 1.**
 
 ```
-silhouettes of swallows arcing across a pastel morning sky over red roofs, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+silhouettes of swallows arcing across a pastel morning sky over red roofs, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-a pair of swallows perched on a clothesline at dawn before flight, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a pair of swallows perched on a clothesline at dawn before flight, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-swallows weaving over a sunlit field of dry grass at golden hour, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+swallows weaving over a sunlit field of dry grass at golden hour, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-swallows nesting under terracotta eaves at sunrise, two arriving in flight, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+swallows nesting under terracotta eaves at sunrise, two arriving in flight, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-swallow gliding low over still river water with soft reflections, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+swallow gliding low over still river water with soft reflections, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-single swallow against a vast pale dawn sky, almost a brushstroke, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single swallow against a vast pale dawn sky, almost a brushstroke, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-swallows perched in a row on a stone wall warmed by morning sun, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+swallows perched in a row on a stone wall warmed by morning sun, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-swallows circling above an abandoned chapel tower at first light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+swallows circling above an abandoned chapel tower at first light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -218,49 +218,49 @@ swallows circling above an abandoned chapel tower at first light, the way ahead 
 **Variante 1.**
 
 ```
-a single white feather drifting slowly through a shaft of golden morning light, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single white feather drifting slowly through a shaft of golden morning light, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-two pale feathers floating above still water at sunrise, soft reflection below, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two pale feathers floating above still water at sunrise, soft reflection below, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-a dove feather caught on a thin spider web at dawn, dew on the strands, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a dove feather caught on a thin spider web at dawn, dew on the strands, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-feather suspended in a glass jar on a windowsill bathed in warm morning light, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+feather suspended in a glass jar on a windowsill bathed in warm morning light, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-feather resting on damp stones beside a forest stream at first light, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+feather resting on damp stones beside a forest stream at first light, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-a small grey feather floating in slow motion against pale linen curtains, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a small grey feather floating in slow motion against pale linen curtains, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-feathers scattered on dewy moss in a soft sunbeam through trees, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+feathers scattered on dewy moss in a soft sunbeam through trees, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-single feather rotating slowly in a shaft of sun through dust particles, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single feather rotating slowly in a shaft of sun through dust particles, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -272,49 +272,49 @@ single feather rotating slowly in a shaft of sun through dust particles, here-no
 **Variante 1.**
 
 ```
-a field of sunflowers covered in heavy morning dew, droplets catching first golden light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a field of sunflowers covered in heavy morning dew, droplets catching first golden light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-a single sunflower wet with dew bending toward the rising sun, soft halo of light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single sunflower wet with dew bending toward the rising sun, soft halo of light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-row of young sunflowers with curled wet leaves at sunrise, mist between stems, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+row of young sunflowers with curled wet leaves at sunrise, mist between stems, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-close up of a sunflower head with bees barely visible, dew on every seed, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of a sunflower head with bees barely visible, dew on every seed, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-wide field of sunflowers backlit by low pink dawn sun, soft fog around bases, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wide field of sunflowers backlit by low pink dawn sun, soft fog around bases, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-sunflower stem with a single droplet sliding down at first light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+sunflower stem with a single droplet sliding down at first light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-small sunflower in a clay pot on a stone wall at dawn, dew on petals, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small sunflower in a clay pot on a stone wall at dawn, dew on petals, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-sunflowers at the edge of a wheat field, soft golden mist between them, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+sunflowers at the edge of a wheat field, soft golden mist between them, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -326,49 +326,49 @@ sunflowers at the edge of a wheat field, soft golden mist between them, the way 
 **Variante 1.**
 
 ```
-rows of lavender swaying gently in a quiet field at dawn, soft purple haze and golden mist, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rows of lavender swaying gently in a quiet field at dawn, soft purple haze and golden mist, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-close up of a single lavender stem with bees barely visible in soft focus, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of a single lavender stem with bees barely visible in soft focus, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-lavender bouquet in a clay jug on a wooden table by an open window at sunrise, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lavender bouquet in a clay jug on a wooden table by an open window at sunrise, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-lavender field with a stone path winding through, morning light low across the rows, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lavender field with a stone path winding through, morning light low across the rows, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-dried lavender bundle hanging from a rustic wooden beam in warm light, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+dried lavender bundle hanging from a rustic wooden beam in warm light, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-lavender stems in a glass jar with dew condensing on the inside, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lavender stems in a glass jar with dew condensing on the inside, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-lavender at the edge of an olive grove in soft dawn fog, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lavender at the edge of an olive grove in soft dawn fog, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-single lavender sprig on a linen napkin beside a clay teacup at first light, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single lavender sprig on a linen napkin beside a clay teacup at first light, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -380,49 +380,49 @@ single lavender sprig on a linen napkin beside a clay teacup at first light, res
 **Variante 1.**
 
 ```
-a single butterfly resting on a wildflower at sunrise, wings folded against soft pink sky, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single butterfly resting on a wildflower at sunrise, wings folded against soft pink sky, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-butterfly slowly opening wings on a sun-warmed stone at dawn, golden translucent wings, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterfly slowly opening wings on a sun-warmed stone at dawn, golden translucent wings, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-butterfly hovering above a meadow of wildflowers in golden hour, slow motion flight, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterfly hovering above a meadow of wildflowers in golden hour, slow motion flight, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-close up of butterfly wings translucent with morning light through them, fine pattern detail, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of butterfly wings translucent with morning light through them, fine pattern detail, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-butterflies in soft flight above lavender at first light, soft purple haze, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterflies in soft flight above lavender at first light, soft purple haze, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-butterfly emerging from a cocoon on a branch in soft morning fog, wings drying, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterfly emerging from a cocoon on a branch in soft morning fog, wings drying, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-butterfly landing on a long blade of grass with dew drops, gentle bend of the stem, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+butterfly landing on a long blade of grass with dew drops, gentle bend of the stem, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-two butterflies side by side on a dry seed pod at dawn, slow wing breathing, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two butterflies side by side on a dry seed pod at dawn, slow wing breathing, transformation that does not remember itself, slow first flight, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -434,49 +434,49 @@ two butterflies side by side on a dry seed pod at dawn, slow wing breathing, tra
 **Variante 1.**
 
 ```
-a meadow of wildflowers in muted yellow white and lilac at sunrise, dew clinging to petals, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a meadow of wildflowers in muted yellow white and lilac at sunrise, dew clinging to petals, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-wild daisies and small grasses backlit by warm low sun, butterflies barely visible, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wild daisies and small grasses backlit by warm low sun, butterflies barely visible, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-poppies and chamomile in a stone-walled garden at golden hour, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+poppies and chamomile in a stone-walled garden at golden hour, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-wild yellow daffodils bending over a quiet path at first light, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wild yellow daffodils bending over a quiet path at first light, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-blue cornflowers among wheat at dawn, single bee in soft focus, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+blue cornflowers among wheat at dawn, single bee in soft focus, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-small white wildflowers along a sunlit forest edge with dust in the air, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small white wildflowers along a sunlit forest edge with dust in the air, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-patch of clover with morning dew, soft sun rays from one side, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+patch of clover with morning dew, soft sun rays from one side, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-wildflowers in a chipped ceramic vase on a wooden windowsill at sunrise, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wildflowers in a chipped ceramic vase on a wooden windowsill at sunrise, uncomplicated happiness, small bright pleasures, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -488,49 +488,49 @@ wildflowers in a chipped ceramic vase on a wooden windowsill at sunrise, uncompl
 **Variante 1.**
 
 ```
-a single dandelion clock releasing seeds into warm morning light, seeds suspended mid air, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single dandelion clock releasing seeds into warm morning light, seeds suspended mid air, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-field of dandelions glowing translucent against rising sun, seeds drifting one by one, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+field of dandelions glowing translucent against rising sun, seeds drifting one by one, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-close up of dandelion seeds detaching one at a time in slow breeze, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of dandelion seeds detaching one at a time in slow breeze, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-dandelion silhouette against blue hour sky just before sunrise, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+dandelion silhouette against soft pink sky at first light, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-two dandelion clocks side by side, half-empty, in golden grass, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two dandelion clocks side by side, half-empty, in golden grass, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-dandelion seed caught mid-flight against a soft cream background, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+dandelion seed caught mid-flight against a soft cream background, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-dandelion at the edge of a stone wall with morning fog drifting behind, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+dandelion at the edge of a stone wall with morning fog drifting behind, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-child-height view of a dandelion clock in a meadow at first light, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+child-height view of a dandelion clock in a meadow at first light, release, soft cleansing, second chance after rain, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -542,49 +542,49 @@ child-height view of a dandelion clock in a meadow at first light, release, soft
 **Variante 1.**
 
 ```
-backlit translucent young leaves at sunrise, veins glowing gold, soft cream sky behind, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+backlit translucent young leaves at sunrise, veins glowing gold, soft cream sky behind, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-single olive leaf held by morning sun, sap droplet shining, blurred green canopy behind, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single olive leaf held by morning sun, sap droplet shining, blurred green canopy behind, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-translucent fig leaves with morning light revealing every vein, soft wind, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+translucent fig leaves with morning light revealing every vein, soft wind, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-vine leaves backlit by low sun, dew sparkling on each, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+vine leaves backlit by low sun, dew sparkling on each, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-a single autumn leaf glowing amber held by a thin branch at dawn, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single autumn leaf glowing amber held by a thin branch at dawn, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-young birch leaves shimmering against a pale blue morning sky, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+young birch leaves shimmering against a pale blue morning sky, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-translucent eucalyptus leaves with a single dewdrop catching first light, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+translucent eucalyptus leaves with a single dewdrop catching first light, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-fern fronds backlit by warm low sun in a forest clearing, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+fern fronds backlit by warm low sun in a forest clearing, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -596,49 +596,49 @@ fern fronds backlit by warm low sun in a forest clearing, awe at simply being he
 **Variante 1.**
 
 ```
-ancient olive trees half-veiled in soft morning fog, red earth between roots, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+ancient olive trees half-veiled in soft morning fog, red earth between roots, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-a baobab tree silhouette emerging from low golden mist at dawn, savannah floor, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a baobab tree silhouette emerging from low golden mist at dawn, savannah floor, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-row of cypress trees in deep fog at sunrise, soft warm halos around tops, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+row of cypress trees in deep fog at sunrise, soft warm halos around tops, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-pine forest with golden sun beams piercing thick low mist, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+pine forest with golden sun beams piercing thick low mist, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-single ancient oak alone in a fog-filled valley at first light, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single ancient oak alone in a fog-filled valley at first light, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-cork oaks in misty meadow with slow drifting fog around trunks, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+cork oaks in misty meadow with slow drifting fog around trunks, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-almond trees in bloom emerging from morning fog, petals barely moving, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+almond trees in bloom emerging from morning fog, petals barely moving, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-mafurreira tree silhouette in soft golden mist on red African soil at dawn, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+mafurreira tree silhouette in soft golden mist on red African soil at dawn, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -650,49 +650,49 @@ mafurreira tree silhouette in soft golden mist on red African soil at dawn, drea
 **Variante 1.**
 
 ```
-a slow river at sunrise reflecting pink and gold sky, gentle current carrying soft light streaks, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a slow river at sunrise reflecting pink and gold sky, gentle current carrying soft light streaks, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-a quiet river bend with overhanging branches, fragments of sunlight dancing on the water, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a quiet river bend with overhanging branches, fragments of sunlight dancing on the water, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-wide river at first light with mist rising from the surface, gold reflections, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wide river at first light with mist rising from the surface, gold reflections, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-river stones in shallow water catching first sun, soft current, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+river stones in shallow water catching first sun, soft current, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-narrow stream through a meadow at dawn, golden ripples around small rocks, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+narrow stream through a meadow at dawn, golden ripples around small rocks, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-river meeting the sea at sunrise, soft swirls of light on the surface, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+river meeting the sea at sunrise, soft swirls of light on the surface, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-calm river with a single fallen leaf drifting through warm reflections, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+calm river with a single fallen leaf drifting through warm reflections, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-ribbon of river through a forest with sun beams across the surface, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+ribbon of river through a forest with sun beams across the surface, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -704,49 +704,49 @@ ribbon of river through a forest with sun beams across the surface, the way ahea
 **Variante 1.**
 
 ```
-a single white lotus opening at first light over still dark water, soft mist around the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single white lotus opening at first light over still warm water, soft mist around the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-pink lotus flower floating on a calm pond at sunrise, soft golden mist around the leaves, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+pink lotus flower floating on a calm pond at sunrise, soft golden mist around the leaves, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-lotus bud half-open with morning dew sliding down a curled petal, water reflection below, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus bud half-open with morning dew sliding down a curled petal, water reflection below, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-cluster of lotus flowers in soft golden mist on a quiet pond at dawn, lily pads barely moving, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+cluster of lotus flowers in soft golden mist on a quiet pond at dawn, lily pads barely moving, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-lotus leaves and one blooming flower reflected on still water in pastel pink light, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus leaves and one blooming flower reflected on still water in pastel pink light, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-lotus emerging from murky water with sunbeams from above, water droplets on the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lotus emerging from murky water with sunbeams from above, water droplets on the petals, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-close up of a lotus stamen with dawn light catching pollen dust, soft yellow centre glowing, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of a lotus stamen with dawn light catching pollen dust, soft yellow centre glowing, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-two lotus flowers side by side on still water at first light, faint reflection of pink sky, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two lotus flowers side by side on still water at first light, faint reflection of pink sky, purity rising through what holds us, second birth from softness, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -758,49 +758,49 @@ two lotus flowers side by side on still water at first light, faint reflection o
 **Variante 1.**
 
 ```
-still surface of a pond reflecting a single tree and pale morning sky, single leaf falling, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+still surface of a pond reflecting a single tree and pale morning sky, single leaf falling, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-mirror puddle on red stone after night rain reflecting pink dawn clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+mirror puddle on red stone after early morning rain reflecting pink dawn clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-still lake at dawn with perfect symmetrical reflection of mountains, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+still lake at dawn with perfect symmetrical reflection of mountains, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-rain barrel filled to the brim reflecting morning sky and one branch above, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rain barrel filled to the brim reflecting morning sky and one branch above, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-small pond at first light with a single ripple expanding from the centre, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small pond at first light with a single ripple expanding from the centre, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-dewdrop on a leaf reflecting the entire morning landscape upside down, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+dewdrop on a leaf reflecting the entire morning landscape upside down, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-still water in a clay basin on a stone wall reflecting golden clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+still water in a clay basin on a stone wall reflecting golden clouds, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-garden fountain still at dawn, surface mirror-flat with first light, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
+garden fountain still at dawn, surface mirror-flat with first light, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, water surface gently rippling, slow current --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -812,49 +812,49 @@ garden fountain still at dawn, surface mirror-flat with first light, introspecti
 **Variante 1.**
 
 ```
-a single deer standing in golden morning mist at the edge of a forest, head turned softly, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single deer standing in golden morning light at the edge of a sunlit meadow, head raised, gentle wonder at the start of the day, quiet presence in golden light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-a young doe in tall grass at dawn, sun rays piercing through fog behind, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a young doe in tall golden grass at sunrise, warm sun rays around her, gentle wonder at the start of the day, quiet presence in golden light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-deer drinking from a still forest pond at first light, soft reflection, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+deer drinking from a still forest pond at first light, golden reflection in the water, gentle wonder at the start of the day, quiet presence in golden light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-a small herd of deer crossing a misty meadow at sunrise, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a small herd of deer crossing a sun-drenched meadow at golden hour, gentle wonder at the start of the day, quiet presence in golden light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-single antlered deer silhouette against pale dawn sky on a hilltop, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single antlered deer silhouette against a radiant pink and gold dawn sky on a hilltop, gentle wonder at the start of the day, quiet presence in golden light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-fawn resting in dewy grass at sunrise, soft light on its coat, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+fawn resting in dewy grass at sunrise, soft warm light on its spotted coat, gentle wonder at the start of the day, quiet presence in golden light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-deer half-hidden between trees with golden sun beams between branches, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+deer half-visible between sunlit trees with warm golden beams between branches, gentle wonder at the start of the day, quiet presence in golden light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-deer ear flicking in slow motion in tall morning grass, introspective stillness, deep listening, room for echo, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+deer looking up in slow motion in tall morning grass, sun catching its eyes, gentle wonder at the start of the day, quiet presence in golden light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -866,49 +866,49 @@ deer ear flicking in slow motion in tall morning grass, introspective stillness,
 **Variante 1.**
 
 ```
-a tabby cat curled on terracotta tiles in a soft morning sun beam, slow breathing, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a tabby cat curled in a pool of warm sunlight on terracotta tiles, eyes half-closed in bliss, effortless joy of warmth, rest earned by simply being alive in morning light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-white cat stretching slowly on a windowsill against linen curtains and dawn light, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+white cat stretching slowly on a sunny windowsill, bright golden morning light on its fur, effortless joy of warmth, rest earned by simply being alive in morning light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-black cat sitting upright in a sunbeam on wooden floor, tail tip flicking, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+black cat sitting upright in a wide sunbeam on a warm wooden floor, tail tip flicking happily, effortless joy of warmth, rest earned by simply being alive in morning light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-ginger cat asleep on a folded blanket by an open window at sunrise, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+ginger cat asleep on a folded blanket in a sunlit room, warm golden glow everywhere, effortless joy of warmth, rest earned by simply being alive in morning light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-kitten paw extended into a warm sunbeam on a cool tile floor, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+kitten paw extended playfully into a bright sunbeam on a warm tile floor, effortless joy of warmth, rest earned by simply being alive in morning light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-cat half-asleep on a stone wall in golden hour, eyes barely open, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+cat half-asleep on a sunny stone wall at golden hour, eyes barely open, radiating contentment, effortless joy of warmth, rest earned by simply being alive in morning light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-cat watching dust particles in a sun ray, body still on a wooden chair, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+cat watching dust particles in a wide sun ray, body relaxed on a wooden chair by a window, effortless joy of warmth, rest earned by simply being alive in morning light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-two cats curled together on a warm stoop at dawn, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two cats curled together on a warm sunny stoop, morning light bathing them in gold, effortless joy of warmth, rest earned by simply being alive in morning light, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -920,49 +920,49 @@ two cats curled together on a warm stoop at dawn, rest as virtue, gentle weight 
 **Variante 1.**
 
 ```
-a single seed splitting open in damp dark earth, first tiny root emerging at sunrise, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single seed splitting open in warm damp earth, first tiny root emerging at sunrise, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-seedling pushing through cracked soil in morning sun, tiny green leaves unfurling, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+seedling pushing through cracked soil in morning sun, tiny green leaves unfurling, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-close up of seeds in dry soil with first drops of rain catching warm light, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+close up of seeds in dry soil with first drops of rain catching warm light, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-cluster of new shoots rising from a terracotta pot in soft dawn light, dew on the leaves, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+cluster of new shoots rising from a terracotta pot in soft dawn light, dew on the leaves, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-seed pod splitting open in soft morning breeze, scattering tiny seeds against pastel sky, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+seed pod splitting open in soft morning breeze, scattering tiny seeds against pastel sky, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-dried grass seed heads backlit by low warm sun in a quiet meadow at dawn, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+dried grass seed heads backlit by low warm sun in a quiet meadow at dawn, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-tiny seedlings in a row in dark earth with morning dew on each one, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+tiny seedlings in a row in warm earth with morning dew on each one, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-open hand-thrown clay pot with a single sprouting seed at first light, soft golden glow, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+open hand-thrown clay pot with a single sprouting seed at first light, soft golden glow, trust in what grows unseen, opening that takes its time, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -974,49 +974,49 @@ open hand-thrown clay pot with a single sprouting seed at first light, soft gold
 **Variante 1.**
 
 ```
-a wheat field at golden hour with low sun grazing the tops, rolling slow waves of light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a wheat field at golden hour with low sun grazing the tops, rolling slow waves of light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-amber savannah grass at sunrise with distant acacia silhouettes, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+amber savannah grass at sunrise with distant acacia silhouettes, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-field of barley with single tree on horizon at first light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+field of barley with single tree on horizon at first light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-rolling hills of golden wheat with morning mist between them, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rolling hills of golden wheat with morning mist between them, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-rye field with dew on tips, soft pink dawn sky above, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rye field with dew on tips, soft pink dawn sky above, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-tall dry grass at sunset golden hour, slow swaying, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+tall dry grass at sunset golden hour, slow swaying, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-wheat field with a single bird flying across at dawn, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wheat field with a single bird flying across at dawn, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-endless meadow of yellow grass with one dirt path through it, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+endless meadow of yellow grass with one dirt path through it, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1028,49 +1028,49 @@ endless meadow of yellow grass with one dirt path through it, grateful attention
 **Variante 1.**
 
 ```
-a soft dirt path winding through pine forest with sun beams cutting through morning fog, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a soft dirt path winding through pine forest with sun beams cutting through morning fog, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-narrow stone path through ancient cork oaks, low sun behind trees, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+narrow stone path through ancient cork oaks, low sun behind trees, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-moss-covered path in a beech forest with golden light from one side, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+moss-covered path in a beech forest with golden light from one side, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-forest trail at dawn with leaves falling through warm sun rays, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+forest trail at dawn with leaves falling through warm sun rays, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-wooden boardwalk through misty woods at first light, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wooden boardwalk through misty woods at first light, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-path between olive trees with golden grass and morning fog, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+path between olive trees with golden grass and morning fog, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-stone steps in an old chestnut forest with warm dawn light from above, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+stone steps in an old chestnut forest with warm dawn light from above, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-narrow track through bamboo with soft green light filtering down, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+narrow track through bamboo with soft green light filtering down, dream anchored in ground, future grown from past, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1082,49 +1082,49 @@ narrow track through bamboo with soft green light filtering down, dream anchored
 **Variante 1.**
 
 ```
-a fading pale moon over soft blue dawn sky above a sleeping valley, wholeness, return to center, circle closing softly, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a fading pale moon over a warm pink dawn sky above a waking valley, first birds in flight, wholeness at the threshold of a new day, the last star yielding to golden sunrise, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-crescent moon hanging low over a quiet lake at blue hour, single bird crossing the frame, wholeness, return to center, circle closing softly, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+crescent moon dissolving into soft peach and gold sunrise sky, single swallow crossing, wholeness at the threshold of a new day, the last star yielding to golden sunrise, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-half moon visible behind thin morning clouds at first light, wholeness, return to center, circle closing softly, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+half moon barely visible behind thin golden morning clouds at first light, wholeness at the threshold of a new day, the last star yielding to golden sunrise, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-full moon setting over the sea as the sun rises behind, wholeness, return to center, circle closing softly, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+full moon setting behind hills as the sun rises warm and golden behind the viewer, wholeness at the threshold of a new day, the last star yielding to golden sunrise, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-pale moon framed by branches of a flowering almond tree at dawn, wholeness, return to center, circle closing softly, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+pale moon framed by branches of a flowering tree at sunrise, petals catching first light, wholeness at the threshold of a new day, the last star yielding to golden sunrise, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-moon reflected in a still rice paddy at blue hour, wholeness, return to center, circle closing softly, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+ghost moon fading in a radiant pink and gold dawn sky over calm water, wholeness at the threshold of a new day, the last star yielding to golden sunrise, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-ghost moon barely visible in pastel pink dawn sky, wholeness, return to center, circle closing softly, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+moon reflected in a still morning pond as golden light spreads across the surface, wholeness at the threshold of a new day, the last star yielding to golden sunrise, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-crescent moon and morning star above a distant mountain ridge, wholeness, return to center, circle closing softly, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+crescent moon and morning star in a sky turning from rose to gold above distant hills, wholeness at the threshold of a new day, the last star yielding to golden sunrise, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1136,49 +1136,49 @@ crescent moon and morning star above a distant mountain ridge, wholeness, return
 **Variante 1.**
 
 ```
-a pastel pink and cream dawn sky with soft golden edged clouds, single bird passing, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a pastel pink and cream dawn sky with soft golden edged clouds, single bird passing, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-peach and lilac dawn sky above a still ocean horizon, single sail far away, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+peach and lilac dawn sky above a still ocean horizon, single sail far away, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-lavender pink clouds above a quiet city skyline at first light, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lavender pink clouds above a quiet city skyline at first light, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-soft cotton candy sky above a calm wheat field at sunrise, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+soft cotton candy sky above a calm wheat field at sunrise, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-salmon coloured clouds drifting slowly above a misty valley, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+salmon coloured clouds drifting slowly above a misty valley, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-sky in soft pinks and blues above a still lake at dawn, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+sky in soft pinks and blues above a still lake at dawn, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-high cirrus clouds catching first light in cream and rose pink, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+high cirrus clouds catching first light in cream and rose pink, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-wide open sky in pastel tones above an empty road at sunrise, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wide open sky in pastel tones above an empty road at sunrise, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1190,49 +1190,49 @@ wide open sky in pastel tones above an empty road at sunrise, awe at simply bein
 **Variante 1.**
 
 ```
-layers of misty mountain ridges fading into pink dawn light, no foreground details, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+layers of misty mountain ridges fading into pink dawn light, no foreground details, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-serene mountain top above a sea of clouds at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+serene mountain top above a sea of clouds at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-distant blue mountains beyond a foreground of golden grass at first light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+distant blue mountains beyond a foreground of golden grass at first light, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-snow-capped peaks barely visible through morning haze, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+snow-capped peaks barely visible through morning haze, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-rolling hills disappearing into soft golden mist toward the horizon, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rolling hills disappearing into soft golden mist toward the horizon, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-single peak emerging from cloud cover at dawn, sun rays from behind, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single peak emerging from cloud cover at dawn, sun rays from behind, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-mountain valley filled with low cloud at first light, peaks above, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+mountain valley filled with low cloud at first light, peaks above, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-horizon line of distant mountains painted in soft pastels at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+horizon line of distant mountains painted in soft pastels at sunrise, the way ahead unhurried, trust in the next step, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1244,49 +1244,49 @@ horizon line of distant mountains painted in soft pastels at sunrise, the way ah
 **Variante 1.**
 
 ```
-a clay teacup on a wooden windowsill with steam rising into morning sunlight, linen curtains softly in focus behind, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a clay teacup on a sunny wooden windowsill with steam rising into warm golden morning light, bright garden visible outside, warmth of a new beginning, gratitude for a bright morning ahead, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-ceramic mug of tea steaming on a kitchen table beside an open book, dawn light through the window, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+ceramic mug of tea steaming on a kitchen table beside fresh flowers, radiant dawn light through the window, warmth of a new beginning, gratitude for a bright morning ahead, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-rustic teapot pouring tea into a cup at first light, gentle steam rising, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rustic teapot pouring tea into a cup at first light, steam glowing in warm sun rays, warmth of a new beginning, gratitude for a bright morning ahead, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-two cups of tea side by side on a wooden tray on a windowsill at sunrise, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+two cups of tea side by side on a wooden tray on a sunny windowsill at golden hour, warmth of a new beginning, gratitude for a bright morning ahead, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-hand-thrown clay mug of tea on a stone ledge with morning fog outside, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+hand-thrown clay mug of tea on a stone ledge with bright sunny morning garden outside, warmth of a new beginning, gratitude for a bright morning ahead, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-tea steeping in a glass cup, steam curling against soft golden light, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+tea steeping in a glass cup, steam curling in warm golden morning light from a large window, warmth of a new beginning, gratitude for a bright morning ahead, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-saucer with a sprig of fresh mint beside a steaming cup at dawn, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+saucer with a sprig of fresh mint beside a steaming cup, radiant sunbeam across the table, warmth of a new beginning, gratitude for a bright morning ahead, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-japanese-style teacup on a tatami with morning sun across the wood, rest as virtue, gentle weight of body, slow exhale, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+teacup on a sunny balcony with climbing flowers and warm golden light everywhere, warmth of a new beginning, gratitude for a bright morning ahead, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1298,49 +1298,49 @@ japanese-style teacup on a tatami with morning sun across the wood, rest as virt
 **Variante 1.**
 
 ```
-linen curtains breathing in summer wind through an open wooden window, soft golden light spilling onto a tile floor, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+linen curtains breathing in summer wind through an open wooden window, soft golden light spilling onto a tile floor, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-sheer curtains glowing against a pale blue morning sky behind an open shutter, dust motes drifting, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+sheer curtains glowing against a pale blue morning sky behind an open shutter, dust motes drifting, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-white cotton curtains gently rising in morning breeze through an open balcony door, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+white cotton curtains gently rising in morning breeze through an open balcony door, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-lace curtains casting patterned shadows on a wooden floor at first light, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lace curtains casting patterned shadows on a wooden floor at first light, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-open wooden window framing a misty garden, curtain barely moving, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+open wooden window framing a misty garden, curtain barely moving, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-kitchen window with linen curtain and a glass jar of wildflowers at dawn, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+kitchen window with linen curtain and a glass jar of wildflowers at dawn, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-curtains drawn aside to reveal a sunrise over rooftops, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+curtains drawn aside to reveal a sunrise over rooftops, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-open shutters with light blue paint, soft cotton curtain catching the morning wind, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
+open shutters with light blue paint, soft cotton curtain catching the morning wind, body as dwelling, slow rituals, sensory return, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, soft wind through grass or curtains, slow drift --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1352,49 +1352,49 @@ open shutters with light blue paint, soft cotton curtain catching the morning wi
 **Variante 1.**
 
 ```
-a single warm paper lantern hanging from a low branch at dawn, soft glow against blue hour sky, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single warm paper lantern on a wooden table at sunrise, golden morning light pouring around it, gentle warm light greeting the new day, hope as a small flame that persists, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-row of small lanterns lining a stone path at blue hour, warm pools of light on cobblestone, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+row of small lanterns along a stone garden path at sunrise, soft pools of warm light on dew-covered stones, gentle warm light greeting the new day, hope as a small flame that persists, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-rustic metal lantern on a wooden bench at first light, soft flame inside, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rustic metal lantern on a wooden bench at first light, flame fading as sunrise takes over, gentle warm light greeting the new day, hope as a small flame that persists, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-paper lanterns floating gently in a quiet courtyard at sunrise, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+paper lanterns in a quiet garden courtyard at golden hour, warm light mixing with morning sun, gentle warm light greeting the new day, hope as a small flame that persists, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-single lantern on a stone wall beside an arched doorway at dawn, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single lantern on a stone wall beside wildflowers at dawn, soft warm glow against pink sky, gentle warm light greeting the new day, hope as a small flame that persists, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-lantern on a wooden boat moored at a misty shore, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+lantern on a wooden boat at a sunlit shore, morning mist clearing, gentle warm light greeting the new day, hope as a small flame that persists, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-warm lantern in a window with curtain glowing pink from morning sky, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+warm lantern in a window glowing soft amber as sunrise fills the room, gentle warm light greeting the new day, hope as a small flame that persists, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-small lanterns hanging from a tree in a quiet garden at first light, awe at simply being here, life as quiet miracle, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small lanterns hanging from a tree branch at first light, golden rays through the leaves, gentle warm light greeting the new day, hope as a small flame that persists, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1406,49 +1406,49 @@ small lanterns hanging from a tree in a quiet garden at first light, awe at simp
 **Variante 1.**
 
 ```
-a wooden table at sunrise with a single ceramic plate, a fig cut in half, a slice of bread and a small glass of water, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a wooden table at sunrise with a single ceramic plate, a fig cut in half, a slice of bread and a small glass of water, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-overhead view of breakfast tableau: clay cup of coffee, half papaya, sprig of fresh herbs, dawn light from the side, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+overhead view of breakfast tableau: clay cup of coffee, half papaya, sprig of fresh herbs, dawn light from the side, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-rustic table with bread, honey jar and a clay cup of tea in soft morning light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+rustic table with bread, honey jar and a clay cup of tea in soft morning light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-small wooden tray on a stone wall with a single fruit and a cup, golden hour, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small wooden tray on a stone wall with a single fruit and a cup, golden hour, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-kitchen counter at dawn with a peach, a knife and a linen napkin, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+kitchen counter at dawn with a peach, a knife and a linen napkin, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-ceramic bowl of berries and yogurt on a wooden table beside an open window, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+ceramic bowl of berries and yogurt on a wooden table beside an open window, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-single boiled egg in a cup with a wooden spoon on a sunlit windowsill, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single boiled egg in a cup with a wooden spoon on a sunlit windowsill, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-wooden plate with sliced bread and olive oil bottle in soft dawn light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+wooden plate with sliced bread and olive oil bottle in soft dawn light, grateful attention to small ordinary gifts, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1460,49 +1460,49 @@ wooden plate with sliced bread and olive oil bottle in soft dawn light, grateful
 **Variante 1.**
 
 ```
-an open vintage book on a worn wooden desk, golden morning light catching the pages, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+an open vintage book on a worn wooden desk, golden morning light catching the pages, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-stack of old books on a windowsill bathed in warm dawn light, dust particles in the rays, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+stack of old books on a windowsill bathed in warm dawn light, dust particles in the rays, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-leather-bound notebook open on a stone wall with morning sun across one page, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+leather-bound notebook open on a stone wall with morning sun across one page, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-books and a small clay cup on a wooden table in soft golden light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+books and a small clay cup on a wooden table in soft golden light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-single book open with a pressed flower between pages at sunrise, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single book open with a pressed flower between pages at sunrise, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-library shelf with sun streaking across the spines at dawn, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+library shelf with sun streaking across the spines at dawn, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-open book on a linen cloth on a balcony at first light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+open book on a linen cloth on a balcony at first light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-old hardback book and round glasses on a desk in warm morning light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+old hardback book and round glasses on a desk in warm morning light, tender warmth, self-embrace, home as body, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---
@@ -1514,49 +1514,49 @@ old hardback book and round glasses on a desk in warm morning light, tender warm
 **Variante 1.**
 
 ```
-a single beeswax candle burning on a wooden table at dawn, soft pink light from a window behind, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+a single beeswax candle on a wooden table at dawn, warm sunlight streaming in behind it, here-now suspension, intention set at the start of a bright new day, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 2.**
 
 ```
-small votive candle near a clay bowl of water at sunrise, gentle reflection on the water, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+small votive candle beside a clay bowl of flowers at sunrise, golden light flooding the room, here-now suspension, intention set at the start of a bright new day, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 3.**
 
 ```
-three small candles on a stone altar at first light, slow flickering, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+three small candles on a sunlit stone ledge at first light, morning breeze barely visible, here-now suspension, intention set at the start of a bright new day, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 4.**
 
 ```
-candle in a glass jar on a windowsill with morning mist outside, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+candle in a glass jar on a windowsill with radiant sunrise outside, warm light on everything, here-now suspension, intention set at the start of a bright new day, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 5.**
 
 ```
-candle on a folded linen napkin beside a sprig of rosemary at dawn, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+candle on a folded linen napkin beside a sprig of rosemary, morning sun across the table, here-now suspension, intention set at the start of a bright new day, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 6.**
 
 ```
-single tall candle in a bronze holder catching first golden light, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+single tall candle in a bronze holder catching first golden rays of the day, here-now suspension, intention set at the start of a bright new day, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 7.**
 
 ```
-candle on a wooden tray with petals around it at sunrise, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+candle on a wooden tray with fresh wildflowers at sunrise, golden warmth everywhere, here-now suspension, intention set at the start of a bright new day, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 **Variante 8.**
 
 ```
-candle in an arched stone niche with soft warm glow at dawn, here-now suspension, breath made visible, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
+candle being gently blown out as morning sunlight pours through an open window, here-now suspension, intention set at the start of a bright new day, contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos, almost still, only dust particles drifting in light --ar 9:16 --style raw --stylize 200 --quality 1 --video
 ```
 
 ---

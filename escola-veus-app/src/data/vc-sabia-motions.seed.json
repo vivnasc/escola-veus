@@ -1,5 +1,5 @@
 {
-  "style_base": "contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, muted earth tones cream gold dust, shallow depth of field, no people no faces no text no logos",
+  "style_base": "contemplative morning lusophone poetry, soft golden hour light, cinematic film grain 35mm, warm radiant earth tones cream gold honey light, shallow depth of field, no people no faces no text no logos",
   "suffix": "--ar 9:16 --style raw --stylize 200 --quality 1 --video",
   "mood_hints": {
     "birds_dawn": "distant birds and very subtle leaf movement",
@@ -188,7 +188,7 @@
         "a single dandelion clock releasing seeds into warm morning light, seeds suspended mid air",
         "field of dandelions glowing translucent against rising sun, seeds drifting one by one",
         "close up of dandelion seeds detaching one at a time in slow breeze",
-        "dandelion silhouette against blue hour sky just before sunrise",
+        "dandelion silhouette against soft pink sky at first light",
         "two dandelion clocks side by side, half-empty, in golden grass",
         "dandelion seed caught mid-flight against a soft cream background",
         "dandelion at the edge of a stone wall with morning fog drifting behind",
@@ -278,7 +278,7 @@
       "mood": "silence",
       "atmosphere": "purity rising through what holds us, second birth from softness",
       "subjects": [
-        "a single white lotus opening at first light over still dark water, soft mist around the petals",
+        "a single white lotus opening at first light over still warm water, soft mist around the petals",
         "pink lotus flower floating on a calm pond at sunrise, soft golden mist around the leaves",
         "lotus bud half-open with morning dew sliding down a curled petal, water reflection below",
         "cluster of lotus flowers in soft golden mist on a quiet pond at dawn, lily pads barely moving",
@@ -301,7 +301,7 @@
       "atmosphere": "introspective stillness, deep listening, room for echo",
       "subjects": [
         "still surface of a pond reflecting a single tree and pale morning sky, single leaf falling",
-        "mirror puddle on red stone after night rain reflecting pink dawn clouds",
+        "mirror puddle on red stone after early morning rain reflecting pink dawn clouds",
         "still lake at dawn with perfect symmetrical reflection of mountains",
         "rain barrel filled to the brim reflecting morning sky and one branch above",
         "small pond at first light with a single ripple expanding from the centre",
@@ -326,16 +326,16 @@
       "name": "Cervos etéreos",
       "tema": "autoconhecimento",
       "mood": "silence",
-      "atmosphere": "introspective stillness, deep listening, room for echo",
+      "atmosphere": "gentle wonder at the start of the day, quiet presence in golden light",
       "subjects": [
-        "a single deer standing in golden morning mist at the edge of a forest, head turned softly",
-        "a young doe in tall grass at dawn, sun rays piercing through fog behind",
-        "deer drinking from a still forest pond at first light, soft reflection",
-        "a small herd of deer crossing a misty meadow at sunrise",
-        "single antlered deer silhouette against pale dawn sky on a hilltop",
-        "fawn resting in dewy grass at sunrise, soft light on its coat",
-        "deer half-hidden between trees with golden sun beams between branches",
-        "deer ear flicking in slow motion in tall morning grass"
+        "a single deer standing in golden morning light at the edge of a sunlit meadow, head raised",
+        "a young doe in tall golden grass at sunrise, warm sun rays around her",
+        "deer drinking from a still forest pond at first light, golden reflection in the water",
+        "a small herd of deer crossing a sun-drenched meadow at golden hour",
+        "single antlered deer silhouette against a radiant pink and gold dawn sky on a hilltop",
+        "fawn resting in dewy grass at sunrise, soft warm light on its spotted coat",
+        "deer half-visible between sunlit trees with warm golden beams between branches",
+        "deer looking up in slow motion in tall morning grass, sun catching its eyes"
       ],
       "keywords": [
         "cervo",
@@ -348,16 +348,16 @@
       "name": "Gatos ao sol da manhã",
       "tema": "suavidade-e-descanso",
       "mood": "silence",
-      "atmosphere": "rest as virtue, gentle weight of body, slow exhale",
+      "atmosphere": "effortless joy of warmth, rest earned by simply being alive in morning light",
       "subjects": [
-        "a tabby cat curled on terracotta tiles in a soft morning sun beam, slow breathing",
-        "white cat stretching slowly on a windowsill against linen curtains and dawn light",
-        "black cat sitting upright in a sunbeam on wooden floor, tail tip flicking",
-        "ginger cat asleep on a folded blanket by an open window at sunrise",
-        "kitten paw extended into a warm sunbeam on a cool tile floor",
-        "cat half-asleep on a stone wall in golden hour, eyes barely open",
-        "cat watching dust particles in a sun ray, body still on a wooden chair",
-        "two cats curled together on a warm stoop at dawn"
+        "a tabby cat curled in a pool of warm sunlight on terracotta tiles, eyes half-closed in bliss",
+        "white cat stretching slowly on a sunny windowsill, bright golden morning light on its fur",
+        "black cat sitting upright in a wide sunbeam on a warm wooden floor, tail tip flicking happily",
+        "ginger cat asleep on a folded blanket in a sunlit room, warm golden glow everywhere",
+        "kitten paw extended playfully into a bright sunbeam on a warm tile floor",
+        "cat half-asleep on a sunny stone wall at golden hour, eyes barely open, radiating contentment",
+        "cat watching dust particles in a wide sun ray, body relaxed on a wooden chair by a window",
+        "two cats curled together on a warm sunny stoop, morning light bathing them in gold"
       ],
       "keywords": [
         "gato",
@@ -372,13 +372,13 @@
       "mood": "silence",
       "atmosphere": "trust in what grows unseen, opening that takes its time",
       "subjects": [
-        "a single seed splitting open in damp dark earth, first tiny root emerging at sunrise",
+        "a single seed splitting open in warm damp earth, first tiny root emerging at sunrise",
         "seedling pushing through cracked soil in morning sun, tiny green leaves unfurling",
         "close up of seeds in dry soil with first drops of rain catching warm light",
         "cluster of new shoots rising from a terracotta pot in soft dawn light, dew on the leaves",
         "seed pod splitting open in soft morning breeze, scattering tiny seeds against pastel sky",
         "dried grass seed heads backlit by low warm sun in a quiet meadow at dawn",
-        "tiny seedlings in a row in dark earth with morning dew on each one",
+        "tiny seedlings in a row in warm earth with morning dew on each one",
         "open hand-thrown clay pot with a single sprouting seed at first light, soft golden glow"
       ],
       "keywords": [
@@ -442,16 +442,16 @@
       "name": "Luas suaves no amanhecer azul",
       "tema": "inteireza",
       "mood": "silence",
-      "atmosphere": "wholeness, return to center, circle closing softly",
+      "atmosphere": "wholeness at the threshold of a new day, the last star yielding to golden sunrise",
       "subjects": [
-        "a fading pale moon over soft blue dawn sky above a sleeping valley",
-        "crescent moon hanging low over a quiet lake at blue hour, single bird crossing the frame",
-        "half moon visible behind thin morning clouds at first light",
-        "full moon setting over the sea as the sun rises behind",
-        "pale moon framed by branches of a flowering almond tree at dawn",
-        "moon reflected in a still rice paddy at blue hour",
-        "ghost moon barely visible in pastel pink dawn sky",
-        "crescent moon and morning star above a distant mountain ridge"
+        "a fading pale moon over a warm pink dawn sky above a waking valley, first birds in flight",
+        "crescent moon dissolving into soft peach and gold sunrise sky, single swallow crossing",
+        "half moon barely visible behind thin golden morning clouds at first light",
+        "full moon setting behind hills as the sun rises warm and golden behind the viewer",
+        "pale moon framed by branches of a flowering tree at sunrise, petals catching first light",
+        "ghost moon fading in a radiant pink and gold dawn sky over calm water",
+        "moon reflected in a still morning pond as golden light spreads across the surface",
+        "crescent moon and morning star in a sky turning from rose to gold above distant hills"
       ],
       "keywords": [
         "lua",
@@ -511,16 +511,16 @@
       "name": "Chá fumegante junto à janela",
       "tema": "suavidade-e-descanso",
       "mood": "silence",
-      "atmosphere": "rest as virtue, gentle weight of body, slow exhale",
+      "atmosphere": "warmth of a new beginning, gratitude for a bright morning ahead",
       "subjects": [
-        "a clay teacup on a wooden windowsill with steam rising into morning sunlight, linen curtains softly in focus behind",
-        "ceramic mug of tea steaming on a kitchen table beside an open book, dawn light through the window",
-        "rustic teapot pouring tea into a cup at first light, gentle steam rising",
-        "two cups of tea side by side on a wooden tray on a windowsill at sunrise",
-        "hand-thrown clay mug of tea on a stone ledge with morning fog outside",
-        "tea steeping in a glass cup, steam curling against soft golden light",
-        "saucer with a sprig of fresh mint beside a steaming cup at dawn",
-        "japanese-style teacup on a tatami with morning sun across the wood"
+        "a clay teacup on a sunny wooden windowsill with steam rising into warm golden morning light, bright garden visible outside",
+        "ceramic mug of tea steaming on a kitchen table beside fresh flowers, radiant dawn light through the window",
+        "rustic teapot pouring tea into a cup at first light, steam glowing in warm sun rays",
+        "two cups of tea side by side on a wooden tray on a sunny windowsill at golden hour",
+        "hand-thrown clay mug of tea on a stone ledge with bright sunny morning garden outside",
+        "tea steeping in a glass cup, steam curling in warm golden morning light from a large window",
+        "saucer with a sprig of fresh mint beside a steaming cup, radiant sunbeam across the table",
+        "teacup on a sunny balcony with climbing flowers and warm golden light everywhere"
       ],
       "keywords": [
         "cha",
@@ -555,16 +555,16 @@
       "name": "Lanternas suaves",
       "tema": "beleza-de-existir",
       "mood": "silence",
-      "atmosphere": "awe at simply being here, life as quiet miracle",
+      "atmosphere": "gentle warm light greeting the new day, hope as a small flame that persists",
       "subjects": [
-        "a single warm paper lantern hanging from a low branch at dawn, soft glow against blue hour sky",
-        "row of small lanterns lining a stone path at blue hour, warm pools of light on cobblestone",
-        "rustic metal lantern on a wooden bench at first light, soft flame inside",
-        "paper lanterns floating gently in a quiet courtyard at sunrise",
-        "single lantern on a stone wall beside an arched doorway at dawn",
-        "lantern on a wooden boat moored at a misty shore",
-        "warm lantern in a window with curtain glowing pink from morning sky",
-        "small lanterns hanging from a tree in a quiet garden at first light"
+        "a single warm paper lantern on a wooden table at sunrise, golden morning light pouring around it",
+        "row of small lanterns along a stone garden path at sunrise, soft pools of warm light on dew-covered stones",
+        "rustic metal lantern on a wooden bench at first light, flame fading as sunrise takes over",
+        "paper lanterns in a quiet garden courtyard at golden hour, warm light mixing with morning sun",
+        "single lantern on a stone wall beside wildflowers at dawn, soft warm glow against pink sky",
+        "lantern on a wooden boat at a sunlit shore, morning mist clearing",
+        "warm lantern in a window glowing soft amber as sunrise fills the room",
+        "small lanterns hanging from a tree branch at first light, golden rays through the leaves"
       ],
       "keywords": [
         "lanterna",
@@ -621,16 +621,16 @@
       "name": "Vela acesa ao nascer do sol",
       "tema": "presenca-leve",
       "mood": "silence",
-      "atmosphere": "here-now suspension, breath made visible",
+      "atmosphere": "here-now suspension, intention set at the start of a bright new day",
       "subjects": [
-        "a single beeswax candle burning on a wooden table at dawn, soft pink light from a window behind",
-        "small votive candle near a clay bowl of water at sunrise, gentle reflection on the water",
-        "three small candles on a stone altar at first light, slow flickering",
-        "candle in a glass jar on a windowsill with morning mist outside",
-        "candle on a folded linen napkin beside a sprig of rosemary at dawn",
-        "single tall candle in a bronze holder catching first golden light",
-        "candle on a wooden tray with petals around it at sunrise",
-        "candle in an arched stone niche with soft warm glow at dawn"
+        "a single beeswax candle on a wooden table at dawn, warm sunlight streaming in behind it",
+        "small votive candle beside a clay bowl of flowers at sunrise, golden light flooding the room",
+        "three small candles on a sunlit stone ledge at first light, morning breeze barely visible",
+        "candle in a glass jar on a windowsill with radiant sunrise outside, warm light on everything",
+        "candle on a folded linen napkin beside a sprig of rosemary, morning sun across the table",
+        "single tall candle in a bronze holder catching first golden rays of the day",
+        "candle on a wooden tray with fresh wildflowers at sunrise, golden warmth everywhere",
+        "candle being gently blown out as morning sunlight pours through an open window"
       ],
       "keywords": [
         "vela",
