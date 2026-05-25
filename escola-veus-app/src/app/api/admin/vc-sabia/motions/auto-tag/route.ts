@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 
 import { MOOD_LABELS, MORNING_MOODS, type MorningMood } from "@/lib/vc-sabia/audio";
+import { VISUAL_CATEGORY_NAMES } from "@/lib/vc-sabia/phrase-motion-match";
 
 export const maxDuration = 120;
 export const runtime = "nodejs";
@@ -72,9 +73,12 @@ export async function POST(req: NextRequest) {
     (m) => `- ${m} (${MOOD_LABELS[m]})`
   ).join("\n");
 
+  const categoryList = VISUAL_CATEGORY_NAMES.map((n) => `- "${n}"`).join("\n");
+
   const systemPrompt = `Classificas frames de clips de video contemplativos para a serie "VC Sabia Que...?" — posts de Instagram com frases de sabedoria sobre uma imagem em movimento + som ambiente.
 
-Cada clip tem de ser classificado em UM destes 4 elementos:
+TAREFA 1 — MOOD (som ambiente):
+Cada clip → UM destes 4 elementos:
 ${elementsList}
 
 Pensa em qual som ambiente faria mais sentido a tocar enquanto vemos esse clip:
@@ -83,11 +87,25 @@ Pensa em qual som ambiente faria mais sentido a tocar enquanto vemos esse clip:
 - lume: chamas, brasas, velas, luz dourada quente, por do sol
 - terra: pedra, raizes, montanhas, jardim seco, mineral, ancestral, ou movimento muito quieto/grounded
 
+TAREFA 2 — CATEGORIA VISUAL:
+Cada clip → UMA destas categorias (pelo subject principal visivel no frame):
+${categoryList}
+
+Escolhe a que melhor descreve O QUE SE VE na imagem. Exemplos:
+- um lotus numa lagoa → "Lótus na água"
+- girassois → "Girassóis molhados de orvalho"
+- passaros pequenos → "Pássaros pequenos ao amanhecer"
+- neblina entre arvores → "Árvores com neblina matinal"
+- montanhas ao longe → "Montanhas etéreas"
+- vela acesa → "Vela acesa ao nascer do sol"
+
 Output APENAS JSON no formato exacto:
 {
   "tags": {
-    "<filename>": "<slug>",
-    ...
+    "<filename>": "<mood_slug>"
+  },
+  "categories": {
+    "<filename>": "<nome exacto da categoria>"
   },
   "reasoning": "1-3 frases a explicar como agrupaste"
 }
@@ -158,8 +176,20 @@ Sem texto fora do JSON. Sem markdown. Sem code fences.`;
     }
   }
 
+  // Validar categorias visuais.
+  const validCategories = new Set<string>(VISUAL_CATEGORY_NAMES);
+  const categories: Record<string, string> = {};
+  for (const [name, cat] of Object.entries(
+    (parsed as { categories?: Record<string, string> }).categories ?? {}
+  )) {
+    if (validCategories.has(cat)) {
+      categories[name] = cat;
+    }
+  }
+
   return NextResponse.json({
     tags,
+    categories,
     reasoning: parsed.reasoning ?? "",
     classified: Object.keys(tags).length,
     skipped: normalized.length - Object.keys(tags).length,
