@@ -129,7 +129,7 @@ def render_doc() -> str:
     lines.append("")
 
     n_cats = len(CATEGORIES)
-    start = date(2026, 6, 1)
+    start = date(2026, 7, 1)
     months_pt = [
         "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
         "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
@@ -195,33 +195,33 @@ def _normalize(s: str) -> str:
 def match_category_for_phrase(
     phrase_text: str,
     phrase_tema: str,
+    usage_counts: dict[str, int],
 ) -> tuple[dict, str]:
-    """Devolve (categoria, modo) — modo em {"keyword", "tema", "fallback"}.
+    """Devolve (categoria, modo).
 
-    1. Procura keyword da categoria em qualquer parte da frase normalizada.
-       Primeira categoria que matcha (pela ordem do JSON) ganha. Por isso
-       no JSON pomos Rios antes de Reflexos (que apanha 'agua' generico).
-    2. Se nenhuma keyword matcha, cai para categoria cujo tema vc-sabia
-       seja o mesmo da frase.
-    3. Ultimo recurso: primeira categoria (mantem determinismo).
+    1. Keyword match: primeira keyword que bate na frase normalizada.
+    2. Tema fallback: categoria com mesmo tema E menor uso (distribui).
+    3. Ultimo recurso: categoria com menor uso global.
     """
     norm = _normalize(phrase_text)
     norm_padded = f" {norm} "
     for cat in CATEGORIES:
         for kw in cat.get("keywords", []):
             kn = _normalize(kw)
-            # match palavra inteira ou substring (alguns kws sao multi-palavra)
             if " " in kn:
                 if kn in norm:
                     return cat, "keyword"
             else:
                 if f" {kn} " in norm_padded or f" {kn}s " in norm_padded:
                     return cat, "keyword"
-    # fallback tema
-    for cat in CATEGORIES:
-        if cat["tema"] == phrase_tema:
-            return cat, "tema"
-    return CATEGORIES[0], "fallback"
+    # fallback tema — pega a categoria menos usada dentro do mesmo tema
+    same_tema = [c for c in CATEGORIES if c["tema"] == phrase_tema]
+    if same_tema:
+        best = min(same_tema, key=lambda c: usage_counts.get(c["name"], 0))
+        return best, "tema"
+    # ultimo recurso — menos usada globalmente
+    best = min(CATEGORIES, key=lambda c: usage_counts.get(c["name"], 0))
+    return best, "fallback"
 
 
 def calendar_markers(d: date) -> list[str]:
@@ -257,11 +257,11 @@ def calendar_markers(d: date) -> list[str]:
 def render_calendar() -> str:
     phrases = json.loads(PHRASES_PATH.read_text(encoding="utf-8"))["frases"]
     n_phrases = len(phrases)
-    start = date(2026, 6, 1)
-    total_days = 180
+    start = date(2026, 7, 1)
+    total_days = 184  # Julho-Dezembro 2026
 
-    # cursor por categoria para rodar entre as 8 variantes ao longo dos meses
     variant_cursor: dict[str, int] = {}
+    usage_counts: dict[str, int] = {}
 
     lines: list[str] = []
     lines.append("# VC Sabia · Calendário de Imagens · 6 meses")
@@ -307,7 +307,8 @@ def render_calendar() -> str:
             lines.append("")
 
         phrase = phrases[i % n_phrases]
-        cat, match_mode = match_category_for_phrase(phrase["texto"], phrase["tema"])
+        cat, match_mode = match_category_for_phrase(phrase["texto"], phrase["tema"], usage_counts)
+        usage_counts[cat["name"]] = usage_counts.get(cat["name"], 0) + 1
         cursor = variant_cursor.get(cat["name"], 0)
         variant_idx = cursor % len(cat["subjects"])
         variant_cursor[cat["name"]] = cursor + 1
@@ -350,7 +351,7 @@ def render_calendar() -> str:
     for c in CATEGORIES:
         counts[c["name"]] = variant_cursor.get(c["name"], 0)
     lines.append("")
-    lines.append("## Distribuição (180 dias)")
+    lines.append(f"## Distribuição ({total_days} dias)")
     lines.append("")
     lines.append("| Categoria | Tema | Usos | Vezes variante 1× repete |")
     lines.append("|---|---|---|---|")
