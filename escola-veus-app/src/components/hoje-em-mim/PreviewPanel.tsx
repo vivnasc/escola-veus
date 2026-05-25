@@ -397,6 +397,24 @@ export function HojeEmMimPreviewPanel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [overridesByDay, monthKey, overridesLoaded]);
 
+  // Histórico de uso: quais motionUrls e fraseIds já saíram em renders
+  // passados. Prioriza clips frescos na pré-montagem e marca usados no picker.
+  const [usedMotionUrls, setUsedMotionUrls] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/hoje-em-mim/usage-history");
+        if (cancelled || !res.ok) return;
+        const json = await res.json();
+        if (Array.isArray(json.usedMotionUrls)) {
+          setUsedMotionUrls(new Set(json.usedMotionUrls));
+        }
+      } catch { /* silencioso */ }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   useEffect(() => {
     if (typeof window !== "undefined" && selectedMotionUrls.size > 0) {
       try {
@@ -933,6 +951,7 @@ export function HojeEmMimPreviewPanel() {
           motions={motionsLib}
           loading={loadingMotionsLib}
           selected={selectedMotionUrls}
+          usedUrls={usedMotionUrls}
           onChange={setSelectedMotionUrls}
           onReload={loadMotionsLib}
         />
@@ -4329,12 +4348,14 @@ function BulkClipPicker({
   motions,
   loading,
   selected,
+  usedUrls,
   onChange,
   onReload,
 }: {
   motions: Array<{ name: string; url: string }>;
   loading: boolean;
   selected: Set<string>;
+  usedUrls: Set<string>;
   onChange: (next: Set<string>) => void;
   onReload: () => void;
 }) {
@@ -4345,15 +4366,40 @@ function BulkClipPicker({
     onChange(next);
   };
   const selectAll = () => onChange(new Set(motions.map((m) => m.url)));
+  const selectFresh = () =>
+    onChange(new Set(motions.filter((m) => !usedUrls.has(m.url)).map((m) => m.url)));
   const clearAll = () => onChange(new Set());
+  const freshCount = motions.filter((m) => !usedUrls.has(m.url)).length;
+  // Ordena frescos primeiro
+  const sorted = useMemo(() => {
+    const fresh = motions.filter((m) => !usedUrls.has(m.url));
+    const used = motions.filter((m) => usedUrls.has(m.url));
+    return [...fresh, ...used];
+  }, [motions, usedUrls]);
 
   return (
     <div className="space-y-2 max-w-xl">
       <div className="flex items-baseline justify-between flex-wrap gap-2">
         <div className="text-xs text-escola-creme">
-          Clips a incluir <span className="text-escola-creme-50">({selected.size}/{motions.length})</span>
+          Clips a incluir{" "}
+          <span className="text-escola-creme-50">
+            ({selected.size}/{motions.length}
+            {freshCount < motions.length && (
+              <span className="text-emerald-400"> · {freshCount} frescos</span>
+            )}
+            )
+          </span>
         </div>
         <div className="flex gap-1 text-[10px]">
+          {freshCount > 0 && freshCount < motions.length && (
+            <button
+              onClick={selectFresh}
+              className="rounded border border-emerald-700/60 bg-emerald-900/20 px-2 py-0.5 text-emerald-300 hover:bg-emerald-900/30"
+              title="Seleccionar só clips nunca usados em renders anteriores"
+            >
+              Só frescos ({freshCount})
+            </button>
+          )}
           <button
             onClick={selectAll}
             className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
@@ -4382,19 +4428,24 @@ function BulkClipPicker({
         </div>
       ) : (
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5 max-h-72 overflow-y-auto">
-          {motions.map((m) => {
+          {sorted.map((m) => {
             const on = selected.has(m.url);
+            const used = usedUrls.has(m.url);
             return (
               <button
                 key={m.url}
                 onClick={() => toggle(m.url)}
                 className="relative rounded border overflow-hidden transition-all"
                 style={{
-                  borderColor: on ? COBRE : "rgba(245, 240, 230, 0.16)",
-                  boxShadow: on ? `0 0 0 1.5px ${COBRE}` : undefined,
-                  opacity: on ? 1 : 0.45,
+                  borderColor: on
+                    ? used
+                      ? "rgba(245, 158, 11, 0.6)"
+                      : COBRE
+                    : "rgba(245, 240, 230, 0.16)",
+                  boxShadow: on ? `0 0 0 1.5px ${on && used ? "rgba(245, 158, 11, 0.4)" : COBRE}` : undefined,
+                  opacity: on ? 1 : 0.35,
                 }}
-                title={m.name}
+                title={`${m.name}${used ? " (já usado)" : " (fresco)"}`}
               >
                 <video
                   src={m.url}
@@ -4413,6 +4464,14 @@ function BulkClipPicker({
                   >
                     {on ? "✓" : ""}
                   </div>
+                  {used && (
+                    <div
+                      className="absolute bottom-0 inset-x-0 text-center text-[7px] uppercase tracking-wider py-0.5"
+                      style={{ background: "rgba(245, 158, 11, 0.85)", color: "#1a0e05" }}
+                    >
+                      usado
+                    </div>
+                  )}
                 </div>
               </button>
             );
