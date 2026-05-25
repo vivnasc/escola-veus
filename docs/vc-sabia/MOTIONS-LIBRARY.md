@@ -1565,218 +1565,219 @@ candle in an arched stone niche with soft warm glow at dawn, here-now suspension
 
 Rotação determinista — cada dia mapeia para uma categoria e variante. Em 180 dias cada categoria aparece ~7× e cada variante 1×.
 
-### Junho 2026
-
-| Dia | Data | Categoria | Variante |
-|---|---|---|---|
-| 1 | 2026-06-01 | Pássaros pequenos ao amanhecer | v1 |
-| 2 | 2026-06-02 | Colibris | v1 |
-| 3 | 2026-06-03 | Andorinhas | v1 |
-| 4 | 2026-06-04 | Penas flutuando | v1 |
-| 5 | 2026-06-05 | Girassóis molhados de orvalho | v1 |
-| 6 | 2026-06-06 | Lavanda | v1 |
-| 7 | 2026-06-07 | Borboletas | v1 |
-| 8 | 2026-06-08 | Flores silvestres | v1 |
-| 9 | 2026-06-09 | Dente-de-leão ao vento | v1 |
-| 10 | 2026-06-10 | Folhas translúcidas | v1 |
-| 11 | 2026-06-11 | Árvores com neblina matinal | v1 |
-| 12 | 2026-06-12 | Rios com reflexos de luz | v1 |
-| 13 | 2026-06-13 | Lótus na água | v1 |
-| 14 | 2026-06-14 | Reflexos na água | v1 |
-| 15 | 2026-06-15 | Cervos etéreos | v1 |
-| 16 | 2026-06-16 | Gatos ao sol da manhã | v1 |
-| 17 | 2026-06-17 | Sementes germinando | v1 |
-| 18 | 2026-06-18 | Campos dourados | v1 |
-| 19 | 2026-06-19 | Caminhos de floresta iluminados | v1 |
-| 20 | 2026-06-20 | Luas suaves no amanhecer azul | v1 |
-| 21 | 2026-06-21 | Céu pastel com nuvens brilhantes | v1 |
-| 22 | 2026-06-22 | Montanhas etéreas | v1 |
-| 23 | 2026-06-23 | Chá fumegante junto à janela | v1 |
-| 24 | 2026-06-24 | Janelas abertas com cortinas leves | v1 |
-| 25 | 2026-06-25 | Lanternas suaves | v1 |
-| 26 | 2026-06-26 | Café da manhã minimalista poético | v1 |
-| 27 | 2026-06-27 | Livros + luz dourada | v1 |
-| 28 | 2026-06-28 | Vela acesa ao nascer do sol | v1 |
-| 29 | 2026-06-29 | Pássaros pequenos ao amanhecer | v2 |
-| 30 | 2026-06-30 | Colibris | v2 |
-
 ### Julho 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-07-01 | Andorinhas | v2 |
-| 2 | 2026-07-02 | Penas flutuando | v2 |
-| 3 | 2026-07-03 | Girassóis molhados de orvalho | v2 |
-| 4 | 2026-07-04 | Lavanda | v2 |
-| 5 | 2026-07-05 | Borboletas | v2 |
-| 6 | 2026-07-06 | Flores silvestres | v2 |
-| 7 | 2026-07-07 | Dente-de-leão ao vento | v2 |
-| 8 | 2026-07-08 | Folhas translúcidas | v2 |
-| 9 | 2026-07-09 | Árvores com neblina matinal | v2 |
-| 10 | 2026-07-10 | Rios com reflexos de luz | v2 |
-| 11 | 2026-07-11 | Lótus na água | v2 |
-| 12 | 2026-07-12 | Reflexos na água | v2 |
-| 13 | 2026-07-13 | Cervos etéreos | v2 |
-| 14 | 2026-07-14 | Gatos ao sol da manhã | v2 |
-| 15 | 2026-07-15 | Sementes germinando | v2 |
-| 16 | 2026-07-16 | Campos dourados | v2 |
-| 17 | 2026-07-17 | Caminhos de floresta iluminados | v2 |
-| 18 | 2026-07-18 | Luas suaves no amanhecer azul | v2 |
-| 19 | 2026-07-19 | Céu pastel com nuvens brilhantes | v2 |
-| 20 | 2026-07-20 | Montanhas etéreas | v2 |
-| 21 | 2026-07-21 | Chá fumegante junto à janela | v2 |
-| 22 | 2026-07-22 | Janelas abertas com cortinas leves | v2 |
-| 23 | 2026-07-23 | Lanternas suaves | v2 |
-| 24 | 2026-07-24 | Café da manhã minimalista poético | v2 |
-| 25 | 2026-07-25 | Livros + luz dourada | v2 |
-| 26 | 2026-07-26 | Vela acesa ao nascer do sol | v2 |
-| 27 | 2026-07-27 | Pássaros pequenos ao amanhecer | v3 |
-| 28 | 2026-07-28 | Colibris | v3 |
-| 29 | 2026-07-29 | Andorinhas | v3 |
-| 30 | 2026-07-30 | Penas flutuando | v3 |
-| 31 | 2026-07-31 | Girassóis molhados de orvalho | v3 |
+| 1 | 2026-07-01 | Pássaros pequenos ao amanhecer | v1 |
+| 2 | 2026-07-02 | Colibris | v1 |
+| 3 | 2026-07-03 | Andorinhas | v1 |
+| 4 | 2026-07-04 | Penas flutuando | v1 |
+| 5 | 2026-07-05 | Girassóis molhados de orvalho | v1 |
+| 6 | 2026-07-06 | Lavanda | v1 |
+| 7 | 2026-07-07 | Borboletas | v1 |
+| 8 | 2026-07-08 | Flores silvestres | v1 |
+| 9 | 2026-07-09 | Dente-de-leão ao vento | v1 |
+| 10 | 2026-07-10 | Folhas translúcidas | v1 |
+| 11 | 2026-07-11 | Árvores com neblina matinal | v1 |
+| 12 | 2026-07-12 | Rios com reflexos de luz | v1 |
+| 13 | 2026-07-13 | Lótus na água | v1 |
+| 14 | 2026-07-14 | Reflexos na água | v1 |
+| 15 | 2026-07-15 | Cervos etéreos | v1 |
+| 16 | 2026-07-16 | Gatos ao sol da manhã | v1 |
+| 17 | 2026-07-17 | Sementes germinando | v1 |
+| 18 | 2026-07-18 | Campos dourados | v1 |
+| 19 | 2026-07-19 | Caminhos de floresta iluminados | v1 |
+| 20 | 2026-07-20 | Luas suaves no amanhecer azul | v1 |
+| 21 | 2026-07-21 | Céu pastel com nuvens brilhantes | v1 |
+| 22 | 2026-07-22 | Montanhas etéreas | v1 |
+| 23 | 2026-07-23 | Chá fumegante junto à janela | v1 |
+| 24 | 2026-07-24 | Janelas abertas com cortinas leves | v1 |
+| 25 | 2026-07-25 | Lanternas suaves | v1 |
+| 26 | 2026-07-26 | Café da manhã minimalista poético | v1 |
+| 27 | 2026-07-27 | Livros + luz dourada | v1 |
+| 28 | 2026-07-28 | Vela acesa ao nascer do sol | v1 |
+| 29 | 2026-07-29 | Pássaros pequenos ao amanhecer | v2 |
+| 30 | 2026-07-30 | Colibris | v2 |
+| 31 | 2026-07-31 | Andorinhas | v2 |
 
 ### Agosto 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-08-01 | Lavanda | v3 |
-| 2 | 2026-08-02 | Borboletas | v3 |
-| 3 | 2026-08-03 | Flores silvestres | v3 |
-| 4 | 2026-08-04 | Dente-de-leão ao vento | v3 |
-| 5 | 2026-08-05 | Folhas translúcidas | v3 |
-| 6 | 2026-08-06 | Árvores com neblina matinal | v3 |
-| 7 | 2026-08-07 | Rios com reflexos de luz | v3 |
-| 8 | 2026-08-08 | Lótus na água | v3 |
-| 9 | 2026-08-09 | Reflexos na água | v3 |
-| 10 | 2026-08-10 | Cervos etéreos | v3 |
-| 11 | 2026-08-11 | Gatos ao sol da manhã | v3 |
-| 12 | 2026-08-12 | Sementes germinando | v3 |
-| 13 | 2026-08-13 | Campos dourados | v3 |
-| 14 | 2026-08-14 | Caminhos de floresta iluminados | v3 |
-| 15 | 2026-08-15 | Luas suaves no amanhecer azul | v3 |
-| 16 | 2026-08-16 | Céu pastel com nuvens brilhantes | v3 |
-| 17 | 2026-08-17 | Montanhas etéreas | v3 |
-| 18 | 2026-08-18 | Chá fumegante junto à janela | v3 |
-| 19 | 2026-08-19 | Janelas abertas com cortinas leves | v3 |
-| 20 | 2026-08-20 | Lanternas suaves | v3 |
-| 21 | 2026-08-21 | Café da manhã minimalista poético | v3 |
-| 22 | 2026-08-22 | Livros + luz dourada | v3 |
-| 23 | 2026-08-23 | Vela acesa ao nascer do sol | v3 |
-| 24 | 2026-08-24 | Pássaros pequenos ao amanhecer | v4 |
-| 25 | 2026-08-25 | Colibris | v4 |
-| 26 | 2026-08-26 | Andorinhas | v4 |
-| 27 | 2026-08-27 | Penas flutuando | v4 |
-| 28 | 2026-08-28 | Girassóis molhados de orvalho | v4 |
-| 29 | 2026-08-29 | Lavanda | v4 |
-| 30 | 2026-08-30 | Borboletas | v4 |
-| 31 | 2026-08-31 | Flores silvestres | v4 |
+| 1 | 2026-08-01 | Penas flutuando | v2 |
+| 2 | 2026-08-02 | Girassóis molhados de orvalho | v2 |
+| 3 | 2026-08-03 | Lavanda | v2 |
+| 4 | 2026-08-04 | Borboletas | v2 |
+| 5 | 2026-08-05 | Flores silvestres | v2 |
+| 6 | 2026-08-06 | Dente-de-leão ao vento | v2 |
+| 7 | 2026-08-07 | Folhas translúcidas | v2 |
+| 8 | 2026-08-08 | Árvores com neblina matinal | v2 |
+| 9 | 2026-08-09 | Rios com reflexos de luz | v2 |
+| 10 | 2026-08-10 | Lótus na água | v2 |
+| 11 | 2026-08-11 | Reflexos na água | v2 |
+| 12 | 2026-08-12 | Cervos etéreos | v2 |
+| 13 | 2026-08-13 | Gatos ao sol da manhã | v2 |
+| 14 | 2026-08-14 | Sementes germinando | v2 |
+| 15 | 2026-08-15 | Campos dourados | v2 |
+| 16 | 2026-08-16 | Caminhos de floresta iluminados | v2 |
+| 17 | 2026-08-17 | Luas suaves no amanhecer azul | v2 |
+| 18 | 2026-08-18 | Céu pastel com nuvens brilhantes | v2 |
+| 19 | 2026-08-19 | Montanhas etéreas | v2 |
+| 20 | 2026-08-20 | Chá fumegante junto à janela | v2 |
+| 21 | 2026-08-21 | Janelas abertas com cortinas leves | v2 |
+| 22 | 2026-08-22 | Lanternas suaves | v2 |
+| 23 | 2026-08-23 | Café da manhã minimalista poético | v2 |
+| 24 | 2026-08-24 | Livros + luz dourada | v2 |
+| 25 | 2026-08-25 | Vela acesa ao nascer do sol | v2 |
+| 26 | 2026-08-26 | Pássaros pequenos ao amanhecer | v3 |
+| 27 | 2026-08-27 | Colibris | v3 |
+| 28 | 2026-08-28 | Andorinhas | v3 |
+| 29 | 2026-08-29 | Penas flutuando | v3 |
+| 30 | 2026-08-30 | Girassóis molhados de orvalho | v3 |
+| 31 | 2026-08-31 | Lavanda | v3 |
 
 ### Setembro 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-09-01 | Dente-de-leão ao vento | v4 |
-| 2 | 2026-09-02 | Folhas translúcidas | v4 |
-| 3 | 2026-09-03 | Árvores com neblina matinal | v4 |
-| 4 | 2026-09-04 | Rios com reflexos de luz | v4 |
-| 5 | 2026-09-05 | Lótus na água | v4 |
-| 6 | 2026-09-06 | Reflexos na água | v4 |
-| 7 | 2026-09-07 | Cervos etéreos | v4 |
-| 8 | 2026-09-08 | Gatos ao sol da manhã | v4 |
-| 9 | 2026-09-09 | Sementes germinando | v4 |
-| 10 | 2026-09-10 | Campos dourados | v4 |
-| 11 | 2026-09-11 | Caminhos de floresta iluminados | v4 |
-| 12 | 2026-09-12 | Luas suaves no amanhecer azul | v4 |
-| 13 | 2026-09-13 | Céu pastel com nuvens brilhantes | v4 |
-| 14 | 2026-09-14 | Montanhas etéreas | v4 |
-| 15 | 2026-09-15 | Chá fumegante junto à janela | v4 |
-| 16 | 2026-09-16 | Janelas abertas com cortinas leves | v4 |
-| 17 | 2026-09-17 | Lanternas suaves | v4 |
-| 18 | 2026-09-18 | Café da manhã minimalista poético | v4 |
-| 19 | 2026-09-19 | Livros + luz dourada | v4 |
-| 20 | 2026-09-20 | Vela acesa ao nascer do sol | v4 |
-| 21 | 2026-09-21 | Pássaros pequenos ao amanhecer | v5 |
-| 22 | 2026-09-22 | Colibris | v5 |
-| 23 | 2026-09-23 | Andorinhas | v5 |
-| 24 | 2026-09-24 | Penas flutuando | v5 |
-| 25 | 2026-09-25 | Girassóis molhados de orvalho | v5 |
-| 26 | 2026-09-26 | Lavanda | v5 |
-| 27 | 2026-09-27 | Borboletas | v5 |
-| 28 | 2026-09-28 | Flores silvestres | v5 |
-| 29 | 2026-09-29 | Dente-de-leão ao vento | v5 |
-| 30 | 2026-09-30 | Folhas translúcidas | v5 |
+| 1 | 2026-09-01 | Borboletas | v3 |
+| 2 | 2026-09-02 | Flores silvestres | v3 |
+| 3 | 2026-09-03 | Dente-de-leão ao vento | v3 |
+| 4 | 2026-09-04 | Folhas translúcidas | v3 |
+| 5 | 2026-09-05 | Árvores com neblina matinal | v3 |
+| 6 | 2026-09-06 | Rios com reflexos de luz | v3 |
+| 7 | 2026-09-07 | Lótus na água | v3 |
+| 8 | 2026-09-08 | Reflexos na água | v3 |
+| 9 | 2026-09-09 | Cervos etéreos | v3 |
+| 10 | 2026-09-10 | Gatos ao sol da manhã | v3 |
+| 11 | 2026-09-11 | Sementes germinando | v3 |
+| 12 | 2026-09-12 | Campos dourados | v3 |
+| 13 | 2026-09-13 | Caminhos de floresta iluminados | v3 |
+| 14 | 2026-09-14 | Luas suaves no amanhecer azul | v3 |
+| 15 | 2026-09-15 | Céu pastel com nuvens brilhantes | v3 |
+| 16 | 2026-09-16 | Montanhas etéreas | v3 |
+| 17 | 2026-09-17 | Chá fumegante junto à janela | v3 |
+| 18 | 2026-09-18 | Janelas abertas com cortinas leves | v3 |
+| 19 | 2026-09-19 | Lanternas suaves | v3 |
+| 20 | 2026-09-20 | Café da manhã minimalista poético | v3 |
+| 21 | 2026-09-21 | Livros + luz dourada | v3 |
+| 22 | 2026-09-22 | Vela acesa ao nascer do sol | v3 |
+| 23 | 2026-09-23 | Pássaros pequenos ao amanhecer | v4 |
+| 24 | 2026-09-24 | Colibris | v4 |
+| 25 | 2026-09-25 | Andorinhas | v4 |
+| 26 | 2026-09-26 | Penas flutuando | v4 |
+| 27 | 2026-09-27 | Girassóis molhados de orvalho | v4 |
+| 28 | 2026-09-28 | Lavanda | v4 |
+| 29 | 2026-09-29 | Borboletas | v4 |
+| 30 | 2026-09-30 | Flores silvestres | v4 |
 
 ### Outubro 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-10-01 | Árvores com neblina matinal | v5 |
-| 2 | 2026-10-02 | Rios com reflexos de luz | v5 |
-| 3 | 2026-10-03 | Lótus na água | v5 |
-| 4 | 2026-10-04 | Reflexos na água | v5 |
-| 5 | 2026-10-05 | Cervos etéreos | v5 |
-| 6 | 2026-10-06 | Gatos ao sol da manhã | v5 |
-| 7 | 2026-10-07 | Sementes germinando | v5 |
-| 8 | 2026-10-08 | Campos dourados | v5 |
-| 9 | 2026-10-09 | Caminhos de floresta iluminados | v5 |
-| 10 | 2026-10-10 | Luas suaves no amanhecer azul | v5 |
-| 11 | 2026-10-11 | Céu pastel com nuvens brilhantes | v5 |
-| 12 | 2026-10-12 | Montanhas etéreas | v5 |
-| 13 | 2026-10-13 | Chá fumegante junto à janela | v5 |
-| 14 | 2026-10-14 | Janelas abertas com cortinas leves | v5 |
-| 15 | 2026-10-15 | Lanternas suaves | v5 |
-| 16 | 2026-10-16 | Café da manhã minimalista poético | v5 |
-| 17 | 2026-10-17 | Livros + luz dourada | v5 |
-| 18 | 2026-10-18 | Vela acesa ao nascer do sol | v5 |
-| 19 | 2026-10-19 | Pássaros pequenos ao amanhecer | v6 |
-| 20 | 2026-10-20 | Colibris | v6 |
-| 21 | 2026-10-21 | Andorinhas | v6 |
-| 22 | 2026-10-22 | Penas flutuando | v6 |
-| 23 | 2026-10-23 | Girassóis molhados de orvalho | v6 |
-| 24 | 2026-10-24 | Lavanda | v6 |
-| 25 | 2026-10-25 | Borboletas | v6 |
-| 26 | 2026-10-26 | Flores silvestres | v6 |
-| 27 | 2026-10-27 | Dente-de-leão ao vento | v6 |
-| 28 | 2026-10-28 | Folhas translúcidas | v6 |
-| 29 | 2026-10-29 | Árvores com neblina matinal | v6 |
-| 30 | 2026-10-30 | Rios com reflexos de luz | v6 |
-| 31 | 2026-10-31 | Lótus na água | v6 |
+| 1 | 2026-10-01 | Dente-de-leão ao vento | v4 |
+| 2 | 2026-10-02 | Folhas translúcidas | v4 |
+| 3 | 2026-10-03 | Árvores com neblina matinal | v4 |
+| 4 | 2026-10-04 | Rios com reflexos de luz | v4 |
+| 5 | 2026-10-05 | Lótus na água | v4 |
+| 6 | 2026-10-06 | Reflexos na água | v4 |
+| 7 | 2026-10-07 | Cervos etéreos | v4 |
+| 8 | 2026-10-08 | Gatos ao sol da manhã | v4 |
+| 9 | 2026-10-09 | Sementes germinando | v4 |
+| 10 | 2026-10-10 | Campos dourados | v4 |
+| 11 | 2026-10-11 | Caminhos de floresta iluminados | v4 |
+| 12 | 2026-10-12 | Luas suaves no amanhecer azul | v4 |
+| 13 | 2026-10-13 | Céu pastel com nuvens brilhantes | v4 |
+| 14 | 2026-10-14 | Montanhas etéreas | v4 |
+| 15 | 2026-10-15 | Chá fumegante junto à janela | v4 |
+| 16 | 2026-10-16 | Janelas abertas com cortinas leves | v4 |
+| 17 | 2026-10-17 | Lanternas suaves | v4 |
+| 18 | 2026-10-18 | Café da manhã minimalista poético | v4 |
+| 19 | 2026-10-19 | Livros + luz dourada | v4 |
+| 20 | 2026-10-20 | Vela acesa ao nascer do sol | v4 |
+| 21 | 2026-10-21 | Pássaros pequenos ao amanhecer | v5 |
+| 22 | 2026-10-22 | Colibris | v5 |
+| 23 | 2026-10-23 | Andorinhas | v5 |
+| 24 | 2026-10-24 | Penas flutuando | v5 |
+| 25 | 2026-10-25 | Girassóis molhados de orvalho | v5 |
+| 26 | 2026-10-26 | Lavanda | v5 |
+| 27 | 2026-10-27 | Borboletas | v5 |
+| 28 | 2026-10-28 | Flores silvestres | v5 |
+| 29 | 2026-10-29 | Dente-de-leão ao vento | v5 |
+| 30 | 2026-10-30 | Folhas translúcidas | v5 |
+| 31 | 2026-10-31 | Árvores com neblina matinal | v5 |
 
 ### Novembro 2026
 
 | Dia | Data | Categoria | Variante |
 |---|---|---|---|
-| 1 | 2026-11-01 | Reflexos na água | v6 |
-| 2 | 2026-11-02 | Cervos etéreos | v6 |
-| 3 | 2026-11-03 | Gatos ao sol da manhã | v6 |
-| 4 | 2026-11-04 | Sementes germinando | v6 |
-| 5 | 2026-11-05 | Campos dourados | v6 |
-| 6 | 2026-11-06 | Caminhos de floresta iluminados | v6 |
-| 7 | 2026-11-07 | Luas suaves no amanhecer azul | v6 |
-| 8 | 2026-11-08 | Céu pastel com nuvens brilhantes | v6 |
-| 9 | 2026-11-09 | Montanhas etéreas | v6 |
-| 10 | 2026-11-10 | Chá fumegante junto à janela | v6 |
-| 11 | 2026-11-11 | Janelas abertas com cortinas leves | v6 |
-| 12 | 2026-11-12 | Lanternas suaves | v6 |
-| 13 | 2026-11-13 | Café da manhã minimalista poético | v6 |
-| 14 | 2026-11-14 | Livros + luz dourada | v6 |
-| 15 | 2026-11-15 | Vela acesa ao nascer do sol | v6 |
-| 16 | 2026-11-16 | Pássaros pequenos ao amanhecer | v7 |
-| 17 | 2026-11-17 | Colibris | v7 |
-| 18 | 2026-11-18 | Andorinhas | v7 |
-| 19 | 2026-11-19 | Penas flutuando | v7 |
-| 20 | 2026-11-20 | Girassóis molhados de orvalho | v7 |
-| 21 | 2026-11-21 | Lavanda | v7 |
-| 22 | 2026-11-22 | Borboletas | v7 |
-| 23 | 2026-11-23 | Flores silvestres | v7 |
-| 24 | 2026-11-24 | Dente-de-leão ao vento | v7 |
-| 25 | 2026-11-25 | Folhas translúcidas | v7 |
-| 26 | 2026-11-26 | Árvores com neblina matinal | v7 |
-| 27 | 2026-11-27 | Rios com reflexos de luz | v7 |
-| 28 | 2026-11-28 | Lótus na água | v7 |
-| 29 | 2026-11-29 | Reflexos na água | v7 |
-| 30 | 2026-11-30 | Cervos etéreos | v7 |
+| 1 | 2026-11-01 | Rios com reflexos de luz | v5 |
+| 2 | 2026-11-02 | Lótus na água | v5 |
+| 3 | 2026-11-03 | Reflexos na água | v5 |
+| 4 | 2026-11-04 | Cervos etéreos | v5 |
+| 5 | 2026-11-05 | Gatos ao sol da manhã | v5 |
+| 6 | 2026-11-06 | Sementes germinando | v5 |
+| 7 | 2026-11-07 | Campos dourados | v5 |
+| 8 | 2026-11-08 | Caminhos de floresta iluminados | v5 |
+| 9 | 2026-11-09 | Luas suaves no amanhecer azul | v5 |
+| 10 | 2026-11-10 | Céu pastel com nuvens brilhantes | v5 |
+| 11 | 2026-11-11 | Montanhas etéreas | v5 |
+| 12 | 2026-11-12 | Chá fumegante junto à janela | v5 |
+| 13 | 2026-11-13 | Janelas abertas com cortinas leves | v5 |
+| 14 | 2026-11-14 | Lanternas suaves | v5 |
+| 15 | 2026-11-15 | Café da manhã minimalista poético | v5 |
+| 16 | 2026-11-16 | Livros + luz dourada | v5 |
+| 17 | 2026-11-17 | Vela acesa ao nascer do sol | v5 |
+| 18 | 2026-11-18 | Pássaros pequenos ao amanhecer | v6 |
+| 19 | 2026-11-19 | Colibris | v6 |
+| 20 | 2026-11-20 | Andorinhas | v6 |
+| 21 | 2026-11-21 | Penas flutuando | v6 |
+| 22 | 2026-11-22 | Girassóis molhados de orvalho | v6 |
+| 23 | 2026-11-23 | Lavanda | v6 |
+| 24 | 2026-11-24 | Borboletas | v6 |
+| 25 | 2026-11-25 | Flores silvestres | v6 |
+| 26 | 2026-11-26 | Dente-de-leão ao vento | v6 |
+| 27 | 2026-11-27 | Folhas translúcidas | v6 |
+| 28 | 2026-11-28 | Árvores com neblina matinal | v6 |
+| 29 | 2026-11-29 | Rios com reflexos de luz | v6 |
+| 30 | 2026-11-30 | Lótus na água | v6 |
+
+### Dezembro 2026
+
+| Dia | Data | Categoria | Variante |
+|---|---|---|---|
+| 1 | 2026-12-01 | Reflexos na água | v6 |
+| 2 | 2026-12-02 | Cervos etéreos | v6 |
+| 3 | 2026-12-03 | Gatos ao sol da manhã | v6 |
+| 4 | 2026-12-04 | Sementes germinando | v6 |
+| 5 | 2026-12-05 | Campos dourados | v6 |
+| 6 | 2026-12-06 | Caminhos de floresta iluminados | v6 |
+| 7 | 2026-12-07 | Luas suaves no amanhecer azul | v6 |
+| 8 | 2026-12-08 | Céu pastel com nuvens brilhantes | v6 |
+| 9 | 2026-12-09 | Montanhas etéreas | v6 |
+| 10 | 2026-12-10 | Chá fumegante junto à janela | v6 |
+| 11 | 2026-12-11 | Janelas abertas com cortinas leves | v6 |
+| 12 | 2026-12-12 | Lanternas suaves | v6 |
+| 13 | 2026-12-13 | Café da manhã minimalista poético | v6 |
+| 14 | 2026-12-14 | Livros + luz dourada | v6 |
+| 15 | 2026-12-15 | Vela acesa ao nascer do sol | v6 |
+| 16 | 2026-12-16 | Pássaros pequenos ao amanhecer | v7 |
+| 17 | 2026-12-17 | Colibris | v7 |
+| 18 | 2026-12-18 | Andorinhas | v7 |
+| 19 | 2026-12-19 | Penas flutuando | v7 |
+| 20 | 2026-12-20 | Girassóis molhados de orvalho | v7 |
+| 21 | 2026-12-21 | Lavanda | v7 |
+| 22 | 2026-12-22 | Borboletas | v7 |
+| 23 | 2026-12-23 | Flores silvestres | v7 |
+| 24 | 2026-12-24 | Dente-de-leão ao vento | v7 |
+| 25 | 2026-12-25 | Folhas translúcidas | v7 |
+| 26 | 2026-12-26 | Árvores com neblina matinal | v7 |
+| 27 | 2026-12-27 | Rios com reflexos de luz | v7 |
+| 28 | 2026-12-28 | Lótus na água | v7 |
+| 29 | 2026-12-29 | Reflexos na água | v7 |
+| 30 | 2026-12-30 | Cervos etéreos | v7 |
+| 31 | 2026-12-31 | Gatos ao sol da manhã | v7 |
 
 ---
 
