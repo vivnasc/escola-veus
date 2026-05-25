@@ -1,7 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase-server";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { gerarColecaoComClaude } from "@/lib/carousel-generate";
 import { slugify, romanFor, type Dia } from "@/lib/carousel-types";
+
+/**
+ * Carrega todos os nomes de dia (veu) já usados em coleções existentes.
+ * Deduplicado, maiúsculas. Claude recebe a lista para evitar repetir.
+ */
+async function loadUsedDayNames(admin: SupabaseClient): Promise<string[]> {
+  try {
+    const { data } = await admin
+      .from("carousel_collections")
+      .select("dias");
+    if (!data) return [];
+    const names = new Set<string>();
+    for (const row of data) {
+      const dias = row.dias as Dia[] | null;
+      if (!Array.isArray(dias)) continue;
+      for (const d of dias) {
+        if (d.veu) names.add(d.veu.toUpperCase().trim());
+      }
+    }
+    return [...names].sort();
+  } catch {
+    return [];
+  }
+}
 
 const BRIEF_FALLBACK =
   "Série temática contemplativa na voz de Os Sete Véus (Vivianne dos Santos). Tom íntimo e calmo, autoridade sem performance. Em cada dia, escolhe uma palavra-tema que destile uma ideia central; mistura prosa curta com momentos poéticos.";
@@ -66,23 +91,23 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   const ownerId = user?.id ?? null;
 
+  const admin = createSupabaseAdminClient();
+  if (!admin) {
+    return NextResponse.json({ erro: "Supabase admin indisponível" }, { status: 500 });
+  }
+
   // Gera com Claude OU cria vazio
   let generated: { dias: Dia[]; usage: unknown };
   if (skipClaude) {
     generated = { dias: blankDias(numDias), usage: null };
   } else {
+    const usedNames = await loadUsedDayNames(admin);
     try {
-      generated = await gerarColecaoComClaude({ apiKey, title, brief: briefEffective, numDias });
+      generated = await gerarColecaoComClaude({ apiKey, title, brief: briefEffective, numDias, usedNames });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       return NextResponse.json({ erro: `Claude falhou: ${msg}` }, { status: 502 });
     }
-  }
-
-  // Persiste em Supabase
-  const admin = createSupabaseAdminClient();
-  if (!admin) {
-    return NextResponse.json({ erro: "Supabase admin indisponível" }, { status: 500 });
   }
 
   // slug único: se houver colisão, anexa sufixo curto
