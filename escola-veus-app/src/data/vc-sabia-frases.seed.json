@@ -19,144 +19,590 @@
     "beleza-de-existir": "Beleza de existir"
   },
   "frases": [
-    { "id": "vsq-0001", "tema": "autoconhecimento", "texto": "Antes de procurares respostas no mundo, escuta a tua primeira voz. A que fala antes do julgamento." },
-    { "id": "vsq-0002", "tema": "autoconhecimento", "texto": "Repara hoje no que repetes sem perceber: é aí que começa o teu mapa." },
-    { "id": "vsq-0003", "tema": "autoconhecimento", "texto": "O que te incomoda nos outros é, quase sempre, um convite a olhares para ti com mais ternura." },
-    { "id": "vsq-0004", "tema": "autoconhecimento", "texto": "Cada pergunta que te fazes com coragem é uma raiz nova a crescer dentro de ti." },
-    { "id": "vsq-0005", "tema": "autoconhecimento", "texto": "Pergunta-te hoje: 'do que tenho saudade?'. A resposta diz-te onde voltar." },
-    { "id": "vsq-0006", "tema": "autoconhecimento", "texto": "Quanto mais te conheces, menos precisas que o mundo te explique." },
-    { "id": "vsq-0007", "tema": "autoconhecimento", "texto": "Conhecer-te é aprender a distinguir a tua voz da voz do medo." },
-
-    { "id": "vsq-0008", "tema": "autoamor", "texto": "Trata-te hoje como tratarias a tua melhor amiga: com paciência, com ternura, com fé." },
-    { "id": "vsq-0009", "tema": "autoamor", "texto": "O amor próprio não se prova a ninguém. Vive-se em silêncio, todos os dias." },
-    { "id": "vsq-0010", "tema": "autoamor", "texto": "Diz a ti, ao espelho: 'estou contigo'. É a frase que muda o resto." },
-    { "id": "vsq-0011", "tema": "autoamor", "texto": "Cuida do que te faz bem antes de cuidares do que te faz importante." },
-    { "id": "vsq-0012", "tema": "autoamor", "texto": "Amares-te começa por dares a ti o que ofereces aos outros sem hesitar." },
-    { "id": "vsq-0013", "tema": "autoamor", "texto": "Dizer 'não' a algo que te esvazia é a forma mais suave de dizer 'sim' a ti." },
-    { "id": "vsq-0014", "tema": "autoamor", "texto": "A tua presença é néctar. Não a desperdices a tentar agradar." },
-
-    { "id": "vsq-0015", "tema": "autoperdao", "texto": "Liberta hoje uma culpa antiga. Não precisas dela para fazer este dia florescer." },
-    { "id": "vsq-0016", "tema": "autoperdao", "texto": "Quem foste ontem trouxe-te até aqui. Agradece-lhe, e segue." },
-    { "id": "vsq-0017", "tema": "autoperdao", "texto": "Perdoares-te é parar de te punires por algo que já não és." },
-    { "id": "vsq-0018", "tema": "autoperdao", "texto": "A tua versão de ontem fez o melhor que pôde com o que tinha. Honra isso." },
-    { "id": "vsq-0019", "tema": "autoperdao", "texto": "Cada amanhecer é um convite a recomeçar. Aceita-o sem peso." },
-    { "id": "vsq-0020", "tema": "autoperdao", "texto": "Solta o que já não te serve como a árvore solta a folha: sem drama, com fé." },
-
-    { "id": "vsq-0021", "tema": "florescer-no-tempo-certo", "texto": "O lótus aprendeu a florescer na lama. Tu também sabes. Confia no teu tempo." },
-    { "id": "vsq-0022", "tema": "florescer-no-tempo-certo", "texto": "Não compares a tua estação com a dos outros. Cada flor abre quando é a sua hora." },
-    { "id": "vsq-0023", "tema": "florescer-no-tempo-certo", "texto": "O que está a germinar em ti agora pede paciência, não pressa." },
-    { "id": "vsq-0024", "tema": "florescer-no-tempo-certo", "texto": "Confia: a tua semente sabe quando abrir, mesmo que tu ainda não saibas." },
-    { "id": "vsq-0025", "tema": "florescer-no-tempo-certo", "texto": "Florescer não é um esforço, é uma rendição luminosa ao tempo certo." },
-    { "id": "vsq-0026", "tema": "florescer-no-tempo-certo", "texto": "Hoje, planta uma intenção pequena. Amanhã, rega-a com presença." },
-
-    { "id": "vsq-0027", "tema": "presenca-leve", "texto": "Antes de pegares no telemóvel, respira três vezes. É assim que se acorda em ti." },
-    { "id": "vsq-0028", "tema": "presenca-leve", "texto": "Estar presente é a forma mais bonita de fazeres pouco e sentires muito." },
-    { "id": "vsq-0029", "tema": "presenca-leve", "texto": "Hoje, faz uma coisa de cada vez. A pressa rouba a alegria." },
-    { "id": "vsq-0030", "tema": "presenca-leve", "texto": "Repara na luz da manhã. Há ali um convite que não se repete." },
-    { "id": "vsq-0031", "tema": "presenca-leve", "texto": "Quando a mente acelera, volta ao corpo. O corpo sabe o caminho." },
-    { "id": "vsq-0032", "tema": "presenca-leve", "texto": "Este momento é a única semente que podes plantar agora. E é suficiente." },
-
-    { "id": "vsq-0033", "tema": "suavidade-e-descanso", "texto": "Hoje, faz menos com mais alma. A lua não acelera para ser cheia." },
-    { "id": "vsq-0034", "tema": "suavidade-e-descanso", "texto": "Descansar não é desistir. É confiares que o mundo continua sem ti, durante um pouco." },
-    { "id": "vsq-0035", "tema": "suavidade-e-descanso", "texto": "O ramo que cede ao vento dura mais do que o que resiste. Sê suave contigo." },
-    { "id": "vsq-0036", "tema": "suavidade-e-descanso", "texto": "Permite-te ir devagar hoje. A pressa nunca foi prova de valor." },
-    { "id": "vsq-0037", "tema": "suavidade-e-descanso", "texto": "Beber água, respirar fundo, parar um instante. Pequenos gestos sustentam grandes vidas." },
-    { "id": "vsq-0038", "tema": "suavidade-e-descanso", "texto": "Cuida da tua energia como cuidas de uma planta delicada. É o que te sustenta." },
-
-    { "id": "vsq-0039", "tema": "sonhar-com-raizes", "texto": "Sonha grande, mas começa pequeno. As maiores árvores começaram numa única semente." },
-    { "id": "vsq-0040", "tema": "sonhar-com-raizes", "texto": "O teu sonho não precisa de pressa, precisa de raiz." },
-    { "id": "vsq-0041", "tema": "sonhar-com-raizes", "texto": "Hoje, dá um passo na direcção do que te chama em silêncio. Basta um." },
-    { "id": "vsq-0042", "tema": "sonhar-com-raizes", "texto": "Os teus sonhos têm raízes, não asas que fogem. Plantam-se em ti, e crescem com calma." },
-    { "id": "vsq-0043", "tema": "sonhar-com-raizes", "texto": "Visualiza, ao acordar, a vida que queres habitar. Depois, faz uma coisa em direcção a ela." },
-    { "id": "vsq-0044", "tema": "sonhar-com-raizes", "texto": "O que te chama com ternura é, quase sempre, o caminho mais verdadeiro." },
-
-    { "id": "vsq-0045", "tema": "inteireza", "texto": "Aceita-te inteira hoje: luz e sombra, certeza e dúvida. Tudo cabe em ti." },
-    { "id": "vsq-0046", "tema": "inteireza", "texto": "Não tens de escolher entre seres forte e seres frágil. Podes ser ambas, e bonita." },
-    { "id": "vsq-0047", "tema": "inteireza", "texto": "A tua complexidade não é defeito. É riqueza, como um jardim com muitas espécies." },
-    { "id": "vsq-0048", "tema": "inteireza", "texto": "Honra os teus opostos. É na união deles que mora a tua paz." },
-    { "id": "vsq-0049", "tema": "inteireza", "texto": "Podes amar e, ainda assim, afastar-te. Ambas as verdades cabem em ti." },
-    { "id": "vsq-0050", "tema": "inteireza", "texto": "Ser inteira é deixares todas as cores caberem no mesmo arco-íris." },
-
-    { "id": "vsq-0051", "tema": "corpo-como-casa", "texto": "Ao acordar, agradece ao teu corpo antes de pedires algo dele." },
-    { "id": "vsq-0052", "tema": "corpo-como-casa", "texto": "O teu corpo já sabia, antes de tu pensares. Volta a ele. É casa." },
-    { "id": "vsq-0053", "tema": "corpo-como-casa", "texto": "Hoje, repara nos teus pés no chão. É o gesto mais simples de regresso a ti." },
-    { "id": "vsq-0054", "tema": "corpo-como-casa", "texto": "Bebe água ao acordar. É a primeira forma de dizeres 'amo-te' ao teu corpo." },
-    { "id": "vsq-0055", "tema": "corpo-como-casa", "texto": "Move o corpo um pouco hoje. A vida começa a circular onde a respiração entra." },
-    { "id": "vsq-0056", "tema": "corpo-como-casa", "texto": "Ouvir o cansaço também é cuidado. Honra-o sem culpa." },
-
-    { "id": "vsq-0057", "tema": "confianca-no-caminho", "texto": "Avança um passo, mesmo sem ver o caminho. A aurora também não pede licença para chegar." },
-    { "id": "vsq-0058", "tema": "confianca-no-caminho", "texto": "O que está para ti não passa por ti sem te tocar. Confia." },
-    { "id": "vsq-0059", "tema": "confianca-no-caminho", "texto": "As raízes confiam no escuro. Por isso é que as flores podem confiar na luz." },
-    { "id": "vsq-0060", "tema": "confianca-no-caminho", "texto": "O atraso que sentes é, quase sempre, preparação. Continua." },
-    { "id": "vsq-0061", "tema": "confianca-no-caminho", "texto": "Hoje, deixa de tentar controlar. Faz o teu, o resto floresce." },
-    { "id": "vsq-0062", "tema": "confianca-no-caminho", "texto": "Confiar não é ter a certeza. É caminhares mesmo sem ela, com leveza." },
-
-    { "id": "vsq-0063", "tema": "gratidao", "texto": "Começa o dia a notar três pequenas bênçãos. A gratidão multiplica o que existe." },
-    { "id": "vsq-0064", "tema": "gratidao", "texto": "Diz 'obrigada' à manhã. É um gesto silencioso que muda o teu olhar." },
-    { "id": "vsq-0065", "tema": "gratidao", "texto": "Há, no banal, um néctar escondido. Só os atentos o sabem colher." },
-    { "id": "vsq-0066", "tema": "gratidao", "texto": "Hoje, agradece ao que te trouxe até aqui: ao pão, à luz, à própria respiração." },
-    { "id": "vsq-0067", "tema": "gratidao", "texto": "Agradecer é o gesto mais leve que multiplica a beleza onde já existe." },
-    { "id": "vsq-0068", "tema": "gratidao", "texto": "Lembra-te: a tua vida tem mais pequenos milagres do que dias para os notar." },
-
-    { "id": "vsq-0069", "tema": "alegria-simples", "texto": "Procura uma alegria pequena hoje: uma chávena, uma luz, um cheiro. É suficiente." },
-    { "id": "vsq-0070", "tema": "alegria-simples", "texto": "Permite-te rir, mesmo sozinha. O riso é uma oração curta." },
-    { "id": "vsq-0071", "tema": "alegria-simples", "texto": "A leveza é a forma mais elevada de seriedade. Pratica-a hoje." },
-    { "id": "vsq-0072", "tema": "alegria-simples", "texto": "Não esperes razões para seres feliz. Algumas alegrias chegam sem pedir licença." },
-    { "id": "vsq-0073", "tema": "alegria-simples", "texto": "Hoje, faz uma coisa só por prazer. Sem produzir, sem provar." },
-    { "id": "vsq-0074", "tema": "alegria-simples", "texto": "A felicidade vive nas pequenas coisas. Só precisa que pares para a notares." },
-
-    { "id": "vsq-0075", "tema": "beleza-de-existir", "texto": "Lembra-te hoje: estares aqui já é uma forma de poesia." },
-    { "id": "vsq-0076", "tema": "beleza-de-existir", "texto": "Que coisa rara é uma manhã onde tu estás. Não desperdices a estranheza disso." },
-    { "id": "vsq-0077", "tema": "beleza-de-existir", "texto": "A beleza não está só na pétala. Está também na coragem de se abrir. Tu também." },
-    { "id": "vsq-0078", "tema": "beleza-de-existir", "texto": "Respirar é um pequeno milagre repetido. E ninguém te cobra a entrada." },
-    { "id": "vsq-0079", "tema": "beleza-de-existir", "texto": "Olha para a luz da manhã como olharias para um milagre. Porque é." },
-    { "id": "vsq-0080", "tema": "beleza-de-existir", "texto": "A tua existência rima com algo. Estás só a aprender o poema. E isso já é vida." },
-
-    { "id": "vsq-0081", "tema": "florescer-no-tempo-certo", "texto": "A semente cresce no escuro antes de ver a luz. Tu também. Confia no que ainda não se vê." },
-    { "id": "vsq-0082", "tema": "confianca-no-caminho", "texto": "O rio encontra sempre o caminho, mesmo quando a pedra resiste. Tu também. Confia no teu fluxo." },
-    { "id": "vsq-0083", "tema": "florescer-no-tempo-certo", "texto": "A lua esvazia-se para voltar a encher-se. Tu também. Confia nos teus ciclos." },
-    { "id": "vsq-0084", "tema": "confianca-no-caminho", "texto": "A árvore curva-se ao vento e não parte. Tu também sabes. Confia na tua raiz." },
-    { "id": "vsq-0085", "tema": "suavidade-e-descanso", "texto": "O silêncio precede toda a canção. Tu também. Confia na tua pausa." },
-    { "id": "vsq-0086", "tema": "confianca-no-caminho", "texto": "A noite mais escura anuncia o amanhecer. Tu também sabes. Confia no teu tempo." },
-    { "id": "vsq-0087", "tema": "florescer-no-tempo-certo", "texto": "A borboleta passou pelo casulo para abrir asas. Tu também. Confia na tua passagem." },
-    { "id": "vsq-0088", "tema": "confianca-no-caminho", "texto": "A montanha não tem pressa de chegar ao céu. Tu também sabes. Confia no teu passo." },
-    { "id": "vsq-0089", "tema": "florescer-no-tempo-certo", "texto": "A chuva alimenta o que parecia morto. Tu também. Confia no que volta." },
-    { "id": "vsq-0090", "tema": "suavidade-e-descanso", "texto": "O fogo precisa de respirar para arder. Tu também. Confia no teu espaço." },
-
-    { "id": "vsq-0091", "tema": "autoamor", "texto": "O lótus nasce na lama e não se suja. Tu também. Confia na tua pureza." },
-    { "id": "vsq-0092", "tema": "florescer-no-tempo-certo", "texto": "O lótus fecha à noite e reabre ao amanhecer. Tu também. Confia no teu recomeço." },
-    { "id": "vsq-0093", "tema": "autoperdao", "texto": "O lótus precisa do lodo para se erguer. Tu também. Confia no que te formou." },
-
-    { "id": "vsq-0094", "tema": "florescer-no-tempo-certo", "texto": "A borboleta não se lembra de ter sido lagarta. Tu também. Confia na tua transformação." },
-    { "id": "vsq-0095", "tema": "suavidade-e-descanso", "texto": "A borboleta descansa antes de abrir as asas. Tu também. Confia na tua pausa." },
-    { "id": "vsq-0096", "tema": "confianca-no-caminho", "texto": "Nenhuma borboleta nasce a voar. Tu também. Confia no teu processo." },
-
-    { "id": "vsq-0097", "tema": "confianca-no-caminho", "texto": "O girassol segue o sol mesmo nos dias cinzentos. Tu também. Confia na tua direção." },
-    { "id": "vsq-0098", "tema": "presenca-leve", "texto": "Os girassóis viram-se uns para os outros quando o sol falta. Tu também. Confia em quem te rodeia." },
-    { "id": "vsq-0099", "tema": "sonhar-com-raizes", "texto": "O girassol nasce alto porque a raiz vai fundo. Tu também. Confia na tua base." },
-
-    { "id": "vsq-0100", "tema": "autoperdao", "texto": "A árvore perde as folhas para voltar a florir. Tu também. Confia no teu deixar ir." },
-    { "id": "vsq-0101", "tema": "inteireza", "texto": "O baobá guarda água para os anos secos. Tu também. Confia no que reservas." },
-    { "id": "vsq-0102", "tema": "sonhar-com-raizes", "texto": "A raiz cresce no escuro para o tronco subir à luz. Tu também. Confia no que ninguém vê." },
-
-    { "id": "vsq-0103", "tema": "confianca-no-caminho", "texto": "A gota fura a pedra sem nunca a empurrar. Tu também. Confia na tua constância." },
-    { "id": "vsq-0104", "tema": "confianca-no-caminho", "texto": "O rio não pede licença ao mar. Tu também. Confia no teu destino." },
-    { "id": "vsq-0105", "tema": "inteireza", "texto": "A água toma a forma do que a recebe e não se perde. Tu também. Confia na tua essência." },
-
-    { "id": "vsq-0106", "tema": "beleza-de-existir", "texto": "As estrelas só aparecem quando o céu escurece. Tu também. Confia na tua noite." },
-    { "id": "vsq-0107", "tema": "autoamor", "texto": "A lua brilha mesmo quando ninguém olha. Tu também. Confia no teu valor." },
-    { "id": "vsq-0108", "tema": "florescer-no-tempo-certo", "texto": "O céu nunca fica do mesmo tom duas vezes. Tu também. Confia na tua mudança." },
-
-    { "id": "vsq-0109", "tema": "florescer-no-tempo-certo", "texto": "A semente parte-se antes de germinar. Tu também. Confia na tua abertura." },
-    { "id": "vsq-0110", "tema": "suavidade-e-descanso", "texto": "A terra descansa no inverno para dar fruto no verão. Tu também. Confia no teu repouso." },
-    { "id": "vsq-0111", "tema": "florescer-no-tempo-certo", "texto": "Nenhuma flor floresce no dia em que foi semeada. Tu também. Confia na tua espera." },
-
-    { "id": "vsq-0112", "tema": "corpo-como-casa", "texto": "O fogo precisa de ar para crescer. Tu também. Confia no teu respirar." },
-    { "id": "vsq-0113", "tema": "confianca-no-caminho", "texto": "O vento move o que parece imóvel. Tu também. Confia no invisível." },
-    { "id": "vsq-0114", "tema": "inteireza", "texto": "A brasa guarda calor mesmo sob a cinza. Tu também. Confia no que parece adormecido." },
-
-    { "id": "vsq-0115", "tema": "confianca-no-caminho", "texto": "O pássaro canta antes do sol nascer. Tu também. Confia na tua antecipação." },
-    { "id": "vsq-0116", "tema": "confianca-no-caminho", "texto": "A ave migra sem mapa e chega sempre. Tu também. Confia no teu instinto." },
-    { "id": "vsq-0117", "tema": "florescer-no-tempo-certo", "texto": "Nenhum voo começa sem o salto. Tu também. Confia no teu impulso." }
+    {
+      "id": "vsq-0001",
+      "tema": "autoconhecimento",
+      "texto": "O espelho da água mostra o que os olhos sozinhos não veem. Tu também. Confia no que reflete."
+    },
+    {
+      "id": "vsq-0002",
+      "tema": "autoconhecimento",
+      "texto": "A coruja abre os olhos quando tudo dorme. Tu também sabes. Confia na tua vigília."
+    },
+    {
+      "id": "vsq-0003",
+      "tema": "autoconhecimento",
+      "texto": "O lago agitado turvou o fundo. Quando parou, viu tudo. Tu também. Confia na tua clareza."
+    },
+    {
+      "id": "vsq-0004",
+      "tema": "autoconhecimento",
+      "texto": "A pedra no fundo do rio não se move, mas o rio muda à volta dela. Tu também. Confia na tua permanência."
+    },
+    {
+      "id": "vsq-0005",
+      "tema": "autoconhecimento",
+      "texto": "O eco só volta quando há silêncio. Tu também sabes. Confia no que o silêncio te devolve."
+    },
+    {
+      "id": "vsq-0006",
+      "tema": "autoconhecimento",
+      "texto": "A cortiça flutua sem esforço. Tu também sabes. Confia na tua leveza."
+    },
+    {
+      "id": "vsq-0007",
+      "tema": "autoconhecimento",
+      "texto": "O cristal só brilha quando a luz o atravessa. Tu também. Confia na tua transparência."
+    },
+    {
+      "id": "vsq-0008",
+      "tema": "autoamor",
+      "texto": "O ninho é feito de fios frágeis, mas sustenta o que nasce. Tu também. Confia na tua ternura."
+    },
+    {
+      "id": "vsq-0009",
+      "tema": "autoamor",
+      "texto": "A oliveira produz fruto sem pressa e sem barulho. Tu também. Confia no teu silêncio."
+    },
+    {
+      "id": "vsq-0010",
+      "tema": "autoamor",
+      "texto": "A concha protege a pérola sem pedir nada em troca. Tu também. Confia no teu cuidado."
+    },
+    {
+      "id": "vsq-0011",
+      "tema": "autoamor",
+      "texto": "O sol aquece-se a si mesmo antes de aquecer o mundo. Tu também. Confia no teu calor."
+    },
+    {
+      "id": "vsq-0012",
+      "tema": "autoamor",
+      "texto": "A nascente não seca por dar água. Tu também. Confia na tua generosidade."
+    },
+    {
+      "id": "vsq-0013",
+      "tema": "autoamor",
+      "texto": "A flor fecha-se de noite para abrir renovada ao sol. Tu também. Confia nos teus limites."
+    },
+    {
+      "id": "vsq-0014",
+      "tema": "autoamor",
+      "texto": "O mel não precisa de convencer ninguém do seu sabor. Tu também. Confia no teu valor."
+    },
+    {
+      "id": "vsq-0015",
+      "tema": "autoperdao",
+      "texto": "A maré leva o que a praia já não precisa. Tu também. Confia no teu largar."
+    },
+    {
+      "id": "vsq-0016",
+      "tema": "autoperdao",
+      "texto": "O rio de ontem já não é o rio de hoje. Tu também. Confia no que te trouxe até aqui."
+    },
+    {
+      "id": "vsq-0017",
+      "tema": "autoperdao",
+      "texto": "A cobra larga a pele velha sem olhar para trás. Tu também. Confia na tua renovação."
+    },
+    {
+      "id": "vsq-0018",
+      "tema": "autoperdao",
+      "texto": "A terra aceita tudo o que cai e transforma em adubo. Tu também. Confia na tua compaixão."
+    },
+    {
+      "id": "vsq-0019",
+      "tema": "autoperdao",
+      "texto": "O sol nasce todos os dias como se fosse a primeira vez. Tu também. Confia no teu recomeço."
+    },
+    {
+      "id": "vsq-0020",
+      "tema": "autoperdao",
+      "texto": "A folha solta-se do ramo sem drama. O ramo agradece. Tu também. Confia no teu soltar."
+    },
+    {
+      "id": "vsq-0021",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "O lótus aprendeu a florescer na lama. Tu também sabes. Confia no teu tempo."
+    },
+    {
+      "id": "vsq-0022",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "O jacarandá floresce quando as outras árvores descansam. Tu também. Confia no teu calendário."
+    },
+    {
+      "id": "vsq-0023",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "O cogumelo germina no escuro antes de aparecer à superfície. Tu também. Confia no que se prepara."
+    },
+    {
+      "id": "vsq-0024",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "A manga verde espera o sol sem forçar a cor. Tu também. Confia no teu amadurecer."
+    },
+    {
+      "id": "vsq-0025",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "A rosa não força as pétalas. Abre quando a seiva chega. Tu também. Confia no teu momento."
+    },
+    {
+      "id": "vsq-0026",
+      "tema": "presenca-leve",
+      "texto": "O cacto guarda água para quando o deserto endurece. Tu também. Confia na tua reserva."
+    },
+    {
+      "id": "vsq-0027",
+      "tema": "presenca-leve",
+      "texto": "A névoa levanta-se sem ser empurrada. Tu também. Confia no teu despertar."
+    },
+    {
+      "id": "vsq-0028",
+      "tema": "presenca-leve",
+      "texto": "A libélula paira sem peso sobre a água parada. Tu também. Confia na tua leveza."
+    },
+    {
+      "id": "vsq-0029",
+      "tema": "presenca-leve",
+      "texto": "O caracol chega sempre, mesmo sem pressa. Tu também sabes. Confia no teu ritmo."
+    },
+    {
+      "id": "vsq-0030",
+      "tema": "beleza-de-existir",
+      "texto": "A primeira luz da manhã não pede permissão para entrar. Tu também. Confia no teu brilho."
+    },
+    {
+      "id": "vsq-0031",
+      "tema": "corpo-como-casa",
+      "texto": "A tartaruga recolhe-se para depois avançar. Tu também sabes. Confia no teu regresso."
+    },
+    {
+      "id": "vsq-0032",
+      "tema": "presenca-leve",
+      "texto": "A gota de orvalho vive uma manhã inteira e basta-lhe. Tu também. Confia no agora."
+    },
+    {
+      "id": "vsq-0033",
+      "tema": "suavidade-e-descanso",
+      "texto": "O bambu verga-se ao vento e não parte. Tu também. Confia na tua flexibilidade."
+    },
+    {
+      "id": "vsq-0034",
+      "tema": "suavidade-e-descanso",
+      "texto": "A terra descansa no inverno e ninguém a chama de preguiçosa. Tu também. Confia no teu descanso."
+    },
+    {
+      "id": "vsq-0035",
+      "tema": "suavidade-e-descanso",
+      "texto": "O salgueiro inclina-se até à água sem se partir. Tu também. Confia na tua cedência."
+    },
+    {
+      "id": "vsq-0036",
+      "tema": "suavidade-e-descanso",
+      "texto": "O musgo cresce devagar e cobre a pedra inteira. Tu também. Confia na tua suavidade."
+    },
+    {
+      "id": "vsq-0037",
+      "tema": "suavidade-e-descanso",
+      "texto": "O lago parado reflete o céu inteiro. Tu também. Confia na tua quietude."
+    },
+    {
+      "id": "vsq-0038",
+      "tema": "suavidade-e-descanso",
+      "texto": "A planta rega-se antes de dar flor. Tu também. Confia no que te sustenta."
+    },
+    {
+      "id": "vsq-0039",
+      "tema": "sonhar-com-raizes",
+      "texto": "O carvalho nasce de uma bolota que ninguém viu cair. Tu também. Confia no teu começo."
+    },
+    {
+      "id": "vsq-0040",
+      "tema": "sonhar-com-raizes",
+      "texto": "O coral cresce um milímetro por ano e constrói recifes. Tu também. Confia na tua raiz."
+    },
+    {
+      "id": "vsq-0041",
+      "tema": "confianca-no-caminho",
+      "texto": "O riacho não hesita diante da curva. Tu também. Confia no teu percurso."
+    },
+    {
+      "id": "vsq-0042",
+      "tema": "sonhar-com-raizes",
+      "texto": "Os teus sonhos têm raízes, não asas que fogem. Plantam-se em ti, e crescem com calma."
+    },
+    {
+      "id": "vsq-0043",
+      "tema": "sonhar-com-raizes",
+      "texto": "Visualiza, ao acordar, a vida que queres habitar. Depois, faz uma coisa em direcção a ela."
+    },
+    {
+      "id": "vsq-0044",
+      "tema": "sonhar-com-raizes",
+      "texto": "O que te chama com ternura é, quase sempre, o caminho mais verdadeiro."
+    },
+    {
+      "id": "vsq-0045",
+      "tema": "inteireza",
+      "texto": "Aceita-te inteira hoje: luz e sombra, certeza e dúvida. Tudo cabe em ti."
+    },
+    {
+      "id": "vsq-0046",
+      "tema": "inteireza",
+      "texto": "Não tens de escolher entre seres forte e seres frágil. Podes ser ambas, e bonita."
+    },
+    {
+      "id": "vsq-0047",
+      "tema": "inteireza",
+      "texto": "A tua complexidade não é defeito. É riqueza, como um jardim com muitas espécies."
+    },
+    {
+      "id": "vsq-0048",
+      "tema": "inteireza",
+      "texto": "Honra os teus opostos. É na união deles que mora a tua paz."
+    },
+    {
+      "id": "vsq-0049",
+      "tema": "inteireza",
+      "texto": "Podes amar e, ainda assim, afastar-te. Ambas as verdades cabem em ti."
+    },
+    {
+      "id": "vsq-0050",
+      "tema": "inteireza",
+      "texto": "Ser inteira é deixares todas as cores caberem no mesmo arco-íris."
+    },
+    {
+      "id": "vsq-0051",
+      "tema": "corpo-como-casa",
+      "texto": "Ao acordar, agradece ao teu corpo antes de pedires algo dele."
+    },
+    {
+      "id": "vsq-0052",
+      "tema": "corpo-como-casa",
+      "texto": "O teu corpo já sabia, antes de tu pensares. Volta a ele. É casa."
+    },
+    {
+      "id": "vsq-0053",
+      "tema": "corpo-como-casa",
+      "texto": "As raízes confiam no escuro. Por isso é que as flores podem confiar na luz. Tu também."
+    },
+    {
+      "id": "vsq-0054",
+      "tema": "corpo-como-casa",
+      "texto": "Bebe água ao acordar. É a primeira forma de dizeres 'amo-te' ao teu corpo."
+    },
+    {
+      "id": "vsq-0055",
+      "tema": "corpo-como-casa",
+      "texto": "Move o corpo um pouco hoje. A vida começa a circular onde a respiração entra."
+    },
+    {
+      "id": "vsq-0056",
+      "tema": "corpo-como-casa",
+      "texto": "Ouvir o cansaço também é cuidado. Honra-o sem culpa."
+    },
+    {
+      "id": "vsq-0057",
+      "tema": "confianca-no-caminho",
+      "texto": "Avança um passo, mesmo sem ver o caminho. A aurora também não pede licença para chegar."
+    },
+    {
+      "id": "vsq-0058",
+      "tema": "confianca-no-caminho",
+      "texto": "O que está para ti não passa por ti sem te tocar. Confia."
+    },
+    {
+      "id": "vsq-0059",
+      "tema": "confianca-no-caminho",
+      "texto": "As raízes confiam no escuro. Por isso é que as flores podem confiar na luz."
+    },
+    {
+      "id": "vsq-0060",
+      "tema": "confianca-no-caminho",
+      "texto": "O atraso que sentes é, quase sempre, preparação. Continua."
+    },
+    {
+      "id": "vsq-0061",
+      "tema": "autoperdao",
+      "texto": "O vento não tenta controlar as folhas. Simplesmente sopra. Tu também. Confia no teu soltar."
+    },
+    {
+      "id": "vsq-0062",
+      "tema": "confianca-no-caminho",
+      "texto": "Confiar não é ter a certeza. É caminhares mesmo sem ela, com leveza."
+    },
+    {
+      "id": "vsq-0063",
+      "tema": "gratidao",
+      "texto": "Começa o dia a notar três pequenas bênçãos. A gratidão multiplica o que existe."
+    },
+    {
+      "id": "vsq-0064",
+      "tema": "gratidao",
+      "texto": "O pássaro agradece ao ramo pousando nele todas as manhãs. Tu também. Confia no teu gesto."
+    },
+    {
+      "id": "vsq-0065",
+      "tema": "gratidao",
+      "texto": "Há, no banal, um néctar escondido. Só os atentos o sabem colher."
+    },
+    {
+      "id": "vsq-0066",
+      "tema": "gratidao",
+      "texto": "A abelha agradece à flor simplesmente por voltar. Tu também. Confia no teu regresso."
+    },
+    {
+      "id": "vsq-0067",
+      "tema": "gratidao",
+      "texto": "Agradecer é o gesto mais leve que multiplica a beleza onde já existe."
+    },
+    {
+      "id": "vsq-0068",
+      "tema": "gratidao",
+      "texto": "O orvalho nasce sem ser visto e alimenta tudo o que toca. Tu também. Confia no teu gesto."
+    },
+    {
+      "id": "vsq-0069",
+      "tema": "alegria-simples",
+      "texto": "O pardal encontra alegria num grão. Tu também. Confia no que é pequeno."
+    },
+    {
+      "id": "vsq-0070",
+      "tema": "alegria-simples",
+      "texto": "A brisa não precisa de razão para soprar. Tu também. Confia na tua alegria."
+    },
+    {
+      "id": "vsq-0071",
+      "tema": "alegria-simples",
+      "texto": "A bolha de sabão não tenta durar. Simplesmente brilha. Tu também. Confia no teu instante."
+    },
+    {
+      "id": "vsq-0072",
+      "tema": "alegria-simples",
+      "texto": "O arco-íris aparece sem avisar e vai-se sem pedir. Tu também. Confia no que chega."
+    },
+    {
+      "id": "vsq-0073",
+      "tema": "alegria-simples",
+      "texto": "A lagarta não sabe que vai voar. Tu também. Confia no que ainda não imaginas."
+    },
+    {
+      "id": "vsq-0074",
+      "tema": "alegria-simples",
+      "texto": "O grilo canta porque existe noite. Tu também. Confia na tua canção."
+    },
+    {
+      "id": "vsq-0075",
+      "tema": "beleza-de-existir",
+      "texto": "A pétala cai sem medo do chão. Tu também. Confia no teu pousar."
+    },
+    {
+      "id": "vsq-0076",
+      "tema": "beleza-de-existir",
+      "texto": "A madrugada não se repete e mesmo assim volta. Tu também. Confia na tua manhã."
+    },
+    {
+      "id": "vsq-0077",
+      "tema": "beleza-de-existir",
+      "texto": "A beleza não está só na pétala. Está também na coragem de se abrir. Tu também."
+    },
+    {
+      "id": "vsq-0078",
+      "tema": "beleza-de-existir",
+      "texto": "Respirar é um pequeno milagre repetido. E ninguém te cobra a entrada."
+    },
+    {
+      "id": "vsq-0079",
+      "tema": "beleza-de-existir",
+      "texto": "Olha para a luz da manhã como olharias para um milagre. Porque é."
+    },
+    {
+      "id": "vsq-0080",
+      "tema": "beleza-de-existir",
+      "texto": "A tua existência rima com algo. Estás só a aprender o poema. E isso já é vida."
+    },
+    {
+      "id": "vsq-0081",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "A semente cresce no escuro antes de ver a luz. Tu também. Confia no que ainda não se vê."
+    },
+    {
+      "id": "vsq-0082",
+      "tema": "confianca-no-caminho",
+      "texto": "O rio encontra sempre o caminho, mesmo quando a pedra resiste. Tu também. Confia no teu fluxo."
+    },
+    {
+      "id": "vsq-0083",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "A lua esvazia-se para voltar a encher-se. Tu também. Confia nos teus ciclos."
+    },
+    {
+      "id": "vsq-0084",
+      "tema": "confianca-no-caminho",
+      "texto": "A árvore curva-se ao vento e não parte. Tu também sabes. Confia na tua raiz."
+    },
+    {
+      "id": "vsq-0085",
+      "tema": "suavidade-e-descanso",
+      "texto": "O silêncio precede toda a canção. Tu também. Confia na tua pausa."
+    },
+    {
+      "id": "vsq-0086",
+      "tema": "confianca-no-caminho",
+      "texto": "A noite mais escura anuncia o amanhecer. Tu também sabes. Confia no teu tempo."
+    },
+    {
+      "id": "vsq-0087",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "A borboleta passou pelo casulo para abrir asas. Tu também. Confia na tua passagem."
+    },
+    {
+      "id": "vsq-0088",
+      "tema": "confianca-no-caminho",
+      "texto": "A montanha não tem pressa de chegar ao céu. Tu também sabes. Confia no teu passo."
+    },
+    {
+      "id": "vsq-0089",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "A chuva alimenta o que parecia morto. Tu também. Confia no que volta."
+    },
+    {
+      "id": "vsq-0090",
+      "tema": "suavidade-e-descanso",
+      "texto": "O fogo precisa de respirar para arder. Tu também. Confia no teu espaço."
+    },
+    {
+      "id": "vsq-0091",
+      "tema": "autoamor",
+      "texto": "O lótus nasce na lama e não se suja. Tu também. Confia na tua pureza."
+    },
+    {
+      "id": "vsq-0092",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "O lótus fecha à noite e reabre ao amanhecer. Tu também. Confia no teu recomeço."
+    },
+    {
+      "id": "vsq-0093",
+      "tema": "autoperdao",
+      "texto": "O lótus precisa do lodo para se erguer. Tu também. Confia no que te formou."
+    },
+    {
+      "id": "vsq-0094",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "A borboleta não se lembra de ter sido lagarta. Tu também. Confia na tua transformação."
+    },
+    {
+      "id": "vsq-0095",
+      "tema": "suavidade-e-descanso",
+      "texto": "A borboleta descansa antes de abrir as asas. Tu também. Confia na tua pausa."
+    },
+    {
+      "id": "vsq-0096",
+      "tema": "confianca-no-caminho",
+      "texto": "Nenhuma borboleta nasce a voar. Tu também. Confia no teu processo."
+    },
+    {
+      "id": "vsq-0097",
+      "tema": "confianca-no-caminho",
+      "texto": "O girassol segue o sol mesmo nos dias cinzentos. Tu também. Confia na tua direção."
+    },
+    {
+      "id": "vsq-0098",
+      "tema": "presenca-leve",
+      "texto": "Os girassóis viram-se uns para os outros quando o sol falta. Tu também. Confia em quem te rodeia."
+    },
+    {
+      "id": "vsq-0099",
+      "tema": "sonhar-com-raizes",
+      "texto": "O girassol nasce alto porque a raiz vai fundo. Tu também. Confia na tua base."
+    },
+    {
+      "id": "vsq-0100",
+      "tema": "autoperdao",
+      "texto": "A árvore perde as folhas para voltar a florir. Tu também. Confia no teu deixar ir."
+    },
+    {
+      "id": "vsq-0101",
+      "tema": "inteireza",
+      "texto": "O baobá guarda água para os anos secos. Tu também. Confia no que reservas."
+    },
+    {
+      "id": "vsq-0102",
+      "tema": "sonhar-com-raizes",
+      "texto": "A raiz cresce no escuro para o tronco subir à luz. Tu também. Confia no que ninguém vê."
+    },
+    {
+      "id": "vsq-0103",
+      "tema": "confianca-no-caminho",
+      "texto": "A gota fura a pedra sem nunca a empurrar. Tu também. Confia na tua constância."
+    },
+    {
+      "id": "vsq-0104",
+      "tema": "confianca-no-caminho",
+      "texto": "O rio não pede licença ao mar. Tu também. Confia no teu destino."
+    },
+    {
+      "id": "vsq-0105",
+      "tema": "inteireza",
+      "texto": "A água toma a forma do que a recebe e não se perde. Tu também. Confia na tua essência."
+    },
+    {
+      "id": "vsq-0106",
+      "tema": "beleza-de-existir",
+      "texto": "As estrelas só aparecem quando o céu escurece. Tu também. Confia na tua noite."
+    },
+    {
+      "id": "vsq-0107",
+      "tema": "autoamor",
+      "texto": "A lua brilha mesmo quando ninguém olha. Tu também. Confia no teu valor."
+    },
+    {
+      "id": "vsq-0108",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "O céu nunca fica do mesmo tom duas vezes. Tu também. Confia na tua mudança."
+    },
+    {
+      "id": "vsq-0109",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "A semente parte-se antes de germinar. Tu também. Confia na tua abertura."
+    },
+    {
+      "id": "vsq-0110",
+      "tema": "suavidade-e-descanso",
+      "texto": "A terra descansa no inverno para dar fruto no verão. Tu também. Confia no teu repouso."
+    },
+    {
+      "id": "vsq-0111",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "Nenhuma flor floresce no dia em que foi semeada. Tu também. Confia na tua espera."
+    },
+    {
+      "id": "vsq-0112",
+      "tema": "corpo-como-casa",
+      "texto": "O fogo precisa de ar para crescer. Tu também. Confia no teu respirar."
+    },
+    {
+      "id": "vsq-0113",
+      "tema": "confianca-no-caminho",
+      "texto": "O vento move o que parece imóvel. Tu também. Confia no invisível."
+    },
+    {
+      "id": "vsq-0114",
+      "tema": "inteireza",
+      "texto": "A brasa guarda calor mesmo sob a cinza. Tu também. Confia no que parece adormecido."
+    },
+    {
+      "id": "vsq-0115",
+      "tema": "confianca-no-caminho",
+      "texto": "O pássaro canta antes do sol nascer. Tu também. Confia na tua antecipação."
+    },
+    {
+      "id": "vsq-0116",
+      "tema": "confianca-no-caminho",
+      "texto": "A ave migra sem mapa e chega sempre. Tu também. Confia no teu instinto."
+    },
+    {
+      "id": "vsq-0117",
+      "tema": "florescer-no-tempo-certo",
+      "texto": "Nenhum voo começa sem o salto. Tu também. Confia no teu impulso."
+    }
   ]
 }
