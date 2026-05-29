@@ -203,29 +203,70 @@ Midjourney como prompt do fundo.
 REGRA CENTRAL: a imagem REFLECTE o tema. Não há lista fixa de materiais.
 O tema decide a matéria, a paisagem, a atmosfera, a escala.
 
-Se o tema é "Solstício/escuro como mestre" → usa escuridão, crepúsculo,
-lanternas, caminhos na floresta, luz dourada a emergir do escuro.
-Se o tema é "Brotar" → usa terra fértil, rebentos, orvalho, manhã.
-Se o tema é "Aconchego" → usa tecidos quentes, interior íntimo, candeeiro.
-Se o tema é "Solidão fértil" → usa vazio vasto, objecto solitário, silêncio.
-Se o tema é "Fluidez" → usa água, vento, cortinas a mover, dissolução.
-Se o tema é "Limite" → usa fronteiras, linhas de sombra/luz, limiares.
+**BANIDO: boho still-life genérico.** Velas, lanternas, vasos de cerâmica,
+livros antigos, flores secas em linho — TUDO ISTO é cliché. Não uses
+estes objectos a não ser que o tema PEÇA explicitamente luz solitária
+contida (caso de Solstício/lanterna). 90% dos temas pedem outra coisa.
 
-Cada tema pede o SEU mundo visual. Não forces sempre os mesmos objectos.
+VARIA O REGISTO VISUAL entre temas. Cada tema pode pedir:
+- Paisagem ampla (campos, horizontes, montanhas, mar, céu)
+- Caminho ou estrada (floresta, deserto, rio que serpenteia)
+- Atmosfera meteorológica (nevoeiro, geada, chuva, raio de sol único)
+- Macro natural (folha que cai, gota, fissura, semente em terra)
+- Arquitectura simbólica (vão de porta, janela, escada, ponte)
+- Cosmologia (constelação, lua, estrelas a emergir)
+- Movimento subtil (cortina ao vento, água a ondular)
+- Vestígios (passada na neve, sombra, rasto)
+
+NÃO te limites a interiores com objectos sobre tecido. A NATUREZA e o
+CÉU contam emoções gigantes; o still-life é uma de muitas linguagens.
+
+EXEMPLOS por tema (vê como CADA tema pede um mundo diferente):
+
+"Solstício / escuro como mestre" → ancient forest path disappearing
+into deep twilight, first faint golden light emerging beyond, painterly
+contemplative
+"Repouso" → winter field before sunrise, frost-covered grasses resting
+beneath blue darkness, horizon glowing soft warm
+"Mistério" → moonlit fog drifting across still lake at night, distant
+shoreline barely visible, mystery in suspension
+"Raiz" → ancient tree standing in winter twilight, roots partially
+exposed beneath dark earth, unseen depth holding it
+"Independência interior" → solitary mountain path leading away from
+village lights at dusk, single figure-shaped shadow on the trail (without
+actually showing a person), wide open sky ahead, painterly
+"Aconchego" → soft amber lamp glow seen through frosted window from
+outside, snow drifting gently, warm light pulling against cold blue night
+"Solidão fértil" → vast empty pale meadow at dawn with single drop of
+dew catching first light on a blade of grass, infinite quiet space
+"Brotar sem pressa" → close-up of a green shoot emerging from cracked
+dark earth at first light, soft mist around, all the patience of months
+in one image
+"Fluidez" → long silk curtains moving softly in a breath of wind by
+an open window, golden light cascading through the folds
+"Limite que ensina" → sharp horizon line where dark calm sea meets
+pale overcast sky, single distant lighthouse, minimal painterly tension
+"Verdade" → single shaft of pure light cutting through dust in a dim
+room, illuminating nothing in particular, just the air
+"Comunidade" → ring of small lit candles seen from above on a dark
+stone floor, the ring is the subject not the candles
+
+Padrão: TODOS estes exemplos têm direcção emocional clara e variam o
+mundo visual. NUNCA respondem com lista de objectos sem contexto.
 
 COMPOSIÇÃO por tipo de slide:
-- CAPA (slide 1): cena RICA, atmosférica, com densidade visual e profundidade.
-  Pode ser paisagem, interior, macro, abstracta — o que o tema pedir.
-- CTA (slide 6): cena SIMBÓLICA e SIMPLES. 1 elemento, muito espaço,
-  contemplativa. É o silêncio depois da história.
+- CAPA (slide 1): cena RICA, atmosférica, com densidade e profundidade.
+  Paisagem, interior, macro, abstracta — o que o tema pedir.
+- CTA (slide 6): cena SIMBÓLICA e SIMPLES. 1 elemento essencial, muito
+  espaço, contemplativa. Silêncio depois da história.
 - CONTEÚDO (slides 2-5): sem fundo MJ (só tipografia).
 
 ESTÉTICA (sempre):
-- Editorial, painterly, contemplativa
-- Paleta quente contida (navy, cream, terracota, dourado)
-- Luz com qualidade (oblíqua, suave, chiaroscuro)
+- Editorial, painterly, contemplativa, cinematic
+- Paleta quente contida (navy, cream, terracota, dourado, brumas frias)
+- Luz com qualidade (oblíqua, suave, chiaroscuro, hora dourada/azul)
 - Sem pessoas, rostos, mãos, corpos
-- Sem HDR, sem stock-photo, sem cores saturadas
+- Sem HDR, sem stock-photo gloss, sem cores saturadas
 - Sem texto, logos, watermarks
 - Sem geografia explícita ("African", "Mozambique", etc.)
 
