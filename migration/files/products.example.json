@@ -1,0 +1,84 @@
+{
+  "_doc": "Catálogo de produtos lido pelo SYSTEM_PROMPT do gerador. Adiciona/remove produtos editando este ficheiro; o Claude API passa a ter conhecimento deles no próximo run.",
+  "_brand": "Sete Ecos / Os Sete Véus",
+  "products": [
+    {
+      "id": "livro-sete-veus",
+      "icone": "📖",
+      "nome": "Os 7 Véus do Despertar",
+      "tipo": "livro impresso + digital",
+      "descricao": "livro com os 7 véus estruturais (Permanência, Memória, Turbilhão, Esforço, Desolação, Horizonte, Dualidade)",
+      "quandoUsar": "tema do dia é um destes véus estruturais ou um despertar geral",
+      "url": "seteveus.space/livro-fisico"
+    },
+    {
+      "id": "espelhos",
+      "icone": "📚",
+      "nome": "Colecção Espelhos",
+      "tipo": "ficções narrativas",
+      "descricao": "7 ficções onde te reconheces (não manuais, histórias)",
+      "quandoUsar": "identidade, padrões repetidos, reconhecer-se em personagens",
+      "url": "seteveus.space/comprar/espelhos"
+    },
+    {
+      "id": "nos",
+      "icone": "📖",
+      "nome": "Colecção Nós",
+      "tipo": "ficções relacionais",
+      "descricao": "ficções sobre relação, vínculo, comunidade, pertença, família",
+      "quandoUsar": "relação, maternidade, amizade, herança",
+      "url": "seteveus.space/comprar/nos"
+    },
+    {
+      "id": "music-veus",
+      "icone": "🎧",
+      "nome": "Music Véus",
+      "tipo": "banda sonora",
+      "descricao": "banda sonora contemplativa para escutar dentro. Primeira faixa de cada álbum gratuita.",
+      "quandoUsar": "silêncio, ritmo, pausa, mente em turbilhão",
+      "url": "music.seteveus.space"
+    },
+    {
+      "id": "vitalis",
+      "icone": "🌿",
+      "nome": "VITALIS",
+      "tipo": "plano alimentar",
+      "descricao": "plano alimentar simples e nutritivo, sem balança nem extremos, receitas acessíveis",
+      "quandoUsar": "corpo, alimentação, reeducação alimentar",
+      "url": "app.seteecos.com/vitalis"
+    },
+    {
+      "id": "lumina",
+      "icone": "✨",
+      "nome": "LUMINA",
+      "tipo": "espelho rápido gratuito",
+      "descricao": "ESPELHO rápido (NÃO 'diagnóstico'), 7 perguntas, 2 minutos. A marca é ANTI-diagnóstica.",
+      "quandoUsar": "tema convida à auto-percepção",
+      "url": "app.seteecos.com/lumina",
+      "regraDura": "NUNCA chames 'diagnóstico'. Usa 'espelho gratuito', 'bússola', 'reconhecimento'."
+    },
+    {
+      "id": "sete-ecos",
+      "icone": "🌀",
+      "nome": "Sete Ecos",
+      "tipo": "comunidade",
+      "descricao": "comunidade anónima, partilha sem máscara",
+      "quandoUsar": "solidão, comunidade, irmandade",
+      "url": "seteveus.space"
+    },
+    {
+      "id": "ouro-proprio",
+      "icone": "🕯️",
+      "nome": "Ouro Próprio",
+      "tipo": "curso · A Casa dos Espelhos Dourados",
+      "descricao": "24 sub-aulas em 8 módulos: O Extracto como Espelho, A Herança Financeira Emocional, A Vergonha do Dinheiro, Cobrar Receber Merecer, Gastar em Ti, Dinheiro e Relações, Ganhar Mais Não Resolve, Dinheiro como Liberdade",
+      "quandoUsar": "dinheiro, valor próprio, escassez, herança financeira, vergonha, cobrar, gastar em si, sabotagem, suficiência, liberdade financeira",
+      "url": "seteveus.space"
+    }
+  ],
+  "_proximos_passos_migracao": [
+    "Adiciona aqui os 70+ ebooks com id/icone/nome/tipo/descricao/quandoUsar/url",
+    "O builder do SYSTEM_PROMPT lê este JSON e gera a secção ECOSSISTEMA automaticamente",
+    "Para suportar muitos produtos: agrupar por categoria, talvez carregar só os mais relevantes ao brief"
+  ]
+}
