@@ -1,0 +1,7 @@
+# Bundle = duplicate of source files (used só para empacotar o ZIP).
+# Regenerar via o script em MIGRATION-PLAYBOOK ou comando cp.
+bundle/
+
+# ZIP é artefacto de delivery — regenerável a partir do bundle/.
+# Commitar o ZIP no repo seria 177KB binário sem valor para diff.
+*.zip
