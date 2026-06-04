@@ -113,16 +113,55 @@ export function RendersLibrarySection({
     }
   };
 
-  // Procura o item de hoje. Se houver vários jobs com o mesmo dia
-  // (ex: re-renders), pega o mais recente (jobs já vêm sorted desc).
-  const todayISO = todayMaputoISO();
-  const todayItem = useMemo(() => {
+  // Constrói lista plana de TODOS os items renderizados (com URL),
+  // ordenados por data desc. Permite ao utilizador encontrar
+  // rapidamente o vídeo de qualquer dia.
+  const allRendered = useMemo(() => {
+    const flat: Array<{ job: LibJob; item: LibItem }> = [];
     for (const job of jobs) {
-      const it = job.items.find((i) => i.date === todayISO && i.url);
-      if (it) return { job, item: it };
+      for (const item of job.items) {
+        if (item.url) flat.push({ job, item });
+      }
     }
-    return null;
-  }, [jobs, todayISO]);
+    // Mais recente primeiro
+    flat.sort((a, b) => (a.item.date < b.item.date ? 1 : -1));
+    return flat;
+  }, [jobs]);
+
+  const todayISO = todayMaputoISO();
+
+  // Data seleccionada: default = hoje se existir, senão mais recente
+  const [pickedDate, setPickedDate] = useState<string>("");
+  useEffect(() => {
+    if (pickedDate || allRendered.length === 0) return;
+    const today = allRendered.find((e) => e.item.date === todayISO);
+    setPickedDate(today ? today.item.date : allRendered[0].item.date);
+  }, [allRendered, todayISO, pickedDate]);
+
+  const pickedEntry = useMemo(() => {
+    return allRendered.find((e) => e.item.date === pickedDate) ?? null;
+  }, [allRendered, pickedDate]);
+
+  const pickedIdx = useMemo(
+    () => allRendered.findIndex((e) => e.item.date === pickedDate),
+    [allRendered, pickedDate]
+  );
+
+  const goPrev = () => {
+    if (pickedIdx < allRendered.length - 1) {
+      setPickedDate(allRendered[pickedIdx + 1].item.date);
+    }
+  };
+  const goNext = () => {
+    if (pickedIdx > 0) {
+      setPickedDate(allRendered[pickedIdx - 1].item.date);
+    }
+  };
+  const goToday = () => {
+    const t = allRendered.find((e) => e.item.date === todayISO);
+    if (t) setPickedDate(t.item.date);
+  };
+  const hasToday = allRendered.some((e) => e.item.date === todayISO);
 
   const downloadRemote = async (url: string, filename: string) => {
     try {
@@ -160,22 +199,75 @@ export function RendersLibrarySection({
         </div>
       )}
 
-      {todayItem && (
+      {allRendered.length > 0 && (
+        <div
+          className="rounded-lg border p-3 space-y-2"
+          style={{ borderColor: COBRE, background: "rgba(194,143,96,0.06)" }}
+        >
+          <div className="flex items-center gap-2 flex-wrap text-[11px]">
+            <span style={{ color: COBRE }} className="font-medium">
+              📅 Vídeo para postar:
+            </span>
+            <button
+              onClick={goPrev}
+              disabled={pickedIdx >= allRendered.length - 1}
+              className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme disabled:opacity-30"
+              title="Dia anterior"
+            >
+              ← anterior
+            </button>
+            <select
+              value={pickedDate}
+              onChange={(e) => setPickedDate(e.target.value)}
+              className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme min-w-[160px]"
+            >
+              {allRendered.map((e) => (
+                <option key={e.item.date} value={e.item.date}>
+                  {e.item.date} ·{" "}
+                  {DIA_LONGO_PT[e.item.dia]}
+                  {e.item.date === todayISO ? " · HOJE" : ""}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={goNext}
+              disabled={pickedIdx <= 0}
+              className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme disabled:opacity-30"
+              title="Dia seguinte"
+            >
+              seguinte →
+            </button>
+            {hasToday && pickedDate !== todayISO && (
+              <button
+                onClick={goToday}
+                className="rounded border px-2 py-0.5"
+                style={{ borderColor: COBRE, color: COBRE, background: "rgba(194,143,96,0.1)" }}
+              >
+                📅 Ir para hoje
+              </button>
+            )}
+            {!hasToday && (
+              <span className="text-[10px] text-escola-creme-50 italic">
+                Não há render para hoje ({todayISO}). A mostrar o mais
+                recente disponível.
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
+      {pickedEntry && (
         <TodayHighlightCard
-          item={todayItem.item}
+          item={pickedEntry.item}
           onCopy={onCopy}
           copied={copied}
           onDownload={downloadRemote}
         />
       )}
 
-      {!todayItem && !loading && jobs.length > 0 && (
-        <div
-          className="rounded border p-3 text-[11px]"
-          style={{ borderColor: COBRE_FRACO, background: "rgba(194,143,96,0.04)", color: COBRE }}
-        >
-          Sem MP4 produzido para hoje ({todayISO}). O destaque aparece aqui
-          assim que renderizares o dia.
+      {allRendered.length === 0 && !loading && (
+        <div className="rounded border border-escola-border bg-escola-card/40 p-3 text-[11px] text-escola-creme-50">
+          Ainda não renderizaste nenhum dia. Faz Submit no Pack mensal acima.
         </div>
       )}
 
