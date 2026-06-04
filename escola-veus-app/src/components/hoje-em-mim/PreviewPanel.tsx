@@ -949,6 +949,18 @@ export function HojeEmMimPreviewPanel() {
 
       {activeTab === "bulk" && (
       <>
+      <RendersLibrarySection
+        onLoadJob={(id) => {
+          setJobId(id);
+          setJobResult(null);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("hoje-em-mim.lastJobId", id);
+          }
+        }}
+        copied={copied}
+        onCopy={copy}
+      />
+
       <QuickRenderPanel
         media={media}
         setMedia={setMedia}
@@ -1177,18 +1189,6 @@ export function HojeEmMimPreviewPanel() {
           if (typeof window !== "undefined") {
             if (id) localStorage.setItem("hoje-em-mim.lastJobId", id);
             else localStorage.removeItem("hoje-em-mim.lastJobId");
-          }
-        }}
-        copied={copied}
-        onCopy={copy}
-      />
-
-      <RendersLibrarySection
-        onLoadJob={(id) => {
-          setJobId(id);
-          setJobResult(null);
-          if (typeof window !== "undefined") {
-            localStorage.setItem("hoje-em-mim.lastJobId", id);
           }
         }}
         copied={copied}
