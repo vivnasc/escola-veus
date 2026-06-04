@@ -176,6 +176,9 @@ export function BulkMonthPanel() {
   const [swapShowAll, setSwapShowAll] = useState<Record<string, boolean>>({});
   const [swapping, setSwapping] = useState<Record<string, "loading" | { error: string } | undefined>>({});
   const [swapPickerOpen, setSwapPickerOpen] = useState<string | null>(null);
+  const [editingPhrase, setEditingPhrase] = useState<Record<string, "loading" | { error: string } | undefined>>({});
+  const [editPhraseOpen, setEditPhraseOpen] = useState<string | null>(null);
+  const [editPhraseDraft, setEditPhraseDraft] = useState<Record<string, { phrase?: string; phraseSize?: number; cardY?: number }>>({});
   /** Indice da linha do plano com picker de swap aberto (antes de submeter). */
   const [planSwapOpenIdx, setPlanSwapOpenIdx] = useState<number | null>(null);
   const [planSwapShowAll, setPlanSwapShowAll] = useState<Record<number, boolean>>({});
@@ -249,6 +252,46 @@ export function BulkMonthPanel() {
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       setSwapping((s) => ({ ...s, [jobId]: { error: msg } }));
+    }
+  };
+
+  /** Edita texto + tamanho fonte + posicao e re-renderiza esse dia. */
+  const editPhraseAndRerender = async (
+    jobId: string,
+    opts: { phrase?: string; phraseSize?: number; cardY?: number }
+  ) => {
+    setEditingPhrase((e) => ({ ...e, [jobId]: "loading" }));
+    try {
+      const payload: Record<string, unknown> = { jobId };
+      if (opts.phrase && opts.phrase.trim()) payload.phrase = opts.phrase.trim();
+      if (typeof opts.phraseSize === "number" && opts.phraseSize > 0)
+        payload.phraseSize = opts.phraseSize;
+      if (typeof opts.cardY === "number") payload.cardY = opts.cardY;
+      const r = await fetch("/api/admin/vc-sabia/render-update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const j = await r.json();
+      if (!r.ok) {
+        setEditingPhrase((e) => ({ ...e, [jobId]: { error: j.erro || `HTTP ${r.status}` } }));
+        return;
+      }
+      setEditingPhrase((e) => {
+        const next = { ...e };
+        delete next[jobId];
+        return next;
+      });
+      setEditPhraseOpen(null);
+      setEditPhraseDraft((d) => {
+        const next = { ...d };
+        delete next[jobId];
+        return next;
+      });
+      await fetchStatus();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setEditingPhrase((s) => ({ ...s, [jobId]: { error: msg } }));
     }
   };
   const deletePastBatch = async (id: string) => {
@@ -1287,6 +1330,122 @@ export function BulkMonthPanel() {
                     {swapping[j.jobId] && swapping[j.jobId] !== "loading" && (
                       <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
                         {(swapping[j.jobId] as { error: string }).error}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Editar texto / tamanho fonte / posicao + re-render */}
+                  <div className="space-y-1">
+                    {editPhraseOpen === j.jobId ? (
+                      <div className="space-y-2 rounded border border-emerald-500/40 bg-emerald-500/5 p-2">
+                        <label className="block text-[10px] text-emerald-200">
+                          Texto da frase
+                          <textarea
+                            value={
+                              editPhraseDraft[j.jobId]?.phrase ?? j.phraseText ?? ""
+                            }
+                            onChange={(e) =>
+                              setEditPhraseDraft((d) => ({
+                                ...d,
+                                [j.jobId]: { ...d[j.jobId], phrase: e.target.value },
+                              }))
+                            }
+                            rows={3}
+                            className="mt-1 block w-full rounded border border-escola-border bg-escola-card px-2 py-1 text-[11px] text-escola-creme"
+                          />
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <label className="block text-[10px] text-emerald-200">
+                            Tamanho fonte (px)
+                            <input
+                              type="number"
+                              min={20}
+                              max={120}
+                              value={editPhraseDraft[j.jobId]?.phraseSize ?? 60}
+                              onChange={(e) =>
+                                setEditPhraseDraft((d) => ({
+                                  ...d,
+                                  [j.jobId]: {
+                                    ...d[j.jobId],
+                                    phraseSize: Number(e.target.value),
+                                  },
+                                }))
+                              }
+                              className="mt-1 block w-full rounded border border-escola-border bg-escola-card px-2 py-1 text-[11px] text-escola-creme"
+                            />
+                          </label>
+                          <label className="block text-[10px] text-emerald-200">
+                            Posição Y (cardY)
+                            <input
+                              type="number"
+                              min={400}
+                              max={1500}
+                              step={20}
+                              value={editPhraseDraft[j.jobId]?.cardY ?? 880}
+                              onChange={(e) =>
+                                setEditPhraseDraft((d) => ({
+                                  ...d,
+                                  [j.jobId]: {
+                                    ...d[j.jobId],
+                                    cardY: Number(e.target.value),
+                                  },
+                                }))
+                              }
+                              className="mt-1 block w-full rounded border border-escola-border bg-escola-card px-2 py-1 text-[11px] text-escola-creme"
+                            />
+                          </label>
+                        </div>
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => {
+                              const draft = editPhraseDraft[j.jobId] || {};
+                              editPhraseAndRerender(j.jobId, draft);
+                            }}
+                            disabled={editingPhrase[j.jobId] === "loading"}
+                            className="flex-1 rounded border border-emerald-500/60 bg-emerald-500/15 px-2 py-1 text-[10px] text-emerald-300 hover:bg-emerald-500/25 disabled:opacity-50"
+                          >
+                            {editingPhrase[j.jobId] === "loading"
+                              ? "↻ a re-renderizar..."
+                              : "✓ Aplicar + re-render"}
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditPhraseOpen(null);
+                              setEditPhraseDraft((d) => {
+                                const next = { ...d };
+                                delete next[j.jobId];
+                                return next;
+                              });
+                            }}
+                            className="rounded border border-escola-border bg-escola-card/40 px-2 py-1 text-[10px] text-escola-creme-50 hover:text-escola-creme"
+                          >
+                            cancelar
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setEditPhraseOpen(j.jobId);
+                          setEditPhraseDraft((d) => ({
+                            ...d,
+                            [j.jobId]: {
+                              phrase: j.phraseText || "",
+                              phraseSize: 60,
+                              cardY: 880,
+                            },
+                          }));
+                        }}
+                        disabled={editingPhrase[j.jobId] === "loading"}
+                        className="block w-full rounded border border-emerald-500/60 bg-emerald-500/10 px-2 py-0.5 text-[10px] text-emerald-300 hover:bg-emerald-500/20 disabled:opacity-50"
+                        title="Editar texto da frase, tamanho da fonte e posição, depois re-renderizar"
+                      >
+                        ✎ Editar texto + tamanho + re-render
+                      </button>
+                    )}
+                    {editingPhrase[j.jobId] && editingPhrase[j.jobId] !== "loading" && (
+                      <div className="rounded border border-red-700/40 bg-red-900/20 p-1 text-[9px] text-red-300">
+                        {(editingPhrase[j.jobId] as { error: string }).error}
                       </div>
                     )}
                   </div>
