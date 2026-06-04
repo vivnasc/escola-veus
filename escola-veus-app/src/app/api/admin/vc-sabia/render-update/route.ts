@@ -21,6 +21,9 @@ export async function POST(req: NextRequest) {
     audioUrl?: string | null;
     phrase?: string;
     dateLabel?: string;
+    phraseSize?: number;
+    kickerSize?: number;
+    cardY?: number;
   };
   try {
     body = await req.json();
@@ -70,6 +73,19 @@ export async function POST(req: NextRequest) {
   if (body.dateLabel && body.dateLabel !== manifest.dateLabel) {
     manifest.dateLabel = body.dateLabel.trim();
     patched.push("dateLabel");
+  }
+  // Design overrides por linha (sobrepoem-se ao design global do batch)
+  if (typeof body.phraseSize === "number" && body.phraseSize > 0) {
+    manifest.design = { ...(manifest.design || {}), phraseSize: body.phraseSize };
+    patched.push("phraseSize");
+  }
+  if (typeof body.kickerSize === "number" && body.kickerSize > 0) {
+    manifest.design = { ...(manifest.design || {}), kickerSize: body.kickerSize };
+    patched.push("kickerSize");
+  }
+  if (typeof body.cardY === "number") {
+    manifest.design = { ...(manifest.design || {}), cardY: body.cardY };
+    patched.push("cardY");
   }
   manifest.updatedAt = new Date().toISOString();
 

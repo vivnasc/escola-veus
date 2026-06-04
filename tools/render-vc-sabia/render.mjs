@@ -254,7 +254,12 @@ try {
     progress: 15,
     message: "A compor overlay...",
   });
-  const design = await fetchDesign();
+  // Merge: global design < per-job override (manifest.design tem prioridade)
+  const globalDesign = await fetchDesign();
+  const design = { ...globalDesign, ...(manifest.design || {}) };
+  if (manifest.design) {
+    console.log(`  design override desta linha: ${JSON.stringify(manifest.design)}`);
+  }
   const overlayBuffer = composeOverlay(manifest.phrase || "", manifest.dateLabel || "", design);
   const overlayPath = path.join(WORK, "overlay.png");
   await writeFile(overlayPath, overlayBuffer);
