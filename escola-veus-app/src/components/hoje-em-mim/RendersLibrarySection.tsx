@@ -259,9 +259,11 @@ export function RendersLibrarySection({
       {pickedEntry && (
         <TodayHighlightCard
           item={pickedEntry.item}
+          jobId={pickedEntry.job.jobId}
           onCopy={onCopy}
           copied={copied}
           onDownload={downloadRemote}
+          onChanged={load}
         />
       )}
 
@@ -341,19 +343,111 @@ export function RendersLibrarySection({
 
 function TodayHighlightCard({
   item,
+  jobId,
   onCopy,
   copied,
   onDownload,
+  onChanged,
 }: {
   item: LibItem;
+  jobId: string;
   onCopy: (key: string, text: string) => void;
   copied: string | null;
   onDownload: (url: string, filename: string) => void;
+  onChanged: () => void;
 }) {
-  const captions = item.fraseTexto
-    ? phraseToCaptions({ phrase: item.fraseTexto, dia: item.dia })
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(item.fraseTexto ?? "");
+  const [regenerating, setRegenerating] = useState(false);
+  const [reRendering, setReRendering] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    setDraft(item.fraseTexto ?? "");
+    setErr(null);
+  }, [item.fraseTexto, item.date]);
+
+  const especial = (() => {
+    // best-effort: detecta fim/inicio mes pelo dia da data
+    const [, mStr, dStr] = item.date.split("-");
+    const m = Number(mStr);
+    const d = Number(dStr);
+    if (m === 12 && d === 31) return "fim_ano";
+    if (m === 1 && d === 1) return "inicio_ano";
+    const last = new Date(Number(item.date.slice(0, 4)), m, 0).getDate();
+    if (d === last) return "fim_mes";
+    if (d === 1) return "inicio_mes";
+    return null;
+  })();
+
+  const captions = draft
+    ? phraseToCaptions({ phrase: draft, dia: item.dia, especial })
     : null;
   const filename = `hoje-em-mim-${item.date}.mp4`;
+
+  const regenWithClaude = async () => {
+    setRegenerating(true);
+    setErr(null);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/phrase/generate", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          dia: item.dia,
+          especial,
+          avoid: [draft, item.fraseTexto].filter(Boolean),
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.phrase) throw new Error(json.erro || "Falhou");
+      setDraft(json.phrase);
+      setEditing(true);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setRegenerating(false);
+    }
+  };
+
+  const reRender = async () => {
+    if (!draft.trim()) {
+      setErr("A frase está vazia");
+      return;
+    }
+    if (
+      !confirm(
+        `Re-renderizar ${item.date} com a frase nova? O MP4 actual é substituído.`
+      )
+    )
+      return;
+    setReRendering(true);
+    setErr(null);
+    try {
+      const res = await fetch("/api/admin/hoje-em-mim/render-rerender", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          jobId,
+          dayIndex: item.dayIndex,
+          overrides: { fraseTexto: draft.trim() },
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.erro || `HTTP ${res.status}`);
+      alert(
+        "Re-render lançado. Aguarda ~30s e carrega ↻ refresh para ver o MP4 actualizado."
+      );
+      setEditing(false);
+      onChanged();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setReRendering(false);
+    }
+  };
+
+  const fraseChanged = draft.trim() !== (item.fraseTexto ?? "").trim();
+
   return (
     <div
       className="rounded-lg border-2 p-4 space-y-3"
@@ -364,19 +458,83 @@ function TodayHighlightCard({
       }}
     >
       <div className="flex items-baseline justify-between gap-3 flex-wrap">
-        <div>
+        <div className="flex-1 min-w-[260px]">
           <div className="text-[10px] uppercase tracking-[0.2em]" style={{ color: COBRE }}>
-            📅 Hoje · {item.date}
+            📅 {item.date}
           </div>
           <div className="text-base font-serif text-escola-creme">
             {GLIFO_POR_DIA[item.dia]} {DIA_LONGO_PT[item.dia]} ·{" "}
             <span style={{ color: COBRE }}>{KICKER_POR_DIA[item.dia]}</span>
           </div>
-          {item.fraseTexto && (
-            <div className="mt-1 max-w-2xl text-xs italic text-escola-creme-50">
-              {item.fraseTexto}
+          <div className="mt-2">
+            {editing ? (
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                rows={3}
+                className="w-full rounded border border-escola-border bg-escola-bg px-2 py-1.5 text-xs italic text-escola-creme"
+                style={{ borderColor: fraseChanged ? COBRE : undefined }}
+              />
+            ) : (
+              <div
+                onClick={() => setEditing(true)}
+                className="cursor-text max-w-2xl text-xs italic text-escola-creme-50 hover:text-escola-creme"
+                title="Clica para editar"
+              >
+                {draft || "(sem frase)"}
+              </div>
+            )}
+            <div className="mt-1 flex gap-1 flex-wrap text-[10px]">
+              {editing ? (
+                <>
+                  <button
+                    onClick={() => {
+                      setDraft(item.fraseTexto ?? "");
+                      setEditing(false);
+                      setErr(null);
+                    }}
+                    className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+                  >
+                    cancelar
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setEditing(true)}
+                  className="rounded border border-escola-border bg-escola-card px-2 py-0.5 text-escola-creme-50 hover:text-escola-creme"
+                >
+                  ✏ editar frase
+                </button>
+              )}
+              <button
+                onClick={regenWithClaude}
+                disabled={regenerating}
+                className="rounded border px-2 py-0.5 disabled:opacity-40"
+                style={{ borderColor: COBRE_FRACO, color: COBRE, background: "rgba(194,143,96,0.06)" }}
+                title="Pede ao Claude uma frase nova para este dia (mantém o kicker, evita a frase actual)"
+              >
+                {regenerating ? "…" : "🤖 Regenerar com Claude"}
+              </button>
+              {fraseChanged && (
+                <button
+                  onClick={reRender}
+                  disabled={reRendering}
+                  className="rounded border px-2 py-0.5 disabled:opacity-40"
+                  style={{
+                    borderColor: "rgb(16, 185, 129)",
+                    color: "rgb(16, 185, 129)",
+                    background: "rgba(16, 185, 129, 0.08)",
+                  }}
+                  title="Lança um novo render para este dia com a frase editada"
+                >
+                  {reRendering ? "a re-renderizar…" : "🔄 Re-renderizar este dia"}
+                </button>
+              )}
             </div>
-          )}
+            {err && (
+              <div className="mt-1 text-[10px] text-red-300">{err}</div>
+            )}
+          </div>
         </div>
       </div>
 
