@@ -967,20 +967,31 @@ export function HojeEmMimPreviewPanel() {
         onCopy={copy}
       />
 
-      <QuickRenderPanel
-        media={media}
-        setMedia={setMedia}
-        audioUrlSelected={audioUrlSelected}
-        setAudioUrlSelected={setAudioUrlSelected}
-        themeId={themeId}
-        setThemeId={setThemeId}
-        durationSec={durationSec}
-        onRender={submitTodayQuick}
-        submitting={submitting}
-        submitError={submitError}
-        phrase={phrase}
-      />
+      <details className="rounded-lg border border-escola-border bg-escola-card/30">
+        <summary className="cursor-pointer px-3 py-2 text-xs text-escola-creme-50 hover:text-escola-creme">
+          ⚡ Render rápido (1 vídeo para hoje) — clica para abrir
+        </summary>
+        <div className="px-3 pb-3">
+          <QuickRenderPanel
+            media={media}
+            setMedia={setMedia}
+            audioUrlSelected={audioUrlSelected}
+            setAudioUrlSelected={setAudioUrlSelected}
+            themeId={themeId}
+            setThemeId={setThemeId}
+            durationSec={durationSec}
+            onRender={submitTodayQuick}
+            submitting={submitting}
+            submitError={submitError}
+            phrase={phrase}
+          />
+        </div>
+      </details>
 
+      <details className="rounded-lg border border-escola-border bg-escola-card/30">
+        <summary className="cursor-pointer px-3 py-2 text-xs text-escola-creme-50 hover:text-escola-creme">
+          📦 Produção do mês (planear, pré-montar, submeter pack) — clica para abrir
+        </summary>
       <section className="space-y-3 rounded-lg border border-escola-border bg-escola-card p-4">
         <h2 className="text-base font-serif" style={{ color: COBRE }}>
           📦 Bulk mensal · Pacote Metricool
@@ -1185,7 +1196,13 @@ export function HojeEmMimPreviewPanel() {
           ficam prontos.
         </div>
       </section>
+      </details>
 
+      <details className="rounded-lg border border-escola-border bg-escola-card/30">
+        <summary className="cursor-pointer px-3 py-2 text-xs text-escola-creme-50 hover:text-escola-creme">
+          📊 Status do último job submetido — clica para abrir
+        </summary>
+        <div className="px-3 pb-3">
       <JobSection
         jobId={jobId}
         jobResult={jobResult}
@@ -1201,6 +1218,8 @@ export function HojeEmMimPreviewPanel() {
         copied={copied}
         onCopy={copy}
       />
+        </div>
+      </details>
       </>
       )}
 
