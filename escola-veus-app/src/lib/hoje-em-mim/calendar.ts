@@ -96,22 +96,46 @@ type FrasesData = {
 
 const SEED = seed as unknown as FrasesData;
 
-/** Constrói a rotação de frases + prompts MJ por dia. */
+/** Constrói a rotação de frases + prompts MJ por dia.
+ *
+ *  Quando `usedFraseIds` é fornecido (do /api/usage-history), a
+ *  rotação salta frases já publicadas em renders passados — só
+ *  reusa quando o pool de frases novas se esgota. */
 export function dailyMjRotation(
   startDate: Date,
-  days: number
+  days: number,
+  opts?: { usedFraseIds?: Set<string> | string[] }
 ): CalendarEntry[] {
-  // Organiza frases por weekday
+  const usedSet =
+    opts?.usedFraseIds instanceof Set
+      ? opts.usedFraseIds
+      : new Set(opts?.usedFraseIds ?? []);
+
+  // Organiza frases por weekday, separando frescas vs já usadas
   const frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string }>> = {
     mon: [], tue: [], wed: [], thu: [], fri: [], sat: [], sun: [],
   };
   for (const f of SEED.frases) frasesPorDia[f.dia].push({ id: f.id, texto: f.texto });
+  // Ordena: frescas primeiro, usadas no fim (mantém ordem relativa)
+  for (const dia of Object.keys(frasesPorDia) as DiaSemana[]) {
+    const list = frasesPorDia[dia];
+    const fresh = list.filter((f) => !usedSet.has(f.id));
+    const used = list.filter((f) => usedSet.has(f.id));
+    frasesPorDia[dia] = [...fresh, ...used];
+  }
   const frasesEspeciais: Record<DiaEspecial, Array<{ id: string; texto: string }>> = {
     fim_mes: SEED.frases_especiais?.fim_mes ?? [],
     inicio_mes: SEED.frases_especiais?.inicio_mes ?? [],
     fim_ano: SEED.frases_especiais?.fim_ano ?? [],
     inicio_ano: SEED.frases_especiais?.inicio_ano ?? [],
   };
+  // Mesmo tratamento para frases especiais
+  for (const k of Object.keys(frasesEspeciais) as DiaEspecial[]) {
+    const list = frasesEspeciais[k];
+    const fresh = list.filter((f) => !usedSet.has(f.id));
+    const used = list.filter((f) => usedSet.has(f.id));
+    frasesEspeciais[k] = [...fresh, ...used];
+  }
 
   const fraseCursor: Record<DiaSemana, number> = {
     mon: 0, tue: 0, wed: 0, thu: 0, fri: 0, sat: 0, sun: 0,

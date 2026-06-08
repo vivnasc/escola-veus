@@ -86,6 +86,7 @@ function computePreviewItems(opts: {
   motionPool: string[];
   audioPool: string[];
   moodByMotion?: Record<string, string>;
+  usedFraseIds?: Set<string>;
   frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string; dia: DiaSemana }>>;
   frasesEspeciais: Record<DiaEspecial, Array<{ id: string; texto: string }>>;
 }): Array<{
@@ -124,7 +125,8 @@ function computePreviewItems(opts: {
   const [calY, calM, calD] = startDate.split("-").map(Number);
   const calRotation = dailyMjRotation(
     new Date(Date.UTC(calY, calM - 1, calD)),
-    numDays
+    numDays,
+    { usedFraseIds: opts.usedFraseIds }
   );
 
   const seed = seedFromRange(opts.ano, opts.mes, opts.diaInicio);
@@ -508,6 +510,7 @@ export function HojeEmMimPreviewPanel() {
   // Histórico de uso: quais motionUrls e fraseIds já saíram em renders
   // passados. Prioriza clips frescos na pré-montagem e marca usados no picker.
   const [usedMotionUrls, setUsedMotionUrls] = useState<Set<string>>(new Set());
+  const [usedFraseIds, setUsedFraseIds] = useState<Set<string>>(new Set());
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -517,6 +520,9 @@ export function HojeEmMimPreviewPanel() {
         const json = await res.json();
         if (Array.isArray(json.usedMotionUrls)) {
           setUsedMotionUrls(new Set(json.usedMotionUrls));
+        }
+        if (Array.isArray(json.usedFraseIds)) {
+          setUsedFraseIds(new Set(json.usedFraseIds));
         }
       } catch { /* silencioso */ }
     })();
@@ -1127,6 +1133,7 @@ export function HojeEmMimPreviewPanel() {
           overrides={overridesByDay}
           onChangeOverrides={setOverridesByDayUserAction}
           moodByMotion={moodByMotion}
+          usedFraseIds={usedFraseIds}
         />
 
         {(() => {
@@ -5012,6 +5019,7 @@ function BulkPreviewTable({
   overrides,
   onChangeOverrides,
   moodByMotion,
+  usedFraseIds,
 }: {
   ano: number;
   mes: number;
@@ -5025,6 +5033,7 @@ function BulkPreviewTable({
   overrides: Record<number, { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }>;
   onChangeOverrides: (next: Record<number, { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }>) => void;
   moodByMotion: Record<string, string>;
+  usedFraseIds: Set<string>;
 }) {
   const items = useMemo(() => {
     const frasesPorDia: Record<DiaSemana, Array<{ id: string; texto: string; dia: DiaSemana }>> = {
@@ -5048,10 +5057,11 @@ function BulkPreviewTable({
       motionPool,
       audioPool,
       moodByMotion,
+      usedFraseIds,
       frasesPorDia,
       frasesEspeciais,
     });
-  }, [ano, mes, diaInicio, diaFim, motionPool, audioPool, moodByMotion]);
+  }, [ano, mes, diaInicio, diaFim, motionPool, audioPool, moodByMotion, usedFraseIds]);
 
   const setOverride = (dayIndex: number, patch: { fraseTexto?: string; motionUrl?: string; audioUrl?: string | null; theme?: string }) => {
     const next = { ...overrides };
