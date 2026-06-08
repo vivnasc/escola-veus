@@ -29,48 +29,54 @@ const H = 1920;
 
 // Tabelas de temas — espelha src/lib/hoje-em-mim/themes.ts. Cada item
 // do manifest pode trazer `theme` (id) e este worker resolve as cores.
+// Temas: cores do overlay (texto + arco) e ffmpegEq desactivado.
+// Antes a Vivianne queixou-se que os motions ficavam planos/escuros:
+// causa era aplicarmos eq=brightness=0.12:gamma=0.82 que matava o motion.
+// VC Sabia não usa filter global no motion — só uma vinheta de
+// legibilidade no fundo. Seguimos o mesmo padrão: motion raw, scrim
+// localizada só atrás do texto.
 const THEMES = {
   "carta-noturna": {
     highlight: "#C28F60",
     highlightSoft: "rgba(194, 143, 96, 0.55)",
     text: "#F2E9D8",
     bg: "#0E0820",
-    ffmpegEq: "brightness=0.12:saturation=1.1:contrast=0.95:gamma=0.82",
+    ffmpegEq: null,
   },
   "luar-prata": {
     highlight: "#CCCCDC",
     highlightSoft: "rgba(204, 204, 220, 0.55)",
     text: "#F8F4EC",
     bg: "#141826",
-    ffmpegEq: "brightness=0.10:saturation=0.85:contrast=1.05:gamma=0.85",
+    ffmpegEq: null,
   },
   "dourado-luminoso": {
     highlight: "#D4A853",
     highlightSoft: "rgba(212, 168, 83, 0.55)",
     text: "#FAF4E0",
     bg: "#1A0E05",
-    ffmpegEq: "brightness=0.08:saturation=1.15:contrast=1.0:gamma=0.85",
+    ffmpegEq: null,
   },
   "rosa-incenso": {
     highlight: "#D4977C",
     highlightSoft: "rgba(212, 151, 124, 0.55)",
     text: "#F5EBD8",
     bg: "#1F0F1A",
-    ffmpegEq: "brightness=0.10:saturation=1.05:contrast=0.98:gamma=0.85",
+    ffmpegEq: null,
   },
   "branco-puro": {
     highlight: "#E8E5DD",
     highlightSoft: "rgba(232, 229, 221, 0.55)",
     text: "#FFFFFF",
     bg: "#0A0A14",
-    ffmpegEq: "brightness=0.12:saturation=0.95:contrast=1.0:gamma=0.82",
+    ffmpegEq: null,
   },
   "verde-musgo": {
     highlight: "#A8AF7A",
     highlightSoft: "rgba(168, 175, 122, 0.55)",
     text: "#F5F0DC",
     bg: "#0E1612",
-    ffmpegEq: "brightness=0.10:saturation=1.1:contrast=1.0:gamma=0.85",
+    ffmpegEq: null,
   },
 };
 const DEFAULT_THEME_ID = "carta-noturna";
@@ -228,19 +234,17 @@ function buildOverlaySvg({ fraseTexto, dia, fontItalicB64, fontSansB64, theme })
       @font-face { font-family: "cormgar"; font-weight: 400; font-style: normal; src: url(data:font/ttf;base64,${fontSansB64}) format("truetype"); }
     </style>
     <linearGradient id="phraseScrim" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${BG}" stop-opacity="0"/>
-      <stop offset="25%" stop-color="${BG}" stop-opacity="0.15"/>
-      <stop offset="75%" stop-color="${BG}" stop-opacity="0.15"/>
-      <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#000" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="footerScrim" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${BG}" stop-opacity="0"/>
-      <stop offset="60%" stop-color="${BG}" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="${BG}" stop-opacity="0.25"/>
+      <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.30"/>
     </linearGradient>
     <radialGradient id="arcDayScrim" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="${BG}" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="${BG}" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#000" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
     </radialGradient>
     <filter id="textShadow" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#000" flood-opacity="0.85"/>
@@ -317,8 +321,11 @@ async function renderOne({ item, workDir, fontItalicB64, fontSansB64, sharp }) {
   const png = await sharp(Buffer.from(svg)).png().toBuffer();
   await writeFile(overlayPath, png);
 
+  // VC Sabia não toca na cor do motion — só compõe o overlay por cima.
+  // Aplicar eq global aqui apagava a vivacidade dos motions de Junho.
+  const eqChain = theme.ffmpegEq ? `,eq=${theme.ffmpegEq}` : "";
   const filter = [
-    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30,eq=${theme.ffmpegEq}[v0]`,
+    `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=30${eqChain}[v0]`,
     `[v0][1:v]overlay=0:0[v]`,
   ].join(";");
 
