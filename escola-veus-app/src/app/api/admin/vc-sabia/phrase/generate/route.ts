@@ -63,9 +63,9 @@ EXEMPLOS-OURO (cada um lê-se como "Sabias que... <frase>"):
 - "O girassol segue o sol mesmo nos dias cinzentos. Tu também. Confia na tua direção."
 - "O baobá guarda água para os anos secos. Tu também. Confia no que reservas."
 - "A gota fura a pedra sem nunca a empurrar. Tu também. Confia na tua constância."
-- "As estrelas só aparecem quando o céu escurece. Tu também. Confia na tua noite."
+- "O orvalho da manhã chega sem aviso e parte sem despedida. Tu também. Confia no que vem suave."
 - "A semente parte-se antes de germinar. Tu também. Confia na tua abertura."
-- "A brasa guarda calor mesmo sob a cinza. Tu também. Confia no que parece adormecido."
+- "A figueira dá fruto na sua estação, nunca antes. Tu também. Confia no teu tempo."
 
 REGRA CRÍTICA — SEM IMPERATIVOS, SEM PRÁTICAS:
 A frase é SEMPRE observação contemplativa, NUNCA conselho ou instrução. PROIBIDO usar "Trata-te", "Pratica", "Pergunta-te", "Permite-te", "Lembra-te", "Procura", "Faz", "Escuta", "Respira", "Hoje, ..." ou qualquer verbo imperativo dirigido ao leitor. O único imperativo permitido é "Confia ..." (na 3ª frase).
@@ -74,9 +74,18 @@ Regras formais:
 - NUNCA usar travessão "—" nem "–". Só pontos finais e vírgulas.
 - 2 ou 3 frases curtas, total 80–220 caracteres.
 - Começa com letra MAIÚSCULA (vai depois de "Sabias que...").
-- A primeira frase é uma imagem da natureza (planta, água, lua, ave, fogo, terra, fruto, pedra), nunca abstracção.
+- A primeira frase é uma imagem da natureza DIURNA / MATINAL (planta, fruto, semente, água, orvalho, ave, sol, vento, terra, pedra, fogo de cozinha). NUNCA abstracção.
 - A segunda é "Tu também." ou "Tu também sabes."
 - A terceira (opcional, ~70%) começa com "Confia" + preposição + substantivo interior (raiz, ciclo, tempo, fluxo, pausa, passo, espaço, silêncio, retorno, instinto, base, processo, pureza, mudança, valor, espera, reserva).
+
+REGRA NOCTURNA — PROIBIÇÃO ABSOLUTA:
+Esta é uma série de MANHÃ. NUNCA uses vocabulário nocturno na imagem da
+natureza: PROIBIDO lua, lua cheia, estrelas, constelação, noite, escuro,
+escuridão, escurece, anoitecer, crepúsculo, madrugada-escura, lanterna,
+vela, brasa (como única luz), pirilampo, sombra-só, breu. O cenário tem
+de funcionar à luz do dia (amanhecer, manhã, golden hour matinal, sol
+suave, orvalho, primeira luz). Brasa pode aparecer só em metáfora positiva
+("brasa guarda calor"), nunca como fonte única de luz nocturna.
 
 ${themeInstruction}${opts.avoidBlock}${stricter}
 

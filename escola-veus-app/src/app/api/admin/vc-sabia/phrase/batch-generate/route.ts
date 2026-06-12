@@ -21,14 +21,17 @@ export const runtime = "nodejs";
  * Returns: { phrases, requested, returned, retries, duplicatesDropped }
  */
 
+// POOL DIURNO/MATINAL: NUNCA lua, estrelas, vaga-lume, noite ou nocturnal.
+// vc-sabia é série de MANHÃ — qualquer referência à lua/estrelas/escuro
+// produz frases incoerentes e prompts MJ nocturnos.
 const NATURE_POOL = [
   "semente", "raiz", "tronco", "ramo", "folha nova", "lirio", "lotus",
   "musgo", "samambaia", "alecrim", "trigo", "rio", "ribeiro", "lago",
   "lagoa", "orvalho", "neblina", "nevoa", "chuva miuda", "garoa",
-  "lua nova", "lua cheia", "crescente", "amanhecer", "alvorada",
+  "amanhecer", "alvorada",
   "primeira luz", "sol baixo", "horizonte", "horizonte rosa", "ceu pastel",
   "borboleta", "abelha", "passaro", "andorinha", "garca", "tartaruga",
-  "tartaruga marinha", "peixe pequeno", "vaga-lume", "pedra do rio",
+  "tartaruga marinha", "peixe pequeno", "pedra do rio",
   "pedra polida", "areia", "duna", "concha", "estrela do mar",
   "fogo brando", "carvao", "brisa", "vento sul", "fumo de incenso",
   "barro", "argila", "terra fresca", "olival", "cajueiro", "mafurreira",
@@ -49,7 +52,10 @@ function buildSystemPrompt(opts: {
 
 REGRA CRITICA #1: a frase aparece DEPOIS do kicker "Sabias que..." que o overlay imprime acima. Testa mentalmente em voz alta: "Sabias que... <a tua frase>" tem de soar natural e fluir como uma frase unica.
 
-REGRA CRITICA #2: a frase NUNCA inclui "sabias que" no inicio (duplica o kicker). Comeca SEMPRE por artigo + substantivo concreto da natureza (A semente, O rio, A lua, A garca, O baobá, A neblina, etc).
+REGRA CRITICA #2: a frase NUNCA inclui "sabias que" no inicio (duplica o kicker). Comeca SEMPRE por artigo + substantivo concreto da natureza DIURNA (A semente, O rio, A garca, O baobá, A neblina, O orvalho, etc).
+
+REGRA CRITICA NOCTURNA — PROIBIÇÃO ABSOLUTA:
+Esta é uma série de MANHÃ. NUNCA uses lua, lua cheia, lua nova, crescente, estrelas, constelação, noite, escuro, escuridão, escurece, anoitecer, crepúsculo, lanterna, vela, pirilampo, vaga-lume, breu. Esse vocabulário pertence à série hoje-em-mim (nocturna), NÃO à vc-sabia. Se gerares uma frase com qualquer destes termos, será REJEITADA.
 
 REGRA CRITICA #3 — SEM IMPERATIVOS, SEM PRATICAS, SEM DIRECTIVAS:
 A frase e SEMPRE uma OBSERVACAO contemplativa, NUNCA um conselho ou instrucao para o leitor.
@@ -67,7 +73,7 @@ EXEMPLOS BONS (cada um le-se como "Sabias que... <frase>"):
 - "O girassol segue o sol mesmo nos dias cinzentos. Tu tambem. Confia na tua direcao."
 - "O baobá guarda agua para os anos secos. Tu tambem. Confia no que reservas."
 - "A gota fura a pedra sem nunca a empurrar. Tu tambem. Confia na tua constancia."
-- "As estrelas so aparecem quando o ceu escurece. Tu tambem. Confia na tua noite."
+- "O orvalho da manha chega sem aviso e parte sem despedida. Tu tambem. Confia no que vem suave."
 - "A semente parte-se antes de germinar. Tu tambem. Confia na tua abertura."
 - "A brasa guarda calor mesmo sob a cinza. Tu tambem. Confia no que parece adormecido."
 - "Nenhum voo comeca sem o salto. Tu tambem. Confia no teu impulso."
@@ -88,14 +94,14 @@ Regras formais:
 - Portugues PT-PT/PT-MZ (Mocambique, nao Brasil). Ortografia pre-Acordo ou Acordo, ambas aceitaveis, mas consistente.
 - NUNCA usar travessao "—" nem "–". So pontos finais e virgulas.
 - Cada frase entre 80 e 220 caracteres totais.
-- Imagem concreta sensorial (planta, agua, lua, ar, animal, pedra, fogo, terra, fruto, ave). Nao filosofia abstracta.
+- Imagem concreta sensorial DIURNA (planta, agua, ar, animal, pedra, fogo de cozinha, terra, fruto, ave, orvalho, sol, vento). NUNCA lua/estrelas/noite. Nao filosofia abstracta.
 - Termina em ponto final.
 
 Sugestoes de natureza para inspirar variedade (escolhe imagens diferentes para cada frase, evita repetir o mesmo substantivo): ${opts.natureSuggestion}.
 
 Temas possiveis: autoconhecimento, autoamor, autoperdao, florescer-no-tempo-certo, presenca-leve, suavidade-e-descanso, sonhar-com-raizes, inteireza, corpo-como-casa, confianca-no-caminho, gratidao, alegria-simples, beleza-de-existir.
 
-GERA EXACTAMENTE ${opts.count} frases. Todas distintas entre si E distintas das ja escritas. Imagens diferentes (nao todas com agua, nao todas com lua, varia substantivos).${opts.dateBlock}${opts.avoidBlock}${stricterTail}
+GERA EXACTAMENTE ${opts.count} frases. Todas distintas entre si E distintas das ja escritas. Imagens diferentes (nao todas com agua, nao todas com a mesma planta, varia substantivos). PROIBIDO usar lua/estrelas/noite/escuro.${opts.dateBlock}${opts.avoidBlock}${stricterTail}
 
 Output strict JSON, sem markdown, sem code fences:
 {
