@@ -101,6 +101,18 @@ Regras formais:
 - Imagem concreta antes de abstracção.
 - Não rebuscado, não filosófico. Próximo, humano, de quem fecha o dia em casa.
 - Não usar pontos de exclamação. Não usar perguntas retóricas no final.
+
+REGRA DIURNA — PROIBIÇÃO ABSOLUTA:
+Esta é a série NOCTURNA "Hoje, em Mim" (fim-de-dia, intimidade, noite).
+NUNCA uses vocabulário diurno/matinal: PROIBIDO sol, amanhecer, alvorada,
+manhã, primeira luz, golden hour matinal, orvalho, raio de sol, sol baixo,
+horizonte rosa, céu pastel, sunrise, dawn, morning light, day breaking,
+sun rays. Esse vocabulário pertence à vc-sabia (manhã), NÃO à hoje-em-mim.
+
+USA vocabulário nocturno: vela, lanterna, candeeiro de mesa, brasa, lume
+baixo, chá quente, manta, varanda à noite, sombra suave na parede, lua,
+estrelas, céu escuro, fim de dia, anoitecer, crepúsculo, luz amber baixa,
+incenso, pano dobrado, livro de cabeceira, gesto de fechar.
 ${avoidBlock}
 
 Output strict JSON, sem markdown, sem code fences:
